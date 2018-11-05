@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700');
 
+@font-face {
+	font-family: 'DK-Crayon-Crumble';
+	src: url('fonts/DK-Crayon-Crumble.ttf');
+	src:
+		local('DK Crayon Crumble'),
+		local('DK-Crayon-Crumble'),
+		url('fonts/DK-Crayon-Crumble.ttf')
+		format('truetype');
+}
+
 body {
     color: #262626;
     font-size: 16px;
@@ -42,7 +52,7 @@ a:hover, a:active {
 # Header Bar
 --------------------------------*/
 .top-header-bar {
-    background: #384030;
+    background: #165B33;
     color: #fff;
 }
 
@@ -434,18 +444,40 @@ a:hover, a:active {
     outline: none;
 }
 
+.button-center {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.wishcard-btn {
+    padding: 17px 32px;
+    margin: 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    outline: none;
+}
+
 .btn:focus {
     outline: none;
 }
 
-.btn.red-border {
-    border-color: #A32C28;
+.btn-red-border {
+    border-color: #BB2528;
+}
+
+.btn-red-bg {
+  border-color: transparent;
+  background: #BB2528;
+  color: #fff;
 }
 
 .btn.orange-border:hover,
 .btn.gradient-bg {
     border-color: transparent;
-    background: #A32C28;
+    background: #BB2528;
     /* background: -moz-linear-gradient(180deg, rgba(255,90,0,1) 0%, rgba(255,54,0,1) 100%); /* ff3.6+ */
     /* background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,90,0,1)), color-stop(100%, rgba(1255,54,0,1))); /* safari4+,chrome */
     /* background: -webkit-linear-gradient(180deg, rgba(255,90,0,1) 0%, rgba(255,54,0,1) 100%); /* safari5.1+,chrome10+ */
@@ -737,6 +769,18 @@ ul.tabs-nav .tab-nav.active {
 }
 
 
+/*--------------------------------------------------------------
+# wishcards section - landing page
+--------------------------------------------------------------*/
+.wishcards {
+  position: relative;
+  padding: 80px 0;
+}
+
+#crayon-font {
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+  font-size: 30px;
+}
 
 /*--------------------------------------------------------------
 # Footer
