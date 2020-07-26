@@ -5,6 +5,19 @@ green 8BC64D
 rgba(139,198,77,1) -green
 */
 
+.icon-box a{
+  outline: none;
+  list-style: none;
+}
+
+.icon-box a:hover, .icon-box a:active {
+  text-decoration: none;
+}
+
+.icon-box i {
+  color: #262626;
+}
+
 .custom-wrapper {
     background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7));
 		background: rgba(139,198,77,0.1);
@@ -90,11 +103,11 @@ rgba(139,198,77,1) -green
 
 @font-face {
 	font-family: 'DK-Crayon-Crumble';
-	src: url('fonts/DK-Crayon-Crumble.ttf');
+	src: url('../fonts/DK-Crayon-Crumble.ttf');
 	src:
 		local('DK Crayon Crumble'),
 		local('DK-Crayon-Crumble'),
-		url('fonts/DK-Crayon-Crumble.ttf')
+		url('../fonts/DK-Crayon-Crumble.ttf')
 		format('truetype');
 }
 
@@ -135,14 +148,9 @@ img {
 }
 
 
-/*--------------------------------------------------------------
-# Links
---------------------------------------------------------------*/
-
-
 /* ---------------header */
 .bg {
-  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.88),  rgba(255,209,90,0.05)), url('./img/gift-holding-1.jpg') center center;
+  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.88),  rgba(255,209,90,0.05)), url('../img/gift-holding-1.jpg') center center;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -349,27 +357,6 @@ ul.tabs-nav .tab-nav.active {
 /*
 # Welcome
 --------------------------------*/
-.home-page-welcome {
-    position: relative;
-    padding: 96px 0;
-    /* background: linear-gradient(-90deg, rgba(104,134,197,1) 0%, rgba(255,172,183,1) 100%); */
-		  /* background: linear-gradient(to right, #f79d00, #64f38c); */
-			background: linear-gradient(100deg, rgba(188,227,97, 1), #BCE361, #FFFA71, rgba(255,209,90,1));
-    /* background-size: cover;
-    z-index: 99; */
-}
-
-.home-page-welcome::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    background: rgba(21,21,21,.9);
-}
-
 .welcome-content .entry-title {
     position: relative;
     padding-bottom: 24px;
@@ -416,26 +403,6 @@ ul.tabs-nav .tab-nav.active {
     }
 }
 
-/*--------------------------------------------------------------
-# Pagination
---------------------------------------------------------------*/
-.pagination {
-    margin-top: 92px;
-}
-
-.pagination a {
-    margin-right: 16px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1;
-    color: #262626;
-    text-decoration: navajowhite;
-}
-
-.pagination a:hover,
-.pagination .active a {
-    color: #ff3900;
-}
 
 /*--------------------------------------------------------------
 # Sidebar
@@ -470,5 +437,5 @@ ul.tabs-nav .tab-nav.active {
     font-size: 1em;
     color: #fff;
     text-align: center;
-		background: #8BC64D;
+		background: #FFD15A;
 }

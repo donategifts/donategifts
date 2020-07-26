@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(express.static('assets'));
 
 var uri = 'mongodb+srv://stacysealky:pwd123@clusterstacy.fco5r.mongodb.net/ostaa?w=majority';
 var db;
@@ -38,3 +39,6 @@ mongoose.connect(uri, options, function (err, database) {
 		});
 	}
 });
+
+// app.get('/', (res, req) => {
+// })
