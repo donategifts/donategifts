@@ -1,0 +1,14 @@
+# Ignore Mac system files & workspace
+.DS_store
+VS-workspace.code-workspace
+.settings
+.project
+
+# Ignore node_modules folder
+node_modules
+
+# Ignore all text files
+*.txt
+
+# Ignore files related to API keys
+*.env

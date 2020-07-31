@@ -5,6 +5,10 @@ green 8BC64D
 rgba(139,198,77,1) -green
 */
 
+#section-text {
+  font-size: 1em;
+}
+
 .icon-box a{
   outline: none;
   list-style: none;
@@ -19,7 +23,7 @@ rgba(139,198,77,1) -green
 }
 
 .custom-wrapper {
-    background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7));
+    /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
 		background: rgba(139,198,77,0.1);
 }
 /* ---------------section with row col */
@@ -58,8 +62,15 @@ rgba(139,198,77,1) -green
 
 .custom-wrapper img {
   border-radius: 10px;
-  box-shadow: 20px 20px rgba(139,198,77,1);
 	width: 400px;
+}
+
+.grn-box {
+  box-shadow: 20px 20px rgba(139,198,77,1);
+}
+
+.yel-box {
+  box-shadow: 20px 20px rgba(255, 209, 90,1);
 }
 
 .subtext {
@@ -149,12 +160,23 @@ img {
 
 
 /* ---------------header */
-.bg {
-  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.88),  rgba(255,209,90,0.05)), url('../img/gift-holding-1.jpg') center center;
+#home-bg {
+  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.8),  rgba(255,209,90,0.05)), url('../img/gift-holding-1.jpg') center center;
+  min-height: 70vh;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  min-height: 70vh;
+}
+
+#about-bg {
+  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.3),  rgba(255,209,90,0.05)), url('../img/kid-yellow-bg.jpg') center center;
+  min-height: 40vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+}
+.bg {
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,8 +361,7 @@ ul.tabs-nav .tab-nav.active {
 }
 
 .icon-box p{
-    margin-top: 24px;
-    font-size: 14px;
+    margin-top: 20px;
     color: #595858;
 }
 
@@ -351,7 +372,7 @@ ul.tabs-nav .tab-nav.active {
 
 
 .sidepad {
-    padding: 7em 5em 5em 5em;
+    padding: 7em 1em 6em 1em;
 }
 
 /*

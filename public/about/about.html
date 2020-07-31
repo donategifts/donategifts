@@ -1,3 +1,9 @@
+<!-- 
+	****
+	THIS PAGE NEEDS TO BE EDITED
+	****
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +25,7 @@
 	<link rel="stylesheet" href="../css/home.css">
 	<link rel="stylesheet" href="../css/utils.css">
 	<link rel="stylesheet" href="../css/nav.css">
-  <link rel="stylesheet" href="about.css">
+	<link rel="stylesheet" href="about.css">
 </head>
 
 <body>
@@ -55,19 +61,20 @@
 		</div>
 	</div>
 
-  <!-- header section-->
-  <div class="bg">
-    <div class="text">
-      <h1 class="banner-h1 crayon-font">Learn our mission</h1>
-      <h4 class="comf-font">Our missions and commitment to making children happy</h4>
-    </div>
-  </div>
+	<!-- header section-->
+	<div class="bg" id="about-bg">
+		<div class="text">
+			<h1 class="banner-h1 crayon-font">Our mission</h1>
+			<h4 class="comf-font">Learn about our missions and commitment to making foster children happy</h4>
+		</div>
+	</div>
 
-  <!-- thank you section-->
+	<!-- thank you section-->
+	<div class="margin-up"></div>
 	<div class="custom-wrapper" id="about">
 		<div class="custom-row">
 			<div class="custom-col custom-left">
-				<img src="../img/kids-smile.gif" alt="chicago-gif-image" />
+				<img src="../img/kids-smile.gif" alt="chicago-gif-image" class="yel-box" />
 			</div>
 			<div class="custom-col custom-right">
 				<h4 id="grn-font" class="crayon-font font-lg">Bringing smiles to kids</h4>
@@ -86,11 +93,11 @@
 		</div>
 	</div>
 
-  <!-- thank you section-->
+	<!-- thank you section-->
 	<div class="custom-wrapper" id="about">
 		<div class="custom-row">
 			<div class="custom-col custom-right">
-				<img src="../img/stacy-photo.jpg" alt="chicago-gif-image" />
+				<img src="../img/stacy-photo.jpg" alt="chicago-gif-image" class="yel-box" />
 			</div>
 			<div class="custom-col custom-left">
 				<h4 id="grn-font" class="crayon-font font-lg">Who made this project</h4>
@@ -109,48 +116,45 @@
 		</div>
 	</div>
 
-  <div class="contact1">
-    <div class="container-contact1">
-      <div class="contact1-pic js-tilt" data-tilt>
-        <img src="../img/email-img.png" alt="IMG">
-      </div>
+	<div class="contact1">
+		<div class="container-contact1">
+			<div class="contact1-pic js-tilt" data-tilt>
+				<img src="../img/email-img.png" alt="IMG">
+			</div>
 
-      <form class="contact1-form validate-form">
-        <span class="crayon-font contact1-form-title">
-          Send us a message
-        </span>
+			<form class="contact1-form validate-form">
+				<span class="crayon-font contact1-form-title">
+					Send Us a Message
+				</span>
 
-        <div class="comf-font wrap-input1 validate-input" data-validate = "Name is required">
-          <input class="input1" type="text" name="name" placeholder="Name">
-          <span class="shadow-input1"></span>
-        </div>
+				<div class="comf-font wrap-input1 validate-input" data-validate="Name is required">
+					<input id="name" class="input1" type="text" name="name" placeholder="Name">
+					<span class="shadow-input1"></span>
+				</div>
 
-        <div class="comf-font wrap-input1 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-          <input class="input1" type="text" name="email" placeholder="Email">
-          <span class="shadow-input1"></span>
-        </div>
+				<div class="comf-font wrap-input1 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+					<input id="email" class="input1" type="text" name="email" placeholder="Email">
+					<span class="shadow-input1"></span>
+				</div>
 
-        <div class="comf-font wrap-input1 validate-input" data-validate = "Subject is required">
-          <input class="input1" type="text" name="subject" placeholder="Subject">
-          <span class="shadow-input1"></span>
-        </div>
+				<div class="comf-font wrap-input1 validate-input" data-validate="Subject is required">
+					<input id="subject" class="input1" type="text" name="subject" placeholder="Subject">
+					<span class="shadow-input1"></span>
+				</div>
 
-        <div class="comf-font wrap-input1 validate-input" data-validate = "Message is required">
-          <textarea class="input1" name="message" placeholder="Message"></textarea>
-          <span class="shadow-input1"></span>
-        </div>
+				<div class="comf-font wrap-input1 validate-input" data-validate="Message is required">
+					<textarea id="message" class="input1" name="message" placeholder="Message"></textarea>
+					<span class="shadow-input1"></span>
+				</div>
 
-        <div class="comf-font container-contact1-form-btn">
-          <button class="contact1-form-btn">
-            <span>
-              Send Email
-              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-            </span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+				<div class="comf-font container-contact1-form-btn">
+					<div class="contact1-form-btn">
+						<input value="Submit" type="submit" class="contact1-form-btn">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
 
 	<!-- footer using bootstrap css-->
@@ -159,11 +163,33 @@
 			<div class="row">
 				<div class="col-12">
 					<p class="m-0">Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script> DonateGifts | <a
-							href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> - All rights reserved</p>
+						<script>
+							document.write(new Date().getFullYear());
+						</script> DonateGifts | <a href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> - All
+						rights reserved</p>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$('form').on('submit', (e) => {
+			e.preventDefault();
+			const name = $('#name').val().trim();
+			const email = $('#email').val().trim();
+			const subject = $('#subject').val().trim();
+			const message = $('#message').val().trim();
+			const mailData = {
+				name,
+				email,
+				subject,
+				message
+			};
+			$.post('/email', mailData, function () {
+				console.log("server received the mailData");
+			});
+		});
+	</script>
 </body>
+
 </html>
