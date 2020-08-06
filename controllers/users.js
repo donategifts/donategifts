@@ -10,7 +10,7 @@ exports.getUsersRoot = (req, res) => {
 	res.send(`
 		<h1>Welcome!</h1>
 		${userId ? `
-			<a href='/users/home'>Home</a>
+			<a href='/users/profile'>Profile</a>
 			<form method='post' action='/users/logout'>
 				<button>Logout</button>
 			</form>
@@ -21,11 +21,11 @@ exports.getUsersRoot = (req, res) => {
 	`);
 }
 
-// '/users/home' (make sure to have redirectLogin)
-exports.getUsersHome = (req, res) => {
+// '/users/profile' (make sure to have redirectLogin)
+exports.getUsersProfile = (req, res) => {
 	const { user } = res.locals;
 	res.send(`
-		<h1>Home</h1>
+		<h1>Profile</h1>
 		<a href='/users'>Main</a>
 		<ul>
 			<li>Name: ${user.fName} ${user.lName}</li>
@@ -34,7 +34,7 @@ exports.getUsersHome = (req, res) => {
 	`);
 };
 
-// '/users/login' (make sure to have redirectHome)
+// '/users/login' (make sure to have redirectProfile)
 exports.getUsersLogin = async (req, res) => {
     res.send(`
 		<h1>Login</h1>
@@ -47,7 +47,7 @@ exports.getUsersLogin = async (req, res) => {
 	`);
 };
 
-// '/users/register' (make sure to have redirectHome)
+// '/users/register' (make sure to have redirectProfile)
 exports.getUsersRegister = async (req, res) => {
 	res.send(`
 		<h1>Register</h1>
@@ -62,20 +62,20 @@ exports.getUsersRegister = async (req, res) => {
 	`);
 };
 
-// '/users/login' (make sure to have redirectHome)
+// '/users/login' (make sure to have redirectProfile)
 exports.postUsersLogin = async (req, res) => {
 	const { email, password } = req.body;
 	const user = await User.findOne({ email: email });
 	if (user) {
 		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
-			return res.redirect('/users/home');
+			return res.redirect('/users/profile');
 		}
 	}
 	res.redirect('/users/login');
 };
 
-// '/users/register' (make sure to have redirectHome)
+// '/users/register' (make sure to have redirectProfile)
 exports.postUsersRegister = async (req, res) => {
 	const { email } = req.body;
 	const result = await User.findOne({ email: email });
@@ -85,14 +85,14 @@ exports.postUsersRegister = async (req, res) => {
 	req.body.password = await bcrypt.hash(req.body.password, 10);
 	const newUser = await User.create(req.body);
 	req.session.userId = newUser._id;
-	return res.redirect('/users/home');
+	return res.redirect('/users/profile');
 };
 
 // '/users/logout' (make sure to have redirectLogin)
 exports.postUsersLogout = (req, res) => {
 	req.session.destroy(err => {
 		if (err) {
-			return res.redirect('/users/home');
+			return res.redirect('/users/profile');
 		}
 
 		res.clearCookie(process.env.SESS_NAME);

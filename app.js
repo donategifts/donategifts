@@ -115,8 +115,6 @@ process.on('unhandledRejection', (err, promise) => {
 // PREVENT XSS ATTACKS
 // app.use(xss());
 
-// SWICH /home to /profile
-
 // BASIC HOME ROUTING 
 // (remove or edit this later after completing routes and controllers)
 // app.get('/', (req,res) => {

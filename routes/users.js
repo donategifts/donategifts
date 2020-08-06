@@ -10,9 +10,9 @@ const redirectLogin = (req, res, next) => {
 	}
 }
 
-const redirectHome = (req, res, next) => {
+const redirectProfile = (req, res, next) => {
 	if (req.session.userId) {
-		res.redirect('/home');
+		res.redirect('/profile');
 	} else {
 		next();
 	}
@@ -20,7 +20,7 @@ const redirectHome = (req, res, next) => {
 
 const {
     getUsersRoot,
-    getUsersHome,
+    getUsersProfile,
     getUsersLogin,
     getUsersRegister,
     postUsersLogin, 
@@ -39,24 +39,24 @@ router
     .get(getUsersRoot);
 
 router
-    .route('/home')
-    .get(redirectLogin, getUsersHome);
+    .route('/profile')
+    .get(redirectLogin, getUsersProfile);
 
 router
     .route('/login')
-    .get(redirectHome, getUsersLogin);
+    .get(redirectProfile, getUsersLogin);
 
 router
     .route('/register')
-    .get(redirectHome, getUsersRegister);
+    .get(redirectProfile, getUsersRegister);
 
 router
     .route('/login')
-    .post(redirectHome, postUsersLogin);
+    .post(redirectProfile, postUsersLogin);
 
 router
     .route('/register')
-    .post(redirectHome, postUsersRegister);
+    .post(redirectProfile, postUsersRegister);
 
 router
     .route('/logout')
