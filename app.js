@@ -107,12 +107,6 @@ process.on('unhandledRejection', (err, promise) => {
 
 // SWICH /home to /profile
 
-const users = [
-	{ id: 1, name: 'Alex', email: 'alex@gmail.com', password: 'secret' },
-	{ id: 2, name: 'Max', email: 'max@gmail.com', password: 'secret' },
-	{ id: 3, name: 'Hagard', email: 'hagard@gmail.com', password: 'secret' }
-]
-
 const redirectLogin = (req, res, next) => {
 	if (!req.session.userId) {
 		res.redirect('/login');
@@ -129,12 +123,11 @@ const redirectHome = (req, res, next) => {
 	}
 }
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
 	const { userId } = req.session;
 	if (userId) {
-		res.locals.user = users.find(
-			user => user.id === userId
-		);
+		const result = await User.findById(userId);
+		res.locals.user = result; 
 	}
 	next();
 });
@@ -162,8 +155,8 @@ app.get('/home', redirectLogin, (req, res) => {
 		<h1>Home</h1>
 		<a href='/'>Main</a>
 		<ul>
-			<li>Name: ${user.name}</li>
-			<li>Email: ${user.email}</li>
+			<li>Name: ${user.fName}</li>
+			<li>Email: ${user.lName}</li>
 		</ul>
 	`);
 });
@@ -184,7 +177,8 @@ app.get('/register', redirectHome, (req, res) => {
 	res.send(`
 		<h1>Register</h1>
 		<form method='post' action='/register'>
-			<input name='name' placeholder='Name' required />
+			<input name='fName' placeholder='fName' required />
+			<input name='lName' placeholder='lName' required />
 			<input type='email' name='email' placeholder='Email' required />
 			<input type='password' name='password' placeholder='Password' required />
 			<input type='submit' />
@@ -193,48 +187,34 @@ app.get('/register', redirectHome, (req, res) => {
 	`);
 });
 
-app.post('/login', redirectHome, (req, res) => {
+app.post('/login', redirectHome, async (req, res) => {
 	const { email, password } = req.body;
-
-	if (email && password) {
-		const user = users.find(
-			user => user.email === email && user.password === password
-		);
-
-		if (user) {
+	const user = await User.findOne({ email: email });
+	if (user) {
+		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
 			return res.redirect('/home');
 		}
 	}
-
 	res.redirect('/login');
 });
 
-app.post('/register', redirectHome, (req, res) => {
-	const { name, email, password } = req.body;
+// remove this route later
+app.get('/clear', (req, res) => {
+	User.find({}).remove().exec();
+	res.redirect('/register');
+})
 
-	if (name && email && password) {
-		const exists = users.some(
-			user => user.email === email
-		)
-
-		if (!exists) {
-			const user = {
-				id: users.length + 1,
-				name: name,
-				email: email,
-				password: password
-			};
-		 
-			users.push(user);
-
-			req.session.userId = user.id;
-
-			return res.redirect('/home');
-		}
-	} 
-
-	res.redirect('/register')
+app.post('/register', redirectHome, async (req, res) => {
+	const { email } = req.body;
+	const result = await User.findOne({ email: email });
+	if (result) {
+		return res.redirect('/register');
+	}
+	req.body.password = await bcrypt.hash(req.body.password, 10);
+	const newUser = await User.create(req.body);
+	req.session.userId = newUser._id;
+	return res.redirect('/home');
 });
 
 app.post('/logout', redirectLogin, (req, res) => {
