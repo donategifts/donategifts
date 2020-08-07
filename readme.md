@@ -6,6 +6,8 @@
 
 > Stacy Sealky Lee
 
+> Jordan Huang
+
 ## Usage
 
 App will not run without config.env !
