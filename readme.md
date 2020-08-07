@@ -5,6 +5,7 @@
 ## Author
 
 > Stacy Sealky Lee
+> Jordan Huang
 
 ## Usage
 
