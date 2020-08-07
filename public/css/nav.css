@@ -19,7 +19,7 @@
     position: fixed;
     top: 0;
     left: -320px;
-    z-index: 9999;
+    z-index: 3;
     width: 320px;
     max-width: calc(100% - 120px);
     height: 100%;

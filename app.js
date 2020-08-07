@@ -1,4 +1,3 @@
-
 /*
  * Author: Stacy Sealky Lee
  * Class: CSC 337
@@ -20,12 +19,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
-const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
-const bcrypt = require('bcrypt');
-const xss = require('xss');
+// const bcrypt = require('bcrypt');
+// const xss = require('xss');
 const dotenv = require('dotenv');
-const webToken = require('jsonwebtoken');
+// const webToken = require('jsonwebtoken');
 const ejs = require('ejs');
 app.set('view engine', 'ejs');
 
@@ -72,22 +70,61 @@ app.use(express.static('public'));
 app.use(express.static('assets'));
 const routes = require('./routes/users');
 
+
 //IMPORT MODELS
 const User = require('./models/User');
+const Contact = require('./models/Contact');
 
 //TODO: MOUNT ROUTERS HERE
 
 //UNHANDLED REJECTION - PROMISE
 process.on('unhandledRejection', (err, promise) => {
 	console.log(`Error: ${err.message}`);
-	server.close(() => process.exit(1));
+	//server.close(() => process.exit(1));
 })
 
 // PREVENT XSS ATTACKS
 // app.use(xss());
 
 // BASIC HOME ROUTING 
-// (remove or edit this later after completing routes and controllers)
+// ***(remove or edit this later after completing routes and controllers)
 app.get('/', (req,res) => {
 	res.sendFile(path.join(__dirname,'public','index.html'));
+});
+
+//EMAIL SENDING FUNCTION LIVES IN THE BELOW CONTROLLER
+//EMAIL SENDING IS FROM THE CONTACT FORM IN ABOUT.HTML
+//*** not sure where to place this yet, but please move this to an appropriate file later
+const sendMail = require('./controllers/email');
+
+// *** not sure where to place this yet, but please move this to an appropriate file later
+// ROUTE FOR POST - DATA PULLED FROM CONTACT FORM TO SEND EMAIL
+app.post('/about/email/', async (req, res, next) => {
+	try {
+		var c = new Contact();
+		c.name = req.body.name;
+		c.email = req.body.email;
+		c.subject = req.body.subject;
+		c.message = req.body.message;
+		sendMail(c.email, c.name, c.subject, c.message, (err, data) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log("email successfully sent");
+			}
+		});
+		c.save((err) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log("contact successfully saved to DB");
+				return res.status(201).redirect('/');
+			}
+		});
+	} catch (error) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			message: "ERROR!"
+		}));
+	}
 });
