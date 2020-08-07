@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Local Bootstrap -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
 	<!-- FontAwesome -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<!-- Local themify-icons -->
@@ -19,6 +19,21 @@
 	<link rel="stylesheet" href="css/home.css">
 	<link rel="stylesheet" href="css/utils.css">
 	<link rel="stylesheet" href="css/nav.css">
+	<!-- CSS only -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+		integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+	</script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+		integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
+	</script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 </head>
 
 <body>
@@ -57,10 +72,91 @@
 	<!-- header section-->
 	<div class="bg" id="home-bg">
 		<div class="text">
-			<h1 class="banner-h1 crayon-font">Donate Gifts<span class="hide"> For Kids</span></h1>
-			<h4 class="comf-font">Share happiness with children in foster care</h4>
-			<h4 class="comf-font">Donate Christmas gifts to the children who may not otherwise get one</h4>
-			<button type="button" class="comf-font wishcard-btn grn-btn" id="btn1">See Wish Cards</button>
+			<h1 class="banner-h1 crayon-font">Donate Gifts<span class="hide"> To Foster Kids</span></h1>
+			<h4 class="comf-font">Every child should feel valued, remembered, and loved</h4>
+			<h4 class="comf-font">Donate holiday/birthday gifts to the children who may not otherwise get one</h4>
+			<a href="wishCards/wishCards.html"><button type="button" class="comf-font wishcard-btn inverted-grn-btn"
+					id="btn1">See Wish Cards</button></a>
+
+			<button type="button" class="comf-font wishcard-btn grn-btn" id="btn1" data-toggle="modal"
+				data-target="#exampleModalCenter">Super Easy Process</button>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title rale-font grn-font bold-text" id="exampleModalLongTitle">Our Super Easy & Transparent Donation Process</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body rale-font">
+					<div class="container-fluid">
+
+						<div class="row">
+							<div class="col-md-6">
+								<img class="how-to-img" src="img/step1.png" alt="how-to-step-img">
+								<p class="bold-text">Step 1. Browse wish cards & Find one you like</p>
+							</div>
+							<div class="col-md-6 ml-auto">
+								<img class="how-to-img" src="img/step2-yellow.png" alt="how-to-step-img">
+								<p class="bold-text">Step 2. Click 'Donate Gift' button on the wish card</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<img class="how-to-img" src="img/step3.png" alt="how-to-step-img">
+								<p class="bold-text">Step 3. Once it automatically opens an Amazon page,
+									Click 'Continue' to add the child's wish item to your Amazon cart
+								</p>
+							</div>
+							<div class="col-md-6 ml-auto">
+								<img class="how-to-img" src="img/step4-yellow.png" alt="how-to-step-img">
+								<p class="bold-text">Step 4. Proceed to checkout on Amazon</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<img class="how-to-img" src="img/step5.png" alt="how-to-step-img">
+								<p class="bold-text">Step 5. ***IMPORTANT*** Under 'Other Addresses", Make sure to select the
+									registered address of the foster child  
+								</p>
+							</div>
+							<div class="col-md-6 ml-auto">
+								<img class="how-to-img" src="img/step6-yellow.png" alt="how-to-step-img">
+								<p class="bold-text">Step 6. ***IMPORTANT*** Before you check out, double check that
+									shipping address is set to the gift recipient's address.
+									Place your order. Now, your gift is on its way!
+								</p>
+							</div>
+						</div>
+						<!-- <div class="row">
+							<p>1.click the donate gift on the wish card that you like</p>
+							<p>2.it will automatically open an Amazon (use logo here) page and add
+									the child's wish item to the your Amazon cart</p>
+						</div> -->
+						
+						
+						<!-- <p>3.select the 3rd party
+							shipping address that is set up to deliver the wish item to the foster care child.
+							</p>
+						<p>4. Continue​ -> Address Selection -> Select Other address / Jane Doe’s ​Gift Registry Address ​->
+							​Use this address​ -> Select payment options -> ​Check out ​& Order completed -> Gift item will
+							be delivered to the foster child’s address through Amazon</p> -->
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<!-- <button type="button" class="btn btn-primary">See Wish Cards</button> -->
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -89,7 +185,9 @@
 								<p class="card-text">Interest : eating cupcakes</p>
 								<div class="row button-center">
 									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg"><a href="https://www.amazon.com/gp/item-dispatch?registryID.1=1294SW62GB8SD&registryItemID.1=I1T6SE8K2M6XPN&offeringID.1=70LhyQFxPtc2CQoGED0W7SDDzNreUcIiedJTFxglwiQrp%252FCzphI7BPJf6VWtCZUbo5Qt1jAcRXu3uhM7X5uFEI7D0QLccmlUSDbSKJ8BryH%252BKDEbvznKil22TI5kfvynrKqNspP%252FSPDhNcsUmYc%252Fxg%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab">Donate gift</a></button>
+									<button type="button" class="wishcard-btn btn-grn-bg"><a
+											href="https://www.amazon.com/gp/item-dispatch?registryID.1=1294SW62GB8SD&registryItemID.1=I1T6SE8K2M6XPN&offeringID.1=70LhyQFxPtc2CQoGED0W7SDDzNreUcIiedJTFxglwiQrp%252FCzphI7BPJf6VWtCZUbo5Qt1jAcRXu3uhM7X5uFEI7D0QLccmlUSDbSKJ8BryH%252BKDEbvznKil22TI5kfvynrKqNspP%252FSPDhNcsUmYc%252Fxg%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab">Donate
+											gift</a></button>
 								</div>
 							</div>
 						</div>
@@ -168,9 +266,12 @@
 					situations due to poverty, illness, or lack of resources.
 					With your generosity and kindness, we are able to provide a moment of happiness to children who are
 					in need.
-					By creating this platform, I wish to provide effortless and convenient ways to share the joy in the
+					By creating this platform, we wish to provide effortless and convenient ways to share the joy in the
 					holiday season.
 				</p>
+				<p class="comf-font">Got any questions? We would love to hear from you.</p>
+				<a href="/about/about.html#emailForm"><button type="button" class="comf-font wishcard-btn grn-btn"
+						id="btn1">How To Contact Us</button></a>
 			</div>
 		</div>
 	</div>
@@ -184,12 +285,12 @@
 					<i class="fa fa-smile-o" aria-hidden="true"></i>
 					<h3 class="entry-title crayon-font">Become a gift donor</h3>
 					<p class="comf-font" id="section-text">
-					Become a secret santa
-					for a foster kid who may otherwise not get anything
-					for Christmas and their birthdays. <br/>
-					Come on and join our meaningful movement!<br/>
-					Together, we can make the kids smile!
-				</p>
+						Become a secret santa
+						for a foster kid who may otherwise not get anything
+						for Christmas and their birthdays. <br />
+						Come on and join our meaningful movement!<br />
+						Together, we can make the kids smile!
+					</p>
 				</div>
 			</div>
 
@@ -199,8 +300,8 @@
 					<i class="fa fa-gift" aria-hidden="true"></i>
 					<h3 class="entry-title crayon-font">Learn our mission</h3>
 					<p class="comf-font" id="section-text">
-						What is the purpose of the DonateGifts project? <br/>
-						What are the problems we aim to solve? <br/>
+						What is the purpose of the DonateGifts project? <br />
+						What are the problems we aim to solve? <br />
 						Who created this project and what are their commitments?
 					</p>
 				</div>
@@ -212,7 +313,8 @@
 					<a href="signup/signup.html">
 						<i class="fa fa-users" aria-hidden="true"></i>
 						<h3 class="entry-title crayon-font">Partner with us</h3>
-						<p class="comf-font" id="section-text">Register your foster organization, non-profit adoption agency, or care home. After you get verified, we are here to help
+						<p class="comf-font" id="section-text">Register your foster organization, non-profit adoption
+							agency, or care home. After you get verified, we are here to help
 							you with creating wish cards on behalf of the children under your care.</p>
 					</a>
 				</div>
@@ -226,12 +328,15 @@
 			<div class="row">
 				<div class="col-12">
 					<p class="m-0">Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script> DonateGifts | <a
-							href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> - All rights reserved</p>
+						<script>
+							document.write(new Date().getFullYear());
+						</script> DonateGifts | All
+						rights reserved</p>
+					<!-- <a href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> -->
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
+
 </html>

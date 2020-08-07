@@ -5,6 +5,19 @@ green 8BC64D
 rgba(139,198,77,1) -green
 */
 
+
+
+.how-to-img {
+  height: 310px;
+	width: auto;
+	margin-bottom: 1em;
+}
+
+.bold-text {
+  font-weight: 500;
+  font-size: 1em;
+}
+
 #section-text {
   font-size: 1em;
 }
@@ -81,7 +94,17 @@ rgba(139,198,77,1) -green
   display: flex;
 }
 
+.list {
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 2em;
+}
+
 #grn-font {
+	color: #8bc64d;
+}
+
+.grn-font {
 	color: #8bc64d;
 }
 
@@ -104,8 +127,8 @@ rgba(139,198,77,1) -green
   }
 
   .subtext {
-    font-size: 1.3em;
-    line-height: 1.4em;
+    font-size: 1em;
+    line-height: 1.6em;
     min-width: 100%;
   }
 }
@@ -161,7 +184,7 @@ img {
 
 /* ---------------header */
 #home-bg {
-  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.8),  rgba(255,209,90,0.05)), url('../img/gift-holding-1.jpg') center center;
+  background: linear-gradient(-90deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.85),  rgba(255,209,90,0.8)), url('../img/gift-holding-1.jpg') center center;
   min-height: 70vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -175,8 +198,10 @@ img {
   background-repeat: no-repeat;
   /* background-attachment: fixed; */
 }
-.bg {
 
+
+
+.bg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,7 +220,8 @@ img {
 
 .text h4 {
 	font-weight: 700;
-	font-size: 1.3em;
+  font-size: 1.34em;
+  text-shadow: 0px 3px 5px rgba(84,119,46,0.99);
 }
 
 .text button {
@@ -212,6 +238,10 @@ img {
 /*
 # Button
 ----------------------------------*/
+/* button:focus {
+  outline: 0;
+} */
+
 .btn {
     padding: 18px 40px;
     border-radius: 20px;
@@ -253,6 +283,19 @@ img {
 	color: #8BC64D;
 	cursor: pointer;
 }
+
+.inverted-grn-btn {
+  background-color: #fff;
+  color: #8BC64D;
+  border: none;
+}
+
+.inverted-grn-btn:hover {
+  background-color: #8BC64D;
+	color: #fff;
+	cursor: pointer;
+}
+
 
 .btn:focus {
     outline: none;
