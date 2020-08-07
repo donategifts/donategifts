@@ -1,0 +1,180 @@
+<!-- 
+	****
+	CONTACT FORM AND EMAIL SENDING FUNCTION IS COMPLETE!
+	PAGE CONTENT STILL NEEDS TO BE EDITED
+	****
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Donate Gifts</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Local Bootstrap -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- FontAwesome -->
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Local themify-icons -->
+	<link rel="stylesheet" href="../css/themify-icons.css">
+	<!-- Google Fonts -->
+	<link
+		href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&family=Raleway:wght@100;200;400;500&display=swap"
+		rel="stylesheet">
+	<!-- Custom Styles -->
+	<link rel="stylesheet" href="../css/home.css">
+	<link rel="stylesheet" href="../css/utils.css">
+	<link rel="stylesheet" href="../css/nav.css">
+	<link rel="stylesheet" href="about.css">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+</head>
+
+<body>
+	<!-- navigation bar using bootstrap-->
+	<div class="nav-bar">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+					<div class="site-branding d-flex align-items-center">
+						<a class="d-block" href="../index.html" rel="home"><img class="d-block" id="logo-img"
+								src="../img/donate-gift-logo.png" alt="logo"></a>
+					</div>
+					<nav class="site-navigation d-flex justify-content-end align-items-center">
+						<ul
+							class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+							<li class="current-menu-item"><a href="index.html">Home</a></li>
+							<li><a href="about.html">About</a></li>
+							<li><a href="https://www.youtube.com/watch?v=RmvqvS7SIMU" target="_blank">How To</a></li>
+							<li><a href="wishCards.html">Wish Cards</a></li>
+
+							<li><a href="signup/signup.html">Sign Up</a></li>
+						</ul>
+					</nav>
+					<!-- .hamburger-menu for mobile-->
+					<div class="hamburger-menu d-lg-none">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- header section-->
+	<div class="bg" id="about-bg">
+		<div class="text">
+			<h1 class="banner-h1 crayon-font">Our mission</h1>
+			<h4 class="comf-font">Learn about our missions and commitment to making foster children happy</h4>
+		</div>
+	</div>
+
+	<!-- thank you section-->
+	<div class="margin-up"></div>
+	<div class="custom-wrapper" id="about">
+		<div class="custom-row">
+			<div class="custom-col custom-left">
+				<img src="../img/kids-smile.gif" alt="chicago-gif-image" class="yel-box" />
+			</div>
+			<div class="custom-col custom-right">
+				<h4 id="grn-font" class="crayon-font font-lg">Bringing smiles to kids</h4>
+				<p class="subtext comf-font">
+					The DonateGifts project enables users to donate holiday/ birthday gifts and school supplies to
+					children in the foster care system and orphanages. Donation is directly linked to the product that
+					is sold on Amazon and the child’s wish item will be added to the donor’s Amazon cart. With one
+					button click, it will automatically send the child's wish item to their address.
+					What's more? Unlike other donation programs and toy drives, our foster child can wish for a specific
+					gift,
+					such as a basketball or new shoes, rather than having random gifts delivered to them. Children will
+					receive the exact gifts they wished for and people will have an easier way to get engaged in the
+					community.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- thank you section-->
+	<div class="custom-wrapper" id="about">
+		<div class="custom-row">
+			<div class="custom-col custom-right">
+				<img src="../img/stacy-photo.jpg" alt="chicago-gif-image" class="yel-box" />
+			</div>
+			<div class="custom-col custom-left">
+				<h4 id="grn-font" class="crayon-font font-lg">Who made this project</h4>
+
+				<ul class="list comf-font">
+					<li>Stacy Sealky Lee</li>
+					<li>Jordan Huang</li>
+				</ul>
+
+				<p class="subtext comf-font">
+					Often times, the donation process is more complicated than expected.
+					We want to simplify your donation experience.
+					With DonateGifts, all you have to do is click one button,
+					which will automatically add the child's wish item to your Amazon cart
+					and deliver to the foster child's anonymous address. <br />
+					No need to visit the store to buy gifts and drive down to the drop-off site. No more unnecessary
+					hassle for doing good.<br />
+					Now, how simple is that?
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Email Contact section-->
+	<div class="contact1">
+		<div class="container-contact1">
+			<div class="contact1-pic js-tilt" data-tilt>
+				<img src="../img/email-img.png" alt="IMG">
+			</div>
+			<!-- emailForm starts here-->
+			<form class="contact1-form validate-form" id="emailForm" action="/about/email/" method="POST">
+				<span class="crayon-font contact1-form-title">
+					Send Us a Message
+				</span>
+
+				<div class="comf-font wrap-input1 validate-input" data-validate="Name is required">
+					<input id="name" class="input1" type="text" name="name" placeholder="Name">
+				</div>
+
+				<div class="comf-font wrap-input1 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+					<input id="email" class="input1" type="text" name="email" placeholder="Email">
+				</div>
+
+				<div class="comf-font wrap-input1 validate-input" data-validate="Subject is required">
+					<input id="subject" class="input1" type="text" name="subject" placeholder="Subject">
+				</div>
+
+				<div class="comf-font wrap-input1 validate-input" data-validate="Message is required">
+					<textarea id="message" class="input1" name="message" placeholder="Message"></textarea>
+				</div>
+
+				<div class="comf-font container-contact1-form-btn">
+					<div class="contact1-form-btn">
+						<input value="Submit" type="submit" class="contact1-form-btn">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<!-- footer using bootstrap css-->
+	<div class="footer-bar">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<p class="m-0">Copyright &copy;
+						<script>
+							document.write(new Date().getFullYear());
+						</script> DonateGifts | All
+						rights reserved</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

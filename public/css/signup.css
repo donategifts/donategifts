@@ -1,0 +1,285 @@
+/*
+* Author: Stacy Sealky Lee
+* FileName: signup.css
+* Purpose: Style file for registration form to sign up for an account
+* Description: This page is responsive and the contents reformat to accommodate different screen sizes.
+Section styling is marked for easy reading and mostly in a cascading order of the page content.
+*/
+
+.balo-font {
+  font-family: 'Baloo 2', cursive;
+}
+
+.comf-font {
+  font-family: 'Comfortaa', cursive;
+}
+
+/* ---------------utilities ----  MOVE THIS TO UTILS LATER*/
+.lg {
+  font-size: 3em;
+  font-weight: 700;
+}
+
+.md {
+  font-size: 1.5em;
+}
+
+.md2 {
+  font-size: 1.35em;
+}
+
+.sm {
+  font-size: 1em;
+  text-align: center;
+}
+
+.no-mg-top {
+  margin-top: -10vh;
+}
+
+#text-left {
+  text-align: left;
+}
+
+.mg-btm {
+  margin-bottom: 4em;
+}
+
+.mg-btm2 {
+  margin-bottom: 2.5em;
+}
+
+.title-text {
+  /* fallback for old browsers */
+  /* background: #FF5F6D; */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: linear-gradient(to left, rgb(255, 195, 113), rgb(255, 95, 109));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  color: #fff;
+  text-align: center;
+  line-height: 1em;
+}
+
+.wht-txt {
+  color: #fff;
+  padding: 10px 0;
+  margin: 3px;
+  line-height: 1.3em;
+}
+
+/* ---------------background container */
+.signup-bg {
+  background: linear-gradient(rgba(255, 95, 109, 0), rgba(255, 195, 113, 0)), url('../img/gift-white-bg.jpeg') center center;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .signup-bg {
+    background: linear-gradient(rgba(255, 95, 109, 0), rgba(255, 195, 113, 0.3)), url('../img/gift-white-bg.jpeg');
+  }
+}
+
+.sign-container {
+  width: 80%;
+  /* min-height: 80vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 5px; */
+  /* background: rgba(255,255,255,0.5);
+  border-radius: 20px; */
+  flex-wrap: wrap;
+  padding-bottom: 5vh;
+  padding-top: 5vh;
+}
+
+/* ---------------form */
+.wrap-box {
+  width: 60%;
+  background: #80c64a;
+  background: linear-gradient(45deg, rgba(255, 95, 109, 0.9), rgba(255, 195, 113, 1));
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 100px 55px;
+}
+
+.wrap-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  height: 45px;
+}
+
+@font-face {
+	font-family: 'DK-Crayon-Crumble';
+	src: url('../fonts/DK-Crayon-Crumble.ttf');
+	src:
+		local('DK Crayon Crumble'),
+		local('DK-Crayon-Crumble'),
+		url('../fonts/DK-Crayon-Crumble.ttf')
+		format('truetype');
+}
+
+.crayon-font {
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+}
+
+
+/* ---------------form utilities*/
+.sign-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row2 {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.row2 p {
+  color: #fff;
+  margin-bottom: 2em;
+}
+
+.img-inline {
+  width: 120px;
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+
+.footer-bar {
+    padding: 23px 0;
+    font-size: 1em;
+    color: #fff;
+    text-align: center;
+		background: #FFD15A;
+}
+/* ---------------form inputs*/
+input,
+textarea {
+  outline: none;
+  border: none;
+  text-align: left;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
+input:checked {
+  border: 6px solid black;
+}
+
+textarea::placeholder {
+  color: rgb(255, 95, 109);
+  padding: 10px;
+}
+
+.input-default {
+  display: block;
+  width: 100%;
+  background: transparent;
+  font-size: 1.35em;
+  color: #fff;
+  line-height: 1.2;
+  padding: 0 5px;
+}
+
+.input-textarea {
+  display: block;
+  width: 100%;
+  font-size: 1em;
+  border-radius: 10px;
+  color: rgb(255, 95, 109);
+}
+
+/* ---------------form radio buttons for newsletter */
+fieldset {
+  border: 1px dotted #fff;
+  border-radius: 10px;
+}
+
+fieldset div {
+  align-items: center;
+}
+
+fieldset label {
+  padding: 0 10px;
+}
+
+.wrap-radio {
+  position: relative;
+  margin: 0 auto 3em auto;
+  padding: 2rem 0;
+  color: #fff;
+}
+
+.wrap-radio label {
+  font-size: 1.4em;
+}
+
+
+/* ---------------form submit button */
+.container-form-btn {
+  padding-top: 0;
+}
+
+.form-btn {
+  color: rgb(255, 95, 109);
+  font-size: 1.5em;
+  line-height: 1.2;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  margin-top: 3vh;
+  margin-left: 25%;
+  margin-right: 25%;
+  min-width: 50%;
+  height: 50px;
+  border-radius: 10px;
+  position: relative;
+  border: 1px solid white;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(255, 195, 113, 1), rgba(255, 195, 113, 0.5));
+  transition: all 0.4s;
+}
+
+.form-btn::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #fff;
+  opacity: 1;
+  transition: all 0.4s;
+}
+
+.form-btn:hover {
+  color: #fff;
+  border: none;
+}
+
+.form-btn:hover:before {
+  opacity: 0;
+}

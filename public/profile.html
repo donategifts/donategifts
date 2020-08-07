@@ -1,0 +1,278 @@
+<!-- 
+	****
+	PROFILE PAGE -- AFTER SIGN UP / LOG IN
+	****
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Donate Gifts</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Local Bootstrap -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- FontAwesome -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Local themify-icons -->
+    <link rel="stylesheet" href="../css/themify-icons.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&family=Raleway:wght@100;200;400;500&display=swap"
+        rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/about.css">
+    <!-- CDN jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- CDN client ejs -->
+    <script src="https://unpkg.com/ejs@3.1.3/ejs.min.js"></script>
+</head>
+
+<body>
+    <!-- navigation bar using bootstrap-->
+    <div class="nav-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="site-branding d-flex align-items-center">
+                        <a class="d-block" href="../index.html" rel="home"><img class="d-block" id="logo-img"
+                                src="../img/donate-gift-logo.png" alt="logo"></a>
+                    </div>
+                    <nav class="site-navigation d-flex justify-content-end align-items-center">
+                        <ul
+                            class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                            <li class="current-menu-item"><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="https://www.youtube.com/watch?v=RmvqvS7SIMU" target="_blank">How To</a></li>
+                            <li><a href="../wishCards/wishCards.html">Wish Cards</a></li>
+                            <li><a href="#">My Profile</a></li>
+                            <li><a href="/users/logout">Log Out</a></li>
+                            
+                        </ul>
+                    </nav>
+                    <!-- .hamburger-menu for mobile-->
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- header section-->
+    <div class="bg" id="profile-bg">
+        <div class="profile-title">
+            <h1 id="cray-font">Welcome <%= user.fName %></h1>
+        </div>
+    </div>
+
+    <!-- profile content section-->
+    <header class="header rale-font">
+        <div class="container">
+
+            <div class="row" id="profile-row">
+                <div class="col-sm-3">
+                    <a href="#"><img id="logo-img" src="../img/default-avatar.png" alt="default-avatar"></a>
+                </div>
+
+                <div class="col-md-3 ml-auto">
+                    <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i class="fa fa-pencil side-pad-sm"></i></button></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2><strong><%= user.fName %> <%= user.lName %></strong></h2>
+                    <h5>Organization: Chicago Foster Care Center</h5>
+                    <p>User Role: <%= user.userRole %></p>
+                    <p>Email: <%= user.email %></p>
+                </div>
+
+                <!-- <div class="col-md-3 ml-auto">
+                    <a href="/users/logout"><button type="button" class="wishcard-btn grn-btn">Log Out</button></a>
+                </div> -->
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-block text-xs-left">
+                    <h5><i class="fa fa-user fa-fw"></i>About Me</h5>
+                    <p>some text here later</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-block">
+                    <h5><i class="fa fa-rocket fa-fw"></i>My Wish Cards</h5>
+                    <ul class="list-group" style="margin-top:15px;margin-bottom:15px;">
+                        <li class="list-group-item">Julie's Wish Card</li>
+                        <li class="list-group-item">Tayler's Wish Card</li>
+                        <li class="list-group-item">Jordan's Wish Card</li>
+                        <li class="list-group-item">Stacy's Wish Card</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Wish Card Form Section-->
+    <div class="create-wish-card">
+        <!-- wishCardForm starts here-->
+        <form class="container-fluid" id="wishCardForm" action="/create/wishCard/" method="POST">
+            <h4 class="crayon-font wish-card-form-title">
+                Create a wish card <br />
+                for children under your care
+            </h4>
+
+            <div class="row side-pad">
+                <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="fName" placeholder="Child's First Name">
+                </div>
+
+                <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="name"
+                        placeholder="Child's Last Name (initial ok)">
+                </div>
+
+                <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="fName" placeholder="Child's Birthday">
+                </div>
+
+                <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="name" placeholder="Child's Interest">
+                </div>
+
+                <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="fName" placeholder="Wish Item Name">
+                </div>
+
+                <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
+                    <input id="name" class="input1" type="text" name="fName" placeholder="Wish Item Price">
+                </div>
+
+                <div class="side-pad-2 comf-font wrap-input1" data-validate="Name is required">
+                    <label for="itemLink">Wish Item Amazon URL <a href="https://youtu.be/RmvqvS7SIMU?t=67"
+                            target="_blank">(Watch this video for help)</a></label>
+                    <input id="itemLink" class="input1" type="text" name="itemLink"
+                        placeholder="(copied hyperlink address for one wish item)">
+                </div>
+
+                <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
+                    <label for="story">Share their story</label>
+                    <textarea id="story" class="input1" name="story"
+                        placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
+                </div>
+
+                <!-- Custom File Uploader  -->
+                <main class="col-lg-6 ml-auto">
+                    <div class="box">
+                        <div class="content">
+                            <p>Photo is required; it can be of the wish item, clip art, or child (if confidentiality is
+                                an issue, try using a photo of their hands making a heart, masked face,
+                                etc.)</p>
+                            <form id="form1" runat="server">
+                                <div class="uploader-left">
+                                    <img id="img-uploaded" src="../../assets/img/img-placeholder.png"
+                                        alt="image-placeholder">
+                                </div>
+                                <div class="uploader-right">
+                                    <input type="text" class="img-path" placeholder="Select wish card image">
+                                    <span class="file-wrapper">
+                                        <input type="file" name="photo" id="imgInp" class="uploader">
+                                        <span class="upload-btn btn-large btn-alpha">Upload Image</span>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- <div class="mg-btm"></div> -->
+
+            <div class="comf-font container-contact1-form-btn">
+                <div class="contact1-form-btn">
+                    <input value="Submit" type="submit" class="contact1-form-btn">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- <div class="mg2"></div> -->
+
+    <!-- footer using bootstrap css-->
+    <div class="footer-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="m-0">Copyright &copy;
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> DonateGifts | All
+                        rights reserved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /*----------------------------------------
+Upload btn
+------------------------------------------*/
+        var SITE = SITE || {};
+
+        SITE.fileInputs = function () {
+            var $this = $(this),
+                $val = $this.val(),
+                valArray = $val.split('\\'),
+                newVal = valArray[valArray.length - 1],
+                $button = $this.siblings('.upload-btn'),
+                $fakeFile = $this.siblings('.file-holder');
+            if (newVal !== '') {
+                $button.text('Photo Chosen');
+                if ($fakeFile.length === 0) {
+                    $button.after('<span class="file-holder">' + newVal + '</span>');
+                } else {
+                    $fakeFile.text(newVal);
+                }
+            }
+        };
+
+
+        $('.file-wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+
+                reader.onload = function (e) {
+                    $('#img-uploaded').attr('src', e.target.result);
+                    $('input.img-path').val(tmppath);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(".uploader").change(function () {
+            readURL(this);
+        });
+    </script>
+
+</body>
+
+</html>

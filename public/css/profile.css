@@ -22,6 +22,12 @@
     color: #8bc64d;
 }
 
+.profile-title h1 {
+    font-size: 4.3em;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
 .mg2 {
     margin: 2em;
 }
