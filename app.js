@@ -23,6 +23,8 @@ const MongoClient = require('mongodb').MongoClient;
 const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const xss = require('xss');
 const dotenv = require('dotenv');
 const webToken = require('jsonwebtoken');
@@ -37,6 +39,9 @@ const port = 8081;
 // const hostname = '157.245.243.18';
 // const port = 80;
 
+//LOAD ENV VARS
+dotenv.config({ path: './config/config.env' });
+
 //PARSERS SET UP
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -45,8 +50,21 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-//LOAD ENV VARS
-dotenv.config({ path: './config/config.env' });
+app.use(session({
+	store: new MongoStore({
+		url: process.env.MONGO_URI,
+		clear_interval: 3600000
+	}),
+	name: process.env.SESS_NAME, 
+	resave: false,
+	saveUninitialized: false,
+	secret: process.env.SESS_SECRET,
+	cookie: {
+		maxAge: Number(process.env.SESS_LIFE),	// cookie set to expire in 1 hour 
+		sameSite: true,
+		secure: process.env.NODE_ENV === 'production'
+	}
+}));
 
 
 //DB SET UP & APP LISTEN (server starts after db connection)
@@ -68,19 +86,30 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 });
 
 //ROUTE FILES - **ADD MORE HERE
-app.use(express.static('public'));
-app.use(express.static('assets'));
-const routes = require('./routes/users');
+// app.use(express.static('public'));
+// app.use(express.static('assets'));
+const usersRoute = require('./routes/users');
 
 //IMPORT MODELS
 const User = require('./models/User');
 
+// middleware for extracting userId from a session
+app.use('/users', async (req, res, next) => {
+	const { userId } = req.session;
+	if (userId) {
+		const result = await User.findById(userId);
+		res.locals.user = result; 
+	}
+	next();
+});
+
 //TODO: MOUNT ROUTERS HERE
+app.use('/users', usersRoute);
 
 //UNHANDLED REJECTION - PROMISE
 process.on('unhandledRejection', (err, promise) => {
 	console.log(`Error: ${err.message}`);
-	server.close(() => process.exit(1));
+	app.close(() => process.exit(1));
 })
 
 // PREVENT XSS ATTACKS
@@ -88,6 +117,6 @@ process.on('unhandledRejection', (err, promise) => {
 
 // BASIC HOME ROUTING 
 // (remove or edit this later after completing routes and controllers)
-app.get('/', (req,res) => {
-	res.sendFile(path.join(__dirname,'public','index.html'));
-});
+// app.get('/', (req,res) => {
+// 	res.sendFile(path.join(__dirname,'public','index.html'));
+// });
