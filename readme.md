@@ -38,6 +38,6 @@ node app.js ||  npm start
 
 https://youtu.be/KhgQV0MTxlA
 
-- Version: 0.0.9
+- Version: 1.0
 - Copyrights: Stacy Sealky Lee
 - Do not distribute this code without permission
