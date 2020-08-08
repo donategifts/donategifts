@@ -1,7 +1,7 @@
 /*
 serving all wishcard related routes
 '/wishcards' is already mounted, so no need to start with it for each route.
-/create     /search/:keyword    /get/:id    /get/all    /get/random
+/create     /search/:keyword    /get/:id    /get/all    /get/random     /update/:id     /delete/:id
 */
 
 //NPM DEPENDENCIES
@@ -37,7 +37,7 @@ router.post('/create', (req, res) => {
 router.get('/search/:keyword', async (req, res) => {
     try {
         //TODO : finish this
-        // I will create a small search bar in the wishCards.html
+        // I made a #searchBar in the wishCards.html
         // so keyword will be a string from user's input text
         // kinda like how we searched items for Ostaa2
         const findCard = await WishCard.find({
@@ -95,6 +95,28 @@ router.get('/get/all', (req, res) => {
     }
 });
 
+// @desc    update one wishcard by id 
+// @route   PUT '/wishcards/update/:id'
+// @access  Private, only partners
+// @tested 	Not yet
+router.put('/update/:id', (req, res) => {
+    try {
+        
+    } catch (error) {
 
+    }
+});
+
+// @desc    delete one wishcard by id 
+// @route   DELETE '/wishcards/delete/:id'
+// @access  Private, only partners
+// @tested 	Not yet
+router.delete('/update/:id', (req, res) => {
+    try {
+        
+    } catch (error) {
+
+    }
+});
 
 module.exports = router;

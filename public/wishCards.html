@@ -5,9 +5,7 @@
 	<title>Donate Gifts</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Local Bootstrap -->
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
-	<!-- FontAwesome -->
+	<!--CDN FontAwesome -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<!-- Local themify-icons -->
 	<link rel="stylesheet" href="../css/themify-icons.css">
@@ -19,6 +17,11 @@
 	<link rel="stylesheet" href="../css/home.css">
 	<link rel="stylesheet" href="../css/utils.css">
 	<link rel="stylesheet" href="../css/nav.css">
+	<link rel="stylesheet" href="../css/search.css">
+	<!-- CDN Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+		integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -35,11 +38,11 @@
 						<ul
 							class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
 							<li class="current-menu-item"><a href="index.html">Home</a></li>
-							<li><a href="#about">About</a></li>
+							<li><a href="about.html">About</a></li>
 							<li><a href="https://www.youtube.com/watch?v=RmvqvS7SIMU" target="_blank">How To</a></li>
 							<li><a href="wishCards.html">Wish Cards</a></li>
 
-							<li><a href="signup/signup.html">Sign Up</a></li>
+							<li><a href="/users/signup">Sign Up</a></li>
 						</ul>
 					</nav>
 					<!-- .hamburger-menu for mobile-->
@@ -54,9 +57,31 @@
 		</div>
 	</div>
 
+
 	<!-- Wish Card deck -->
 	<div class="wishcards">
 		<div class="container">
+
+			<!-- Search Bar -->
+			<div class="row justify-content-center rale-font" id="margin-bottom">
+				<div class="col-12 col-md-10 col-lg-8">
+					<!-- Search form -->
+					<form class="card card-sm" id="searchBar">
+						<div class="card-body row no-gutters align-items-center">
+							<div class="col-auto">
+								<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
+							</div>
+							<div class="col">
+								<input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Wish Cards">
+							</div>
+							<div class="col-auto">
+								<button class="btn btn-lg btn-success" type="submit">Search</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
 			<div class="row">
 				<div class="card-deck">
 					<!-- Card -->
@@ -138,87 +163,87 @@
 				</div>
 			</div>
 
-<!--    Additional cards for preview   -->
-      <div class="row">
-        <div class="card-deck">
-          <!-- Card -->
-          <div class="card mb-4">
-            <!--Card image-->
-            <div class="view overlay">
-              <img class="card-img-top" src="../img/lego-sample.jpg" alt="Card image cap">
-              <a href="#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Card content-->
-            <div class="card-body">
-              <!--Title-->
-              <h4 class="card-title text-center font-md crayon-font">My name is Hazza</h4>
-              <!--Text-->
-              <div class="comf-font">
-                <p class="card-text">Wish : Lego set </p>
-                <p class="card-text">Age : 7 </p>
-                <p class="card-text">Interest : eating cupcakes</p>
-                <div class="row button-center">
-                  <button type="button" class="wishcard-btn btn-grn-border">See more</button>
-                  <button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-                </div>
-              </div>
-            </div>
-          </div>
+			<!--    Additional cards for preview   -->
+			<div class="row">
+				<div class="card-deck">
+					<!-- Card -->
+					<div class="card mb-4">
+						<!--Card image-->
+						<div class="view overlay">
+							<img class="card-img-top" src="../img/lego-sample.jpg" alt="Card image cap">
+							<a href="#">
+								<div class="mask rgba-white-slight"></div>
+							</a>
+						</div>
+						<!--Card content-->
+						<div class="card-body">
+							<!--Title-->
+							<h4 class="card-title text-center font-md crayon-font">My name is Hazza</h4>
+							<!--Text-->
+							<div class="comf-font">
+								<p class="card-text">Wish : Lego set </p>
+								<p class="card-text">Age : 7 </p>
+								<p class="card-text">Interest : eating cupcakes</p>
+								<div class="row button-center">
+									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
+									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
+								</div>
+							</div>
+						</div>
+					</div>
 
-          <!-- Card -->
-          <div class="card mb-4">
-            <!--Card image-->
-            <div class="view overlay">
-              <img class="card-img-top" src="../img/sample-kid-jun.jpeg" alt="Card image cap">
-              <a href="#!">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Card content-->
-            <div class="card-body">
-              <!--Title-->
-              <h4 class="card-title text-center font-md crayon-font">My name is Jun</h4>
-              <!--Text-->
-              <div class="comf-font">
-                <p class="card-text">Wish : Science X Kit</p>
-                <p class="card-text">Age : 10 </p>
-                <p class="card-text">Interest : watching cartoons</p>
-                <div class="row button-center">
-                  <button type="button" class="wishcard-btn btn-grn-border">See more</button>
-                  <button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Card -->
-          <div class="card mb-4">
-            <!--Card image-->
-            <div class="view overlay">
-              <img class="card-img-top" src="../img/sample-kid-juliana.jpeg" alt="Card image cap">
-              <a href="#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Card content-->
-            <div class="card-body">
-              <!--Title-->
-              <h4 class="card-title text-center font-md crayon-font">My name is Juliana</h4>
-              <!--Text-->
-              <div class="comf-font">
-                <p class="card-text">Wish : Little Live Pets -Unicorn Toy</p>
-                <p class="card-text">Age : 9 </p>
-                <p class="card-text">Interest : playing with friends</p>
-                <div class="row button-center">
-                  <button type="button" class="wishcard-btn btn-grn-border">See more</button>
-                  <button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+					<!-- Card -->
+					<div class="card mb-4">
+						<!--Card image-->
+						<div class="view overlay">
+							<img class="card-img-top" src="../img/sample-kid-jun.jpeg" alt="Card image cap">
+							<a href="#!">
+								<div class="mask rgba-white-slight"></div>
+							</a>
+						</div>
+						<!--Card content-->
+						<div class="card-body">
+							<!--Title-->
+							<h4 class="card-title text-center font-md crayon-font">My name is Jun</h4>
+							<!--Text-->
+							<div class="comf-font">
+								<p class="card-text">Wish : Science X Kit</p>
+								<p class="card-text">Age : 10 </p>
+								<p class="card-text">Interest : watching cartoons</p>
+								<div class="row button-center">
+									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
+									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Card -->
+					<div class="card mb-4">
+						<!--Card image-->
+						<div class="view overlay">
+							<img class="card-img-top" src="../img/sample-kid-juliana.jpeg" alt="Card image cap">
+							<a href="#">
+								<div class="mask rgba-white-slight"></div>
+							</a>
+						</div>
+						<!--Card content-->
+						<div class="card-body">
+							<!--Title-->
+							<h4 class="card-title text-center font-md crayon-font">My name is Juliana</h4>
+							<!--Text-->
+							<div class="comf-font">
+								<p class="card-text">Wish : Little Live Pets -Unicorn Toy</p>
+								<p class="card-text">Age : 9 </p>
+								<p class="card-text">Interest : playing with friends</p>
+								<div class="row button-center">
+									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
+									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 		</div>
@@ -231,11 +256,14 @@
 			<div class="row">
 				<div class="col-12">
 					<p class="m-0">Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script> DonateGifts | <a
-							href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> - All rights reserved</p>
+						<script>
+							document.write(new Date().getFullYear());
+						</script> DonateGifts | <a href="mailto:stacy.sealky.lee@gmail.com">Stacy Sealky Lee</a> - All
+						rights reserved</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+
 </html>
