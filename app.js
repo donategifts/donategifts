@@ -90,7 +90,7 @@ app.use(express.static('public'));
 app.use(express.static('assets'));
 app.use(express.static(__dirname));
 
-//** QUESTION: Can we place this in the middleware directory?
+
 // middleware for extracting userId from a session
 app.use('/users', async (req, res, next) => {
 	const { userId } = req.session;
@@ -115,14 +115,7 @@ const User = require('./models/User');
 const Contact = require('./models/Contact');
 
 
-/* 
-** Message for Stacy:
-** BASIC HOME ROUTING (THIS ROUTE IS NOT ACTUALLY BEING USED 
-** BECAUSE OF app.use(express.static('public')) above)
-*/
-app.get('/', function(req, res) {
-    res.sendFile('index.html', { root: __dirname });
-});
+
 
 //EMAIL SENDING FUNCTION LIVES IN THE BELOW CONTROLLER
 //EMAIL SENDING IS FROM THE CONTACT FORM IN ABOUT.HTML

@@ -1,6 +1,5 @@
 /*
-    CHANGES MADE: we will just use /routes and mount on app.js
-    I moved the controllers and merged them into one file here.
+    TODO: When redirected to index.html, Nav bar should change from 'sign up' to 'log out' and show 'my profile' also
 */
 
 //NPM DEPENDENCIES
@@ -24,15 +23,14 @@ const redirectLogin = (req, res, next) => {
     } else {
         next();
     }
-}
-
+};
 const redirectProfile = (req, res, next) => {
     if (req.session.userId) {
         res.redirect(`/users/profile/${req.session.userId}`);
     } else {
         next();
     }
-}
+};
 
 // @desc    Render index.html (home)
 // @route   GET '/users'
@@ -89,7 +87,7 @@ router.get('/profile/:id', redirectLogin, async (req, res) => {
 		var userId = req.params.id;
 		const userData = await User.findOne({_id: userId});
 		res.render((path.join( __dirname, '../public', 'profile.html' )), {user: userData});
-    } catch (error) {
+    } catch (err) {
         res.status(400).send(JSON.stringify({
 			success: false,
 			error: err

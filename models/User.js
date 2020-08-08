@@ -31,7 +31,11 @@ var UserSchema = new Schema({
 	/* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS*/
 	wishCards: [{
 		type: Schema.Types.ObjectId,
-		ref: 'WishCards'
+		ref: 'WishCard'
+	}],
+	donationsMade: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Donation'
 	}],
 	joined: {
 		type: Date,
