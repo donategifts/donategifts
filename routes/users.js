@@ -1,6 +1,7 @@
 /*
     CHANGES MADE: we will just use /routes and mount on app.js
-    I moved the controllers and merged them into one file here.
+	I moved the controllers and merged them into one file here.
+	Jordan, your codes are still on the bottom, commented out, feel free to make changes
 */
 
 //NPM DEPENDENCIES

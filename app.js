@@ -1,5 +1,5 @@
 /*
- * Author: Stacy Sealky Lee
+ * Author: Stacy Sealky Lee, Jordan Huang
  * Class: CSC 337
  * Type: Final Project
  * FileName: app.js
@@ -92,9 +92,11 @@ app.use(express.static(__dirname));
 
 //IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
+const wishCardsRoute = require('./routes/wishCards');
 
 //MOUNT ROUTERS
 app.use('/users', usersRoute);
+app.use('/wishcards', wishCardsRoute);
 
 
 //IMPORT MODELS
@@ -102,6 +104,7 @@ const User = require('./models/User');
 const Contact = require('./models/Contact');
 
 
+//** QUESTION: Can we place this in the middleware directory?
 // middleware for extracting userId from a session
 // app.use('/users', async (req, res, next) => {
 // 	const {

@@ -52,7 +52,7 @@
                             <li><a href="../wishCards/wishCards.html">Wish Cards</a></li>
                             <li><a href="#">My Profile</a></li>
                             <li><a href="/users/logout">Log Out</a></li>
-                            
+
                         </ul>
                     </nav>
                     <!-- .hamburger-menu for mobile-->
@@ -84,7 +84,10 @@
                 </div>
 
                 <div class="col-md-3 ml-auto">
-                    <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i class="fa fa-pencil side-pad-sm"></i></button></a>
+                    <% if (user.userRole == 'partner') { %>
+                    <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i
+                                class="fa fa-pencil side-pad-sm"></i></button></a>
+                    <%}%>
                 </div>
             </div>
 
@@ -128,6 +131,7 @@
     </div>
 
 
+    <% if (user.userRole == 'partner') { %>
     <!-- Wish Card Form Section-->
     <div class="create-wish-card">
         <!-- wishCardForm starts here-->
@@ -210,6 +214,7 @@
             </div>
         </form>
     </div>
+    <%}%>
 
     <!-- <div class="mg2"></div> -->
 
