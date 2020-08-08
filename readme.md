@@ -28,10 +28,10 @@ npm install
 
 ```
 # Run in dev mode
-npm run dev 
+npx nodemon app.js  ||  npm run dev 
 
 # Run in prod mode
-npm start 
+node app.js ||  npm start 
 ```
 
 ## Demo
