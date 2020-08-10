@@ -108,7 +108,8 @@ router.get('/get/:id', (req, res) => {
 // @tested 	No
 router.get('/get/random', (req, res) => {
     try {
-         
+         //TODO: /views/templates/homeSampleCards.ejs
+         //     has all the frontend codes for this random display 
     } catch (error) {
         
     }
