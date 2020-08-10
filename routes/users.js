@@ -6,15 +6,10 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const path = require('path');
 const mongoose = require('mongoose');
 
 //IMPORT USER MODEL
 const User = require('../models/User');
-
-//LOAD STATIC VIEWS
-router.use(express.static('public'));
-router.use(express.static('assets'));
 
 // Middleware for users 
 const redirectLogin = (req, res, next) => {
@@ -32,13 +27,13 @@ const redirectProfile = (req, res, next) => {
     }
 };
 
-// @desc    Render index.html (home)
+// @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
 // @tested 	Yes
 router.get('/', (req, res) => {
     try {
-        res.status(200).sendFile( path.join( __dirname, '../public', 'index.html' )); 
+        res.status(200).render('home', {user: res.locals.user}); 
     } catch (error) {
         res.status(400).send(JSON.stringify({
 			success: false,
@@ -53,7 +48,7 @@ router.get('/', (req, res) => {
 // @tested 	Yes
 router.get('/signup', redirectProfile, (req, res) => {
     try {
-        res.status(200).sendFile( path.join( __dirname, '../public', 'signup.html' )); 
+        res.status(200).render('signup', {user: res.locals.user});
     } catch (error) {
         res.status(400).send(JSON.stringify({
 			success: false,
@@ -68,7 +63,7 @@ router.get('/signup', redirectProfile, (req, res) => {
 // @tested 	Not yet
 router.get('/login', redirectProfile, (req, res) => {
     try {
-        res.status(200).sendFile( path.join( __dirname, '../public', 'login.html' ));
+        res.status(200).render('login', {user: res.locals.user});
     } catch (error) {
         res.status(400).send(JSON.stringify({
 			success: false,
@@ -84,7 +79,7 @@ router.get('/login', redirectProfile, (req, res) => {
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
 router.get('/profile', redirectLogin, async (req, res) => {
     try {
-		res.render((path.join( __dirname, '../public', 'profile.html' )), {user: res.locals.user});
+		res.render('profile', {user: res.locals.user});
     } catch (err) {
         res.status(400).send(JSON.stringify({
 			success: false,
@@ -118,7 +113,7 @@ router.post('/signup', redirectProfile, async (req, res) => {
 		req.session.userId = userId;
 		try {
 			await newUser.save(); 
-			return res.send(`/users/profile`); 
+			return res.send('/users/profile'); 
 		} catch (err) {
 			console.log(err);
 		}
@@ -135,7 +130,7 @@ router.post('/login', redirectProfile, async (req, res) => {
 	if (user) {
 		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
-			return res.redirect(`/users/profile`);
+			return res.redirect('/users/profile');
 		}
 	}
 	res.redirect('/users/login');

@@ -1,6 +1,6 @@
 <!--
 * Author: Stacy Sealky Lee
-* FileName: signup.html
+* FileName: signup.ejs
 * Description: signup page
 * TODO: in the future, make individual donor, enterprise donor, foster care partner
 -->
@@ -10,22 +10,10 @@
 
 <head>
   <title>Sign Up to Donate Gifts</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="../img/gift.ico">
-  <!-- Local Bootstrap -->
-  <link rel="stylesheet" href="../css/bootstrap.min.css">
-  <!-- Local themify-icons -->
-  <link rel="stylesheet" href="../css/themify-icons.css">
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600&family=Comfortaa:wght@300;600;700&display=swap"
-    rel="stylesheet">
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="../css/utils.css">
+
+  <%- include('./templates/header')-%>
+
   <link rel="stylesheet" href="../css/signup.css">
-  <link rel="stylesheet" href="../css/nav.css">
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- js scripts -->
@@ -33,33 +21,7 @@
 </head>
 
 <body>
-  <!-- navigation bar -->
-  <div class="nav-bar">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-          <div class="site-branding d-flex align-items-center">
-            <a class="d-block" href="/" rel="home"><img class="d-block" id="logo-img"
-                src="../img/donate-gift-logo.png" alt="logo"></a>
-          </div>
-          <nav class="site-navigation d-flex justify-content-end align-items-center">
-            <ul class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-              <li class="current-menu-item"><a href="/">Home</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/wishcards">Wish Cards</a></li>
-              <li><a href="/users/signup">Sign Up</a></li>
-            </ul>
-          </nav>
-          <div class="hamburger-menu d-lg-none">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div><!-- .hamburger-menu -->
-        </div>
-      </div>
-    </div>
-  </div>
+  <%- include('./templates/nav')-%>
 
   <div class="signup-bg">
     <div class="sign-container">
@@ -71,7 +33,7 @@
           <div class="sign-row lg title-text crayon-font mg-sm">
             <div class="userLogBtn"><a href="/users/signup">Sign Up </a>
             </div>
-             OR
+            OR
             <div class="userLogBtn">
               <a href="/users/login"> Log In</a>
             </div>
@@ -120,20 +82,7 @@
     </div>
   </div>
 
-  <!-- footer -->
-  <div class="footer-bar">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <p class="m-0">Copyright &copy;
-            <script>
-              document.write(new Date().getFullYear());
-            </script> DonateGifts | All rights
-            reserved</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%- include('./templates/footer')-%>
 </body>
 
 </html>

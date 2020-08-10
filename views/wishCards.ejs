@@ -2,58 +2,14 @@
 <html lang="en">
 
 <head>
-	<title>Donate Gifts</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!--CDN FontAwesome -->
-	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<!-- Local themify-icons -->
-	<link rel="stylesheet" href="../css/themify-icons.css">
-	<!-- Google Fonts -->
-	<link
-		href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&family=Raleway:wght@100;200;400;500&display=swap"
-		rel="stylesheet">
-	<!-- Custom Styles -->
-	<link rel="stylesheet" href="../css/home.css">
-	<link rel="stylesheet" href="../css/utils.css">
-	<link rel="stylesheet" href="../css/nav.css">
+	<title>See Wish Cards | Donate Gifts</title>
+	<!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+	<%- include('./templates/header')-%>
 	<link rel="stylesheet" href="../css/search.css">
-	<!-- CDN Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
-		integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
-
 </head>
 
 <body>
-	<!-- navigation bar using bootstrap-->
-	<div class="nav-bar">
-		<div class="container">
-			<div class="row">
-				<div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-					<div class="site-branding d-flex align-items-center">
-						<a class="d-block" href="/" rel="home"><img class="d-block" id="logo-img"
-							src="../img/donate-gift-logo.png" alt="logo"></a>
-					  </div>
-					  <nav class="site-navigation d-flex justify-content-end align-items-center">
-						<ul class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-						  <li class="current-menu-item"><a href="/">Home</a></li>
-						  <li><a href="/about">About</a></li>
-						  <li><a href="/wishcards">Wish Cards</a></li>
-						  <li><a href="/users/signup">Sign Up</a></li>
-						</ul>
-					</nav>
-					<!-- .hamburger-menu for mobile-->
-					<div class="hamburger-menu d-lg-none">
-						<span></span>
-						<span></span>
-						<span></span>
-						<span></span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	<%- include('./templates/nav')-%>
 
 	<!-- Wish Card deck -->
 	<div class="wishcards">
@@ -69,7 +25,8 @@
 								<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
 							</div>
 							<div class="col">
-								<input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Wish Cards">
+								<input class="form-control form-control-lg form-control-borderless" type="search"
+									placeholder="Search Wish Cards">
 							</div>
 							<div class="col-auto">
 								<button class="btn btn-lg btn-success" type="submit">Search</button>
@@ -246,21 +203,7 @@
 		</div>
 	</div>
 
-
-	<!-- footer using bootstrap css-->
-	<div class="footer-bar">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<p class="m-0">Copyright &copy;
-						<script>
-							document.write(new Date().getFullYear());
-						</script> DonateGifts | - All
-						rights reserved</p>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%- include('./templates/footer')-%>
 </body>
 
 </html>

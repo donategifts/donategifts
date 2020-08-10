@@ -1,7 +1,7 @@
 /*
 serving all wishcard related routes
 '/wishcards' is already mounted, so no need to start with it for each route.
-/create     /search/:keyword    /get/:id    /get/all    /get/random     /update/:id     /delete/:id
+/create     /search/:keyword    /get/:id    /get/all    /get/random     /update/:id 
 */
 
 //NPM DEPENDENCIES
@@ -12,7 +12,7 @@ const multer = require('multer');
 
 // SET STORAGE ENGINE
 const storage = multer.diskStorage({
-	destination: './public/uploads/',
+	destination: '../public/uploads',
 	filename: function(req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + 
 		path.extname(file.originalname));
@@ -29,19 +29,9 @@ const upload = multer({
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
 
-//LOAD STATIC VIEWS 
-/******************************************************************************************************
- * Hey stacy these two lines create a lot of bugs, if we don't need them, can you
- * please remove them because every single time we try to go to '/wishcards', the
- * path would get picked up by router.use(express.static('public')) line and then
- * it would display index.html so if we don't need these two lines, please remove them
- * thanks!
- *****************************************************************************************************/
-// router.use(express.static('public'));
-// router.use(express.static('assets'));
 
 
-// @desc    grab form inputs && save wishcard to db, then redirect to '/get/all' 
+// @desc    grab form inputs && save wishcard to db, then redirect to '/wishcards' 
 // @route   POST '/wishcards'
 // @access  Private, only partners
 // @tested 	Not yet
@@ -57,6 +47,21 @@ router.post('/', (req, res) => {
             res.send({ success: true, redirectURL: '/wishcards'});
         }
     });
+});
+
+// @desc    Render wishCards.html which will show all wishcards
+// @route   GET '/wishcards'
+// @access  Public
+// @tested 	Not yet
+router.get('/', (req, res) => {
+    try {
+        res.status(200).render('wishCards', {user: res.locals.user}); 
+    } catch (error) {
+        res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+    }
 });
 
 // @desc    search the wish cards by substring of wishItemName
@@ -75,7 +80,7 @@ router.get('/search/:keyword', async (req, res) => {
                 "$options": "i"
             }
         });
-        res.status(200).sendFile( path.join( __dirname, '../public', 'wishCards.html' )); 
+        res.status(200).render('wishCards', {user: res.locals.user}); 
     } catch (error) {
         //we don't have to do this so change this to whatever you want
         res.status(400).send(JSON.stringify({
@@ -109,21 +114,6 @@ router.get('/get/random', (req, res) => {
     }
 });
 
-// @desc    Render wishCards.html which will show all wishcards
-// @route   GET '/wishcards'
-// @access  Public
-// @tested 	Not yet
-router.get('/', (req, res) => {
-    try {
-        res.status(200).render(path.join( __dirname, '../public', 'wishCards.html' ), { user:res.locals.user }); 
-    } catch (error) {
-        res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-    }
-});
-
 // @desc    update one wishcard by id 
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only partners
@@ -136,16 +126,5 @@ router.put('/update/:id', (req, res) => {
     }
 });
 
-// @desc    delete one wishcard by id 
-// @route   DELETE '/wishcards/delete/:id'
-// @access  Private, only partners
-// @tested 	Not yet
-router.delete('/update/:id', (req, res) => {
-    try {
-        
-    } catch (error) {
-
-    }
-});
 
 module.exports = router;

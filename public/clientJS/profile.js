@@ -1,10 +1,11 @@
 $(document).ready(function () {
-
-        /*----------------------------------------
-    Upload btn
+     /*----------------------------------------
+    @desc   custom handle the <input type="file"> default appearance,
+            changes the button text when photo is chosen,
+            grabs the user's file path,
+            previews the chosen photo in a thumbnail. 
     ------------------------------------------*/
     var SITE = SITE || {};
-
     SITE.fileInputs = function () {
         var $this = $(this),
             $val = $this.val(),
@@ -21,20 +22,16 @@ $(document).ready(function () {
             }
         }
     };
-
-
     $('.file-wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
 
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             var tmppath = URL.createObjectURL(event.target.files[0]);
-
             reader.onload = function (e) {
                 $('#img-uploaded').attr('src', e.target.result);
                 $('input.img-path').val(tmppath);
             }
-
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -43,15 +40,23 @@ $(document).ready(function () {
         readURL(this);
     });
 
+
+    /*----------------------------------------
+    QUESTION: why do we need the below code?
+            I thought
+            <form method="POST" action="/wishcards/create"></form>
+            already handles the posting the values to server
+            you can just grab form inputs from (req.body)
+            inside router.post('/wishcards/create'...)
+    ------------------------------------------*/
+
     $("#wishCardForm").submit(function (e) {
-
         e.preventDefault();
-
         var fName = $("#fName").val();
         var lName = $("#lName").val();
         var email = $("#birthday").val();
         var interest = $("#interest").val();
-        var item = $("#wish-item").val();
+        var item = $("#wishItem").val();
         var price = $("#price").val();
         var link = $("#itemLink").val();
         var story = $("#story").val();

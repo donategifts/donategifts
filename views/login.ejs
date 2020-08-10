@@ -1,0 +1,61 @@
+<!--
+* Author: Stacy Sealky Lee
+* Class: CSC 337
+-->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <title>Sign Up to Donate Gifts</title>
+
+  <%- include('./templates/header')-%>
+
+  <link rel="stylesheet" href="../css/signup.css">
+</head>
+
+<body>
+  <%- include('./templates/nav')-%>
+
+  <div class="signup-bg">
+    <div class="sign-container">
+      <div class="wrap-box">
+
+        <!-- form section -->
+        <form class="signup" action="/users/login" method="post">
+
+          <div class="sign-row lg title-text crayon-font mg-sm">
+            <div class="userLogBtn"><a href="/users/login">Log In </a>
+            </div>
+            OR
+            <div class="userLogBtn">
+              <a href="/users/signup"> Sign Up</a>
+            </div>
+            <!-- <img class="img-inline" src="../img/line-gift-white.png" alt="line-art-gift-image"> -->
+          </div>
+
+
+          <div class="wrap-input mg-btm" data-validate="Email is required">
+            <input required class="input-default comf-font" type="email" name="email" id="email" placeholder="Email : "
+              title="example: username@xyz.com">
+          </div>
+
+          <div class="wrap-input mg-btm2" data-validate="Password is required">
+            <input required class="input-default comf-font" type="password" name="password" id="password"
+              placeholder="Password : " pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+              title="Must contain at least one number and one lowercase letter, and at least 8 or more characters">
+          </div>
+
+          <!-- submit button section -->
+          <div class="container-form-btn">
+            <button class="form-btn comf-font" type="submit">
+              Log In
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./templates/footer')-%>
+</body>
+
+</html>
