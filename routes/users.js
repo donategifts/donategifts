@@ -117,7 +117,6 @@ router.post('/signup', redirectProfile, async (req, res) => {
 		var userId = mongoose.Types.ObjectId(newUser._id);
 		req.session.userId = userId;
 		try {
-			console.log(newUser); 
 			await newUser.save(); 
 			return res.send(`/users/profile`); 
 		} catch (err) {
