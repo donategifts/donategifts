@@ -6,6 +6,20 @@
 Section styling is marked for easy reading and mostly in a cascading order of the page content.
 */
 
+
+.userLogBtn a {
+  color: rgb(255, 95, 109);
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.3em;
+  margin: 0.5em;
+  /* border: 1px solid rgb(255, 95, 109);
+  border-radius: 15px; */
+}
+
+.mg-sm {
+  margin-bottom: 0.8em;
+}
+
 .balo-font {
   font-family: 'Baloo 2', cursive;
 }

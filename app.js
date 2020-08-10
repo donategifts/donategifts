@@ -115,6 +115,13 @@ const User = require('./models/User');
 const Contact = require('./models/Contact');
 
 
+app.get('/about', (req, res) => {
+    try {
+        res.status(200).sendFile( path.join( __dirname, '/public', 'about.html' )); 
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 
 //EMAIL SENDING FUNCTION LIVES IN THE BELOW CONTROLLER
@@ -124,7 +131,7 @@ const sendMail = require('./controllers/email');
 
 // *** not sure where to place this yet, but please move this to an appropriate file later
 // ROUTE FOR POST - DATA PULLED FROM CONTACT FORM TO SEND EMAIL
-app.post('/about/email/', async (req, res, next) => {
+app.post('/about/email', async (req, res, next) => {
 	try {
 		var c = new Contact();
 		c.name = req.body.name;

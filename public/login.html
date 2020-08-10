@@ -43,15 +43,15 @@
       <div class="row">
         <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
           <div class="site-branding d-flex align-items-center">
-            <a class="d-block" href="../index.html" rel="home"><img class="d-block" id="logo-img"
+            <a class="d-block" href="/" rel="home"><img class="d-block" id="logo-img"
                 src="../img/donate-gift-logo.png" alt="logo"></a>
           </div>
           <nav class="site-navigation d-flex justify-content-end align-items-center">
             <ul class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-              <li class="current-menu-item"><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#about">About</a></li>
-              <li><a href="wishcards.html">Wish Cards</a></li>
-              <li><a href="signup.html">Sign Up</a></li>
+              <li class="current-menu-item"><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/wishcards">Wish Cards</a></li>
+              <li><a href="/users/signup">Sign Up</a></li>
             </ul>
           </nav>
           <div class="hamburger-menu d-lg-none">
@@ -76,10 +76,14 @@
 
         <form class="signup" action="/users/login" method="post">
 
-          <div class="sign-row no-mg-top">
-            <h1 class="lg title-text crayon-font"><a href="#">Log In</a><span> OR </span> <a href="signup.html">Sign
-                Up</a></h1>
-            <img class="img-inline" src="../img/line-gift-white.png" alt="line-art-gift-image">
+          <div class="sign-row lg title-text crayon-font mg-sm">
+            <div class="userLogBtn"><a href="/users/login">Log In </a>
+            </div>
+             OR
+            <div class="userLogBtn">
+              <a href="/users/signup"> Sign Up</a>
+            </div>
+            <!-- <img class="img-inline" src="../img/line-gift-white.png" alt="line-art-gift-image"> -->
           </div>
 
 
