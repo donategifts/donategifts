@@ -49,7 +49,7 @@
                             <li class="current-menu-item"><a href="/">Home</a></li>
                             <li><a href="about.html">About</a></li>
                             <li><a href="https://www.youtube.com/watch?v=RmvqvS7SIMU" target="_blank">How To</a></li>
-                            <li><a href="../wishCards/wishCards.html">Wish Cards</a></li>
+                            <li><a href="/wishcards">Wish Cards</a></li>
                             <li><a href="#">My Profile</a></li>
                             <li><a href="/users/logout">Log Out</a></li>
 
@@ -135,7 +135,7 @@
     <!-- Wish Card Form Section-->
     <div class="create-wish-card">
         <!-- wishCardForm starts here-->
-        <form class="container-fluid" id="wishCardForm" action="/create/wishCard/" method="POST">
+        <form class="container-fluid" id="wishCardForm" action="/wishcards/sdkfs" method="POST">
             <h4 class="crayon-font wish-card-form-title">
                 Create a wish card <br />
                 for children under your care
@@ -143,28 +143,28 @@
 
             <div class="row side-pad">
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="fName" placeholder="Child's First Name">
+                    <input id="fName" class="input1" type="text" name="fName" placeholder="Child's First Name">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="name"
+                    <input id="lName" class="input1" type="text" name="lName"
                         placeholder="Child's Last Name (initial ok)">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="fName" placeholder="Child's Birthday">
+                    <input id="birthday" class="input1" type="date" name="birthday" placeholder="Child's Birthday">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="name" placeholder="Child's Interest">
+                    <input id="interest" class="input1" type="text" name="interest" placeholder="Child's Interest">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="fName" placeholder="Wish Item Name">
+                    <input id="wish-item" class="input1" type="text" name="wish-item" placeholder="Wish Item Name">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
-                    <input id="name" class="input1" type="text" name="fName" placeholder="Wish Item Price">
+                    <input id="price" class="input1" type="number" name="price" placeholder="Wish Item Price">
                 </div>
 
                 <div class="side-pad-2 comf-font wrap-input1" data-validate="Name is required">

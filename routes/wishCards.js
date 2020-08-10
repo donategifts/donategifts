@@ -19,12 +19,12 @@ router.use(express.static('assets'));
 
 
 // @desc    grab form inputs && save wishcard to db, then redirect to '/get/all' 
-// @route   POST '/wishcards/create'
+// @route   POST '/wishcards'
 // @access  Private, only partners
 // @tested 	Not yet
-router.post('/create', (req, res) => {
+router.post('/sdkfs', (req, res) => {
     try {
-        
+        console.log(req.body);
     } catch (error) {
 
     }
@@ -85,8 +85,9 @@ router.get('/get/random', (req, res) => {
 // @access  Public
 // @tested 	Not yet
 router.get('/', (req, res) => {
+    console.log('yo');
     try {
-        res.status(200).sendFile( path.join( __dirname, '../public', 'wishCards.html' )); 
+        res.status(200).render(path.join( __dirname, '../public', 'wishCards.html' ), { user:res.locals.user }); 
     } catch (error) {
         res.status(400).send(JSON.stringify({
 			success: false,
