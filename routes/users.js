@@ -26,7 +26,7 @@ const redirectLogin = (req, res, next) => {
 };
 const redirectProfile = (req, res, next) => {
     if (req.session.userId) {
-        res.redirect(`/users/profile/${req.session.userId}`);
+        res.redirect(`/users/profile`);
     } else {
         next();
     }
@@ -78,15 +78,13 @@ router.get('/login', redirectProfile, (req, res) => {
 });
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
-// @route   GET '/users/profile/:id'
+// @route   GET '/users/profile'
 // @access  Private, only users
 // @tested 	Yes
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
-router.get('/profile/:id', redirectLogin, async (req, res) => {
+router.get('/profile', redirectLogin, async (req, res) => {
     try {
-		var userId = req.params.id;
-		const userData = await User.findOne({_id: userId});
-		res.render((path.join( __dirname, '../public', 'profile.html' )), {user: userData});
+		res.render((path.join( __dirname, '../public', 'profile.html' )), {user: res.locals.user});
     } catch (err) {
         res.status(400).send(JSON.stringify({
 			success: false,
@@ -119,9 +117,8 @@ router.post('/signup', redirectProfile, async (req, res) => {
 		var userId = mongoose.Types.ObjectId(newUser._id);
 		req.session.userId = userId;
 		try {
-			console.log(newUser); 
 			await newUser.save(); 
-			return res.send(`/users/profile/${userId}`); 
+			return res.send(`/users/profile`); 
 		} catch (err) {
 			console.log(err);
 		}
@@ -138,7 +135,7 @@ router.post('/login', redirectProfile, async (req, res) => {
 	if (user) {
 		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
-			return res.redirect(`/users/profile/${user._id}`);
+			return res.redirect(`/users/profile`);
 		}
 	}
 	res.redirect('/users/login');

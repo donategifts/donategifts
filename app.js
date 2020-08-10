@@ -85,14 +85,9 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 	}
 });
 
-//STATIC SET UP
-app.use(express.static('public'));
-app.use(express.static('assets'));
-app.use(express.static(__dirname));
-
 
 // middleware for extracting userId from a session
-app.use('/users', async (req, res, next) => {
+app.use(async (req, res, next) => {
 	const { userId } = req.session;
 	if (userId) {
 		const result = await User.findById(userId);
@@ -100,6 +95,15 @@ app.use('/users', async (req, res, next) => {
 	}
 	next();
 });
+
+app.get('/', (req, res) => {
+	res.render((path.join( __dirname, './public', 'index.html' )), {user: res.locals.user});
+});
+
+//STATIC SET UP
+app.use(express.static('public'));
+app.use(express.static('assets'));
+app.use(express.static(__dirname));
 
 //IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
