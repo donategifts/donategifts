@@ -81,10 +81,10 @@ router.get('/get/random', (req, res) => {
 });
 
 // @desc    Render wishCards.html which will show all wishcards
-// @route   GET '/wishcards/get/all'
+// @route   GET '/wishcards'
 // @access  Public
 // @tested 	Not yet
-router.get('/get/all', (req, res) => {
+router.get('/', (req, res) => {
     try {
         res.status(200).sendFile( path.join( __dirname, '../public', 'wishCards.html' )); 
     } catch (error) {
