@@ -8,26 +8,55 @@ serving all wishcard related routes
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const multer = require('multer');
+
+// SET STORAGE ENGINE
+const storage = multer.diskStorage({
+	destination: './public/uploads/',
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + 
+		path.extname(file.originalname));
+	}
+});
+
+// INIT UPLOAD 
+const upload = multer({
+    storage: storage,
+    limits: {fileSize: 10}
+}).single('photo');
 
 
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
 
-//LOAD STATIC VIEWS
-router.use(express.static('public'));
-router.use(express.static('assets'));
+//LOAD STATIC VIEWS 
+/******************************************************************************************************
+ * Hey stacy these two lines create a lot of bugs, if we don't need them, can you
+ * please remove them because every single time we try to go to '/wishcards', the
+ * path would get picked up by router.use(express.static('public')) line and then
+ * it would display index.html so if we don't need these two lines, please remove them
+ * thanks!
+ *****************************************************************************************************/
+// router.use(express.static('public'));
+// router.use(express.static('assets'));
 
 
 // @desc    grab form inputs && save wishcard to db, then redirect to '/get/all' 
 // @route   POST '/wishcards'
 // @access  Private, only partners
 // @tested 	Not yet
-router.post('/sdkfs', (req, res) => {
-    try {
-        console.log(req.body);
-    } catch (error) {
-
-    }
+router.post('/', (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            res.send({ success: false, msg: err });
+        } else {
+            console.log(req.file);
+            /*
+            TODO: saving image logic 
+            */
+            res.send({ success: true, redirectURL: '/wishcards'});
+        }
+    });
 });
 
 // @desc    search the wish cards by substring of wishItemName
@@ -85,7 +114,6 @@ router.get('/get/random', (req, res) => {
 // @access  Public
 // @tested 	Not yet
 router.get('/', (req, res) => {
-    console.log('yo');
     try {
         res.status(200).render(path.join( __dirname, '../public', 'wishCards.html' ), { user:res.locals.user }); 
     } catch (error) {

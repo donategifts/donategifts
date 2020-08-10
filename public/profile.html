@@ -31,6 +31,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- CDN client ejs -->
     <script src="https://unpkg.com/ejs@3.1.3/ejs.min.js"></script>
+    <!-- js scripts -->
+  <script src="../clientJS/profile.js"></script>
 </head>
 
 <body>
@@ -134,7 +136,7 @@
     <!-- Wish Card Form Section-->
     <div class="create-wish-card">
         <!-- wishCardForm starts here-->
-        <form class="container-fluid" id="wishCardForm" action="/wishcards/sdkfs" method="POST">
+        <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
             <h4 class="crayon-font wish-card-form-title">
                 Create a wish card <br />
                 for children under your care
@@ -180,7 +182,7 @@
                 </div>
 
                 <!-- Custom File Uploader  -->
-                <main class="col-lg-6 ml-auto">
+                <!-- <main class="col-lg-6 ml-auto">
                     <div class="box">
                         <div class="content">
                             <p>Photo is required; it can be of the wish item, clip art, or child (if confidentiality is
@@ -201,7 +203,18 @@
                             </form>
                         </div>
                     </div>
-                </main>
+                </main> -->
+                <div class="uploader-left">
+                    <img id="img-uploaded" src="../../assets/img/img-placeholder.png"
+                        alt="image-placeholder">
+                </div>
+                <div class="uploader-right">
+                    <input type="text" class="img-path" placeholder="Select wish card image">
+                    <span class="file-wrapper">
+                        <input type="file" name="photo" id="imgInp" class="uploader">
+                        <span class="upload-btn btn-large btn-alpha">Upload Image</span>
+                    </span>
+                </div>
             </div>
 
             <!-- <div class="mg-btm"></div> -->
@@ -213,7 +226,7 @@
             </div>
         </form>
     </div>
-    <%}%>
+    <% } %>
 
     <!-- <div class="mg2"></div> -->
 
@@ -231,51 +244,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        /*----------------------------------------
-Upload btn
-------------------------------------------*/
-        var SITE = SITE || {};
-
-        SITE.fileInputs = function () {
-            var $this = $(this),
-                $val = $this.val(),
-                valArray = $val.split('\\'),
-                newVal = valArray[valArray.length - 1],
-                $button = $this.siblings('.upload-btn'),
-                $fakeFile = $this.siblings('.file-holder');
-            if (newVal !== '') {
-                $button.text('Photo Chosen');
-                if ($fakeFile.length === 0) {
-                    $button.after('<span class="file-holder">' + newVal + '</span>');
-                } else {
-                    $fakeFile.text(newVal);
-                }
-            }
-        };
-
-
-        $('.file-wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                var tmppath = URL.createObjectURL(event.target.files[0]);
-
-                reader.onload = function (e) {
-                    $('#img-uploaded').attr('src', e.target.result);
-                    $('input.img-path').val(tmppath);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $(".uploader").change(function () {
-            readURL(this);
-        });
-    </script>
 
 </body>
 

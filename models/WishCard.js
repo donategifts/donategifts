@@ -38,8 +38,9 @@ var WishCardSchema = new Schema({
 		type: String
     },
     wishCardImage: {
+		binData: Buffer,
 		type: String,
-		required: true
+		required: true 
     },
 	createdBy: {
 		type: Schema.Types.ObjectId,
