@@ -19,13 +19,13 @@
 			<div class="row justify-content-center rale-font" id="margin-bottom">
 				<div class="col-12 col-md-10 col-lg-8">
 					<!-- Search form -->
-					<form class="card card-sm" id="searchBar">
+					<form class="card card-sm" id="searchBar" action="/wishcards/search" method="POST">
 						<div class="card-body row no-gutters align-items-center">
 							<div class="col-auto">
 								<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
 							</div>
 							<div class="col">
-								<input class="form-control form-control-lg form-control-borderless" type="search"
+								<input class="form-control form-control-lg form-control-borderless" type="search" name="wishitem"
 									placeholder="Search Wish Cards">
 							</div>
 							<div class="col-auto">
@@ -38,164 +38,39 @@
 
 			<div class="row">
 				<div class="card-deck">
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/lego-sample.jpg" alt="Card image cap">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Hazza</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Lego set </p>
-								<p class="card-text">Age : 7 </p>
-								<p class="card-text">Interest : eating cupcakes</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-								</div>
-							</div>
-						</div>
-					</div>
 
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/sample-kid-jun.jpeg" alt="Card image cap">
-							<a href="#!">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Jun</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Science X Kit</p>
-								<p class="card-text">Age : 10 </p>
-								<p class="card-text">Interest : watching cartoons</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
+					<% if (wishcards.length === 0) { %>
+						<h1>No wishcards</h1>
+					<% } else { %>
+						<% for (var wishcard of wishcards) { %>
+							<!-- Card -->
+							<div class="card mb-4">
+								<!--Card image-->
+								<div class="view overlay">
+									<img class="card-img-top" src="<%= wishcard.wishCardImage %>" alt="Card image cap">
+									<a href="#!">
+										<div class="mask rgba-white-slight"></div>
+									</a>
+								</div>
+								<!--Card content-->
+								<div class="card-body">
+									<!--Title-->
+									<h4 class="card-title text-center font-md crayon-font">My name is <%= wishcard.childFirstName %></h4>
+									<!--Text-->
+									<div class="comf-font">
+										<p class="card-text">Wish : <%= wishcard.wishItemName %></p>
+										<p class="card-text">Age : <%= Math.abs(new Date(Date.now() - wishcard.childBirthday.getTime()).getUTCFullYear() - 1970) %></p>
+										<p class="card-text">Interest : <%= wishcard.childInterest %></p>
+										<div class="row button-center">
+											<button type="button" class="wishcard-btn btn-grn-border">See more</button>
+											<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/sample-kid-juliana.jpeg" alt="Card image cap">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Juliana</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Little Live Pets -Unicorn Toy</p>
-								<p class="card-text">Age : 9 </p>
-								<p class="card-text">Interest : playing with friends</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!--    Additional cards for preview   -->
-			<div class="row">
-				<div class="card-deck">
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/lego-sample.jpg" alt="Card image cap">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Hazza</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Lego set </p>
-								<p class="card-text">Age : 7 </p>
-								<p class="card-text">Interest : eating cupcakes</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/sample-kid-jun.jpeg" alt="Card image cap">
-							<a href="#!">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Jun</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Science X Kit</p>
-								<p class="card-text">Age : 10 </p>
-								<p class="card-text">Interest : watching cartoons</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- Card -->
-					<div class="card mb-4">
-						<!--Card image-->
-						<div class="view overlay">
-							<img class="card-img-top" src="../img/sample-kid-juliana.jpeg" alt="Card image cap">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<!--Title-->
-							<h4 class="card-title text-center font-md crayon-font">My name is Juliana</h4>
-							<!--Text-->
-							<div class="comf-font">
-								<p class="card-text">Wish : Little Live Pets -Unicorn Toy</p>
-								<p class="card-text">Age : 9 </p>
-								<p class="card-text">Interest : playing with friends</p>
-								<div class="row button-center">
-									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-									<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-								</div>
-							</div>
-						</div>
-					</div>
+						<% } %>
+					<% } %>
+			
 				</div>
 			</div>
 

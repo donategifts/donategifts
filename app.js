@@ -33,6 +33,7 @@ app.engine('html', ejs.renderFile);
 
 //STATIC SET UP
 app.use(express.static('./public'));
+app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
 
 //DEV ENV
