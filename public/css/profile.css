@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'DK-Crayon-Crumble';
-    src: url('../../assets/fonts/DK-Crayon-Crumble.ttf');
+    src: url('../fonts/DK-Crayon-Crumble.ttf');
     src:
         local('DK Crayon Crumble'),
-        url('../../assets/fonts/DK-Crayon-Crumble.ttf') format('truetype');
+        url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
 }
 
 #cray-font {
@@ -147,7 +147,7 @@
 }
 
 .file-wrapper .upload-btn {
-    background-color:  rgba(188,227,97, 0.3); !important;
+    background-color:  rgba(188,227,97, 0.3) !important;
 }
 
 /* .file-wrapper input {
