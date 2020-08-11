@@ -1,12 +1,10 @@
 <!-- navigation bar using bootstrap-->
-<div class="nav-bar">
+<div class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                <div class="site-branding d-flex align-items-center">
-                    <a class="d-block" href="/" rel="home"><img class="d-block" id="logo-img"
-                            src="../img/donate-gift-logo.png" alt="logo"></a>
-                </div>
+                <a class="site-branding d-block" href="/" rel="home"><img class="d-block" id="logo-img"
+                        src="../img/donate-gift-logo.png" alt="logo"></a>
                 <nav class="site-navigation d-flex justify-content-end align-items-center">
                     <ul class="comf-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
                         <li class="current-menu-item"><a href="/">Home</a></li>
@@ -21,12 +19,27 @@
                         <% } %>
                     </ul>
                 </nav>
-                <!-- .hamburger-menu for mobile-->
-                <div class="hamburger-menu d-lg-none">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <!-- the below is for mobile and it only shows in smaller screens-->
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse d-lg-none" id="navbarToggleExternalContent">
+                    <ul class="comf-font navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                        <li class="nav-item"><a href="https://www.youtube.com/watch?v=RmvqvS7SIMU" target="_blank"
+                                class="nav-link">How To</a></li>
+                        <li class="nav-item"><a href="/wishcards" class="nav-link">Wish Cards</a></li>
+                        <% if (!user) { %>
+                        <li class="nav-item"><a href="/users/signup" class="nav-link">Sign Up</a></li>
+                        <% } else { %>
+                        <li class="nav-item"><a href="/users/profile" class="nav-link">My Profile</a></li>
+                        <li class="nav-item"><a href="/users/logout" class="nav-link">Log Out</a></li>
+                        <% } %>
+                    </ul>
                 </div>
             </div>
         </div>
