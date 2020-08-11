@@ -41,45 +41,36 @@ $(document).ready(function () {
     });
 
 
-    /*----------------------------------------
-    QUESTION: why do we need the below code?
-            I thought
-            <form method="POST" action="/wishcards/create"></form>
-            already handles the posting the values to server
-            you can just grab form inputs from (req.body)
-            inside router.post('/wishcards/create'...)
-    ------------------------------------------*/
+    // $("#wishCardForm").submit(function (e) {
+    //     e.preventDefault();
+    //     var fName = $("#fName").val();
+    //     var lName = $("#lName").val();
+    //     var birthday = $("#birthday").val();
+    //     var interest = $("#interest").val();
+    //     var item = $("#wishItem").val();
+    //     var price = $("#price").val();
+    //     var link = $("#itemLink").val();
+    //     var story = $("#story").val();
+    //     var img = $("#imgInp");
 
-    $("#wishCardForm").submit(function (e) {
-        e.preventDefault();
-        var fName = $("#fName").val();
-        var lName = $("#lName").val();
-        var email = $("#birthday").val();
-        var interest = $("#interest").val();
-        var item = $("#wishItem").val();
-        var price = $("#price").val();
-        var link = $("#itemLink").val();
-        var story = $("#story").val();
-        var img = $("#imgInp");
+    //     $.post("/wishcards", {
+    //         fName,
+    //         lName,
+    //         birthday,
+    //         interest,
+    //         item, 
+    //         price, 
+    //         link,
+    //         story,
+    //         img
+    //       }, function(data, status, xhr) {
+    //           if (!data.success) {
+    //             alert(data.msg);
+    //           } else {
+    //             location.replace(data.redirectURL);
+    //           }
+    //     });
 
-        $.post("/wishcards", {
-            fName,
-            lName,
-            email,
-            interest,
-            item, 
-            price, 
-            link,
-            story,
-            img
-          }, function(data, status, xhr) {
-              if (!data.success) {
-                alert(data.msg);
-              } else {
-                location.replace(data.redirectURL);
-              }
-        });
-
-    });
+    // });
 
 });

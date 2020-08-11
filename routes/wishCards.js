@@ -7,46 +7,59 @@ serving all wishcard related routes
 //NPM DEPENDENCIES
 const express = require('express');
 const router = express.Router();
-const path = require('path');
+const fs = require('fs');
 const multer = require('multer');
 
-// SET STORAGE ENGINE
 const storage = multer.diskStorage({
-	destination: '../public/uploads',
-	filename: function(req, file, cb) {
-		cb(null, file.fieldname + '-' + Date.now() + 
-		path.extname(file.originalname));
-	}
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
 });
 
-// INIT UPLOAD 
-const upload = multer({
-    storage: storage,
-    limits: {fileSize: 10}
-}).single('photo');
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')  {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
 
+const upload = multer({ 
+    storage: storage, 
+    limits: {
+    fileSize: 1024 * 1024 * 5   // up to 5 mbs
+    },
+    fileFilter: fileFilter
+});
 
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
-
-
 
 // @desc    grab form inputs && save wishcard to db, then redirect to '/wishcards' 
 // @route   POST '/wishcards'
 // @access  Private, only partners
 // @tested 	Not yet
-router.post('/', (req, res) => {
-    upload(req, res, (err) => {
-        if (err) {
-            res.send({ success: false, msg: err });
-        } else {
-            console.log(req.file);
-            /*
-            TODO: saving image logic 
-            */
-            res.send({ success: true, redirectURL: '/wishcards'});
-        }
+router.post('/', upload.single('photo'), (req, res) => {
+    console.log(req.file);
+    var newCard = new WishCard({
+        childFirstName: req.body.fName,
+        childLastName: req.body.lName,
+        childBirthday: new Date(req.body.birthday),
+        childInterest: req.body.interest,
+        wishItemName: req.body.item,
+        wishItemPrice: Number(req.body.price),
+        wishItemURL: req.body.link,
+        chlidStory: req.body.story,
+        wishCardImage: req.file.path,
+        createdBy: res.locals.user._id
     });
+    newCard.save((err) => { if (err) console.log(err); });
+    res.send(newCard);
+    
 });
 
 // @desc    Render wishCards.html which will show all wishcards
@@ -55,6 +68,8 @@ router.post('/', (req, res) => {
 // @tested 	Not yet
 router.get('/', (req, res) => {
     try {
+        var results = WishCard.find({}).exec();
+        console.log(results);
         res.status(200).render('wishCards', {user: res.locals.user}); 
     } catch (error) {
         res.status(400).send(JSON.stringify({
