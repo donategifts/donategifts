@@ -45,9 +45,14 @@
     border-top: 3px dotted rgba(188,227,97, 0.6);
 }
 
-.side-pad-sm {
-    padding-left: 0.7em;
+.fa-user, .fa-bell {
+    font-size: 2.4em;
 }
+
+.fa {
+    margin: 0.3em 0.5em;
+}
+
 
 .wish-card-form-title {
     display: block;
@@ -55,19 +60,10 @@
     color: #8bc64d;
     line-height: 1.2;
     text-align: center;
-    padding-top: 1em;
+    padding-top: 1.5em;
     padding-bottom: 1.5em;
 }
 
-.side-pad {
-    padding-left: 2.5em;
-    padding-right: 2.5em;
-}
-
-.side-pad-2 {
-    padding-left: 1em;
-    padding-right: 1em;
-}
 
 /* --------- img uploader ---------------- */
 .box {
@@ -150,16 +146,6 @@
     background-color:  rgba(188,227,97, 0.3) !important;
 }
 
-/* .file-wrapper input {
-    cursor: pointer;
-    height: 100%;
-    -moz-opacity: 0.01;
-    opacity: 0.01;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 9;
-} */
 
 /* ---- Profile Content Section---- */
 
@@ -167,48 +153,8 @@
     margin-top: 2em;
 }
 
-/* .profile-card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-} */
-
-.header {
-    padding: 10px 0;
-    /* background: rgba(139,198,77,0.2); */
+.profile-header {
+    padding: 1em 0;
     background: linear-gradient(180deg, rgba(188,227,97, 0.3),  rgba(255,209,90,0.02));
-    border-top: 3px solid rgba(188,227,97, 0.6);
-    /* border-bottom: 3px solid #8bc64d; */
-}
-
-.button-email {
-    margin: 10px 0;
-}
-
-.fa-circle {
-    color: #8bc64d;
-}
-
-.list-group {
-    list-style: disc inside;
-
-}
-
-.list-group-item {
-    display: list-item;
-}
-
-.find-more {
-    text-align: right;
-}
-
-
-.label-theme {
-    background: #8bc64d;
-    font-size: 14px;
-    padding: .3em .7em .3em;
-    color: #fff;
-    border-radius: .25em;
-}
-
-.label a {
-    color: inherit;
+    /* border-top: 2px dotted rgba(188,227,97, 0.6); */
 }

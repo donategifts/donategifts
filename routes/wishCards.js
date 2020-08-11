@@ -10,61 +10,90 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + file.originalname);
-    }
-});
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'uploads/');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, new Date().toISOString() + file.originalname);
+//     }
+// });
 
-const fileFilter = (req, file, cb) => {
-    // reject a file
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')  {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-}
+// const fileFilter = (req, file, cb) => {
+//     // reject a file
+//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// }
 
-const upload = multer({ 
-    storage: storage, 
-    limits: {
-    fileSize: 1024 * 1024 * 5   // up to 5 mbs
-    },
-    fileFilter: fileFilter
-});
+// const upload = multer({
+//     storage: storage,
+//     limits: {
+//         fileSize: 1024 * 1024 * 5 // up to 5 mbs
+//     },
+//     fileFilter: fileFilter
+// });
 
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
-const { resolveNaptr } = require('dns');
+
+
+// *** QUESTION : what does this do?
+// const {
+//     resolveNaptr
+// } = require('dns');
+
+
 
 // @desc    grab form inputs && save wishcard to db, then redirect to '/wishcards' 
 // @route   POST '/wishcards'
 // @access  Private, only partners
-// @tested 	Not yet
-router.post('/', upload.single('photo'), (req, res) => {
-    if (req.file === undefined) {
-        res.send('Error: File must be in either .jpeg or .png format. The file \
-        must also be less than 5 megabytes.');
-    } else {
+// @tested 	This works (BUT WITHOUT USER PHOTO)
+
+router.post('/create', async (req, res) => {
+    try {
+        const { childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage} = req.body;
+        
         var newCard = new WishCard({
-            childFirstName: req.body.fName,
-            childLastName: req.body.lName,
-            childBirthday: new Date(req.body.birthday),
-            childInterest: req.body.interest,
-            wishItemName: req.body.wishItem,
-            wishItemPrice: Number(req.body.price),
-            wishItemURL: req.body.itemLink,
-            chlidStory: req.body.story,
-            wishCardImage: req.file.path,
-            createdBy: res.locals.user._id
+            childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage
         });
-        newCard.save((err) => { if (err) console.log(err); });
+        console.log(newCard);
+        newCard.save((err) => {
+            if (err) console.log(err);
+        });
         res.redirect('/wishcards');
+    } catch (error) {
+        console.log(error);
     }
 });
+
+/* ------------------ Hey, I had to comment this out because it wasn't working, 
+---------------------but once you finish the file uploader, feel free to uncomment this */
+
+// router.post('/', upload.single('photo'), (req, res) => {
+//     if (req.file === undefined) {
+//         res.send('Error: File must be in either .jpeg or .png format. The file \
+//         must also be less than 5 megabytes.');
+//     } else {
+//         var newCard = new WishCard({
+//             childFirstName: req.body.fName,
+//             childLastName: req.body.lName,
+//             childBirthday: new Date(req.body.birthday),
+//             childInterest: req.body.interest,
+//             wishItemName: req.body.wishItem,
+//             wishItemPrice: Number(req.body.price),
+//             wishItemURL: req.body.itemLink,
+//             chlidStory: req.body.story,
+//             wishCardImage: req.file.path,
+//             createdBy: res.locals.user._id
+//         });
+//         newCard.save((err) => { if (err) console.log(err); });
+//         console.log(newCard);
+//         res.redirect('/wishcards');
+//     }
+// });
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
@@ -73,12 +102,15 @@ router.post('/', upload.single('photo'), (req, res) => {
 router.get('/', async (req, res) => {
     try {
         var results = await WishCard.find({});
-        res.status(200).render('wishCards', { user: res.locals.user, wishcards: results }); 
+        res.status(200).render('wishCards', {
+            user: res.locals.user,
+            wishcards: results
+        });
     } catch (error) {
         res.status(400).send(JSON.stringify({
-			success: false,
-			error: error
-		}));
+            success: false,
+            error: error
+        }));
     }
 });
 
@@ -93,13 +125,16 @@ router.post('/search', async (req, res) => {
                 "$regex": req.body.wishitem,
                 "$options": "i"
             }
-        }); 
-        res.status(200).render('wishCards', { user: res.locals.user, wishcards: results }); 
+        });
+        res.status(200).render('wishCards', {
+            user: res.locals.user,
+            wishcards: results
+        });
     } catch (error) {
         res.status(400).send(JSON.stringify({
-			success: false,
-			error: error
-		}));
+            success: false,
+            error: error
+        }));
     }
 });
 
@@ -113,9 +148,9 @@ router.get('/:id', async (req, res) => {
         res.send(result);
     } catch (error) {
         res.status(400).send(JSON.stringify({
-			success: false,
-			error: error
-		}));
+            success: false,
+            error: error
+        }));
     }
 });
 
@@ -125,16 +160,16 @@ router.get('/:id', async (req, res) => {
 // @tested 	No
 router.get('/get/random', async (req, res) => {
     try {
-         //TODO: /views/templates/homeSampleCards.ejs
-         //     has all the frontend codes for this random display 
+        //TODO: /views/templates/homeSampleCards.ejs
+        //     has all the frontend codes for this random display 
         const results = await WishCard.find({});
         results.sort(() => Math.random() - 0.5);
         res.send(results.slice(0, 3));
     } catch (error) {
         res.status(400).send(JSON.stringify({
-			success: false,
-			error: error
-		}));
+            success: false,
+            error: error
+        }));
     }
 });
 
@@ -148,12 +183,12 @@ router.put('/update/:id', async (req, res) => {
         /*
         WHERE ARE WE EDITING THIS ON THE FRONT END? 
         */
-       result.save();
+        result.save();
     } catch (error) {
         res.status(400).send(JSON.stringify({
-			success: false,
-			error: error
-		}));
+            success: false,
+            error: error
+        }));
     }
 });
 

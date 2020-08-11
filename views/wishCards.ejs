@@ -13,67 +13,74 @@
 
 	<!-- Wish Card deck -->
 	<div class="wishcards">
-		<div class="container">
 
-			<!-- Search Bar -->
-			<div class="row justify-content-center rale-font" id="margin-bottom">
-				<div class="col-12 col-md-10 col-lg-8">
-					<!-- Search form -->
-					<form class="card card-sm" id="searchBar" action="/wishcards/search" method="POST">
-						<div class="card-body row no-gutters align-items-center">
-							<div class="col-auto">
-								<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
-							</div>
-							<div class="col">
-								<input class="form-control form-control-lg form-control-borderless" type="search" name="wishitem"
-									placeholder="Search Wish Cards">
-							</div>
-							<div class="col-auto">
-								<button class="btn btn-lg btn-success" type="submit">Search</button>
+		<!-- Search Bar -->
+		<div class="row justify-content-center rale-font" id="margin-bottom">
+			<div class="col-12 col-md-10 col-lg-8">
+				<!-- Search form -->
+				<form class="card card-sm" id="searchBar" action="/wishcards/search" method="POST">
+					<div class="card-body row no-gutters align-items-center">
+						<div class="col-auto">
+							<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
+						</div>
+						<div class="col">
+							<input class="form-control form-control-lg form-control-borderless" type="search"
+								name="wishitem" placeholder="Search Wish Cards">
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-lg btn-success" type="submit">Search</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Temporary photo array until the photo uploader gets fixed -->
+		<% const tempPhotos = ['../img/card-sample-1.jpg', '../img/card-sample-2.jpg', '../img/card-sample-3.jpg', '../img/sample-kid-juliana.jpeg', '../img/sample-kid-jun.jpeg']; %>
+		<% let tempCount = 0; %>
+
+		<!-- Dynamic Card Display now fixed and responsive-->
+
+		<div class="container">
+			<% if (wishcards.length === 0) { %>
+			<h1>No wishcards</h1>
+			<% } else { %>
+			<div class="row justify-content-center">
+
+				<% for (var i = 0; i < wishcards.length; i++) { %>
+					<% tempCount++ %>
+					<%if (tempCount == 5) { tempCount = 0; }%>
+				<div class="card-deck mr-1 w-50">
+					<!-- Card -->
+					<div class="card mb-3">
+						<!--Card image-->
+						<div class="view overlay">
+							<img class="card-img-top" src="<%= tempPhotos[tempCount] %>" alt="Card image">
+							<a href="#!">
+								<div class="mask rgba-white-slight"></div>
+							</a>
+						</div>
+						<!--Card content-->
+						<div class="card-body">
+							<!--Title-->
+							<h4 class="card-title text-center crayon-font">My name is
+								<%= wishcards[i].childFirstName %></h4>
+							<!--Text-->
+							<div class="comf-font">
+								<p class="card-text">Wish Item : <%= wishcards[i].wishItemName %></p>
+								<p class="card-text">Item Price : $ <%= wishcards[i].wishItemPrice %></p>
+								<p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
+								<div class="row button-center">
+									<button type="button" class="wishcard-btn btn-grn-border">See more</button>
+									<button type="button" class="wishcard-btn btn-grn-bg"><a href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate gift</a></button>
+								</div>
 							</div>
 						</div>
-					</form>
+					</div>
 				</div>
+				<% } %>
 			</div>
-
-			<div class="row">
-				<div class="card-deck">
-
-					<% if (wishcards.length === 0) { %>
-						<h1>No wishcards</h1>
-					<% } else { %>
-						<% for (var wishcard of wishcards) { %>
-							<!-- Card -->
-							<div class="card mb-4">
-								<!--Card image-->
-								<div class="view overlay">
-									<img class="card-img-top" src="<%= wishcard.wishCardImage %>" alt="Card image cap">
-									<a href="#!">
-										<div class="mask rgba-white-slight"></div>
-									</a>
-								</div>
-								<!--Card content-->
-								<div class="card-body">
-									<!--Title-->
-									<h4 class="card-title text-center font-md crayon-font">My name is <%= wishcard.childFirstName %></h4>
-									<!--Text-->
-									<div class="comf-font">
-										<p class="card-text">Wish : <%= wishcard.wishItemName %></p>
-										<p class="card-text">Age : <%= Math.abs(new Date(Date.now() - wishcard.childBirthday.getTime()).getUTCFullYear() - 1970) %></p>
-										<p class="card-text">Interest : <%= wishcard.childInterest %></p>
-										<div class="row button-center">
-											<button type="button" class="wishcard-btn btn-grn-border">See more</button>
-											<button type="button" class="wishcard-btn btn-grn-bg">Donate gift</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						<% } %>
-					<% } %>
-			
-				</div>
-			</div>
-
+			<% } %>
 
 		</div>
 	</div>
