@@ -24,7 +24,7 @@
   <%- include('./templates/nav')-%>
 
   <div class="signup-bg">
-    <div class="sign-container">
+    <div class="d-flex container justify-content-center mg-top-btm">
 
       <!-- sign up form | post to '/users/signup' -->
       <div class="wrap-box">
@@ -63,12 +63,15 @@
           <!-- userRole section -->
           <fieldset class="wrap-radio comf-font">
             <legend class="md2">Signing up as:</legend>
-            <div>
+            <div class="row">
               <input type="radio" id="donor" name="userRole" value="donor">
               <label for="donor">Donor</label>
+            </div>
+            <div class="row">
               <input type="radio" id="partner" name="userRole" value="partner">
               <label for="partner">Foster Care Partner</label>
             </div>
+
           </fieldset>
           <!-- submit button section -->
           <div class="container-form-btn">
@@ -83,6 +86,9 @@
   </div>
 
   <%- include('./templates/footer')-%>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+    integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
+  </script>
 </body>
 
 </html>
