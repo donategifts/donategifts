@@ -6,7 +6,6 @@ rgba(139,198,77,1) -green
 */
 
 
-
 .how-to-img {
   height: 310px;
 	width: auto;
@@ -231,7 +230,10 @@ img {
 @media screen and (max-width: 992px){
 	.hide {
 	  display: none;
-	}
+  }
+  .bg {
+    margin-bottom: 0;
+  }
 }
 
 
@@ -309,55 +311,6 @@ img {
   border: none;
   background: #8BC64D;
   color: #fff;
-}
-
-
-
-/*
-# Tabs
-----------------------------------*/
-ul.tabs-nav {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-ul.tabs-nav .tab-nav {
-    padding: 12px 32px;
-    margin-right: 6px;
-    border-radius: 30px;
-    background: #f3f3f3;
-    font-size: 14px;
-    font-weight: 600;
-    color: #262626;
-    cursor: pointer;
-    transition: all .35s;
-}
-
-ul.tabs-nav .tab-nav.active {
-    border: 0;
-    background: linear-gradient(270deg, rgba(255,90,0,1) 0%, rgba(255,54,0,1) 100%);
-    color: #fff;
-}
-
-.tabs .tab-nav {
-    margin-bottom: -1px;
-    z-index: 99;
-}
-
-.tabs-container {
-    padding: 34px;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content p {
-    margin-bottom: 0;
-    font-size: 14px;
-    line-height: 2;
-    color: #929191;
 }
 
 
@@ -463,7 +416,7 @@ ul.tabs-nav .tab-nav.active {
 
 @media screen and (max-width: 992px){
     .home-page-welcome img {
-        margin-bottom: 60px;
+        margin-bottom: 0.8em;
     }
 }
 

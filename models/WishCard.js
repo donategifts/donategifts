@@ -7,40 +7,31 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var WishCardSchema = new Schema({
 	childFirstName: {
-		type: String,
-		required: true
+		type: String
 	},
 	childLastName: {
-		type: String,
-		required: true
+		type: String
 	},
 	childBirthday: {
-		type: Date,
-		required: true
+		type: Date
     },
     childInterest: {
-		type: String,
-		required: true
+		type: String
     },
     wishItemName: {
-		type: String,
-		required: true
+		type: String
     },
     wishItemPrice: {
-		type: String,
-		required: true
+		type: String
     },
     wishItemURL: {
-		type: String,
-		required: true
+		type: String
 	},
-	chlidStory: {
+	childStory: {
 		type: String
     },
     wishCardImage: {
-		binData: Buffer,
-		type: String,
-		required: true 
+		type: String
     },
 	createdBy: {
 		type: Schema.Types.ObjectId,

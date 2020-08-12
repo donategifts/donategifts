@@ -25,7 +25,7 @@
     </div>
 
     <!-- profile content section-->
-    <header class="header rale-font">
+    <header class="profile-header rale-font">
         <div class="container">
 
             <div class="row" id="profile-row">
@@ -36,7 +36,7 @@
                 <div class="col-md-3 ml-auto">
                     <% if (user.userRole == 'partner') { %>
                     <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i
-                                class="fa fa-pencil side-pad-sm"></i></button></a>
+                                class="fa fa-pencil"></i></button></a>
                     <%}%>
                 </div>
             </div>
@@ -44,36 +44,44 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h2><strong><%= user.fName %> <%= user.lName %></strong></h2>
+
                     <% if (user.userRole == 'partner') { %>
-                        <h5>Organization: Chicago Foster Care Center</h5>
+                    <h5>Organization: Chicago Foster Care Center</h5>
                     <%}%>
+
                     <p>User Role: <%= user.userRole %></p>
                     <p>Email: <%= user.email %></p>
                 </div>
-
-                <!-- <div class="col-md-3 ml-auto">
-                    <a href="/users/logout"><button type="button" class="wishcard-btn grn-btn">Log Out</button></a>
-                </div> -->
             </div>
         </div>
     </header>
 
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card card-block text-xs-left">
-                    <h5><i class="fa fa-user fa-fw"></i>About Me</h5>
-                    <p>You have no bio saved</p>
+            <div class="col-md-6 mb-3">
+                <div class="card card-block">
+                    <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>About Me</h5>
+                    <p class="card-text p-4"> You have no description saved.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <h5 class="card-title"><i class="fa fa-gift" aria-hidden="true"></i>My Donations</h5>
+                    <p class="card-text p-4"> You have made 0 donations.</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
+        <div class="row my-3">
+            <div class="col-md-6 mb-3">
                 <div class="card card-block">
-                    <h5><i class="fa fa-rocket fa-fw"></i>My Wish Cards</h5>
-                    <ul class="list-group" style="margin-top:15px;margin-bottom:15px;">
-                        <li class="list-group-item">You have no wish cards saved</li>
-                    </ul>
+                    <h5 class="card-title"><i class="fa fa-bell" aria-hidden="true"></i>Notifications</h5>
+                    <p class="card-text p-4"> You have 0 messages.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <h5 class="card-title"><i class="fa fa-users" aria-hidden="true"></i>Friends</h5>
+                    <p class="card-text p-4"> You have invited 0 friends.</p>
                 </div>
             </div>
         </div>
@@ -89,81 +97,69 @@
                 for children under your care
             </h4>
 
-            <div class="row side-pad">
+            <div class="row">
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                    <input id="fName" class="input1" type="text" name="fName" placeholder="Child's First Name">
+                    <input id="childFirstName" class="input1" type="text" name="childFirstName"
+                        placeholder="Child's First Name">
                 </div>
 
-                <div class="col-lg-6 ml-auto comf-font wrap-input1" data-validate="Name is required">
-                    <input id="lName" class="input1" type="text" name="lName"
+                <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                    <input id="childLastName" class="input1" type="text" name="childLastName"
                         placeholder="Child's Last Name (initial ok)">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1">
-                    <input id="birthday" class="input1" type="date" name="birthday" placeholder="Child's Birthday">
+                    <input id="childBirthday" class="input1" type="date" name="childBirthday" placeholder="Child's Birthday">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <input id="interest" class="input1" type="text" name="interest" placeholder="Child's Interest">
+                    <input id="childInterest" class="input1" type="text" name="childInterest"
+                        placeholder="Child's Interest">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1">
-                    <input id="wish-item" class="input1" type="text" name="wishItem" placeholder="Wish Item Name">
+                    <input id="wishItemName" class="input1" type="text" name="wishItemName" placeholder="Wish Item Name">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <input id="price" class="input1" type="number" name="price" placeholder="Wish Item Price">
+                    <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice" placeholder="Wish Item Price">
                 </div>
 
-                <div class="side-pad-2 comf-font wrap-input1">
-                    <label for="itemLink">Wish Item Amazon URL <a href="https://youtu.be/RmvqvS7SIMU?t=67"
+                <div class="px-3 comf-font wrap-input1">
+                    <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/RmvqvS7SIMU?t=67"
                             target="_blank">(Watch this video for help)</a></label>
-                    <input id="itemLink" class="input1" type="text" name="itemLink"
+                    <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
                         placeholder="(copied hyperlink address for one wish item)">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
-                    <label for="story">Share their story</label>
-                    <textarea id="story" class="input1" name="story"
+                    <label for="chlidStory">Share their story</label>
+                    <textarea id="chlidStory" class="input1" name="childStory"
                         placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
                 </div>
 
                 <!-- Custom File Uploader  -->
-                <!-- <main class="col-lg-6 ml-auto">
+                <main class="col-lg-6 ml-auto">
                     <div class="box">
                         <div class="content">
                             <p>Photo is required; it can be of the wish item, clip art, or child (if confidentiality is
                                 an issue, try using a photo of their hands making a heart, masked face,
                                 etc.)</p>
-                            <form id="form1" runat="server">
-                                <div class="uploader-left">
-                                    <img id="img-uploaded" src="../img/img-placeholder.png"
-                                        alt="image-placeholder">
-                                </div>
-                                <div class="uploader-right">
-                                    <input type="text" class="img-path" placeholder="Select wish card image">
-                                    <span class="file-wrapper">
-                                        <input type="file" name="photo" id="imgInp" class="uploader">
-                                        <span class="upload-btn btn-large btn-alpha">Upload Image</span>
-                                    </span>
-                                </div>
-                            </form>
+                            <div class="uploader-left">
+                                <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
+                            </div>
+                            <div class="uploader-right">
+                                <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
+                                <span class="file-wrapper">
+                                    <input type="file" name="wishCardImage" id="filetag"
+                                        class="uploader upload-btn btn-large btn-alpha">
+                                    <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </main> -->
-                <div class="uploader-left">
-                    <img id="img-uploaded" src="../img/img-placeholder.png" alt="image-placeholder">
-                </div>
-                <div class="uploader-right">
-                    <input type="text" class="img-path" placeholder="Select wish card image">
-                    <span class="file-wrapper">
-                        <input type="file" name="photo" id="imgInp" class="uploader">
-                        <span class="upload-btn btn-large btn-alpha">Upload Image</span>
-                    </span>
-                </div>
+                </main>
             </div>
-
-            <!-- <div class="mg-btm"></div> -->
 
             <div class="comf-font container-contact1-form-btn">
                 <div class="contact1-form-btn">
@@ -175,6 +171,9 @@
     <% } %>
 
     <%- include('./templates/footer')-%>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+        integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
+    </script>
 
 </body>
 
