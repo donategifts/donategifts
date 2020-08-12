@@ -27,7 +27,7 @@ var WishCardSchema = new Schema({
     wishItemURL: {
 		type: String
 	},
-	chlidStory: {
+	childStory: {
 		type: String
     },
     wishCardImage: {

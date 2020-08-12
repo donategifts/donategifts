@@ -10,31 +10,31 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads/');
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, new Date().toISOString() + file.originalname);
-//     }
-// });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
 
-// const fileFilter = (req, file, cb) => {
-//     // reject a file
-//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-//         cb(null, true);
-//     } else {
-//         cb(null, false);
-//     }
-// }
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
 
-// const upload = multer({
-//     storage: storage,
-//     limits: {
-//         fileSize: 1024 * 1024 * 5 // up to 5 mbs
-//     },
-//     fileFilter: fileFilter
-// });
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // up to 5 mbs
+    },
+    fileFilter: fileFilter
+});
 
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
@@ -52,48 +52,50 @@ const WishCard = require('../models/WishCard');
 // @access  Private, only partners
 // @tested 	This works (BUT WITHOUT USER PHOTO)
 
-router.post('/create', async (req, res) => {
-    try {
-        const { childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage} = req.body;
+// router.post('/create', async (req, res) => {
+//     try {
+//         const { childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage} = req.body;
         
-        var newCard = new WishCard({
-            childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage
-        });
-        console.log(newCard);
-        newCard.save((err) => {
-            if (err) console.log(err);
-        });
-        res.redirect('/wishcards');
-    } catch (error) {
-        console.log(error);
-    }
-});
+//         var newCard = new WishCard({
+//             childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage
+//         });
+//         console.log(newCard);
+//         newCard.save((err) => {
+//             if (err) console.log(err);
+//         });
+//         res.redirect('/wishcards');
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
 
 /* ------------------ Hey, I had to comment this out because it wasn't working, 
 ---------------------but once you finish the file uploader, feel free to uncomment this */
 
-// router.post('/', upload.single('photo'), (req, res) => {
-//     if (req.file === undefined) {
-//         res.send('Error: File must be in either .jpeg or .png format. The file \
-//         must also be less than 5 megabytes.');
-//     } else {
-//         var newCard = new WishCard({
-//             childFirstName: req.body.fName,
-//             childLastName: req.body.lName,
-//             childBirthday: new Date(req.body.birthday),
-//             childInterest: req.body.interest,
-//             wishItemName: req.body.wishItem,
-//             wishItemPrice: Number(req.body.price),
-//             wishItemURL: req.body.itemLink,
-//             chlidStory: req.body.story,
-//             wishCardImage: req.file.path,
-//             createdBy: res.locals.user._id
-//         });
-//         newCard.save((err) => { if (err) console.log(err); });
-//         console.log(newCard);
-//         res.redirect('/wishcards');
-//     }
-// });
+router.post('/', upload.single('wishCardImage'), (req, res) => {
+    console.log(req.body); 
+    console.log(req.file);
+    if (req.file === undefined) {
+        res.send('Error: File must be in either .jpeg or .png format. The file \
+        must also be less than 5 megabytes.');
+    } else {
+        var newCard = new WishCard({
+            childFirstName: req.body.childFirstName,
+            childLastName: req.body.childLastName,
+            childBirthday: new Date(req.body.childBirthday),
+            childInterest: req.body.childInterest,
+            wishItemName: req.body.wishItemName,
+            wishItemPrice: Number(req.body.wishItemPrice),
+            wishItemURL: req.body.wishItemURL,
+            childStory: req.body.childStory,
+            wishCardImage: req.file.path,
+            createdBy: res.locals.user._id
+        });
+        newCard.save((err) => { if (err) console.log(err); });
+        console.log(newCard);
+        res.redirect('/wishcards');
+    }
+});
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
