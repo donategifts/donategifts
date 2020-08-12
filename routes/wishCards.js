@@ -39,42 +39,7 @@ const upload = multer({
 //IMPORT WISHCARD MODEL
 const WishCard = require('../models/WishCard');
 
-
-// *** QUESTION : what does this do?
-// const {
-//     resolveNaptr
-// } = require('dns');
-
-
-
-// @desc    grab form inputs && save wishcard to db, then redirect to '/wishcards' 
-// @route   POST '/wishcards'
-// @access  Private, only partners
-// @tested 	This works (BUT WITHOUT USER PHOTO)
-
-// router.post('/create', async (req, res) => {
-//     try {
-//         const { childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage} = req.body;
-        
-//         var newCard = new WishCard({
-//             childFirstName, childLastName, childBirthday, childInterest, wishItemName, wishItemPrice, wishItemURL, chlidStory, wishCardImage
-//         });
-//         console.log(newCard);
-//         newCard.save((err) => {
-//             if (err) console.log(err);
-//         });
-//         res.redirect('/wishcards');
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
-
-/* ------------------ Hey, I had to comment this out because it wasn't working, 
----------------------but once you finish the file uploader, feel free to uncomment this */
-
 router.post('/', upload.single('wishCardImage'), (req, res) => {
-    console.log(req.body); 
-    console.log(req.file);
     if (req.file === undefined) {
         res.send('Error: File must be in either .jpeg or .png format. The file \
         must also be less than 5 megabytes.');
@@ -140,6 +105,7 @@ router.post('/search', async (req, res) => {
     }
 });
 
+
 // @desc    Retrieve a wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  
@@ -147,6 +113,7 @@ router.post('/search', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const result = await WishCard.findById(req.params.id);
+        // Stacy: create a page and have a dynamic link for see more 
         res.send(result);
     } catch (error) {
         res.status(400).send(JSON.stringify({
@@ -165,7 +132,7 @@ router.get('/get/random', async (req, res) => {
         //TODO: /views/templates/homeSampleCards.ejs
         //     has all the frontend codes for this random display 
         const results = await WishCard.find({});
-        results.sort(() => Math.random() - 0.5);
+        results.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
         res.send(results.slice(0, 3));
     } catch (error) {
         res.status(400).send(JSON.stringify({
