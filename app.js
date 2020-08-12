@@ -35,11 +35,11 @@ app.engine('html', ejs.renderFile);
 app.use(express.static('./public'));
 
 //DEV ENV
-const hostname = '127.0.0.1';
-const port = 8081;
+//const hostname = '127.0.0.1';
+//const port = 8081;
 // LIVE ENV
-// const hostname = '157.245.243.18';
-// const port = 80;
+const hostname = '64.227.8.216';
+const port = 443;
 
 //LOAD CONFIG.ENV VARS
 dotenv.config({
