@@ -1,14 +1,12 @@
 /*
  * Author: Stacy Sealky Lee, Jordan Huang
- * Class: CSC 337
- * Type: Final Project
  * FileName: app.js
  * FileDescription: 
- * this file is the server. It's setting up express, etc. 
- * Make sure to npm install for all dependencies before usage!!
+ * This file is the node server. It's setting up express, etc. 
+ * Make sure to 'npm install' for all dependencies before usage!!
  * The set up codes are in an order, 
- * so some functions won't work if you switch the order of what gets loaded in app.js first.
- * (add more comments later)
+ * which means some functions won't work if you switch the order of what gets loaded in app.js first.
+ * 
  */
 
 //EXPRESS SET UP 
@@ -116,3 +114,7 @@ app.use('/about', aboutRoute);
 app.get('/', (req, res) => {
 	res.render('home', {user: res.locals.user});
 });
+
+//we need some kinda 'next' for signup as foster care partner
+// Are you signing up as a foster care partner - true (continue) / false - modal check
+// 2/3 1/3

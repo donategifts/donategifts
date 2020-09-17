@@ -3,6 +3,8 @@
 VS-workspace.code-workspace
 .settings
 .project
+
+# Ignore image file folder
 uploads
 
 # Ignore node_modules folder
