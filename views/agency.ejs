@@ -2,14 +2,44 @@
 * Author: Stacy Sealky Lee
 * FileName: agency.ejs
 * Description: agency registration page
-* TODO: in the future, make individual donor, enterprise donor, foster care partner
+* TODO: 
+Make the background of form green to yellow
+agencyName: {
+		type: String,
+		required: true
+	},
+	agencyWebsite: {
+		type: String
+	},
+	agencyPhone: {
+        type: Number,
+        required: true
+    },
+    accountManager: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+    },
+    agencyBio: {
+		type: String
+    },
+    agencyAddress: {
+		type: String
+    },
+    childrenUnderCare: {
+		type: Number
+    },
+    childrenAgeRange: {
+		type: String
+	},
+	agencyProfileImage
+in the future, make individual donor, enterprise donor, foster care partner
 -->
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
-  <title>Sign Up to Donate Gifts</title>
+  <title>Register as a Foster Care Partner</title>
 
   <%- include('./templates/header')-%>
 
@@ -31,52 +61,39 @@
         <form class="signup" action="/users/signup" method="post">
           <!-- form title -->
           <div class="sign-row lg title-text crayon-font mg-sm">
-           Signing up as a Foster Care Partner
+            Last Step: Register Your Organization
             <!-- <img class="img-inline" src="../img/line-gift-white.png" alt="line-art-gift-image"> -->
           </div>
-          <!-- first name -->
-          <div class="">
-            
-          </div>
-          <div class="wrap-input mg-btm" data-validate="First name is required">
-            <input required class="input-default comf-font" type="text" name="fName" id="fName"
-              placeholder="First name : " title="First name must contain alphabets only">
-          </div>
-          <!-- last name -->
-          <div class="wrap-input mg-btm" data-validate="Last name is required">
-            <input required class="input-default comf-font" type="text" name="lName" id="lName"
-              placeholder="Last name : " title="Last name must contain alphabets only">
-          </div>
-          <!-- email -->
-          <div class="wrap-input mg-btm" data-validate="Email is required">
-            <input required class="input-default comf-font" type="email" name="email" id="email" placeholder="Email : "
-              title="example: username@xyz.com">
-          </div>
-          <!-- password -->
-          <div class="wrap-input mg-btm2" data-validate="Password is required">
-            <input required class="input-default comf-font" type="password" name="password" id="password"
-              placeholder="Password : " pattern="(?=.*\d)(?=.*[a-z]).{8,}"
-              title="Must contain at least one number and one lowercase letter, and at least 8 or more characters">
-          </div>
-          <!-- userRole section -->
-          <fieldset class="wrap-radio comf-font">
-            <legend class="md2">Signing up as:</legend>
-            <div class="row">
-              <input type="radio" id="donor" name="userRole" value="donor">
-              <label for="donor">Donor</label>
-            </div>
-            <div class="row">
-              <input type="radio" id="partner" name="userRole" value="partner">
-              <label for="partner">Foster Care Partner</label>
-            </div>
 
-          </fieldset>
+          <!-- agencyName -->
+          <div class="wrap-input mg-btm" data-validate="Required field, please fill it out.">
+            <input required class="input-default comf-font" type="text" name="agencyName" id="agencyName"
+              placeholder="Organization Name : ">
+          </div>
+          <!-- agencyWebsite -->
+          <div class="wrap-input mg-btm">
+            <input class="input-default comf-font" type="text" name="agencyWebsite" id="agencyWebsite"
+              placeholder="Organization Website (if any) : " title="This helps us verify your organization">
+          </div>
+          <!-- agencyPhone -->
+          <div class="wrap-input mg-btm" data-validate="Phone number is required">
+            <input required class="input-default comf-font" type="text" name="agencyPhone" id="agencyPhone"
+              placeholder="Organization Phone Number : " title="agencyPhone">
+          </div>
+
+          <!-- agencyBio -->
+          <div class="wrap-input mg-btm">
+            <input class="input-default comf-font" type="text" name="agencyBio" id="agencyBio"
+              placeholder="Organization Description : " title="agencyBio">
+          </div>
+
           <!-- submit button section -->
           <div class="container-form-btn">
             <button class="form-btn comf-font" type="submit">
-              Sign Up
+              Submit
             </button>
           </div>
+
         </form>
       </div>
 

@@ -11,20 +11,23 @@ const mongoose = require('mongoose');
 //IMPORT USER MODEL
 const User = require('../models/User');
 
+//IMPORT AGENCY MODEL
+const Agency = require('../models/Agency');
+
 // Middleware for users 
 const redirectLogin = (req, res, next) => {
-    if (!req.session.userId) {
-        res.redirect('/users/login');
-    } else {
-        next();
-    }
+	if (!req.session.userId) {
+		res.redirect('/users/login');
+	} else {
+		next();
+	}
 };
 const redirectProfile = (req, res, next) => {
-    if (req.session.userId) {
-        res.redirect(`/users/profile`);
-    } else {
-        next();
-    }
+	if (req.session.userId) {
+		res.redirect(`/users/profile`);
+	} else {
+		next();
+	}
 };
 
 // @desc    Render (home)
@@ -32,14 +35,16 @@ const redirectProfile = (req, res, next) => {
 // @access  Public
 // @tested 	Yes
 router.get('/', (req, res) => {
-    try {
-        res.status(200).render('home', {user: res.locals.user}); 
-    } catch (error) {
-        res.status(400).send(JSON.stringify({
+	try {
+		res.status(200).render('home', {
+			user: res.locals.user
+		});
+	} catch (error) {
+		res.status(400).send(JSON.stringify({
 			success: false,
 			error: err
 		}));
-    }
+	}
 });
 
 // @desc    Render signup.html
@@ -47,14 +52,16 @@ router.get('/', (req, res) => {
 // @access  Public
 // @tested 	Yes
 router.get('/signup', redirectProfile, (req, res) => {
-    try {
-        res.status(200).render('signup', {user: res.locals.user});
-    } catch (error) {
-        res.status(400).send(JSON.stringify({
+	try {
+		res.status(200).render('signup', {
+			user: res.locals.user
+		});
+	} catch (error) {
+		res.status(400).send(JSON.stringify({
 			success: false,
 			error: err
 		}));
-    }
+	}
 });
 
 // @desc    
@@ -62,14 +69,16 @@ router.get('/signup', redirectProfile, (req, res) => {
 // @access  Private
 // @tested 	Not yet
 router.get('/login', redirectProfile, (req, res) => {
-    try {
-        res.status(200).render('login', {user: res.locals.user});
-    } catch (error) {
-        res.status(400).send(JSON.stringify({
+	try {
+		res.status(200).render('login', {
+			user: res.locals.user
+		});
+	} catch (error) {
+		res.status(400).send(JSON.stringify({
 			success: false,
 			error: err
 		}));
-    }
+	}
 });
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
@@ -78,10 +87,29 @@ router.get('/login', redirectProfile, (req, res) => {
 // @tested 	Yes
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
 router.get('/profile', redirectLogin, async (req, res) => {
-    try {
-		res.render('profile', {user: res.locals.user});
-    } catch (err) {
-        res.status(400).send(JSON.stringify({
+	try {
+		res.render('profile', {
+			user: res.locals.user
+		});
+	} catch (err) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	}
+});
+
+// @desc    Render agency.ejs
+// @route   GET '/users/agency'
+// @access  Private, only userRole == partners
+// @tested 	No
+router.get('/agency', redirectLogin, async (req, res) => {
+	try {
+		res.render('agency', {
+			user: res.locals.user
+		});
+	} catch (err) {
+		res.status(400).send(JSON.stringify({
 			success: false,
 			error: err
 		}));
@@ -94,9 +122,45 @@ router.get('/profile', redirectLogin, async (req, res) => {
 // @access  Public
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
+router.post('/agency', redirectProfile, async (req, res) => {
+	const {
+		agencyName,
+		agencyWebsite,
+		agencyPhone,
+		agencyBio
+	} = req.body;
+
+	const newAgency = new Agency({
+		agencyName,
+		agencyWebsite,
+		agencyPhone,
+		agencyBio
+	});
+	try {
+		await newAgency.save();
+		return res.send('/users/profile');
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+
+// @desc    Create a newUser, hash password, issue session
+// @route   POST '/users/signup'
+// @access  Public
+// @tested 	Yes
+// TODO: display this message in signup.html client side as a notification alert
 router.post('/signup', redirectProfile, async (req, res) => {
-	const { fName, lName, email, password, userRole} = req.body;
-	const candidate = await User.findOne({email: email});
+	const {
+		fName,
+		lName,
+		email,
+		password,
+		userRole
+	} = req.body;
+	const candidate = await User.findOne({
+		email: email
+	});
 	if (candidate) {
 		return res.status(409).send('This email is already taken. Try another');
 	} else {
@@ -112,21 +176,34 @@ router.post('/signup', redirectProfile, async (req, res) => {
 		var userId = mongoose.Types.ObjectId(newUser._id);
 		req.session.userId = userId;
 		try {
-			await newUser.save(); 
-			return res.send('/users/profile'); 
+			await newUser.save();
+			//trying to add a second step here
+			//if the userRole is partner then redirect to agency.ejs then profile.ejs
+			if (newUser.userRole == 'partner') {
+				return res.send('/users/agency');
+			} else {
+				return res.send('/users/profile');
+			}
 		} catch (err) {
 			console.log(err);
 		}
 	}
 });
 
+
+
 // @desc    Render login.html
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
 router.post('/login', redirectProfile, async (req, res) => {
-    const { email, password } = req.body;
-	const user = await User.findOne({ email: email });
+	const {
+		email,
+		password
+	} = req.body;
+	const user = await User.findOne({
+		email: email
+	});
 	if (user) {
 		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
@@ -141,7 +218,7 @@ router.post('/login', redirectProfile, async (req, res) => {
 // @access  Public
 // @tested 	Not yet
 router.get('/logout', redirectLogin, (req, res) => {
-    req.session.destroy(err => {
+	req.session.destroy(err => {
 		res.clearCookie(process.env.SESS_NAME);
 		res.redirect('/users/login');
 	});
