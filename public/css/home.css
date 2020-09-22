@@ -183,7 +183,7 @@ img {
 
 /* ---------------header */
 #home-bg {
-  background: linear-gradient(-90deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.85),  rgba(255,209,90,0.8)), url('../img/gift-holding-1.jpg') center center;
+  background: linear-gradient(-90deg, rgba(255,151,99, 0.95), rgba(0,0,0, 0.3),  rgba(255,209,90,0.9)), url('../img/gift-holding-1.jpg') center center;
   min-height: 70vh;
   background-size: cover;
   background-repeat: no-repeat;
