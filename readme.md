@@ -14,9 +14,10 @@
 
 ## Usage
 
+Install Mongo or use Docker to spin up a Docker container
+start container with:
+`docker-compose up`
 App will not run without config.env !
-
-db url and other api keys, SMTP info are hidden in config.env file -- which is not pushed to github. Ask Stacy or another contributor for the config file.
 
 public dir has all the static components. assets dir contains font and imgs. 
 
