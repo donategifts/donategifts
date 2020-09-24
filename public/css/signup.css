@@ -37,9 +37,6 @@ Section styling is marked for easy reading and mostly in a cascading order of th
 
 /* ---------------modal design end*/
 
-.source-font {
-  font-family: 'Source Sans Pro', sans-serif;
-}
 
 .userLogBtn a {
   color: rgb(255, 95, 109);
