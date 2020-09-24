@@ -116,7 +116,3 @@ app.get('/', (req, res) => {
 		user: res.locals.user
 	});
 });
-
-//we need some kinda 'next' for signup as foster care partner
-// Are you signing up as a foster care partner - true (continue) / false - modal check
-// 2/3 1/3

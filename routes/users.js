@@ -1,7 +1,3 @@
-/*
-    TODO: When redirected to index.html, Nav bar should change from 'sign up' to 'log out' and show 'my profile' also
-*/
-
 //NPM DEPENDENCIES
 const express = require('express');
 const router = express.Router();
@@ -67,7 +63,7 @@ router.get('/signup', redirectProfile, (req, res) => {
 // @desc    
 // @route   GET '/users/login'
 // @access  Private
-// @tested 	Not yet
+// @tested 	yes
 router.get('/login', redirectProfile, (req, res) => {
 	try {
 		res.status(200).render('login', {
@@ -118,9 +114,9 @@ router.get('/agency', redirectLogin, async (req, res) => {
 
 
 // @desc    Create a newUser, hash password, issue session
-// @route   POST '/users/signup'
-// @access  Public
-// @tested 	Yes
+// @route   POST '/users/agency'
+// @access  
+// @tested 	No
 // TODO: display this message in signup.html client side as a notification alert
 router.post('/agency', redirectProfile, async (req, res) => {
 	const {
