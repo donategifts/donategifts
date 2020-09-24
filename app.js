@@ -61,6 +61,14 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 	}
 });
 
+const sendMail = require('./controllers/email');
+sendMail('bla@bla.de', 'bla', 'bla', 'blabla', (err, data) => {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log("email successfully sent");
+	}
+})
 //IMPORT MODELS
 const User = require('./models/User');
 
