@@ -41,7 +41,7 @@ const port = 8081;
 
 //LOAD CONFIG.ENV VARS
 dotenv.config({
-	path: './config/dev-config.env'
+	path: './config/config.env'
 });
 
 //DB SET UP & APP LISTEN (server starts after db connection)
