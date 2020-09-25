@@ -11,5 +11,5 @@ uploads
 node_modules
 
 # Ignore files related to API keys
-*.env
+
 config/config.env

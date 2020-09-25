@@ -39,6 +39,10 @@ var UserSchema = new Schema({
 	joined: {
 		type: Date,
 		default: Date.now
+    },
+    aboutMe: {
+		type: String,
+		required: false
 	},
 }, {
 	collection: 'users'
