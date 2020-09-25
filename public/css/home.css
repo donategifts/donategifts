@@ -1,9 +1,13 @@
-/* FFD15A -yellow
-rgba(255,151,99, 1)
-(255,209,90) - yellow
-green 8BC64D
+/* 
+Gotta clean up more
+
+FFD15A - yellow
+8BC64D - green
 rgba(139,198,77,1) -green
 */
+
+
+/* --------------- utils */
 
 .source-font {
   font-family: 'Source Sans Pro', sans-serif;
@@ -12,12 +16,6 @@ rgba(139,198,77,1) -green
 .chivo-font {
   font-family: 'Chivo', sans-serif;
   font-weight: 300;
-}
-
-.how-to-img {
-  height: 310px;
-	width: auto;
-	margin-bottom: 1em;
 }
 
 .bold-text {
@@ -29,23 +27,73 @@ rgba(139,198,77,1) -green
   font-size: 1em;
 }
 
+#grn-font {
+	color: #8bc64d;
+}
+
+.grn-font {
+	color: #8bc64d;
+}
+
+.org-bg {
+	background: #FFD15A;
+}
+
+
+.comf-font {
+	font-family: 'Comfortaa', cursive;
+}
+
+.rale-font {
+	font-family: 'Raleway', sans-serif;
+}
+
+.crayon-font {
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+}
+
+.font-md {
+	font-size: 1.45em;
+}
+
+.font-lg {
+	font-size: 2.5em;
+}
+
+
+.yellow {
+	color: rgba(255,224,172,1);
+}
+
+
+
+
 .icon-box a{
   outline: none;
   list-style: none;
 }
-
 .icon-box a:hover, .icon-box a:active {
   text-decoration: none;
 }
-
 .icon-box i {
   color: #262626;
 }
+
+
 
 .custom-wrapper {
     /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
 		background: rgba(139,198,77,0.1);
 }
+
+
+.how-to-img {
+  height: 310px;
+	width: auto;
+	margin-bottom: 1em;
+}
+
+
 /* ---------------section with row col */
 
 .custom-row {
@@ -85,6 +133,8 @@ rgba(139,198,77,1) -green
 	width: 400px;
 }
 
+
+
 .grn-box {
   box-shadow: 20px 20px rgba(139,198,77,1);
 }
@@ -107,17 +157,7 @@ rgba(139,198,77,1) -green
   line-height: 2em;
 }
 
-#grn-font {
-	color: #8bc64d;
-}
 
-.grn-font {
-	color: #8bc64d;
-}
-
-.org-bg {
-	background: #FFD15A;
-}
 
 /* ---------------responsive screen */
 @media screen and (max-width: 1024px) {
@@ -152,30 +192,7 @@ rgba(139,198,77,1) -green
 		format('truetype');
 }
 
-.comf-font {
-	font-family: 'Comfortaa', cursive;
-}
 
-.rale-font {
-	font-family: 'Raleway', sans-serif;
-}
-
-.crayon-font {
-  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
-}
-
-.font-md {
-	font-size: 1.45em;
-}
-
-.font-lg {
-	font-size: 2.5em;
-}
-
-
-.yellow {
-	color: rgba(255,224,172,1);
-}
 
 body {
     color: #262626;
