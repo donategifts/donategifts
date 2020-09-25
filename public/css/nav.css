@@ -49,6 +49,15 @@
     transition: color .35s;
 }
 
+button.navbar-toggler {
+    height: 60px;
+    margin-top: 20px;
+}
+
+.nav-item {
+    text-align: right;
+}
+
 @media screen and (min-width: 992px) {
     .site-navigation ul {
         position: relative;
