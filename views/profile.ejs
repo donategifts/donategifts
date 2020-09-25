@@ -16,7 +16,7 @@
 
 <body>
     <%- include('./templates/nav')-%>
-
+    <%- include('./templates/editAboutmeModal')-%>
     <!-- header section-->
     <div class="bg" id="profile-bg">
         <div class="profile-title">
@@ -60,8 +60,15 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <div class="card card-block">
-                    <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>About Me</h5>
-                    <p class="card-text p-4"> You have no description saved.</p>
+                    <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>About Me<img  data-toggle="modal" 
+                        data-target="#aboutMeModal" id="update-about-me" class="about-me-edit" 
+                        src="../img/edit-profile.svg" alt="Edit profile"/></h5>
+                    
+                        <% if(user.aboutMe){ %>
+                        <p id="about-me" class="card-text p-4"><%= user.aboutMe %></p>
+                        <% } else{ %>  
+                        <p id="about-me" class="card-text p-4">You have no description saved.</p>
+                        <% } %>
                 </div>
             </div>
             <div class="col-md-6">
