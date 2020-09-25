@@ -29,23 +29,23 @@ rgba(139,198,77,1) -green
 
 
 #grn-font {
-	color: #8bc64d;
+  color: #8bc64d;
 }
 
 .grn-font {
-	color: #8bc64d;
+  color: #8bc64d;
 }
 
 .org-bg {
-	background: #FFD15A;
+  background: #FFD15A;
 }
 
 .comf-font {
-	font-family: 'Comfortaa', cursive;
+  font-family: 'Comfortaa', cursive;
 }
 
 .rale-font {
-	font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 
 .crayon-font {
@@ -53,17 +53,35 @@ rgba(139,198,77,1) -green
 }
 
 .font-md {
-	font-size: 1.45em;
+  font-size: 1.45em;
 }
 
 .font-lg {
-	font-size: 2.5em;
+  font-size: 2.5em;
 }
 
 .yellow {
-	color: rgba(255,224,172,1);
+  color: rgba(255, 224, 172, 1);
 }
 
+a {
+  color: inherit !important;
+}
+
+/* --------------- icon box */
+.icon-box a {
+  outline: none;
+  list-style: none;
+}
+
+.icon-box a:hover,
+.icon-box a:active {
+  text-decoration: none;
+}
+
+.icon-box i {
+  color: #262626;
+}
 
 /* --------------- howto, wrapper */
 
@@ -75,8 +93,8 @@ rgba(139,198,77,1) -green
 
 .how-to-img {
   height: 310px;
-	width: auto;
-	margin-bottom: 1em;
+  width: auto;
+  margin-bottom: 1em;
 }
 
 /* ---------------section with row col */
@@ -197,12 +215,10 @@ img {
 
 /* ---------------header */
 #home-bg {
-  background: linear-gradient(
-      -90deg,
+  background: linear-gradient(-90deg,
       rgba(255, 151, 99, 0.85),
       rgba(0, 0, 0, 0.5),
-      rgba(255, 209, 90, 0.6)
-    ),
+      rgba(255, 209, 90, 0.6)),
     url("../img/gift-holding-1.jpg") center center;
   min-height: 70vh;
   background-size: cover;
@@ -211,12 +227,10 @@ img {
 }
 
 #about-bg {
-  background: linear-gradient(
-      180deg,
+  background: linear-gradient(180deg,
       rgba(255, 151, 99, 0.8),
       rgba(188, 227, 97, 0.3),
-      rgba(255, 209, 90, 0.05)
-    ),
+      rgba(255, 209, 90, 0.05)),
     url("../img/kid-yellow-bg.jpg") center center;
   min-height: 40vh;
   background-size: cover;
@@ -255,6 +269,7 @@ img {
   .hide {
     display: none;
   }
+
   .bg {
     margin-bottom: 0;
   }
@@ -360,9 +375,11 @@ img {
 .icon-box:hover,
 .icon-box.active {
   border: none;
-  background: #2f7336; /* fallback for old browsers */
+  background: #2f7336;
+  /* fallback for old browsers */
   color: #fff;
 }
+
 /*fix the gradients if necessary!! -------------------*/
 
 .icon-box .entry-title {
