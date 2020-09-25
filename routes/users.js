@@ -162,11 +162,10 @@ router.get('/agency', redirectLogin, async (req, res) => {
 });
 
 
-// @desc    Create a newUser, hash password, issue session
+// @desc    agency info is sent to db
 // @route   POST '/users/agency'
-// @access  
+// @access  private, partners only
 // @tested 	No
-// TODO: display this message in signup.html client side as a notification alert
 router.post('/agency', redirectProfile, async (req, res) => {
 	const {
 		agencyName,
@@ -183,6 +182,7 @@ router.post('/agency', redirectProfile, async (req, res) => {
 	});
 	try {
 		await newAgency.save();
+		console.log("agency data saved");
 		return res.send('/users/profile');
 	} catch (err) {
 		console.log(err);

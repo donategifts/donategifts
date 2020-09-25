@@ -1,7 +1,5 @@
 /*
 * Author: Stacy Sealky Lee
-* Class: CSC 337
-* Type: Programming Assignment 3
 * FileName: slider.js
 * Purpose: This javascript file contains a function that displays the select value in the bubble from a custom range slider.
 */
