@@ -95,6 +95,55 @@ router.get('/profile', redirectLogin, async (req, res) => {
 	}
 });
 
+// @desc    Update user about me info
+// @route   PUT '/users/profile'
+// @access  Private, only users
+// @tested 	No?
+router.put('/profile', redirectLogin, async (req, res) => {
+	try {
+        const {aboutMe} = req.body;
+        
+        // if no user id is present return forbidden status 403
+        if (!req.session.userId) {
+            res.status(403).send(JSON.stringify({
+                success: false,
+                error: "No user id in request"
+            }));
+        }
+
+        const candidate = await User.findOne({_id: req.session.userId});
+
+        // candidate with id not found in database, return not found status 404
+        if (!candidate) {
+            res.status(404).send(JSON.stringify({
+                success: false,
+                error: "User could not be found"
+            }));
+        }
+        
+        // update user and add aboutMe
+        User.updateOne(
+            {_id: candidate._id}, 
+            {aboutMe : aboutMe },
+            {multi:true}, 
+              function(err, numberAffected){  
+              });
+
+        res.status(200).send(JSON.stringify({
+            success: true,
+            error: null,
+            data: aboutMe,
+        }));
+
+	} catch (err) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	}
+});
+
+
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
 // @access  Private, only userRole == partners

@@ -158,3 +158,23 @@
     background: linear-gradient(180deg, rgba(188,227,97, 0.3),  rgba(255,209,90,0.02));
     /* border-top: 2px dotted rgba(188,227,97, 0.6); */
 }
+
+/* ---- About me edit pencil ---- */
+.about-me-edit {
+    position:relative;
+    float:right;
+    margin-top: 1em;
+    margin-right: 0.5em;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.textarea-about-me {
+    position: relative;
+    display: flex;
+    margin: auto;
+    padding: auto;
+    width: inherit;
+    height: inherit;
+    background-color: #F3F9ED;
+}
