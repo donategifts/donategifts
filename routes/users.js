@@ -166,7 +166,7 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', redirectProfile, async (req, res) => {
+router.post('/agency', async (req, res) => {
 	const {
 		agencyName,
 		agencyWebsite,
