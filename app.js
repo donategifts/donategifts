@@ -40,8 +40,9 @@ app.use('/uploads', express.static('./uploads'));
 //const hostname = '127.0.0.1';
 //const port = 8081;
 // LIVE ENV
-const hostname = '64.227.8.216';
-const port = 443;
+//const hostname = '64.227.8.216';
+const hostname = '127.0.0.1';
+const port = 8081;
 
 //LOAD CONFIG.ENV VARS
 dotenv.config({
