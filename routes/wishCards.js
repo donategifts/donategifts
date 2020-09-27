@@ -68,11 +68,16 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
 // @tested 	Not yet
 router.get('/', async (req, res) => {
     try {
-        var results = await WishCard.find({});
-        res.status(200).render('wishCards', {
-            user: res.locals.user,
+        
+	    var results = await WishCard.find({});
+       console.log(results);
+	    res.status(200).render('wishCards', {
+            
+		user: res.locals.user,
             wishcards: results
         });
+	    
+	    
     } catch (error) {
         res.status(400).send(JSON.stringify({
             success: false,
