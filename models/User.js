@@ -1,6 +1,5 @@
-//TODO: HOW SHOULD WE STORE USER ROLE? 
+
 //TODO: REVIEW THE RELATIONS OF THE SCHEMAS 
-//TODO: USE BCRYPT FOR SALT / HASH
 //TODO: ADD PASSWORD CONSTRAINTS 
 //TODO: AUTHENTICATION & SECURITY & TOKENS FOR PASSWORD RESET
 
@@ -40,6 +39,10 @@ var UserSchema = new Schema({
 	joined: {
 		type: Date,
 		default: Date.now
+    },
+    aboutMe: {
+		type: String,
+		required: false
 	},
 }, {
 	collection: 'users'

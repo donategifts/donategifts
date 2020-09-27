@@ -1,14 +1,10 @@
 /*
- * Author: Stacy Sealky Lee, Jordan Huang
- * Class: CSC 337
- * Type: Final Project
+ * Author: Stacy Sealky Lee
  * FileName: app.js
  * FileDescription: 
- * this file is the server. It's setting up express, etc. 
- * Make sure to npm install for all dependencies before usage!!
  * The set up codes are in an order, 
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
- * (add more comments later)
+ * 
  */
 
 //EXPRESS SET UP 
@@ -88,7 +84,9 @@ app.use(session({
 
 // MIDDLEWARE for extracting userId from a session
 app.use(async (req, res, next) => {
-	const { userId } = req.session;
+	const {
+		userId
+	} = req.session;
 	if (userId) {
 		const result = await User.findById(userId);
 		res.locals.user = result;
@@ -115,5 +113,7 @@ app.use('/wishcards', wishCardsRoute);
 app.use('/about', aboutRoute);
 
 app.get('/', (req, res) => {
-	res.render('home', {user: res.locals.user});
+	res.render('home', {
+		user: res.locals.user
+	});
 });

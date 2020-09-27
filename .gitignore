@@ -3,14 +3,13 @@
 VS-workspace.code-workspace
 .settings
 .project
+
+# Ignore image file folder
 uploads
 
 # Ignore node_modules folder
 node_modules
 
-# Ignore all text files
-*.txt
-
 # Ignore files related to API keys
-*.env
+
 config/config.env

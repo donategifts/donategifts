@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+      
+    volumes: 
+      - donategifts_mongo:/data/db
+
+volumes:
+  donategifts_mongo:

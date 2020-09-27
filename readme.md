@@ -2,17 +2,22 @@
 
 > Overview: This project enables users to donate holiday/ birthday gifts to the children in foster care and orphanages --simply by clicking one button-- which will automatically add the child's wish item to the user's Amazon cart & deliver to the child's address.
 
+# Visit my live site at: https://donate-gifts.com/
+
 ## Author
 
 > Stacy Sealky Lee
+
+## Collaborators
 
 > Jordan Huang
 
 ## Usage
 
+Install Mongo or use Docker to spin up a Docker container
+start container with:
+`docker-compose up`
 App will not run without config.env !
-
-db url and other api keys, SMTP info are hidden in config.env file -- which is not pushed to github. Ask Stacy or another contributor for the config file.
 
 public dir has all the static components. assets dir contains font and imgs. 
 

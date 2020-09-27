@@ -1,15 +1,21 @@
-/* FFD15A -yellow
-rgba(255,151,99, 1)
-(255,209,90) - yellow
-green 8BC64D
+/* 
+Gotta clean up more
+
+FFD15A - yellow
+8BC64D - green
 rgba(139,198,77,1) -green
 */
 
 
-.how-to-img {
-  height: 310px;
-	width: auto;
-	margin-bottom: 1em;
+/* --------------- utils */
+
+.source-font {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.chivo-font {
+  font-family: "Chivo", sans-serif;
+  font-weight: 300;
 }
 
 .bold-text {
@@ -21,12 +27,55 @@ rgba(139,198,77,1) -green
   font-size: 1em;
 }
 
-.icon-box a{
+
+#grn-font {
+  color: #8bc64d;
+}
+
+.grn-font {
+  color: #8bc64d;
+}
+
+.org-bg {
+  background: #FFD15A;
+}
+
+.comf-font {
+  font-family: 'Comfortaa', cursive;
+}
+
+.rale-font {
+  font-family: 'Raleway', sans-serif;
+}
+
+.crayon-font {
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+}
+
+.font-md {
+  font-size: 1.45em;
+}
+
+.font-lg {
+  font-size: 2.5em;
+}
+
+.yellow {
+  color: rgba(255, 224, 172, 1);
+}
+
+a {
+  color: inherit !important;
+}
+
+/* --------------- icon box */
+.icon-box a {
   outline: none;
   list-style: none;
 }
 
-.icon-box a:hover, .icon-box a:active {
+.icon-box a:hover,
+.icon-box a:active {
   text-decoration: none;
 }
 
@@ -34,10 +83,20 @@ rgba(139,198,77,1) -green
   color: #262626;
 }
 
+/* --------------- howto, wrapper */
+
 .custom-wrapper {
-    /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
-		background: rgba(139,198,77,0.1);
+  /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
+  background: rgba(139, 198, 77, 0.1);
 }
+
+
+.how-to-img {
+  height: 310px;
+  width: auto;
+  margin-bottom: 1em;
+}
+
 /* ---------------section with row col */
 
 .custom-row {
@@ -52,7 +111,6 @@ rgba(139,198,77,1) -green
   flex-flow: column wrap;
   flex-basis: auto;
   flex: 1;
-  padding: 20px;
   margin: 20px;
   justify-content: center;
   align-items: center;
@@ -74,15 +132,17 @@ rgba(139,198,77,1) -green
 
 .custom-wrapper img {
   border-radius: 10px;
-	width: 400px;
+  width: 400px;
 }
 
+
+
 .grn-box {
-  box-shadow: 20px 20px rgba(139,198,77,1);
+  box-shadow: 20px 20px rgba(139, 198, 77, 1);
 }
 
 .yel-box {
-  box-shadow: 20px 20px rgba(255, 209, 90,1);
+  box-shadow: 20px 20px rgba(255, 209, 90, 1);
 }
 
 .subtext {
@@ -91,6 +151,7 @@ rgba(139,198,77,1) -green
   line-height: 2.1em;
   max-width: 80%;
   display: flex;
+  text-align: justify;
 }
 
 .list {
@@ -99,20 +160,9 @@ rgba(139,198,77,1) -green
   line-height: 2em;
 }
 
-#grn-font {
-	color: #8bc64d;
-}
-
-.grn-font {
-	color: #8bc64d;
-}
-
-.org-bg {
-	background: #FFD15A;
-}
 
 /* ---------------responsive screen */
-@media screen and (max-width: 1024px) {
+@media screen and (min-width: 722px) and (max-width: 1024px) {
   .custom-left {
     order: 2;
     width: 100vw !important;
@@ -132,58 +182,44 @@ rgba(139,198,77,1) -green
   }
 }
 
+@media screen and (max-width: 496px) {
+  img.grn-box {
+    width: 300px;
+  }
+}
 
+@media screen and (min-width: 640px) {
+  .custom-col {
+    padding: 20px;
+  }
+}
 
 @font-face {
-	font-family: 'DK-Crayon-Crumble';
-	src: url('../fonts/DK-Crayon-Crumble.ttf');
-	src:
-		local('DK Crayon Crumble'),
-		local('DK-Crayon-Crumble'),
-		url('../fonts/DK-Crayon-Crumble.ttf')
-		format('truetype');
+  font-family: "DK-Crayon-Crumble";
+  src: url("../fonts/DK-Crayon-Crumble.ttf");
+  src: local("DK Crayon Crumble"), local("DK-Crayon-Crumble"),
+    url("../fonts/DK-Crayon-Crumble.ttf") format("truetype");
 }
 
-.comf-font {
-	font-family: 'Comfortaa', cursive;
-}
-
-.rale-font {
-	font-family: 'Raleway', sans-serif;
-}
-
-.crayon-font {
-  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
-}
-
-.font-md {
-	font-size: 1.45em;
-}
-
-.font-lg {
-	font-size: 2.5em;
-}
-
-
-.yellow {
-	color: rgba(255,224,172,1);
-}
 
 body {
-    color: #262626;
-    font-size: 16px;
-    line-height: 1.8;
-		margin: auto 0;
+  color: #262626;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: auto 0;
 }
 
 img {
-    vertical-align: baseline;
+  vertical-align: baseline;
 }
-
 
 /* ---------------header */
 #home-bg {
-  background: linear-gradient(-90deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.85),  rgba(255,209,90,0.8)), url('../img/gift-holding-1.jpg') center center;
+  background: linear-gradient(-90deg,
+      rgba(255, 151, 99, 0.85),
+      rgba(0, 0, 0, 0.5),
+      rgba(255, 209, 90, 0.6)),
+    url("../img/gift-holding-1.jpg") center center;
   min-height: 70vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -191,14 +227,16 @@ img {
 }
 
 #about-bg {
-  background: linear-gradient(180deg, rgba(255,151,99, 0.8), rgba(188,227,97, 0.3),  rgba(255,209,90,0.05)), url('../img/kid-yellow-bg.jpg') center center;
+  background: linear-gradient(180deg,
+      rgba(255, 151, 99, 0.8),
+      rgba(188, 227, 97, 0.3),
+      rgba(255, 209, 90, 0.05)),
+    url("../img/kid-yellow-bg.jpg") center center;
   min-height: 40vh;
   background-size: cover;
   background-repeat: no-repeat;
   /* background-attachment: fixed; */
 }
-
-
 
 .bg {
   display: flex;
@@ -209,7 +247,7 @@ img {
 .banner-h1 {
   font-size: 4.1em;
   font-weight: bolder;
-	text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .text {
@@ -218,24 +256,24 @@ img {
 }
 
 .text h4 {
-	font-weight: 700;
+  font-weight: 700;
   font-size: 1.34em;
-  text-shadow: 0px 3px 5px rgba(84,119,46,0.99);
+  text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99);
 }
 
 .text button {
-	margin-top: 1.4em;
+  margin-top: 1.4em;
 }
 
-@media screen and (max-width: 992px){
-	.hide {
-	  display: none;
+@media screen and (max-width: 992px) {
+  .hide {
+    display: none;
   }
+
   .bg {
     margin-bottom: 0;
   }
 }
-
 
 /*
 # Button
@@ -245,13 +283,13 @@ img {
 } */
 
 .btn {
-    padding: 18px 40px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1;
-    color: #262626;
-    outline: none;
+  padding: 18px 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: #262626;
+  outline: none;
 }
 
 .button-center {
@@ -261,180 +299,177 @@ img {
 }
 
 .wishcard-btn {
-    padding: 17px 32px;
-    margin: 10px;
-    border-radius: 20px;
-    font-size: 15px;
-    line-height: 1;
-    outline: none;
+  padding: 17px 32px;
+  margin: 10px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1;
+  outline: none;
 }
 
 #btn1 {
-	font-size: 1.2em;
-	font-weight: 700;
+  font-size: 1.2em;
+  font-weight: 700;
 }
 
 .grn-btn {
-	background-color: #8BC64D;
-	color: #fff;
-	border: none;
+  background-color: #8bc64d;
+  color: #fff;
+  border: none;
 }
 
 .grn-btn:hover {
-	background-color: #fff;
-	color: #8BC64D;
-	cursor: pointer;
+  background-color: #fff;
+  color: #8bc64d;
+  cursor: pointer;
 }
 
 .inverted-grn-btn {
   background-color: #fff;
-  color: #8BC64D;
+  color: #8bc64d;
   border: none;
 }
 
 .inverted-grn-btn:hover {
-  background-color: #8BC64D;
-	color: #fff;
-	cursor: pointer;
+  background-color: #8bc64d;
+  color: #fff;
+  cursor: pointer;
 }
 
-
 .btn:focus {
-    outline: none;
+  outline: none;
 }
 
 .btn-grn-border {
-    border-color: #8BC64D;
+  border-color: #8bc64d;
 }
 
 .btn-grn-bg {
   border: none;
-  background: #8BC64D;
+  background: #8bc64d;
   color: #fff;
 }
-
 
 /*
 # Icon Box
 ----------------------------------*/
 .icon-box {
-    padding: 40px;
-    border-radius: 24px;
-    text-align: center;
-    transition: all .35s;
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  transition: all 0.35s;
 }
 
 .grn-bg {
-	background: #8BC64D;
+  background: #8bc64d;
 }
 
 .pale-grn-bg {
-	background: #BCE361;
+  background: #bce361;
 }
 
 .yellow-bg {
-	background: #FFFA71;
+  background: #fffa71;
 }
 
 .icon-box:hover,
 .icon-box.active {
-    border: none;
-    background: #2F7336;  /* fallback for old browsers */
-		color: #fff;
+  border: none;
+  background: #2f7336;
+  /* fallback for old browsers */
+  color: #fff;
 }
+
 /*fix the gradients if necessary!! -------------------*/
 
 .icon-box .entry-title {
-    margin-top: 0.5em;
-    font-size: 2em;
-    font-weight: 600;
-    color: #262626;
+  margin-top: 0.5em;
+  font-size: 2em;
+  font-weight: 600;
+  color: #262626;
 }
 
 .icon-box:hover .entry-title,
 .icon-box.active .entry-title {
-    color: #fff;
+  color: #fff;
 }
 
-.icon-box p{
-    margin-top: 20px;
-    color: #595858;
+.icon-box p {
+  margin-top: 20px;
+  color: #595858;
 }
 
 .icon-box:hover p,
 .icon-box.active p {
-    color: #fff;
+  color: #fff;
 }
 
-
 .sidepad {
-    padding: 7em 1em 6em 1em;
+  padding: 7em 1em 6em 1em;
 }
 
 /*
 # Welcome
 --------------------------------*/
 .welcome-content .entry-title {
-    position: relative;
-    padding-bottom: 24px;
-    font-size: 36px;
-    font-weight: 600;
-    color: #fff;
+  position: relative;
+  padding-bottom: 24px;
+  font-size: 36px;
+  font-weight: 600;
+  color: #fff;
 }
 
-.fa-smile-o, .fa-users {
-	font-size: 2.2em;
+.fa-smile-o,
+.fa-users {
+  font-size: 2.2em;
 }
 
 .fa-gift {
-	font-size: 2.5em;
+  font-size: 2.5em;
 }
 
-
 .welcome-content .entry-title::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 64px;
-    height: 4px;
-    border-radius: 2px;
-    background: #ff5a00;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 64px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ff5a00;
 }
 
 .welcome-content .entry-content {
-    font-size: 14px;
-    line-height: 2;
-    color: #b7b7b7;
+  font-size: 14px;
+  line-height: 2;
+  color: #b7b7b7;
 }
 
 .home-page-welcome img {
-    display: block;
-    width: 100%;
-		border-radius: 15px;
+  display: block;
+  width: 100%;
+  border-radius: 15px;
 }
 
-@media screen and (max-width: 992px){
-    .home-page-welcome img {
-        margin-bottom: 0.8em;
-    }
+@media screen and (max-width: 992px) {
+  .home-page-welcome img {
+    margin-bottom: 0.8em;
+  }
 }
-
 
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
-@media screen and (max-width: 992px){
-    .sidebar {
-        margin-top: 96px;
-    }
+@media screen and (max-width: 992px) {
+  .sidebar {
+    margin-top: 96px;
+  }
 }
 
 .sidebar h2 {
-    font-size: 18px;
-    font-weight: 600;
+  font-size: 18px;
+  font-weight: 600;
 }
-
 
 /*--------------------------------------------------------------
 # wishcards section - landing page
@@ -444,15 +479,40 @@ img {
   padding: 80px 0;
 }
 
+@media screen and (max-width: 992px) {
+  .card {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 765px) {
+  .card-deck {
+    flex-direction: column !important;
+  }
+}
+
+@media screen and (min-width: 762px) and (max-width: 992px) {
+  .card-deck {
+    margin-right: 15px !important;
+    margin-left: 15px !important;
+    justify-content: space-between !important;
+  }
+
+  .card-deck .card {
+    flex: 1 0 auto !important;
+    max-width: 300px;
+  }
+}
 
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
 
 .footer-bar {
-    padding: 23px 0;
-    font-size: 1em;
-    color: #fff;
-    text-align: center;
-		background: #FFD15A;
+  padding: 23px 0;
+  font-size: 1em;
+  color: #fff;
+  text-align: center;
+  background: #ffd15a;
 }
