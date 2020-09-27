@@ -26,7 +26,7 @@ $(document).ready(() => {
 window.onload = function() {
     let buttonSaveProfile = document.getElementById("save-about-me-button");
 
-    // button listener
+    // button listeners
     function handleSaveAboutMeButtonClick() {
         let aboutMeElemet = document.getElementById("about-me-text");
         let aboutMeText = aboutMeElemet.value;
@@ -47,6 +47,11 @@ window.onload = function() {
             })
             .then(response => response.json())
             .then(data => {
+                if (data.error){
+                    alert("Could not update about me. Check console for error details");
+                    console.log(data);
+                    return;
+                }
                 let aboutMeElement = document.getElementById("about-me");
                 aboutMeElement.innerText = data.data;
             })

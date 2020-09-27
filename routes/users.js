@@ -99,10 +99,10 @@ router.get('/profile', redirectLogin, async (req, res) => {
 // @route   PUT '/users/profile'
 // @access  Private, only users
 // @tested 	No?
-router.put('/profile', redirectLogin, async (req, res) => {
+router.put('/profile', async (req, res) => {
 	try {
         const {aboutMe} = req.body;
-        
+        console.log("1")
         // if no user id is present return forbidden status 403
         if (!req.session.userId) {
             res.status(403).send(JSON.stringify({
@@ -166,7 +166,7 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', redirectProfile, async (req, res) => {
+router.post('/agency', async (req, res) => {
 	const {
 		agencyName,
 		agencyWebsite,

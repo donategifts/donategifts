@@ -33,11 +33,12 @@ app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
 
 //DEV ENV
+//const hostname = '127.0.0.1';
+//const port = 8081;
+// LIVE ENV
+//const hostname = '64.227.8.216';
 const hostname = '127.0.0.1';
 const port = 8081;
-// LIVE ENV
-// const hostname = '157.245.243.18';
-// const port = 80;
 
 //LOAD CONFIG.ENV VARS
 dotenv.config({
