@@ -501,7 +501,7 @@ img {
 
   .card-deck .card {
     flex: 1 0 auto !important;
-    max-width: 300px;
+    /* max-width: 300px; */
   }
 }
 
