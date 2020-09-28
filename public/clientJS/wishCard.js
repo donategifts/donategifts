@@ -4,7 +4,7 @@ function preventChildImageContextMenu(e) {
     let childImageElementClassName = "card-img-top"; 
     
     // take clicked html element
-    let firstElementChild = e.path[0];
+    let firstElementChild = e.target;
     
     // check if it exists
     if (firstElementChild) {
