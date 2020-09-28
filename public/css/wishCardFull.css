@@ -1,0 +1,25 @@
+.section-title {
+    grid-area: title;
+}
+
+.section-info {
+    grid-area: info;
+}
+
+.section-write {
+    grid-area: write;
+}
+
+.section-msg {
+    grid-area: msg;
+}
+
+.page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "title title title title"
+        "info info write write"
+        "msg msg msg msg";
+}
