@@ -41,7 +41,7 @@ const port = 8081;
 
 //LOAD CONFIG.ENV VARS
 dotenv.config({
-	path: './config/.config.env'
+	path: './config/config.env'
 });
 
 //DB SET UP & APP LISTEN (server starts after db connection)
@@ -63,8 +63,7 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 
 //IMPORT MODELS
 const User = require('./models/User');
-const Agency = require("./models/Agency");
-
+con
 //SESSION SET UP
 app.use(session({
 	store: new MongoStore({
