@@ -50,6 +50,7 @@ var options = {
 	useUnifiedTopology: true
 };
 mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 	if (err) {
 		console.log('Unable to connect to DB. Error:', err);
@@ -63,7 +64,7 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 
 //IMPORT MODELS
 const User = require('./models/User');
-con
+const Agency = require("./models/Agency");
 //SESSION SET UP
 app.use(session({
 	store: new MongoStore({
