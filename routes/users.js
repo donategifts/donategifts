@@ -84,9 +84,10 @@ router.get('/login', redirectProfile, (req, res) => {
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
 router.get('/profile', redirectLogin, async (req, res) => {
 	try {
-		res.render('profile', {
-			user: res.locals.user
-		});
+		let params = { user: res.locals.user };
+		if (res.locals.agency)
+			params = {...params, agency: res.locals.agency}
+		res.render('profile', params);
 	} catch (err) {
 		res.status(400).send(JSON.stringify({
 			success: false,
@@ -171,17 +172,20 @@ router.post('/agency', async (req, res) => {
 		agencyName,
 		agencyWebsite,
 		agencyPhone,
-		agencyBio
+		agencyBio,
 	} = req.body;
 
 	const newAgency = new Agency({
 		agencyName,
 		agencyWebsite,
 		agencyPhone,
-		agencyBio
+		agencyBio,
+		accountManager: req.session.userId
 	});
 	try {
 		await newAgency.save();
+		var agencyId = mongoose.Types.ObjectId(newAgency._id);
+    	req.session.agencyId = agencyId;
 		console.log("agency data saved");
 		return res.send('/users/profile');
 	} catch (err) {
