@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <% if (user.userRole == 'partner') { %>
+    <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
     <!-- Wish Card Form Section-->
     <div class="create-wish-card">
         <!-- wishCardForm starts here-->

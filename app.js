@@ -50,6 +50,7 @@ var options = {
 	useUnifiedTopology: true
 };
 mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 	if (err) {
 		console.log('Unable to connect to DB. Error:', err);
@@ -63,7 +64,7 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 
 //IMPORT MODELS
 const User = require('./models/User');
-
+const Agency = require("./models/Agency");
 //SESSION SET UP
 app.use(session({
 	store: new MongoStore({
@@ -84,11 +85,15 @@ app.use(session({
 // MIDDLEWARE for extracting userId from a session
 app.use(async (req, res, next) => {
 	const {
-		userId
+		userId, agencyId
 	} = req.session;
 	if (userId) {
 		const result = await User.findById(userId);
 		res.locals.user = result;
+	}
+	if (agencyId) {
+		const result = await Agency.findById(agencyId);
+		res.locals.agency = result;
 	}
 	next();
 });
