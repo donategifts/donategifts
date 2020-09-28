@@ -31,7 +31,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 7 // up to 7 mbs
+        fileSize: 1024 * 1024 * 5 // up to 5 mbs
     },
     fileFilter: fileFilter
 });
@@ -46,7 +46,7 @@ const WishCard = require('../models/WishCard');
 router.post('/', upload.single('wishCardImage'), (req, res) => {
     if (req.file === undefined) {
         res.send('Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 7 megabytes.');
+        must also be less than 5 megabytes.');
     } else {
         var newCard = new WishCard({
             childFirstName: req.body.childFirstName,
