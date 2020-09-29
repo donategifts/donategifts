@@ -45,8 +45,10 @@
                 <div class="col-lg-6">
                     <h2><strong><%= user.fName %> <%= user.lName %></strong></h2>
 
+                    <!-- this need to dynamically display agency.agencyName
+                    but currently agency obj not passed to /users/profile route-->
                     <% if (user.userRole == 'partner') { %>
-                    <h5>Organization: Chicago Foster Care Center</h5>
+                    <h5>Organization: </h5>
                     <%}%>
 
                     <p>User Role: <%= user.userRole %></p>
