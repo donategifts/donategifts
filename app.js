@@ -37,13 +37,15 @@ app.use("/uploads", express.static("./uploads"));
 //const port = 8081;
 // LIVE ENV
 //const hostname = '64.227.8.216';
-const hostname = '127.0.0.1';
+const hostname = "127.0.0.1";
 const port = 8081;
 
 //LOAD CONFIG.ENV VARS
-dotenv.config({
-  path: "./config/example-config.env",
-});
+if (process.env.NODE_ENV === "production") {
+  dotenv.config({ path: "./config/.config.env" });
+} else if (process.env.NODE_ENV === "development") {
+  dotenv.config({ path: "./config/example-config.env" });
+}
 
 //DB SET UP & APP LISTEN (server starts after db connection)
 var options = {
