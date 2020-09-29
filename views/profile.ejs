@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="col-md-3 ml-auto">
-                    <% if (user.userRole == 'partner') { %>
+                    <% if (user.userRole == 'partner'  && locals.agency && agency.isVerified) { %>
                     <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i
                                 class="fa fa-pencil"></i></button></a>
                     <%}%>
@@ -53,6 +53,9 @@
 
                     <p>User Role: <%= user.userRole %></p>
                     <p>Email: <%= user.email %></p>
+                    <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
+                    <p>Some features are disabled for your account. They will be enabled after Agency Verification.</p>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -96,7 +99,7 @@
         </div>
     </div>
 
-    <% if (user.userRole == 'partner') { %>
+    <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
     <!-- Wish Card Form Section-->
     <div class="create-wish-card">
         <!-- wishCardForm starts here-->
@@ -106,15 +109,23 @@
                 for children under your care
             </h4>
 
+            <div class="row mb-5">
+                <h6 class="col chivo-font text-center">We are developing new features to make the card creation much easier in the future. 
+                    Support us by continuing to use this process until then. Thank you.
+                </h6>
+            </div>
+            
             <div class="row">
                 <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                    <label for="childFirstName">Child's First Name</label>
                     <input id="childFirstName" class="input1" type="text" name="childFirstName"
-                        placeholder="Child's First Name">
+                        placeholder="Enter First Name">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                    <label for="childLastName">Child's Last Name</label>
                     <input id="childLastName" class="input1" type="text" name="childLastName"
-                        placeholder="Child's Last Name (initial ok)">
+                        placeholder="Initial is ok">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1">
@@ -124,23 +135,25 @@
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <label for="childInterest">Write something that the child likes to do</label>
+                    <label for="childInterest">Child's Interest</label>
                     <input id="childInterest" class="input1" type="text" name="childInterest"
-                        placeholder="Child's Interest">
+                        placeholder="Write something that the child likes to do">
                 </div>
 
                 <div class="col-lg-6 comf-font wrap-input1">
+                    <label for="wishItemName">Wish Item Name</label>
                     <input id="wishItemName" class="input1" type="text" name="wishItemName"
-                        placeholder="Wish Item Name">
+                        placeholder="(e.g. Lego Set, Elephant Toy, etc. )">
                 </div>
 
                 <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                    <label for="wishItemPrice">We limit the price to be under $50 (USD)</label>
                     <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
-                        placeholder="Wish Item Price">
+                        placeholder="Wish Item Price (numeric only)" min="1" max="50">
                 </div>
 
                 <div class="px-3 comf-font wrap-input1">
-                    <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/RmvqvS7SIMU?t=67"
+                    <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/P4P6jEqTXs4"
                             target="_blank">(Watch this video for help)</a></label>
                     <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
                         placeholder="(copied hyperlink address for one wish item)">
@@ -156,9 +169,9 @@
                 <main class="col-lg-6 ml-auto">
                     <div class="box">
                         <div class="content">
-                            <p>Photo is required; it can be of the wish item, clip art, or child (if confidentiality is
-                                an issue, try using a photo of their hands making a heart, masked face,
-                                etc.)</p>
+                            <p>Photo is required; it can be of the wish item, relevant clip art, or child (if confidentiality is
+                                an issue, try using a photo of their hands making a heart, masked face, 
+                                wearing sunglasses, etc.)</p>
                             <div class="uploader-left">
                                 <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
                             </div>
