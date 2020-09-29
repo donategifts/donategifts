@@ -26,6 +26,15 @@ const redirectProfile = (req, res, next) => {
   }
 };
 
+const sendError = (res, status, err) => {
+  res.status(status).send(
+    JSON.stringify({
+      success: false,
+      error: err,
+    })
+  );
+};
+
 // @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
@@ -35,13 +44,8 @@ router.get("/", (req, res) => {
     res.status(200).render("home", {
       user: res.locals.user,
     });
-  } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+  } catch (err) {
+    return sendError(res, 400, err);
   }
 });
 
@@ -54,13 +58,8 @@ router.get("/signup", redirectProfile, (req, res) => {
     res.status(200).render("signup", {
       user: res.locals.user,
     });
-  } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+  } catch (err) {
+    return sendError(res, 400, err);
   }
 });
 
@@ -74,12 +73,7 @@ router.get("/login", redirectProfile, (req, res) => {
       user: res.locals.user,
     });
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+    return sendError(res, 400, err);
   }
 });
 
@@ -94,16 +88,14 @@ router.get("/profile", redirectLogin, async (req, res) => {
     let params = { user };
     if (user.userRole == "partner") {
       let agency = await Agency.findOne({ accountManager: user._id });
+      if (!agency) {
+        return sendError(res, 404, "Agency Not Found");
+      }
       params = { ...params, agency };
     }
     res.render("profile", params);
   } catch (err) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+    return sendError(res, 400, err);
   }
 });
 
@@ -117,32 +109,21 @@ router.put("/profile", redirectLogin, async (req, res) => {
 
     // if no user id is present return forbidden status 403
     if (!req.session.userId) {
-      res.status(403).send(
-        JSON.stringify({
-          success: false,
-          error: "No user id in request",
-        })
-      );
+      return sendError(res, 403, "No user id in request");
     }
 
     const candidate = await User.findOne({ _id: req.session.userId });
 
     // candidate with id not found in database, return not found status 404
     if (!candidate) {
-      res.status(404).send(
-        JSON.stringify({
-          success: false,
-          error: "User could not be found",
-        })
-      );
+      return sendError(res, 404, "User could not be found");
     }
 
     // update user and add aboutMe
     User.updateOne(
       { _id: candidate._id },
       { aboutMe: aboutMe },
-      { multi: true },
-      function (err, numberAffected) {}
+      { multi: true }
     );
 
     res.status(200).send(
@@ -153,12 +134,7 @@ router.put("/profile", redirectLogin, async (req, res) => {
       })
     );
   } catch (err) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+    return sendError(res, 400, err);
   }
 });
 
@@ -172,12 +148,7 @@ router.get("/agency", redirectLogin, async (req, res) => {
       user: res.locals.user,
     });
   } catch (err) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: err,
-      })
-    );
+    return sendError(res, 400, err);
   }
 });
 
@@ -200,9 +171,10 @@ router.post("/agency", async (req, res) => {
     var agencyId = mongoose.Types.ObjectId(newAgency._id);
     req.session.agencyId = agencyId;
     console.log("agency data saved");
-    return res.send("/users/profile");
+    res.send("/users/profile");
   } catch (err) {
     console.log(err);
+    return sendError(res, 400, err);
   }
 });
 
@@ -217,7 +189,7 @@ router.post("/signup", redirectProfile, async (req, res) => {
     email: email,
   });
   if (candidate) {
-    return res.status(409).send("This email is already taken. Try another");
+    return sendError(res, 409, "This email is already taken. Try another");
   } else {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -241,6 +213,7 @@ router.post("/signup", redirectProfile, async (req, res) => {
       }
     } catch (err) {
       console.log(err);
+      return sendError(res, 500, err);
     }
   }
 });
@@ -251,16 +224,22 @@ router.post("/signup", redirectProfile, async (req, res) => {
 // @tested 	Not yet
 router.post("/login", redirectProfile, async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({
-    email: email,
-  });
-  if (user) {
-    if (await bcrypt.compare(password, user.password)) {
-      req.session.userId = user.id;
-      return res.redirect("/users/profile");
-    }
+  if (email == null || password == null) {
+    return sendError(res, 400, "Username/Password is required");
   }
-  res.redirect("/users/login");
+  try {
+    const user = await User.findOne({ email: email });
+    if (user) {
+      if (await bcrypt.compare(password, user.password)) {
+        req.session.userId = user.id;
+        return res.redirect("/users/profile");
+      }
+    } else {
+      return sendError(res, 404, "Username/Password is incorrect");
+    }
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
 
 // @desc    Render login.html
