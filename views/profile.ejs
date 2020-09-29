@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="col-md-3 ml-auto">
-                    <% if (user.userRole == 'partner') { %>
+                    <% if (user.userRole == 'partner'  && locals.agency && agency.isVerified) { %>
                     <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i
                                 class="fa fa-pencil"></i></button></a>
                     <%}%>
@@ -51,6 +51,9 @@
 
                     <p>User Role: <%= user.userRole %></p>
                     <p>Email: <%= user.email %></p>
+                    <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
+                    <p>Some features are disabled for your account. They will be enabled after Agency Verification.</p>
+                    <% } %>
                 </div>
             </div>
         </div>
