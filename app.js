@@ -41,11 +41,9 @@ const hostname = "127.0.0.1";
 const port = 8081;
 
 //LOAD CONFIG.ENV VARS
-if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: "./config/config.env" });
-} else if (process.env.NODE_ENV === "development") {
-  dotenv.config({ path: "./config/example-config.env" });
-}
+dotenv.config({
+  path: "./config/config.env",
+});
 
 //DB SET UP & APP LISTEN (server starts after db connection)
 var options = {

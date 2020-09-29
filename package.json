@@ -8,9 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node app.js",
-    "dev": "NODE_ENV=production npx nodemon app.js",
-    "local": "NODE_ENV=development npx nodemon app.js"
+    "start": "node app.js",
+    "dev": "npx nodemon app.js"
   },
   "repository": {
     "type": "git",
