@@ -8,9 +8,12 @@
 
 > Stacy Sealky Lee
 
-## Collaborators
+## Contributors
 
 > Jordan Huang
+> gnorbsl
+> Tokikko
+> Jacobjeevan
 
 ## Usage
 
