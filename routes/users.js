@@ -269,4 +269,21 @@ router.get('/logout', redirectLogin, (req, res) => {
 	});
 });
 
+// @desc    Render terms.ejs
+// @route   GET '/users/terms'
+// @access  public
+// @tested 	No
+router.get('/terms', async (req, res) => {
+	try {
+		res.render('terms', {
+			user: res.locals.user
+		});
+	} catch (err) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	}
+});
+
 module.exports = router;
