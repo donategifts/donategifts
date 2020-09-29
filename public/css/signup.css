@@ -186,7 +186,8 @@ Section styling is marked for easy reading and mostly in a cascading order of th
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< Updated upstream
+}
+/* <<<<<<< Updated upstream
 =======
   flex-direction: column;
 }
@@ -204,7 +205,7 @@ Section styling is marked for easy reading and mostly in a cascading order of th
     margin: 0 20px;
   }
 >>>>>>> Stashed changes
-}
+} */
 
 .row2 {
   display: inline-flex;

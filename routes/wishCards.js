@@ -121,7 +121,7 @@ router.get('/:id', async (req, res) => {
     try {
         const result = await WishCard.findById(req.params.id);
         // create a page and have a dynamic link for see more 
-        res.status(200).render('wishCardFull', {
+        res.status(200).render('wishCardFullPage', {
             user: res.locals.user,
             wishcard: result
         });

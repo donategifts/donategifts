@@ -2,7 +2,7 @@
 
 > Overview: This project enables users to donate holiday/ birthday gifts to the children in foster care and orphanages --simply by clicking one button-- which will automatically add the child's wish item to the user's Amazon cart & deliver to the child's address.
 
-# Visit my live site at: https://donate-gifts.com/
+# Visit live site at: https://donate-gifts.com/
 
 ## Author
 
