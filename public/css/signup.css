@@ -187,6 +187,25 @@ Section styling is marked for easy reading and mostly in a cascading order of th
   justify-content: center;
   align-items: center;
 }
+/* <<<<<<< Updated upstream
+=======
+  flex-direction: column;
+}
+
+@media screen and (min-width: 992px) {
+  .wrap-box {
+    padding: 100px 55px;
+  }
+
+  .sign-row {
+    flex-direction: row;
+  }
+
+  .userLogBtn {
+    margin: 0 20px;
+  }
+>>>>>>> Stashed changes
+} */
 
 .row2 {
   display: inline-flex;
