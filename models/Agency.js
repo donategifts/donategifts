@@ -7,13 +7,15 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var AgencySchema = new Schema({
 	agencyName: {
-		type: String
+		type: String,
+		required: true
 	},
 	agencyWebsite: {
 		type: String
 	},
 	agencyPhone: {
-        type: String
+        type: Number,
+        required: true
     },
     accountManager: {
 		type: Schema.Types.ObjectId,
@@ -46,10 +48,6 @@ var AgencySchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	isVerified: {
-		type: Boolean,
-		default: false,
-	}
 }, {
 	collection: 'agencies'
 });

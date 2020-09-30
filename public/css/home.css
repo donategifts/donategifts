@@ -64,10 +64,6 @@ rgba(139,198,77,1) -green
   color: rgba(255, 224, 172, 1);
 }
 
-#blk {
-  color: #262626;
-}
-
 a {
   color: inherit !important;
 }
@@ -505,7 +501,7 @@ img {
 
   .card-deck .card {
     flex: 1 0 auto !important;
-    /* max-width: 300px; */
+    max-width: 300px;
   }
 }
 
