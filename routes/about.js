@@ -11,7 +11,7 @@ const router = express.Router();
 const Contact = require('../models/Contact');
 
 //LOAD EMAIL SENDING FUNCTION
-const sendMail = require('../controllers/email');
+const {sendMail} = require('../controllers/email');
 
 // @desc    Render about.html
 // @route   GET '/about'
@@ -34,15 +34,15 @@ router.post('/email', async (req, res, next) => {
 		var c = new Contact();
 		c.name = req.body.name;
 		c.email = req.body.email;
-		c.subject = req.body.subject;
+		c.subject = `${req.body.subject} | send from ${c.name}`;
 		c.message = req.body.message;
-		sendMail(c.email, c.name, c.subject, c.message, (err, data) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log("email successfully sent");
-			}
-		});
+		const mailResponse = await sendMail(c.email, 'stacy.sealky.lee@gmail.com', c.subject, c.message);
+
+		if (mailResponse.error) {
+			console.log(mailResponse.error);
+		} else {
+			console.log("email successfully sent");
+		}
 		c.save((err) => {
 			if (err) {
 				console.log(err);

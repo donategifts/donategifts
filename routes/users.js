@@ -4,13 +4,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
+const {sendMail, createEmailVerificationHash} = require('../controllers/email');
+
 //IMPORT USER MODEL
 const User = require('../models/User');
 
 //IMPORT AGENCY MODEL
 const Agency = require('../models/Agency');
 
-// Middleware for users 
+// Middleware for users
 const redirectLogin = (req, res, next) => {
 	if (!req.session.userId) {
 		res.redirect('/users/login');
@@ -60,14 +62,17 @@ router.get('/signup', redirectProfile, (req, res) => {
 	}
 });
 
-// @desc    
+// @desc
 // @route   GET '/users/login'
 // @access  Private
 // @tested 	yes
 router.get('/login', redirectProfile, (req, res) => {
 	try {
 		res.status(200).render('login', {
-			user: res.locals.user
+			user: res.locals.user,
+			successNotification: null,
+			errorNotification: null
+
 		});
 	} catch (error) {
 		res.status(400).send(JSON.stringify({
@@ -102,7 +107,7 @@ router.get('/profile', redirectLogin, async (req, res) => {
 router.put('/profile', redirectLogin, async (req, res) => {
 	try {
         const {aboutMe} = req.body;
-        
+
         // if no user id is present return forbidden status 403
         if (!req.session.userId) {
             res.status(403).send(JSON.stringify({
@@ -120,13 +125,13 @@ router.put('/profile', redirectLogin, async (req, res) => {
                 error: "User could not be found"
             }));
         }
-        
+
         // update user and add aboutMe
         User.updateOne(
-            {_id: candidate._id}, 
+            {_id: candidate._id},
             {aboutMe : aboutMe },
-            {multi:true}, 
-              function(err, numberAffected){  
+            {multi:true},
+              function(err, numberAffected){
               });
 
         res.status(200).send(JSON.stringify({
@@ -211,20 +216,27 @@ router.post('/signup', redirectProfile, async (req, res) => {
 	} else {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
+		const verificationHash = createEmailVerificationHash();
+
 		const newUser = new User({
 			fName,
 			lName,
 			email,
+			verificationHash,
 			password: hashedPassword,
 			userRole
 		});
-		var userId = mongoose.Types.ObjectId(newUser._id);
-		req.session.userId = userId;
+		req.session.userId = mongoose.Types.ObjectId(newUser._id);
 		try {
 			await newUser.save();
 			//trying to add a second step here
 			//if the userRole is partner then redirect to agency.ejs then profile.ejs
-			if (newUser.userRole == 'partner') {
+
+			const emailResponse = await sendMail('gnorbsl@gmail.com', email, 'Email verification', 'Please verify your email by clicking on this link: http://localhost:8081/users/verify/' + verificationHash)
+
+			console.log(emailResponse);
+
+			if (newUser.userRole === 'partner') {
 				return res.send('/users/agency');
 			} else {
 				return res.send('/users/profile');
@@ -250,9 +262,24 @@ router.post('/login', redirectProfile, async (req, res) => {
 		email: email
 	});
 	if (user) {
+		if(!user.emailVerfied) {
+			return res.status(403).render('login', {
+				user: res.locals.user,
+				successNotification: null,
+				errorNotification:  {msg: "Please verify your Email"}
+			});
+		}
+
 		if (await bcrypt.compare(password, user.password)) {
 			req.session.userId = user.id;
 			return res.redirect('/users/profile');
+		} else {
+
+			return res.status(403).render('login', {
+				user: res.locals.user,
+				successNotification: null,
+				errorNotification:  {msg: "Username and/or password incorrect"}
+			});
 		}
 	}
 	res.redirect('/users/login');
@@ -267,6 +294,52 @@ router.get('/logout', redirectLogin, (req, res) => {
 		res.clearCookie(process.env.SESS_NAME);
 		res.redirect('/users/login');
 	});
+});
+
+// @desc    Render login.html
+// @route   GET '/users/verify'
+// @access  Public
+// @tested 	Not yet
+router.get('/verify/:hash', async (req, res) => {
+
+	try {
+		const user = await User.findOne({
+			verificationHash: req.params.hash
+		});
+
+		if (user) {
+			if (user.emailVerfied) {
+
+				return res.status(200).render('login', {
+					user: res.locals.user,
+					successNotification: {msg: "Your email is already verified, you can login now!"},
+					errorNotification: null
+				});
+			}
+			user.emailVerfied = true;
+			user.save();
+
+			return res.status(200).render('login', {
+				user: res.locals.user,
+				successNotification: {msg: "Verification successful, you can login now!"},
+				errorNotification: null
+			});
+		} else {
+			return res.status(400).render('login', {
+				user: res.locals.user,
+				successNotification: null,
+				errorNotification:  {msg: "Verfication failed"}
+			});
+		}
+
+	} catch (error) {
+		return res.status(500).render('login', {
+			user: res.locals.user,
+			successNotification: null,
+			errorNotification:  {msg: "Verfication failed"}
+		});	}
+
+
 });
 
 module.exports = router;

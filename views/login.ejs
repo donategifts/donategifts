@@ -10,12 +10,17 @@
 
   <%- include('./templates/header')-%>
 
-  <link rel="stylesheet" href="../css/signup.css">
+  <link rel="stylesheet" href="/css/signup.css">
 </head>
 
 <body>
   <%- include('./templates/nav')-%>
-
+  <% if (successNotification) { %>
+    <p><%= successNotification.msg%></p>
+  <%}%>
+  <% if (errorNotification) { %>
+    <p><%= errorNotification.msg%></p>
+  <%}%>
   <div class="signup-bg">
     <div class="d-flex container justify-content-center mg-top-btm">
       <div class="wrap-box">
