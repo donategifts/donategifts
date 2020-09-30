@@ -33,7 +33,7 @@ const s3storage = multerS3({
     bucket: 'donategifts',
     acl: 'public-read',
     key: function (req, file, cb) {
-        cb(null, Date.now().toString() + uuidv4())
+        cb(null, uuidv4())
     }
 })
 
