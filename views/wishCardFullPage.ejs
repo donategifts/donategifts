@@ -7,51 +7,54 @@
     <title>See Each Wish Card | Donate Gifts</title>
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
-    <link rel="stylesheet" href="../public/css/wishCardFull.css">
+    <link rel="stylesheet" href="../css/wishCardFull.css">
 </head>
 
 <body>
     <%- include('./templates/nav')-%>
 
     <div class="container">
+        <div class="page-wrapper">
 
-        <div class="section-title">
-            <h1 class="card-title text-center crayon-font">
-                <%= wishcard.childFirstName %>'s Wishcard</h1>
-            <img class="img-circle" src="<%= wishcard.wishCardImage %>" alt="Card image">
-            <div class="row button-center">
-                <button type="button" class="wishcard-btn btn-grn-bg"><a href="<%= wishcard.wishItemURL %>"
-                        target="_blank">Donate Gift</a></button>
+            <div class="section-title mt-5">
+                <h1 class="card-title text-center crayon-font grn-font">
+                    <%= wishcard.childFirstName %>'s Wishcard</h1>
+                <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image">
+                <div class="button-center">
+                    <button type="button" id="donate-btn" class="wishcard-btn btn-grn-bg comf-font"><a href="<%= wishcard.wishItemURL %>"
+                            target="_blank">Donate Gift</a></button>
+                </div>
             </div>
-        </div>
 
-        <div class="section-info">
-            <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
-            <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
-            <p class="card-text">Interest : <%= wishcard.childInterest %></p>
-            <p class="card-text">About Me : <%= wishcard.childStory %></p>
-        </div>
+            <div class="section-info mt-5 comf-font">
+                <h4 class="pb-4 grn-font">Wish Card Details</h4>
+                <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
+                <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
+                <p class="card-text">Interest : <%= wishcard.childInterest %></p>
+                <p class="card-text">About Me : <%= wishcard.childStory %></p>
+            </div>
 
-        <div class="section-write">
-            <h4>Sign <%= wishcard.childFirstName %>'s Card</h4>
-            <label for="message">Send best wishes or write something nice</label>
-            <textarea name="message" id="message" cols="30" rows="10"></textarea>
-            <input type="submit" id="submit" value="Send Message">
-        </div>
+            <div class="section-write mt-5 comf-font">
+                <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
+                <label for="message">Send best wishes or write something nice</label>
+                <textarea name="message" id="message" cols="35" rows="5" placeholder="(e.g. Happy birthday )"></textarea>
+                <input type="submit" id="submit" value="Send Message">
+            </div>
 
-        <div class="section-msg">
-            <% if (wishcard.messages.length === 0) { %>
-            <h4>No one signed <%= wishcard.childFirstName %>'s card yet.
-                Be the first person to send a message.</h4>
-            <% } else { %>
-            <div>
-                <% for (var i = 0; i < wishcard.messages.length; i++) { %>
-                <p>"This part needs to show user's message"</p>
-                <p>Sent by: <%= user.firstName %></p>
-                <!-- also add a timestamp here-->
+            <div class="section-msg">
+                <% if (wishcard.messages.length === 0) { %>
+                <h6 class="comf-font">No one signed <%= wishcard.childFirstName %>'s card yet.
+                    Be the first person to send a message.</h6>
+                <% } else { %>
+                <div>
+                    <% for (var i = 0; i < wishcard.messages.length; i++) { %>
+                    <p>"This part needs to show all users' messages sent to this wishcard"</p>
+                    <p>Sent by: <%= user.firstName %></p>
+                    <!-- also add a timestamp here-->
+                    <% } %>
+                </div>
                 <% } %>
             </div>
-            <% } %>
         </div>
     </div>
 

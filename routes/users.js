@@ -1,65 +1,68 @@
 //NPM DEPENDENCIES
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 const {sendMail, createEmailVerificationHash} = require('../controllers/email');
 
 //IMPORT USER MODEL
-const User = require('../models/User');
+const User = require("../models/User");
 
 //IMPORT AGENCY MODEL
-const Agency = require('../models/Agency');
+const Agency = require("../models/Agency");
 
 // Middleware for users
 const redirectLogin = (req, res, next) => {
-	if (!req.session.userId) {
-		res.redirect('/users/login');
-	} else {
-		next();
-	}
+  if (!req.session.userId) {
+    res.redirect("/users/login");
+  } else {
+    next();
+  }
 };
 const redirectProfile = (req, res, next) => {
-	if (req.session.userId) {
-		res.redirect(`/users/profile`);
-	} else {
-		next();
-	}
+  if (req.session.userId) {
+    res.redirect(`/users/profile`);
+  } else {
+    next();
+  }
+};
+
+const sendError = (res, status, err) => {
+  res.status(status).send(
+    JSON.stringify({
+      success: false,
+      error: err,
+    })
+  );
 };
 
 // @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
 // @tested 	Yes
-router.get('/', (req, res) => {
-	try {
-		res.status(200).render('home', {
-			user: res.locals.user
-		});
-	} catch (error) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	}
+router.get("/", (req, res) => {
+  try {
+    res.status(200).render("home", {
+      user: res.locals.user,
+    });
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
 
 // @desc    Render signup.html
 // @route   GET '/users/signup'
 // @access  Public
 // @tested 	Yes
-router.get('/signup', redirectProfile, (req, res) => {
-	try {
-		res.status(200).render('signup', {
-			user: res.locals.user
-		});
-	} catch (error) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	}
+router.get("/signup", redirectProfile, (req, res) => {
+  try {
+    res.status(200).render("signup", {
+      user: res.locals.user,
+    });
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
 
 // @desc
@@ -87,113 +90,101 @@ router.get('/login', redirectProfile, (req, res) => {
 // @access  Private, only users
 // @tested 	Yes
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
-router.get('/profile', redirectLogin, async (req, res) => {
-	try {
-		res.render('profile', {
-			user: res.locals.user
-		});
-	} catch (err) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	}
+router.get("/profile", redirectLogin, async (req, res) => {
+  try {
+    let user = res.locals.user;
+    let params = { user };
+    if (user.userRole == "partner") {
+      let agency = await Agency.findOne({ accountManager: user._id });
+      if (!agency) {
+        return sendError(res, 404, "Agency Not Found");
+      }
+      params = { ...params, agency };
+    }
+    res.render("profile", params);
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
 
 // @desc    Update user about me info
 // @route   PUT '/users/profile'
 // @access  Private, only users
 // @tested 	No?
-router.put('/profile', redirectLogin, async (req, res) => {
-	try {
-        const {aboutMe} = req.body;
+router.put("/profile", redirectLogin, async (req, res) => {
+  try {
+    const { aboutMe } = req.body;
 
-        // if no user id is present return forbidden status 403
-        if (!req.session.userId) {
-            res.status(403).send(JSON.stringify({
-                success: false,
-                error: "No user id in request"
-            }));
-        }
+    // if no user id is present return forbidden status 403
+    if (!req.session.userId) {
+      return sendError(res, 403, "No user id in request");
+    }
 
-        const candidate = await User.findOne({_id: req.session.userId});
+    const candidate = await User.findOne({ _id: req.session.userId });
 
-        // candidate with id not found in database, return not found status 404
-        if (!candidate) {
-            res.status(404).send(JSON.stringify({
-                success: false,
-                error: "User could not be found"
-            }));
-        }
+    // candidate with id not found in database, return not found status 404
+    if (!candidate) {
+      return sendError(res, 404, "User could not be found");
+    }
 
-        // update user and add aboutMe
-        User.updateOne(
-            {_id: candidate._id},
-            {aboutMe : aboutMe },
-            {multi:true},
-              function(err, numberAffected){
-              });
+    // update user and add aboutMe
+    User.updateOne(
+      { _id: candidate._id },
+      { aboutMe: aboutMe },
+      { multi: true }
+    );
 
-        res.status(200).send(JSON.stringify({
-            success: true,
-            error: null,
-            data: aboutMe,
-        }));
-
-	} catch (err) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	}
+    res.status(200).send(
+      JSON.stringify({
+        success: true,
+        error: null,
+        data: aboutMe,
+      })
+    );
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
-
 
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
 // @access  Private, only userRole == partners
 // @tested 	No
-router.get('/agency', redirectLogin, async (req, res) => {
-	try {
-		res.render('agency', {
-			user: res.locals.user
-		});
-	} catch (err) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	}
+router.get("/agency", redirectLogin, async (req, res) => {
+  try {
+    res.render("agency", {
+      user: res.locals.user,
+    });
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
-
 
 // @desc    agency info is sent to db
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', async (req, res) => {
-	const {
-		agencyName,
-		agencyWebsite,
-		agencyPhone,
-		agencyBio
-	} = req.body;
+router.post("/agency", async (req, res) => {
+  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
 
-	const newAgency = new Agency({
-		agencyName,
-		agencyWebsite,
-		agencyPhone,
-		agencyBio
-	});
-	try {
-		await newAgency.save();
-		console.log("agency data saved");
-		return res.send('/users/profile');
-	} catch (err) {
-		console.log(err);
-	}
+  const newAgency = new Agency({
+    agencyName,
+    agencyWebsite,
+    agencyPhone,
+    agencyBio,
+    accountManager: req.session.userId,
+  });
+  try {
+    await newAgency.save();
+    var agencyId = mongoose.Types.ObjectId(newAgency._id);
+    req.session.agencyId = agencyId;
+    console.log("agency data saved");
+    res.send("/users/profile");
+  } catch (err) {
+    console.log(err);
+    return sendError(res, 400, err);
+  }
 });
-
 
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
@@ -247,8 +238,6 @@ router.post('/signup', redirectProfile, async (req, res) => {
 	}
 });
 
-
-
 // @desc    Render login.html
 // @route   POST '/users/login'
 // @access  Public
@@ -289,11 +278,28 @@ router.post('/login', redirectProfile, async (req, res) => {
 // @route   GET '/users/logout'
 // @access  Public
 // @tested 	Not yet
-router.get('/logout', redirectLogin, (req, res) => {
-	req.session.destroy(err => {
-		res.clearCookie(process.env.SESS_NAME);
-		res.redirect('/users/login');
-	});
+router.get("/logout", redirectLogin, (req, res) => {
+  req.session.destroy((err) => {
+    res.clearCookie(process.env.SESS_NAME);
+    res.redirect("/users/login");
+  });
+});
+
+// @desc    Render terms.ejs
+// @route   GET '/users/terms'
+// @access  public
+// @tested 	No
+router.get('/terms', async (req, res) => {
+	try {
+		res.render('terms', {
+			user: res.locals.user
+		});
+	} catch (err) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	}
 });
 
 // @desc    Render login.html

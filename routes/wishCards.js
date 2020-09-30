@@ -1,7 +1,7 @@
 /*
 serving all wishcard related routes
 '/wishcards' is already mounted, so no need to start with it for each route.
-/search/:keyword    /get/:id    /get/all    /get/random     /update/:id 
+/search/:keyword    /get/:id    /get/all    /get/random     /update/:id
 */
 
 //NPM DEPENDENCIES
@@ -9,6 +9,15 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3')
+const { v4: uuidv4 } = require('uuid');
+
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_KEY,
+    secretAccessKey: process.env.AWS_SECRET
+});
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,6 +27,15 @@ const storage = multer.diskStorage({
         cb(null, new Date().toISOString() + file.originalname);
     }
 });
+
+const s3storage = multerS3({
+    s3: s3,
+    bucket: 'donategifts',
+    acl: 'public-read',
+    key: function (req, file, cb) {
+        cb(null, uuidv4())
+    }
+})
 
 const fileFilter = (req, file, cb) => {
     // reject a file
@@ -29,7 +47,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 const upload = multer({
-    storage: storage,
+    storage: s3storage,
     limits: {
         fileSize: 1024 * 1024 * 5 // up to 5 mbs
     },
@@ -57,7 +75,7 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
             wishItemPrice: Number(req.body.wishItemPrice),
             wishItemURL: req.body.wishItemURL,
             childStory: req.body.childStory,
-            wishCardImage: req.file.path,
+            wishCardImage: req.file.location,
             createdBy: res.locals.user._id
         });
         newCard.save((err) => {
@@ -120,7 +138,7 @@ router.post('/search', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const result = await WishCard.findById(req.params.id);
-        // create a page and have a dynamic link for see more 
+        // create a page and have a dynamic link for see more
         res.status(200).render('wishCardFullPage', {
             user: res.locals.user,
             wishcard: result
@@ -133,14 +151,14 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @desc    display 3 wishcards randomly in the sample wishcard section of index.html 
+// @desc    display 3 wishcards randomly in the sample wishcard section of index.html
 // @route   GET '/wishcards/get/random'
 // @access  Public
 // @tested 	No
 router.get('/get/random', async (req, res) => {
     try {
         //TODO: /views/templates/homeSampleCards.ejs
-        //     has all the frontend codes for this random display 
+        //     has all the frontend codes for this random display
         const results = await WishCard.find({});
         results.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
         res.send(results.slice(0, 3));
@@ -152,7 +170,7 @@ router.get('/get/random', async (req, res) => {
     }
 });
 
-// @desc    update one wishcard by id 
+// @desc    update one wishcard by id
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only partners
 // @tested 	Not yet
@@ -163,7 +181,7 @@ router.put('/update/:id', async (req, res) => {
         WHERE ARE WE EDITING THIS ON THE FRONT END?
             - in /users/profile
             - all wishcards created by this user should display
-            - then add a pencil icon for edit function 
+            - then add a pencil icon for edit function
         */
         result.save();
     } catch (error) {
