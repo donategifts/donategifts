@@ -41,6 +41,10 @@ var WishCardSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	messages: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Message'
+    }],
 }, {
 	collection: 'wishcards'
 });
