@@ -12,7 +12,7 @@
 
 > Jordan Huang
 > gnorbsl
-> Tokikko
+> Ivan Repusic
 > Jacobjeevan
 
 ## Usage

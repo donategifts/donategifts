@@ -49,6 +49,10 @@
                     but currently agency obj not passed to /users/profile route-->
                     <% if (user.userRole == 'partner') { %>
                     <h5>Organization: </h5>
+                    <p>Organization Name: <%= agency.agencyName %></p>
+                    <p>Organization Website: <%= agency.agencyBio %></p>
+                    <p>Organization Website: <%= agency.agencyWebsite %></p>
+                    <p>Organization Phone Number: <%= agency.agencyPhone %></p>
                     <%}%>
 
                     <p>User Role: <%= user.userRole %></p>

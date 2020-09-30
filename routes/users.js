@@ -73,7 +73,7 @@ router.get("/login", redirectProfile, (req, res) => {
       user: res.locals.user,
     });
   } catch (error) {
-    return sendError(res, 400, err);
+    return sendError(res, 400, error);
   }
 });
 
