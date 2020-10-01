@@ -8,6 +8,10 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="../css/wishCardFull.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- js scripts -->
+    <script src="../clientJS/wishCardFullPage.js"></script>
 </head>
 
 <body>
@@ -40,44 +44,39 @@
                 <!-- After discussion, we decided to just do a pre-written phrase checkbox,
                 instead of allowing people to write personal messages
                 to prevent possible profanity -->
-
-                <!-- using bootstrap dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Message Phrases
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Sending you love, <%= wishcard.childFirstName %></a>
-                        <a class="dropdown-item" href="#">Happy Birthday to the sweetest kid in the entire world.</a>
-                        <a class="dropdown-item" href="#">Happy birthday to a future superstar!</a>
-                        <a class="dropdown-item" href="#">Happy birthday, <%= wishcard.childFirstName %></a>
-                        <a class="dropdown-item" href="#">Merry Christmas, <%= wishcard.childFirstName %></a>
-                        <a class="dropdown-item" href="#">Happy holidays, <%= wishcard.childFirstName %></a>
-                        <a class="dropdown-item" href="#"><%= wishcard.childFirstName %>, you are awesome!</a>
-                        <a class="dropdown-item" href="#">Lots of love and best wishes, <%= wishcard.childFirstName %></a>
-                        <a class="dropdown-item" href="#"><%= wishcard.childFirstName %>, hope you enjoy my gift!</a>
-                        <a class="dropdown-item" href="#">Merry Christmas and a Happy New Year</a>
-                        <a class="dropdown-item" href="#"><%= wishcard.childFirstName %>, have a happy holiday</a>
-                        <a class="dropdown-item" href="#">Congratulations, <%= wishcard.childFirstName %></a>
-                    </div>
-                </div>
-
-                <input type="submit" id="submit" class="mt-4" value="Send Message">
-
+                
+                <form class="message" action="/wishcards/message" method="post">
+                    <select class="custom-select">
+                        <option selected>Messages</option>
+                        <option value="1"><%= user.fName %> sends you love, <%= wishcard.childFirstName %></option>
+                        <option value="2">Happy Birthday to the sweetest kid in the entire world.</option>
+                        <option value="3">Happy birthday to a future superstar!</option>
+                        <option value="4">Happy birthday, <%= wishcard.childFirstName %></option>
+                        <option value="5">Merry Christmas, <%= wishcard.childFirstName %></option>
+                        <option value="6">Happy holidays, <%= wishcard.childFirstName %></option>
+                        <option value="7"><%= wishcard.childFirstName %>, you are awesome!</option>
+                        <option value="8">Lots of love and best wishes, <%= wishcard.childFirstName %></option>
+                        <option value="9"><%= wishcard.childFirstName %>, hope you enjoy my gift!</option>
+                        <option value="10">Merry Christmas and a Happy New Year</option>
+                        <option value="11"><%= wishcard.childFirstName %>, have a happy holiday</option>
+                        <option value="12">Congratulations, <%= wishcard.childFirstName %></option>
+                    </select>
+                    <input type="submit" id="submit" class="mt-4" value="Send Message">
+                </form>
+                
             </div>
 
             <!-- This part needs to show all users' messages sent to this wishcard 
             wishcard model has 'messages' field which is an objectId array of 'Message'-->
-            <div class="show-msg"> 
-                <% if (wishcard.messages.length === 0) { %>
+            <div class="show-msg">
+                <% if (messages.length === 0) { %>
                 <h6 class="comf-font">No one signed <%= wishcard.childFirstName %>'s card yet.
                     Be the first person to send a message.</h6>
                 <% } else { %>
                 <div>
-                    <% for (var i = 0; i < wishcard.messages.length; i++) { %>
-                    <p>This line needs to show each user's message sent to this wishcard</p>
-                    <p>Sent by: <%= user.fName %></p>
+                    <% for (var i = 0; i < messages.length; i++) { %>
+                    <p><%= messages[i].message %></p>
+                    <p>Sent by: <%= messages[i].fromUser %></p>
                     <!-- also add a timestamp here-->
                     <% } %>
                 </div>
@@ -87,16 +86,18 @@
     </div>
 
     <%- include('./templates/footer')-%>
-    <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    <script>
+        let messageFrom = `<%- JSON.stringify(user) %>`;
+        let messageTo = `<%- JSON.stringify(wishcard) %>`;
     </script>
+    <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
         integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-    </script>
+        </script>
 </body>
 
 </html>
