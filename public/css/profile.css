@@ -149,9 +149,6 @@
 
 /* ---- Profile Content Section---- */
 
-#profile-row {
-    margin-top: 2em;
-}
 
 .profile-header {
     padding: 1em 0;
@@ -177,4 +174,43 @@
     width: inherit;
     height: inherit;
     background-color: #F3F9ED;
+}
+
+/* organization info display */
+.org-wrapper {
+    background-color: rgba(255, 224, 172, 0.7);
+    padding: 2em;
+    border-radius: 10px;
+}
+
+#create-btn {
+    font-size: 1em;
+    width: 250px;
+    line-height: 1.7em;
+}
+
+#submit-btn {
+    max-width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.3em;
+}
+
+
+.user-info {
+    background-color: rgba(188,227,97, 0.5);
+    padding: 2em;
+    border-radius: 10px;
+    font-size: 1em;
+}
+
+.notify {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.create-title {
+    font-weight: bold;
 }
