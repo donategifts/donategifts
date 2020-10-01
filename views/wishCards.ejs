@@ -66,7 +66,7 @@
 									<p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
 									<div class="row button-center">
 										<!--The See More button needs another 'details' page but it will be implemented in a later version-->
-										<!-- <button type="button" class="wishcard-btn btn-grn-border">See more</button> -->
+										<button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards/<%= wishcards[i]._id %>">See more</a></button>
 										<button type="button" class="wishcard-btn btn-grn-bg"><a href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
 									</div>
 								</div>
