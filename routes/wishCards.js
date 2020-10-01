@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 
 const s3storage = multerS3({
   s3: s3,
-  bucket: "donategifts",
+  bucket: process.env.bucket,
   acl: "public-read",
   key: function (req, file, cb) {
     cb(null, uuidv4());
@@ -58,10 +58,10 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-//IMPORT WISHCARD MODEL
+//IMPORT MODELS
 const WishCard = require("../models/WishCard");
 const Message = require("../models/Message");
-const { findOneAndUpdate } = require("../models/WishCard");
+const User = require("../models/User");
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
@@ -101,7 +101,6 @@ router.post("/", upload.single("wishCardImage"), (req, res) => {
 router.get("/", async (req, res) => {
   try {
     var results = await WishCard.find({});
-    console.log(results);
     res.status(200).render("wishCards", {
       user: res.locals.user,
       wishcards: results,
@@ -147,20 +146,36 @@ router.post("/search", async (req, res) => {
 // @access  Public, all users (path led by "see more" button)
 // @tested 	No
 router.get("/:id", async (req, res) => {
-  try {
-    const result = await WishCard.findById(req.params.id);
-    // create a page and have a dynamic link for see more
-    res.status(200).render("wishCardFullPage", {
-      user: res.locals.user,
-      wishcard: result,
-    });
-  } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+  if (!res.locals.user) {
+    // TO DO: Display alert instead? Hiding the See more button is another option
+    res.redirect("/users/login");
+  } else {
+    try {
+      let wishcard = await WishCard.findById(req.params.id);
+      let messages;
+      if (wishcard.messages.length > 0) {
+        messages = await Promise.all(
+          wishcard.messages.map(async (messageID) => {
+            let foundMessage = await Message.findById(messageID);
+            let foundUser = await User.findById(foundMessage.messageFrom);
+            return { message: foundMessage.message, fromUser: foundUser.fName };
+          })
+        );
+      }
+      // create a page and have a dynamic link for see more
+      res.status(200).render("wishCardFullPage", {
+        user: res.locals.user,
+        wishcard,
+        messages,
+      });
+    } catch (error) {
+      res.status(400).send(
+        JSON.stringify({
+          success: false,
+          error: error,
+        })
+      );
+    }
   }
 });
 
@@ -215,14 +230,14 @@ router.put("/update/:id", async (req, res) => {
 // @tested 	Not yet
 router.post("/message", async (req, res) => {
   try {
-    const { messageFrom, messageTo, message, wishcardId } = req.body;
+    const { messageFrom, messageTo, message } = req.body;
     const newMessage = new Message({ messageFrom, messageTo, message });
-    newMessage.save();
+    await newMessage.save();
 
-    let updatedWishCard = await WishCard.findOneAndUpdate(
-      { _id: wishcardId },
-      { messages: [...messages, newMessage] },
-      { returnNewDocument: true }
+    let updatedWishCard = await WishCard.findByIdAndUpdate(
+      { _id: messageTo._id },
+      { $push: { messages: newMessage } },
+      { new: true }
     );
 
     if (updatedWishCard) {
