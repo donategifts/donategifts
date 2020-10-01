@@ -5,13 +5,13 @@ serving all wishcard related routes
 */
 
 //NPM DEPENDENCIES
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const path = require("path");
-const multer = require("multer");
-const AWS = require("aws-sdk");
-const multerS3 = require("multer-s3");
-const { v4: uuidv4 } = require("uuid");
+const path = require('path');
+const multer = require('multer');
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+const { v4: uuidv4 } = require('uuid');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_KEY,
@@ -20,7 +20,7 @@ const s3 = new AWS.S3({
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 const s3storage = multerS3({
   s3: s3,
   bucket: process.env.bucket,
-  acl: "public-read",
+  acl: 'public-read',
   key: function (req, file, cb) {
     cb(null, uuidv4());
   },
@@ -39,10 +39,10 @@ const s3storage = multerS3({
 const fileFilter = (req, file, cb) => {
   // reject a file
   if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/gif" ||
-    file.mimetype === "image/png"
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/gif' ||
+    file.mimetype === 'image/png'
   ) {
     cb(null, true);
   } else {
@@ -59,19 +59,19 @@ const upload = multer({
 });
 
 //IMPORT MODELS
-const WishCard = require("../models/WishCard");
-const Message = require("../models/Message");
-const User = require("../models/User");
+const WishCard = require('../models/WishCard');
+const Message = require('../models/Message');
+const User = require('../models/User');
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post("/", upload.single("wishCardImage"), (req, res) => {
+router.post('/', upload.single('wishCardImage'), (req, res) => {
   if (req.file === undefined) {
     res.send(
-      "Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 5 megabytes."
+      'Error: File must be in jpeg, jpg, gif, or png format. The file \
+        must also be less than 5 megabytes.'
     );
   } else {
     var newCard = new WishCard({
@@ -90,7 +90,7 @@ router.post("/", upload.single("wishCardImage"), (req, res) => {
       if (err) console.log(err);
     });
     console.log(newCard);
-    res.redirect("/wishcards");
+    res.redirect('/wishcards');
   }
 });
 
@@ -98,10 +98,10 @@ router.post("/", upload.single("wishCardImage"), (req, res) => {
 // @route   GET '/wishcards'
 // @access  Public, all users can see
 // @tested 	Yes
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     var results = await WishCard.find({});
-    res.status(200).render("wishCards", {
+    res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards: results,
     });
@@ -119,15 +119,15 @@ router.get("/", async (req, res) => {
 // @route   POST '/wishcards/search'
 // @access  Public, all users can see
 // @tested 	Yes
-router.post("/search", async (req, res) => {
+router.post('/search', async (req, res) => {
   try {
     const results = await WishCard.find({
       wishItemName: {
         $regex: req.body.wishitem,
-        $options: "i",
+        $options: 'i',
       },
     });
-    res.status(200).render("wishCards", {
+    res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards: results,
     });
@@ -145,10 +145,10 @@ router.post("/search", async (req, res) => {
 // @route   GET '/wishcards/:id'
 // @access  Public, all users (path led by "see more" button)
 // @tested 	No
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   if (!res.locals.user) {
     // TO DO: Display alert instead? Hiding the See more button is another option
-    res.redirect("/users/login");
+    res.redirect('/users/login');
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
@@ -163,7 +163,7 @@ router.get("/:id", async (req, res) => {
         );
       }
       // create a page and have a dynamic link for see more
-      res.status(200).render("wishCardFullPage", {
+      res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
         wishcard,
         messages,
@@ -183,7 +183,7 @@ router.get("/:id", async (req, res) => {
 // @route   GET '/wishcards/get/random'
 // @access  Public
 // @tested 	No
-router.get("/get/random", async (req, res) => {
+router.get('/get/random', async (req, res) => {
   try {
     //TODO: /views/templates/homeSampleCards.ejs
     //     has all the frontend codes for this random display
@@ -204,7 +204,7 @@ router.get("/get/random", async (req, res) => {
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only partners
 // @tested 	Not yet
-router.put("/update/:id", async (req, res) => {
+router.put('/update/:id', async (req, res) => {
   try {
     const result = await WishCard.findById(req.params.id);
     /*
@@ -228,7 +228,7 @@ router.put("/update/:id", async (req, res) => {
 // @route  POST '/wishcards/message'
 // @access  Public, all users
 // @tested 	Not yet
-router.post("/message", async (req, res) => {
+router.post('/message', async (req, res) => {
   try {
     const { messageFrom, messageTo, message } = req.body;
     const newMessage = new Message({ messageFrom, messageTo, message });
