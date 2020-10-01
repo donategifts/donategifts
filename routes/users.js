@@ -184,7 +184,9 @@ router.post("/agency", async (req, res) => {
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
 router.post("/signup", redirectProfile, async (req, res) => {
-  const { fName, lName, email, password, userRole } = req.body;
+  const { fName, lName, email, password, passwordConfirm, userRole } = req.body;
+  if (passwordConfirm !== password)
+    return sendError(res, 404, "Password fields do not match");
   const candidate = await User.findOne({
     email: email,
   });
