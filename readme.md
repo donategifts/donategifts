@@ -10,10 +10,10 @@
 
 ## Contributors
 
-> Jordan Huang
-> gnorbsl
-> Ivan Repusic
-> Jacobjeevan
+> Jordan Huang  
+> gnorbsl  
+> Ivan Repusic  
+> Jacobjeevan  
 
 ## Usage
 
