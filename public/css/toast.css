@@ -1,7 +1,7 @@
 .custom-toast {
-    height: 6em;
+    height: 5em;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 22px;
+    font-size: 1.3em;
 }
