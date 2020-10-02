@@ -45,6 +45,29 @@
         "msg msg msg msg";
 }
 
+/* Responsive for tablet/mobile */
+@media screen and (max-width: 992px) {
+    .page-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "title title title title"
+            "info info info info"
+            "write write write write"
+            "msg msg msg msg";
+    }
+
+    .section-info {
+        margin-right: 0;
+    }
+    
+    .write-msg {
+        margin-left: 0;
+    }
+
+  }
+
 #img-kid {
     border-radius: 20px;
     width: 420px;
