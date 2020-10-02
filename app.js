@@ -123,5 +123,6 @@ app.use('/about', aboutRoute);
 app.get('/', (req, res) => {
   res.render('home', {
     user: res.locals.user,
+    wishcards: [],
   });
 });

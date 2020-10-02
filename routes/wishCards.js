@@ -208,11 +208,20 @@ router.get('/:id', async (req, res) => {
 // @tested 	No
 router.get('/get/random', async (req, res) => {
   try {
-    //TODO: /views/templates/homeSampleCards.ejs
-    //     has all the frontend codes for this random display
-    const results = await WishCard.find({});
-    results.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
-    res.send(results.slice(0, 3));
+    let wishcards = await WishCard.find({});
+    if (!wishcards) {
+      wishcards = [];
+    } else {
+      wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
+      wishcards = wishcards.slice(0, 3);
+    }
+    res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.send(html);
+      }
+    });
   } catch (error) {
     res.status(400).send(
       JSON.stringify({
