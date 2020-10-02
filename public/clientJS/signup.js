@@ -27,16 +27,7 @@ $(document).ready(function () {
       },
       error: function(response, textStatus, errorThrown) {
         let txtToJson =  JSON.parse(response.responseText);
-        Toastify({
-            text: txtToJson.error,
-            duration: 3000,
-            newWindow: true,
-            close: true,
-            gravity: "top",
-            position: "center",
-            backgroundColor: "linear-gradient(to right, #8e4dff, #8e4dff)",
-            stopOnFocus: true,
-        }).showToast();
+        showToast(txtToJson.error);
       }
     });
 })

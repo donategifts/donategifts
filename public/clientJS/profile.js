@@ -49,7 +49,7 @@ window.onload = function() {
             .then(data => {
                 // if there was an error on the backend do not append about me
                 if (data.error){
-                    alert("Could not update about me. Check console for error details");
+                    showToast("Could not update about me info.");
                     console.log(data);
                     return;
                 }
@@ -58,7 +58,7 @@ window.onload = function() {
             })
             .catch((error) => {
                 console.error("Error:", error);
-                alert("Could not update about me. Check console for error details");
+                showToast("Could not update about me info.");
             });
     }
 
