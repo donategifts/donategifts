@@ -75,21 +75,15 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
     );
   } else {
     var newCard = new WishCard({
-      childFirstName: req.body.childFirstName,
-      childLastName: req.body.childLastName,
       childBirthday: new Date(req.body.childBirthday),
-      childInterest: req.body.childInterest,
-      wishItemName: req.body.wishItemName,
       wishItemPrice: Number(req.body.wishItemPrice),
-      wishItemURL: req.body.wishItemURL,
-      childStory: req.body.childStory,
       wishCardImage: req.file.location,
       createdBy: res.locals.user._id,
+      ...req.body,
     });
     newCard.save((err) => {
       if (err) console.log(err);
     });
-    console.log(newCard);
     res.redirect('/wishcards');
   }
 });
@@ -141,6 +135,44 @@ router.post('/search', async (req, res) => {
   }
 });
 
+// This needs to be moved elsewhere during Cleanup
+let getMessageChoices = (userFirstName, childFirstName) => {
+  if (!userFirstName | !childFirstName) {
+    return [];
+  } else {
+    return [
+      `${userFirstName} sends you love, ${childFirstName}`,
+      'Happy Birthday to the sweetest kid in the entire world.',
+      'Happy birthday to a future superstar!',
+      `Happy birthday, ${childFirstName}`,
+      `Merry Christmas, ${childFirstName}`,
+      `Happy holidays, ${childFirstName}`,
+      `${childFirstName}, you are awesome!`,
+      `Lots of love and best wishes, ${childFirstName}`,
+      `${childFirstName}, hope you enjoy my gift!`,
+      'Merry Christmas and a Happy New Year',
+      `${childFirstName}, have a happy holiday`,
+      `Congratulations, ${childFirstName}`,
+    ];
+  }
+};
+
+let getPreviousMessages = async (wishcard) => {
+  if (wishcard.messages.length > 0) {
+    messages = await Promise.all(
+      wishcard.messages.map(async (messageID) => {
+        let foundMessage = await Message.findById(messageID);
+        let foundUser = await User.findById(foundMessage.messageFrom);
+        return {
+          message: foundMessage.message,
+          fromUser: foundUser.fName,
+        };
+      })
+    );
+  }
+  return wishcard;
+};
+
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  Public, all users (path led by "see more" button)
@@ -152,21 +184,17 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
-      let messages = {};
-      if (wishcard.messages.length > 0) {
-        messages = await Promise.all(
-          wishcard.messages.map(async (messageID) => {
-            let foundMessage = await Message.findById(messageID);
-            let foundUser = await User.findById(foundMessage.messageFrom);
-            return { message: foundMessage.message, fromUser: foundUser.fName };
-          })
-        );
-      }
+      wishcard = await getPreviousMessages(wishcard);
+      let defaultMessages = getMessageChoices(
+        res.locals.user.fName,
+        wishcard.childFirstName
+      );
       // create a page and have a dynamic link for see more
       res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
-        wishcard,
-        messages,
+        wishcard: wishcard ? wishcard : [],
+        messages: messages ? messages : [],
+        defaultMessages,
       });
     } catch (error) {
       res.status(400).send(
@@ -185,11 +213,20 @@ router.get('/:id', async (req, res) => {
 // @tested 	No
 router.get('/get/random', async (req, res) => {
   try {
-    //TODO: /views/templates/homeSampleCards.ejs
-    //     has all the frontend codes for this random display
-    const results = await WishCard.find({});
-    results.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
-    res.send(results.slice(0, 3));
+    let wishcards = await WishCard.find({});
+    if (!wishcards) {
+      wishcards = [];
+    } else {
+      wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
+      wishcards = wishcards.slice(0, 3);
+    }
+    res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.send(html);
+      }
+    });
   } catch (error) {
     res.status(400).send(
       JSON.stringify({

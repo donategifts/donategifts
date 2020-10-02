@@ -11,7 +11,7 @@
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- js scripts -->
-    <script src="../clientJS/wishCardFullPage.js"></script>
+    <script src="/clientJS/wishCardFullPage.js"></script>
 </head>
 
 <body>
@@ -44,26 +44,16 @@
                 <!-- After discussion, we decided to just do a pre-written phrase checkbox,
                 instead of allowing people to write personal messages
                 to prevent possible profanity -->
-                
                 <form class="message" action="/wishcards/message" method="post">
                     <select class="custom-select">
                         <option selected>Messages</option>
-                        <option value="1"><%= user.fName %> sends you love, <%= wishcard.childFirstName %></option>
-                        <option value="2">Happy Birthday to the sweetest kid in the entire world.</option>
-                        <option value="3">Happy birthday to a future superstar!</option>
-                        <option value="4">Happy birthday, <%= wishcard.childFirstName %></option>
-                        <option value="5">Merry Christmas, <%= wishcard.childFirstName %></option>
-                        <option value="6">Happy holidays, <%= wishcard.childFirstName %></option>
-                        <option value="7"><%= wishcard.childFirstName %>, you are awesome!</option>
-                        <option value="8">Lots of love and best wishes, <%= wishcard.childFirstName %></option>
-                        <option value="9"><%= wishcard.childFirstName %>, hope you enjoy my gift!</option>
-                        <option value="10">Merry Christmas and a Happy New Year</option>
-                        <option value="11"><%= wishcard.childFirstName %>, have a happy holiday</option>
-                        <option value="12">Congratulations, <%= wishcard.childFirstName %></option>
+                        <% for (let i = 0; i < defaultMessages.length; i++) { %>
+                        <option value=<%=i%>> <%= defaultMessages[i] %></option>
+                        <% } %>
                     </select>
                     <input type="submit" id="submit" class="mt-4" value="Send Message">
                 </form>
-                
+
             </div>
 
             <!-- This part needs to show all users' messages sent to this wishcard 
@@ -74,7 +64,7 @@
                     Be the first person to send a message.</h6>
                 <% } else { %>
                 <div>
-                    <% for (var i = 0; i < messages.length; i++) { %>
+                    <% for (let i = 0; i < messages.length; i++) { %>
                     <p><%= messages[i].message %></p>
                     <p>Sent by: <%= messages[i].fromUser %></p>
                     <!-- also add a timestamp here-->
