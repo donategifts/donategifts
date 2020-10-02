@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 
 const s3storage = multerS3({
   s3: s3,
-  bucket: process.env.bucket,
+  bucket: process.env.S3BUCKET,
   acl: 'public-read',
   key: function (req, file, cb) {
     cb(null, uuidv4());
@@ -152,7 +152,7 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
-      let messages;
+      let messages = {};
       if (wishcard.messages.length > 0) {
         messages = await Promise.all(
           wishcard.messages.map(async (messageID) => {
