@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 
 const s3storage = multerS3({
   s3: s3,
-  bucket: process.env.bucket,
+  bucket: process.env.S3BUCKET,
   acl: 'public-read',
   key: function (req, file, cb) {
     cb(null, uuidv4());
@@ -141,6 +141,24 @@ router.post('/search', async (req, res) => {
   }
 });
 
+// This needs to be moved elsewhere during Cleanup
+let getDefaultMessages = (userFirstName, childFirstName) => {
+  return [
+    `${userFirstName} sends you love, ${childFirstName}`,
+    'Happy Birthday to the sweetest kid in the entire world.',
+    'Happy birthday to a future superstar!',
+    `Happy birthday, ${childFirstName}`,
+    `Merry Christmas, ${childFirstName}`,
+    `Happy holidays, ${childFirstName}`,
+    `${childFirstName}, you are awesome!`,
+    `Lots of love and best wishes, ${childFirstName}`,
+    `${childFirstName}, hope you enjoy my gift!`,
+    'Merry Christmas and a Happy New Year',
+    `${childFirstName}, have a happy holiday`,
+    `Congratulations, ${childFirstName}`,
+  ];
+};
+
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  Public, all users (path led by "see more" button)
@@ -152,7 +170,7 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
-      let messages;
+      let messages = [];
       if (wishcard.messages.length > 0) {
         messages = await Promise.all(
           wishcard.messages.map(async (messageID) => {
@@ -162,11 +180,16 @@ router.get('/:id', async (req, res) => {
           })
         );
       }
+      let defaultMessages = getDefaultMessages(
+        res.locals.user.fName,
+        wishcard.childFirstName
+      );
       // create a page and have a dynamic link for see more
       res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
         wishcard,
         messages,
+        defaultMessages,
       });
     } catch (error) {
       res.status(400).send(

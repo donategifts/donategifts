@@ -49,7 +49,7 @@ dotenv.config({
 var options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: true,
+  useFindAndModify: false,
 };
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
