@@ -11,3 +11,8 @@
 #margin-bottom {
     margin-bottom: 3em;
 }
+
+form.card {
+    max-width: 100%;
+}
+
