@@ -7,7 +7,7 @@
 
         <div class="row justify-content-center">
             <% for (let i = 0; i < wishcards.length; i++) { %>
-            <div class="card-deck mr-1 col-12 col-lg-6">
+            <div class="card-deck col-lg-4 col-xs-12">
                 <!-- Card -->
                 <div class="card mb-3">
                     <!--Card image-->
@@ -29,9 +29,9 @@
                             <p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
 
                             <div class="row button-center">
-                                <button type="button" class="wishcard-btn btn-grn-border"><a
+                                <button type="button" class="col wishcard-btn btn-grn-border"><a
                                         href="/wishcards/<%= wishcards[i]._id %>">See more</a></button>
-                                <button type="button" class="wishcard-btn btn-grn-bg"><a
+                                <button type="button" class="col wishcard-btn btn-grn-bg"><a
                                         href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
                             </div>
                         </div>
