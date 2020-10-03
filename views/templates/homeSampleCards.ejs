@@ -4,11 +4,12 @@
         <% if (wishcards && wishcards.length === 0) { %>
         <h1>No wishcards</h1>
         <% } else { %>
-        <div class="row">
-            <% for (var i = 0; i < wishcards.length; i++) { %>
-            <div class="card-deck">
+
+        <div class="row justify-content-center">
+            <% for (let i = 0; i < wishcards.length; i++) { %>
+            <div class="card-deck mr-1 col-12 col-lg-6">
                 <!-- Card -->
-                <div class="card mb-4">
+                <div class="card mb-3">
                     <!--Card image-->
                     <div class="view overlay">
                         <img class="card-img-top" src="<%= wishcards[i].wishCardImage %>" alt="Card image">
@@ -19,18 +20,19 @@
                     <!--Card content-->
                     <div class="card-body">
                         <!--Title-->
-                        <h4 class="card-title text-center font-md crayon-font">My name is
+                        <h4 class="card-title text-center crayon-font">My name is
                             <%= wishcards[i].childFirstName %></h4>
                         <!--Text-->
                         <div class="comf-font">
                             <p class="card-text">Wish : <%= wishcards[i].wishItemName %></p>
+                            <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
                             <p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
+
                             <div class="row button-center">
-                                <button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards">See
-                                        More</a></button>
-                                <button type="button" class="wishcard-btn btn-grn-bg"><a target="_blank"
-                                        href="<%= wishcards[i].wishItemURL %>">
-                                        Donate Gift</a></button>
+                                <button type="button" class="wishcard-btn btn-grn-border"><a
+                                        href="/wishcards/<%= wishcards[i]._id %>">See more</a></button>
+                                <button type="button" class="wishcard-btn btn-grn-bg"><a
+                                        href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
                             </div>
                         </div>
                     </div>
@@ -39,5 +41,6 @@
             <% } %>
         </div>
         <% } %>
+
     </div>
 </div>
