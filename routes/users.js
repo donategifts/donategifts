@@ -272,4 +272,27 @@ router.get('/terms', async (req, res) => {
 	}
 });
 
+
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested 	
+router.get("/choose", redirectLogin, async (req, res) => {
+  try {
+    let user = res.locals.user;
+    let params = { user };
+    if (user.userRole == "partner") {
+      let agency = await Agency.findOne({ accountManager: user._id });
+      if (!agency) {
+        return sendError(res, 404, "Agency Not Found");
+      }
+      params = { ...params, agency };
+    }
+    res.render("chooseItem", params);
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
+});
+
 module.exports = router;
