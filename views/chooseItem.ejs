@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
-
 <head>
     <title>See Each Wish Card | Donate Gifts</title>
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
+
     <link rel="stylesheet" href="../css/profile.css">
     <link rel="stylesheet" href="../css/about.css">
+    <!-- CDN jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- js scripts -->
+    <script src="/clientJS/profile.js"></script>
 
 </head>
 
@@ -22,29 +25,28 @@
             <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST"
                 enctype="multipart/form-data">
                 <h4 class="crayon-font wish-card-form-title">
-                    Create a wish card <br />
-                    for children under your care
+                    Select a wish item<br />
+                    for a faster wish card creation
                 </h4>
 
-                <div class="row">
-                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                        <label for="childFirstName">Child's First Name</label>
-                        <input id="childFirstName" class="input1" type="text" name="childFirstName"
-                            placeholder="Nick name is also ok">
-                    </div>
-    
-                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                        <label for="childLastName">Child's Last Name</label>
-                        <input id="childLastName" class="input1" type="text" name="childLastName"
-                            placeholder="Initial is also ok">
-                    </div>
-                </div>
-                
-
-
+                <!-- So we want to make the Age Group label clickable
+                and show/hide the select options
+                and display images in bootstrap columns
+                once user clicks the image
+                then select the value and pass the data
+                to the backend -->
+            
                 <div class="mb-5">
                     <h5>Choose Child's Wish Item: </h5>
-                    <p>Age Group: Babies & Toddlers</p>
+
+                    <label for="baby">Age Group: Babies & Toddlers</label>
+
+                    <select name="baby" id="baby">
+                      <option value="baby_item1"></option>
+                      <option value="baby_item2"></option>
+                    </select>
+
+l
                     <div class="row justify-content-center">
                         <div class="mx-1 card col-sm-2 col-xs-6">
                             <img class="card-img-top" src="../img/baby_item1.png" alt="Card image cap">
@@ -142,10 +144,21 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                        <label for="childFirstName">Child's First Name</label>
+                        <input id="childFirstName" class="input1" type="text" name="childFirstName"
+                            placeholder="Nick name is also ok">
+                    </div>
+    
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="childLastName">Child's Last Name</label>
+                        <input id="childLastName" class="input1" type="text" name="childLastName"
+                            placeholder="Initial is also ok">
+                    </div>
+                </div>
 
                 <div class="row">
-                    
-
                     <div class="col-lg-6 comf-font wrap-input1">
                         <label for="childBirthday">Child's Birthday</label>
                         <input id="childBirthday" class="input1" type="date" name="childBirthday"
@@ -190,6 +203,7 @@
                     </main>
                 </div>
 
+
                 <div class="col-lg-6 comf-font wrap-input1">
                     <label for="address">Shipping address</label>
                     <input id="childInterest" class="input1" type="text" name="childInterest"
@@ -208,9 +222,7 @@
 
     <%- include('./templates/footer')-%>
     <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
     </script>

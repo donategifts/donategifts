@@ -1,8 +1,8 @@
 <!-- Wish Card deck -->
 <div class="wishcards">
     <div class="container">
-        <% if (wishcards && wishcards.length === 0) { %>
-        <h1>No wishcards</h1>
+        <% if (wishcards.length === 0 || !wishcards) { %>
+        <h1>No wishcards to display</h1>
         <% } else { %>
 
         <div class="row justify-content-center">
