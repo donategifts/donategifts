@@ -49,7 +49,7 @@ dotenv.config({
 var options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: true,
+  useFindAndModify: false,
 };
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
@@ -123,5 +123,6 @@ app.use('/about', aboutRoute);
 app.get('/', (req, res) => {
   res.render('home', {
     user: res.locals.user,
+    wishcards: [],
   });
 });

@@ -18,7 +18,7 @@ $(document).ready(function () {
       },
       statusCode: {
         409: function (responseObject, textStatus, jqXHR) {
-          alert(responseObject.responseText);
+          showToast(responseObject.responseText);
         },
         200: function (responseObject, textStatus, errorThrown) {
           location.replace(responseObject);

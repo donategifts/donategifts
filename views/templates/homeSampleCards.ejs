@@ -1,13 +1,18 @@
 <!-- Wish Card deck -->
 <div class="wishcards">
     <div class="container">
-        <div class="row">
-            <div class="card-deck">
+        <% if (wishcards.length === 0 || !wishcards) { %>
+        <h1>No wishcards to display</h1>
+        <% } else { %>
+
+        <div class="row justify-content-center">
+            <% for (let i = 0; i < wishcards.length; i++) { %>
+            <div class="card-deck col-lg-4 col-xs-12">
                 <!-- Card -->
-                <div class="card mb-4">
+                <div class="card mb-3">
                     <!--Card image-->
                     <div class="view overlay">
-                        <img class="card-img-top" src="img/lego-sample.jpg" alt="Card image cap">
+                        <img class="card-img-top" src="<%= wishcards[i].wishCardImage %>" alt="Card image">
                         <a href="#">
                             <div class="mask rgba-white-slight"></div>
                         </a>
@@ -15,78 +20,27 @@
                     <!--Card content-->
                     <div class="card-body">
                         <!--Title-->
-                        <h4 class="card-title text-center font-md crayon-font">My name is Hazza</h4>
+                        <h4 class="card-title text-center crayon-font">My name is
+                            <%= wishcards[i].childFirstName %></h4>
                         <!--Text-->
                         <div class="comf-font">
-                            <p class="card-text">Wish : Lego set </p>
-                            <p class="card-text">Age : 7 </p>
-                            <p class="card-text">Interest : eating cupcakes</p>
-                            <div class="row button-center">
-                                <button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards">See More</a></button>
-                                <button type="button" class="wishcard-btn btn-grn-bg"><a target="_blank" 
-                                        href="https://www.amazon.com/gp/item-dispatch?registryID.1=1294SW62GB8SD&registryItemID.1=I2N1R8I1QEWFU5&offeringID.1=jMLrMhecYA%252BKrLG2ZgRVbRmJ6jNMds4%252BFrMvOP1PmBUkucrPxsH%252BshpmTiAdmyNejLfoZESMSWR9M9SWEj%252BY%252FePjGjyxA%252BeqrKbjO9JwqG0wLb2rw5zW%252FOC04NNVUaf%252BojMU%252FUB9wQoedqsnkqL8dBdmk2%252BZ75eJYzxab2Q3vVois9V3vhR1FrorJdX1A912&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab">
-                                        Donate Gift</a></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <p class="card-text">Wish : <%= wishcards[i].wishItemName %></p>
+                            <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
+                            <p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
 
-                <!-- Card -->
-                <div class="card mb-4">
-                    <!--Card image-->
-                    <div class="view overlay">
-                        <img class="card-img-top" src="img/sample-kid-jun.jpeg" alt="Card image cap">
-                        <a href="#">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <!--Title-->
-                        <h4 class="card-title text-center font-md crayon-font">My name is Jun</h4>
-                        <!--Text-->
-                        <div class="comf-font">
-                            <p class="card-text">Wish : Science X Kit</p>
-                            <p class="card-text">Age : 10 </p>
-                            <p class="card-text">Interest : watching cartoons</p>
                             <div class="row button-center">
-                                <button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards">See More</a></button>
-                                <button type="button" class="wishcard-btn btn-grn-bg"><a target="_blank" 
-                                        href="https://www.amazon.com/gp/item-dispatch?registryID.1=1294SW62GB8SD&registryItemID.1=I2N1R8I1QEWFU5&offeringID.1=jMLrMhecYA%252BKrLG2ZgRVbRmJ6jNMds4%252BFrMvOP1PmBUkucrPxsH%252BshpmTiAdmyNejLfoZESMSWR9M9SWEj%252BY%252FePjGjyxA%252BeqrKbjO9JwqG0wLb2rw5zW%252FOC04NNVUaf%252BojMU%252FUB9wQoedqsnkqL8dBdmk2%252BZ75eJYzxab2Q3vVois9V3vhR1FrorJdX1A912&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab">
-                                        Donate Gift</a></button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Card -->
-                <div class="card mb-4">
-                    <!--Card image-->
-                    <div class="view overlay">
-                        <img class="card-img-top" src="img/sample-kid-juliana.jpeg" alt="Card image cap">
-                        <a href="#">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
-                    </div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <!--Title-->
-                        <h4 class="card-title text-center font-md crayon-font">My name is Juliana</h4>
-                        <!--Text-->
-                        <div class="comf-font">
-                            <p class="card-text">Wish : Little Live Pets -Unicorn Toy</p>
-                            <p class="card-text">Age : 9 </p>
-                            <p class="card-text">Interest : playing with friends</p>
-                            <div class="row button-center">
-                                <button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards">See More</a></button>
-                                <button type="button" class="wishcard-btn btn-grn-bg"><a target="_blank" href="https://www.amazon.com/gp/item-dispatch?registryID.1=1294SW62GB8SD&registryItemID.1=I2N1R8I1QEWFU5&offeringID.1=jMLrMhecYA%252BKrLG2ZgRVbRmJ6jNMds4%252BFrMvOP1PmBUkucrPxsH%252BshpmTiAdmyNejLfoZESMSWR9M9SWEj%252BY%252FePjGjyxA%252BeqrKbjO9JwqG0wLb2rw5zW%252FOC04NNVUaf%252BojMU%252FUB9wQoedqsnkqL8dBdmk2%252BZ75eJYzxab2Q3vVois9V3vhR1FrorJdX1A912&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab">
-                                        Donate Gift</a></button>
+                                <button type="button" class="col wishcard-btn btn-grn-border"><a
+                                        href="/wishcards/<%= wishcards[i]._id %>">See more</a></button>
+                                <button type="button" class="col wishcard-btn btn-grn-bg"><a
+                                        href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <% } %>
         </div>
+        <% } %>
+
     </div>
 </div>
