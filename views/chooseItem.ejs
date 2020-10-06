@@ -27,9 +27,13 @@
             <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST"
                 enctype="multipart/form-data">
                 <h4 class="crayon-font wish-card-form-title">
-                    Select a wish item<br />
-                    for a faster wish card creation
+                    For a faster wish card creation <br />
+                    Just choose item from suggestion
                 </h4>
+
+                <p class="form-notification source-font pb-2">Note: With this method, you don't have to make an Amazon
+                    list or even have an Amazon account.
+                    Once you fill out the form, that's it!</p>
 
                 <!-- So we want to make the Age Group label clickable
                 and show/hide the select options
@@ -38,21 +42,27 @@
                 then select the value and pass the data
                 to the backend -->
 
-                <div class="mb-5">
-                    <h5>Choose Child's Wish Item</h5>
+                <div class="mb-5 pt-5">
+                    <div class="comf-font">
+                        <h6>Select Child's Wish Item: </h6>
+                        <h6>(Items Ordered By Age Group)</h6>
+                        <select name="ageGroup" id="ageGroupSelector">
+                            <option selected value="1">Babies & Toddlers</option>
+                            <option value="2">Pre-schoolers</option>
+                            <option value="3">Kids (Age: 6-8)</option>
+                            <option value="4">Kids (Age: 9-11)</option>
+                            <option value="5">Teens</option>
+                            <option value="6">Youth</option>
+                            <option value="7">All Ages (Option A)</option>
+                            <option value="8">All Ages (Option B)</option>
+                        </select>
+                    </div>
 
-                    <h6>Choose Age Group:</h6>
-                    <select name="ageGroup" id="ageGroupSelector">
-                        <option selected value="1">Babies & Toddlers</option>
-                        <option value="2">Pre-schoolers</option>
-                        <option value="3">Kids (Age: 6-8)</option>
-                        <option value="4">Kids (Age: 9-11)</option>
-                        <option value="5">Teens</option>
-                    </select>
 
                     <div class="row justify-content-center choicesContainer"></div>
 
-                    <div class="row">
+
+                    <div class="row pt-4">
                         <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
                             <label for="childFirstName">Child's First Name</label>
                             <input id="childFirstName" class="input1" type="text" name="childFirstName"
@@ -78,8 +88,6 @@
                             <input id="childInterest" class="input1" type="text" name="childInterest"
                                 placeholder="Write something that the child likes to do">
                         </div>
-
-
 
                         <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
                             <label for="chlidStory">Share their story</label>
@@ -111,15 +119,57 @@
                         </main>
                     </div>
 
+                    <div class="row pb-5">
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="deadline">Set last date for the wish item delivery (skip if no deadline)</label>
+                            <input id="deadline" class="input1" type="date" name="deadline">
+                        </div>
 
-                    <div class="col-lg-6 comf-font wrap-input1">
-                        <label for="address">Shipping address</label>
-                        <input id="childInterest" class="input1" type="text" name="childInterest"
-                            placeholder="street name">
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="occasion">What's the occasion?</label>
+                            <input id="occasion" class="input1" type="text" name="occasion"
+                                placeholder="(e.g. holiday, birthday, graduation)">
+                        </div>
+                    </div>
+
+                    <h6 class="comf-font pb-2">Shipping address (where to deliver this item?)</h6>
+
+                    <div class="row">
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Address Line 1</label>
+                            <input id="" class="input1" type="text" name="address1"
+                                placeholder="(e.g. 1004 Donate St.)">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Address Line 2</label>
+                            <input id="" class="input1" type="text" name="address2" placeholder="(e.g. Suite 200)">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">City</label>
+                            <input id="city" class="input1" type="address" name="city" placeholder="(e.g. Chicago )">
+                        </div>
+                    </div>
+
+                    <div class="row pb-2">
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">State</label>
+                            <input id="" class="input1" type="text" name="" placeholder="(e.g. Illinois )">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Zipcode</label>
+                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                                placeholder="(e.g. 60640 )">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Country</label>
+                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                                placeholder="(e.g. USA )">
+                        </div>
                     </div>
 
 
-                    <div id="submit-btn" class="comf-font">
+
+                    <div id="submit-btn" class="comf-font pt-5">
                         <div class="contact1-form-btn">
                             <input value="Submit" type="submit" class="contact1-form-btn">
                         </div>

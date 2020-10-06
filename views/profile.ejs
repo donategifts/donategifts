@@ -42,20 +42,20 @@
                 <div class="row justify-content-center">
                     <div class="col-md-4 col-xs-12">
                         <p><i class="fa fa-pencil"></i>Child has a specific wish item</p>
-                        <button id="create-btn" type="button" class="wishcard-btn">
-                            <a href="#wishCardForm">Create Wish Card From Scratch</a></button>
+                        <a href="#wishCardForm"><button id="create-btn" type="button" class="wishcard-btn">
+                            Create Wish Card From Scratch</button></a>
                     </div>
                     <div class="col-md-4 col-xs-12">
                         <p><i class="fa fa-bolt" aria-hidden="true"></i>Need a faster way or unsure?
                         </p>
-                        <button id="create-btn" type="button" class="wishcard-btn grn-btn">
-                            <a href="/users/choose">Choose From Suggested List</a></button>
+                        <a href="/users/choose"><button id="create-btn" type="button" class="wishcard-btn grn-btn">
+                            Choose From Suggested List</button></a>
                     </div>
                     <div class="col-md-4 col-xs-12">
                         <p><i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
                         </p>
-                        <button id="create-btn" type="button" class="wishcard-btn">
-                            <a href="mailto:donate.gifts.stacy@gmail.com">Email Us</a></button>
+                        <a href="mailto:donate.gifts.stacy@gmail.com"><button id="create-btn" type="button" class="wishcard-btn">
+                            Email Us</button></a>
                     </div>
                 </div>
             </div>
@@ -148,8 +148,11 @@
                 </h4>
 
                 <div class="row mb-5">
-                    <h6 class="col text-center">We are developing new features to make the card creation much
-                        easier in the future.
+                    <h6 class="col form-notification">
+                        For this method, you need to watch <a href="https://youtu.be/P4P6jEqTXs4"
+                        target="_blank" class="highlight text-danger">this video</a> and create an Amazon list first. <br>
+                        We are developing new features to make the card creation much
+                        easier in the future.<br>
                         Support us by continuing to use this process until then. Thank you.
                     </h6>
                 </div>
@@ -186,16 +189,27 @@
                     </div>
 
                     <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                        <label for="wishItemPrice">We limit the price to be under $50 (USD)</label>
+                        <label for="wishItemPrice">We limit the price to be under $30 (USD)</label>
                         <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
-                            placeholder="Wish Item Price (numeric only)" min="1" max="50">
+                            placeholder="Wish Item Price (numeric only, round it up)" min="1" max="30">
                     </div>
 
                     <div class="px-3 comf-font wrap-input1">
                         <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/P4P6jEqTXs4"
-                                target="_blank">(Watch this video for help)</a></label>
+                                target="_blank" class="text-danger">(Watch this video for help)</a></label>
                         <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
                             placeholder="(copied hyperlink address for one wish item)">
+                    </div>
+
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="deadline">Set last date for the wish item delivery (skip if no deadline)</label>
+                        <input id="deadline" class="input1" type="date" name="deadline">
+                    </div>
+
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="occasion">What's the occasion?</label>
+                        <input id="occasion" class="input1" type="text" name="occasion"
+                        placeholder="(e.g. holiday, birthday, graduation)">
                     </div>
 
                     <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
