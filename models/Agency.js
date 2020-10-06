@@ -15,10 +15,10 @@ var AgencySchema = new Schema({
 	agencyPhone: {
         type: String
     },
-    accountManager: {
+    accountManagers: [{
 		type: Schema.Types.ObjectId,
 		ref: 'User'
-    },
+    }],
     agencyBio: {
 		type: String
     },
