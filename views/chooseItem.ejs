@@ -6,12 +6,14 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
 
-    <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/about.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/about.css">
+    <link rel="stylesheet" href="/css/chooseItem.css">
     <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- js scripts -->
     <script src="/clientJS/profile.js"></script>
+    <script src="/clientJS/chooseItem.js"></script>
 
 </head>
 
@@ -25,9 +27,13 @@
             <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST"
                 enctype="multipart/form-data">
                 <h4 class="crayon-font wish-card-form-title">
-                    Select a wish item<br />
-                    for a faster wish card creation
+                    For a faster wish card creation <br />
+                    Just choose item from suggestion
                 </h4>
+
+                <p class="form-notification source-font pb-2">Note: With this method, you don't have to make an Amazon
+                    list or even have an Amazon account.
+                    Once you fill out the form, that's it!</p>
 
                 <!-- So we want to make the Age Group label clickable
                 and show/hide the select options
@@ -35,194 +41,133 @@
                 once user clicks the image
                 then select the value and pass the data
                 to the backend -->
-            
-                <div class="mb-5">
-                    <h5>Choose Child's Wish Item: </h5>
 
-                    <label for="baby">Age Group: Babies & Toddlers</label>
+                <div class="mb-5 pt-5">
+                    <div class="comf-font">
+                        <h6>Select Child's Wish Item: </h6>
+                        <h6>(Items Ordered By Age Group)</h6>
+                        <select name="ageGroup" id="ageGroupSelector">
+                            <option selected value="1">Babies & Toddlers</option>
+                            <option value="2">Pre-schoolers</option>
+                            <option value="3">Kids (Age: 6-8)</option>
+                            <option value="4">Kids (Age: 9-11)</option>
+                            <option value="5">Teens</option>
+                        </select>
+                    </div>
 
-                    <select name="baby" id="baby">
-                      <option value="baby_item1"></option>
-                      <option value="baby_item2"></option>
-                    </select>
 
-l
-                    <div class="row justify-content-center">
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/baby_item1.png" alt="Card image cap">
+                    <div class="row justify-content-center choicesContainer"></div>
+
+
+                    <div class="row pt-4">
+                        <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                            <label for="childFirstName">Child's First Name</label>
+                            <input id="childFirstName" class="input1" type="text" name="childFirstName"
+                                placeholder="Nick name is also ok">
                         </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/baby_item2.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/baby_item3.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/baby_item4.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/baby_item5.png" alt="Card image cap">
+
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="childLastName">Child's Last Name</label>
+                            <input id="childLastName" class="input1" type="text" name="childLastName"
+                                placeholder="Initial is also ok">
                         </div>
                     </div>
 
-                    <p>Age Group: Preschoolers</p>
-                    <div class="row justify-content-center">
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/pre_item1.png" alt="Card image cap">
+                    <div class="row">
+                        <div class="col-lg-6 comf-font wrap-input1">
+                            <label for="childBirthday">Child's Birthday</label>
+                            <input id="childBirthday" class="input1" type="date" name="childBirthday"
+                                placeholder="Child's Birthday">
                         </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/pre_item2.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/pre_item3.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/pre_item4.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/pre_item5.png" alt="Card image cap">
-                        </div>
-                    </div>
-                    
 
-                    <p>Age Group: Kids 6-8</p>
-                    <div class="row justify-content-center">
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid6-8_item1.png" alt="Card image cap">
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="childInterest">Child's Interest</label>
+                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                                placeholder="Write something that the child likes to do">
                         </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid6-8_item2.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid6-8_item3.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid6-8_item4.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid6-8_item5.png" alt="Card image cap">
-                        </div>
-                    </div>
 
-                    <p>Age Group: Kids 9-11</p>
-                    <div class="row justify-content-center">
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid9-11_item1.png" alt="Card image cap">
+                        <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
+                            <label for="chlidStory">Share their story</label>
+                            <textarea id="chlidStory" class="input1" name="childStory"
+                                placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
                         </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid9-11_item2.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid9-11_item3.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid9-11_item4.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/kid9-11_item5.png" alt="Card image cap">
-                        </div>
-                    </div>
-                   
 
-                    <p>Age Group: Teens</p>
-                    <div class="row justify-content-center">
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/teens_item1.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/teens_item2.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/teens_item3.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-2 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/teens_item4.png" alt="Card image cap">
-                        </div>
-                        <div class="mx-1 card col-sm-2 col-xs-6">
-                            <img class="card-img-top" src="../img/teens_item5.png" alt="Card image cap">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                        <label for="childFirstName">Child's First Name</label>
-                        <input id="childFirstName" class="input1" type="text" name="childFirstName"
-                            placeholder="Nick name is also ok">
-                    </div>
-    
-                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                        <label for="childLastName">Child's Last Name</label>
-                        <input id="childLastName" class="input1" type="text" name="childLastName"
-                            placeholder="Initial is also ok">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6 comf-font wrap-input1">
-                        <label for="childBirthday">Child's Birthday</label>
-                        <input id="childBirthday" class="input1" type="date" name="childBirthday"
-                            placeholder="Child's Birthday">
-                    </div>
-
-                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                        <label for="childInterest">Child's Interest</label>
-                        <input id="childInterest" class="input1" type="text" name="childInterest"
-                            placeholder="Write something that the child likes to do">
-                    </div>
-
-                    
-
-                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
-                        <label for="chlidStory">Share their story</label>
-                        <textarea id="chlidStory" class="input1" name="childStory"
-                            placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
-                    </div>
-
-                    <!-- Custom File Uploader  -->
-                    <main class="col-lg-6 ml-auto">
-                        <div class="box">
-                            <div class="content">
-                                <p>Photo is required; it can be of the wish item, relevant clip art, or child (if
-                                    confidentiality is
-                                    an issue, try using a photo of their hands making a heart, masked face,
-                                    wearing sunglasses, etc.)</p>
-                                <div class="uploader-left">
-                                    <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
-                                </div>
-                                <div class="uploader-right">
-                                    <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
-                                    <span class="file-wrapper">
-                                        <input type="file" name="wishCardImage" id="filetag"
-                                            class="uploader upload-btn btn-large btn-alpha">
-                                        <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
-                                    </span>
+                        <!-- Custom File Uploader  -->
+                        <main class="col-lg-6 ml-auto">
+                            <div class="box">
+                                <div class="content">
+                                    <p>Photo is required; it can be of the wish item, relevant clip art, or child (if
+                                        confidentiality is
+                                        an issue, try using a photo of their hands making a heart, masked face,
+                                        wearing sunglasses, etc.)</p>
+                                    <div class="uploader-left">
+                                        <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
+                                    </div>
+                                    <div class="uploader-right">
+                                        <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
+                                        <span class="file-wrapper">
+                                            <input type="file" name="wishCardImage" id="filetag"
+                                                class="uploader upload-btn btn-large btn-alpha">
+                                            <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </main>
-                </div>
-
-
-                <div class="col-lg-6 comf-font wrap-input1">
-                    <label for="address">Shipping address</label>
-                    <input id="childInterest" class="input1" type="text" name="childInterest"
-                        placeholder="street name">
-                </div>
-
-
-                <div id="submit-btn" class="comf-font">
-                    <div class="contact1-form-btn">
-                        <input value="Submit" type="submit" class="contact1-form-btn">
+                        </main>
                     </div>
-                </div>
+
+                    <h6 class="comf-font pb-3">Shipping address (where to deliver this item?)</h6>
+
+                    <div class="row">
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Address Line 1</label>
+                            <input id="" class="input1" type="text" name="address1"
+                                placeholder="(e.g. 1004 Donate St.)">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Address Line 2</label>
+                            <input id="" class="input1" type="text" name="address2"
+                                placeholder="(e.g. Suite 200)">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">City</label>
+                            <input id="city" class="input1" type="address" name="city"
+                                placeholder="(e.g. Chicago )">
+                        </div>
+                    </div>
+
+                    <div class="row pb-2">
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">State</label>
+                            <input id="" class="input1" type="text" name=""
+                                placeholder="(e.g. Illinois )">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Zipcode</label>
+                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                                placeholder="(e.g. 60640 )">
+                        </div>
+                        <div class="col-lg-4 comf-font wrap-input1">
+                            <label for="address">Country</label>
+                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                                placeholder="(e.g. USA )">
+                        </div>
+                    </div>
+                    
+
+
+                    <div id="submit-btn" class="comf-font pt-5">
+                        <div class="contact1-form-btn">
+                            <input value="Submit" type="submit" class="contact1-form-btn">
+                        </div>
+                    </div>
             </form>
         </div>
     </div>
 
     <%- include('./templates/footer')-%>
     <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
-    
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
     </script>
