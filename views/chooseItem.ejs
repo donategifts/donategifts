@@ -52,6 +52,9 @@
                             <option value="3">Kids (Age: 6-8)</option>
                             <option value="4">Kids (Age: 9-11)</option>
                             <option value="5">Teens</option>
+                            <option value="6">Youth</option>
+                            <option value="7">All Ages (Option A)</option>
+                            <option value="8">All Ages (Option B)</option>
                         </select>
                     </div>
 
@@ -116,7 +119,20 @@
                         </main>
                     </div>
 
-                    <h6 class="comf-font pb-3">Shipping address (where to deliver this item?)</h6>
+                    <div class="row pb-5">
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="deadline">Set last date for the wish item delivery (skip if no deadline)</label>
+                            <input id="deadline" class="input1" type="date" name="deadline">
+                        </div>
+    
+                        <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                            <label for="occasion">What's the occasion?</label>
+                            <input id="occasion" class="input1" type="text" name="occasion"
+                            placeholder="(e.g. holiday, birthday, graduation)">
+                        </div>
+                    </div>
+
+                    <h6 class="comf-font pb-2">Shipping address (where to deliver this item?)</h6>
 
                     <div class="row">
                         <div class="col-lg-4 comf-font wrap-input1">

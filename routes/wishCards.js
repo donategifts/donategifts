@@ -305,39 +305,63 @@ router.post('/message', async (req, res) => {
 // Move this later when cleaning up this route
 
 let babies = [
-  '/img/baby_item1.png',
-  '/img/baby_item2.png',
-  '/img/baby_item3.png',
-  '/img/baby_item4.png',
-  '/img/baby_item5.png',
+  '/img/chooseFrom/baby_item1.png',
+  '/img/chooseFrom/baby_item2.png',
+  '/img/chooseFrom/baby_item3.png',
+  '/img/chooseFrom/baby_item4.png',
+  '/img/chooseFrom/baby_item5.png',
 ];
 let preschoolers = [
-  '/img/pre_item1.png',
-  '/img/pre_item2.png',
-  '/img/pre_item3.png',
-  '/img/pre_item4.png',
-  '/img/pre_item5.png',
+  '/img/chooseFrom/pre_item1.png',
+  '/img/chooseFrom/pre_item2.png',
+  '/img/chooseFrom/pre_item3.png',
+  '/img/chooseFrom/pre_item4.png',
+  '/img/chooseFrom/pre_item5.png',
 ];
 let kids6_8 = [
-  '/img/kid6-8_item1.png',
-  '/img/kid6-8_item2.png',
-  '/img/kid6-8_item3.png',
-  '/img/kid6-8_item4.png',
-  '/img/kid6-8_item5.png',
+  '/img/chooseFrom/kid6-8_item1.png',
+  '/img/chooseFrom/kid6-8_item2.png',
+  '/img/chooseFrom/kid6-8_item3.png',
+  '/img/chooseFrom/kid6-8_item4.png',
+  '/img/chooseFrom/kid6-8_item5.png',
 ];
 let kids9_11 = [
-  '/img/kid9-11_item1.png',
-  '/img/kid9-11_item2.png',
-  '/img/kid9-11_item3.png',
-  '/img/kid9-11_item4.png',
-  '/img/kid9-11_item5.png',
+  '/img/chooseFrom/kid9-11_item1.png',
+  '/img/chooseFrom/kid9-11_item2.png',
+  '/img/chooseFrom/kid9-11_item3.png',
+  '/img/chooseFrom/kid9-11_item4.png',
+  '/img/chooseFrom/kid9-11_item5.png',
 ];
 let teens = [
-  '/img/teens_item1.png',
-  '/img/teens_item2.png',
-  '/img/teens_item3.png',
-  '/img/teens_item4.png',
-  '/img/teens_item5.png',
+  '/img/chooseFrom/teens_item1.png',
+  '/img/chooseFrom/teens_item2.png',
+  '/img/chooseFrom/teens_item3.png',
+  '/img/chooseFrom/teens_item4.png',
+  '/img/chooseFrom/teens_item5.png',
+];
+
+let youth = [
+  '/img/chooseFrom/youth_item1.png',
+  '/img/chooseFrom/youth_item2.png',
+  '/img/chooseFrom/youth_item3.png',
+  '/img/chooseFrom/youth_item4.png',
+  '/img/chooseFrom/youth_item5.png',
+];
+
+let allAgesA = [
+  '/img/chooseFrom/all_item1.png',
+  '/img/chooseFrom/all_item2.png',
+  '/img/chooseFrom/all_item3.png',
+  '/img/chooseFrom/all_item4.png',
+  '/img/chooseFrom/all_item5.png',
+];
+
+let allAgesB = [
+  '/img/chooseFrom/allB_item1.png',
+  '/img/chooseFrom/allB_item2.png',
+  '/img/chooseFrom/allB_item3.png',
+  '/img/chooseFrom/allB_item4.png',
+  '/img/chooseFrom/allB_item5.png',
 ];
 
 
@@ -352,7 +376,10 @@ router.get('/defaults/:id', async (req, res) => {
   else if (ageCategory === 2) imageChoices = preschoolers;
   else if (ageCategory === 3) imageChoices = kids6_8;
   else if (ageCategory === 4) imageChoices = kids9_11;
-  else imageChoices = teens;
+  else if (ageCategory === 5) imageChoices = teens;
+  else if (ageCategory === 6) imageChoices = youth;
+  else if (ageCategory === 7) imageChoices = allAgesA;  
+  else imageChoices = allAgesB;
   res.render('imageChoices', { imageChoices }, (error, html) => {
     if (error) {
       res.status(400).json({ success: false, error });
