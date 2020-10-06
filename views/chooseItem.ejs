@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="create-wish-card">
             <!-- wishCardForm starts here-->
-            <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST"
+            <form class="container-fluid" id="wishCardForm" action="/wishcards/guided/" method="POST"
                 enctype="multipart/form-data">
                 <h4 class="crayon-font wish-card-form-title">
                     For a faster wish card creation <br />
@@ -90,8 +90,8 @@
                         </div>
 
                         <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
-                            <label for="chlidStory">Share their story</label>
-                            <textarea id="chlidStory" class="input1" name="childStory"
+                            <label for="childStory">Share their story</label>
+                            <textarea id="childStory" class="input1" name="childStory"
                                 placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
                         </div>
 
@@ -121,8 +121,9 @@
 
                     <div class="row pb-5">
                         <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                            <label for="deadline">Set last date for the wish item delivery (skip if no deadline)</label>
-                            <input id="deadline" class="input1" type="date" name="deadline">
+                            <label for="deliveryDate">Set last date for the wish item delivery (skip if no
+                                deadline)</label>
+                            <input id="deliveryDate" class="input1" type="date" name="deliveryDate">
                         </div>
 
                         <div class="col-lg-6 ml-auto comf-font wrap-input1">
@@ -136,33 +137,36 @@
 
                     <div class="row">
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">Address Line 1</label>
-                            <input id="" class="input1" type="text" name="address1"
+                            <label for="address1">Address Line 1</label>
+                            <input id="address1" class="input1" type="text" name="address1"
                                 placeholder="(e.g. 1004 Donate St.)">
                         </div>
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">Address Line 2</label>
-                            <input id="" class="input1" type="text" name="address2" placeholder="(e.g. Suite 200)">
+                            <label for="address2">Address Line 2</label>
+                            <input id="address2" class="input1" type="text" name="address2"
+                                placeholder="(e.g. Suite 200)">
                         </div>
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">City</label>
-                            <input id="city" class="input1" type="address" name="city" placeholder="(e.g. Chicago )">
+                            <label for="address_city">City</label>
+                            <input id="address_city" class="input1" type="text" name="address_city"
+                                placeholder="(e.g. Chicago )">
                         </div>
                     </div>
 
                     <div class="row pb-2">
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">State</label>
-                            <input id="" class="input1" type="text" name="" placeholder="(e.g. Illinois )">
+                            <label for="address_state">State</label>
+                            <input id="address_state" class="input1" type="text" name="address_state"
+                                placeholder="(e.g. Illinois )">
                         </div>
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">Zipcode</label>
-                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                            <label for="address_zip">Zipcode</label>
+                            <input id="address_zip" class="input1" type="text" name="address_zip"
                                 placeholder="(e.g. 60640 )">
                         </div>
                         <div class="col-lg-4 comf-font wrap-input1">
-                            <label for="address">Country</label>
-                            <input id="childInterest" class="input1" type="text" name="childInterest"
+                            <label for="address_country">Country</label>
+                            <input id="address_country" class="input1" type="text" name="address_country"
                                 placeholder="(e.g. USA )">
                         </div>
                     </div>

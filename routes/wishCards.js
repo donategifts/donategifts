@@ -80,14 +80,15 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
         wishItemPrice: Number(req.body.wishItemPrice),
         wishCardImage: req.file.location,
         createdBy: res.locals.user._id,
-        address: {
+        // Uncomment once address fields are added to profile page.
+        /* address: {
           address1: req.body.address1,
           address2: req.body.address2,
           city: req.body.address_city,
           state: req.body.address_state,
           zip: req.body.address_zip,
           country: req.body.address_country,
-        },
+        }, */
         ...req.body,
       });
       newCard.save((err) => {
