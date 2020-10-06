@@ -74,17 +74,77 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
         must also be less than 5 megabytes.'
     );
   } else {
-    var newCard = new WishCard({
-      childBirthday: new Date(req.body.childBirthday),
-      wishItemPrice: Number(req.body.wishItemPrice),
-      wishCardImage: req.file.location,
-      createdBy: res.locals.user._id,
-      ...req.body,
-    });
-    newCard.save((err) => {
-      if (err) console.log(err);
-    });
-    res.redirect('/wishcards');
+    try {
+      let newCard = new WishCard({
+        childBirthday: new Date(req.body.childBirthday),
+        wishItemPrice: Number(req.body.wishItemPrice),
+        wishCardImage: req.file.location,
+        createdBy: res.locals.user._id,
+        address: {
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.address_city,
+          state: req.body.address_state,
+          zip: req.body.address_zip,
+          country: req.body.address_country,
+        },
+        ...req.body,
+      });
+      newCard.save((err) => {
+        if (err) {
+          res.status(400).json({ success: false, error: err });
+        } else {
+          res.status(200).json({ success: true });
+        }
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, error });
+    }
+  }
+});
+
+// @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
+// @route   POST '/wishcards/guided/'
+// @access  Private, must be verified as a partner
+// @tested 	Yes
+router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
+  if (req.file === undefined) {
+    res.send(
+      'Error: File must be in jpeg, jpg, gif, or png format. The file \
+        must also be less than 5 megabytes.'
+    );
+  } else {
+    try {
+      let { itemChoice } = req.body;
+      itemChoice = JSON.parse(itemChoice);
+      let newCard = new WishCard({
+        childBirthday: new Date(req.body.childBirthday),
+        wishItemName: itemChoice.Name,
+        wishItemPrice: Number(itemChoice.Price),
+        wishItemURL: itemChoice.ItemURL,
+        wishCardImage: req.file.location,
+        createdBy: res.locals.user._id,
+        address: {
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.address_city,
+          state: req.body.address_state,
+          zip: req.body.address_zip,
+          country: req.body.address_country,
+        },
+        ...req.body,
+      });
+      newCard.save((err, data) => {
+        if (err) {
+          console.log(err);
+          res.status(400).json({ success: false, error: err });
+        } else {
+          res.status(200).json({ success: true, error: 'No error' });
+        }
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, error });
+    }
   }
 });
 
