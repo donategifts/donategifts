@@ -219,6 +219,7 @@ let getMessageChoices = (userFirstName, childFirstName) => {
 };
 
 let getPreviousMessages = async (wishcard) => {
+  let messages = [];
   if (wishcard.messages.length > 0) {
     messages = await Promise.all(
       wishcard.messages.map(async (messageID) => {
@@ -231,7 +232,7 @@ let getPreviousMessages = async (wishcard) => {
       })
     );
   }
-  return wishcard;
+  return messages;
 };
 
 // @desc    Retrieve one wishcard by its _id
@@ -245,7 +246,7 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
-      wishcard = await getPreviousMessages(wishcard);
+      let messages = await getPreviousMessages(wishcard);
       let defaultMessages = getMessageChoices(
         res.locals.user.fName,
         wishcard.childFirstName
@@ -254,7 +255,7 @@ router.get('/:id', async (req, res) => {
       res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
         wishcard: wishcard ? wishcard : [],
-        messages: messages ? messages : [],
+        messages,
         defaultMessages,
       });
     } catch (error) {
