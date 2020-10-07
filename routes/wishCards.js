@@ -74,17 +74,78 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
         must also be less than 5 megabytes.'
     );
   } else {
-    var newCard = new WishCard({
-      childBirthday: new Date(req.body.childBirthday),
-      wishItemPrice: Number(req.body.wishItemPrice),
-      wishCardImage: req.file.location,
-      createdBy: res.locals.user._id,
-      ...req.body,
-    });
-    newCard.save((err) => {
-      if (err) console.log(err);
-    });
-    res.redirect('/wishcards');
+    try {
+      let newCard = new WishCard({
+        childBirthday: new Date(req.body.childBirthday),
+        wishItemPrice: Number(req.body.wishItemPrice),
+        wishCardImage: req.file.location,
+        createdBy: res.locals.user._id,
+        // Uncomment once address fields are added to profile page.
+        /* address: {
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.address_city,
+          state: req.body.address_state,
+          zip: req.body.address_zip,
+          country: req.body.address_country,
+        }, */
+        ...req.body,
+      });
+      newCard.save((err) => {
+        if (err) {
+          res.status(400).json({ success: false, error: err });
+        } else {
+          res.status(200).json({ success: true });
+        }
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, error });
+    }
+  }
+});
+
+// @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
+// @route   POST '/wishcards/guided/'
+// @access  Private, must be verified as a partner
+// @tested 	Yes
+router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
+  if (req.file === undefined) {
+    res.send(
+      'Error: File must be in jpeg, jpg, gif, or png format. The file \
+        must also be less than 5 megabytes.'
+    );
+  } else {
+    try {
+      let { itemChoice } = req.body;
+      itemChoice = JSON.parse(itemChoice);
+      let newCard = new WishCard({
+        childBirthday: new Date(req.body.childBirthday),
+        wishItemName: itemChoice.Name,
+        wishItemPrice: Number(itemChoice.Price),
+        wishItemURL: itemChoice.ItemURL,
+        wishCardImage: req.file.location,
+        createdBy: res.locals.user._id,
+        address: {
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.address_city,
+          state: req.body.address_state,
+          zip: req.body.address_zip,
+          country: req.body.address_country,
+        },
+        ...req.body,
+      });
+      newCard.save((err, data) => {
+        if (err) {
+          console.log(err);
+          res.status(400).json({ success: false, error: err });
+        } else {
+          res.status(200).json({ success: true, error: 'No error' });
+        }
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, error });
+    }
   }
 });
 
@@ -158,6 +219,7 @@ let getMessageChoices = (userFirstName, childFirstName) => {
 };
 
 let getPreviousMessages = async (wishcard) => {
+  let messages = [];
   if (wishcard.messages.length > 0) {
     messages = await Promise.all(
       wishcard.messages.map(async (messageID) => {
@@ -170,7 +232,7 @@ let getPreviousMessages = async (wishcard) => {
       })
     );
   }
-  return wishcard;
+  return messages;
 };
 
 // @desc    Retrieve one wishcard by its _id
@@ -184,7 +246,7 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
-      wishcard = await getPreviousMessages(wishcard);
+      let messages = await getPreviousMessages(wishcard);
       let defaultMessages = getMessageChoices(
         res.locals.user.fName,
         wishcard.childFirstName
@@ -193,7 +255,7 @@ router.get('/:id', async (req, res) => {
       res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
         wishcard: wishcard ? wishcard : [],
-        messages: messages ? messages : [],
+        messages,
         defaultMessages,
       });
     } catch (error) {
@@ -303,84 +365,33 @@ router.post('/message', async (req, res) => {
 });
 
 // Move this later when cleaning up this route
+let {
+  babies,
+  preschoolers,
+  kids6_8,
+  kids9_11,
+  teens,
+  youth,
+  allAgesA,
+  allAgesB,
+} = require('../utilities/defaultItems');
 
-let babies = [
-  '/img/chooseFrom/baby_item1.png',
-  '/img/chooseFrom/baby_item2.png',
-  '/img/chooseFrom/baby_item3.png',
-  '/img/chooseFrom/baby_item4.png',
-  '/img/chooseFrom/baby_item5.png',
-];
-let preschoolers = [
-  '/img/chooseFrom/pre_item1.png',
-  '/img/chooseFrom/pre_item2.png',
-  '/img/chooseFrom/pre_item3.png',
-  '/img/chooseFrom/pre_item4.png',
-  '/img/chooseFrom/pre_item5.png',
-];
-let kids6_8 = [
-  '/img/chooseFrom/kid6-8_item1.png',
-  '/img/chooseFrom/kid6-8_item2.png',
-  '/img/chooseFrom/kid6-8_item3.png',
-  '/img/chooseFrom/kid6-8_item4.png',
-  '/img/chooseFrom/kid6-8_item5.png',
-];
-let kids9_11 = [
-  '/img/chooseFrom/kid9-11_item1.png',
-  '/img/chooseFrom/kid9-11_item2.png',
-  '/img/chooseFrom/kid9-11_item3.png',
-  '/img/chooseFrom/kid9-11_item4.png',
-  '/img/chooseFrom/kid9-11_item5.png',
-];
-let teens = [
-  '/img/chooseFrom/teens_item1.png',
-  '/img/chooseFrom/teens_item2.png',
-  '/img/chooseFrom/teens_item3.png',
-  '/img/chooseFrom/teens_item4.png',
-  '/img/chooseFrom/teens_item5.png',
-];
-
-let youth = [
-  '/img/chooseFrom/youth_item1.png',
-  '/img/chooseFrom/youth_item2.png',
-  '/img/chooseFrom/youth_item3.png',
-  '/img/chooseFrom/youth_item4.png',
-  '/img/chooseFrom/youth_item5.png',
-];
-
-let allAgesA = [
-  '/img/chooseFrom/all_item1.png',
-  '/img/chooseFrom/all_item2.png',
-  '/img/chooseFrom/all_item3.png',
-  '/img/chooseFrom/all_item4.png',
-  '/img/chooseFrom/all_item5.png',
-];
-
-let allAgesB = [
-  '/img/chooseFrom/allB_item1.png',
-  '/img/chooseFrom/allB_item2.png',
-  '/img/chooseFrom/allB_item3.png',
-  '/img/chooseFrom/allB_item4.png',
-  '/img/chooseFrom/allB_item5.png',
-];
-
-
-// @desc    
+// @desc
 // @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
-// @access  
+// @access
 // @tested 	No
 router.get('/defaults/:id', async (req, res) => {
   let ageCategory = Number(req.params.id);
-  let imageChoices;
-  if (ageCategory === 1) imageChoices = babies;
-  else if (ageCategory === 2) imageChoices = preschoolers;
-  else if (ageCategory === 3) imageChoices = kids6_8;
-  else if (ageCategory === 4) imageChoices = kids9_11;
-  else if (ageCategory === 5) imageChoices = teens;
-  else if (ageCategory === 6) imageChoices = youth;
-  else if (ageCategory === 7) imageChoices = allAgesA;  
-  else imageChoices = allAgesB;
-  res.render('imageChoices', { imageChoices }, (error, html) => {
+  let itemChoices;
+  if (ageCategory === 1) itemChoices = babies;
+  else if (ageCategory === 2) itemChoices = preschoolers;
+  else if (ageCategory === 3) itemChoices = kids6_8;
+  else if (ageCategory === 4) itemChoices = kids9_11;
+  else if (ageCategory === 5) itemChoices = teens;
+  else if (ageCategory === 6) itemChoices = youth;
+  else if (ageCategory === 7) itemChoices = allAgesA;
+  else itemChoices = allAgesB;
+  res.render('itemChoices', { itemChoices }, (error, html) => {
     if (error) {
       res.status(400).json({ success: false, error });
     } else {
