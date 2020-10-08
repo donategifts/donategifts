@@ -13,7 +13,8 @@
 > Jordan Huang  
 > gnorbsl  
 > Ivan Repusic  
-> Jacobjeevan 
+> Jacobjeevan
+
 > Maria Nguyen
 
 ## Usage
