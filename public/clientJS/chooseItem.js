@@ -26,7 +26,7 @@ $(document).ready(function () {
     });
   });
 
-  $('#wishCardForm').on('submit', function (e) {
+  $('#wishCardFormGuided').on('submit', function (e) {
     e.preventDefault();
 
     var form = $(this);
@@ -40,12 +40,16 @@ $(document).ready(function () {
       contentType: false,
       cache: false,
       timeout: 600000,
-      success: function () {
-        showToast('WishCard Created!');
-      },
-      error: function (response, textStatus, errorThrown) {
-        let txtToJson = JSON.parse(response.responseText);
-        showToast(txtToJson.error);
+      statusCode: {
+        200: function (route) {
+          $('#wishCardFormGuided')[0].reset();
+          showToast('WishCard Created!');
+          setTimeout(() => location.assign(route), 2000);
+        },
+        400: function (response) {
+          let txtToJson = JSON.parse(response.responseText);
+          showToast(txtToJson.error);
+        },
       },
     });
   });

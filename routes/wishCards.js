@@ -69,10 +69,12 @@ const User = require('../models/User');
 // @tested 	Yes
 router.post('/', upload.single('wishCardImage'), (req, res) => {
   if (req.file === undefined) {
-    res.send(
-      'Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 5 megabytes.'
-    );
+    res.status(400).send({
+      success: false,
+      error:
+        'Error: File must be in jpeg, jpg, gif, or png format. The file \
+        must also be less than 5 megabytes.',
+    });
   } else {
     try {
       let newCard = new WishCard({
@@ -95,7 +97,7 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
         if (err) {
           res.status(400).json({ success: false, error: err });
         } else {
-          res.status(200).json({ success: true });
+          res.status(200).send('/wishcards/');
         }
       });
     } catch (error) {
@@ -110,10 +112,12 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
 // @tested 	Yes
 router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
   if (req.file === undefined) {
-    res.send(
-      'Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 5 megabytes.'
-    );
+    res.status(400).send({
+      success: false,
+      error:
+        'Error: File must be in jpeg, jpg, gif, or png format. The file \
+        must also be less than 5 megabytes.',
+    });
   } else {
     try {
       let { itemChoice } = req.body;
@@ -137,10 +141,9 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
       });
       newCard.save((err, data) => {
         if (err) {
-          console.log(err);
           res.status(400).json({ success: false, error: err });
         } else {
-          res.status(200).json({ success: true, error: 'No error' });
+          res.status(200).send('/wishcards/');
         }
       });
     } catch (error) {
@@ -161,12 +164,10 @@ router.get('/', async (req, res) => {
       wishcards: results,
     });
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+    res.status(400).send({
+      success: false,
+      error: error,
+    });
   }
 });
 
@@ -187,12 +188,10 @@ router.post('/search', async (req, res) => {
       wishcards: results,
     });
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+    res.status(400).send({
+      success: false,
+      error: error,
+    });
   }
 });
 
@@ -259,12 +258,10 @@ router.get('/:id', async (req, res) => {
         defaultMessages,
       });
     } catch (error) {
-      res.status(400).send(
-        JSON.stringify({
-          success: false,
-          error: error,
-        })
-      );
+      res.status(400).send({
+        success: false,
+        error: error,
+      });
     }
   }
 });
@@ -286,7 +283,7 @@ router.get('/get/random', async (req, res) => {
       if (error) {
         res.status(400).json({ success: false, error });
       } else {
-        res.send(html);
+        res.status(200).send(html);
       }
     });
   } catch (error) {
@@ -314,12 +311,10 @@ router.put('/update/:id', async (req, res) => {
         */
     result.save();
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+    res.status(400).send({
+      success: false,
+      error: error,
+    });
   }
 });
 
@@ -340,27 +335,22 @@ router.post('/message', async (req, res) => {
     );
 
     if (updatedWishCard) {
-      res.status(200).send(
-        JSON.stringify({
-          success: true,
-          error: null,
-          data: newMessage,
-        })
-      );
+      res.status(200).send({
+        success: true,
+        error: null,
+        data: newMessage,
+      });
     } else {
-      res.status(400).send(
-        JSON.stringify({
-          success: false,
-        })
-      );
+      res.status(400).send({
+        success: false,
+        error: 'Could not Update Card',
+      });
     }
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+    res.status(400).send({
+      success: false,
+      error: error,
+    });
   }
 });
 
