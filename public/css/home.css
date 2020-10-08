@@ -496,6 +496,11 @@ img {
   padding: 80px 0;
 }
 
+.view.overlay {
+  max-height: 350px;
+  overflow: hidden;
+}
+
 @media screen and (max-width: 992px) {
   .card {
     margin-left: 20px;
