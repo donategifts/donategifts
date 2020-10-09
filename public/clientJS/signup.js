@@ -3,6 +3,7 @@ $(document).ready(function () {
   $(".signup").submit(function (e) {
 
     e.preventDefault();
+    $("#submit-btn").prop("disabled",true);
 
     let fName = $("#fName").val();
     let lName = $("#lName").val();
@@ -23,13 +24,19 @@ $(document).ready(function () {
         userRole: userRole
       },
       success: function(response, textStatus, xhr) {
+        $("#submit-btn").prop("disabled",false);
+      
         showToast("Please check your mails for a verification email");
         console.log(response.email)
-          setTimeout(function(){ window.location = "/users/login" }, 15000);
+        setTimeout(function(){ window.location = "/users/login" }, 15000);
+    
+
       },
       error: function(response, textStatus, errorThrown) {
         let txtToJson =  JSON.parse(response.responseText);
         showToast(txtToJson.error);
+        $("#submit-btn").prop("disabled",false);
+
       }
     });
 })
