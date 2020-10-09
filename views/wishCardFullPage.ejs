@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- NOTE: This page is NOT complete. -->
+<!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
 
 <head>
     <title>See Each Wish Card | Donate Gifts</title>
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="../css/wishCardFull.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- js scripts -->
+    <script src="/clientJS/wishCardFullPage.js"></script>
 </head>
 
 <body>
@@ -21,8 +25,8 @@
                     <%= wishcard.childFirstName %>'s Wishcard</h1>
                 <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image">
                 <div class="button-center">
-                    <button type="button" id="donate-btn" class="wishcard-btn btn-grn-bg comf-font"><a href="<%= wishcard.wishItemURL %>"
-                            target="_blank">Donate Gift</a></button>
+                    <button type="button" id="donate-btn" class="wishcard-btn btn-grn-bg comf-font"><a
+                            href="<%= wishcard.wishItemURL %>" target="_blank">Donate Gift</a></button>
                 </div>
             </div>
 
@@ -34,22 +38,35 @@
                 <p class="card-text">About Me : <%= wishcard.childStory %></p>
             </div>
 
-            <div class="section-write mt-5 comf-font">
+            <div class="write-msg mt-5 comf-font">
                 <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
-                <label for="message">Send best wishes or write something nice</label>
-                <textarea name="message" id="message" cols="35" rows="5" placeholder="(e.g. Happy birthday )"></textarea>
-                <input type="submit" id="submit" value="Send Message">
+                <p class="card-text">Select a message to send</p>
+                <!-- After discussion, we decided to just do a pre-written phrase checkbox,
+                instead of allowing people to write personal messages
+                to prevent possible profanity -->
+                <form class="message" action="/wishcards/message" method="post">
+                    <select class="custom-select">
+                        <option selected>Messages</option>
+                        <% for (let i = 0; i < defaultMessages.length; i++) { %>
+                        <option value=<%=i%>> <%= defaultMessages[i] %></option>
+                        <% } %>
+                    </select>
+                    <input type="submit" id="submit" class="mt-4" value="Send Message">
+                </form>
+
             </div>
 
-            <div class="section-msg">
-                <% if (wishcard.messages.length === 0) { %>
+            <!-- This part needs to show all users' messages sent to this wishcard 
+            wishcard model has 'messages' field which is an objectId array of 'Message'-->
+            <div class="show-msg">
+                <% if (messages.length === 0) { %>
                 <h6 class="comf-font">No one signed <%= wishcard.childFirstName %>'s card yet.
                     Be the first person to send a message.</h6>
                 <% } else { %>
                 <div>
-                    <% for (var i = 0; i < wishcard.messages.length; i++) { %>
-                    <p>"This part needs to show all users' messages sent to this wishcard"</p>
-                    <p>Sent by: <%= user.firstName %></p>
+                    <% for (let i = 0; i < messages.length; i++) { %>
+                    <p><%= messages[i].message %></p>
+                    <p>Sent by: <%= messages[i].fromUser %></p>
                     <!-- also add a timestamp here-->
                     <% } %>
                 </div>
@@ -59,12 +76,18 @@
     </div>
 
     <%- include('./templates/footer')-%>
-    <!-- jquery -->
-    <script src="../clientJS/wishCard.js"></script>
+    <script>
+        let messageFrom = `<%- JSON.stringify(user) %>`;
+        let messageTo = `<%- JSON.stringify(wishcard) %>`;
+    </script>
+    <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
         integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-    </script>
+        </script>
 </body>
 
 </html>

@@ -73,7 +73,7 @@ router.get("/login", redirectProfile, (req, res) => {
       user: res.locals.user,
     });
   } catch (error) {
-    return sendError(res, 400, err);
+    return sendError(res, 400, error);
   }
 });
 
@@ -184,7 +184,9 @@ router.post("/agency", async (req, res) => {
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
 router.post("/signup", redirectProfile, async (req, res) => {
-  const { fName, lName, email, password, userRole } = req.body;
+  const { fName, lName, email, password, passwordConfirm, userRole } = req.body;
+  if (passwordConfirm !== password)
+    return sendError(res, 404, "Password fields do not match");
   const candidate = await User.findOne({
     email: email,
   });
@@ -268,6 +270,29 @@ router.get('/terms', async (req, res) => {
 			error: err
 		}));
 	}
+});
+
+
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested 	
+router.get("/choose", redirectLogin, async (req, res) => {
+  try {
+    let user = res.locals.user;
+    let params = { user };
+    if (user.userRole == "partner") {
+      let agency = await Agency.findOne({ accountManager: user._id });
+      if (!agency) {
+        return sendError(res, 404, "Agency Not Found");
+      }
+      params = { ...params, agency };
+    }
+    res.render("chooseItem", params);
+  } catch (err) {
+    return sendError(res, 400, err);
+  }
 });
 
 module.exports = router;

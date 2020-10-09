@@ -1,0 +1,41 @@
+[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+[type='radio'] + img {
+  cursor: pointer;
+}
+
+[type='radio']:checked + img {
+  box-shadow: 4px 4px 18px 4px rgba(139, 198, 77, 0.6);
+}
+
+.choicesContainer {
+  margin-top: 1.5em;
+  margin-bottom: 2em;
+}
+
+.choicesContainer label {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img.itemChoice {
+  max-width: 250px;
+  height: 250px;
+  padding: 0.8em;
+}
+
+#ageGroupSelector {
+  font-size: 1.1em;
+  padding: 0.5em 1.1em;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  color: rgba(139, 198, 77, 1);
+  border: rgba(139, 198, 77, 1) solid 2px;
+  outline: none;
+}
