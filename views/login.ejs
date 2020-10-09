@@ -14,6 +14,9 @@
 
 <body>
 
+<% if (locals.email) { %>
+  <p><%= email%></p>
+<%}%>
   <div class="signup-bg">
     <div class="d-flex container justify-content-center mg-top-btm">
       <div class="wrap-box">
@@ -62,10 +65,10 @@
     integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <% if (successNotification) { %>
+  <% if (locals.successNotification) { %>
     <script>showToast("<%= successNotification.msg%>")</script>
   <%}%>
-  <% if (errorNotification) { %>
+  <% if (locals.errorNotification) { %>
     <script>showToast("<%= errorNotification.msg%>")</script>
   <%}%>
 </body>

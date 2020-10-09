@@ -24,10 +24,10 @@ $(document).ready(function () {
       },
       success: function(response, textStatus, xhr) {
         showToast("Please check your mails for a verification email");
-          setTimeout(function(){ window.location = "/users/login" }, 3000);
+        console.log(response.email)
+          setTimeout(function(){ window.location = "/users/login" }, 15000);
       },
       error: function(response, textStatus, errorThrown) {
-          console.log(response)
         let txtToJson =  JSON.parse(response.responseText);
         showToast(txtToJson.error);
       }

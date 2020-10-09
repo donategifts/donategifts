@@ -29,17 +29,18 @@ const sendMail = async (from, to, subject,  message) => {
 			text: message
 		};
 
-		transporter.sendMail(mailOptions, (error, data) => {
-			if (error) {
-				return {error: error}
-			} else {
-				console.log("sendMail function successfully called");
-				if (process.env.NODE_ENV === 'development') {
-					console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
-				}
-				return {success: true}
+		let data = await transporter.sendMail(mailOptions)
+
+		if (!data) {
+			return {success: false}
+		} else {
+			console.log("sendMail function successfully called");
+			if (process.env.NODE_ENV === 'development') {
+				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
 			}
-		});
+			return {success: true, data: nodemailer.getTestMessageUrl(data)}
+		}
+
 	} else {
 		return {success: false};
 	}

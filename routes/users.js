@@ -232,10 +232,8 @@ router.post('/signup', async (req, res) => {
 
 			console.log(emailResponse)
 
-			return res.status(200).render('login.ejs', {
-				user: {},
-				successNotification: {msg: "Please check your email inbox to verify your Email"},
-				errorNotification:  null
+			return res.status(200).send( {
+				email: emailResponse?emailResponse.data:''
 			});
 
 		} catch (err) {
