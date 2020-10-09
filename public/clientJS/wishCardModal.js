@@ -6,7 +6,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // extract values from button that contain child name / amazonlink
     let amazonUrl = button[0].dataset.valueUrl;
     let childName = button[0].dataset.valueName;
-    let modalWarningMessage = ` Hello, before proceeding we want to make sure that you are sure you want to donate. 
+    let modalWarningMessage = ` Hello, before proceeding we want to make sure that you are certain that you want to donate. 
         Since we can not follow the donation process from amazon we trust that you will see the process to the end 
         and buy the selected for ${childName}. Once you click on the "Donate gift" button you  will be redirect to amazon and we will 
         inform ${childName} that the gift is on its way. If for some reason you are unable to place the order on amazon but you have clicked 
