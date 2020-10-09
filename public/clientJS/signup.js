@@ -22,10 +22,12 @@ $(document).ready(function () {
         passwordConfirm: passwordConfirm,
         userRole: userRole
       },
-      success: function(route, textStatus, xhr) {
-        location.replace(route);
+      success: function(response, textStatus, xhr) {
+        showToast("Please check your mails for a verification email");
+          setTimeout(function(){ window.location = "/users/login" }, 3000);
       },
       error: function(response, textStatus, errorThrown) {
+          console.log(response)
         let txtToJson =  JSON.parse(response.responseText);
         showToast(txtToJson.error);
       }

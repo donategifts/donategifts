@@ -94,10 +94,12 @@ router.get("/profile", redirectLogin, async (req, res) => {
   try {
     let user = res.locals.user;
     let params = { user };
-    if (user.userRole == "partner") {
+    if (user.userRole === "partner") {
+    	console.log(user)
       let agency = await Agency.findOne({ accountManager: user._id });
+    	console.log(agency)
       if (!agency) {
-        return sendError(res, 404, "Agency Not Found");
+		  return res.render("agency");
       }
       params = { ...params, agency };
     }
@@ -176,8 +178,9 @@ router.post("/agency", async (req, res) => {
   });
   try {
     await newAgency.save();
-    var agencyId = mongoose.Types.ObjectId(newAgency._id);
-    req.session.agencyId = agencyId;
+
+    console.log(newAgency)
+	  req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
     console.log("agency data saved");
     res.send("/users/profile");
   } catch (err) {
@@ -203,7 +206,7 @@ router.post('/signup', async (req, res) => {
 		email: email
 	});
 	if (candidate) {
-		return res.status(409).send('This email is already taken. Try another');
+		return sendError(res, 409, "This email is already taken. Try another");
 	} else {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
@@ -227,7 +230,9 @@ router.post('/signup', async (req, res) => {
 				'Email verification',
 				`Please verify your email by clicking on this link: ${process.env.BASE_URL}/users/verify/${verificationHash}`)
 
-			return res.status(200).render('login', {
+			console.log(emailResponse)
+
+			return res.status(200).render('login.ejs', {
 				user: {},
 				successNotification: {msg: "Please check your email inbox to verify your Email"},
 				errorNotification:  null
@@ -252,25 +257,33 @@ router.post('/login', redirectProfile, async (req, res) => {
 		email: email
 	});
 	if (user) {
-		if(!user.emailVerfied) {
-			return res.status(403).render('login', {
-				user: res.locals.user,
-				successNotification: null,
-				errorNotification:  {msg: "Please verify your Email"}
-			});
-		}
+
 
 		if (await bcrypt.compare(password, user.password)) {
+
+			if(!user.emailVerfied) {
+
+				return res.status(403).render('login', {
+					user: res.locals.user,
+					successNotification: null,
+					errorNotification: {msg: "Please verify your Email"}
+				});
+			}
+
 			req.session.userId = user.id;
 			return res.redirect('/users/profile');
-		} else {
 
+		} else {
 			return res.status(403).render('login', {
 				user: res.locals.user,
 				successNotification: null,
-				errorNotification:  {msg: "Username and/or password incorrect"}
+				errorNotification: {msg: "Username and/or password incorrect"}
 			});
+
 		}
+
+
+
 	}
 	res.redirect('/users/login');
 });
@@ -332,6 +345,7 @@ router.get('/verify/:hash', async (req, res) => {
 				errorNotification: null
 			});
 		} else {
+
 			return res.status(400).render('login', {
 				user: res.locals.user,
 				successNotification: null,
@@ -340,6 +354,7 @@ router.get('/verify/:hash', async (req, res) => {
 		}
 
 	} catch (error) {
+
 		return res.status(500).render('login', {
 			user: res.locals.user,
 			successNotification: null,

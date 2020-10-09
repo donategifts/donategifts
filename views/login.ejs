@@ -7,16 +7,13 @@
   <%- include('./templates/header')-%>
 
   <link rel="stylesheet" href="/css/signup.css">
+
 </head>
+<%- include('./templates/nav')-%>
+
 
 <body>
-  <%- include('./templates/nav')-%>
-  <% if (successNotification) { %>
-    <p><%= successNotification.msg%></p>
-  <%}%>
-  <% if (errorNotification) { %>
-    <p><%= errorNotification.msg%></p>
-  <%}%>
+
   <div class="signup-bg">
     <div class="d-flex container justify-content-center mg-top-btm">
       <div class="wrap-box">
@@ -64,6 +61,13 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
     integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
   </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <% if (successNotification) { %>
+    <script>showToast("<%= successNotification.msg%>")</script>
+  <%}%>
+  <% if (errorNotification) { %>
+    <script>showToast("<%= errorNotification.msg%>")</script>
+  <%}%>
 </body>
 
 </html>

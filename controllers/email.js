@@ -19,41 +19,44 @@ const mailGun = require('nodemailer-mailgun-transport');
 //IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject,  message) => {
 
-	const transporter = await getTransport()
+	const transporter = await getTransport();
 
-	const mailOptions = {
-		from: from,
-		to: to,
-		subject: subject,
-		text: message
-	};
+	if (transporter) {
+		const mailOptions = {
+			from: from,
+			to: to,
+			subject: subject,
+			text: message
+		};
 
-	transporter.sendMail(mailOptions, (error, data) => {
-		if (error) {
-			return {error}
-		} else {
-			console.log("sendMail function successfully called");
-			if (process.env.NODE_ENV === 'development') {
-				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+		transporter.sendMail(mailOptions, (error, data) => {
+			if (error) {
+				return {error: error}
+			} else {
+				console.log("sendMail function successfully called");
+				if (process.env.NODE_ENV === 'development') {
+					console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+				}
+				return {success: true}
 			}
-			return {data}
-		}
-	});
+		});
+	} else {
+		return {success: false};
+	}
+
 
 };
 
 const getTransport = async () => {
 
+	console.log(process.env.NODE_ENV)
 		if (process.env.NODE_ENV === 'development') {
 
-			nodemailer.createTestAccount((err, account) => {
-				if (err) {
-					console.error('Failed to create a testing account. ' + err.message);
-					return false;
-				}
+			const account = await nodemailer.createTestAccount();
 
-				// Create a SMTP transporter object
-				transporter = nodemailer.createTransport({
+			if (account) {
+
+				return nodemailer.createTransport({
 					host: account.smtp.host,
 					port: account.smtp.port,
 					secure: account.smtp.secure,
@@ -62,9 +65,8 @@ const getTransport = async () => {
 						pass: account.pass
 					}
 				});
-				return transporter;
+			}
 
-			});
 
 			//LIVE data
 		} else {
@@ -75,8 +77,7 @@ const getTransport = async () => {
 				}
 			}
 
-			const transporter = nodemailer.createTransport(mailGun(auth));
-			return transporter
+			return nodemailer.createTransport(mailGun(auth))
 
 		}
 

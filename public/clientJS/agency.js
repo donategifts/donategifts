@@ -2,10 +2,10 @@ $(document).ready(function () {
   $(".signup-agency").submit(function (e) {
     e.preventDefault();
 
-    var agencyName = $("#agencyName").val();
-    var agencyWebsite = $("#agencyWebsite").val();
-    var agencyPhone = $("#agencyPhone").val();
-    var agencyBio = $("#agencyBio").val();
+    let agencyName = $("#agencyName").val();
+    let agencyWebsite = $("#agencyWebsite").val();
+    let agencyPhone = $("#agencyPhone").val();
+    let agencyBio = $("#agencyBio").val();
 
     $.ajax({
       type: "POST",
