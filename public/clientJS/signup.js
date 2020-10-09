@@ -3,6 +3,7 @@ $(document).ready(function () {
   $(".signup").submit(function (e) {
 
     e.preventDefault();
+    $("#submit-btn").prop("disabled",true);
 
     let fName = $("#fName").val();
     let lName = $("#lName").val();
@@ -24,10 +25,14 @@ $(document).ready(function () {
       },
       success: function(route, textStatus, xhr) {
         location.replace(route);
+        $("#submit-btn").prop("disabled",false);
+
       },
       error: function(response, textStatus, errorThrown) {
         let txtToJson =  JSON.parse(response.responseText);
         showToast(txtToJson.error);
+        $("#submit-btn").prop("disabled",false);
+
       }
     });
 })
