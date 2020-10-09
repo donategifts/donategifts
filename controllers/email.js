@@ -37,8 +37,11 @@ const sendMail = async (from, to, subject,  message) => {
 			console.log("sendMail function successfully called");
 			if (process.env.NODE_ENV === 'development') {
 				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+				return {success: true, data: nodemailer.getTestMessageUrl(data)}
+
+			} else {
+				return {success: true, data: ''}
 			}
-			return {success: true, data: nodemailer.getTestMessageUrl(data)}
 		}
 
 	} else {
