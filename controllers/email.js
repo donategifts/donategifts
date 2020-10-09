@@ -3,8 +3,8 @@
  * Class: CSC 337
  * Type: Final Project
  * FileName: controllers/email.js
- * FileDescription: 
- *      When user fills out the 'Contact' form in about.html, 
+ * FileDescription:
+ *      When user fills out the 'Contact' form in about.html,
  *      it will use nodemailer and mailgun to send the user's message
  *      to the mailgun authorized email address
  *      all the req.body data from the 'Contact' form will be saved in our 'contacts' DB collection.
@@ -17,46 +17,50 @@ const mailGun = require('nodemailer-mailgun-transport');
 
 //cb is callback, cb(err, null) means if err, get err, else null
 //IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
-const sendMail = (email, name, subject, message, cb) => {
-	
-	getTransport()
-	.then(transport => {
+const sendMail = async (from, to, subject,  message) => {
+
+	const transporter = await getTransport();
+
+	if (transporter) {
 		const mailOptions = {
-			from: email,
-			to: 'stacy.sealky.lee@gmail.com',
-			subject: `${subject} | sent by: ${name}`,
+			from: from,
+			to: to,
+			subject: subject,
 			text: message
 		};
-		
-		transporter.sendMail(mailOptions, (err, data) => {
-			if (err) {
-				cb(err, null);
-				console.log(err);
+
+		let data = await transporter.sendMail(mailOptions)
+
+		if (!data) {
+			return {success: false}
+		} else {
+			console.log("sendMail function successfully called");
+			if (process.env.NODE_ENV === 'development') {
+				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+				return {success: true, data: nodemailer.getTestMessageUrl(data)}
+
 			} else {
-				console.log("sendMail function successfully called");	
-				if (process.env.NODE_ENV === 'development') {
-					console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));	
-				} 
-				cb(null, data);
+				return {success: true, data: ''}
 			}
-		});
-	})	
+		}
+
+	} else {
+		return {success: false};
+	}
+
+
 };
 
-const getTransport = () => {
+const getTransport = async () => {
 
-	return new Promise((resolve, reject)=> {
-
+	console.log(process.env.NODE_ENV)
 		if (process.env.NODE_ENV === 'development') {
 
-			nodemailer.createTestAccount((err, account) => {
-				if (err) {
-					reject('Failed to create a testing account. ' + err.message)
-					console.error('Failed to create a testing account. ' + err.message);
-				}
-			
-				// Create a SMTP transporter object
-				transporter = nodemailer.createTransport({
+			const account = await nodemailer.createTestAccount();
+
+			if (account) {
+
+				return nodemailer.createTransport({
 					host: account.smtp.host,
 					port: account.smtp.port,
 					secure: account.smtp.secure,
@@ -65,9 +69,8 @@ const getTransport = () => {
 						pass: account.pass
 					}
 				});
-				resolve(transporter);
-		
-			});
+			}
+
 
 			//LIVE data
 		} else {
@@ -77,14 +80,24 @@ const getTransport = () => {
 					domain: process.env.MAILGUN_DOMAIN
 				}
 			}
-			
-			const transporter = nodemailer.createTransport(mailGun(auth));
-			resolve(transporter);
+
+			return nodemailer.createTransport(mailGun(auth))
 
 		}
-	})
 
 }
 
+const createEmailVerificationHash = () => {
 
-module.exports = sendMail;
+	let result           = '';
+	const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+	for ( let i = 0; i < 18; i++ ) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+
+	return result
+}
+
+
+module.exports = {sendMail, createEmailVerificationHash};

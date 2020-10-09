@@ -4,6 +4,8 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
+const {sendMail, createEmailVerificationHash} = require('../controllers/email');
+
 //IMPORT USER MODEL
 const User = require("../models/User");
 
@@ -67,14 +69,20 @@ router.get("/signup", redirectProfile, (req, res) => {
 // @route   GET '/users/login'
 // @access  Private
 // @tested 	yes
-router.get("/login", redirectProfile, (req, res) => {
-  try {
-    res.status(200).render("login", {
-      user: res.locals.user,
-    });
-  } catch (error) {
-    return sendError(res, 400, error);
-  }
+router.get('/login', redirectProfile, (req, res) => {
+	try {
+		res.status(200).render('login', {
+			user: res.locals.user,
+			successNotification: null,
+			errorNotification: null
+
+		});
+	} catch (error) {
+		res.status(400).send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	}
 });
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
@@ -86,10 +94,12 @@ router.get("/profile", redirectLogin, async (req, res) => {
   try {
     let user = res.locals.user;
     let params = { user };
-    if (user.userRole == "partner") {
+    if (user.userRole === "partner") {
+    	console.log(user)
       let agency = await Agency.findOne({ accountManager: user._id });
+    	console.log(agency)
       if (!agency) {
-        return sendError(res, 404, "Agency Not Found");
+		  return res.render("agency");
       }
       params = { ...params, agency };
     }
@@ -168,8 +178,9 @@ router.post("/agency", async (req, res) => {
   });
   try {
     await newAgency.save();
-    var agencyId = mongoose.Types.ObjectId(newAgency._id);
-    req.session.agencyId = agencyId;
+
+    console.log(newAgency)
+	  req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
     console.log("agency data saved");
     res.send("/users/profile");
   } catch (err) {
@@ -183,65 +194,96 @@ router.post("/agency", async (req, res) => {
 // @access  Public
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
-router.post("/signup", redirectProfile, async (req, res) => {
-  const { fName, lName, email, password, passwordConfirm, userRole } = req.body;
-  if (passwordConfirm !== password)
-    return sendError(res, 404, "Password fields do not match");
-  const candidate = await User.findOne({
-    email: email,
-  });
-  if (candidate) {
-    return sendError(res, 409, "This email is already taken. Try another");
-  } else {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new User({
-      fName,
-      lName,
-      email,
-      password: hashedPassword,
-      userRole,
-    });
-    var userId = mongoose.Types.ObjectId(newUser._id);
-    req.session.userId = userId;
-    try {
-      await newUser.save();
-      //trying to add a second step here
-      //if the userRole is partner then redirect to agency.ejs then profile.ejs
-      if (newUser.userRole == "partner") {
-        return res.send("/users/agency");
-      } else {
-        return res.send("/users/profile");
-      }
-    } catch (err) {
-      console.log(err);
-      return sendError(res, 500, err);
-    }
-  }
+router.post('/signup', async (req, res) => {
+	const {
+		fName,
+		lName,
+		email,
+		password,
+		userRole
+	} = req.body;
+	const candidate = await User.findOne({
+		email: email
+	});
+	if (candidate) {
+		return sendError(res, 409, "This email is already taken. Try another");
+	} else {
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+		const verificationHash = createEmailVerificationHash();
+
+		const newUser = new User({
+			fName,
+			lName,
+			email,
+			verificationHash,
+			password: hashedPassword,
+			userRole
+		});
+		try {
+			await newUser.save();
+			//trying to add a second step here
+			//if the userRole is partner then redirect to agency.ejs then profile.ejs
+
+			const emailResponse = await sendMail(process.env.DEFAULT_EMAIL,
+				email,
+				'Email verification',
+				`Please verify your email by clicking on this link: ${process.env.BASE_URL}/users/verify/${verificationHash}`)
+
+			console.log(emailResponse)
+
+			return res.status(200).send( {
+				email: emailResponse?emailResponse.data:''
+			});
+
+		} catch (err) {
+			console.log(err);
+		}
+	}
 });
 
 // @desc    Render login.html
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
-router.post("/login", redirectProfile, async (req, res) => {
-  const { email, password } = req.body;
-  if (email == null || password == null) {
-    return sendError(res, 400, "Username/Password is required");
-  }
-  try {
-    const user = await User.findOne({ email: email });
-    if (user) {
-      if (await bcrypt.compare(password, user.password)) {
-        req.session.userId = user.id;
-        return res.redirect("/users/profile");
-      }
-    } else {
-      return sendError(res, 404, "Username/Password is incorrect");
-    }
-  } catch (err) {
-    return sendError(res, 400, err);
-  }
+router.post('/login', redirectProfile, async (req, res) => {
+	const {
+		email,
+		password
+	} = req.body;
+	const user = await User.findOne({
+		email: email
+	});
+	if (user) {
+
+
+		if (await bcrypt.compare(password, user.password)) {
+
+			if(!user.emailVerfied) {
+
+				return res.status(403).render('login', {
+					user: res.locals.user,
+					successNotification: null,
+					errorNotification: {msg: "Please verify your Email"}
+				});
+			}
+
+			req.session.userId = user.id;
+			return res.redirect('/users/profile');
+
+		} else {
+			return res.status(403).render('login', {
+				user: res.locals.user,
+				successNotification: null,
+				errorNotification: {msg: "Username and/or password incorrect"}
+			});
+
+		}
+
+
+
+	}
+	res.redirect('/users/login');
 });
 
 // @desc    Render login.html
@@ -272,12 +314,60 @@ router.get('/terms', async (req, res) => {
 	}
 });
 
+// @desc    Render login.html
+// @route   GET '/users/verify'
+// @access  Public
+// @tested 	Not yet
+router.get('/verify/:hash', async (req, res) => {
+
+	try {
+		const user = await User.findOne({
+			verificationHash: req.params.hash
+		});
+
+		if (user) {
+			if (user.emailVerfied) {
+
+				return res.status(200).render('login', {
+					user: res.locals.user,
+					successNotification: {msg: "Your email is already verified, you can login now!"},
+					errorNotification: null
+				});
+			}
+			user.emailVerfied = true;
+			user.save();
+
+			return res.status(200).render('login', {
+				user: res.locals.user,
+				successNotification: {msg: "Verification successful, you can login now!"},
+				errorNotification: null
+			});
+		} else {
+
+			return res.status(400).render('login', {
+				user: res.locals.user,
+				successNotification: null,
+				errorNotification:  {msg: "Verification failed"}
+			});
+		}
+
+	} catch (error) {
+
+		return res.status(500).render('login', {
+			user: res.locals.user,
+			successNotification: null,
+			errorNotification:  {msg: "Verification failed"}
+		});	}
+
+
+});
+
 
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/choose'
 // @access  Private
-// @tested 	
+// @tested
 router.get("/choose", redirectLogin, async (req, res) => {
   try {
     let user = res.locals.user;
