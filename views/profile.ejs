@@ -11,7 +11,7 @@
     <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- js scripts -->
-    <script src="../clientJS/profile.js"></script>
+    <script src="/clientJS/profile.js"></script>
 </head>
 
 <body>
@@ -25,45 +25,81 @@
     </div>
 
     <!-- profile content section-->
-    <header class="profile-header rale-font">
-        <div class="container">
+    <header class="profile-header comf-font">
+        <div class="container justify-content-center">
 
-            <div class="row" id="profile-row">
-                <div class="col-sm-3">
-                    <a href="#"><img id="logo-img" src="../img/default-avatar.png" alt="default-avatar"></a>
-                </div>
+            <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
+            <p class="mt-5 text-danger notify"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Wish card
+                creation feature is disabled for your account. <br> It will be enabled
+                after agency verification. <br> For a faster verification, <a href="mailto:donate.gifts.stacy@gmail.com"
+                    class="text-dark">click to email us</a>
+            </p>
+            <% } %>
 
-                <div class="col-md-3 ml-auto">
-                    <% if (user.userRole == 'partner'  && locals.agency && agency.isVerified) { %>
-                    <a href="#wishCardForm"><button type="button" class="wishcard-btn grn-btn">Create Wish Cards<i
-                                class="fa fa-pencil"></i></button></a>
-                    <%}%>
+            <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
+            <div class="user-info my-5">
+                <h4 class="create-title pb-5">Create Wish Cards</h4>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 col-xs-12">
+                        <p><i class="fa fa-pencil"></i>Child has a specific wish item</p>
+                        <a href="#wishCardForm"><button id="create-btn" type="button" class="wishcard-btn">
+                                Create Wish Card From Scratch</button></a>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <p><i class="fa fa-bolt" aria-hidden="true"></i>Need a faster way or unsure?
+                        </p>
+                        <a href="/users/choose"><button id="create-btn" type="button" class="wishcard-btn grn-btn">
+                                Choose From Suggested List</button></a>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <p><i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
+                        </p>
+                        <a href="mailto:donate.gifts.stacy@gmail.com"><button id="create-btn" type="button"
+                                class="wishcard-btn">
+                                Email Us</button></a>
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2><strong><%= user.fName %> <%= user.lName %></strong></h2>
-
-                    <!-- this need to dynamically display agency.agencyName
-                    but currently agency obj not passed to /users/profile route-->
-                    <% if (user.userRole == 'partner') { %>
-                    <h5>Organization: </h5>
-                    <%}%>
-
-                    <p>User Role: <%= user.userRole %></p>
-                    <p>Email: <%= user.email %></p>
-                    <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
-                    <p>Some features are disabled for your account. They will be enabled after Agency Verification.</p>
-                    <% } %>
+            <%}%>
+    
+               
+            <% if (user.userRole == 'partner') { %>
+            <div class="org-wrapper my-5">
+                <h4 class="pb-5 font-weight-bold">Organization Details</h4>
+                <div class="row justify-content-around">
+                    <p class="col-md-4 col-xs-12">Name: <strong><%= agency.agencyName %></strong></p>
+                    <p class="col-md-4 col-xs-12">Description: <%= agency.agencyBio %></p>
+                </div>
+                <div class="row justify-content-around">
+                    <p class="col-md-4 col-xs-12">Phone Number: <%= agency.agencyPhone %></p>
+                    <p class="col-md-4 col-xs-12">Website: <%= agency.agencyWebsite %></p>
+                </div>
+                <div class="row justify-content-around">
+                    <p class="col-md-4 col-xs-12">Agency Verified: <%= agency.isVerified %></p>
+                    <p class="col-md-4 col-xs-12">Number of Wishcards: <%= agency.wishCards.length %></p>
                 </div>
             </div>
+            <%}%>
+    
+            <div class="user-info my-5">
+                <h4 class="pb-5 font-weight-bold">Account Details</h4>
+                <div class="row justify-content-around">
+                    <p class="col-md-4 col-xs-12">First Name: <%= user.fName %></p>
+            <p class="col-md-4 col-xs-12">Last Name: <%= user.lName %></p>
+        </div>
+        <div class="row justify-content-around">
+            <p class="col-md-4 col-xs-12">Email: <%= user.email %></p>
+            <p class="col-md-4 col-xs-12">User Role: <%= user.userRole %></p>
+        </div>
+        </div>
+
         </div>
     </header>
 
     <div class="container mb-5">
         <div class="row">
             <div class="col-md-6 mb-3">
+                <!-- about-me section -->
                 <div class="card card-block">
                     <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i>About Me<img data-toggle="modal"
                             data-target="#aboutMeModal" id="update-about-me" class="about-me-edit"
@@ -75,6 +111,7 @@
                     <p id="about-me" class="card-text p-4">You have no description saved.</p>
                     <% } %>
                 </div>
+
             </div>
             <div class="col-md-6">
                 <div class="card card-block">
@@ -101,99 +138,120 @@
 
     <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
     <!-- Wish Card Form Section-->
-    <div class="create-wish-card">
-        <!-- wishCardForm starts here-->
-        <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
-            <h4 class="crayon-font wish-card-form-title">
-                Create a wish card <br />
-                for children under your care
-            </h4>
+    <div class="container-fluid">
+        <div class="create-wish-card">
+            <!-- wishCardForm starts here-->
+            <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST"
+                enctype="multipart/form-data">
+                <h4 class="crayon-font wish-card-form-title">
+                    Create a wish card <br />
+                    for children under your care
+                </h4>
 
-            <div class="row mb-5">
-                <h6 class="col chivo-font text-center">We are developing new features to make the card creation much easier in the future. 
-                    Support us by continuing to use this process until then. Thank you.
-                </h6>
-            </div>
-            
-            <div class="row">
-                <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
-                    <label for="childFirstName">Child's First Name</label>
-                    <input id="childFirstName" class="input1" type="text" name="childFirstName"
-                        placeholder="Enter First Name">
+                <div class="row mb-5">
+                    <h6 class="col form-notification">
+
+                        For this method, you need to watch <a href="https://youtu.be/P4P6jEqTXs4"
+                        target="_blank" class="highlight text-success">this video</a> and create an Amazon list first. <br>
+
+                        We are developing new features to make the card creation much
+                        easier in the future.<br>
+                        Support us by continuing to use this process until then. Thank you.
+                    </h6>
                 </div>
 
-                <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <label for="childLastName">Child's Last Name</label>
-                    <input id="childLastName" class="input1" type="text" name="childLastName"
-                        placeholder="Initial is ok">
-                </div>
+                <div class="row">
+                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                        <label for="childFirstName">Child's First Name</label>
+                        <input id="childFirstName" class="input1" type="text" name="childFirstName"
+                            placeholder="Enter First Name">
+                    </div>
 
-                <div class="col-lg-6 comf-font wrap-input1">
-                    <label for="childBirthday">Child's Birthday</label>
-                    <input id="childBirthday" class="input1" type="date" name="childBirthday"
-                        placeholder="Child's Birthday">
-                </div>
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="childLastName">Child's Last Name</label>
+                        <input id="childLastName" class="input1" type="text" name="childLastName"
+                            placeholder="Initial is ok">
+                    </div>
 
-                <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <label for="childInterest">Child's Interest</label>
-                    <input id="childInterest" class="input1" type="text" name="childInterest"
-                        placeholder="Write something that the child likes to do">
-                </div>
+                    <div class="col-lg-6 comf-font wrap-input1">
+                        <label for="childBirthday">Child's Birthday</label>
+                        <input id="childBirthday" class="input1" type="date" name="childBirthday"
+                            placeholder="Child's Birthday">
+                    </div>
 
-                <div class="col-lg-6 comf-font wrap-input1">
-                    <label for="wishItemName">Wish Item Name</label>
-                    <input id="wishItemName" class="input1" type="text" name="wishItemName"
-                        placeholder="(e.g. Lego Set, Elephant Toy, etc. )">
-                </div>
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="childInterest">Child's Interest</label>
+                        <input id="childInterest" class="input1" type="text" name="childInterest"
+                            placeholder="Write something that the child likes to do">
+                    </div>
 
-                <div class="col-lg-6 ml-auto comf-font wrap-input1">
-                    <label for="wishItemPrice">We limit the price to be under $50 (USD)</label>
-                    <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
-                        placeholder="Wish Item Price (numeric only)" min="1" max="50">
-                </div>
+                    <div class="col-lg-6 comf-font wrap-input1">
+                        <label for="wishItemName">Wish Item Name</label>
+                        <input id="wishItemName" class="input1" type="text" name="wishItemName"
+                            placeholder="(e.g. Lego Set, Elephant Toy, etc. )">
+                    </div>
 
-                <div class="px-3 comf-font wrap-input1">
-                    <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/P4P6jEqTXs4"
-                            target="_blank">(Watch this video for help)</a></label>
-                    <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
-                        placeholder="(copied hyperlink address for one wish item)">
-                </div>
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="wishItemPrice">We limit the price to be under $30 (USD)</label>
+                        <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
+                            placeholder="Wish Item Price (numeric only, round it up)" min="1" max="30">
+                    </div>
 
-                <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
-                    <label for="chlidStory">Share their story</label>
-                    <textarea id="chlidStory" class="input1" name="childStory"
-                        placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
-                </div>
+                    <div class="px-3 comf-font wrap-input1">
+                        <label for="wishItemURL">Wish Item Amazon URL <a href="https://youtu.be/P4P6jEqTXs4"
+                                target="_blank" class="text-success">(Watch this video for help)</a></label>
+                        <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
+                            placeholder="(copied hyperlink address for one wish item)">
+                    </div>
 
-                <!-- Custom File Uploader  -->
-                <main class="col-lg-6 ml-auto">
-                    <div class="box">
-                        <div class="content">
-                            <p>Photo is required; it can be of the wish item, relevant clip art, or child (if confidentiality is
-                                an issue, try using a photo of their hands making a heart, masked face, 
-                                wearing sunglasses, etc.)</p>
-                            <div class="uploader-left">
-                                <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
-                            </div>
-                            <div class="uploader-right">
-                                <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
-                                <span class="file-wrapper">
-                                    <input type="file" name="wishCardImage" id="filetag"
-                                        class="uploader upload-btn btn-large btn-alpha">
-                                    <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
-                                </span>
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="deliveryDate">Set last date for the wish item delivery (skip if no deadline)</label>
+                        <input id="deliveryDate" class="input1" type="date" name="deliveryDate">
+                    </div>
+
+                    <div class="col-lg-6 ml-auto comf-font wrap-input1">
+                        <label for="occasion">What's the occasion?</label>
+                        <input id="occasion" class="input1" type="text" name="occasion"
+                            placeholder="(e.g. holiday, birthday, graduation)">
+                    </div>
+
+                    <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
+                        <label for="childStory">Share their story</label>
+                        <textarea id="childStory" class="input1" name="childStory"
+                            placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
+                    </div>
+
+                    <!-- Custom File Uploader  -->
+                    <main class="col-lg-6 ml-auto">
+                        <div class="box">
+                            <div class="content">
+                                <p>Photo is required; it can be of the wish item, relevant clip art, or child (if
+                                    confidentiality is
+                                    an issue, try using a photo of their hands making a heart, masked face,
+                                    wearing sunglasses, etc.)</p>
+                                <div class="uploader-left">
+                                    <img id="preview" src="../img/img-placeholder.png" alt="image-placeholder">
+                                </div>
+                                <div class="uploader-right">
+                                    <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
+                                    <span class="file-wrapper">
+                                        <input type="file" name="wishCardImage" id="filetag"
+                                            class="uploader upload-btn btn-large btn-alpha">
+                                        <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </main>
-            </div>
-
-            <div class="comf-font container-contact1-form-btn">
-                <div class="contact1-form-btn">
-                    <input value="Submit" type="submit" class="contact1-form-btn">
+                    </main>
                 </div>
-            </div>
-        </form>
+
+                <div id="submit-btn" class="comf-font">
+                    <div class="contact1-form-btn">
+                        <input value="Submit" type="submit" class="contact1-form-btn">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <% } %>
 

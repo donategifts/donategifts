@@ -7,6 +7,19 @@ rgba(139,198,77,1) -green
 */
 
 
+/* new addition - need to organize these later */
+
+.highlight {
+  text-decoration: underline;
+}
+
+.form-notification {
+  font-size: 1.2em;
+  text-align: center;
+  line-height: 1.7em;
+  background-color: rgba(139, 198, 77, 0.2);
+}
+
 /* --------------- utils */
 
 .source-font {
@@ -481,6 +494,11 @@ img {
 .wishcards {
   position: relative;
   padding: 80px 0;
+}
+
+.view.overlay {
+  max-height: 350px;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 992px) {
