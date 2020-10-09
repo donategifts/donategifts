@@ -347,7 +347,7 @@ router.get('/verify/:hash', async (req, res) => {
 			return res.status(400).render('login', {
 				user: res.locals.user,
 				successNotification: null,
-				errorNotification:  {msg: "Verfication failed"}
+				errorNotification:  {msg: "Verification failed"}
 			});
 		}
 
@@ -356,7 +356,7 @@ router.get('/verify/:hash', async (req, res) => {
 		return res.status(500).render('login', {
 			user: res.locals.user,
 			successNotification: null,
-			errorNotification:  {msg: "Verfication failed"}
+			errorNotification:  {msg: "Verification failed"}
 		});	}
 
 
