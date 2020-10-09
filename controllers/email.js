@@ -14,45 +14,42 @@
 //NPM DEPENDENCIES
 const nodemailer = require('nodemailer');
 const mailGun = require('nodemailer-mailgun-transport');
-const bcrypt = require('bcrypt');
 
 //cb is callback, cb(err, null) means if err, get err, else null
 //IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject,  message) => {
 
-	getTransport()
-	.then(transporter => {
-		const mailOptions = {
-			from: from,
-			to: to,
-			subject: subject,
-			text: message
-		};
+	const transporter = await getTransport()
 
-		transporter.sendMail(mailOptions, (error, data) => {
-			if (error) {
-				return {error}
-			} else {
-				console.log("sendMail function successfully called");
-				if (process.env.NODE_ENV === 'development') {
-					console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
-				}
-				return {data}
+	const mailOptions = {
+		from: from,
+		to: to,
+		subject: subject,
+		text: message
+	};
+
+	transporter.sendMail(mailOptions, (error, data) => {
+		if (error) {
+			return {error}
+		} else {
+			console.log("sendMail function successfully called");
+			if (process.env.NODE_ENV === 'development') {
+				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
 			}
-		});
-	})
+			return {data}
+		}
+	});
+
 };
 
-const getTransport = () => {
-
-	return new Promise((resolve, reject)=> {
+const getTransport = async () => {
 
 		if (process.env.NODE_ENV === 'development') {
 
 			nodemailer.createTestAccount((err, account) => {
 				if (err) {
-					reject('Failed to create a testing account. ' + err.message)
 					console.error('Failed to create a testing account. ' + err.message);
+					return false;
 				}
 
 				// Create a SMTP transporter object
@@ -65,7 +62,7 @@ const getTransport = () => {
 						pass: account.pass
 					}
 				});
-				resolve(transporter);
+				return transporter;
 
 			});
 
@@ -79,10 +76,9 @@ const getTransport = () => {
 			}
 
 			const transporter = nodemailer.createTransport(mailGun(auth));
-			resolve(transporter);
+			return transporter
 
 		}
-	})
 
 }
 

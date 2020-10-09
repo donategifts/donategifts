@@ -191,7 +191,7 @@ router.post("/agency", async (req, res) => {
 // @access  Public
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
-router.post('/signup', redirectProfile, async (req, res) => {
+router.post('/signup', async (req, res) => {
 	const {
 		fName,
 		lName,
@@ -217,21 +217,22 @@ router.post('/signup', redirectProfile, async (req, res) => {
 			password: hashedPassword,
 			userRole
 		});
-		req.session.userId = mongoose.Types.ObjectId(newUser._id);
 		try {
 			await newUser.save();
 			//trying to add a second step here
 			//if the userRole is partner then redirect to agency.ejs then profile.ejs
 
-			const emailResponse = await sendMail('gnorbsl@gmail.com', email, 'Email verification', 'Please verify your email by clicking on this link: http://localhost:8081/users/verify/' + verificationHash)
+			const emailResponse = await sendMail(process.env.DEFAULT_EMAIL,
+				email,
+				'Email verification',
+				`Please verify your email by clicking on this link: ${process.env.BASE_URL}/users/verify/${verificationHash}`)
 
-			console.log(emailResponse);
+			return res.status(200).render('login', {
+				user: {},
+				successNotification: {msg: "Please check your email inbox to verify your Email"},
+				errorNotification:  null
+			});
 
-			if (newUser.userRole === 'partner') {
-				return res.send('/users/agency');
-			} else {
-				return res.send('/users/profile');
-			}
 		} catch (err) {
 			console.log(err);
 		}
