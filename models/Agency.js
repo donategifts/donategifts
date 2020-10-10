@@ -16,31 +16,19 @@ var AgencySchema = new Schema({
     type: String,
   },
   accountManager: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   agencyBio: {
     type: String,
   },
   agencyAddress: {
-    address1: {
-      type: String
-    },
-    address2: {
-      type: String
-    },
-    city: {
-      type: String
-    },
-    state: {
-      type: String
-    },
-    country: {
-      type: String
-    },
-    zipcode: {
-      type: String
-    },
+    address1: { type: String },
+    address2: { type: String },
+    city: { type: String },
+    state: { type: String },
+    country: { type: String },
+    zipcode: { type: String },
   },
   childrenUnderCare: {
     type: Number,

@@ -20,7 +20,7 @@
                     </div>
                     <!--Card content-->
                     <div class="card-body">
-                        
+
                         <div class="pb-2 row justify-content-center">
                             <a class='mx-2 btn-3 msg-icon' href='/wishcards/<%= wishcards[i]._id %>'>
                                 <i class="fa fa-envelope-o" aria-hidden="true"></i>
@@ -43,13 +43,17 @@
                             <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
                             <p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
                         </div>
-                            <div class="quick-font row button-center">
-                                <button type="button" class="col wishcard-btn btn-navy-border"><a
-                                        href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
-                                <button type="button" class="col wishcard-btn btn-navy-bg"><a
-                                        href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
-                            </div>
-                        
+
+                        <div class="quick-font row button-center">
+                            <button type="button" class="col wishcard-btn btn-navy-border"><a
+                                    href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
+                            <button type="button" data-toggle="modal" data-value-url="<%= wishcards[i].wishItemURL %>"
+                                data-value-name="<%= wishcards[i].childFirstName %>" data-target="#wishCardDonateModal"
+                                class="col wishcard-btn btn-navy-bg">Donate Gift</button>
+
+
+                        </div>
+
                     </div>
                 </div>
             </div>
