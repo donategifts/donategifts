@@ -28,4 +28,10 @@ jobs:
       - run: npm ci
       - run: sudo docker run --name mongo -d -p 27017:27017 mongo
       - run: npm run build --if-present
+      - run: npm run format
       - run: npm test
+      - name: Commit changes
+          uses: stefanzweifel/git-auto-commit-action@v4.1.2
+          with:
+            commit_message: Apply formatting changes
+            branch: ${{ github.head_ref }}
