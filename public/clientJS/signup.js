@@ -28,8 +28,7 @@ $(document).ready(function () {
       
         showToast("Please check your mails for a verification email");
         console.log(response.email)
-        setTimeout(function(){ window.location = "/users/login" }, 15000);
-    
+        setTimeout(function(){ window.location = "/users/login" }, response.dev?15000:3000);
 
       },
       error: function(response, textStatus, errorThrown) {
