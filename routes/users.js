@@ -92,12 +92,9 @@ router.get('/login', redirectProfile, (req, res) => {
 router.get("/profile", redirectLogin, async (req, res) => {
   try {
     let user = res.locals.user;
-    console.log(res.locals)
     let params = { user };
     if (user.userRole === "partner") {
-    	console.log(user)
       let agency = await Agency.findOne({ accountManager: user._id });
-    	console.log(agency)
       if (!agency) {
 		  return res.render("agency");
       }
@@ -180,8 +177,7 @@ router.post("/agency", async (req, res) => {
   try {
     await newAgency.save();
 
-    console.log(newAgency)
-	  req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
+    req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
     console.log("agency data saved");
     res.send("/users/profile");
   } catch (err) {
