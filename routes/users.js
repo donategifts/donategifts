@@ -29,11 +29,10 @@ const redirectProfile = (req, res, next) => {
 };
 
 const sendError = (res, status, err) => {
-  res.status(status).send(
-    JSON.stringify({
+  res.status(status).send({
       success: false,
       error: err,
-    })
+    }
   );
 };
 
@@ -95,9 +94,7 @@ router.get("/profile", redirectLogin, async (req, res) => {
     let user = res.locals.user;
     let params = { user };
     if (user.userRole === "partner") {
-    	console.log(user)
       let agency = await Agency.findOne({ accountManager: user._id });
-    	console.log(agency)
       if (!agency) {
 		  return res.render("agency");
       }
@@ -105,6 +102,7 @@ router.get("/profile", redirectLogin, async (req, res) => {
     }
     res.render("profile", params);
   } catch (err) {
+  	console.log(err)
     return sendError(res, 400, err);
   }
 });
@@ -179,8 +177,7 @@ router.post("/agency", async (req, res) => {
   try {
     await newAgency.save();
 
-    console.log(newAgency)
-	  req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
+    req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
     console.log("agency data saved");
     res.send("/users/profile");
   } catch (err) {
@@ -208,6 +205,11 @@ router.post('/signup', async (req, res) => {
 	if (candidate) {
 		return sendError(res, 409, "This email is already taken. Try another");
 	} else {
+		if (!password) return sendError(res, 206, {message: 'Password missing'});
+		if (!userRole) return sendError(res, 206, {message: 'userRole missing'});
+		if (!fName) return sendError(res, 206, {message: 'fName missing'});
+		if (!lName) return sendError(res, 206, {message: 'lName missing'});
+
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 		const verificationHash = createEmailVerificationHash();
@@ -230,14 +232,14 @@ router.post('/signup', async (req, res) => {
 				'Email verification',
 				`Please verify your email by clicking on this link: ${process.env.BASE_URL}/users/verify/${verificationHash}`)
 
-			console.log(emailResponse)
-
 			return res.status(200).send( {
+				success: true,
+				user: newUser,
 				email: emailResponse?emailResponse.data:''
 			});
 
 		} catch (err) {
-			console.log(err);
+			return sendError(res, 206, err);
 		}
 	}
 });
@@ -251,15 +253,17 @@ router.post('/login', redirectProfile, async (req, res) => {
 		email,
 		password
 	} = req.body;
+
+	if (!email) return sendError(res, 206, {message: 'Email missing'});
+	if (!password) return sendError(res, 206, {message: 'Password missing'});
+
 	const user = await User.findOne({
 		email: email
 	});
 	if (user) {
 
-
 		if (await bcrypt.compare(password, user.password)) {
-
-			if(!user.emailVerfied) {
+			if(!user.emailVerified) {
 
 				return res.status(403).render('login', {
 					user: res.locals.user,
@@ -269,6 +273,7 @@ router.post('/login', redirectProfile, async (req, res) => {
 			}
 
 			req.session.userId = user.id;
+			res.locals.user = user;
 			return res.redirect('/users/profile');
 
 		} else {
@@ -279,10 +284,14 @@ router.post('/login', redirectProfile, async (req, res) => {
 			});
 
 		}
-
-
-
+	} else {
+		return res.status(403).render('login', {
+			user: res.locals.user,
+			successNotification: null,
+			errorNotification: {msg: "Username and/or password incorrect"}
+		});
 	}
+
 	res.redirect('/users/login');
 });
 
@@ -372,7 +381,7 @@ router.get("/choose", redirectLogin, async (req, res) => {
   try {
     let user = res.locals.user;
     let params = { user };
-    if (user.userRole == "partner") {
+    if (user.userRole === "partner") {
       let agency = await Agency.findOne({ accountManager: user._id });
       if (!agency) {
         return sendError(res, 404, "Agency Not Found");

@@ -126,3 +126,5 @@ app.get('/', (req, res) => {
     wishcards: [],
   });
 });
+
+module.exports = app;
