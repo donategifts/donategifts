@@ -1,6 +1,6 @@
 <!-- Wish Card deck -->
 <div class="wishcards">
-    <h1 class="cool-font home-wish-title">Become Our Secret Santa</h1>
+    <h1 class="crayon-font home-wish-title">Become Our Secret Santa</h1>
     <div class="container">
         <% if (wishcards.length === 0 || !wishcards) { %>
         <h1>No wishcards to display</h1>
@@ -20,25 +20,36 @@
                     </div>
                     <!--Card content-->
                     <div class="card-body">
-                        <a class='btn-3 msg-icon' href='/wishcards/<%= wishcards[i]._id %>'>
-                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
-						</a>
+                        
+                        <div class="pb-2 row justify-content-center">
+                            <a class='mx-2 btn-3 msg-icon' href='/wishcards/<%= wishcards[i]._id %>'>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            </a>
+                            <div id="fb" class="mx-2 btn-3" data-href="https://donate-gifts.com" data-layout="button"
+                                data-size="large"><a target="_blank"
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdonate-gifts.com%2F&amp;src=sdkpreparse"
+                                    class="fb-xfbml-parse-ignore"><i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </i>
+                                </a></div>
+                        </div>
+
                         <!--Title-->
-                        <h4 class="card-title text-center crayon-font">My name is
-                            <%= wishcards[i].childFirstName %></h4>
+                        <h3 class="card-title text-center crayon-font">My name is
+                            <%= wishcards[i].childFirstName %></h3>
+
                         <!--Text-->
-                        <div class="teac-font">
+                        <div class="quick-font">
                             <p class="card-text">Wish : <%= wishcards[i].wishItemName %></p>
                             <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
                             <p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
-
-                            <div class="row button-center">
+                        </div>
+                            <div class="quick-font row button-center">
                                 <button type="button" class="col wishcard-btn btn-navy-border"><a
                                         href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
                                 <button type="button" class="col wishcard-btn btn-navy-bg"><a
                                         href="<%= wishcards[i].wishItemURL %>" target="_blank">Donate Gift</a></button>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -47,5 +58,5 @@
         <% } %>
 
     </div>
-   
+
 </div>
