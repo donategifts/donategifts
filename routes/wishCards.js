@@ -160,13 +160,11 @@ router.get('/', async (req, res) => {
   try {
     let wishcards = await WishCard.find({});
 
-
     for (let i = 0; i < wishcards.length; i++) {
-
       let birthday = moment(new Date(wishcards[i].childBirthday));
       let today = moment(new Date());
 
-      wishcards[i].age = today.diff(birthday, 'years')
+      wishcards[i].age = today.diff(birthday, 'years');
     }
 
     res.status(200).render('wishCards', {
@@ -174,7 +172,7 @@ router.get('/', async (req, res) => {
       wishcards,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).send({
       success: false,
       error: error,
@@ -260,7 +258,7 @@ router.get('/:id', async (req, res) => {
       let birthday = moment(new Date(wishcard.childBirthday));
       let today = moment(new Date());
 
-      wishcard.age = today.diff(birthday, 'years')
+      wishcard.age = today.diff(birthday, 'years');
 
       let messages = await getPreviousMessages(wishcard);
       let defaultMessages = getMessageChoices(
