@@ -4,8 +4,8 @@
 const mongoose = require('mongoose');
 
 //SCHEMA SETUP
-var Schema = mongoose.Schema;
-var AgencySchema = new Schema(
+let Schema = mongoose.Schema;
+let AgencySchema = new Schema(
   {
     agencyName: {
       type: String,
@@ -16,12 +16,10 @@ var AgencySchema = new Schema(
     agencyPhone: {
       type: String,
     },
-    accountManagers: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    ],
+    accountManager: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     agencyBio: {
       type: String,
     },

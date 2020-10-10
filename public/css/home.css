@@ -1,11 +1,201 @@
 /* 
-Gotta clean up more
+New Color Scheme Reference:
 
-FFD15A - yellow
-8BC64D - green
-rgba(139,198,77,1) -green
+primary red
+#ff5c6f
+rgba(255, 92, 111, 1)
+
+primary orange
+#ff826b
+rgba(255, 130, 107, 1)
+
+light cream
+#fff6ed
+rgba(255, 246, 237, 1)
+
+cream
+#f8e4c9
+rgba(248, 228, 201, 1)
+
+primary green
+#00a19a
+rgba(0, 161, 154, 1)
+
+primary yellow
+#ffbb59
+rgba(255, 187, 89, 1)
+
+secondary yellow
+#f9a14c
+rgba(249, 161, 76, 1)
+
+primary navy
+#333a64
+rgba(51, 58, 100, 1)
+
+secondary navy
+#414254
+rgba(65, 66, 84, 1)
+
+dark grey
+#313131
+rgba(49, 49, 49, 1)
 */
 
+
+
+/* new local fonts */
+
+@font-face {
+  font-family: 'Childrensans';
+  src:
+    local('Childrensans'),
+    url('../fonts/Childrensans.ttf');
+}
+
+
+@font-face {
+  font-family: 'DjbTeacherFont';
+  src:
+    local('DjbTeacherFont'),
+    url('../fonts/DjbTeacherFont.ttf');
+}
+
+@font-face {
+  font-family: 'DkCoolCrayon';
+  src:
+    local('DkCoolCrayon'),
+    url('../fonts/DkCoolCrayon.ttf');
+}
+
+@font-face {
+  font-family: 'DjbNumber2Pencil';
+  src:
+    local('DjbNumber2Pencil'),
+    url('../fonts/DjbNumber2Pencil.ttf');
+}
+
+@font-face {
+  font-family: 'DjbNumber2PencilBold';
+  src:
+    local('DjbNumber2PencilBold'),
+    url('../fonts/DjbNumber2PencilBold.ttf');
+}
+
+@font-face {
+  font-family: 'DjbThisFontIsBold';
+  src:
+    local('DjbThisFontIsBold'),
+    url('../fonts/DjbThisFontIsBold.ttf');
+}
+
+@font-face {
+  font-family: "DK-Crayon-Crumble";
+  src: local("DK Crayon Crumble"), local("DK-Crayon-Crumble"),
+    url("../fonts/DK-Crayon-Crumble.ttf") format("truetype");
+}
+
+.cool-font {
+  font-family: 'DkCoolCrayon', 'Comfortaa', cursive;
+}
+
+.teac-font {
+  font-family: 'DjbTeacherFont', "Source Sans Pro", sans-serif;
+}
+
+.n2b-font {
+  font-family: 'DjbNumber2PencilBold', "Source Sans Pro", sans-serif;
+}
+
+.n2-font {
+  font-family: 'DjbNumber2Pencil', "Source Sans Pro", sans-serif;
+}
+
+.chldn-font {
+  font-family: 'Childrensans', "Source Sans Pro", sans-serif;
+}
+
+.quick-font {
+  font-family: 'Quicksand', sans-serif;
+}
+
+
+#fb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  transition: all 0.25s ease-in-out;
+  background: rgba(59, 89, 152, 1);
+  padding: 0.6em 0.8em;
+}
+ 
+#fb .fa {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+/* ---------------home hero section */
+
+#home-bg {
+  background:
+    url("../img/donategifts-new-hero.png") center center;
+  min-height: 90vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#about-bg {
+  background: linear-gradient(180deg,
+      rgba(255, 151, 99, 0.8),
+      rgba(188, 227, 97, 0.3),
+      rgba(255, 209, 90, 0.05)),
+    url("../img/kid-yellow-bg.jpg") center center;
+  min-height: 40vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+}
+
+.bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-h1 {
+  font-size: 4em;
+  text-transform: uppercase;
+}
+
+.text {
+  text-align: center;
+  color: #fff;
+}
+
+.text h4 {
+  /* font-weight: 700; */
+  font-size: 1.7em;
+  line-height: 1.2em;
+  /* text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99); */
+}
+
+.text button {
+  margin-top: 1.4em;
+}
+
+/* new addition start  ------------------------------*/
+.home-wish-title {
+  font-size: 3.5em;
+  color: rgba(51, 58, 100, 1);
+  text-align: center;
+  padding: 1em 0em 1em 0em;
+}
+
+/* new addition end  */
 
 /* new addition - need to organize these later */
 
@@ -17,10 +207,12 @@ rgba(139,198,77,1) -green
   font-size: 1.2em;
   text-align: center;
   line-height: 1.7em;
-  background-color: rgba(139, 198, 77, 0.2);
+  background-color: rgba(185, 221, 145, 0.2);
 }
 
 /* --------------- utils */
+
+
 
 .source-font {
   font-family: "Source Sans Pro", sans-serif;
@@ -42,15 +234,15 @@ rgba(139,198,77,1) -green
 
 
 #grn-font {
-  color: #8bc64d;
+  color: rgba(0, 161, 154, 1);
 }
 
 .grn-font {
-  color: #8bc64d;
+  color: rgba(0, 161, 154, 1);
 }
 
 .org-bg {
-  background: #FFD15A;
+  background: rgba(249, 161, 76, 1);
 }
 
 .comf-font {
@@ -104,7 +296,7 @@ a {
 
 .custom-wrapper {
   /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
-  background: rgba(139, 198, 77, 0.1);
+  background: rgba(255, 246, 237, 0.5);
 }
 
 
@@ -155,11 +347,11 @@ a {
 
 
 .grn-box {
-  box-shadow: 20px 20px rgba(139, 198, 77, 1);
+  box-shadow: 20px 20px rgba(0, 161, 154, 1);
 }
 
 .yel-box {
-  box-shadow: 20px 20px rgba(255, 209, 90, 1);
+  box-shadow: 20px 20px rgba(255, 187, 89, 1);
 }
 
 .subtext {
@@ -211,12 +403,7 @@ a {
   }
 }
 
-@font-face {
-  font-family: "DK-Crayon-Crumble";
-  src: url("../fonts/DK-Crayon-Crumble.ttf");
-  src: local("DK Crayon Crumble"), local("DK-Crayon-Crumble"),
-    url("../fonts/DK-Crayon-Crumble.ttf") format("truetype");
-}
+
 
 
 body {
@@ -230,57 +417,7 @@ img {
   vertical-align: baseline;
 }
 
-/* ---------------header */
-#home-bg {
-  background: linear-gradient(-90deg,
-      rgba(255, 151, 99, 0.85),
-      rgba(0, 0, 0, 0.5),
-      rgba(255, 209, 90, 0.6)),
-    url("../img/gift-holding-1.jpg") center center;
-  min-height: 70vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
 
-#about-bg {
-  background: linear-gradient(180deg,
-      rgba(255, 151, 99, 0.8),
-      rgba(188, 227, 97, 0.3),
-      rgba(255, 209, 90, 0.05)),
-    url("../img/kid-yellow-bg.jpg") center center;
-  min-height: 40vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* background-attachment: fixed; */
-}
-
-.bg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-h1 {
-  font-size: 4.1em;
-  font-weight: bolder;
-  text-transform: uppercase;
-}
-
-.text {
-  text-align: center;
-  color: #fff;
-}
-
-.text h4 {
-  font-weight: 700;
-  font-size: 1.34em;
-  text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99);
-}
-
-.text button {
-  margin-top: 1.4em;
-}
 
 @media screen and (max-width: 992px) {
   .hide {
@@ -316,11 +453,10 @@ img {
 }
 
 .wishcard-btn {
-  padding: 17px 32px;
+  padding: 1em 2em;
   margin: 10px;
   border-radius: 20px;
-  font-size: 15px;
-  line-height: 1;
+  line-height: 1.2em;
   outline: none;
 }
 
@@ -330,25 +466,25 @@ img {
 }
 
 .grn-btn {
-  background-color: #8bc64d;
+  background-color: rgba(0, 161, 154, 1);
   color: #fff;
   border: none;
 }
 
 .grn-btn:hover {
   background-color: #fff;
-  color: #8bc64d;
+  color: rgba(0, 161, 154, 1);
   cursor: pointer;
 }
 
 .inverted-grn-btn {
   background-color: #fff;
-  color: #8bc64d;
+  color: rgba(0, 161, 154, 1);
   border: none;
 }
 
 .inverted-grn-btn:hover {
-  background-color: #8bc64d;
+  background-color: rgba(0, 161, 154, 1);
   color: #fff;
   cursor: pointer;
 }
@@ -358,12 +494,23 @@ img {
 }
 
 .btn-grn-border {
-  border-color: #8bc64d;
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.btn-navy-border {
+  border-color: rgba(51, 58, 100, 1);
+  background: #fff;
+}
+
+.btn-navy-bg {
+  border: none;
+  background: rgba(51, 58, 100, 1);
+  color: #fff;
 }
 
 .btn-grn-bg {
   border: none;
-  background: #8bc64d;
+  background: rgba(0, 161, 154, 1);
   color: #fff;
 }
 
@@ -378,21 +525,21 @@ img {
 }
 
 .grn-bg {
-  background: #8bc64d;
+  background: rgba(0, 161, 154, 1);
 }
 
-.pale-grn-bg {
-  background: #bce361;
+.yel-bg-2 {
+  background: rgba(255, 187, 89, 0.7);
 }
 
-.yellow-bg {
-  background: #fffa71;
+.yel-bg-3 {
+  background: rgba(255, 187, 89, 0.45);
 }
 
 .icon-box:hover,
 .icon-box.active {
   border: none;
-  background: #2f7336;
+  background: rgba(255, 187, 89, 1);
   /* fallback for old browsers */
   color: #fff;
 }
@@ -491,13 +638,60 @@ img {
 /*--------------------------------------------------------------
 # wishcards section - landing page
 --------------------------------------------------------------*/
-.wishcards {
-  position: relative;
-  padding: 80px 0;
+
+
+#card-fix {
+  border: none;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-radius: 20px;
+  background: rgba(255, 246, 237, 0.7);
 }
 
+#img-fix {
+  display: block;
+  object-fit: cover;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.card .btn-3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  transition: all 0.25s ease-in-out;
+}
+
+
+.msg-icon {
+  background: rgba(255, 92, 111, 1);
+  padding: 0.6em 0.8em;
+  border: none;
+}
+
+.msg-icon .fa {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+/* new additions end */
+
+
+
+
+.wishcards {
+  position: relative;
+  padding: 3.5em 0;
+}
+
+/* height might need to change */
 .view.overlay {
-  max-height: 350px;
+  height: 240px;
   overflow: hidden;
 }
 
@@ -536,5 +730,5 @@ img {
   font-size: 1em;
   color: #fff;
   text-align: center;
-  background: #ffd15a;
+  background: rgba(249, 161, 76, 1);
 }

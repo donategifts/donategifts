@@ -86,11 +86,12 @@ app.use(
   })
 );
 
+
 // MIDDLEWARE for extracting userId from a session
 app.use(async (req, res, next) => {
-  const { userId, agencyId } = req.session;
-  if (userId) {
-    const result = await User.findById(userId);
+  const { user, agencyId } = req.session;
+  if (user) {
+    const result = await User.findById(user._id);
     res.locals.user = result;
   }
   if (agencyId) {
@@ -126,3 +127,5 @@ app.get('/', (req, res) => {
     wishcards: [],
   });
 });
+
+module.exports = app;
