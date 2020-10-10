@@ -25,7 +25,7 @@ let UserSchema = new Schema({
 		type: String,
 		unique: true
 	},
-	emailVerfied: {
+	emailVerified: {
 		type: Boolean,
 		default: false,
 	},

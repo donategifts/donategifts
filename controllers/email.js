@@ -34,7 +34,6 @@ const sendMail = async (from, to, subject,  message) => {
 		if (!data) {
 			return {success: false}
 		} else {
-			console.log("sendMail function successfully called");
 			if (process.env.NODE_ENV === 'development') {
 				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
 				return {success: true, data: nodemailer.getTestMessageUrl(data)}
@@ -53,7 +52,6 @@ const sendMail = async (from, to, subject,  message) => {
 
 const getTransport = async () => {
 
-	console.log(process.env.NODE_ENV)
 		if (process.env.NODE_ENV === 'development') {
 
 			const account = await nodemailer.createTestAccount();
