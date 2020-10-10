@@ -2,7 +2,7 @@
 <div class="wishcards">
     <h1 class="crayon-font home-wish-title">Become Our Secret Santa</h1>
     <div class="container">
-        <% if (wishcards.length === 0 || !wishcards) { %>
+        <% if (!locals.wishcards ||  wishcards.length === 0) { %>
         <h1>No wishcards to display</h1>
         <% } else { %>
 

@@ -17,87 +17,73 @@ const mailGun = require('nodemailer-mailgun-transport');
 
 //cb is callback, cb(err, null) means if err, get err, else null
 //IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
-const sendMail = async (from, to, subject,  message) => {
+const sendMail = async (from, to, subject, message) => {
+  const transporter = await getTransport();
 
-	const transporter = await getTransport();
+  if (transporter) {
+    const mailOptions = {
+      from: from,
+      to: to,
+      subject: subject,
+      text: message,
+    };
 
-	if (transporter) {
-		const mailOptions = {
-			from: from,
-			to: to,
-			subject: subject,
-			text: message
-		};
+    let data = await transporter.sendMail(mailOptions);
 
-		let data = await transporter.sendMail(mailOptions)
-
-		if (!data) {
-			return {success: false}
-		} else {
-			console.log("sendMail function successfully called");
-			if (process.env.NODE_ENV === 'development') {
-				console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
-				return {success: true, data: nodemailer.getTestMessageUrl(data)}
-
-			} else {
-				return {success: true, data: ''}
-			}
-		}
-
-	} else {
-		return {success: false};
-	}
-
-
+    if (!data) {
+      return { success: false };
+    } else {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+        return { success: true, data: nodemailer.getTestMessageUrl(data) };
+      } else {
+        return { success: true, data: '' };
+      }
+    }
+  } else {
+    return { success: false };
+  }
 };
 
 const getTransport = async () => {
+  if (process.env.NODE_ENV === 'development') {
+    const account = await nodemailer.createTestAccount();
 
-	console.log(process.env.NODE_ENV)
-		if (process.env.NODE_ENV === 'development') {
+    if (account) {
+      return nodemailer.createTransport({
+        host: account.smtp.host,
+        port: account.smtp.port,
+        secure: account.smtp.secure,
+        auth: {
+          user: account.user,
+          pass: account.pass,
+        },
+      });
+    }
 
-			const account = await nodemailer.createTestAccount();
+    //LIVE data
+  } else {
+    const auth = {
+      auth: {
+        api_key: process.env.MAILGUN_API_KEY,
+        domain: process.env.MAILGUN_DOMAIN,
+      },
+    };
 
-			if (account) {
-
-				return nodemailer.createTransport({
-					host: account.smtp.host,
-					port: account.smtp.port,
-					secure: account.smtp.secure,
-					auth: {
-						user: account.user,
-						pass: account.pass
-					}
-				});
-			}
-
-
-			//LIVE data
-		} else {
-			const auth = {
-				auth: {
-					api_key: process.env.MAILGUN_API_KEY,
-					domain: process.env.MAILGUN_DOMAIN
-				}
-			}
-
-			return nodemailer.createTransport(mailGun(auth))
-
-		}
-
-}
+    return nodemailer.createTransport(mailGun(auth));
+  }
+};
 
 const createEmailVerificationHash = () => {
+  let result = '';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 18; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
 
-	let result           = '';
-	const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	const charactersLength = characters.length;
-	for ( let i = 0; i < 18; i++ ) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	}
+  return result;
+};
 
-	return result
-}
-
-
-module.exports = {sendMail, createEmailVerificationHash};
+module.exports = { sendMail, createEmailVerificationHash };

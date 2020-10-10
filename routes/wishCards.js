@@ -12,7 +12,7 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
-
+const moment = require('moment');
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_KEY,
   secretAccessKey: process.env.AWS_SECRET,
@@ -51,7 +51,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: process.env.USE_AWS?s3storage:storage,
+  storage: process.env.USE_AWS ? s3storage : storage,
   limits: {
     fileSize: 1024 * 1024 * 5, // up to 5 mbs
   },
@@ -158,12 +158,21 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
 // @tested 	Yes
 router.get('/', async (req, res) => {
   try {
-    var results = await WishCard.find({});
+    let wishcards = await WishCard.find({});
+
+    for (let i = 0; i < wishcards.length; i++) {
+      let birthday = moment(new Date(wishcards[i].childBirthday));
+      let today = moment(new Date());
+
+      wishcards[i].age = today.diff(birthday, 'years');
+    }
+
     res.status(200).render('wishCards', {
       user: res.locals.user,
-      wishcards: results,
+      wishcards,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send({
       success: false,
       error: error,
@@ -245,6 +254,12 @@ router.get('/:id', async (req, res) => {
   } else {
     try {
       let wishcard = await WishCard.findById(req.params.id);
+
+      let birthday = moment(new Date(wishcard.childBirthday));
+      let today = moment(new Date());
+
+      wishcard.age = today.diff(birthday, 'years');
+
       let messages = await getPreviousMessages(wishcard);
       let defaultMessages = getMessageChoices(
         res.locals.user.fName,
