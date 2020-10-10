@@ -9,7 +9,8 @@
   "scripts": {
     "test": "mocha --timeout 10000 --exit",
     "start": "node app.js",
-    "dev": "npx nodemon app.js"
+    "dev": "npx nodemon app.js",
+    "format": "prettier --write **/*.js"
   },
   "repository": {
     "type": "git",

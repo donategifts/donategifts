@@ -51,7 +51,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: process.env.USE_AWS?s3storage:storage,
+  storage: process.env.USE_AWS ? s3storage : storage,
   limits: {
     fileSize: 1024 * 1024 * 5, // up to 5 mbs
   },
