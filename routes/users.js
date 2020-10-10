@@ -14,14 +14,14 @@ const Agency = require("../models/Agency");
 
 // Middleware for users
 const redirectLogin = (req, res, next) => {
-  if (!req.session.userId) {
+  if (!req.session.user) {
     res.redirect("/users/login");
   } else {
     next();
   }
 };
 const redirectProfile = (req, res, next) => {
-  if (req.session.userId) {
+  if (req.session.user) {
     res.redirect(`/users/profile`);
   } else {
     next();
@@ -91,7 +91,8 @@ router.get('/login', redirectProfile, (req, res) => {
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
 router.get("/profile", redirectLogin, async (req, res) => {
   try {
-    let user = res.locals.user;
+    let user = req.session.user;
+    console.log(user)
     let params = { user };
     if (user.userRole === "partner") {
       let agency = await Agency.findOne({ accountManager: user._id });
@@ -116,11 +117,11 @@ router.put("/profile", redirectLogin, async (req, res) => {
     const { aboutMe } = req.body;
 
     // if no user id is present return forbidden status 403
-    if (!req.session.userId) {
+    if (!req.session.user) {
       return sendError(res, 403, "No user id in request");
     }
 
-    const candidate = await User.findOne({ _id: req.session.userId });
+    const candidate = await User.findOne({ _id: req.session.user._id });
 
     // candidate with id not found in database, return not found status 404
     if (!candidate) {
@@ -166,18 +167,20 @@ router.get("/agency", redirectLogin, async (req, res) => {
 // @tested 	No
 router.post("/agency", async (req, res) => {
   const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
-
+  console.log('POST AGENCY')
+  console.log(req.session.user);
   const newAgency = new Agency({
     agencyName,
     agencyWebsite,
     agencyPhone,
     agencyBio,
-    accountManager: req.session.userId,
+    accountManager: req.session.user._id,
   });
   try {
     await newAgency.save();
 
     req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
+    console.log(newAgency)
     console.log("agency data saved");
     res.send("/users/profile");
   } catch (err) {
@@ -234,6 +237,7 @@ router.post('/signup', async (req, res) => {
 
 			return res.status(200).send( {
 				success: true,
+				dev: true,
 				user: newUser,
 				email: emailResponse?emailResponse.data:''
 			});
@@ -272,7 +276,7 @@ router.post('/login', redirectProfile, async (req, res) => {
 				});
 			}
 
-			req.session.userId = user.id;
+			req.session.user = user;
 			res.locals.user = user;
 			return res.redirect('/users/profile');
 
@@ -335,7 +339,7 @@ router.get('/verify/:hash', async (req, res) => {
 		});
 
 		if (user) {
-			if (user.emailVerfied) {
+			if (user.emailVerified) {
 
 				return res.status(200).render('login', {
 					user: res.locals.user,
@@ -343,7 +347,7 @@ router.get('/verify/:hash', async (req, res) => {
 					errorNotification: null
 				});
 			}
-			user.emailVerfied = true;
+			user.emailVerified = true;
 			user.save();
 
 			return res.status(200).render('login', {
