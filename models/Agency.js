@@ -58,7 +58,7 @@ let AgencySchema = new Schema(
       type: Boolean,
       default: false,
     },
-  },x
+  },
   {
     collection: 'agencies',
   }
