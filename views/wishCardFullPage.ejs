@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/wishCardFull.css">
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- js scripts -->
     <script src="/clientJS/wishCardFullPage.js"></script>
 </head>
@@ -35,6 +36,7 @@
                 <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
                 <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
                 <p class="card-text">Interest : <%= wishcard.childInterest %></p>
+                <p class="card-text" id="age">Age : <%= wishcard.age %></p>
                 <p class="card-text">About Me : <%= wishcard.childStory %></p>
             </div>
 
@@ -56,7 +58,7 @@
 
             </div>
 
-            <!-- This part needs to show all users' messages sent to this wishcard 
+            <!-- This part needs to show all users' messages sent to this wishcard
             wishcard model has 'messages' field which is an objectId array of 'Message'-->
             <div class="show-msg">
                 <% if (messages.length === 0) { %>
@@ -87,7 +89,7 @@
         </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
         integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-        </script>
+    </script>
 </body>
 
 </html>
