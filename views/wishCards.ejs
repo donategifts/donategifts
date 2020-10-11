@@ -6,7 +6,7 @@
 	<!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
 	<%- include('./templates/header')-%>
     <link rel="stylesheet" href="/css/search.css">
-   
+
 </head>
 
 <body>
@@ -66,10 +66,11 @@
 									<p class="card-text">Wish Item : <%= wishcards[i].wishItemName %></p>
 									<p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
 									<p class="card-text">Interest : <%= wishcards[i].childInterest %></p>
+									<p class="card-text">Age : <%= wishcards[i].age %></p>
 									<div class="row button-center">
                                         <!--The See More button needs another 'details' page but it will be implemented in a later version-->
 										<button type="button" class="wishcard-btn btn-grn-border"><a href="/wishcards/<%= wishcards[i]._id %>">See more</a></button>
-                                        <button type="button"  data-toggle="modal" data-value-url="<%= wishcards[i].wishItemURL %>" data-value-name="<%= wishcards[i].childFirstName %>"
+                                        <button id="donate-button-<%= wishcards[i]._id %>" type="button"  data-toggle="modal" data-value-url="<%= wishcards[i].wishItemURL %>" data-value-="<%= wishcards[i].wishItemURL %>" data-value-name="<%= wishcards[i].childFirstName %>"
                                         data-target="#wishCardDonateModal" class="wishcard-btn btn-grn-bg">Donate Gift</button>
 									</div>
 								</div>
@@ -91,6 +92,45 @@
 		integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
     </script>
     <script src="/clientJS/wishCardModal.js"></script>
+	<script>
+		<% for (var j = 0; j < wishcards.length; j++) { %>
+
+			<% if (wishcards[j].lockedUntil && wishcards[j].lockedUntil > new Date()) { %>
+
+				// Set the date we're counting down to
+				let countDownDate<%= wishcards[j]._id %> = new Date("<%= wishcards[j].lockedUntil %>").getTime();
+
+				// Update the count down every 1 second
+				let x<%= wishcards[j]._id %> = setInterval(function() {
+
+					// Get today's date and time
+					let now = new Date().getTime();
+
+					// Find the distance between now and the count down date
+					let distance = countDownDate<%= wishcards[j]._id %> - now;
+
+					let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+					let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+					let donateButton = document.getElementById("donate-button-<%= wishcards[j]._id %>");
+
+					seconds = seconds<10?"0"+seconds:seconds;
+					if (distance < 0) {
+						clearInterval(x<%= wishcards[j]._id %>);
+						donateButton.innerHTML = "Donate Gift";
+						donateButton.disabled =false;
+					} else {
+						donateButton.innerHTML = "Locked for " + minutes + ":" + seconds;
+						donateButton.disabled = true;
+
+					}
+				}, 1000);
+
+			<% } %>
+
+		<% } %>
+
+	</script>
 </body>
 
 </html>
