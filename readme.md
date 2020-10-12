@@ -2,7 +2,13 @@
 
 > Overview: This project enables users to donate holiday & birthday gifts to the foster children and homeless youth --simply by clicking one button-- which will automatically add the child's wish item to the user's Amazon cart & deliver to the child's address.
 
-# Visit live site at: https://donate-gifts.com/
+# Live Production: 
+> https://donate-gifts.com/ 
+
+> https://donate-gifts.org
+
+# Dev Server: 
+> https://dev.donate-gifts.com
 
 ## Author
 
@@ -10,19 +16,22 @@
 
 ## Contributors
 
-> Jordan Huang  
-> gnorbsl  
+  
+> Patric  
 > Ivan Repusic  
-> Jacobjeevan
-
-> Maria Nguyen
+> Jacob Jeevan  
+> Jordan Huang  
+> Maria Nguyen  
 
 ## Usage
 
 Install Mongo or use Docker to spin up a Docker container
 start container with:
 `docker-compose up`
+
 App will not run without config.env
+
+Dev server uses a separate db 
 
 public dir has all the static components and assets 
 
