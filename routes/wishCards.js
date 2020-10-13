@@ -20,8 +20,8 @@ const s3 = new AWS.S3({
 
 const {
   createWishcardValidationRules,
-  validate
-} = require("./validations/wishcards.validations");
+  validate,
+} = require('./validations/wishcards.validations');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -73,7 +73,6 @@ const User = require('../models/User');
 // @access  Private, must be verified as a partner
 // @tested 	Yes
 router.post('/', upload.single('wishCardImage'), (req, res) => {
-
   if (req.file === undefined) {
     res.status(400).send({
       success: false,

@@ -46,7 +46,10 @@ const sendMail = async (from, to, subject, message) => {
 };
 
 const getTransport = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
+  ) {
     const account = await nodemailer.createTestAccount();
 
     if (account) {

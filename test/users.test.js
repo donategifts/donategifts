@@ -10,24 +10,22 @@ let should = chai.should();
 chai.use(chaiHttp);
 let agent = chai.request.agent(server);
 
-
 let signupRequest;
 
 describe('Users', () => {
   beforeEach((done) => {
-
-      signupRequest = {
-          fName: 'testFirstName',
-          lName: 'testLastName',
-          email: 'test@email.de',
-          password: 'testPassword',
-          password2: 'testPassword',
-          userRole: 'donor',
-      };
+    signupRequest = {
+      fName: 'testFirstName',
+      lName: 'testLastName',
+      email: 'test@email.de',
+      password: 'testPassword',
+      password2: 'testPassword',
+      userRole: 'donor',
+    };
     //Before each test we empty the database
     User.deleteMany({ email: 'test@email.de' }, (err) => {
       Agency.deleteMany({}, (err) => {
-          agent.get('/users/logout').end((err, res) => {
+        agent.get('/users/logout').end((err, res) => {
           res.text.should.contain('Sign Up to Donate Gifts');
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -87,8 +85,7 @@ describe('Users', () => {
     });
 
     it('it should verify existing hash', (done) => {
-
-        console.log('test')
+      console.log('test');
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -148,7 +145,6 @@ describe('Users', () => {
     });
 
     it('should get profile when logged in', (done) => {
-
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -212,7 +208,7 @@ describe('Users', () => {
 
   describe('/POST users/signup', () => {
     it('it should not POST without fName', (done) => {
-        delete signupRequest.fName;
+      delete signupRequest.fName;
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -226,50 +222,48 @@ describe('Users', () => {
     });
 
     it('it should not POST without lName', (done) => {
-        delete signupRequest.lName
+      delete signupRequest.lName;
       agent
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.have.property('error');
-            res.body.error[0].msg.should.contain('Invalid value');
-            res.body.error[0].param.should.contain('lName');
+          res.should.have.status(400);
+          res.body.should.have.property('error');
+          res.body.error[0].msg.should.contain('Invalid value');
+          res.body.error[0].param.should.contain('lName');
           done();
         });
     });
 
     it('it should not POST without email', (done) => {
-        delete signupRequest.email,
-      agent
-        .post('/users/signup')
-        .send(signupRequest)
-        .end((err, res) => {
+      delete signupRequest.email,
+        agent
+          .post('/users/signup')
+          .send(signupRequest)
+          .end((err, res) => {
             res.should.have.status(400);
             res.body.should.have.property('error');
             res.body.error[0].msg.should.contain('Invalid value');
             res.body.error[0].param.should.contain('email');
-          done();
-        });
+            done();
+          });
     });
 
     it('it should not POST without password', (done) => {
-
-        delete signupRequest.password,
-      agent
-        .post('/users/signup')
-        .send(signupRequest)
-        .end((err, res) => {
+      delete signupRequest.password,
+        agent
+          .post('/users/signup')
+          .send(signupRequest)
+          .end((err, res) => {
             res.should.have.status(400);
             res.body.should.have.property('error');
             res.body.error[0].msg.should.contain('Invalid value');
             res.body.error[0].param.should.contain('password');
-          done();
-        });
+            done();
+          });
     });
 
     it('it should create User', (done) => {
-
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -304,10 +298,10 @@ describe('Users', () => {
         .post('/users/login')
         .send(loginRequest)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.have.property('error');
-            res.body.error[0].msg.should.contain('Invalid value');
-            res.body.error[0].param.should.contain('email');
+          res.should.have.status(400);
+          res.body.should.have.property('error');
+          res.body.error[0].msg.should.contain('Invalid value');
+          res.body.error[0].param.should.contain('email');
           done();
         });
     });
@@ -320,10 +314,10 @@ describe('Users', () => {
         .post('/users/login')
         .send(loginRequest)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.have.property('error');
-            res.body.error[0].msg.should.contain('Invalid value');
-            res.body.error[0].param.should.contain('password');
+          res.should.have.status(400);
+          res.body.should.have.property('error');
+          res.body.error[0].msg.should.contain('Invalid value');
+          res.body.error[0].param.should.contain('password');
           done();
         });
     });
@@ -344,7 +338,6 @@ describe('Users', () => {
     });
 
     it('it should not login without verified email', (done) => {
-
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -388,8 +381,7 @@ describe('Users', () => {
     });
 
     it('it should show agency registration page when logged in and partner', (done) => {
-
-        signupRequest.userRole = 'partner';
+      signupRequest.userRole = 'partner';
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -438,10 +430,9 @@ describe('Users', () => {
     });
 
     it('it should save agency when logged in and partner', (done) => {
+      signupRequest.userRole = 'partner';
 
-        signupRequest.userRole = 'partner';
-
-        agent
+      agent
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {

@@ -10,8 +10,8 @@ const {
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  validate
-} = require("./validations/users.validations");
+  validate,
+} = require('./validations/users.validations');
 
 const {
   sendMail,
@@ -123,41 +123,46 @@ router.get('/profile', redirectLogin, async (req, res) => {
 // @route   PUT '/users/profile'
 // @access  Private, only users
 // @tested 	No?
-router.put('/profile', updateProfileValidationRules(), validate, redirectLogin, async (req, res) => {
-  try {
+router.put(
+  '/profile',
+  updateProfileValidationRules(),
+  validate,
+  redirectLogin,
+  async (req, res) => {
+    try {
+      const { aboutMe } = req.body;
 
-    const { aboutMe } = req.body;
+      // if no user id is present return forbidden status 403
+      if (!req.session.user) {
+        return sendError(res, 403, 'No user id in request');
+      }
 
-    // if no user id is present return forbidden status 403
-    if (!req.session.user) {
-      return sendError(res, 403, 'No user id in request');
+      const candidate = await User.findOne({ _id: req.session.user._id });
+
+      // candidate with id not found in database, return not found status 404
+      if (!candidate) {
+        return sendError(res, 404, 'User could not be found');
+      }
+
+      // update user and add aboutMe
+      User.updateOne(
+        { _id: candidate._id },
+        { aboutMe: aboutMe },
+        { multi: true }
+      );
+
+      res.status(200).send(
+        JSON.stringify({
+          success: true,
+          error: null,
+          data: aboutMe,
+        })
+      );
+    } catch (err) {
+      return sendError(res, 400, err);
     }
-
-    const candidate = await User.findOne({ _id: req.session.user._id });
-
-    // candidate with id not found in database, return not found status 404
-    if (!candidate) {
-      return sendError(res, 404, 'User could not be found');
-    }
-
-    // update user and add aboutMe
-    User.updateOne(
-      { _id: candidate._id },
-      { aboutMe: aboutMe },
-      { multi: true }
-    );
-
-    res.status(200).send(
-      JSON.stringify({
-        success: true,
-        error: null,
-        data: aboutMe,
-      })
-    );
-  } catch (err) {
-    return sendError(res, 400, err);
   }
-});
+);
 
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
@@ -177,29 +182,31 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', createAgencyValidationRules(), validate, async (req, res) => {
-  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
+router.post(
+  '/agency',
+  createAgencyValidationRules(),
+  validate,
+  async (req, res) => {
+    const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
 
-  const newAgency = new Agency({
-    agencyName,
-    agencyWebsite,
-    agencyPhone,
-    agencyBio,
-    accountManager: req.session.user._id,
-  });
-  try {
+    const newAgency = new Agency({
+      agencyName,
+      agencyWebsite,
+      agencyPhone,
+      agencyBio,
+      accountManager: req.session.user._id,
+    });
+    try {
+      await newAgency.save();
 
-    await newAgency.save();
-
-    req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
-    res.send('/users/profile');
-
-  } catch (err) {
-
-    console.log(err);
-    return sendError(res, 400, err);
+      req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
+      res.send('/users/profile');
+    } catch (err) {
+      console.log(err);
+      return sendError(res, 400, err);
+    }
   }
-});
+);
 
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
@@ -214,7 +221,6 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   if (candidate) {
     return sendError(res, 409, 'This email is already taken. Try another');
   } else {
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationHash = createEmailVerificationHash();
@@ -228,7 +234,6 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
       userRole,
     });
     try {
-
       await newUser.save();
       //trying to add a second step here
       //if the userRole is partner then redirect to agency.ejs then profile.ejs
@@ -242,7 +247,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
 
       return res.status(200).send({
         success: true,
-        dev: (process.env.NODE_ENV === 'development'),
+        dev: process.env.NODE_ENV === 'development',
         user: newUser,
         email: emailResponse ? emailResponse.data : '',
       });
@@ -256,26 +261,37 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
-router.post('/login', loginValidationRules(), validate, redirectProfile, async (req, res) => {
+router.post(
+  '/login',
+  loginValidationRules(),
+  validate,
+  redirectProfile,
+  async (req, res) => {
+    const { email, password } = req.body;
 
-  const { email, password } = req.body;
+    const user = await User.findOne({
+      email: email,
+    });
+    if (user) {
+      if (await bcrypt.compare(password, user.password)) {
+        if (!user.emailVerified) {
+          return res.status(403).render('login', {
+            user: res.locals.user,
+            successNotification: null,
+            errorNotification: { msg: 'Please verify your Email' },
+          });
+        }
 
-  const user = await User.findOne({
-    email: email,
-  });
-  if (user) {
-    if (await bcrypt.compare(password, user.password)) {
-      if (!user.emailVerified) {
+        req.session.user = user;
+        res.locals.user = user;
+        return res.redirect('/users/profile');
+      } else {
         return res.status(403).render('login', {
           user: res.locals.user,
           successNotification: null,
-          errorNotification: { msg: 'Please verify your Email' },
+          errorNotification: { msg: 'Username and/or password incorrect' },
         });
       }
-
-      req.session.user = user;
-      res.locals.user = user;
-      return res.redirect('/users/profile');
     } else {
       return res.status(403).render('login', {
         user: res.locals.user,
@@ -283,16 +299,10 @@ router.post('/login', loginValidationRules(), validate, redirectProfile, async (
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
-  } else {
-    return res.status(403).render('login', {
-      user: res.locals.user,
-      successNotification: null,
-      errorNotification: { msg: 'Username and/or password incorrect' },
-    });
-  }
 
-  res.redirect('/users/login');
-});
+    res.redirect('/users/login');
+  }
+);
 
 // @desc    Render login.html
 // @route   GET '/users/logout'
