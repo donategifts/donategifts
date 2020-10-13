@@ -667,6 +667,9 @@ img {
   transition: all 0.25s ease-in-out;
 }
 
+.card-body .card-text-container {
+  min-height: 150px;
+}
 
 .msg-icon {
   background: rgba(255, 92, 111, 1);
