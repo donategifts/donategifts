@@ -16,6 +16,7 @@ const {
 const {
   sendMail,
   createEmailVerificationHash,
+  sendVerificationEmail,
 } = require('../controllers/email');
 
 //IMPORT USER MODEL
@@ -238,12 +239,9 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
       //trying to add a second step here
       //if the userRole is partner then redirect to agency.ejs then profile.ejs
 
-      const emailResponse = await sendMail(
-        process.env.DEFAULT_EMAIL,
+      const emailResponse = await sendVerificationEmail(
         email,
-        'Email verification',
-        `Please verify your email by clicking on this link: ${process.env.BASE_URL}/users/verify/${verificationHash}`
-      );
+        verificationHash);
 
       return res.status(200).send({
         success: true,
