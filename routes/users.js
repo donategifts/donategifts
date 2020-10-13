@@ -241,7 +241,8 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
 
       const emailResponse = await sendVerificationEmail(
         email,
-        verificationHash);
+        verificationHash
+      );
 
       return res.status(200).send({
         success: true,
