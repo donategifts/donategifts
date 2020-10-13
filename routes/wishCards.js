@@ -18,6 +18,11 @@ const s3 = new AWS.S3({
   secretAccessKey: process.env.AWS_SECRET,
 });
 
+const {
+  createWishcardValidationRules,
+  validate,
+} = require('./validations/wishcards.validations');
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');

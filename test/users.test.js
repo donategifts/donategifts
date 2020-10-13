@@ -1,4 +1,3 @@
-let mongoose = require('mongoose');
 let User = require('../models/User');
 let Agency = require('../models/Agency');
 
@@ -11,8 +10,18 @@ let should = chai.should();
 chai.use(chaiHttp);
 let agent = chai.request.agent(server);
 
+let signupRequest;
+
 describe('Users', () => {
   beforeEach((done) => {
+    signupRequest = {
+      fName: 'testFirstName',
+      lName: 'testLastName',
+      email: 'test@email.de',
+      password: 'testPassword',
+      passwordConfirm: 'testPassword',
+      userRole: 'donor',
+    };
     //Before each test we empty the database
     User.deleteMany({ email: 'test@email.de' }, (err) => {
       Agency.deleteMany({}, (err) => {
@@ -76,13 +85,6 @@ describe('Users', () => {
     });
 
     it('it should verify existing hash', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -99,7 +101,6 @@ describe('Users', () => {
           res.body.user.should.have.property('userRole');
           res.body.user.should.have.property('_id');
           res.body.user.emailVerified.should.equal(false);
-
           User.findOne({ email: signupRequest.email }).then((user) => {
             user.id.should.equal(res.body.user._id);
 
@@ -143,13 +144,6 @@ describe('Users', () => {
     });
 
     it('should get profile when logged in', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -213,87 +207,62 @@ describe('Users', () => {
 
   describe('/POST users/signup', () => {
     it('it should not POST without fName', (done) => {
-      let signupRequest = {
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
+      delete signupRequest.fName;
       agent
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
-          res.should.have.status(206);
+          res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.message.should.contain('fName missing');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('fName');
           done();
         });
     });
 
     it('it should not POST without lName', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
+      delete signupRequest.lName;
       agent
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
-          res.should.have.status(206);
+          res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.message.should.contain('lName missing');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('lName');
           done();
         });
     });
 
     it('it should not POST without email', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
-      agent
-        .post('/users/signup')
-        .send(signupRequest)
-        .end((err, res) => {
-          res.should.have.status(206);
-          res.body.should.have.property('error');
-          res.body.error.message.should.contain(
-            'User validation failed: email: Path `email` is required.'
-          );
-          done();
-        });
+      delete signupRequest.email,
+        agent
+          .post('/users/signup')
+          .send(signupRequest)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property('error');
+            res.body.error.msg.should.contain('Invalid value');
+            res.body.error.param.should.contain('email');
+            done();
+          });
     });
 
     it('it should not POST without password', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        userRole: 'donor',
-      };
-      agent
-        .post('/users/signup')
-        .send(signupRequest)
-        .end((err, res) => {
-          res.should.have.status(206);
-          res.body.should.have.property('error');
-          res.body.error.message.should.contain('Password missing');
-          done();
-        });
+      delete signupRequest.password,
+        agent
+          .post('/users/signup')
+          .send(signupRequest)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have.property('error');
+            res.body.error.msg.should.contain('Invalid value');
+            res.body.error.param.should.contain('password');
+            done();
+          });
     });
 
     it('it should create User', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -328,31 +297,33 @@ describe('Users', () => {
         .post('/users/login')
         .send(loginRequest)
         .end((err, res) => {
-          res.should.have.status(206);
+          res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.message.should.contain('Email missing');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('email');
           done();
         });
     });
 
     it('it should not login without password', (done) => {
       let loginRequest = {
-        email: 'testEmail',
+        email: 'test@Email.de',
       };
       agent
         .post('/users/login')
         .send(loginRequest)
         .end((err, res) => {
-          res.should.have.status(206);
+          res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.message.should.contain('Password missing');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('password');
           done();
         });
     });
 
     it("it should not login if user doesn't exist", (done) => {
       let loginRequest = {
-        email: 'testEmail',
+        email: 'testEmail@email.de',
         password: 'testPassword',
       };
       agent
@@ -366,13 +337,6 @@ describe('Users', () => {
     });
 
     it('it should not login without verified email', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'donor',
-      };
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -416,13 +380,7 @@ describe('Users', () => {
     });
 
     it('it should show agency registration page when logged in and partner', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'partner',
-      };
+      signupRequest.userRole = 'partner';
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -471,13 +429,8 @@ describe('Users', () => {
     });
 
     it('it should save agency when logged in and partner', (done) => {
-      let signupRequest = {
-        fName: 'testFirstName',
-        lName: 'testLastName',
-        email: 'test@email.de',
-        password: 'testPassword',
-        userRole: 'partner',
-      };
+      signupRequest.userRole = 'partner';
+
       agent
         .post('/users/signup')
         .send(signupRequest)
