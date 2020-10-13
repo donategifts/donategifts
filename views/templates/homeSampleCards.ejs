@@ -33,15 +33,17 @@
                                 </a></div>
                         </div>
 
-                        <!--Title-->
-                        <h3 class="card-title text-center crayon-font">My name is
-                            <%= wishcards[i].childFirstName %></h3>
+                        <div class="card-text-container">
+                            <!--Title-->
+                            <h3 class="card-title text-center crayon-font">My name is
+                                <%= wishcards[i].childFirstName %></h3>
 
-                        <!--Text-->
-                        <div class="quick-font card-text-container">
-                            <p class="card-text">Wish : <%= wishcards[i].wishItemName %></p>
-                            <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
-                            <p class="card-text">Interest : <%= wishcards[i].childInterest.length > 125 ? wishcards[i].childInterest.substring(0, 125) + "..." : wishcards[i].childInterest %></p>
+                            <!--Text-->
+                            <div class="quick-font">
+                                <p class="card-text">Wish : <%= wishcards[i].wishItemName %></p>
+                                <p class="card-text">Item Price : $<%= wishcards[i].wishItemPrice %></p>
+                                <p class="card-text">Interest : <%= wishcards[i].childInterest.length > 125 ? wishcards[i].childInterest.substring(0, 125) + "..." : wishcards[i].childInterest %></p>
+                            </div>
                         </div>
 
                         <div class="quick-font row button-center">

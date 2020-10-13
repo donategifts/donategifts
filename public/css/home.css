@@ -654,6 +654,7 @@ img {
   display: block;
   object-fit: cover;
   border-radius: 20px 20px 0px 0px;
+  height: 100%;
 }
 
 .card .btn-3 {
@@ -668,7 +669,7 @@ img {
 }
 
 .card-body .card-text-container {
-  min-height: 150px;
+  min-height: 225px;
 }
 
 .msg-icon {
