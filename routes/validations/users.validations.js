@@ -6,7 +6,7 @@ const signupValidationRules = () => {
         body('lName').notEmpty().isString(),
         body('email').isString().isEmail().trim(),
         body('password').notEmpty().isString().isLength({min: 8}),
-        body('password2').custom((value, { req }) => {
+        body('passwordConfirm').custom((value, { req }) => {
             if (value !== req.body.password) {
                 throw new Error('Password confirmation does not match password');
             }
@@ -44,7 +44,7 @@ const validate = (req, res, next) => {
 
         return res.status(400).send({
             success: false,
-            error: errors.array({onlyFirstError: true}),
+            error: errors.array({onlyFirstError: true})[0].msg,
         });
     }
     next();
