@@ -1,8 +1,17 @@
 //NPM DEPENDENCIES
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+
+const {
+  signupValidationRules,
+  updateProfileValidationRules,
+  createAgencyValidationRules,
+  loginValidationRules,
+  validate
+} = require("./validations/users.validations");
 
 const {
   sendMail,
@@ -95,7 +104,6 @@ router.get('/login', redirectProfile, (req, res) => {
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
     let user = req.session.user;
-    console.log(user);
     let params = { user };
     if (user.userRole === 'partner') {
       let agency = await Agency.findOne({ accountManager: user._id });
@@ -115,8 +123,9 @@ router.get('/profile', redirectLogin, async (req, res) => {
 // @route   PUT '/users/profile'
 // @access  Private, only users
 // @tested 	No?
-router.put('/profile', redirectLogin, async (req, res) => {
+router.put('/profile', updateProfileValidationRules(), validate, redirectLogin, async (req, res) => {
   try {
+
     const { aboutMe } = req.body;
 
     // if no user id is present return forbidden status 403
@@ -168,10 +177,9 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', async (req, res) => {
+router.post('/agency', createAgencyValidationRules(), validate, async (req, res) => {
   const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
-  console.log('POST AGENCY');
-  console.log(req.session.user);
+
   const newAgency = new Agency({
     agencyName,
     agencyWebsite,
@@ -180,13 +188,14 @@ router.post('/agency', async (req, res) => {
     accountManager: req.session.user._id,
   });
   try {
+
     await newAgency.save();
 
     req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
-    console.log(newAgency);
-    console.log('agency data saved');
     res.send('/users/profile');
+
   } catch (err) {
+
     console.log(err);
     return sendError(res, 400, err);
   }
@@ -197,7 +206,7 @@ router.post('/agency', async (req, res) => {
 // @access  Public
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
-router.post('/signup', async (req, res) => {
+router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   const { fName, lName, email, password, userRole } = req.body;
   const candidate = await User.findOne({
     email: email,
@@ -205,10 +214,6 @@ router.post('/signup', async (req, res) => {
   if (candidate) {
     return sendError(res, 409, 'This email is already taken. Try another');
   } else {
-    if (!password) return sendError(res, 206, { message: 'Password missing' });
-    if (!userRole) return sendError(res, 206, { message: 'userRole missing' });
-    if (!fName) return sendError(res, 206, { message: 'fName missing' });
-    if (!lName) return sendError(res, 206, { message: 'lName missing' });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -223,6 +228,7 @@ router.post('/signup', async (req, res) => {
       userRole,
     });
     try {
+
       await newUser.save();
       //trying to add a second step here
       //if the userRole is partner then redirect to agency.ejs then profile.ejs
@@ -236,7 +242,7 @@ router.post('/signup', async (req, res) => {
 
       return res.status(200).send({
         success: true,
-        dev: true,
+        dev: (process.env.NODE_ENV === 'development'),
         user: newUser,
         email: emailResponse ? emailResponse.data : '',
       });
@@ -250,11 +256,9 @@ router.post('/signup', async (req, res) => {
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
-router.post('/login', redirectProfile, async (req, res) => {
-  const { email, password } = req.body;
+router.post('/login', loginValidationRules(), validate, redirectProfile, async (req, res) => {
 
-  if (!email) return sendError(res, 206, { message: 'Email missing' });
-  if (!password) return sendError(res, 206, { message: 'Password missing' });
+  const { email, password } = req.body;
 
   const user = await User.findOne({
     email: email,

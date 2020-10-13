@@ -15,7 +15,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const MongoClient = require('mongodb').MongoClient;
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -40,13 +39,17 @@ app.use('/uploads', express.static('./uploads'));
 const hostname = '127.0.0.1';
 const port = 8081;
 
-//LOAD CONFIG.ENV VARS
+//LOAD CONFIG.ENV vars
+let configPath = './config/config.env'
+if (process.env.NODE_ENV === 'test') {
+    configPath = './config/test.config.env'
+}
 dotenv.config({
-  path: './config/config.env',
+    path: configPath,
 });
 
 //DB SET UP & APP LISTEN (server starts after db connection)
-var options = {
+let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -57,7 +60,7 @@ mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
   if (err) {
     console.log('Unable to connect to DB. Error:', err);
   } else {
-    console.log('Connected to Mongodb');
+    console.log('Connected to Mongodb ' + database.name);
     app.listen(port, hostname, () => {
       console.log(`Server running at http://${hostname}:${port}/`);
     });
