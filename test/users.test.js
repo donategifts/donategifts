@@ -19,7 +19,7 @@ describe('Users', () => {
       lName: 'testLastName',
       email: 'test@email.de',
       password: 'testPassword',
-      password2: 'testPassword',
+      passwordConfirm: 'testPassword',
       userRole: 'donor',
     };
     //Before each test we empty the database
@@ -85,7 +85,6 @@ describe('Users', () => {
     });
 
     it('it should verify existing hash', (done) => {
-      console.log('test');
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -215,8 +214,8 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error[0].msg.should.contain('Invalid value');
-          res.body.error[0].param.should.contain('fName');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('fName');
           done();
         });
     });
@@ -229,8 +228,8 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error[0].msg.should.contain('Invalid value');
-          res.body.error[0].param.should.contain('lName');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('lName');
           done();
         });
     });
@@ -243,8 +242,8 @@ describe('Users', () => {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.have.property('error');
-            res.body.error[0].msg.should.contain('Invalid value');
-            res.body.error[0].param.should.contain('email');
+            res.body.error.msg.should.contain('Invalid value');
+            res.body.error.param.should.contain('email');
             done();
           });
     });
@@ -257,8 +256,8 @@ describe('Users', () => {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.have.property('error');
-            res.body.error[0].msg.should.contain('Invalid value');
-            res.body.error[0].param.should.contain('password');
+            res.body.error.msg.should.contain('Invalid value');
+            res.body.error.param.should.contain('password');
             done();
           });
     });
@@ -300,8 +299,8 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error[0].msg.should.contain('Invalid value');
-          res.body.error[0].param.should.contain('email');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('email');
           done();
         });
     });
@@ -316,8 +315,8 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error[0].msg.should.contain('Invalid value');
-          res.body.error[0].param.should.contain('password');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('password');
           done();
         });
     });
