@@ -10,6 +10,7 @@ async function validateReCaptchaToken(token) {
     return (async () => {
         try {
             const res = await superagent.post(googleUrl);
+            console.log(res.body);
             return res.body.success;
         } catch (err) {
             return false;
