@@ -96,10 +96,12 @@ app.use(async (req, res, next) => {
   if (user) {
     const result = await User.findById(user._id);
     res.locals.user = result;
+    req.session.user = result;
   }
   if (agencyId) {
     const result = await Agency.findById(agencyId);
     res.locals.agency = result;
+    req.session.agency = result;
   }
   next();
 });
