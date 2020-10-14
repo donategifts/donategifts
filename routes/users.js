@@ -222,6 +222,11 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   if (candidate) {
     return sendError(res, 409, 'This email is already taken. Try another');
   } else {
+    if (!password) return sendError(res, 206, { message: 'Password missing' });
+    if (!userRole) return sendError(res, 206, { message: 'userRole missing' });
+    if (!fName) return sendError(res, 206, { message: 'fName missing' });
+    if (!lName) return sendError(res, 206, { message: 'lName missing' });
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationHash = createEmailVerificationHash();
@@ -291,6 +296,10 @@ router.post(
           errorNotification: { msg: 'Username and/or password incorrect' },
         });
       }
+
+      req.session.user = user;
+      res.locals.user = user;
+      return res.redirect('/users/profile');
     } else {
       return res.status(403).render('login', {
         user: res.locals.user,
