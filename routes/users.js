@@ -146,10 +146,9 @@ router.put(
       }
 
       // update user and add aboutMe
-      User.updateOne(
+      await User.findByIdAndUpdate(
         { _id: candidate._id },
-        { aboutMe: aboutMe },
-        { multi: true }
+        { $set: { aboutMe: aboutMe } }
       );
 
       res.status(200).send(
