@@ -215,6 +215,7 @@ const sendEmail = async (email, verificationHash) => {
   console.log(emailResponse);
 };
 
+
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
 // @access  Public
