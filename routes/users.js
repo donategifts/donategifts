@@ -105,15 +105,13 @@ router.get('/login', redirectProfile, (req, res) => {
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
     let user = req.session.user;
-    let params = { user };
     if (user.userRole === 'partner') {
       let agency = await Agency.findOne({ accountManager: user._id });
       if (!agency) {
         return res.render('agency');
       }
-      params = { ...params, agency };
     }
-    res.render('profile', params);
+    res.render('profile', user);
   } catch (err) {
     console.log(err);
     return sendError(res, 400, err);
@@ -199,8 +197,6 @@ router.post(
     });
     try {
       await newAgency.save();
-
-      req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
       res.send('/users/profile');
     } catch (err) {
       console.log(err);
@@ -283,37 +279,22 @@ router.post(
     });
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
-        if (!user.emailVerified) {
-          return res.status(403).render('login', {
-            user: res.locals.user,
-            successNotification: null,
-            errorNotification: { msg: 'Please verify your Email' },
-          });
-        }
-
         req.session.user = user;
-        res.locals.user = user;
         return res.redirect('/users/profile');
       } else {
         return res.status(403).render('login', {
-          user: res.locals.user,
+          user: null,
           successNotification: null,
           errorNotification: { msg: 'Username and/or password incorrect' },
         });
       }
-
-      req.session.user = user;
-      res.locals.user = user;
-      return res.redirect('/users/profile');
     } else {
       return res.status(403).render('login', {
-        user: res.locals.user,
+        user: null,
         successNotification: null,
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
-
-    res.redirect('/users/login');
   }
 );
 
