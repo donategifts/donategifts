@@ -23,13 +23,9 @@ $(document).ready(function () {
         passwordConfirm: passwordConfirm,
         userRole: userRole
       },
-      success: function(response, textStatus, xhr) {
+      success: function(route, textStatus, xhr) {
         $("#submit-btn").prop("disabled",false);
-      
-        showToast("Please check your mails for a verification email");
-        console.log(response.email)
-        setTimeout(function(){ window.location = "/users/login" }, response.dev?15000:3000);
-
+        location.assign(route);
       },
       error: function(response, textStatus, errorThrown) {
         let txtToJson =  JSON.parse(response.responseText);

@@ -28,6 +28,12 @@
     <header class="profile-header comf-font">
         <div class="container justify-content-center">
 
+            <% if (!user.emailVerified) { %>
+            <p class="mt-5 text-danger notify"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Please
+                verify your Email Address. A confirmation email has been sent to your email.
+            </p>
+            <% } %>
+
             <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
             <p class="mt-5 text-danger notify"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Wish card
                 creation feature is disabled for your account. <br> It will be enabled
@@ -151,8 +157,8 @@
                 <div class="row mb-5">
                     <h6 class="col form-notification">
 
-                        For this method, you need to watch <a href="https://youtu.be/P4P6jEqTXs4"
-                        target="_blank" class="highlight text-success">this video</a> and create an Amazon list first. <br>
+                        For this method, you need to watch <a href="https://youtu.be/P4P6jEqTXs4" target="_blank"
+                            class="highlight text-success">this video</a> and create an Amazon list first. <br>
 
                         We are developing new features to make the card creation much
                         easier in the future.<br>

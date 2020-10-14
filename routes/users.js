@@ -209,6 +209,16 @@ router.post(
   }
 );
 
+const sendEmail = async (email, verificationHash) => {
+  let emailResponse = await sendVerificationEmail(email, verificationHash);
+  if (emailResponse) {
+    emailResponse = emailResponse.data;
+  } else {
+    emailResponse = '';
+  }
+  console.log(emailResponse);
+};
+
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
 // @access  Public
@@ -241,20 +251,15 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     });
     try {
       await newUser.save();
+      req.session.user = newUser;
       //trying to add a second step here
       //if the userRole is partner then redirect to agency.ejs then profile.ejs
-
-      const emailResponse = await sendVerificationEmail(
-        email,
-        verificationHash
-      );
-
-      return res.status(200).send({
-        success: true,
-        dev: process.env.NODE_ENV === 'development',
-        user: newUser,
-        email: emailResponse ? emailResponse.data : '',
-      });
+      sendEmail(email, verificationHash);
+      if (newUser.userRole == 'partner') {
+        return res.status(200).send('/users/agency');
+      } else {
+        return res.status(200).send('/users/profile');
+      }
     } catch (err) {
       return sendError(res, 206, err);
     }
