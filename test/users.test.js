@@ -26,7 +26,7 @@ describe('Users', () => {
     User.deleteMany({ email: 'test@email.de' }, (err) => {
       Agency.deleteMany({}, (err) => {
         agent.get('/users/logout').end((err, res) => {
-          res.text.should.contain('Log in to Donate Gifts');
+          res.text.should.contain('Sign Up to Donate Gifts');
           res.should.have.status(200);
           res.body.should.be.an('object');
           done();
