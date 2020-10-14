@@ -1,7 +1,5 @@
 $(document).ready(function () {
-  console.log("heheheeheh")
   $(".signup").submit(function (e) {
-
     e.preventDefault();
     $("#submit-btn").prop("disabled",true);
     grecaptcha.execute();
