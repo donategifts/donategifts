@@ -40,12 +40,12 @@ const hostname = '127.0.0.1';
 const port = 8081;
 
 //LOAD CONFIG.ENV vars
-let configPath = './config/config.env';
+let configPath = './config/config.env'
 if (process.env.NODE_ENV === 'test') {
-  configPath = './config/test.config.env';
+    configPath = './config/test.config.env'
 }
 dotenv.config({
-  path: configPath,
+    path: configPath,
 });
 
 //DB SET UP & APP LISTEN (server starts after db connection)
@@ -88,6 +88,7 @@ app.use(
     },
   })
 );
+
 
 // MIDDLEWARE for extracting userId from a session
 app.use(async (req, res, next) => {

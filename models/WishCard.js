@@ -56,6 +56,10 @@ var WishCardSchema = new Schema(
       country: { type: String },
       zipcode: { type: String },
     },
+    isDonated: {
+      type: Boolean,
+      default: false,
+    },
     messages: [
       {
         type: Schema.Types.ObjectId,

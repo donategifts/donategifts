@@ -1,12 +1,12 @@
 /* Site Branding
 -------------------------------- logo-img may need changes-----*/
 #logo-img {
-  height: 95px;
-	width: auto;
-	margin-bottom: 3px;
+    height: 95px;
+    width: auto;
+    margin-bottom: 3px;
 }
 
-@media screen and (min-width: 992px){
+@media screen and (min-width: 992px) {
     .site-branding {
         width: auto;
     }
@@ -38,11 +38,12 @@
 .site-navigation ul li {
     margin: 0 15px;
 }
+
 .site-navigation ul li a {
     display: block;
     padding: 16px 0;
-    font-size: 1.1em;
-    font-weight: 600;
+    font-size: 1.2em;
+    font-weight: 500;
     line-height: 1;
     color: #262626;
     text-decoration: none;
@@ -76,8 +77,6 @@ button.navbar-toggler {
     }
 }
 
-.site-navigation ul li a:hover,
-.site-navigation ul li.current-menu-item a {
-    /* border-bottom: 3px solid #ff5a00; */
-    color: #FF9763;
+.site-navigation ul li a:hover{
+    color: rgba(255, 92, 111, 1) !important;
 }

@@ -363,7 +363,7 @@ router.get('/verify/:hash', async (req, res) => {
       }
       user.emailVerified = true;
       user.save();
-
+      
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
