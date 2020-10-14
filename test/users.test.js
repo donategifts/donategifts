@@ -90,7 +90,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
@@ -149,7 +148,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
@@ -268,7 +266,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
@@ -342,7 +339,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
@@ -386,7 +382,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
@@ -436,7 +431,6 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
           res.body.user.should.have.property('lName');
