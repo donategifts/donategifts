@@ -13,6 +13,8 @@ const {
   validate,
 } = require('./validations/users.validations');
 
+const {validateReCaptchaToken} = require('./validations/googleReCaptcha');
+
 const {
   sendMail,
   createEmailVerificationHash,
@@ -212,9 +214,16 @@ router.post(
 // @route   POST '/users/signup'
 // @access  Public
 // @tested 	Yes
-// TODO: display this message in signup.html client side as a notification alert
+// TODO: display this message in signup.html client side as a notification alert.
 router.post('/signup', signupValidationRules(), validate, async (req, res) => {
-  const { fName, lName, email, password, userRole } = req.body;
+  const { fName, lName, email, password, userRole, captchaToken } = req.body;
+
+  // validate captcha code. False if its invalid
+  let isCaptchaValid = await validateReCaptchaToken(captchaToken);
+  if (isCaptchaValid === false) {
+    return sendError(res, 400, { msg: 'Provided captcha token is not valid', param: 'captchaToken', location: 'body' });
+  }
+
   const candidate = await User.findOne({
     email: email,
   });
