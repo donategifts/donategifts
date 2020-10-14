@@ -204,17 +204,6 @@ Section styling is marked for easy reading and mostly in a cascading order of th
   width: 120px;
 }
 
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
-
-.footer-bar {
-    padding: 23px 0;
-    font-size: 1em;
-    color: #fff;
-    text-align: center;
-		background: #FFD15A;
-}
 /* ---------------form inputs*/
 input,
 textarea {

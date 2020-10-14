@@ -11,18 +11,18 @@ const router = express.Router();
 const Contact = require('../models/Contact');
 
 //LOAD EMAIL SENDING FUNCTION
-const sendMail = require('../controllers/email');
+const { sendMail } = require('../controllers/email');
 
 // @desc    Render about.html
 // @route   GET '/about'
 // @access  Public
 // @tested 	Not yet
 router.get('/', (req, res) => {
-    try {
-        res.status(200).render('about', {user: res.locals.user});
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    res.status(200).render('about', { user: res.locals.user });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // @desc    saves user data and sends an email to us
@@ -30,34 +30,40 @@ router.get('/', (req, res) => {
 // @access  Public
 // @tested 	Not yet
 router.post('/email', async (req, res, next) => {
-	try {
-		var c = new Contact();
-		c.name = req.body.name;
-		c.email = req.body.email;
-		c.subject = req.body.subject;
-		c.message = req.body.message;
-		sendMail(c.email, c.name, c.subject, c.message, (err, data) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log("email successfully sent");
-			}
-		});
-		c.save((err) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log("contact successfully saved to DB");
-				return res.status(201).redirect('/');
-			}
-		});
-	} catch (error) {
-		res.status(400).send(JSON.stringify({
-			success: false,
-			message: "ERROR!"
-		}));
-	}
-});
+  try {
+    var c = new Contact();
+    c.name = req.body.name;
+    c.email = req.body.email;
+    c.subject = `${req.body.subject} | send from ${c.name}`;
+    c.message = req.body.message;
+    const mailResponse = await sendMail(
+      c.email,
+      'stacy.sealky.lee@gmail.com',
+      c.subject,
+      c.message
+    );
 
+    if (mailResponse.error) {
+      console.log(mailResponse.error);
+    } else {
+      console.log('email successfully sent');
+    }
+    c.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('contact successfully saved to DB');
+        return res.status(201).redirect('/');
+      }
+    });
+  } catch (error) {
+    res.status(400).send(
+      JSON.stringify({
+        success: false,
+        message: 'ERROR!',
+      })
+    );
+  }
+});
 
 module.exports = router;

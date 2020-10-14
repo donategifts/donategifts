@@ -1,11 +1,12 @@
 $(document).ready(function () {
   $(".signup-agency").submit(function (e) {
     e.preventDefault();
+    $("#submit-btn").prop("disabled",true);
 
-    var agencyName = $("#agencyName").val();
-    var agencyWebsite = $("#agencyWebsite").val();
-    var agencyPhone = $("#agencyPhone").val();
-    var agencyBio = $("#agencyBio").val();
+    let agencyName = $("#agencyName").val();
+    let agencyWebsite = $("#agencyWebsite").val();
+    let agencyPhone = $("#agencyPhone").val();
+    let agencyBio = $("#agencyBio").val();
 
     $.ajax({
       type: "POST",
@@ -18,10 +19,14 @@ $(document).ready(function () {
       },
       statusCode: {
         409: function (responseObject, textStatus, jqXHR) {
-          alert(responseObject.responseText);
+          showToast(responseObject.responseText);
+          $("#submit-btn").prop("disabled",false);
+
         },
         200: function (responseObject, textStatus, errorThrown) {
           location.replace(responseObject);
+          $("#submit-btn").prop("disabled",false);
+
         },
       },
     });

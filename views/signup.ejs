@@ -9,6 +9,16 @@
 <html lang="en" dir="ltr">
 
 <head>
+  <script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-180152810-1');
+	</script>
   <title>Sign Up to Donate Gifts</title>
 
   <%- include('./templates/header')-%>
@@ -17,7 +27,7 @@
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- js scripts -->
-  <script src="../clientJS/signup.js"></script>
+  <script src="/clientJS/signup.js"></script>
 </head>
 
 <body>
@@ -41,27 +51,31 @@
           </div>
           <!-- first name -->
           <div class="wrap-input mg-btm" data-validate="First name is required">
-            <input required class="input-default comf-font" type="text" name="fName" id="fName"
+            <input required class="input-default quick-font" type="text" name="fName" id="fName"
               placeholder="First name : " title="First name must contain alphabets only">
           </div>
           <!-- last name -->
           <div class="wrap-input mg-btm" data-validate="Last name is required">
-            <input required class="input-default comf-font" type="text" name="lName" id="lName"
+            <input required class="input-default quick-font" type="text" name="lName" id="lName"
               placeholder="Last name : " title="Last name must contain alphabets only">
           </div>
           <!-- email -->
           <div class="wrap-input mg-btm" data-validate="Email is required">
-            <input required class="input-default comf-font" type="email" name="email" id="email" placeholder="Email : "
+            <input required class="input-default quick-font" type="email" name="email" id="email" placeholder="Email : "
               title="example: username@xyz.com">
           </div>
           <!-- password -->
           <div class="wrap-input mg-btm2" data-validate="Password is required">
-            <input required class="input-default comf-font" type="password" name="password" id="password"
+            <input required class="input-default quick-font" type="password" name="password" id="password"
               placeholder="Password : " pattern="(?=.*\d)(?=.*[a-z]).{8,}"
               title="Must contain at least one number and one lowercase letter, and at least 8 or more characters">
           </div>
+          <div class="wrap-input mg-btm2" data-validate="Password is required">
+            <input required class="input-default quick-font" type="password" name="password2" id="password2"
+              placeholder="Confirm Password :">
+          </div>
           <!-- userRole section -->
-          <fieldset class="wrap-radio comf-font">
+          <fieldset class="wrap-radio quick-font">
             <legend class="md2">Signing up as :</legend>
             <div class="row">
               <input type="radio" id="donor" name="userRole" value="donor">
@@ -75,7 +89,7 @@
           </fieldset>
           <!-- submit button section -->
           <div class="container-form-btn">
-            <button class="form-btn comf-font" type="submit">
+            <button class="form-btn quick-font" id="submit-btn" type="submit">
               Sign Up
             </button>
           </div>

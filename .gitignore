@@ -11,9 +11,5 @@ uploads
 node_modules
 
 # Ignore files related to API keys
-
+.idea
 config/config.env
-*.jpeg
-uploads/2020-08-12T03:10:33.540Zboxing.jpeg
-uploads/2020-08-12T05:28:03.155Zcoca_cola.jpg
-uploads/2020-08-12T05:41:29.153Zbasketball.jpeg
