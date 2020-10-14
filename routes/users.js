@@ -13,7 +13,7 @@ const {
   validate,
 } = require('./validations/users.validations');
 
-const {validateReCaptchaToken} = require('./validations/googleReCaptcha');
+const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
 
 const {
   sendMail,
@@ -221,7 +221,11 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   // validate captcha code. False if its invalid
   let isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
-    return sendError(res, 400, { msg: 'Provided captcha token is not valid', param: 'captchaToken', location: 'body' });
+    return sendError(res, 400, {
+      msg: 'Provided captcha token is not valid',
+      param: 'captchaToken',
+      location: 'body',
+    });
   }
 
   const candidate = await User.findOne({
