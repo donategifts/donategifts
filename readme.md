@@ -14,7 +14,7 @@
 
 > Stacy Sealky Lee
 
-## Contributors
+## Collaborators
 
   
 > Patric  
