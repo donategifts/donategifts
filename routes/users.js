@@ -145,11 +145,10 @@ router.put(
         return sendError(res, 404, 'User could not be found');
       }
 
-      // update user and add aboutMe
-      User.updateOne(
+      // update user and add aboutMe;
+      await User.findByIdAndUpdate(
         { _id: candidate._id },
-        { aboutMe: aboutMe },
-        { multi: true }
+        { $set: { aboutMe: aboutMe } }
       );
 
       res.status(200).send(
