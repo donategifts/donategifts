@@ -9,6 +9,8 @@ const {
   createEmailVerificationHash,
 } = require('../controllers/email');
 
+const {validateReCaptchaToken} = require('../utilities/googleReCaptcha');
+
 //IMPORT USER MODEL
 const User = require('../models/User');
 
@@ -198,22 +200,29 @@ router.post('/agency', async (req, res) => {
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
 router.post('/signup', async (req, res) => {
-  const { fName, lName, email, password, userRole } = req.body;
+  const { fName, lName, email, password, userRole, captchaCode } = req.body;
   const candidate = await User.findOne({
     email: email,
   });
   if (candidate) {
     return sendError(res, 409, 'This email is already taken. Try another');
   } else {
-    if (!password) return sendError(res, 206, { message: 'Password missing' });
-    if (!userRole) return sendError(res, 206, { message: 'userRole missing' });
-    if (!fName) return sendError(res, 206, { message: 'fName missing' });
-    if (!lName) return sendError(res, 206, { message: 'lName missing' });
-
+    if (!password) return sendError(res, 400, { message: 'Password missing' });
+    if (!userRole) return sendError(res, 400, { message: 'userRole missing' });
+    if (!fName) return sendError(res, 400, { message: 'fName missing' });
+    if (!lName) return sendError(res, 400, { message: 'lName missing' });
+    if (!captchaCode) return sendError(res, 400, { message: 'captchaCode missing' });
+    
+    // validate captcha code. False if its invalid, return error
+    let isCaptchaValid = await validateReCaptchaToken(captchaCode);
+    if (isCaptchaValid === false) {
+        return sendError(res, 400, { message: 'Provided captcha token is not valid'});
+    }
+    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationHash = createEmailVerificationHash();
-
+    
     const newUser = new User({
       fName,
       lName,
