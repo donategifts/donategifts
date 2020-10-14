@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="../css/signup.css">
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- recaptcha -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <!-- js scripts -->
   <script src="/clientJS/signup.js"></script>
 </head>
@@ -88,6 +90,7 @@
 
           </fieldset>
           <!-- submit button section -->
+          <div class="g-recaptcha" data-sitekey="6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe" data-callback="confirmCaptchaSubmit" data-size="invisible"></div>
           <div class="container-form-btn">
             <button class="form-btn quick-font" id="submit-btn" type="submit">
               Sign Up

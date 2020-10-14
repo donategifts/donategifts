@@ -19,6 +19,8 @@ const {
   sendVerificationEmail,
 } = require('../controllers/email');
 
+const {validateReCaptchaToken} = require('./validations/googleReCaptcha');
+
 //IMPORT USER MODEL
 const User = require('../models/User');
 
@@ -215,7 +217,14 @@ router.post(
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert
 router.post('/signup', signupValidationRules(), validate, async (req, res) => {
-  const { fName, lName, email, password, userRole } = req.body;
+  const { fName, lName, email, password, userRole, captchaCode } = req.body;
+
+  // validate captcha code. False if its invalid
+  let isCaptchaValid = await validateReCaptchaToken(captchaCode);
+  if (isCaptchaValid === false) {
+      return sendError(res, 400, { message: 'Provided captcha token is not valid'});
+  }
+
   const candidate = await User.findOne({
     email: email,
   });
