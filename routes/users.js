@@ -212,7 +212,7 @@ router.post(
 // @route   POST '/users/signup'
 // @access  Public
 // @tested 	Yes
-// TODO: display this message in signup.html client side as a notification alert
+// TODO: display this message in signup.html client side as a notification alert.
 router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   const { fName, lName, email, password, userRole } = req.body;
   const candidate = await User.findOne({
