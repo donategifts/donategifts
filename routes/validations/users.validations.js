@@ -12,7 +12,7 @@ const signupValidationRules = () => {
             }
             return true;
         }),
-        body('userRole').isString().notEmpty()
+        body('userRole').notEmpty().isString()
     ]
 }
 
@@ -24,17 +24,17 @@ const updateProfileValidationRules = () => {
 
 const createAgencyValidationRules = () => {
     return [
-        body('agencyName').isString().notEmpty(),
+        body('agencyName').notEmpty().isString(),
         body('agencyWebsite').optional(),
-        body('agencyPhone').isNumeric().isLength({min:7, max: undefined}).notEmpty(),
+        body('agencyPhone').notEmpty().isNumeric().isLength({min:7, max: undefined}),
         body('agencyBio').optional(),
     ]
 };
 
 const loginValidationRules = () => {
     return [
-        body('email').isString().notEmpty().isEmail().trim(),
-        body('password').isString().notEmpty()
+        body('email').notEmpty().isString().isEmail().trim(),
+        body('password').notEmpty().isString()
     ]
 }
 
