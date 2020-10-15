@@ -105,15 +105,14 @@ router.get('/login', redirectProfile, (req, res) => {
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
     let user = req.session.user;
-    let params = { user };
     if (user.userRole === 'partner') {
       let agency = await Agency.findOne({ accountManager: user._id });
+      // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
-        return res.render('agency');
+        return res.status(200).render('agency');
       }
-      params = { ...params, agency };
     }
-    res.render('profile', params);
+    res.status(200).render('profile');
   } catch (err) {
     console.log(err);
     return sendError(res, 400, err);
