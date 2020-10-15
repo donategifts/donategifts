@@ -199,8 +199,11 @@ router.post(
     try {
       await newAgency.save();
 
-      req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
-      res.send('/users/profile');
+      return res.status(200).send({
+        success: true,
+        user: req.session.user,
+        url: '/users/profile',
+      });
     } catch (err) {
       console.log(err);
       return sendError(res, 400, err);
