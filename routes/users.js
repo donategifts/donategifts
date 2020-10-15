@@ -107,15 +107,14 @@ router.get('/login', redirectProfile, (req, res) => {
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
     let user = req.session.user;
-    let params = { user };
     if (user.userRole === 'partner') {
       let agency = await Agency.findOne({ accountManager: user._id });
+      // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
-        return res.render('agency');
+        return res.status(200).render('agency');
       }
-      params = { ...params, agency };
     }
-    res.render('profile', params);
+    res.status(200).render('profile');
   } catch (err) {
     console.log(err);
     return sendError(res, 400, err);
@@ -201,14 +200,24 @@ router.post(
     try {
       await newAgency.save();
 
-      req.session.agencyId = mongoose.Types.ObjectId(newAgency._id);
-      res.send('/users/profile');
+      return res.status(200).send({
+        success: true,
+        user: req.session.user,
+        url: '/users/profile',
+      });
     } catch (err) {
       console.log(err);
       return sendError(res, 400, err);
     }
   }
 );
+
+const sendEmail = (email, verificationHash) => {
+  sendVerificationEmail(email, verificationHash).then((emailResponse) => {
+    emailResponse = emailResponse ? emailResponse.data : '';
+    if (process.env.NODE_ENV === 'development') console.log(emailResponse);
+  });
+};
 
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
@@ -251,16 +260,18 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
       //trying to add a second step here
       //if the userRole is partner then redirect to agency.ejs then profile.ejs
 
-      const emailResponse = await sendVerificationEmail(
-        email,
-        verificationHash
-      );
-
+      sendEmail(email, verificationHash);
+      let url;
+      req.session.user = newUser;
+      if (newUser.userRole === 'partner') {
+        url = '/users/agency';
+      } else {
+        url = '/users/profile';
+      }
       return res.status(200).send({
         success: true,
-        dev: process.env.NODE_ENV === 'development',
         user: newUser,
-        email: emailResponse ? emailResponse.data : '',
+        url,
       });
     } catch (err) {
       return sendError(res, 206, err);
@@ -285,14 +296,6 @@ router.post(
     });
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
-        if (!user.emailVerified) {
-          return res.status(403).render('login', {
-            user: res.locals.user,
-            successNotification: null,
-            errorNotification: { msg: 'Please verify your Email' },
-          });
-        }
-
         req.session.user = user;
         res.locals.user = user;
         return res.redirect('/users/profile');
@@ -310,8 +313,6 @@ router.post(
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
-
-    res.redirect('/users/login');
   }
 );
 
@@ -360,7 +361,7 @@ router.get('/verify/:hash', async (req, res) => {
         return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {
-            msg: 'Your email is already verified, you can login now!',
+            msg: 'Your email is already verified.',
           },
           errorNotification: null,
         });
@@ -371,7 +372,7 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
-          msg: 'Verification successful, you can login now!',
+          msg: 'Email Verification successful',
         },
         errorNotification: null,
       });
@@ -379,14 +380,14 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(400).render('login', {
         user: res.locals.user,
         successNotification: null,
-        errorNotification: { msg: 'Verification failed' },
+        errorNotification: { msg: 'Email Verification failed' },
       });
     }
   } catch (error) {
     return res.status(500).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Verification failed' },
+      errorNotification: { msg: 'Email Verification failed' },
     });
   }
 });
