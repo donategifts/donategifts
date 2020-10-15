@@ -281,14 +281,6 @@ router.post(
     });
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
-        if (!user.emailVerified) {
-          return res.status(403).render('login', {
-            user: res.locals.user,
-            successNotification: null,
-            errorNotification: { msg: 'Please verify your Email' },
-          });
-        }
-
         req.session.user = user;
         res.locals.user = user;
         return res.redirect('/users/profile');
@@ -306,8 +298,6 @@ router.post(
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
-
-    res.redirect('/users/login');
   }
 );
 
@@ -356,7 +346,7 @@ router.get('/verify/:hash', async (req, res) => {
         return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {
-            msg: 'Your email is already verified, you can login now!',
+            msg: 'Your email is already verified.',
           },
           errorNotification: null,
         });
@@ -367,7 +357,7 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
-          msg: 'Verification successful, you can login now!',
+          msg: 'Email Verification successful',
         },
         errorNotification: null,
       });
@@ -375,14 +365,14 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(400).render('login', {
         user: res.locals.user,
         successNotification: null,
-        errorNotification: { msg: 'Verification failed' },
+        errorNotification: { msg: 'Email Verification failed' },
       });
     }
   } catch (error) {
     return res.status(500).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Verification failed' },
+      errorNotification: { msg: 'Email Verification failed' },
     });
   }
 });
