@@ -24,18 +24,12 @@ $(document).ready(function () {
         userRole: userRole
       },
       success: function(response, textStatus, xhr) {
-        $("#submit-btn").prop("disabled",false);
-      
-        showToast("Please check your mails for a verification email");
-        console.log(response.email)
-        setTimeout(function(){ window.location = "/users/login" }, response.dev?15000:3000);
-
+        location.assign(response.url);
       },
       error: function(response, textStatus, errorThrown) {
         let txtToJson =  JSON.parse(response.responseText);
         showToast(txtToJson.error);
         $("#submit-btn").prop("disabled",false);
-
       }
     });
 })
