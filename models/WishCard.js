@@ -60,6 +60,10 @@ var WishCardSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    approvedByAdmin: {
+      type: Boolean,
+      default: false,
+    },
     messages: [
       {
         type: Schema.Types.ObjectId,
