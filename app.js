@@ -40,12 +40,12 @@ const hostname = '127.0.0.1';
 const port = 8081;
 
 //LOAD CONFIG.ENV vars
-let configPath = './config/config.env'
+let configPath = './config/config.env';
 if (process.env.NODE_ENV === 'test') {
-    configPath = './config/test.config.env'
+  configPath = './config/test.config.env';
 }
 dotenv.config({
-    path: configPath,
+  path: configPath,
 });
 
 //DB SET UP & APP LISTEN (server starts after db connection)
@@ -89,19 +89,20 @@ app.use(
   })
 );
 
-
-// MIDDLEWARE for extracting userId from a session
+// MIDDLEWARE for extracting user and agency from a session
 app.use(async (req, res, next) => {
-  const { user, agencyId } = req.session;
+  const { user } = req.session;
   if (user) {
     const result = await User.findById(user._id);
     res.locals.user = result;
     req.session.user = result;
-  }
-  if (agencyId) {
-    const result = await Agency.findById(agencyId);
-    res.locals.agency = result;
-    req.session.agency = result;
+    if (user.userRole === 'partner') {
+      const agency = await Agency.findOne({ accountManager: user._id });
+      if (agency !== null) {
+        res.locals.agency = agency;
+        req.session.agency = agency;
+      }
+    }
   }
   next();
 });
