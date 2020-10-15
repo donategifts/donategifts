@@ -388,6 +388,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
@@ -418,6 +419,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
@@ -447,9 +449,11 @@ describe('Users', () => {
                 .post('/users/agency')
                 .send(agencyRequest)
                 .end((err, res) => {
+                  res.should.have.status(200);
                   res.body.should.have.property('url');
 
                   agent.get('/users/profile').end((err, res) => {
+                    res.should.have.status(200);
                     res.text.should.contain('Welcome ' + user.fName);
                     res.text.should.contain('Your email is unverified');
 
@@ -477,6 +481,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
@@ -525,6 +530,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
