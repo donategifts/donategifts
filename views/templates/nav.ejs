@@ -10,7 +10,7 @@
                     <li><a href="/about">About</a></li>
                     <li><a href="https://youtu.be/P4P6jEqTXs4" target="_blank">How To</a></li>
                     <li><a href="/wishcards">Wish Cards</a></li>
-                    <% if (!user) { %>
+                    <% if (!locals.user) { %>
                     <li><a href="/users/signup">Sign Up</a></li>
                     <li><a href="/users/login">Login</a></li>
                     <% } else { %>
@@ -35,7 +35,7 @@
                     <li class="nav-item"><a href="https://youtu.be/P4P6jEqTXs4" target="_blank"
                             class="nav-link">How To</a></li>
                     <li class="nav-item"><a href="/wishcards" class="nav-link">Wish Cards</a></li>
-                    <% if (!user) { %>
+                    <% if (!locals.user) { %>
                     <li class="nav-item"><a href="/users/signup" class="nav-link">Sign Up</a></li>
                     <% } else { %>
                     <li class="nav-item"><a href="/users/profile" class="nav-link">My Profile</a></li>

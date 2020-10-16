@@ -33,6 +33,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetTokenExpires: {
+      type: Date,
+    },
     userRole: String,
     /* ROLES: Donor, Partner, Admin */
     /* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS */
