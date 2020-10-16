@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-let Schema = mongoose.Schema;
-let MessageSchema = new Schema(
+// SCHEMA SETUP
+const { Schema } = mongoose;
+const MessageSchema = new Schema(
   {
     messageFrom: {
       type: Schema.Types.ObjectId,
@@ -22,7 +22,7 @@ let MessageSchema = new Schema(
   },
   {
     collection: 'messages',
-  }
+  },
 );
 
 module.exports = mongoose.model('Message', MessageSchema);

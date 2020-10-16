@@ -1,12 +1,12 @@
-//TODO: REVIEW THE RELATIONS OF THE SCHEMAS
-//TODO: ADD PASSWORD CONSTRAINTS
-//TODO: AUTHENTICATION & SECURITY & TOKENS FOR PASSWORD RESET
+// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
+// TODO: ADD PASSWORD CONSTRAINTS
+// TODO: AUTHENTICATION & SECURITY & TOKENS FOR PASSWORD RESET
 
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-let Schema = mongoose.Schema;
-let UserSchema = new Schema(
+// SCHEMA SETUP
+const { Schema } = mongoose;
+const UserSchema = new Schema(
   {
     fName: {
       type: String,
@@ -35,7 +35,7 @@ let UserSchema = new Schema(
     },
     userRole: String,
     /* ROLES: Donor, Partner, Admin */
-    /* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS*/
+    /* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS */
     wishCards: [
       {
         type: Schema.Types.ObjectId,
@@ -59,7 +59,7 @@ let UserSchema = new Schema(
   },
   {
     collection: 'users',
-  }
+  },
 );
 
 module.exports = mongoose.model('User', UserSchema);

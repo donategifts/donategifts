@@ -1,11 +1,11 @@
-//TODO: HOW SHOULD WE STORE USER ROLE?
-//TODO: REVIEW THE RELATIONS OF THE SCHEMAS
+// TODO: HOW SHOULD WE STORE USER ROLE?
+// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
 
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-var Schema = mongoose.Schema;
-var WishCardSchema = new Schema(
+// SCHEMA SETUP
+const { Schema } = mongoose;
+const WishCardSchema = new Schema(
   {
     childFirstName: {
       type: String,
@@ -73,7 +73,7 @@ var WishCardSchema = new Schema(
   },
   {
     collection: 'wishcards',
-  }
+  },
 );
 
 module.exports = mongoose.model('WishCard', WishCardSchema);

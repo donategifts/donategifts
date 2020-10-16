@@ -3,21 +3,23 @@
     '/about' is already mounted, so no need to start with it for each route.
 */
 
-//NPM DEPENDENCIES
+// NPM DEPENDENCIES
 const express = require('express');
+
 const router = express.Router();
 
-//IMPORT WISHCARD MODEL
+// IMPORT WISHCARD MODEL
 const Contact = require('../models/Contact');
 
-//LOAD EMAIL SENDING FUNCTION
+// LOAD EMAIL SENDING FUNCTION
 const { sendMail } = require('../controllers/email');
+const { handleError } = require('../middleware/error');
 
 // @desc    Render about.html
 // @route   GET '/about'
 // @access  Public
 // @tested 	Not yet
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   try {
     res.status(200).render('about', { user: res.locals.user });
   } catch (error) {
@@ -29,9 +31,9 @@ router.get('/', (req, res) => {
 // @route   POST '/about/email'
 // @access  Public
 // @tested 	Not yet
-router.post('/email', async (req, res, next) => {
+router.post('/email', async (req, res) => {
   try {
-    var c = new Contact();
+    const c = new Contact();
     c.name = req.body.name;
     c.email = req.body.email;
     c.subject = `${req.body.subject} | send from ${c.name}`;
@@ -40,7 +42,7 @@ router.post('/email', async (req, res, next) => {
       c.email,
       'stacy.sealky.lee@gmail.com',
       c.subject,
-      c.message
+      c.message,
     );
 
     if (mailResponse.error) {
@@ -57,12 +59,7 @@ router.post('/email', async (req, res, next) => {
       }
     });
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        message: 'ERROR!',
-      })
-    );
+    handleError(res, 400, 'ERROR!');
   }
 });
 

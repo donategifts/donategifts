@@ -1,11 +1,11 @@
-//TODO: REVIEW THE RELATIONS OF THE SCHEMAS
-//TODO: edit the image file types
+// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
+// TODO: edit the image file types
 
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-let Schema = mongoose.Schema;
-let DonationSchema = new Schema(
+// SCHEMA SETUP
+const { Schema } = mongoose;
+const DonationSchema = new Schema(
   {
     donationFrom: {
       type: Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ let DonationSchema = new Schema(
   },
   {
     collection: 'donations',
-  }
+  },
 );
 
 module.exports = mongoose.model('Donation', DonationSchema);

@@ -1,4 +1,4 @@
-let babies = [
+const babies = [
   {
     Image: '/img/chooseFrom/baby_item1.png',
     Name: 'Baby Activity Book - Peekaboo',
@@ -35,7 +35,7 @@ let babies = [
       'https://www.amazon.com/gp/item-dispatch?registryID.1=3ERLGLFOY8E4M&registryItemID.1=I18RET5KOQW9MR&offeringID.1=WfaXeWe%252FiqQGhM6HX3UmSOz9zrqpt5YfYxTOS4htrp%252FhqX8jYZ2NaIFHH%252BmV%252FKSNYxTSuBngsv3LoOrXw3YsnuaMwDFBCVYswVFQRvuKrGgueivH3VLnlZWfY60fdkDxxEcBTAq2pjxxAFZdPqE0Qg%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
   },
 ];
-let preschoolers = [
+const preschoolers = [
   {
     Image: '/img/chooseFrom/pre_item1.png',
     Name: 'Cuddly Plush Bunny Toy',
@@ -72,7 +72,7 @@ let preschoolers = [
       'https://www.amazon.com/gp/item-dispatch?registryID.1=3ERLGLFOY8E4M&registryItemID.1=I1C1XDKAF4NNSU&offeringID.1=AikzMKcU5kCpuuTX7UpBHHVF7KEwTTv%252F%252FNZp8l6vg7aHGteBti8GKIF8goKChUwvd5PpmGVnoxZnW5M8px25i%252BXDh5GG0VIdFhtb6Awk1T%252BT8qf5DhOa9D5JkpH2vThmyQGog0yC3I4DepQ1OS62Uw%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
   },
 ];
-let kids6_8 = [
+const kids6_8 = [
   {
     Image: '/img/chooseFrom/kid6-8_item1.png',
     Name: 'Toy Puppy that barks and wags',
@@ -110,7 +110,7 @@ let kids6_8 = [
   },
 ];
 
-let kids9_11 = [
+const kids9_11 = [
   {
     Image: '/img/chooseFrom/kid9-11_item1.png',
     Name: 'STEM Kids - Microscope with carrying box',
@@ -148,7 +148,7 @@ let kids9_11 = [
   },
 ];
 
-let teens = [
+const teens = [
   {
     Image: '/img/chooseFrom/teens_item1.png',
     Name: 'Wonder Woman Coffee Maker with Mug',
@@ -186,7 +186,7 @@ let teens = [
   },
 ];
 
-let youth = [
+const youth = [
   {
     Image: '/img/chooseFrom/youth_item1.png',
     Name: 'Plain Knit Beanie - color black',
@@ -224,7 +224,7 @@ let youth = [
   },
 ];
 
-let allAgesA = [
+const allAgesA = [
   {
     Image: '/img/chooseFrom/all_item1.png',
     Name: 'Little Book of Mindfulness',
@@ -262,7 +262,7 @@ let allAgesA = [
   },
 ];
 
-let allAgesB = [
+const allAgesB = [
   {
     Image: '/img/chooseFrom/allB_item1.png',
     Name: 'Dual Marker Brush Pen Set',
