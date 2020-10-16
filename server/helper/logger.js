@@ -31,7 +31,7 @@ const log = function doLog(req, error = '', additional = '') {
   const logFct = console.log;
 
   let prefix;
-  if (typeof req === 'object') {
+  if (typeof req === 'object' && req.method && req.protocol && req.get('host') && req.originalUrl) {
     prefix = `[${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}]`;
   } else {
     prefix = '[INFO]';
