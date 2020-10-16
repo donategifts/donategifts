@@ -17,11 +17,11 @@
 ## Contributors
 
   
-> Patric Hoffmann
-> Ivan Repusic  
-> Jacob Jeevan  
-> Jordan Huang  
-> Maria Nguyen  
+* Patric Hoffmann
+* Ivan Repusic  
+* Jacob Jeevan  
+* Jordan Huang  
+* Maria Nguyen  
 
 ## Usage
 
