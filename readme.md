@@ -17,7 +17,7 @@
 ## Contributors
 
   
-> Patric  
+> Patric Hoffmann
 > Ivan Repusic  
 > Jacob Jeevan  
 > Jordan Huang  
