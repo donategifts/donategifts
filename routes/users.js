@@ -195,11 +195,10 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
   }
 });
 
-const sendEmail = (email, verificationHash) => {
-  sendVerificationEmail(email, verificationHash).then((emailResponse) => {
-    const response = emailResponse ? emailResponse.data : '';
-    if (process.env.NODE_ENV === 'development') console.log(response);
-  });
+const sendEmail = async (email, verificationHash) => {
+  const emailResponse = await sendVerificationEmail(email, verificationHash);
+  const response = emailResponse ? emailResponse.data : '';
+  if (process.env.NODE_ENV === 'development') console.log(response);
 };
 
 // @desc    Create a newUser, hash password, issue session
