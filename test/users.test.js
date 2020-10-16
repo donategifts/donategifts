@@ -162,7 +162,6 @@ describe('Users', () => {
             user.id.should.equal(res.body.user._id);
 
             agent.get('/users/profile').end((err, res) => {
-              console.log('-------------------------', res.text);
               res.text.should.contain('Welcome ' + user.fName);
               res.text.should.contain('Your email is unverified');
               done();
@@ -187,7 +186,6 @@ describe('Users', () => {
                 user.emailVerified.should.equal(true);
 
                 agent.get('/users/profile').end((err, res) => {
-                  console.log('-----------------------------', res.status, res.body);
                   res.should.have.status(200);
                   res.text.should.contain('Welcome ' + user.fName);
                   res.text.should.not.contain('Your email is unverified');
@@ -447,7 +445,6 @@ describe('Users', () => {
                 .post('/users/agency')
                 .send(agencyRequest)
                 .end((err, res) => {
-                  console.log('--------------------', res);
                   res.should.have.status(200);
                   res.body.should.have.property('url');
 
