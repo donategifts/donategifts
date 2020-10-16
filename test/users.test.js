@@ -1,10 +1,10 @@
-let User = require('../models/User');
-let Agency = require('../models/Agency');
+let User = require('../server/db/models/User');
+let Agency = require('../server/db/models/Agency');
 
 //Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../app');
+let server = require('../server/app');
 let should = chai.should();
 
 chai.use(chaiHttp);
@@ -70,8 +70,7 @@ describe('Users', () => {
   describe('/GET users/verify/hash', () => {
     it('it should not verify non existing hash', (done) => {
       let hash = '';
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       const charactersLength = characters.length;
       for (let i = 0; i < 18; i++) {
         hash += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -106,17 +105,15 @@ describe('Users', () => {
             user.id.should.equal(res.body.user._id);
             user.email.should.equal(signupRequest.email);
 
-            agent
-              .get('/users/verify/' + user.verificationHash)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain('Verification successful');
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
 
-                User.findOne({ email: signupRequest.email }).then((user) => {
-                  user.emailVerified.should.equal(true);
-                  done();
-                });
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
+                done();
               });
+            });
           });
         });
     });
@@ -165,6 +162,7 @@ describe('Users', () => {
             user.id.should.equal(res.body.user._id);
 
             agent.get('/users/profile').end((err, res) => {
+              console.log('-------------------------', res.text);
               res.text.should.contain('Welcome ' + user.fName);
               res.text.should.contain('Your email is unverified');
               done();
@@ -181,23 +179,22 @@ describe('Users', () => {
           res.should.have.status(200);
           User.findOne({ email: signupRequest.email }).then((user) => {
             user.emailVerified.should.equal(false);
-            agent
-              .get('/users/verify/' + user.verificationHash)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain('Verification successful');
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
 
-                User.findOne({ email: signupRequest.email }).then((user) => {
-                  user.emailVerified.should.equal(true);
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
 
-                  agent.get('/users/profile').end((err, res) => {
-                    res.should.have.status(200);
-                    res.text.should.contain('Welcome ' + user.fName);
-                    res.text.should.not.contain('Your email is unverified');
-                    done();
-                  });
+                agent.get('/users/profile').end((err, res) => {
+                  console.log('-----------------------------', res.status, res.body);
+                  res.should.have.status(200);
+                  res.text.should.contain('Welcome ' + user.fName);
+                  res.text.should.not.contain('Your email is unverified');
+                  done();
                 });
               });
+            });
           });
         });
     });
@@ -450,6 +447,7 @@ describe('Users', () => {
                 .post('/users/agency')
                 .send(agencyRequest)
                 .end((err, res) => {
+                  console.log('--------------------', res);
                   res.should.have.status(200);
                   res.body.should.have.property('url');
 
@@ -458,17 +456,13 @@ describe('Users', () => {
                     res.text.should.contain('Welcome ' + user.fName);
                     res.text.should.contain('Your email is unverified');
 
-                    Agency.findOne({ accountManager: user._id }).then(
-                      (agency) => {
-                        agency.agencyName.should.equal(
-                          agencyRequest.agencyName
-                        );
-                        const aUserId = agency.accountManager.toString();
-                        const userId = user._id.toString();
-                        aUserId.should.equal(userId);
-                        done();
-                      }
-                    );
+                    Agency.findOne({ accountManager: user._id }).then((agency) => {
+                      agency.agencyName.should.equal(agencyRequest.agencyName);
+                      const aUserId = agency.accountManager.toString();
+                      const userId = user._id.toString();
+                      aUserId.should.equal(userId);
+                      done();
+                    });
                   });
                 });
             });

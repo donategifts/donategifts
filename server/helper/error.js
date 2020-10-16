@@ -11,23 +11,23 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (res, code, err, status = 'error', success = false) => {
+const handleError = (res, code, error, status = 'error', success = false) => {
   let statusCode;
   let message;
   let name;
 
-  if (typeof err === 'object') {
-    name = err.name;
-    statusCode = err.statusCode;
-    message = err.message;
-  } else if (typeof err === 'string') {
-    message = err;
+  if (typeof error === 'object') {
+    name = error.name;
+    statusCode = error.statusCode;
+    message = error.message;
+  } else if (typeof error === 'string') {
+    message = error;
   }
 
   statusCode = code || statusCode;
 
   // CONSOLE LOG FOR DEV ENV
-  log(res, err);
+  log(res, error);
 
   // MONGOOSE BAD OBJECT ID
   if (name === 'CastError') {
@@ -37,7 +37,7 @@ const handleError = (res, code, err, status = 'error', success = false) => {
 
   // MONGOOSE VALIDATION ERROR
   if (name === 'ValidationError') {
-    message = Object.values(err.errors).map((val) => val.message);
+    message = Object.values(error.errors).map((val) => val.message);
     statusCode = 400;
   }
 
@@ -46,7 +46,7 @@ const handleError = (res, code, err, status = 'error', success = false) => {
     success,
     statusCode,
     message,
-    err,
+    error,
   });
 };
 

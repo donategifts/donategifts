@@ -8,8 +8,6 @@ const express = require('express');
 
 const router = express.Router();
 
-const path = require('path');
-
 // IMPORT WISHCARD MODEL
 const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
@@ -23,9 +21,7 @@ const { log } = require('../helper/logger');
 // @tested 	Not yet
 router.get('/', (req, res) => {
   try {
-    res
-      .status(200)
-      .render(path.join(__dirname, '../../client/views/about'), { user: res.locals.user });
+    res.status(200).render('about', { user: res.locals.user });
   } catch (error) {
     log(req, error);
   }

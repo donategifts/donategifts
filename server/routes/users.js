@@ -7,7 +7,6 @@ const express = require('express');
 const router = express.Router();
 
 const bcrypt = require('bcrypt');
-const path = require('path');
 const moment = require('moment');
 
 const {
@@ -54,7 +53,7 @@ const redirectProfile = (req, res, next) => {
 // @tested 	Yes
 router.get('/', (req, res) => {
   try {
-    res.status(200).render(path.join(__dirname, '../../client/views/home'), {
+    res.status(200).render('home', {
       user: res.locals.user,
     });
   } catch (err) {
@@ -68,7 +67,7 @@ router.get('/', (req, res) => {
 // @tested 	Yes
 router.get('/signup', redirectProfile, (req, res) => {
   try {
-    res.status(200).render(path.join(__dirname, '../../client/views/signup'), {
+    res.status(200).render('signup', {
       user: res.locals.user,
     });
   } catch (err) {
@@ -82,7 +81,7 @@ router.get('/signup', redirectProfile, (req, res) => {
 // @tested 	yes
 router.get('/login', redirectProfile, (req, res) => {
   try {
-    res.status(200).render(path.join(__dirname, '../../client/views/login'), {
+    res.status(200).render('login', {
       user: res.locals.user,
       successNotification: null,
       errorNotification: null,
@@ -111,7 +110,7 @@ router.get('/profile', redirectLogin, async (req, res) => {
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
       // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
-        return res.status(200).render(path.join(__dirname, '../../client/views/agency'));
+        return res.status(200).render('agency');
       }
     }
     res.status(200).render('profile');
@@ -167,7 +166,7 @@ router.put(
 // @tested 	No
 router.get('/agency', redirectLogin, async (req, res) => {
   try {
-    res.render(path.join(__dirname, '../../client/views/agency'), {
+    res.render('agency', {
       user: res.locals.user,
     });
   } catch (err) {
@@ -280,13 +279,13 @@ router.post('/login', loginValidationRules(), validate, redirectProfile, async (
       res.locals.user = user;
       return res.redirect('/users/profile');
     }
-    return res.status(403).render(path.join(__dirname, '../../client/views/login'), {
+    return res.status(403).render('login', {
       user: res.locals.user,
       successNotification: null,
       errorNotification: { msg: 'Username and/or password incorrect' },
     });
   }
-  return res.status(403).render(path.join(__dirname, '../../client/views/login'), {
+  return res.status(403).render('login', {
     user: res.locals.user,
     successNotification: null,
     errorNotification: { msg: 'Username and/or password incorrect' },
@@ -310,7 +309,7 @@ router.get('/logout', redirectLogin, (req, res) => {
 // @tested 	No
 router.get('/terms', async (req, res) => {
   try {
-    res.render(path.join(__dirname, '../../client/views/terms'), {
+    res.render('terms', {
       user: res.locals.user,
     });
   } catch (err) {
@@ -328,7 +327,7 @@ router.get('/verify/:hash', async (req, res) => {
 
     if (user) {
       if (user.emailVerified) {
-        return res.status(200).render(path.join(__dirname, '../../client/views/login'), {
+        return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {
             msg: 'Your email is already verified.',
@@ -339,7 +338,7 @@ router.get('/verify/:hash', async (req, res) => {
       user.emailVerified = true;
       user.save();
 
-      return res.status(200).render(path.join(__dirname, '../../client/views/login'), {
+      return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
           msg: 'Email Verification successful',
@@ -347,13 +346,13 @@ router.get('/verify/:hash', async (req, res) => {
         errorNotification: null,
       });
     }
-    return res.status(400).render(path.join(__dirname, '../../client/views/login'), {
+    return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
       errorNotification: { msg: 'Email Verification failed' },
     });
   } catch (error) {
-    return res.status(500).render(path.join(__dirname, '../../client/views/login'), {
+    return res.status(500).render('login', {
       user: res.locals.user,
       successNotification: null,
       errorNotification: { msg: 'Email Verification failed' },
@@ -376,7 +375,7 @@ router.get('/choose', redirectLogin, async (req, res) => {
       }
       params = { ...params, agency };
     }
-    res.render(path.join(__dirname, '../../client/views/chooseItem'), params);
+    res.render('chooseItem', params);
   } catch (err) {
     return handleError(res, 400, err);
   }
@@ -388,7 +387,7 @@ router.get('/choose', redirectLogin, async (req, res) => {
 // @tested
 router.get('/password/request', async (req, res) => {
   try {
-    res.render(path.join(__dirname, '../../client/views/requestPassword'));
+    res.render('requestPassword');
   } catch (err) {
     return handleError(res, 400, err);
   }
@@ -429,7 +428,7 @@ router.get('/password/reset/:token', async (req, res) => {
 
     if (userObject) {
       if (moment(userObject.passwordResetTokenExpires) > moment()) {
-        res.render(path.join(__dirname, '../../client/views/resetPassword'), {
+        res.render('resetPassword', {
           token: req.params.token,
         });
       } else {

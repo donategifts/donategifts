@@ -13,7 +13,6 @@ const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
-const path = require('path');
 
 const {
   babies,
@@ -170,7 +169,7 @@ router.get('/', async (_req, res) => {
       wishcards[i].age = today.diff(birthday, 'years');
     }
 
-    res.status(200).render(path.join(__dirname, '../../client/views/wishCards'), {
+    res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
     });
@@ -186,7 +185,7 @@ router.get('/', async (_req, res) => {
 router.post('/search', async (req, res) => {
   try {
     const results = await WishCardRepository.getWishCardsByItemName(req.body.wishitem);
-    res.status(200).render(path.join(__dirname, '../../client/views/wishCards'), {
+    res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards: results,
     });
@@ -253,7 +252,7 @@ router.get('/:id', async (req, res) => {
       const messages = await getPreviousMessages(wishcard);
       const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
       // create a page and have a dynamic link for see more
-      res.status(200).render(path.join(__dirname, '../../client/views/wishCardFullPage'), {
+      res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
         wishcard: wishcard || [],
         messages,
@@ -278,17 +277,13 @@ router.get('/get/random', async (req, res) => {
       wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
       wishcards = wishcards.slice(0, 3);
     }
-    res.render(
-      path.join(__dirname, '../../client/views/templates/homeSampleCards'),
-      { wishcards },
-      (error, html) => {
-        if (error) {
-          res.status(400).json({ success: false, error });
-        } else {
-          res.status(200).send(html);
-        }
-      },
-    );
+    res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
   } catch (error) {
     handleError(res, 400, error);
   }
@@ -352,17 +347,13 @@ router.get('/defaults/:id', async (req, res) => {
   else if (ageCategory === 6) itemChoices = youth;
   else if (ageCategory === 7) itemChoices = allAgesA;
   else itemChoices = allAgesB;
-  res.render(
-    path.join(__dirname, '../../client/views/itemChoices'),
-    { itemChoices },
-    (error, html) => {
-      if (error) {
-        handleError(res, 400, error);
-      } else {
-        res.send(html);
-      }
-    },
-  );
+  res.render('itemChoices', { itemChoices }, (error, html) => {
+    if (error) {
+      handleError(res, 400, error);
+    } else {
+      res.send(html);
+    }
+  });
 });
 
 module.exports = router;

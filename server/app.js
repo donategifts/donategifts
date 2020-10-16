@@ -26,7 +26,7 @@ const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'ejs');
 app.engine('html', ejs.renderFile);
 
@@ -115,7 +115,7 @@ app.use('/wishcards', wishCardsRoute);
 app.use('/about', aboutRoute);
 
 app.get('/', (_req, res) => {
-  res.render(path.join(__dirname, '../client/views/home'), {
+  res.render('home', {
     user: res.locals.user,
     wishcards: [],
   });
