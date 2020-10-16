@@ -112,7 +112,7 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
 const sendVerificationEmail = async (to, hash) => {
 
   const body = template
-    .replace('linkplaceholder', `${process.env.BASE_URL}/users/verify/${hash}`)
+    .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
     .replace('%headerPlaceHolder%', 'Verify Your Email Account')
     .replace('%titlePlaceHolder%', 'Thank you for creating an account!')
     .replace('%bodyPlaceHolder%', 'Please confirm your email address to continue using our services.')
@@ -131,7 +131,7 @@ const sendVerificationEmail = async (to, hash) => {
 const sendPasswordResetMail = async (to, hash) => {
 
   const body = template
-    .replace('linkplaceholder', `${process.env.BASE_URL}/users/password/reset/${hash}`)
+    .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/password/reset/${hash}`)
     .replace('%titlePlaceHolder%', 'Your password reset request')
     .replace('%headerPlaceHolder%', '')
     .replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
