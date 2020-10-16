@@ -14,5 +14,5 @@ node_modules
 .idea
 config/config.env
 
-# eslint
-.eslintcache
+# generated logs folder
+server/logs
