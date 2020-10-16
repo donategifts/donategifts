@@ -44,10 +44,19 @@ async function createNewUser(params) {
   }
 }
 
+async function getUserByPasswordResetToken(tokenId) {
+  try {
+    return User.findOne({ passwordResetToken: tokenId });
+  } catch (error) {
+    throw new Error(`Failed to get User: ${error}`);
+  }
+}
+
 module.exports = {
   getUserByObjectId,
   updateUserById,
   getUserByEmail,
   getUserByVerificationHash,
   createNewUser,
+  getUserByPasswordResetToken,
 };

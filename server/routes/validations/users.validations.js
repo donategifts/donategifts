@@ -14,7 +14,7 @@ const signupValidationRules = () => {
       }
       return true;
     }),
-    body('userRole').isString().notEmpty(),
+    body('userRole').notEmpty().isString(),
   ];
 };
 
@@ -24,7 +24,7 @@ const updateProfileValidationRules = () => {
 
 const createAgencyValidationRules = () => {
   return [
-    body('agencyName').isString().notEmpty(),
+    body('agencyName').notEmpty().isString(),
     body('agencyWebsite').optional(),
     body('agencyPhone').isNumeric().isLength({ min: 7, max: undefined }).notEmpty(),
     body('agencyBio').optional(),
@@ -33,8 +33,21 @@ const createAgencyValidationRules = () => {
 
 const loginValidationRules = () => {
   return [
-    body('email').isString().notEmpty().isEmail().trim(),
-    body('password').isString().notEmpty(),
+    body('email').notEmpty().isString().isEmail().trim(),
+    body('password').notEmpty().isString(),
+  ];
+};
+
+const passwordResetValidationRules = () => {
+  return [
+    body('password').notEmpty().isString().trim(),
+    body('passwordConfirm').notEmpty().isString(),
+    body('passwordConfirm').custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Password confirmation does not match password');
+      }
+      return true;
+    }),
   ];
 };
 
@@ -52,5 +65,6 @@ module.exports = {
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
+  passwordResetValidationRules,
   validate,
 };

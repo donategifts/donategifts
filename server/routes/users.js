@@ -1,21 +1,29 @@
 // NPM DEPENDENCIES
 
+const { v4: uuidv4 } = require('uuid');
+
 const express = require('express');
 
 const router = express.Router();
 
 const bcrypt = require('bcrypt');
 const path = require('path');
+const moment = require('moment');
 
 const {
   signupValidationRules,
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
+  passwordResetValidationRules,
   validate,
 } = require('./validations/users.validations');
 const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
-const { createEmailVerificationHash, sendVerificationEmail } = require('../controller/email');
+const {
+  createEmailVerificationHash,
+  sendVerificationEmail,
+  sendPasswordResetMail,
+} = require('../controller/email');
 const { handleError } = require('../helper/error');
 const { log } = require('../helper/logger');
 
@@ -373,5 +381,104 @@ router.get('/choose', redirectLogin, async (req, res) => {
     return handleError(res, 400, err);
   }
 });
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested
+router.get('/password/request', async (req, res) => {
+  try {
+    res.render(path.join(__dirname, '../../client/views/requestPassword'));
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+});
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested
+router.post('/password/request', async (req, res) => {
+  try {
+    if (!req.body.email) return handleError(res, 400, 'email missing');
+
+    const userObject = await UserRepository.getUserByEmail(req.body.email);
+
+    if (!userObject) return handleError(res, 400, 'user not found');
+
+    const resetToken = uuidv4();
+    userObject.passwordResetToken = resetToken;
+    userObject.passwordResetTokenExpires = moment().add(1, 'hours');
+    userObject.save();
+
+    sendPasswordResetMail(userObject.email, resetToken);
+
+    res.send({ success: true });
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+});
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested
+router.get('/password/reset/:token', async (req, res) => {
+  try {
+    const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
+
+    if (userObject) {
+      if (moment(userObject.passwordResetTokenExpires) > moment()) {
+        res.render(path.join(__dirname, '../../client/views/resetPassword'), {
+          token: req.params.token,
+        });
+      } else {
+        return handleError(res, 400, 'Password token expired');
+      }
+    } else {
+      return handleError(res, 400, 'User not found');
+    }
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+});
+
+// @desc    Render profile.html, grabs userId and render ejs data in static template
+// @route   GET '/users/choose'
+// @access  Private
+// @tested
+router.post(
+  '/password/reset/:token',
+  passwordResetValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
+
+      if (userObject) {
+        if (moment(userObject.passwordResetTokenExpires) > moment()) {
+          const salt = await bcrypt.genSalt(10);
+
+          userObject.password = await bcrypt.hash(req.body.password, salt);
+          userObject.passwordResetToken = null;
+          userObject.passwordResetTokenExpires = null;
+          userObject.save();
+
+          req.session.destroy(() => {
+            res.clearCookie(process.env.SESS_NAME);
+          });
+
+          res.send({ success: true });
+        } else {
+          return handleError(res, 400, 'Password token expired');
+        }
+      } else {
+        return handleError(res, 400, 'User not found');
+      }
+    } catch (err) {
+      return handleError(res, 400, err);
+    }
+  },
+);
 
 module.exports = router;
