@@ -1,30 +1,28 @@
-//NPM DEPENDENCIES
+// NPM DEPENDENCIES
 
 const express = require('express');
+
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
 
 const {
   signupValidationRules,
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  validate,
+  validate
 } = require('./validations/users.validations');
 
 const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
 
-const {
-  sendMail,
-  createEmailVerificationHash,
-  sendVerificationEmail,
-} = require('../controllers/email');
+const { createEmailVerificationHash, sendVerificationEmail } = require('../controllers/email');
 
-//IMPORT USER MODEL
+const { handleError } = require('../middleware/error');
+
+// IMPORT USER MODEL
 const User = require('../models/User');
 
-//IMPORT AGENCY MODEL
+// IMPORT AGENCY MODEL
 const Agency = require('../models/Agency');
 
 // Middleware for users
@@ -43,13 +41,6 @@ const redirectProfile = (req, res, next) => {
   }
 };
 
-const sendError = (res, status, err) => {
-  res.status(status).send({
-    success: false,
-    error: err,
-  });
-};
-
 // @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
@@ -57,10 +48,10 @@ const sendError = (res, status, err) => {
 router.get('/', (req, res) => {
   try {
     res.status(200).render('home', {
-      user: res.locals.user,
+      user: res.locals.user
     });
   } catch (err) {
-    return sendError(res, 400, err);
+    return handleError(res, 400, err);
   }
 });
 
@@ -71,10 +62,10 @@ router.get('/', (req, res) => {
 router.get('/signup', redirectProfile, (req, res) => {
   try {
     res.status(200).render('signup', {
-      user: res.locals.user,
+      user: res.locals.user
     });
   } catch (err) {
-    return sendError(res, 400, err);
+    return handleError(res, 400, err);
   }
 });
 
@@ -87,13 +78,13 @@ router.get('/login', redirectProfile, (req, res) => {
     res.status(200).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: null,
+      errorNotification: null
     });
   } catch (error) {
     res.status(400).send(
       JSON.stringify({
         success: false,
-        error: err,
+        error
       })
     );
   }
@@ -106,9 +97,9 @@ router.get('/login', redirectProfile, (req, res) => {
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
-    let user = req.session.user;
+    const { user } = req.session;
     if (user.userRole === 'partner') {
-      let agency = await Agency.findOne({ accountManager: user._id });
+      const agency = await Agency.findOne({ accountManager: user._id });
       // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
         return res.status(200).render('agency');
@@ -117,7 +108,7 @@ router.get('/profile', redirectLogin, async (req, res) => {
     res.status(200).render('profile');
   } catch (err) {
     console.log(err);
-    return sendError(res, 400, err);
+    return handleError(res, 400, err);
   }
 });
 
@@ -136,31 +127,28 @@ router.put(
 
       // if no user id is present return forbidden status 403
       if (!req.session.user) {
-        return sendError(res, 403, 'No user id in request');
+        return handleError(res, 403, 'No user id in request');
       }
 
       const candidate = await User.findOne({ _id: req.session.user._id });
 
       // candidate with id not found in database, return not found status 404
       if (!candidate) {
-        return sendError(res, 404, 'User could not be found');
+        return handleError(res, 404, 'User could not be found');
       }
 
       // update user and add aboutMe;
-      await User.findByIdAndUpdate(
-        { _id: candidate._id },
-        { $set: { aboutMe: aboutMe } }
-      );
+      await User.findByIdAndUpdate({ _id: candidate._id }, { $set: { aboutMe } });
 
       res.status(200).send(
         JSON.stringify({
           success: true,
           error: null,
-          data: aboutMe,
+          data: aboutMe
         })
       );
     } catch (err) {
-      return sendError(res, 400, err);
+      return handleError(res, 400, err);
     }
   }
 );
@@ -172,10 +160,10 @@ router.put(
 router.get('/agency', redirectLogin, async (req, res) => {
   try {
     res.render('agency', {
-      user: res.locals.user,
+      user: res.locals.user
     });
   } catch (err) {
-    return sendError(res, 400, err);
+    return handleError(res, 400, err);
   }
 });
 
@@ -183,39 +171,34 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post(
-  '/agency',
-  createAgencyValidationRules(),
-  validate,
-  async (req, res) => {
-    const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
+router.post('/agency', createAgencyValidationRules(), validate, async (req, res) => {
+  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
 
-    const newAgency = new Agency({
-      agencyName,
-      agencyWebsite,
-      agencyPhone,
-      agencyBio,
-      accountManager: req.session.user._id,
+  const newAgency = new Agency({
+    agencyName,
+    agencyWebsite,
+    agencyPhone,
+    agencyBio,
+    accountManager: req.session.user._id
+  });
+  try {
+    await newAgency.save();
+
+    return res.status(200).send({
+      success: true,
+      user: req.session.user,
+      url: '/users/profile'
     });
-    try {
-      await newAgency.save();
-
-      return res.status(200).send({
-        success: true,
-        user: req.session.user,
-        url: '/users/profile',
-      });
-    } catch (err) {
-      console.log(err);
-      return sendError(res, 400, err);
-    }
+  } catch (err) {
+    console.log(err);
+    return handleError(res, 400, err);
   }
-);
+});
 
 const sendEmail = (email, verificationHash) => {
   sendVerificationEmail(email, verificationHash).then((emailResponse) => {
-    emailResponse = emailResponse ? emailResponse.data : '';
-    if (process.env.NODE_ENV === 'development') console.log(emailResponse);
+    const response = emailResponse ? emailResponse.data : '';
+    if (process.env.NODE_ENV === 'development') console.log(response);
   });
 };
 
@@ -228,54 +211,55 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   const { fName, lName, email, password, userRole, captchaToken } = req.body;
 
   // validate captcha code. False if its invalid
-  let isCaptchaValid = await validateReCaptchaToken(captchaToken);
+  const isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
-    return sendError(res, 400, {
-      msg: 'Provided captcha token is not valid',
-      param: 'captchaToken',
-      location: 'body',
+    return handleError(res, 400, {
+      message: {
+        msg: 'Provided captcha token is not valid',
+        param: 'captchaToken',
+        location: 'body'
+      }
     });
   }
 
   const candidate = await User.findOne({
-    email: email,
+    email
   });
   if (candidate) {
-    return sendError(res, 409, 'This email is already taken. Try another');
-  } else {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const verificationHash = createEmailVerificationHash();
+    return handleError(res, 409, 'This email is already taken. Try another');
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const verificationHash = createEmailVerificationHash();
 
-    const newUser = new User({
-      fName,
-      lName,
-      email,
-      verificationHash,
-      password: hashedPassword,
-      userRole,
-    });
-    try {
-      await newUser.save();
-      //trying to add a second step here
-      //if the userRole is partner then redirect to agency.ejs then profile.ejs
+  const newUser = new User({
+    fName,
+    lName,
+    email,
+    verificationHash,
+    password: hashedPassword,
+    userRole
+  });
+  try {
+    await newUser.save();
+    // trying to add a second step here
+    // if the userRole is partner then redirect to agency.ejs then profile.ejs
 
-      sendEmail(email, verificationHash);
-      let url;
-      req.session.user = newUser;
-      if (newUser.userRole === 'partner') {
-        url = '/users/agency';
-      } else {
-        url = '/users/profile';
-      }
-      return res.status(200).send({
-        success: true,
-        user: newUser,
-        url,
-      });
-    } catch (err) {
-      return sendError(res, 206, err);
+    sendEmail(email, verificationHash);
+    let url;
+    req.session.user = newUser;
+    if (newUser.userRole === 'partner') {
+      url = '/users/agency';
+    } else {
+      url = '/users/profile';
     }
+    return res.status(200).send({
+      success: true,
+      user: newUser,
+      url
+    });
+  } catch (err) {
+    return handleError(res, 206, err);
   }
 });
 
@@ -283,45 +267,37 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
-router.post(
-  '/login',
-  loginValidationRules(),
-  validate,
-  redirectProfile,
-  async (req, res) => {
-    const { email, password } = req.body;
+router.post('/login', loginValidationRules(), validate, redirectProfile, async (req, res) => {
+  const { email, password } = req.body;
 
-    const user = await User.findOne({
-      email: email,
-    });
-    if (user) {
-      if (await bcrypt.compare(password, user.password)) {
-        req.session.user = user;
-        res.locals.user = user;
-        return res.redirect('/users/profile');
-      } else {
-        return res.status(403).render('login', {
-          user: res.locals.user,
-          successNotification: null,
-          errorNotification: { msg: 'Username and/or password incorrect' },
-        });
-      }
-    } else {
-      return res.status(403).render('login', {
-        user: res.locals.user,
-        successNotification: null,
-        errorNotification: { msg: 'Username and/or password incorrect' },
-      });
+  const user = await User.findOne({
+    email
+  });
+  if (user) {
+    if (await bcrypt.compare(password, user.password)) {
+      req.session.user = user;
+      res.locals.user = user;
+      return res.redirect('/users/profile');
     }
+    return res.status(403).render('login', {
+      user: res.locals.user,
+      successNotification: null,
+      errorNotification: { msg: 'Username and/or password incorrect' }
+    });
   }
-);
+  return res.status(403).render('login', {
+    user: res.locals.user,
+    successNotification: null,
+    errorNotification: { msg: 'Username and/or password incorrect' }
+  });
+});
 
 // @desc    Render login.html
 // @route   GET '/users/logout'
 // @access  Public
 // @tested 	Not yet
 router.get('/logout', redirectLogin, (req, res) => {
-  req.session.destroy((err) => {
+  req.session.destroy(() => {
     res.clearCookie(process.env.SESS_NAME);
     res.redirect('/users/login');
   });
@@ -334,13 +310,13 @@ router.get('/logout', redirectLogin, (req, res) => {
 router.get('/terms', async (req, res) => {
   try {
     res.render('terms', {
-      user: res.locals.user,
+      user: res.locals.user
     });
   } catch (err) {
     res.status(400).send(
       JSON.stringify({
         success: false,
-        error: err,
+        error: err
       })
     );
   }
@@ -353,7 +329,7 @@ router.get('/terms', async (req, res) => {
 router.get('/verify/:hash', async (req, res) => {
   try {
     const user = await User.findOne({
-      verificationHash: req.params.hash,
+      verificationHash: req.params.hash
     });
 
     if (user) {
@@ -361,9 +337,9 @@ router.get('/verify/:hash', async (req, res) => {
         return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {
-            msg: 'Your email is already verified.',
+            msg: 'Your email is already verified.'
           },
-          errorNotification: null,
+          errorNotification: null
         });
       }
       user.emailVerified = true;
@@ -372,22 +348,21 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
-          msg: 'Email Verification successful',
+          msg: 'Email Verification successful'
         },
-        errorNotification: null,
-      });
-    } else {
-      return res.status(400).render('login', {
-        user: res.locals.user,
-        successNotification: null,
-        errorNotification: { msg: 'Email Verification failed' },
+        errorNotification: null
       });
     }
+    return res.status(400).render('login', {
+      user: res.locals.user,
+      successNotification: null,
+      errorNotification: { msg: 'Email Verification failed' }
+    });
   } catch (error) {
     return res.status(500).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Email Verification failed' },
+      errorNotification: { msg: 'Email Verification failed' }
     });
   }
 });
@@ -398,18 +373,18 @@ router.get('/verify/:hash', async (req, res) => {
 // @tested
 router.get('/choose', redirectLogin, async (req, res) => {
   try {
-    let user = res.locals.user;
+    const { user } = res.locals;
     let params = { user };
     if (user.userRole === 'partner') {
-      let agency = await Agency.findOne({ accountManager: user._id });
+      const agency = await Agency.findOne({ accountManager: user._id });
       if (!agency) {
-        return sendError(res, 404, 'Agency Not Found');
+        return handleError(res, 404, 'Agency Not Found');
       }
       params = { ...params, agency };
     }
     res.render('chooseItem', params);
   } catch (err) {
-    return sendError(res, 400, err);
+    return handleError(res, 400, err);
   }
 });
 

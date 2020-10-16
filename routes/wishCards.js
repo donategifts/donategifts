@@ -4,24 +4,32 @@ serving all wishcard related routes
 /search/:keyword    /get/:id    /get/all    /get/random     /update/:id
 */
 
-//NPM DEPENDENCIES
+// NPM DEPENDENCIES
 const express = require('express');
+
 const router = express.Router();
-const path = require('path');
 const multer = require('multer');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET,
-});
 
 const {
-  createWishcardValidationRules,
-  validate,
-} = require('./validations/wishcards.validations');
+  babies,
+  preschoolers,
+  kids6_8,
+  kids9_11,
+  teens,
+  youth,
+  allAgesA,
+  allAgesB
+} = require('../utilities/defaultItems');
+const { handleError } = require('../middleware/error');
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,16 +37,16 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
-  },
+  }
 });
 
 const s3storage = multerS3({
-  s3: s3,
+  s3,
   bucket: process.env.S3BUCKET,
   acl: 'public-read',
-  key: function (req, file, cb) {
+  key(req, file, cb) {
     cb(null, uuidv4());
-  },
+  }
 });
 
 const fileFilter = (req, file, cb) => {
@@ -58,12 +66,12 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: process.env.USE_AWS ? s3storage : storage,
   limits: {
-    fileSize: 1024 * 1024 * 5, // up to 5 mbs
+    fileSize: 1024 * 1024 * 5 // up to 5 mbs
   },
-  fileFilter: fileFilter,
+  fileFilter
 });
 
-//IMPORT MODELS
+// IMPORT MODELS
 const WishCard = require('../models/WishCard');
 const Message = require('../models/Message');
 const User = require('../models/User');
@@ -76,13 +84,12 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
   if (req.file === undefined) {
     res.status(400).send({
       success: false,
-      error:
-        'Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 5 megabytes.',
+      error: `Error: File must be in jpeg, jpg, gif, or png format. The file
+        must also be less than 5 megabytes.`
     });
   } else {
     try {
-      let newCard = new WishCard({
+      const newCard = new WishCard({
         childBirthday: new Date(req.body.childBirthday),
         wishItemPrice: Number(req.body.wishItemPrice),
         wishCardImage: req.file.location,
@@ -96,17 +103,17 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
           zip: req.body.address_zip,
           country: req.body.address_country,
         }, */
-        ...req.body,
+        ...req.body
       });
       newCard.save((err) => {
         if (err) {
-          res.status(400).json({ success: false, error: err });
+          handleError(res, 400, err);
         } else {
           res.status(200).send('/wishcards/');
         }
       });
     } catch (error) {
-      res.status(400).json({ success: false, error });
+      handleError(res, 400, error);
     }
   }
 });
@@ -117,17 +124,17 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
 // @tested 	Yes
 router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
   if (req.file === undefined) {
-    res.status(400).send({
-      success: false,
-      error:
-        'Error: File must be in jpeg, jpg, gif, or png format. The file \
-        must also be less than 5 megabytes.',
-    });
+    handleError(
+      res,
+      400,
+      `Error: File must be in jpeg, jpg, gif, or png format. The file
+        mst also be less than 5 megabytes.`
+    );
   } else {
     try {
       let { itemChoice } = req.body;
       itemChoice = JSON.parse(itemChoice);
-      let newCard = new WishCard({
+      const newCard = new WishCard({
         childBirthday: new Date(req.body.childBirthday),
         wishItemName: itemChoice.Name,
         wishItemPrice: Number(itemChoice.Price),
@@ -140,19 +147,19 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
           city: req.body.address_city,
           state: req.body.address_state,
           zip: req.body.address_zip,
-          country: req.body.address_country,
+          country: req.body.address_country
         },
-        ...req.body,
+        ...req.body
       });
-      newCard.save((err, data) => {
+      newCard.save((err) => {
         if (err) {
-          res.status(400).json({ success: false, error: err });
+          handleError(res, 400, err);
         } else {
           res.status(200).send('/wishcards/');
         }
       });
     } catch (error) {
-      res.status(400).json({ success: false, error });
+      handleError(res, 400, error);
     }
   }
 });
@@ -161,27 +168,23 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
 // @route   GET '/wishcards'
 // @access  Public, all users can see
 // @tested 	Yes
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
   try {
-    let wishcards = await WishCard.find({});
+    const wishcards = await WishCard.find({});
 
     for (let i = 0; i < wishcards.length; i++) {
-      let birthday = moment(new Date(wishcards[i].childBirthday));
-      let today = moment(new Date());
+      const birthday = moment(new Date(wishcards[i].childBirthday));
+      const today = moment(new Date());
 
       wishcards[i].age = today.diff(birthday, 'years');
     }
 
     res.status(200).render('wishCards', {
       user: res.locals.user,
-      wishcards,
+      wishcards
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      success: false,
-      error: error,
-    });
+    handleError(res, 400, error);
   }
 });
 
@@ -194,53 +197,49 @@ router.post('/search', async (req, res) => {
     const results = await WishCard.find({
       wishItemName: {
         $regex: req.body.wishitem,
-        $options: 'i',
-      },
+        $options: 'i'
+      }
     });
     res.status(200).render('wishCards', {
       user: res.locals.user,
-      wishcards: results,
+      wishcards: results
     });
   } catch (error) {
-    res.status(400).send({
-      success: false,
-      error: error,
-    });
+    handleError(res, 400, error);
   }
 });
 
 // This needs to be moved elsewhere during Cleanup
-let getMessageChoices = (userFirstName, childFirstName) => {
-  if (!userFirstName | !childFirstName) {
+const getMessageChoices = (userFirstName, childFirstName) => {
+  if (!userFirstName || !childFirstName) {
     return [];
-  } else {
-    return [
-      `${userFirstName} sends you love, ${childFirstName}`,
-      'Happy Birthday to the sweetest kid in the entire world.',
-      'Happy birthday to a future superstar!',
-      `Happy birthday, ${childFirstName}`,
-      `Merry Christmas, ${childFirstName}`,
-      `Happy holidays, ${childFirstName}`,
-      `${childFirstName}, you are awesome!`,
-      `Lots of love and best wishes, ${childFirstName}`,
-      `${childFirstName}, hope you enjoy my gift!`,
-      'Merry Christmas and a Happy New Year',
-      `${childFirstName}, have a happy holiday`,
-      `Congratulations, ${childFirstName}`,
-    ];
   }
+  return [
+    `${userFirstName} sends you love, ${childFirstName}`,
+    'Happy Birthday to the sweetest kid in the entire world.',
+    'Happy birthday to a future superstar!',
+    `Happy birthday, ${childFirstName}`,
+    `Merry Christmas, ${childFirstName}`,
+    `Happy holidays, ${childFirstName}`,
+    `${childFirstName}, you are awesome!`,
+    `Lots of love and best wishes, ${childFirstName}`,
+    `${childFirstName}, hope you enjoy my gift!`,
+    'Merry Christmas and a Happy New Year',
+    `${childFirstName}, have a happy holiday`,
+    `Congratulations, ${childFirstName}`
+  ];
 };
 
-let getPreviousMessages = async (wishcard) => {
+const getPreviousMessages = async (wishcard) => {
   let messages = [];
   if (wishcard.messages.length > 0) {
     messages = await Promise.all(
       wishcard.messages.map(async (messageID) => {
-        let foundMessage = await Message.findById(messageID);
-        let foundUser = await User.findById(foundMessage.messageFrom);
+        const foundMessage = await Message.findById(messageID);
+        const foundUser = await User.findById(foundMessage.messageFrom);
         return {
           message: foundMessage.message,
-          fromUser: foundUser.fName,
+          fromUser: foundUser.fName
         };
       })
     );
@@ -258,30 +257,24 @@ router.get('/:id', async (req, res) => {
     res.redirect('/users/login');
   } else {
     try {
-      let wishcard = await WishCard.findById(req.params.id);
+      const wishcard = await WishCard.findById(req.params.id);
 
-      let birthday = moment(new Date(wishcard.childBirthday));
-      let today = moment(new Date());
+      const birthday = moment(new Date(wishcard.childBirthday));
+      const today = moment(new Date());
 
       wishcard.age = today.diff(birthday, 'years');
 
-      let messages = await getPreviousMessages(wishcard);
-      let defaultMessages = getMessageChoices(
-        res.locals.user.fName,
-        wishcard.childFirstName
-      );
+      const messages = await getPreviousMessages(wishcard);
+      const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
       // create a page and have a dynamic link for see more
       res.status(200).render('wishCardFullPage', {
         user: res.locals.user,
-        wishcard: wishcard ? wishcard : [],
+        wishcard: wishcard || [],
         messages,
-        defaultMessages,
+        defaultMessages
       });
     } catch (error) {
-      res.status(400).send({
-        success: false,
-        error: error,
-      });
+      handleError(res, 400, error);
     }
   }
 });
@@ -307,12 +300,7 @@ router.get('/get/random', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(400).send(
-      JSON.stringify({
-        success: false,
-        error: error,
-      })
-    );
+    handleError(res, 400, error);
   }
 });
 
@@ -331,10 +319,7 @@ router.put('/update/:id', async (req, res) => {
         */
     result.save();
   } catch (error) {
-    res.status(400).send({
-      success: false,
-      error: error,
-    });
+    handleError(res, 400, error);
   }
 });
 
@@ -348,7 +333,7 @@ router.post('/message', async (req, res) => {
     const newMessage = new Message({ messageFrom, messageTo, message });
     await newMessage.save();
 
-    let updatedWishCard = await WishCard.findByIdAndUpdate(
+    const updatedWishCard = await WishCard.findByIdAndUpdate(
       { _id: messageTo._id },
       { $push: { messages: newMessage } },
       { new: true }
@@ -358,40 +343,22 @@ router.post('/message', async (req, res) => {
       res.status(200).send({
         success: true,
         error: null,
-        data: newMessage,
+        data: newMessage
       });
     } else {
-      res.status(400).send({
-        success: false,
-        error: 'Could not Update Card',
-      });
+      handleError(res, 400, 'Could not Update Card');
     }
   } catch (error) {
-    res.status(400).send({
-      success: false,
-      error: error,
-    });
+    handleError(res, 400, error);
   }
 });
-
-// Move this later when cleaning up this route
-let {
-  babies,
-  preschoolers,
-  kids6_8,
-  kids9_11,
-  teens,
-  youth,
-  allAgesA,
-  allAgesB,
-} = require('../utilities/defaultItems');
 
 // @desc
 // @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access
 // @tested 	No
 router.get('/defaults/:id', async (req, res) => {
-  let ageCategory = Number(req.params.id);
+  const ageCategory = Number(req.params.id);
   let itemChoices;
   if (ageCategory === 1) itemChoices = babies;
   else if (ageCategory === 2) itemChoices = preschoolers;
@@ -403,7 +370,7 @@ router.get('/defaults/:id', async (req, res) => {
   else itemChoices = allAgesB;
   res.render('itemChoices', { itemChoices }, (error, html) => {
     if (error) {
-      res.status(400).json({ success: false, error });
+      handleError(res, 400, error);
     } else {
       res.send(html);
     }

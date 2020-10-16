@@ -1,28 +1,53 @@
-//TODO: ADD MORE ERROR HANDLING HERE
+// TODO: ADD MORE ERROR HANDLING HERE
+class ErrorHandler extends Error {
+  constructor(statusCode, message, name) {
+    super();
+    this.statusCode = statusCode;
+    this.message = message;
+    this.name = name;
+  }
+}
 
-const errorHandler = (err, req, res, next) => {
-  let error = { ...err };
-  error.message = err.message;
+const handleError = (res, code, err, status = 'error', success = false) => {
+  let statusCode;
+  let message;
+  let name;
+
+  if (typeof err === 'object') {
+    name = err.name;
+    statusCode = err.statusCode;
+    message = err.message;
+  } else if (typeof err === 'string') {
+    message = err;
+  }
+
+  statusCode = code || statusCode;
 
   // CONSOLE LOG FOR DEV ENV
-  console.log(err);
+  console.log(JSON.stringify(err, null, 3));
 
   // MONGOOSE BAD OBJECT ID
-  if (err.name === 'CastError') {
-    const message = `Resource not found`;
-    error = new ErrorResponse(message, 404);
+  if (name === 'CastError') {
+    message = 'Resource not found';
+    statusCode = 404;
   }
 
   // MONGOOSE VALIDATION ERROR
-  if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val) => val.message);
-    error = new ErrorResponse(message, 400);
+  if (name === 'ValidationError') {
+    message = Object.values(err.errors).map((val) => val.message);
+    statusCode = 400;
   }
 
-  res.status(error.statusCode || 500).json({
-    success: false,
-    error: error.message || 'Server Error',
+  res.status(statusCode).json({
+    status,
+    success,
+    statusCode,
+    message,
+    err
   });
 };
 
-module.exports = errorHandler;
+module.exports = {
+  ErrorHandler,
+  handleError
+};
