@@ -389,6 +389,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
@@ -419,6 +420,7 @@ describe('Users', () => {
         .post('/users/signup')
         .send(signupRequest)
         .end((err, res) => {
+          res.should.have.status(200);
           res.body.success.should.equal(true);
           res.body.should.have.property('user');
           res.body.user.should.have.property('fName');
@@ -448,9 +450,11 @@ describe('Users', () => {
                 .post('/users/agency')
                 .send(agencyRequest)
                 .end((err, res) => {
+                  res.should.have.status(200);
                   res.body.should.have.property('url');
 
                   agent.get('/users/profile').end((err, res) => {
+                    res.should.have.status(200);
                     res.text.should.contain('Welcome ' + user.fName);
                     res.text.should.contain('Your email is unverified');
 
@@ -465,6 +469,104 @@ describe('Users', () => {
                         done();
                       }
                     );
+                  });
+                });
+            });
+          });
+        });
+    });
+
+    it('it should not save agency without Agency Name', (done) => {
+      signupRequest.userRole = 'partner';
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.success.should.equal(true);
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('fName');
+          res.body.user.should.have.property('lName');
+          res.body.user.should.have.property('email');
+          res.body.user.should.have.property('emailVerified');
+          res.body.user.should.have.property('verificationHash');
+          res.body.user.should.have.property('password');
+          res.body.user.should.have.property('userRole');
+          res.body.user.should.have.property('_id');
+          res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
+
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
+
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
+                agencyWebsite: 'http://testAgencyWebsite',
+                agencyPhone: '12334556',
+                agencyBio: 'testAgencyBio',
+              };
+
+              agent
+                .post('/users/agency')
+                .send(agencyRequest)
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyName');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
+                    done();
+                  });
+                });
+            });
+          });
+        });
+    });
+
+    it('it should not save agency without phone number', (done) => {
+      signupRequest.userRole = 'partner';
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.success.should.equal(true);
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('fName');
+          res.body.user.should.have.property('lName');
+          res.body.user.should.have.property('email');
+          res.body.user.should.have.property('emailVerified');
+          res.body.user.should.have.property('verificationHash');
+          res.body.user.should.have.property('password');
+          res.body.user.should.have.property('userRole');
+          res.body.user.should.have.property('_id');
+          res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
+
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
+
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
+                agencyName: 'testAgencyName',
+                agencyWebsite: 'http://testAgencyWebsite',
+                agencyBio: 'testAgencyBio',
+              };
+
+              agent
+                .post('/users/agency')
+                .send(agencyRequest)
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyPhone');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
+                    done();
                   });
                 });
             });
