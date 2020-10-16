@@ -3,5 +3,5 @@
     "server"
   ],
   "ext": "js",
-  "exec": "NODE_ENV=development node --inspect=0.0.0.0:9229 server/app.js"
+  "exec": "node --inspect=0.0.0.0:9229 server/app.js"
 }
