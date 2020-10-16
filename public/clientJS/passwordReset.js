@@ -14,7 +14,7 @@ $(document).ready(function () {
             },
             success: function(response, textStatus, xhr) {
                 $("#submit-btn").prop("disabled",false);
-                showToast("Password Changed. You will be reddirected to login page");
+                showToast("Password Changed. You will be redirected to login page");
                 setTimeout(() => {
                     window.location.replace(`${getHostName()}/users/login`);
                 }, 4000);
