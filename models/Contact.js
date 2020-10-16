@@ -1,12 +1,12 @@
-//This data model is for sending emails through nodemailer
-//Everything the user enters in the contact form in about.html
-//will be saved in the 'contact' collections in our DB
+// This data model is for sending emails through nodemailer
+// Everything the user enters in the contact form in about.html
+// will be saved in the 'contact' collections in our DB
 
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-let Schema = mongoose.Schema;
-let ContactSchema = new Schema(
+// SCHEMA SETUP
+const {Schema} = mongoose;
+const ContactSchema = new Schema(
   {
     name: {
       type: String,

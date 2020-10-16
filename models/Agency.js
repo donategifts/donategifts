@@ -1,11 +1,11 @@
-//TODO: REVIEW THE RELATIONS OF THE SCHEMAS
-//TODO: edit the image file types
+// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
+// TODO: edit the image file types
 
 const mongoose = require('mongoose');
 
-//SCHEMA SETUP
-let Schema = mongoose.Schema;
-let AgencySchema = new Schema(
+// SCHEMA SETUP
+const {Schema} = mongoose;
+const AgencySchema = new Schema(
   {
     agencyName: {
       type: String,

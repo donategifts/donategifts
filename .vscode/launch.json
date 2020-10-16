@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach app",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**"
+      ],
+      "type": "node",
+      "restart": true,
+      "internalConsoleOptions": "neverOpen",
+      "protocol": "inspector"
+    },
+  ]
+}
