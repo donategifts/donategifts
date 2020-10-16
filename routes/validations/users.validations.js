@@ -12,7 +12,7 @@ const signupValidationRules = () => {
       }
       return true;
     }),
-    body('userRole').isString().notEmpty()
+    body('userRole').isString().notEmpty(),
   ];
 };
 
@@ -25,14 +25,14 @@ const createAgencyValidationRules = () => {
     body('agencyName').isString().notEmpty(),
     body('agencyWebsite').optional(),
     body('agencyPhone').isNumeric().isLength({ min: 7, max: undefined }).notEmpty(),
-    body('agencyBio').optional()
+    body('agencyBio').optional(),
   ];
 };
 
 const loginValidationRules = () => {
   return [
     body('email').isString().notEmpty().isEmail().trim(),
-    body('password').isString().notEmpty()
+    body('password').isString().notEmpty(),
   ];
 };
 
@@ -41,7 +41,7 @@ const validate = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).send({
       success: false,
-      error: errors.array({ onlyFirstError: true })[0]
+      error: errors.array({ onlyFirstError: true })[0],
     });
   }
   next();
@@ -52,5 +52,5 @@ module.exports = {
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  validate
+  validate,
 };

@@ -22,13 +22,13 @@ const {
   teens,
   youth,
   allAgesA,
-  allAgesB
+  allAgesB,
 } = require('../utilities/defaultItems');
 const { handleError } = require('../middleware/error');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET
+  secretAccessKey: process.env.AWS_SECRET,
 });
 
 const storage = multer.diskStorage({
@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
-  }
+  },
 });
 
 const s3storage = multerS3({
@@ -46,7 +46,7 @@ const s3storage = multerS3({
   acl: 'public-read',
   key(req, file, cb) {
     cb(null, uuidv4());
-  }
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -66,9 +66,9 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: process.env.USE_AWS ? s3storage : storage,
   limits: {
-    fileSize: 1024 * 1024 * 5 // up to 5 mbs
+    fileSize: 1024 * 1024 * 5, // up to 5 mbs
   },
-  fileFilter
+  fileFilter,
 });
 
 // IMPORT MODELS
@@ -85,7 +85,7 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
     res.status(400).send({
       success: false,
       error: `Error: File must be in jpeg, jpg, gif, or png format. The file
-        must also be less than 5 megabytes.`
+        must also be less than 5 megabytes.`,
     });
   } else {
     try {
@@ -103,7 +103,7 @@ router.post('/', upload.single('wishCardImage'), (req, res) => {
           zip: req.body.address_zip,
           country: req.body.address_country,
         }, */
-        ...req.body
+        ...req.body,
       });
       newCard.save((err) => {
         if (err) {
@@ -128,7 +128,7 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
       res,
       400,
       `Error: File must be in jpeg, jpg, gif, or png format. The file
-        mst also be less than 5 megabytes.`
+        mst also be less than 5 megabytes.`,
     );
   } else {
     try {
@@ -147,9 +147,9 @@ router.post('/guided/', upload.single('wishCardImage'), (req, res) => {
           city: req.body.address_city,
           state: req.body.address_state,
           zip: req.body.address_zip,
-          country: req.body.address_country
+          country: req.body.address_country,
         },
-        ...req.body
+        ...req.body,
       });
       newCard.save((err) => {
         if (err) {
@@ -181,7 +181,7 @@ router.get('/', async (_req, res) => {
 
     res.status(200).render('wishCards', {
       user: res.locals.user,
-      wishcards
+      wishcards,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -197,12 +197,12 @@ router.post('/search', async (req, res) => {
     const results = await WishCard.find({
       wishItemName: {
         $regex: req.body.wishitem,
-        $options: 'i'
-      }
+        $options: 'i',
+      },
     });
     res.status(200).render('wishCards', {
       user: res.locals.user,
-      wishcards: results
+      wishcards: results,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -226,7 +226,7 @@ const getMessageChoices = (userFirstName, childFirstName) => {
     `${childFirstName}, hope you enjoy my gift!`,
     'Merry Christmas and a Happy New Year',
     `${childFirstName}, have a happy holiday`,
-    `Congratulations, ${childFirstName}`
+    `Congratulations, ${childFirstName}`,
   ];
 };
 
@@ -239,9 +239,9 @@ const getPreviousMessages = async (wishcard) => {
         const foundUser = await User.findById(foundMessage.messageFrom);
         return {
           message: foundMessage.message,
-          fromUser: foundUser.fName
+          fromUser: foundUser.fName,
         };
-      })
+      }),
     );
   }
   return messages;
@@ -271,7 +271,7 @@ router.get('/:id', async (req, res) => {
         user: res.locals.user,
         wishcard: wishcard || [],
         messages,
-        defaultMessages
+        defaultMessages,
       });
     } catch (error) {
       handleError(res, 400, error);
@@ -336,14 +336,14 @@ router.post('/message', async (req, res) => {
     const updatedWishCard = await WishCard.findByIdAndUpdate(
       { _id: messageTo._id },
       { $push: { messages: newMessage } },
-      { new: true }
+      { new: true },
     );
 
     if (updatedWishCard) {
       res.status(200).send({
         success: true,
         error: null,
-        data: newMessage
+        data: newMessage,
       });
     } else {
       handleError(res, 400, 'Could not Update Card');

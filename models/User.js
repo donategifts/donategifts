@@ -5,7 +5,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMA SETUP
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const UserSchema = new Schema(
   {
     fName: {
@@ -59,7 +59,7 @@ const UserSchema = new Schema(
   },
   {
     collection: 'users',
-  }
+  },
 );
 
 module.exports = mongoose.model('User', UserSchema);

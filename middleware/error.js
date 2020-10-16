@@ -43,11 +43,11 @@ const handleError = (res, code, err, status = 'error', success = false) => {
     success,
     statusCode,
     message,
-    err
+    err,
   });
 };
 
 module.exports = {
   ErrorHandler,
-  handleError
+  handleError,
 };

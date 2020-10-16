@@ -17,7 +17,7 @@ const path = require('path');
 const fs = require('fs');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/verifyEmail.html'), {
-  encoding: 'utf-8'
+  encoding: 'utf-8',
 });
 
 const getTransport = async () => {
@@ -31,8 +31,8 @@ const getTransport = async () => {
         secure: account.smtp.secure,
         auth: {
           user: account.user,
-          pass: account.pass
-        }
+          pass: account.pass,
+        },
       });
     }
 
@@ -41,8 +41,8 @@ const getTransport = async () => {
     const auth = {
       auth: {
         api_key: process.env.MAILGUN_API_KEY,
-        domain: process.env.MAILGUN_DOMAIN
-      }
+        domain: process.env.MAILGUN_DOMAIN,
+      },
     };
 
     return nodemailer.createTransport(mailGun(auth));
@@ -62,7 +62,7 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
         to,
         subject,
         html: message,
-        attachments
+        attachments,
       };
 
       const data = await transporter.sendMail(mailOptions);
@@ -89,28 +89,28 @@ const sendVerificationEmail = async (to, hash) => {
     {
       filename: 'instagram2x.png',
       path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
-      cid: 'instagram2x.png' // same cid value as in the html img src
+      cid: 'instagram2x.png', // same cid value as in the html img src
     },
     {
       filename: 'website2x.png',
       path: path.resolve(__dirname, '../resources/email/website2x.png'),
-      cid: 'website2x.png' // same cid value as in the html img src
+      cid: 'website2x.png', // same cid value as in the html img src
     },
     {
       filename: 'mail2x.png',
       path: path.resolve(__dirname, '../resources/email/mail2x.png'),
-      cid: 'mail2x.png' // same cid value as in the html img src
+      cid: 'mail2x.png', // same cid value as in the html img src
     },
     {
       filename: 'new-donate-gifts-logo-2.png',
       path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
-      cid: 'new-donate-gifts-logo-2.png' // same cid value as in the html img src
+      cid: 'new-donate-gifts-logo-2.png', // same cid value as in the html img src
     },
     {
       filename: 'Img1_2x.jpg',
       path: path.resolve(__dirname, '../resources/email/Img1_2x.jpg'),
-      cid: 'Img1_2x.jpg' // same cid value as in the html img src
-    }
+      cid: 'Img1_2x.jpg', // same cid value as in the html img src
+    },
   ];
 
   const body = template.replace('linkplaceholder', `${process.env.BASE_URL}/users/verify/${hash}`);
@@ -121,7 +121,7 @@ const sendVerificationEmail = async (to, hash) => {
     to,
     'Donate-gifts.com Email verification',
     body,
-    attachments
+    attachments,
   );
 };
 
@@ -139,5 +139,5 @@ const createEmailVerificationHash = () => {
 module.exports = {
   sendMail,
   createEmailVerificationHash,
-  sendVerificationEmail
+  sendVerificationEmail,
 };

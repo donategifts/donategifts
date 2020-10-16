@@ -10,7 +10,7 @@ const {
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  validate
+  validate,
 } = require('./validations/users.validations');
 
 const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
@@ -48,7 +48,7 @@ const redirectProfile = (req, res, next) => {
 router.get('/', (req, res) => {
   try {
     res.status(200).render('home', {
-      user: res.locals.user
+      user: res.locals.user,
     });
   } catch (err) {
     return handleError(res, 400, err);
@@ -62,7 +62,7 @@ router.get('/', (req, res) => {
 router.get('/signup', redirectProfile, (req, res) => {
   try {
     res.status(200).render('signup', {
-      user: res.locals.user
+      user: res.locals.user,
     });
   } catch (err) {
     return handleError(res, 400, err);
@@ -78,14 +78,14 @@ router.get('/login', redirectProfile, (req, res) => {
     res.status(200).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: null
+      errorNotification: null,
     });
   } catch (error) {
     res.status(400).send(
       JSON.stringify({
         success: false,
-        error
-      })
+        error,
+      }),
     );
   }
 });
@@ -144,13 +144,13 @@ router.put(
         JSON.stringify({
           success: true,
           error: null,
-          data: aboutMe
-        })
+          data: aboutMe,
+        }),
       );
     } catch (err) {
       return handleError(res, 400, err);
     }
-  }
+  },
 );
 
 // @desc    Render agency.ejs
@@ -160,7 +160,7 @@ router.put(
 router.get('/agency', redirectLogin, async (req, res) => {
   try {
     res.render('agency', {
-      user: res.locals.user
+      user: res.locals.user,
     });
   } catch (err) {
     return handleError(res, 400, err);
@@ -179,7 +179,7 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
     agencyWebsite,
     agencyPhone,
     agencyBio,
-    accountManager: req.session.user._id
+    accountManager: req.session.user._id,
   });
   try {
     await newAgency.save();
@@ -187,7 +187,7 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
     return res.status(200).send({
       success: true,
       user: req.session.user,
-      url: '/users/profile'
+      url: '/users/profile',
     });
   } catch (err) {
     console.log(err);
@@ -217,13 +217,13 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
       message: {
         msg: 'Provided captcha token is not valid',
         param: 'captchaToken',
-        location: 'body'
-      }
+        location: 'body',
+      },
     });
   }
 
   const candidate = await User.findOne({
-    email
+    email,
   });
   if (candidate) {
     return handleError(res, 409, 'This email is already taken. Try another');
@@ -238,7 +238,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     email,
     verificationHash,
     password: hashedPassword,
-    userRole
+    userRole,
   });
   try {
     await newUser.save();
@@ -256,7 +256,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     return res.status(200).send({
       success: true,
       user: newUser,
-      url
+      url,
     });
   } catch (err) {
     return handleError(res, 206, err);
@@ -271,7 +271,7 @@ router.post('/login', loginValidationRules(), validate, redirectProfile, async (
   const { email, password } = req.body;
 
   const user = await User.findOne({
-    email
+    email,
   });
   if (user) {
     if (await bcrypt.compare(password, user.password)) {
@@ -282,13 +282,13 @@ router.post('/login', loginValidationRules(), validate, redirectProfile, async (
     return res.status(403).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Username and/or password incorrect' }
+      errorNotification: { msg: 'Username and/or password incorrect' },
     });
   }
   return res.status(403).render('login', {
     user: res.locals.user,
     successNotification: null,
-    errorNotification: { msg: 'Username and/or password incorrect' }
+    errorNotification: { msg: 'Username and/or password incorrect' },
   });
 });
 
@@ -310,14 +310,14 @@ router.get('/logout', redirectLogin, (req, res) => {
 router.get('/terms', async (req, res) => {
   try {
     res.render('terms', {
-      user: res.locals.user
+      user: res.locals.user,
     });
   } catch (err) {
     res.status(400).send(
       JSON.stringify({
         success: false,
-        error: err
-      })
+        error: err,
+      }),
     );
   }
 });
@@ -329,7 +329,7 @@ router.get('/terms', async (req, res) => {
 router.get('/verify/:hash', async (req, res) => {
   try {
     const user = await User.findOne({
-      verificationHash: req.params.hash
+      verificationHash: req.params.hash,
     });
 
     if (user) {
@@ -337,9 +337,9 @@ router.get('/verify/:hash', async (req, res) => {
         return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {
-            msg: 'Your email is already verified.'
+            msg: 'Your email is already verified.',
           },
-          errorNotification: null
+          errorNotification: null,
         });
       }
       user.emailVerified = true;
@@ -348,21 +348,21 @@ router.get('/verify/:hash', async (req, res) => {
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
-          msg: 'Email Verification successful'
+          msg: 'Email Verification successful',
         },
-        errorNotification: null
+        errorNotification: null,
       });
     }
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Email Verification failed' }
+      errorNotification: { msg: 'Email Verification failed' },
     });
   } catch (error) {
     return res.status(500).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Email Verification failed' }
+      errorNotification: { msg: 'Email Verification failed' },
     });
   }
 });

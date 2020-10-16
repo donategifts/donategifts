@@ -10,7 +10,7 @@ const createWishcardValidationRules = () => {
     body('wishItemName').notEmpty().isString(),
     body('wishItemPrice').notEmpty().isString(),
     body('wishItemURL').notEmpty().isString(),
-    body('childStory').notEmpty().isString()
+    body('childStory').notEmpty().isString(),
   ];
 };
 
@@ -19,7 +19,7 @@ const validate = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).send({
       success: false,
-      error: errors.array({ onlyFirstError: true })
+      error: errors.array({ onlyFirstError: true }),
     });
   }
   next();
@@ -27,5 +27,5 @@ const validate = (req, res, next) => {
 
 module.exports = {
   createWishcardValidationRules,
-  validate
+  validate,
 };

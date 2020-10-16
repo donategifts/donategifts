@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMA SETUP
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const AgencySchema = new Schema(
   {
     agencyName: {
@@ -61,7 +61,7 @@ const AgencySchema = new Schema(
   },
   {
     collection: 'agencies',
-  }
+  },
 );
 
 module.exports = mongoose.model('Agency', AgencySchema);

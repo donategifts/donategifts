@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMA SETUP
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const MessageSchema = new Schema(
   {
     messageFrom: {
@@ -22,7 +22,7 @@ const MessageSchema = new Schema(
   },
   {
     collection: 'messages',
-  }
+  },
 );
 
 module.exports = mongoose.model('Message', MessageSchema);

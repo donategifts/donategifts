@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMA SETUP
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const WishCardSchema = new Schema(
   {
     childFirstName: {
@@ -73,7 +73,7 @@ const WishCardSchema = new Schema(
   },
   {
     collection: 'wishcards',
-  }
+  },
 );
 
 module.exports = mongoose.model('WishCard', WishCardSchema);

@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMA SETUP
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 const DonationSchema = new Schema(
   {
     donationFrom: {
@@ -28,7 +28,7 @@ const DonationSchema = new Schema(
   },
   {
     collection: 'donations',
-  }
+  },
 );
 
 module.exports = mongoose.model('Donation', DonationSchema);

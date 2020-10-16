@@ -46,14 +46,14 @@ if (process.env.NODE_ENV === 'test') {
   configPath = './config/test.config.env';
 }
 dotenv.config({
-  path: configPath
+  path: configPath,
 });
 
 // DB SET UP & APP LISTEN (server starts after db connection)
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 };
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
@@ -76,7 +76,7 @@ app.use(
   session({
     store: new MongoStore({
       url: process.env.MONGO_URI,
-      clear_interval: 3600000
+      clear_interval: 3600000,
     }),
     name: process.env.SESS_NAME,
     resave: false,
@@ -85,9 +85,9 @@ app.use(
     cookie: {
       maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour
       sameSite: true,
-      secure: process.env.NODE_ENV === 'production'
-    }
-  })
+      secure: process.env.NODE_ENV === 'production',
+    },
+  }),
 );
 
 // MIDDLEWARE for extracting user and agency from a session
@@ -113,8 +113,8 @@ app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true,
-    useUnifiedTopology: true
-  })
+    useUnifiedTopology: true,
+  }),
 );
 app.use(cookieParser());
 
@@ -131,7 +131,7 @@ app.use('/about', aboutRoute);
 app.get('/', (_req, res) => {
   res.render('home', {
     user: res.locals.user,
-    wishcards: []
+    wishcards: [],
   });
 });
 

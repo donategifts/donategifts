@@ -42,7 +42,7 @@ router.post('/email', async (req, res) => {
       c.email,
       'stacy.sealky.lee@gmail.com',
       c.subject,
-      c.message
+      c.message,
     );
 
     if (mailResponse.error) {
