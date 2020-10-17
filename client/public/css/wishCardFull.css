@@ -1,102 +1,99 @@
 .section-title {
-    grid-area: title;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
+  grid-area: title;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .section-info {
-    grid-area: info;
-    /* background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
-    border-radius: 20px;
-    border: rgba(255, 209, 90, 1) dotted 4px;
-    padding: 2em;
-    margin-right: 2em;
-    color: #262626;
+  grid-area: info;
+  /* background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
+  border-radius: 20px;
+  border: rgba(255, 209, 90, 1) dotted 4px;
+  padding: 2em;
+  margin-right: 2em;
+  color: #262626;
 }
 
 .write-msg {
-    grid-area: write;
-    /* background: linear-gradient(290deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
-    border-radius: 20px;
-    border: rgba(255, 209, 90, 1) dotted 4px;
-    padding: 2em;
-    margin-left: 2em;
-    color: #262626;
+  grid-area: write;
+  /* background: linear-gradient(290deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
+  border-radius: 20px;
+  border: rgba(255, 209, 90, 1) dotted 4px;
+  padding: 2em;
+  margin-left: 2em;
+  color: #262626;
 }
 
 .show-msg {
-    grid-area: msg;
-    background: rgba(255, 209, 90, 0.6);
-    border-radius: 10px;
-    padding: 2em;
-    margin-top: 3em;
-    margin-bottom: 3em;
+  grid-area: msg;
+  background: rgba(255, 209, 90, 0.6);
+  border-radius: 10px;
+  padding: 2em;
+  margin-top: 3em;
+  margin-bottom: 3em;
 }
 
 .page-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas:
-        "title title title title"
-        "info info write write"
-        "msg msg msg msg";
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    'title title title title'
+    'info info write write'
+    'msg msg msg msg';
 }
 
 /* Responsive for tablet/mobile */
 @media screen and (max-width: 992px) {
-    .page-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: auto;
-        grid-template-areas:
-            "title title title title"
-            "info info info info"
-            "write write write write"
-            "msg msg msg msg";
-    }
-
-    .section-info {
-        margin-right: 0;
-    }
-    
-    .write-msg {
-        margin-left: 0;
-    }
-
+  .page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      'title title title title'
+      'info info info info'
+      'write write write write'
+      'msg msg msg msg';
   }
 
+  .section-info {
+    margin-right: 0;
+  }
+
+  .write-msg {
+    margin-left: 0;
+  }
+}
+
 #img-kid {
-    border-radius: 20px;
-    width: 420px;
-    height: auto;
+  border-radius: 20px;
+  width: 420px;
+  height: auto;
 }
 
 #donate-btn {
-    width: 420px;
-    border-radius: 10px;
-    font-size: 1.3em;
-    font-weight: bold;
+  width: 420px;
+  border-radius: 10px;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 #message {
-    border-radius: 10px;
-    border: none;
-    background: rgba(255, 209, 90, 0.6);
-    padding: 1em;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 209, 90, 0.6);
+  padding: 1em;
 }
 
 #submit {
-    background-color: #8bc64d;
-    color: #fff;
-    padding: 1em;
-    width: 360px;
-    max-height: 55px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
+  background-color: #8bc64d;
+  color: #fff;
+  padding: 1em;
+  width: 360px;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
 }
-
-
