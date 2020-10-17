@@ -121,4 +121,10 @@ app.get('/', (_req, res) => {
   });
 });
 
+// ERROR PAGE
+// eslint-disable-next-line no-unused-vars
+app.get('*', (_req, res) => {
+  res.status(404).render('error');
+});
+
 module.exports = app;
