@@ -1,4 +1,3 @@
-
 .contact1 {
   width: 100%;
   min-height: 100%;
@@ -29,7 +28,6 @@
   max-width: 100%;
 }
 
-
 /*------------------------------------------------------------------
 [  ]*/
 .contact1-form {
@@ -51,7 +49,6 @@ input.input1 {
   border-radius: 15px;
   padding: 0 30px;
 }
-
 
 textarea.input1 {
   min-height: 150px;
@@ -76,14 +73,12 @@ textarea.input1 {
   color: #666666;
 }
 
-
 input,
 textarea {
   text-decoration: none;
   outline: none;
   border: none;
 }
-
 
 /*---------------------------------------------*/
 .container-contact1-form-btn {
@@ -115,8 +110,6 @@ textarea {
 .contact1-form-btn:hover {
   background: #333333;
 }
-
-
 
 /*------------------------------------------------------------------
 [ Responsive ]*/

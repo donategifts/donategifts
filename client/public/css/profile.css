@@ -1,216 +1,210 @@
 @font-face {
-    font-family: 'DK-Crayon-Crumble';
-    src: url('../fonts/DK-Crayon-Crumble.ttf');
-    src:
-        local('DK Crayon Crumble'),
-        url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
+  font-family: 'DK-Crayon-Crumble';
+  src: url('../fonts/DK-Crayon-Crumble.ttf');
+  src: local('DK Crayon Crumble'), url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
 }
 
 #cray-font {
-    font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
 }
 
 #profile-bg {
-    /* background: linear-gradient(180deg, rgba(255, 151, 99, 1), rgba(188, 227, 97, 0.9), rgba(255, 209, 90, 1)); */
-    min-height: 20vh;
-    margin-top: 1em;
-    /* background-size: cover; */
-    /* border-top: 3px solid #8bc64d; */
+  /* background: linear-gradient(180deg, rgba(255, 151, 99, 1), rgba(188, 227, 97, 0.9), rgba(255, 209, 90, 1)); */
+  min-height: 20vh;
+  margin-top: 1em;
+  /* background-size: cover; */
+  /* border-top: 3px solid #8bc64d; */
 }
 
 .profile-title {
-    color: #8bc64d;
+  color: #8bc64d;
 }
 
 .profile-title h1 {
-    font-size: 4.3em;
-    font-weight: 500;
-    text-transform: capitalize;
+  font-size: 4.3em;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .mg2 {
-    margin: 2em;
+  margin: 2em;
 }
 
 .create-wish-card {
-    width: 100%;
-    min-height: 100%;
-    padding: 2em;
-    margin-top: 2em;
-    margin-bottom: 3em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    border-top: 3px dotted rgba(188,227,97, 0.6);
+  width: 100%;
+  min-height: 100%;
+  padding: 2em;
+  margin-top: 2em;
+  margin-bottom: 3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-top: 3px dotted rgba(188, 227, 97, 0.6);
 }
 
-.fa-user, .fa-bell {
-    font-size: 2.4em;
+.fa-user,
+.fa-bell {
+  font-size: 2.4em;
 }
 
 .fa {
-    margin: 0.3em 0.5em;
+  margin: 0.3em 0.5em;
 }
-
 
 .wish-card-form-title {
-    display: block;
-    font-size: 2.7em;
-    color: #8bc64d;
-    line-height: 1.2;
-    text-align: center;
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+  display: block;
+  font-size: 2.7em;
+  color: #8bc64d;
+  line-height: 1.2;
+  text-align: center;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
-
 
 /* --------- img uploader ---------------- */
 .box {
-    border: 1px solid #ddd;
-    display: block;
-    width: 100%;
-    /* max-width: 30em; */
-    margin: 0.5em 0 2em 0em;
-    border-radius: 15px;
+  border: 1px solid #ddd;
+  display: block;
+  width: 100%;
+  /* max-width: 30em; */
+  margin: 0.5em 0 2em 0em;
+  border-radius: 15px;
 }
 
 .box .content {
-    padding: 1em;
+  padding: 1em;
 }
 
 .content p {
-    font-size: 0.9em;
+  font-size: 0.9em;
 }
 
 .upload-btn {
-    /* color: #fff; */
-    /* background-color: #aaa; */
-    text-align: center;
-    display: inline-block;
-    vertical-align: middle;
-    /* white-space: nowrap; */
-    /* margin: 0.6em 0.6em .6em 0; */
-    padding: 0.35em .7em 0.4em;
-    text-decoration: none;
-    width: auto;
-    position: relative;
-    border-radius: 8px;
-    /* user-select: none; */
-    outline: none;
+  /* color: #fff; */
+  /* background-color: #aaa; */
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  /* white-space: nowrap; */
+  /* margin: 0.6em 0.6em .6em 0; */
+  padding: 0.35em 0.7em 0.4em;
+  text-decoration: none;
+  width: auto;
+  position: relative;
+  border-radius: 8px;
+  /* user-select: none; */
+  outline: none;
 }
 
 .box form {
-    display: table;
+  display: table;
 }
 
 .box input {
-    width: 96%;
-    color: #999;
+  width: 96%;
+  color: #999;
 }
 
 .uploader-left,
 .uploader-right {
-    display: table-cell;
-    vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .uploader-left {
-    width: 6em;
-    min-width: 6em;
-    padding-right: 1em;
+  width: 6em;
+  min-width: 6em;
+  padding-right: 1em;
 }
 
 .uploader-left img {
-    width: 100%;
+  width: 100%;
 }
 
 .img-holder {
-    display: block;
-    width: 2em;
-    height: 2em;
+  display: block;
+  width: 2em;
+  height: 2em;
 }
 
 .file-wrapper {
-    cursor: pointer;
-    display: inline-block;
-    /* overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  /* overflow: hidden;
     position: relative; */
 }
 
 .file-wrapper:hover .upload-btn {
-    background-color: #8bc64d !important;
+  background-color: #8bc64d !important;
 }
 
 .file-wrapper .upload-btn {
-    background-color:  rgba(188,227,97, 0.3) !important;
+  background-color: rgba(188, 227, 97, 0.3) !important;
 }
-
 
 /* ---- Profile Content Section---- */
 
-
 .profile-header {
-    padding: 1em 0;
-    background: linear-gradient(180deg, rgba(188,227,97, 0.3),  rgba(255,209,90,0.02));
-    /* border-top: 2px dotted rgba(188,227,97, 0.6); */
+  padding: 1em 0;
+  background: linear-gradient(180deg, rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.02));
+  /* border-top: 2px dotted rgba(188,227,97, 0.6); */
 }
 
 /* ---- About me edit pencil ---- */
 .about-me-edit {
-    position:relative;
-    float:right;
-    margin-top: 1em;
-    margin-right: 0.5em;
-    width: 1.5em;
-    height: 1.5em;
+  position: relative;
+  float: right;
+  margin-top: 1em;
+  margin-right: 0.5em;
+  width: 1.5em;
+  height: 1.5em;
 }
 
 .textarea-about-me {
-    position: relative;
-    display: flex;
-    margin: auto;
-    padding: auto;
-    width: inherit;
-    height: inherit;
-    background-color: #F3F9ED;
+  position: relative;
+  display: flex;
+  margin: auto;
+  padding: auto;
+  width: inherit;
+  height: inherit;
+  background-color: #f3f9ed;
 }
 
 /* organization info display */
 .org-wrapper {
-    background-color: rgba(255, 224, 172, 0.7);
-    padding: 2em;
-    border-radius: 10px;
+  background-color: rgba(255, 224, 172, 0.7);
+  padding: 2em;
+  border-radius: 10px;
 }
 
 #create-btn {
-    font-size: 1em;
-    width: 250px;
-    line-height: 1.7em;
+  font-size: 1em;
+  width: 250px;
+  line-height: 1.7em;
 }
 
 #submit-btn {
-    max-width: 500px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.3em;
+  max-width: 500px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.3em;
 }
 
-
 .user-info {
-    background-color: rgba(188,227,97, 0.5);
-    padding: 2em;
-    border-radius: 10px;
-    font-size: 1em;
+  background-color: rgba(188, 227, 97, 0.5);
+  padding: 2em;
+  border-radius: 10px;
+  font-size: 1em;
 }
 
 .notify {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .create-title {
-    font-weight: bold;
+  font-weight: bold;
 }

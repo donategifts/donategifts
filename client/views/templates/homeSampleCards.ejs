@@ -50,8 +50,9 @@
                                 </p>
                             </div>
                             <div class="quick-font row button-center mt-2">
-                                <button type="button" class="col wishcard-btn btn-navy-border"><a
-                                        href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
+                                <a href="/wishcards/<%= wishcards[i]._id %>">
+                                    <button type="button" class="col wishcard-btn btn-navy-border">Read more</button>
+                                </a>
                                 <button type="button" data-toggle="modal"
                                     data-value-url="<%= wishcards[i].wishItemURL %>"
                                     data-value-name="<%= wishcards[i].childFirstName %>"
