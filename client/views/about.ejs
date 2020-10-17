@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="../public/css/about.css" />
+  </head>
+
+  <body>
+    <%- include('./templates/nav')-%>
+
+    <!-- header section-->
+    <div class="bg" id="about-bg">
+      <div class="text">
+        <h1 class="banner-h1 cool-font">Our mission</h1>
+        <h4 class="quick-font font-weight-bold">
+          Learn about our mission and commitment to making foster children happy
+        </h4>
+      </div>
+    </div>
+
+    <!-- thank you section-->
+    <div class="pt-5 custom-wrapper" id="about">
+      <div class="custom-row">
+        <div class="custom-col custom-left">
+          <img src="../public/img/kids-smile.gif" alt="chicago-gif-image" class="yel-box" />
+        </div>
+        <div class="custom-col custom-right">
+          <h4 id="navy" class="crayon-font font-lg">Bringing smiles to kids</h4>
+
+          <p class="navy bold-text quick-font">
+            Mission: Every child should feel valued, remembered, and loved.
+          </p>
+
+          <p class="subtext quick-font">
+            The DonateGifts project enables users to donate holiday/ birthday gifts and school
+            supplies to children in the foster care system and orphanages. Donation is directly
+            linked to the product that is sold on Amazon and the child’s wish item will be added to
+            the donor’s Amazon cart. With one button click, it will automatically send the child's
+            wish item to their address. What's more? Unlike other donation programs and toy drives,
+            our foster child can wish for a specific gift, such as a basketball or new shoes, rather
+            than having random gifts delivered to them. Children will receive the exact gifts they
+            wished for and people will have an easier way to get engaged with the community.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- thank you section-->
+    <div class="custom-wrapper" id="about">
+      <div class="custom-row">
+        <div class="custom-col custom-right">
+          <img src="../public/img/three-kids-bg.jpg" alt="chicago-gif-image" class="yel-box" />
+        </div>
+        <div class="custom-col custom-left">
+          <h4 id="navy" class="crayon-font font-lg hide">Why we made this project</h4>
+
+          <p class="subtext quick-font hide">
+            Often times, the donation process is more complicated than expected. We want to simplify
+            your donation experience. With DonateGifts, all you have to do is click one button,
+            which will automatically add the child's wish item to your Amazon cart and deliver to
+            the foster child's anonymous address. <br />
+            No need to visit the store to buy gifts and drive down to the drop-off site. No more
+            unnecessary hassle for doing good.<br />
+            Now, how simple is that?
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Contact section-->
+    <div class="contact1">
+      <div class="container-contact1">
+        <div class="contact1-pic js-tilt" data-tilt>
+          <img src="../public/img/email-img.png" alt="IMG" />
+        </div>
+        <!-- emailForm starts here-->
+        <form
+          class="contact1-form validate-form"
+          id="emailForm"
+          action="/about/email/"
+          method="POST"
+        >
+          <span class="crayon-font contact1-form-title"> Send Us a Message </span>
+
+          <div class="quick-font wrap-input1 validate-input" data-validate="Name is required">
+            <input id="name" class="input1" type="text" name="name" placeholder="Name" />
+          </div>
+
+          <div
+            class="quick-font wrap-input1 validate-input"
+            data-validate="Valid email is required: ex@abc.xyz"
+          >
+            <input id="email" class="input1" type="text" name="email" placeholder="Email" />
+          </div>
+
+          <div class="quick-font wrap-input1 validate-input" data-validate="Subject is required">
+            <input id="subject" class="input1" type="text" name="subject" placeholder="Subject" />
+          </div>
+
+          <div class="quick-font wrap-input1 validate-input" data-validate="Message is required">
+            <textarea id="message" class="input1" name="message" placeholder="Message"></textarea>
+          </div>
+
+          <div class="quick-font container-contact1-form-btn">
+            <div class="contact1-form-btn">
+              <input value="Submit" type="submit" class="contact1-form-btn" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <%- include('./templates/footer')-%>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
