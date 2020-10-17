@@ -1,11 +1,7 @@
 {
   "watch": [
-    "controllers",
-    "middleware",
-    "models",
-    "routes",
-    "utilities"
+    "server"
   ],
   "ext": "js",
-  "exec": "node --inspect=0.0.0.0:9229 app.js"
+  "exec": "node --inspect=0.0.0.0:9229 server/app.js"
 }

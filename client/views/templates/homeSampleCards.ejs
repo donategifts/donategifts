@@ -1,0 +1,71 @@
+<!-- Wish Card deck -->
+<div class="wishcards">
+    <h1 class="crayon-font home-wish-title">Become Our Secret Santa</h1>
+    <div class="container">
+        <% if (!locals.wishcards ||  wishcards.length === 0) { %>
+        <h1>No wishcards to display</h1>
+        <% } else { %>
+
+        <div class="row justify-content-center">
+            <% for (let i = 0; i < wishcards.length; i++) { %>
+            <div class="col-lg-4 col-xs-12">
+                <!-- Card -->
+                <div id="card-fix" class="card mb-3">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img id="img-fix" class="card-img-top" src="<%= wishcards[i].wishCardImage %>" alt="Card image">
+                        <a href="#">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <div class="pb-2 row justify-content-center">
+                            <a class='mx-2 btn-3 msg-icon' href='/wishcards/<%= wishcards[i]._id %>'>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            </a>
+                            <div id="fb" class="mx-2 btn-3" data-href="https://donate-gifts.com" data-layout="button"
+                                data-size="large"><a target="_blank"
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdonate-gifts.com%2F&amp;src=sdkpreparse"
+                                    class="fb-xfbml-parse-ignore"><i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </i>
+                                </a></div>
+                        </div>
+
+                        <div class="card-text-container">
+                            <!--Title-->
+                            <h3 class="card-title text-center crayon-font">My name is
+                                <%= wishcards[i].childFirstName %></h3>
+
+                            <!--Text-->
+                            <div class="quick-font">
+                                <p class="card-text"><span class="font-weight-bold">Wish : </span>
+                                    <%= wishcards[i].wishItemName.length > 25 ? wishcards[i].wishItemName.substring(0, 25) + "..." : wishcards[i].wishItemName %>
+                                </p>
+                                <p class="card-text"><span class="font-weight-bold">Item Price :</span>
+                                    $<%= wishcards[i].wishItemPrice %></p>
+                                <p class="card-text"><span class="font-weight-bold">Interest : </span>
+                                    <%= wishcards[i].childInterest.length > 30 ? wishcards[i].childInterest.substring(0, 30) + "..." : wishcards[i].childInterest %>
+                                </p>
+                            </div>
+                            <div class="quick-font row button-center mt-2">
+                                <button type="button" class="col wishcard-btn btn-navy-border"><a
+                                        href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
+                                <button type="button" data-toggle="modal"
+                                    data-value-url="<%= wishcards[i].wishItemURL %>"
+                                    data-value-name="<%= wishcards[i].childFirstName %>"
+                                    data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
+                                    Gift</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+
+    </div>
+
+</div>
