@@ -11,7 +11,7 @@
 const express = require('express');
 
 const app = express();
-
+require('./helper/socket')
 // NPM DEPENDENCIES
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -34,6 +34,7 @@ app.engine('html', ejs.renderFile);
 app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
+
 
 // DEV ENV
 // const hostname = '127.0.0.1';
