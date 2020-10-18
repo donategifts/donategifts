@@ -1,13 +1,12 @@
 // NPM DEPENDENCIES
-
 const { v4: uuidv4 } = require('uuid');
-
 const express = require('express');
-
-const router = express.Router();
-
 const bcrypt = require('bcrypt');
 const moment = require('moment');
+const { OAuth2Client } = require('google-auth-library');
+
+const oauthClient = new OAuth2Client(process.env.G_CLIENT_ID);
+const router = express.Router();
 
 const {
   signupValidationRules,
@@ -47,6 +46,19 @@ const redirectProfile = (req, res, next) => {
   }
 };
 
+async function verifyGoogleToken(token) {
+  const ticket = await oauthClient.verifyIdToken({
+    idToken: token,
+    audience: process.env.G_CLIENT_ID,
+  });
+  const payload = ticket.getPayload();
+  return {
+    firstName: payload.given_name,
+    lastName: payload.family_name,
+    mail: payload.email,
+  };
+}
+
 // @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
@@ -85,6 +97,8 @@ router.get('/login', redirectProfile, (req, res) => {
       user: res.locals.user,
       successNotification: null,
       errorNotification: null,
+      g_client_id: process.env.G_CLIENT_ID,
+      fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
     handleError(
@@ -263,6 +277,79 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   } catch (err) {
     return handleError(res, 206, err);
   }
+});
+
+// @desc    handle google signup/login
+// @route   POST '/google-signin'
+// @access  Public
+// @tested 	Not yet
+router.post('/google-signin', async (req, res) => {
+  const { id_token } = req.body;
+
+  log(id_token);
+
+  if (id_token) {
+    const user = await verifyGoogleToken(id_token);
+    const fName = user.firstName;
+    const lName = user.lastName;
+    const email = user.mail;
+
+    const dbUser = await UserRepository.getUserByEmail(email);
+
+    if (dbUser) {
+      req.session.user = dbUser;
+      res.locals.user = dbUser;
+      return res.redirect('/users/profile');
+    }
+
+    const newUser = await UserRepository.createNewUser({
+      fName,
+      lName,
+      email,
+      userRole: 'donor',
+    });
+
+    req.session.user = newUser;
+    res.locals.user = newUser;
+    return res.redirect('/users/profile');
+  }
+
+  return handleError(res, 400, 'Missing information');
+});
+
+// @desc    handle facebook signup/login
+// @route   POST '/fb-signin'
+// @access  Public
+// @tested 	Not yet
+router.post('/fb-signin', async (req, res) => {
+  const { userName, id_token, email } = req.body;
+
+  log(userName, id_token, email);
+
+  if (userName && id_token && email) {
+    const [fName, lName] = userName.split(' ');
+
+    const dbUser = await UserRepository.getUserByEmail(email);
+
+    if (dbUser) {
+      req.session.user = dbUser;
+      res.locals.user = dbUser;
+      return res.redirect('/users/profile');
+    }
+
+    const newUser = await UserRepository.createNewUser({
+      fName,
+      lName,
+      email,
+      userRole: 'donor',
+    });
+
+    req.session.user = newUser;
+    res.locals.user = newUser;
+    return res.redirect('/users/profile');
+  }
+
+  return handleError(res, 400, 'Missing information');
 });
 
 // @desc    Render login.html
