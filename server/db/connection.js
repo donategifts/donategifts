@@ -14,7 +14,9 @@ function connect(app, port, hostname) {
     if (err) {
       log('Unable to connect to DB. Error:', err);
     } else {
-      log(`Connected to Mongodb ${database.connections[0].name}`);
+      log(`Connected to Mongodb ${database.name?database.name:database.connections[0].name}`);
+
+
       app.listen(port, hostname, () => {
         log(`Server running at http://${hostname}:${port}/`);
       });

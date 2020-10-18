@@ -16,3 +16,4 @@ config/config.env
 
 # generated logs folder
 server/logs
+.eslintcache
