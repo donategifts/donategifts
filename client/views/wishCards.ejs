@@ -6,6 +6,8 @@
 	<!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
 	<%- include('./templates/header')-%>
 	<link rel="stylesheet" href="/public/css/search.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -88,14 +90,13 @@
 								<div class="quick-font row button-center mt-2">
 									<button type="button" class="col wishcard-btn btn-navy-border"><a
 											href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
-									<% if (user && !user.emailVerified) { %>
-										<button type="button" data-toggle="modal"
-										data-value-url="<%= wishcards[i].wishItemURL %>"
-										data-value-name="<%= wishcards[i].childFirstName %>"
-										
-										data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
-										Gift</button>
-									<% } %>
+									<button type="button" id="donate-btn-<%= wishcards[i]._id %>" data-toggle="modal"
+									data-value-url="<%= wishcards[i].wishItemURL %>"
+									data-value-name="<%= wishcards[i].childFirstName %>"
+									data-value-id="<%= wishcards[i]._id %>"
+									data-value-loggedIn="<%= !!locals.user %>"
+									data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
+									Gift</button>
 								</div>
 							</div>
 
@@ -111,14 +112,16 @@
 
 	<%- include('./templates/footer')-%>
 	<!-- jquery -->
+
 	<script src="/public/clientJS/wishCard.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
 		integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
 	</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	<script src="/public/clientJS/wishCardModal.js"></script>
 
-	
+
 	<!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'
 	because it was breaking the whole page
 	move it back when you fix the issue -->

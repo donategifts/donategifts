@@ -60,6 +60,13 @@ const WishCardSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isLockedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    isLockedUntil: {
+      type: Date,
+    },
     approvedByAdmin: {
       type: Boolean,
       default: false,

@@ -13,6 +13,7 @@ const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
+const io = require('../helper/socket');
 
 const {
   babies,
@@ -326,6 +327,42 @@ router.post('/message', async (req, res) => {
       success: true,
       error: null,
       data: newMessage,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
+
+
+// @desc   lock a wishcard
+// @route  POST '/wishcards/message'
+// @access  Public, all users
+// @tested 	Not yet
+router.post('/lock/:id', async (req, res) => {
+  try {
+
+    const wishCardId = req.params.id;
+
+    if (!req.session.user) return handleError(res, 400, 'User not found');
+
+    const user = await UserRepository.getUserByObjectId(req.session.user._id);
+    if (!user) return handleError(res, 400, 'User not found');
+
+    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+    if(wishcardAlreadyLockedByUser) {
+      // user has locked wishcard and its still locked
+      if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
+        return handleError(res, 400, 'You already have a locked wishcard.');
+      }
+    }
+
+    const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
+
+    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil})
+
+    res.status(200).send({
+      success: true,
+      error: null,
     });
   } catch (error) {
     handleError(res, 400, error);
