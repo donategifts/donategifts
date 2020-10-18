@@ -15,7 +15,7 @@ function preventChildImageContextMenu(e) {
     }
 }
 
-const socket = io('78.46.234.93:3000');
+const socket = io('wss://dev.donate-gifts.com');
 let x = [];
 socket.on('block', event => {
 
