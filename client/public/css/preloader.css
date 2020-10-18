@@ -1,153 +1,267 @@
-.preloader {
-    /* background-color: rgba(65, 66, 84, 1); */
+
+.wrap {
+    font-size: 0.05em;
+}
+  
+  .ball-animation {
+    width: 60em;
+    height: 60em;
+    border-radius: 50%;
+    
+    position: absolute;
+  
+    /* Animate only the bouncing movement */
+    -webkit-animation: 2s linear 0s normal forwards infinite bouncing-ball;
+    animation: 2s linear 0s normal forwards infinite bouncing-ball;
+  }
+  
+  .ball-decoration {
     width: 100%;
-    height: 100vh;
-    margin: 0 auto;
+    height: 100%;
+    background: url("../img/ball.png") no-repeat center;
+    background-size: contain;
+    
+    /* Animate the rotation of the ball while it bounces */
+    -webkit-animation: 1s linear 0s normal forwards infinite rotating-ball;
+    animation: 1s linear 0s normal forwards infinite rotating-ball;
+  }
+  
+  @-webkit-keyframes rotating-ball {
+    0% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(180deg);}
+  }
+  
+  @keyframes rotating-ball {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(180deg);}
+  }
+  
+  @-webkit-keyframes bouncing-ball {
+    0% {top: 0;left: 0;-webkit-transform: none;}
+    3% {top: 15em;left: 50em;-webkit-transform: none;}
+    6% {top: 50em;left: 105em;-webkit-transform: none;}
+    9% {top: 130em;left: 175em;-webkit-transform: none;}
+    12% {top: 250em;left: 235em;-webkit-transform: rotate(-20deg) scaleY(1.2);}
+    15% {top: 410em;left: 280em;-webkit-transform: rotate(-15deg) scale(0.8, 1.6);}
+    18% {top: 490em;left: 295em;-webkit-transform: scale(1.5, 0.6);}
+    21% {top: 370em;left: 310em;-webkit-transform: rotate(7deg) scaleY(1.3);}
+    24% {top: 275em;left: 330em;-webkit-transform: none;}
+    27% {top: 205em;left: 355em;-webkit-transform: none;}
+    30% {top: 170em;left: 380em;-webkit-transform: none;}
+    33% {top: 150em;left: 415em;-webkit-transform: none;}
+    36% {top: 170em;left: 450em;-webkit-transform: none;}
+    39% {top: 210em;left: 480em;-webkit-transform: none;}
+    42% {top: 290em;left: 520em;-webkit-transform: none;}
+    45% {top: 415em;left: 545em;-webkit-transform: rotate(-10deg) scale(0.9, 1.3);}
+    48% {top: 490em;left: 560em;-webkit-transform: scale(1.3, 0.8);}
+    51% {top: 400em;left: 565em;-webkit-transform: rotate(8deg) scale(0.9, 1.3);}
+    54% {top: 340em;left: 585em;-webkit-transform: none;}
+    57% {top: 310em;left: 605em;-webkit-transform: none;}
+    60% {top: 295em;left: 635em;-webkit-transform: none;}
+    63% {top: 310em;left: 665em;-webkit-transform: none;}
+    66% {top: 340em;left: 685em;-webkit-transform: none;}
+    69% {top: 420em;left: 710em;-webkit-transform: rotate(-11deg) scale(0.9, 1.3);}
+    72% {top: 490em;left: 725em;-webkit-transform: scale(1.3, 0.8);}
+    75% {top: 440em;left: 732em;-webkit-transform: rotate(10deg) scale(0.9, 1.3);}
+    78% {top: 415em;left: 740em;-webkit-transform: none;}
+    81% {top: 395em;left: 760em;-webkit-transform: none;}
+    84% {top: 415em;left: 775em;-webkit-transform: none;}
+    87% {top: 450em;left: 790em;-webkit-transform: none;}
+    90% {top: 490em;left: 800em;-webkit-transform: scale(1.2, 0.9);}
+    93% {top: 490em;left: 800em;-webkit-transform: none;}
+    100% {top: 490em;left: 820em;-webkit-transform: none;}
+  }
+  
+  @keyframes bouncing-ball {
+    0% {top: 0;left: 0;transform: none;}
+    3% {top: 15em;left: 50em;transform: none;}
+    6% {top: 50em;left: 105em;transform: none;}
+    9% {top: 130em;left: 175em;transform: none;}
+    12% {top: 250em;left: 235em;transform: rotate(-20deg) scaleY(1.2);}
+    15% {top: 410em;left: 280em;transform: rotate(-15deg) scale(0.8, 1.6);}
+    18% {top: 490em;left: 295em;transform: scale(1.5, 0.6);}
+    21% {top: 370em;left: 310em;transform: rotate(7deg) scaleY(1.3);}
+    24% {top: 275em;left: 330em;transform: none;}
+    27% {top: 205em;left: 355em;transform: none;}
+    30% {top: 170em;left: 380em;transform: none;}
+    33% {top: 150em;left: 415em;transform: none;}
+    36% {top: 170em;left: 450em;transform: none;}
+    39% {top: 210em;left: 480em;transform: none;}
+    42% {top: 290em;left: 520em;transform: none;}
+    45% {top: 415em;left: 545em;transform: rotate(-10deg) scale(0.9, 1.3);}
+    48% {top: 490em;left: 560em;transform: scale(1.3, 0.8);}
+    51% {top: 400em;left: 565em;transform: rotate(8deg) scale(0.9, 1.3);}
+    54% {top: 340em;left: 585em;transform: none;}
+    57% {top: 310em;left: 605em;transform: none;}
+    60% {top: 295em;left: 635em;transform: none;}
+    63% {top: 310em;left: 665em;transform: none;}
+    66% {top: 340em;left: 685em;transform: none;}
+    69% {top: 420em;left: 710em;transform: rotate(-11deg) scale(0.9, 1.3);}
+    72% {top: 490em;left: 725em;transform: scale(1.3, 0.8);}
+    75% {top: 440em;left: 732em;transform: rotate(10deg) scale(0.9, 1.3);}
+    78% {top: 415em;left: 740em;transform: none;}
+    81% {top: 395em;left: 760em;transform: none;}
+    84% {top: 415em;left: 775em;transform: none;}
+    87% {top: 450em;left: 790em;transform: none;}
+    90% {top: 490em;left: 800em;transform: scale(1.2, 0.9);}
+    93% {top: 490em;left: 800em;transform: none;}
+    100% {top: 490em;left: 820em;transform: none;}
+  }
+
+
+.preloader {
+  /* background-color: rgba(65, 66, 84, 1); */
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
 }
 
 .loading {
-    text-align: center;
-    padding-top: 3em;
-    color: rgba(65, 66, 84, 1);
-    font-size: 3em;
+  text-align: center;
+  padding-top: 3em;
+  color: rgba(65, 66, 84, 1);
+  font-size: 3em;
 }
 
 .dog {
-    margin-left: 40%;
-    background-color: #fdb44e;
-    height: 75px;
-    width: 120px;
-    position: absolute;
-    top: 40%;
-    bottom: 35%;
-    border-radius: 0 0 0 120px;
-    animation: walk 10s 1;
+  margin-left: 40%;
+  background-color: #fdb44e;
+  height: 75px;
+  width: 120px;
+  position: absolute;
+  top: 40%;
+  bottom: 35%;
+  border-radius: 0 0 0 120px;
+  animation: walk 10s 1;
 }
 
 .dog2 {
-    margin-left: 10%;
-    background-color: wheat;
-    height: 75px;
-    width: 120px;
-    position: absolute;
-    top: 40%;
-    bottom: 35%;
-    border-radius: 0 0 0 120px;
-    transform: scaleX(-1);
+  margin-left: 10%;
+  background-color: wheat;
+  height: 75px;
+  width: 120px;
+  position: absolute;
+  top: 40%;
+  bottom: 35%;
+  border-radius: 0 0 0 120px;
+  transform: scaleX(-1);
 }
 
 @keyframes walk {
-    from {
-        left: 150px;
-    }
+  from {
+    left: 150px;
+  }
 
-    to {
-        left: 0;
-    }
+  to {
+    left: 0;
+  }
 }
 
 .dogbody {
-    background-color: #fdb44e;
-    height: 100px;
-    width: 180px;
-    position: relative;
-    top: 55px;
-    left: 70px;
-    border-radius: 0 0 0 60px;
+  background-color: #fdb44e;
+  height: 100px;
+  width: 180px;
+  position: relative;
+  top: 55px;
+  left: 70px;
+  border-radius: 0 0 0 60px;
 }
 
-.leg1, .leg2, .leg3, .leg4 {
-    background-color: #fdb44e;
-    height: 50px;
-    width: 18px;
-    position: relative;
+.leg1,
+.leg2,
+.leg3,
+.leg4 {
+  background-color: #fdb44e;
+  height: 50px;
+  width: 18px;
+  position: relative;
 }
 
 .leg1 {
-    left: 102px;
-    top: 48px;
+  left: 102px;
+  top: 48px;
 }
 
 .leg2 {
-    left: 130px;
-    bottom: 2px;
+  left: 130px;
+  bottom: 2px;
 }
 
 .leg3 {
-    left: 205px;
-    bottom: 52px;
+  left: 205px;
+  bottom: 52px;
 }
 
 .leg4 {
-    left: 232px;
-    bottom: 102px;
+  left: 232px;
+  bottom: 102px;
 }
 
 .tail {
-    width: 0;
-    height: 0;
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-bottom: 100px solid #fdb44e;
-    position: relative;
-    bottom: 320px;
-    left: 230px;
-    transform: rotate(30deg);
-    transform-origin: bottom;
-    animation: wag 1.2s infinite;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 100px solid #fdb44e;
+  position: relative;
+  bottom: 320px;
+  left: 230px;
+  transform: rotate(30deg);
+  transform-origin: bottom;
+  animation: wag 1.2s infinite;
 }
 
 @keyframes wag {
-    50% {
-        transform: rotate(20deg);
-    }
+  50% {
+    transform: rotate(20deg);
+  }
 }
 
 .ear {
-    background-color: rgba(151, 89, 2, 0.8);
-    width: 45px;
-    height: 90px;
-    border-radius: 0 0 100px 100px;
-    position: relative;
-    left: 75px;
-    bottom: 400px;
+  background-color: rgba(151, 89, 2, 0.8);
+  width: 45px;
+  height: 90px;
+  border-radius: 0 0 100px 100px;
+  position: relative;
+  left: 75px;
+  bottom: 400px;
 }
 
 .nose {
-    background-color: black;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    position: relative;
-    bottom: 492px;
-    right: 2.5px;
+  background-color: black;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  position: relative;
+  bottom: 492px;
+  right: 2.5px;
 }
 
 .eye {
-    background-color: black;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    position: relative;
-    bottom: 490px;
-    left: 50px;
+  background-color: black;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  position: relative;
+  bottom: 490px;
+  left: 50px;
 }
 
 .tongue {
-    background-color: tomato;
-    height: 25px;
-    width: 16px;
-    border-radius: 10px;
-    position: relative;
-    left: 23px;
-    bottom: 470px;
-    /* z-index: -1; */
-    transform: rotate(45deg);
-    animation: pant 0.9s infinite;
+  background-color: tomato;
+  height: 25px;
+  width: 16px;
+  border-radius: 10px;
+  position: relative;
+  left: 23px;
+  bottom: 470px;
+  /* z-index: -1; */
+  transform: rotate(45deg);
+  animation: pant 0.9s infinite;
 }
 
 @keyframes pant {
-    50% {
-        transform: rotate(50deg) translateY(3.1px);
-    }
+  50% {
+    transform: rotate(50deg) translateY(3.1px);
+  }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Error page | Unfortunately</title>
+    <%- include('./templates/header')-%>
+
+    <link rel="stylesheet" href="/public/css/error.css" />
+  </head>
+  <body>
+    <%- include('./templates/nav')-%>
+    <div id="home-bg" class="bg">
+      <div class="text-center">
+        <h1 class="banner-h1 cool-font">404</h1>
+        <h2 class="banner-h1 cool-font">How unfortunate, this page does not exist :(</h2>
+        <div class="quick-font font-md">
+          <span>For now take a look at those awesome Wish Cards until our devs fixed this</span>
+          <div class="container-form-btn">
+            <a href="/wishcards">
+              <button type="button" class="quick-font wishcard-btn grn-btn">See Wish Cards</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./templates/footer.ejs') %>
+  </body>
+</html>

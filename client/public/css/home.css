@@ -4,22 +4,22 @@ New color scheme reference is in utils.css
 ---------------
 */
 
-
 /* ---------------home hero section */
 #home-bg {
-  background:
-    url("../img/donategifts-new-hero.png") center center;
+  background: url('../img/donategifts-new-hero.png') center center;
   min-height: 90vh;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 #about-bg {
-  background: linear-gradient(180deg,
+  background: linear-gradient(
+      180deg,
       rgba(255, 151, 99, 0.8),
       rgba(188, 227, 97, 0.3),
-      rgba(255, 209, 90, 0.05)),
-    url("../img/kid-yellow-bg.jpg") center center;
+      rgba(255, 209, 90, 0.05)
+    ),
+    url('../img/kid-yellow-bg.jpg') center center;
   min-height: 40vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -127,7 +127,6 @@ New color scheme reference is in utils.css
   font-size: 1em;
   line-height: 2em;
 }
-
 
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
@@ -346,7 +345,7 @@ New color scheme reference is in utils.css
 }
 
 .welcome-content .entry-title::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
