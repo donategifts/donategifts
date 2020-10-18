@@ -15,11 +15,9 @@ function preventChildImageContextMenu(e) {
     }
 }
 
-const socket = io('127.0.0.1:3000');
-let bla = false;
+const socket = io('https://dev.donate-gifts.com:3000');
 let x = [];
 socket.on('block', event => {
-    console.log(event)
 
     // Get today's date and time
 
@@ -40,11 +38,9 @@ socket.on('block', event => {
         if (distance < 0) {
             clearInterval(x[event.id]);
             x[event.id] = null;
-            console.log(x[event.id])
             button.text("Donate Gift");
             button.prop("disabled",false);
         } else {
-            console.log(x[event.id])
             button.text("Locked for " + minutes + ":" + seconds);
             button.prop("disabled",true);
         }
