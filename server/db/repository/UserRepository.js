@@ -11,7 +11,7 @@ async function getUserByObjectId(id) {
 
 async function updateUserById(id, updateParams) {
   try {
-    await User.updateOne({ _id: id }, { $set: { updateParams } }).exec();
+    await User.updateOne({ _id: id }, { $set: updateParams }).exec();
   } catch (error) {
     throw new Error(`Failed to update user: ${error}`);
   }
