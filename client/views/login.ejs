@@ -18,20 +18,27 @@
     <script>
       window.fbAsyncInit = function () {
         FB.init({
-          appId: <%- fb_client_id %>,
-          autoLogAppEvents: true,
+          appId: '<%- fb_client_id %>',
+          cookie: true,
           xfbml: true,
           version: 'v8.0',
         });
+
+        FB.AppEvents.logPageView();
       };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
     </script>
-    <script
-      async
-      defer
-      crossorigin="anonymous"
-      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
-      nonce="20XuMc32"
-    ></script>
 
     <!-- google login -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -116,8 +123,7 @@
                 data-layout="default"
                 data-auto-logout-link="false"
                 data-use-continue-as="false"
-                data-scope="email"
-                data-width=""
+                data-scope="public_profile,email"
                 data-onlogin="facebookLogin"
               ></div>
             </div>
@@ -144,7 +150,7 @@
       showToast('<%= errorNotification.msg%>');
     </script>
     <%}%>
-    <!-- google-login -->
+    <!-- google login -->
     <script>
       function onSignIn(googleUser) {
         var id_token = googleUser.getAuthResponse().id_token;
@@ -157,17 +163,19 @@
     <!-- facebook login -->
     <script>
       function facebookLogin(fbUser) {
-        console.log(fbUser);
-
-        if (fbUser.authResponse) {
-          var id_token = fbUser.authResponse.accessToken;
+        if (fbUser.authResponse && fbUser.status === 'connected') {
           var userName;
+          var email;
+          var id_token;
+          FB.api('/me', 'GET', { fields: ['name', 'email'] }, function (response) {
+            if (response.id) {
+              userName = response.name;
+              email = response.email;
+              id_token = response.id;
+            }
 
-          FB.api('/me', function (response) {
-            userName = response.name;
+            $.post('/users/fb-signin', { userName, id_token, email });
           });
-
-          $.post('/users/fb-signin', { userName, id_token, email: '' });
         }
       }
     </script>
