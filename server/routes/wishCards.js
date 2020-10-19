@@ -173,6 +173,7 @@ router.get('/', async (_req, res) => {
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
+      socketUrl: process.env.SOCKET_URL
     });
   } catch (error) {
     handleError(res, 400, error);
