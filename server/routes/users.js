@@ -315,17 +315,20 @@ router.post('/google-signin', async (req, res) => {
         password: createDefaultPassword(),
         userRole: 'donor',
         loginMode: 'Google',
+        emailVerified: true,
       });
 
-      req.session.user = newUser;
-      res.locals.user = newUser;
-      return res.redirect('/users/profile');
+      return res.status(200).send({
+        success: true,
+        user: newUser,
+        url: '/users/profile',
+      });
     } catch (error) {
       return handleError(res, 400, error);
     }
   }
 
-  return handleError(res, 400, 'Missing information');
+  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
 // @desc    handle facebook signup/login
@@ -333,11 +336,9 @@ router.post('/google-signin', async (req, res) => {
 // @access  Public
 // @tested 	Not yet
 router.post('/fb-signin', async (req, res) => {
-  const { userName, id_token, email } = req.body;
+  const { userName, email } = req.body;
 
-  log(userName, id_token, email);
-
-  if (userName && id_token && email) {
+  if (userName && email) {
     const [fName, lName] = userName.split(' ');
 
     const dbUser = await UserRepository.getUserByEmail(email);
@@ -345,7 +346,9 @@ router.post('/fb-signin', async (req, res) => {
     if (dbUser) {
       req.session.user = dbUser;
       res.locals.user = dbUser;
-      return res.redirect('/users/profile');
+      return res.status(200).send({
+        url: '/users/profile',
+      });
     }
 
     const newUser = await UserRepository.createNewUser({
@@ -355,14 +358,17 @@ router.post('/fb-signin', async (req, res) => {
       password: createDefaultPassword(),
       userRole: 'donor',
       loginMode: 'Facebook',
+      emailVerified: true,
     });
 
     req.session.user = newUser;
     res.locals.user = newUser;
-    return res.redirect('/users/profile');
+    return res.status(200).send({
+      url: '/users/profile',
+    });
   }
 
-  return handleError(res, 400, 'Missing information');
+  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
 // @desc    Render login.html
@@ -435,8 +441,8 @@ router.get('/verify/:hash', async (req, res) => {
           errorNotification: null,
         });
       }
-      user.emailVerified = true;
-      user.save();
+
+      await UserRepository.setUserEmailVerification(user._id, true);
 
       return res.status(200).render('login', {
         user: res.locals.user,

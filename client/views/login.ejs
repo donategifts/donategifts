@@ -112,7 +112,7 @@
                 class="g-signin2 mt-3"
                 data-width="228"
                 data-longtitle="true"
-                data-onsuccess="onSignIn"
+                data-onsuccess="googleLogin"
               ></div>
             </div>
             <div class="d-flex justify-content-center">
@@ -150,42 +150,6 @@
       showToast('<%= errorNotification.msg%>');
     </script>
     <%}%>
-    <!-- google login -->
-    <script>
-      function onSignIn(googleUser) {
-        var id_token = googleUser.getAuthResponse().id_token;
-
-        $.post('/users/google-signin', {
-          id_token,
-        });
-      }
-    </script>
-    <!-- facebook login -->
-    <script>
-      function facebookLogin(fbUser) {
-        if (fbUser.authResponse && fbUser.status === 'connected') {
-          var userName;
-          var email;
-          var id_token;
-          FB.api('/me', 'GET', { fields: ['name', 'email'] }, function (response) {
-            if (response.id) {
-              $.ajax({
-                type: 'POST',
-                url: '/users/fb-signin',
-                data: {
-                  userName: response.name,
-                  id_token: response.id,
-                  email: response.email,
-                },
-                success: function () {},
-                error: function (response) {
-                  console.log(response);
-                },
-              });
-            }
-          });
-        }
-      }
-    </script>
+    <script src="/public/clientJS/login.js"></script>
   </body>
 </html>

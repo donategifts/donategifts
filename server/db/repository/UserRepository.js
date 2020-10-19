@@ -50,6 +50,14 @@ async function getUserByPasswordResetToken(tokenId) {
   }
 }
 
+async function setUserEmailVerification(userId, verified) {
+  try {
+    await User.updateOne({ _id: userId }, { $set: { emailVerified: verified } });
+  } catch (error) {
+    throw new Error(`Failed to set email verification: ${error}`);
+  }
+}
+
 module.exports = {
   getUserByObjectId,
   updateUserById,
@@ -57,4 +65,5 @@ module.exports = {
   getUserByVerificationHash,
   createNewUser,
   getUserByPasswordResetToken,
+  setUserEmailVerification,
 };
