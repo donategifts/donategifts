@@ -15,7 +15,7 @@ function preventChildImageContextMenu(e) {
     }
 }
 
-const socket = io('ws://wsdev.donate-gifts.com');
+const socket = io('wss://wsdev.donate-gifts.com');
 let x = [];
 socket.on('block', event => {
 
