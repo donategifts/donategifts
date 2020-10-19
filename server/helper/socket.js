@@ -2,8 +2,8 @@ const fs = require('fs');
 
 const https = require('https');
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/cert.pem')
+  key: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/cert.pem')
 };
 var server = https.createServer(options);
 var io  = require('socket.io').listen(server);
