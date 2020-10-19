@@ -255,6 +255,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     verificationHash,
     password: hashedPassword,
     userRole,
+    loginMode: 'Default',
   });
 
   try {
@@ -308,6 +309,7 @@ router.post('/google-signin', async (req, res) => {
         lName,
         email,
         userRole: 'donor',
+        loginMode: 'Google',
       });
 
       req.session.user = newUser;
@@ -346,6 +348,7 @@ router.post('/fb-signin', async (req, res) => {
       lName,
       email,
       userRole: 'donor',
+      loginMode: 'Facebook',
     });
 
     req.session.user = newUser;
