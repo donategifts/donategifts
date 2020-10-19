@@ -59,6 +59,10 @@ async function verifyGoogleToken(token) {
   };
 }
 
+function createDefaultPassword() {
+  return Math.random().toString(36).slice(-8);
+}
+
 // @desc    Render (home)
 // @route   GET '/users'
 // @access  Public
@@ -308,6 +312,7 @@ router.post('/google-signin', async (req, res) => {
         fName,
         lName,
         email,
+        password: createDefaultPassword(),
         userRole: 'donor',
         loginMode: 'Google',
       });
@@ -347,6 +352,7 @@ router.post('/fb-signin', async (req, res) => {
       fName,
       lName,
       email,
+      password: createDefaultPassword(),
       userRole: 'donor',
       loginMode: 'Facebook',
     });
