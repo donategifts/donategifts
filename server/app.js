@@ -19,7 +19,7 @@ const ejs = require('ejs');
 const cors = require('cors');
 
 // custom db connection
-const Mongoose = require('./db/connection');
+const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
@@ -56,7 +56,7 @@ dotenv.config({
 });
 
 // DB SET UP & APP LISTEN (server starts after db connection)
-Mongoose.connect(app, port, hostname);
+MongooseConnection.connect(app, port, hostname);
 
 // SESSION SET UP
 app.use(

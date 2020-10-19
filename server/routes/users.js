@@ -3,9 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const { OAuth2Client } = require('google-auth-library');
 
-const oauthClient = new OAuth2Client(process.env.G_CLIENT_ID);
 const router = express.Router();
 
 const {
@@ -24,44 +22,16 @@ const {
 } = require('../controller/email');
 const { handleError } = require('../helper/error');
 const { log } = require('../helper/logger');
+const {
+  redirectLogin,
+  redirectProfile,
+  verifyGoogleToken,
+  hashPassword,
+  createDefaultPassword,
+} = require('../helper/userHelper');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-
-// IMPORT AGENCY MODEL
-
-// Middleware for users
-const redirectLogin = (req, res, next) => {
-  if (!req.session.user) {
-    res.redirect('/users/login');
-  } else {
-    next();
-  }
-};
-const redirectProfile = (req, res, next) => {
-  if (req.session.user) {
-    res.redirect('/users/profile');
-  } else {
-    next();
-  }
-};
-
-async function verifyGoogleToken(token) {
-  const ticket = await oauthClient.verifyIdToken({
-    idToken: token,
-    audience: process.env.G_CLIENT_ID,
-  });
-  const payload = ticket.getPayload();
-  return {
-    firstName: payload.given_name,
-    lastName: payload.family_name,
-    mail: payload.email,
-  };
-}
-
-function createDefaultPassword() {
-  return Math.random().toString(36).slice(-8);
-}
 
 // @desc    Render (home)
 // @route   GET '/users'
@@ -163,7 +133,7 @@ router.put(
       }
 
       // update user and add aboutMe;
-      await UserRepository.updateUserById(candidate._id, aboutMe);
+      await UserRepository.updateUserById(candidate._id, { aboutMe });
 
       res.status(200).send(
         JSON.stringify({
@@ -248,8 +218,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   if (candidate) {
     return handleError(res, 409, 'This email is already taken. Try another');
   }
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const hashedPassword = await hashPassword(password);
   const verificationHash = createEmailVerificationHash();
 
   const newUser = await UserRepository.createNewUser({
@@ -562,9 +531,7 @@ router.post(
 
       if (userObject) {
         if (moment(userObject.passwordResetTokenExpires) > moment()) {
-          const salt = await bcrypt.genSalt(10);
-
-          userObject.password = await bcrypt.hash(req.body.password, salt);
+          userObject.password = hashPassword(req.body.password);
           userObject.passwordResetToken = null;
           userObject.passwordResetTokenExpires = null;
           userObject.save();
