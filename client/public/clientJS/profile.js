@@ -1,10 +1,4 @@
 $(document).ready(() => {
-  var fileTag = document.getElementById('filetag'),
-    preview = document.getElementById('preview');
-  fileTag.addEventListener('change', function () {
-    changeImage(this);
-  });
-
   function changeImage(input) {
     var reader;
 
@@ -17,6 +11,15 @@ $(document).ready(() => {
 
       reader.readAsDataURL(input.files[0]);
     }
+  }
+
+  var fileTag = document.getElementById('filetag');
+  var preview = document.getElementById('preview');
+
+  if (fileTag) {
+    fileTag.addEventListener('change', function () {
+      changeImage(this);
+    });
   }
 
   $('#wishCardForm').on('submit', function (e) {
