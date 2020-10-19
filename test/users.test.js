@@ -1,10 +1,10 @@
-let User = require('../models/User');
-let Agency = require('../models/Agency');
+let User = require('../server/db/models/User');
+let Agency = require('../server/db/models/Agency');
 
 //Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../app');
+let server = require('../server/app');
 let should = chai.should();
 
 chai.use(chaiHttp);
@@ -70,8 +70,7 @@ describe('Users', () => {
   describe('/GET users/verify/hash', () => {
     it('it should not verify non existing hash', (done) => {
       let hash = '';
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       const charactersLength = characters.length;
       for (let i = 0; i < 18; i++) {
         hash += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -101,22 +100,20 @@ describe('Users', () => {
           res.body.user.should.have.property('userRole');
           res.body.user.should.have.property('_id');
           res.body.user.emailVerified.should.equal(false);
+
           User.findOne({ email: signupRequest.email }).then((user) => {
             user.id.should.equal(res.body.user._id);
+            user.email.should.equal(signupRequest.email);
 
-            agent
-              .get('/users/verify/' + user.verificationHash)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain(
-                  'Verification successful, you can login now!'
-                );
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
 
-                User.findOne({ email: signupRequest.email }).then((user) => {
-                  user.emailVerified.should.equal(true);
-                  done();
-                });
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
+                done();
               });
+            });
           });
         });
     });
@@ -143,7 +140,7 @@ describe('Users', () => {
       });
     });
 
-    it('should get profile when logged in', (done) => {
+    it('should get profile when logged in and display unverified email message', (done) => {
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -160,24 +157,42 @@ describe('Users', () => {
           res.body.user.should.have.property('userRole');
           res.body.user.should.have.property('_id');
           res.body.user.emailVerified.should.equal(false);
-
+          res.body.should.have.property('url');
           User.findOne({ email: signupRequest.email }).then((user) => {
-            user.emailVerified = true;
-            user.save();
+            user.id.should.equal(res.body.user._id);
 
-            let loginRequest = {
-              email: 'test@email.de',
-              password: 'testPassword',
-            };
-            agent
-              .post('/users/login')
-              .redirects(1)
-              .send(loginRequest)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain('Welcome ' + user.fName);
-                done();
+            agent.get('/users/profile').end((err, res) => {
+              res.text.should.contain('Welcome ' + user.fName);
+              res.text.should.contain('Your email is unverified');
+              done();
+            });
+          });
+        });
+    });
+
+    it('should not display unverified email message once email is verified', (done) => {
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          User.findOne({ email: signupRequest.email }).then((user) => {
+            user.emailVerified.should.equal(false);
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
+
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
+
+                agent.get('/users/profile').end((err, res) => {
+                  res.should.have.status(200);
+                  res.text.should.contain('Welcome ' + user.fName);
+                  res.text.should.not.contain('Your email is unverified');
+                  done();
+                });
               });
+            });
           });
         });
     });
@@ -268,20 +283,9 @@ describe('Users', () => {
         .send(signupRequest)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.success.should.equal(true);
-          res.body.should.have.property('user');
-          res.body.user.should.have.property('fName');
-          res.body.user.should.have.property('lName');
-          res.body.user.should.have.property('email');
-          res.body.user.should.have.property('emailVerified');
-          res.body.user.should.have.property('verificationHash');
-          res.body.user.should.have.property('password');
-          res.body.user.should.have.property('userRole');
-          res.body.user.should.have.property('_id');
-          res.body.user.emailVerified.should.equal(false);
 
           User.findOne({ email: signupRequest.email }).then((user) => {
-            user.id.should.equal(res.body.user._id);
+            user.email.should.equal(signupRequest.email);
             done();
           });
         });
@@ -335,39 +339,6 @@ describe('Users', () => {
           done();
         });
     });
-
-    it('it should not login without verified email', (done) => {
-      agent
-        .post('/users/signup')
-        .send(signupRequest)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.success.should.equal(true);
-          res.body.should.have.property('user');
-          res.body.user.should.have.property('fName');
-          res.body.user.should.have.property('lName');
-          res.body.user.should.have.property('email');
-          res.body.user.should.have.property('emailVerified');
-          res.body.user.should.have.property('verificationHash');
-          res.body.user.should.have.property('password');
-          res.body.user.should.have.property('userRole');
-          res.body.user.should.have.property('_id');
-          res.body.user.emailVerified.should.equal(false);
-
-          let loginRequest = {
-            email: 'test@email.de',
-            password: 'testPassword',
-          };
-          agent
-            .post('/users/login')
-            .send(loginRequest)
-            .end((err, res) => {
-              res.should.have.status(403);
-              res.text.should.contain('Please verify your Email');
-              done();
-            });
-        });
-    });
   });
 
   describe('/POST users/agency', () => {
@@ -379,7 +350,7 @@ describe('Users', () => {
       });
     });
 
-    it('it should show agency registration page when logged in and partner', (done) => {
+    it('it should show agency registration page after initial registration for partners', (done) => {
       signupRequest.userRole = 'partner';
       agent
         .post('/users/signup')
@@ -397,40 +368,18 @@ describe('Users', () => {
           res.body.user.should.have.property('userRole');
           res.body.user.should.have.property('_id');
           res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
 
-          User.findOne({ email: signupRequest.email }).then((user) => {
-            user.emailVerified = true;
-            user.save();
-
-            let loginRequest = {
-              email: 'test@email.de',
-              password: 'testPassword',
-            };
-            agent
-              .post('/users/login')
-              .redirects(1)
-              .send(loginRequest)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain('agency registration page');
-
-                agent
-                  .get('/users/agency')
-                  .redirects(1)
-                  .send(loginRequest)
-                  .end((err, res) => {
-                    res.should.have.status(200);
-                    res.text.should.contain('agency registration page');
-                    done();
-                  });
-              });
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
+            done();
           });
         });
     });
 
-    it('it should save agency when logged in and partner', (done) => {
+    it('it should always redirect to agency registration if user has not completed it and navigates away', (done) => {
       signupRequest.userRole = 'partner';
-
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -447,45 +396,171 @@ describe('Users', () => {
           res.body.user.should.have.property('userRole');
           res.body.user.should.have.property('_id');
           res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
 
-          User.findOne({ email: signupRequest.email }).then((user) => {
-            user.emailVerified = true;
-            user.save();
+          agent
+            .get('/users/profile')
+            .redirects(1)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('agency registration page');
+              done();
+            });
+        });
+    });
 
-            let loginRequest = {
-              email: 'test@email.de',
-              password: 'testPassword',
-            };
-            agent
-              .post('/users/login')
-              .redirects(1)
-              .send(loginRequest)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.text.should.contain(' agency registration page');
+    it('it should save agency information', (done) => {
+      signupRequest.userRole = 'partner';
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.success.should.equal(true);
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('fName');
+          res.body.user.should.have.property('lName');
+          res.body.user.should.have.property('email');
+          res.body.user.should.have.property('emailVerified');
+          res.body.user.should.have.property('verificationHash');
+          res.body.user.should.have.property('password');
+          res.body.user.should.have.property('userRole');
+          res.body.user.should.have.property('_id');
+          res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
 
-                let agencyRequest = {
-                  agencyName: 'testAgencyName',
-                  agencyWebsite: 'http://testAgencyWebsite',
-                  agencyPhone: '12334556',
-                  agencyBio: 'testAgencyBio',
-                };
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
 
-                agent
-                  .post('/users/agency')
-                  .redirects(1)
-                  .send(agencyRequest)
-                  .end((err, res) => {
-                    Agency.findOne({ accountManager: user._id }).then(
-                      (agency) => {
-                        const aUserId = agency.accountManager.toString();
-                        const userId = user._id.toString();
-                        aUserId.should.equal(userId);
-                        done();
-                      }
-                    );
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
+                agencyName: 'testAgencyName',
+                agencyWebsite: 'http://testAgencyWebsite',
+                agencyPhone: '12334556',
+                agencyBio: 'testAgencyBio',
+              };
+
+              agent
+                .post('/users/agency')
+                .send(agencyRequest)
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.have.property('url');
+
+                  agent.get('/users/profile').end((err, res) => {
+                    res.should.have.status(200);
+                    res.text.should.contain('Welcome ' + user.fName);
+                    res.text.should.contain('Your email is unverified');
+
+                    Agency.findOne({ accountManager: user._id }).then((agency) => {
+                      agency.agencyName.should.equal(agencyRequest.agencyName);
+                      const aUserId = agency.accountManager.toString();
+                      const userId = user._id.toString();
+                      aUserId.should.equal(userId);
+                      done();
+                    });
                   });
-              });
+                });
+            });
+          });
+        });
+    });
+
+    it('it should not save agency without Agency Name', (done) => {
+      signupRequest.userRole = 'partner';
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.success.should.equal(true);
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('fName');
+          res.body.user.should.have.property('lName');
+          res.body.user.should.have.property('email');
+          res.body.user.should.have.property('emailVerified');
+          res.body.user.should.have.property('verificationHash');
+          res.body.user.should.have.property('password');
+          res.body.user.should.have.property('userRole');
+          res.body.user.should.have.property('_id');
+          res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
+
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
+
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
+                agencyWebsite: 'http://testAgencyWebsite',
+                agencyPhone: '12334556',
+                agencyBio: 'testAgencyBio',
+              };
+
+              agent
+                .post('/users/agency')
+                .send(agencyRequest)
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyName');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
+                    done();
+                  });
+                });
+            });
+          });
+        });
+    });
+
+    it('it should not save agency without phone number', (done) => {
+      signupRequest.userRole = 'partner';
+      agent
+        .post('/users/signup')
+        .send(signupRequest)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.success.should.equal(true);
+          res.body.should.have.property('user');
+          res.body.user.should.have.property('fName');
+          res.body.user.should.have.property('lName');
+          res.body.user.should.have.property('email');
+          res.body.user.should.have.property('emailVerified');
+          res.body.user.should.have.property('verificationHash');
+          res.body.user.should.have.property('password');
+          res.body.user.should.have.property('userRole');
+          res.body.user.should.have.property('_id');
+          res.body.user.emailVerified.should.equal(false);
+          res.body.should.have.property('url');
+
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
+
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
+                agencyName: 'testAgencyName',
+                agencyWebsite: 'http://testAgencyWebsite',
+                agencyBio: 'testAgencyBio',
+              };
+
+              agent
+                .post('/users/agency')
+                .send(agencyRequest)
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyPhone');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
+                    done();
+                  });
+                });
+            });
           });
         });
     });

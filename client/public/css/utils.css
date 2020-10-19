@@ -1,0 +1,251 @@
+/* 
+-----------------------------
+file: utils.css
+desc: this file has all reusable utilities for css
+----------------------------- 
+New Color Scheme Reference:
+primary red:
+    #ff5c6f
+    rgba(255, 92, 111, 1)
+primary orange:
+    #ff826b
+    rgba(255, 130, 107, 1)
+light cream:
+    #fff6ed
+    rgba(255, 246, 237, 1)
+cream:
+    #f8e4c9
+    rgba(248, 228, 201, 1)
+primary green:
+    #00a19a
+    rgba(0, 161, 154, 1)
+primary yellow:
+    #ffbb59
+    rgba(255, 187, 89, 1)
+secondary yellow:
+    #f9a14c
+    rgba(249, 161, 76, 1)
+primary navy:
+    #333a64
+    rgba(51, 58, 100, 1)
+secondary navy:
+    #414254
+    rgba(65, 66, 84, 1)
+dark grey:
+    #313131
+    rgba(49, 49, 49, 1)
+----------------------------- 
+*/
+
+/* ------------- new local fonts -------------- */
+@font-face {
+  font-family: 'Childrensans';
+  src: local('Childrensans'), url('../fonts/Childrensans.ttf');
+}
+
+@font-face {
+  font-family: 'DjbTeacherFont';
+  src: local('DjbTeacherFont'), url('../fonts/DjbTeacherFont.ttf');
+}
+
+@font-face {
+  font-family: 'DkCoolCrayon';
+  src: local('DkCoolCrayon'), url('../fonts/DkCoolCrayon.ttf');
+}
+
+@font-face {
+  font-family: 'DjbNumber2Pencil';
+  src: local('DjbNumber2Pencil'), url('../fonts/DjbNumber2Pencil.ttf');
+}
+
+@font-face {
+  font-family: 'DjbNumber2PencilBold';
+  src: local('DjbNumber2PencilBold'), url('../fonts/DjbNumber2PencilBold.ttf');
+}
+
+@font-face {
+  font-family: 'DK-Crayon-Crumble';
+  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'),
+    url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
+}
+
+/* fonts
+----------------------------------------
+*/
+.cool-font {
+  font-family: 'DkCoolCrayon', 'Comfortaa', cursive;
+}
+
+.teac-font {
+  font-family: 'DjbTeacherFont', 'Source Sans Pro', sans-serif;
+}
+
+.n2b-font {
+  font-family: 'DjbNumber2PencilBold', 'Source Sans Pro', sans-serif;
+}
+
+.n2-font {
+  font-family: 'DjbNumber2Pencil', 'Source Sans Pro', sans-serif;
+}
+
+.chldn-font {
+  font-family: 'Childrensans', 'Source Sans Pro', sans-serif;
+}
+
+.quick-font {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.source-font {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.comf-font {
+  font-family: 'Comfortaa', cursive;
+}
+
+.crayon-font {
+  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+}
+
+/* Text Styling
+----------------------------------------
+*/
+.bold-text {
+  font-weight: 500;
+  font-size: 1em;
+}
+
+#section-text {
+  font-size: 1em;
+}
+
+.subtext {
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 2.1em;
+  max-width: 80%;
+  display: flex;
+  text-align: center;
+}
+
+.text-fix {
+  line-height: 2em !important;
+}
+
+#grn-font {
+  color: rgba(0, 161, 154, 1);
+}
+
+.grn-font {
+  color: rgba(0, 161, 154, 1);
+}
+
+#navy {
+  color: rgba(65, 66, 84, 1);
+}
+
+.org-bg {
+  background: rgba(249, 161, 76, 1);
+}
+
+.font-md {
+  font-size: 1.45em;
+}
+
+.font-lg {
+  font-size: 2.5em;
+}
+
+.yellow {
+  color: rgba(255, 187, 89, 1);
+}
+
+#blk {
+  color: #262626;
+}
+
+/* commonly used utils
+----------------------------------------
+*/
+body {
+  margin: auto 0;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit !important;
+}
+
+img {
+  vertical-align: baseline;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.grn-box {
+  box-shadow: 20px 20px rgba(0, 161, 154, 1);
+}
+
+.yel-box {
+  box-shadow: 20px 20px rgba(255, 187, 89, 1);
+}
+
+/* Hamburger Menu
+----------------------------------------
+*/
+.hamburger-menu {
+  position: relative;
+  width: 24px;
+  height: 22px;
+  margin: 0 auto;
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.hamburger-menu span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #262626;
+  border-radius: 10px;
+  opacity: 1;
+  left: 0;
+  transition: 0.25s ease-in-out;
+}
+
+.hamburger-menu span:nth-child(1) {
+  top: 2px;
+}
+
+.hamburger-menu span:nth-child(2),
+.hamburger-menu span:nth-child(3) {
+  top: 10px;
+}
+
+.hamburger-menu span:nth-child(4) {
+  top: 18px;
+}
+
+.hamburger-menu.open span:nth-child(1) {
+  top: 18px;
+  width: 0;
+  left: 50%;
+}
+
+.hamburger-menu.open span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.hamburger-menu.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.hamburger-menu.open span:nth-child(4) {
+  top: 18px;
+  width: 0;
+  left: 50%;
+}
