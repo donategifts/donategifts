@@ -169,12 +169,20 @@
           var id_token;
           FB.api('/me', 'GET', { fields: ['name', 'email'] }, function (response) {
             if (response.id) {
-              userName = response.name;
-              email = response.email;
-              id_token = response.id;
+              $.ajax({
+                type: 'POST',
+                url: '/users/fb-signin',
+                data: {
+                  userName: response.name,
+                  id_token: response.id,
+                  email: response.email,
+                },
+                success: function () {},
+                error: function (response) {
+                  console.log(response);
+                },
+              });
             }
-
-            $.post('/users/fb-signin', { userName, id_token, email });
           });
         }
       }

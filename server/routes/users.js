@@ -289,29 +289,33 @@ router.post('/google-signin', async (req, res) => {
   log(id_token);
 
   if (id_token) {
-    const user = await verifyGoogleToken(id_token);
-    const fName = user.firstName;
-    const lName = user.lastName;
-    const email = user.mail;
+    try {
+      const user = await verifyGoogleToken(id_token);
+      const fName = user.firstName;
+      const lName = user.lastName;
+      const email = user.mail;
 
-    const dbUser = await UserRepository.getUserByEmail(email);
+      const dbUser = await UserRepository.getUserByEmail(email);
 
-    if (dbUser) {
-      req.session.user = dbUser;
-      res.locals.user = dbUser;
+      if (dbUser) {
+        req.session.user = dbUser;
+        res.locals.user = dbUser;
+        return res.redirect('/users/profile');
+      }
+
+      const newUser = await UserRepository.createNewUser({
+        fName,
+        lName,
+        email,
+        userRole: 'donor',
+      });
+
+      req.session.user = newUser;
+      res.locals.user = newUser;
       return res.redirect('/users/profile');
+    } catch (error) {
+      return handleError(res, 400, error);
     }
-
-    const newUser = await UserRepository.createNewUser({
-      fName,
-      lName,
-      email,
-      userRole: 'donor',
-    });
-
-    req.session.user = newUser;
-    res.locals.user = newUser;
-    return res.redirect('/users/profile');
   }
 
   return handleError(res, 400, 'Missing information');
