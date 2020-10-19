@@ -243,6 +243,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     } else {
       url = '/users/profile';
     }
+
     return res.status(200).send({
       success: true,
       user: newUser,
@@ -421,13 +422,9 @@ router.get('/verify/:hash', async (req, res) => {
         errorNotification: null,
       });
     }
-    return res.status(400).render('login', {
-      user: res.locals.user,
-      successNotification: null,
-      errorNotification: { msg: 'Email Verification failed' },
-    });
+    return handleError(res, 400, 'Email Verification failed!');
   } catch (error) {
-    return res.status(500).render('login', {
+    return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
       errorNotification: { msg: 'Email Verification failed' },
