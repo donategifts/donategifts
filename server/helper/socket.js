@@ -1,5 +1,6 @@
 const app = require('../app');
-var https        = require('https');
+const https        = require('https');
+const fs = require( 'fs' );
 const server = https.createServer({     
   key: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/privkey.pem'),     
   cert: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/cert.pem'),     
