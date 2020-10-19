@@ -1,16 +1,17 @@
-const app = require('../app');
-const https        = require('https');
-const fs = require( 'fs' );
-const server = https.createServer({     
-  key: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/privkey.pem'),     
-  cert: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/cert.pem'),     
-  ca: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/chain.pem'),     
-  requestCert: false,     
-  rejectUnauthorized: false },app); 
-server.listen(3000);
+const fs = require('fs');
 
-const io = require('socket.io').listen(server);
+const https = require('https');
+const options = {
+  key: fs.readFileSync('etc/letsencrypt/live/wsdev.donate-gifts.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/wsdev.donate-gifts.com/cert.pem')
+};
+var server = https.createServer(options);
+var io  = require('socket.io').listen(server);
+var port = 3000; // Enter any of the cloudflare ports.
 
-io.set('origins', '*:*');
+
+server.listen(port, function(){
+  console.log('listening : ' + port);
+});
 
 module.exports = io
