@@ -7,14 +7,23 @@
  *
  */
 
-require('./helper/socket');
+const dotenv = require('dotenv');
+
+let configPath = './config/config.env';
+if (process.env.NODE_ENV === 'test') {
+  configPath = './config/test.config.env';
+}
+dotenv.config({
+  path: configPath,
+});
+
+// EXPRESS SET UP
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const dotenv = require('dotenv');
 const ejs = require('ejs');
 const cors = require('cors');
 
@@ -45,15 +54,6 @@ app.use('/uploads', express.static('./uploads'));
 // const hostname = '64.227.8.216';
 const hostname = '127.0.0.1';
 const port = 8081;
-
-// LOAD CONFIG.ENV vars
-let configPath = './config/config.env';
-if (process.env.NODE_ENV === 'test') {
-  configPath = './config/test.config.env';
-}
-dotenv.config({
-  path: configPath,
-});
 
 // DB SET UP & APP LISTEN (server starts after db connection)
 MongooseConnection.connect(app, port, hostname);

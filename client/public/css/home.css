@@ -128,6 +128,26 @@ New color scheme reference is in utils.css
   line-height: 2em;
 }
 
+/* ---------------partners section */
+.partners-container img {
+  width: 100%;
+}
+
+.partners-container .col-lg-3 {
+  align-self: center;
+}
+
+.partners-container .partner-img {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-width: 200px;
+  min-height: 200px;
+}
+
+/* ---------------partners section end */
+
+
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
   .custom-left {

@@ -15,7 +15,6 @@ function preventChildImageContextMenu(e) {
     }
 }
 
-const socket = io('dev.donate-gifts.com');
 let x = [];
 socket.on('block', event => {
 
