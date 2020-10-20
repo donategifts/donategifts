@@ -40,8 +40,8 @@ const handleError = (res, code, error, status = 'error', success = false) => {
     status,
     success,
     statusCode,
-    message,
-    error,
+    message: message.toString(),
+    error: error.toString(),
   });
 };
 

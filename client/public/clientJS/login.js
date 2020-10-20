@@ -25,6 +25,9 @@ function facebookLogin(fbUser) {
 function googleLogin(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
 
+  // disconnect to avoid constant re-login after logout
+  googleUser.disconnect();
+
   $.ajax({
     type: 'POST',
     url: '/users/google-signin',

@@ -261,8 +261,6 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
 router.post('/google-signin', async (req, res) => {
   const { id_token } = req.body;
 
-  log(id_token);
-
   if (id_token) {
     try {
       const user = await verifyGoogleToken(id_token);
@@ -275,7 +273,9 @@ router.post('/google-signin', async (req, res) => {
       if (dbUser) {
         req.session.user = dbUser;
         res.locals.user = dbUser;
-        return res.redirect('/users/profile');
+        return res.status(200).send({
+          url: '/users/profile',
+        });
       }
 
       const newUser = await UserRepository.createNewUser({
@@ -283,21 +283,24 @@ router.post('/google-signin', async (req, res) => {
         lName,
         email,
         password: createDefaultPassword(),
+        verificationHash: createEmailVerificationHash(),
         userRole: 'donor',
         loginMode: 'Google',
         emailVerified: true,
       });
 
+      req.session.user = newUser;
+      res.locals.user = newUser;
       return res.status(200).send({
-        success: true,
-        user: newUser,
         url: '/users/profile',
       });
     } catch (error) {
-      return handleError(res, 400, error);
+      log('DB error during google login!', error);
+      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
+  log('No Valid google token provided!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
@@ -321,23 +324,30 @@ router.post('/fb-signin', async (req, res) => {
       });
     }
 
-    const newUser = await UserRepository.createNewUser({
-      fName,
-      lName,
-      email,
-      password: createDefaultPassword(),
-      userRole: 'donor',
-      loginMode: 'Facebook',
-      emailVerified: true,
-    });
+    try {
+      const newUser = await UserRepository.createNewUser({
+        fName,
+        lName,
+        email,
+        password: createDefaultPassword(),
+        verificationHash: createEmailVerificationHash(),
+        userRole: 'donor',
+        loginMode: 'Facebook',
+        emailVerified: true,
+      });
 
-    req.session.user = newUser;
-    res.locals.user = newUser;
-    return res.status(200).send({
-      url: '/users/profile',
-    });
+      req.session.user = newUser;
+      res.locals.user = newUser;
+      return res.status(200).send({
+        url: '/users/profile',
+      });
+    } catch (error) {
+      log('DB error during facebook login!', error);
+      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+    }
   }
 
+  log('No username and email provided from facebook!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
