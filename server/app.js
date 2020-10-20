@@ -19,20 +19,23 @@ dotenv.config({
 
 // EXPRESS SET UP
 const express = require('express');
-
-const app = express();
-require('./helper/socket')
-// NPM DEPENDENCIES
 const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
+const cors = require('cors');
+
 // custom db connection
-const Mongoose = require('./db/connection');
+const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
+
+const app = express();
+
+// CORS SETUP
+app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
 app.set('views', path.join(__dirname, '../client/views'));
@@ -44,7 +47,6 @@ app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
 
-
 // DEV ENV
 // const hostname = '127.0.0.1';
 // const port = 8081;
@@ -54,7 +56,7 @@ const hostname = '127.0.0.1';
 const port = 8081;
 
 // DB SET UP & APP LISTEN (server starts after db connection)
-Mongoose.connect(app, port, hostname);
+MongooseConnection.connect(app, port, hostname);
 
 // SESSION SET UP
 app.use(
@@ -123,7 +125,6 @@ app.get('/', (_req, res) => {
 });
 
 // ERROR PAGE
-// eslint-disable-next-line no-unused-vars
 app.get('*', (_req, res) => {
   res.status(404).render('error');
 });

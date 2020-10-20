@@ -1,5 +1,3 @@
-const { log } = require('./logger');
-
 // TODO: ADD MORE ERROR HANDLING HERE
 
 class ErrorHandler extends Error {
@@ -25,9 +23,6 @@ const handleError = (res, code, error, status = 'error', success = false) => {
   }
 
   statusCode = code || statusCode;
-
-  // CONSOLE LOG FOR DEV ENV
-  log(res, error);
 
   // MONGOOSE BAD OBJECT ID
   if (name === 'CastError') {

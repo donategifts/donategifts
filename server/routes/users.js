@@ -1,13 +1,10 @@
 // NPM DEPENDENCIES
-
 const { v4: uuidv4 } = require('uuid');
-
 const express = require('express');
-
-const router = express.Router();
-
 const bcrypt = require('bcrypt');
 const moment = require('moment');
+
+const router = express.Router();
 
 const {
   signupValidationRules,
@@ -25,27 +22,16 @@ const {
 } = require('../controller/email');
 const { handleError } = require('../helper/error');
 const { log } = require('../helper/logger');
+const {
+  redirectLogin,
+  redirectProfile,
+  verifyGoogleToken,
+  hashPassword,
+  createDefaultPassword,
+} = require('../helper/userHelper');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-
-// IMPORT AGENCY MODEL
-
-// Middleware for users
-const redirectLogin = (req, res, next) => {
-  if (!req.session.user) {
-    res.redirect('/users/login');
-  } else {
-    next();
-  }
-};
-const redirectProfile = (req, res, next) => {
-  if (req.session.user) {
-    res.redirect('/users/profile');
-  } else {
-    next();
-  }
-};
 
 // @desc    Render (home)
 // @route   GET '/users'
@@ -85,6 +71,8 @@ router.get('/login', redirectProfile, (req, res) => {
       user: res.locals.user,
       successNotification: null,
       errorNotification: null,
+      g_client_id: process.env.G_CLIENT_ID,
+      fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
     handleError(
@@ -145,7 +133,7 @@ router.put(
       }
 
       // update user and add aboutMe;
-      await UserRepository.updateUserById(candidate._id, aboutMe);
+      await UserRepository.updateUserById(candidate._id, { aboutMe });
 
       res.status(200).send(
         JSON.stringify({
@@ -230,8 +218,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   if (candidate) {
     return handleError(res, 409, 'This email is already taken. Try another');
   }
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const hashedPassword = await hashPassword(password);
   const verificationHash = createEmailVerificationHash();
 
   const newUser = await UserRepository.createNewUser({
@@ -241,6 +228,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     verificationHash,
     password: hashedPassword,
     userRole,
+    loginMode: 'Default',
   });
 
   try {
@@ -255,6 +243,7 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
     } else {
       url = '/users/profile';
     }
+
     return res.status(200).send({
       success: true,
       user: newUser,
@@ -263,6 +252,103 @@ router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   } catch (err) {
     return handleError(res, 206, err);
   }
+});
+
+// @desc    handle google signup/login
+// @route   POST '/google-signin'
+// @access  Public
+// @tested 	Not yet
+router.post('/google-signin', async (req, res) => {
+  const { id_token } = req.body;
+
+  if (id_token) {
+    try {
+      const user = await verifyGoogleToken(id_token);
+      const fName = user.firstName;
+      const lName = user.lastName;
+      const email = user.mail;
+
+      const dbUser = await UserRepository.getUserByEmail(email);
+
+      if (dbUser) {
+        req.session.user = dbUser;
+        res.locals.user = dbUser;
+        return res.status(200).send({
+          url: '/users/profile',
+        });
+      }
+
+      const newUser = await UserRepository.createNewUser({
+        fName,
+        lName,
+        email,
+        password: createDefaultPassword(),
+        verificationHash: createEmailVerificationHash(),
+        userRole: 'donor',
+        loginMode: 'Google',
+        emailVerified: true,
+      });
+
+      req.session.user = newUser;
+      res.locals.user = newUser;
+      return res.status(200).send({
+        url: '/users/profile',
+      });
+    } catch (error) {
+      log('DB error during google login!', error);
+      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+    }
+  }
+
+  log('No Valid google token provided!');
+  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+});
+
+// @desc    handle facebook signup/login
+// @route   POST '/fb-signin'
+// @access  Public
+// @tested 	Not yet
+router.post('/fb-signin', async (req, res) => {
+  const { userName, email } = req.body;
+
+  if (userName && email) {
+    const [fName, lName] = userName.split(' ');
+
+    const dbUser = await UserRepository.getUserByEmail(email);
+
+    if (dbUser) {
+      req.session.user = dbUser;
+      res.locals.user = dbUser;
+      return res.status(200).send({
+        url: '/users/profile',
+      });
+    }
+
+    try {
+      const newUser = await UserRepository.createNewUser({
+        fName,
+        lName: lName || 'LastnameUnset',
+        email,
+        password: createDefaultPassword(),
+        verificationHash: createEmailVerificationHash(),
+        userRole: 'donor',
+        loginMode: 'Facebook',
+        emailVerified: true,
+      });
+
+      req.session.user = newUser;
+      res.locals.user = newUser;
+      return res.status(200).send({
+        url: '/users/profile',
+      });
+    } catch (error) {
+      log('DB error during facebook login!', error);
+      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+    }
+  }
+
+  log('No username and email provided from facebook!');
+  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
 // @desc    Render login.html
@@ -282,12 +368,16 @@ router.post('/login', loginValidationRules(), validate, redirectProfile, async (
     return res.status(403).render('login', {
       user: res.locals.user,
       successNotification: null,
+      g_client_id: process.env.G_CLIENT_ID,
+      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Username and/or password incorrect' },
     });
   }
   return res.status(403).render('login', {
     user: res.locals.user,
     successNotification: null,
+    g_client_id: process.env.G_CLIENT_ID,
+    fb_client_id: process.env.FB_APP_ID,
     errorNotification: { msg: 'Username and/or password incorrect' },
   });
 });
@@ -332,29 +422,31 @@ router.get('/verify/:hash', async (req, res) => {
           successNotification: {
             msg: 'Your email is already verified.',
           },
+          g_client_id: process.env.G_CLIENT_ID,
+          fb_client_id: process.env.FB_APP_ID,
           errorNotification: null,
         });
       }
-      user.emailVerified = true;
-      user.save();
+
+      await UserRepository.setUserEmailVerification(user._id, true);
 
       return res.status(200).render('login', {
         user: res.locals.user,
         successNotification: {
           msg: 'Email Verification successful',
         },
+        g_client_id: process.env.G_CLIENT_ID,
+        fb_client_id: process.env.FB_APP_ID,
         errorNotification: null,
       });
     }
+    return handleError(res, 400, 'Email Verification failed!');
+  } catch (error) {
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
-      errorNotification: { msg: 'Email Verification failed' },
-    });
-  } catch (error) {
-    return res.status(500).render('login', {
-      user: res.locals.user,
-      successNotification: null,
+      g_client_id: process.env.G_CLIENT_ID,
+      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Email Verification failed' },
     });
   }
@@ -456,9 +548,7 @@ router.post(
 
       if (userObject) {
         if (moment(userObject.passwordResetTokenExpires) > moment()) {
-          const salt = await bcrypt.genSalt(10);
-
-          userObject.password = await bcrypt.hash(req.body.password, salt);
+          userObject.password = hashPassword(req.body.password);
           userObject.passwordResetToken = null;
           userObject.passwordResetTokenExpires = null;
           userObject.save();
