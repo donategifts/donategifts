@@ -26,7 +26,7 @@ async function verifyGoogleToken(token) {
   const payload = ticket.getPayload();
   return {
     firstName: payload.given_name,
-    lastName: payload.family_name,
+    lastName: payload.family_name || 'LastnameUnset',
     mail: payload.email,
   };
 }
