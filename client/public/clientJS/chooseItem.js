@@ -4,11 +4,15 @@ $(document).ready(function () {
   $.ajax({
     type: 'GET',
     url: `/wishcards/defaults/${ageCategory}`,
-    success: function (html) {
-      $('.choicesContainer').replaceWith(html);
-    },
-    error: function (response) {
-      alert('Images could not be retrieved');
+    statusCode: {
+      200: function (responseObject) {
+        $('.choicesContainer').replaceWith(responseObject);
+      },
+      403: function (responseObject) {
+        showToast('Access Forbidden: Your account lacks sufficient permissions');
+        let { url } = responseObject.responseJSON;
+        setTimeout(() => location.assign(url), 1200);
+      },
     },
   });
 
