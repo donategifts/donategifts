@@ -16,6 +16,18 @@ const moment = require('moment');
 const io = require('../helper/socket');
 
 const {
+  createWishcardValidationRules,
+  createGuidedWishcardValidationRules,
+  searchValidationRules,
+  getByIdValidationRules,
+  updateWishCardValidationRules,
+  postMessageValidationRules,
+  getDefaultCardsValidationRules,
+  lockWishCardValidationRules,
+  validate,
+} = require('./validations/wishcards.validations');
+
+const {
   babies,
   preschoolers,
   kids6_8,
@@ -81,22 +93,27 @@ const WishCardRepository = require('../db/repository/WishCardRepository');
 // @route   POST '/wishcards'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/', upload.single('wishCardImage'), async (req, res) => {
-  if (req.file === undefined) {
-    handleError(res, 400, {
-      success: false,
-      error: `Error: File must be in jpeg, jpg, gif, or png format. The file
+router.post(
+  '/',
+  createWishcardValidationRules(),
+  validate,
+  upload.single('wishCardImage'),
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(res, 400, {
+        success: false,
+        error: `Error: File must be in jpeg, jpg, gif, or png format. The file
         must also be less than 5 megabytes.`,
-    });
-  } else {
-    try {
-      await WishCardRepository.createNewWishCard({
-        childBirthday: new Date(req.body.childBirthday),
-        wishItemPrice: Number(req.body.wishItemPrice),
-        wishCardImage: req.file.location,
-        createdBy: res.locals.user._id,
-        // Uncomment once address fields are added to profile page.
-        /* address: {
+      });
+    } else {
+      try {
+        await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(req.body.childBirthday),
+          wishItemPrice: Number(req.body.wishItemPrice),
+          wishCardImage: req.file.location,
+          createdBy: res.locals.user._id,
+          // Uncomment once address fields are added to profile page.
+          /* address: {
           address1: req.body.address1,
           address2: req.body.address2,
           city: req.body.address_city,
@@ -104,56 +121,63 @@ router.post('/', upload.single('wishCardImage'), async (req, res) => {
           zip: req.body.address_zip,
           country: req.body.address_country,
         }, */
-        ...req.body,
-      });
+          ...req.body,
+        });
 
-      res.status(200).send('/wishcards/');
-    } catch (error) {
-      handleError(res, 400, error);
+        res.status(200).send('/wishcards/');
+      } catch (error) {
+        handleError(res, 400, error);
+      }
     }
-  }
-});
+  },
+);
 
 // @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
 // @route   POST '/wishcards/guided/'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/guided/', upload.single('wishCardImage'), async (req, res) => {
-  if (req.file === undefined) {
-    handleError(
-      res,
-      400,
-      `Error: File must be in jpeg, jpg, gif, or png format. The file
+router.post(
+  '/guided/',
+  createGuidedWishcardValidationRules(),
+  validate,
+  upload.single('wishCardImage'),
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-    );
-  } else {
-    try {
-      let { itemChoice } = req.body;
-      itemChoice = JSON.parse(itemChoice);
-      await WishCardRepository.createNewWishCard({
-        childBirthday: new Date(req.body.childBirthday),
-        wishItemName: itemChoice.Name,
-        wishItemPrice: Number(itemChoice.Price),
-        wishItemURL: itemChoice.ItemURL,
-        wishCardImage: req.file.location,
-        createdBy: res.locals.user._id,
-        address: {
-          address1: req.body.address1,
-          address2: req.body.address2,
-          city: req.body.address_city,
-          state: req.body.address_state,
-          zip: req.body.address_zip,
-          country: req.body.address_country,
-        },
-        ...req.body,
-      });
+      );
+    } else {
+      try {
+        let { itemChoice } = req.body;
+        itemChoice = JSON.parse(itemChoice);
+        await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(req.body.childBirthday),
+          wishItemName: itemChoice.Name,
+          wishItemPrice: Number(itemChoice.Price),
+          wishItemURL: itemChoice.ItemURL,
+          wishCardImage: req.file.location,
+          createdBy: res.locals.user._id,
+          address: {
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.address_city,
+            state: req.body.address_state,
+            zip: req.body.address_zip,
+            country: req.body.address_country,
+          },
+          ...req.body,
+        });
 
-      res.status(200).send('/wishcards/');
-    } catch (error) {
-      handleError(res, 400, error);
+        res.status(200).send('/wishcards/');
+      } catch (error) {
+        handleError(res, 400, error);
+      }
     }
-  }
-});
+  },
+);
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
@@ -173,7 +197,7 @@ router.get('/', async (_req, res) => {
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
-      socketUrl: process.env.SOCKET_URL
+      socketUrl: process.env.SOCKET_URL,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -184,7 +208,7 @@ router.get('/', async (_req, res) => {
 // @route   POST '/wishcards/search'
 // @access  Public, all users can see
 // @tested 	Yes
-router.post('/search', async (req, res) => {
+router.post('/search', searchValidationRules(), validate, async (req, res) => {
   try {
     const results = await WishCardRepository.getWishCardsByItemName(req.body.wishitem);
     res.status(200).render('wishCards', {
@@ -238,7 +262,7 @@ const getPreviousMessages = async (wishcard) => {
 // @route   GET '/wishcards/:id'
 // @access  Public, all users (path led by "see more" button)
 // @tested 	No
-router.get('/:id', async (req, res) => {
+router.get('/:id', getByIdValidationRules(), validate, async (req, res) => {
   if (!res.locals.user) {
     // TO DO: Display alert instead? Hiding the See more button is another option
     res.redirect('/users/login');
@@ -295,7 +319,7 @@ router.get('/get/random', async (req, res) => {
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only partners
 // @tested 	Not yet
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', updateWishCardValidationRules(), validate, async (req, res) => {
   // what are we doing here?
   try {
     const result = await WishCardRepository.getWishCardByObjectId(req.params.id);
@@ -313,7 +337,7 @@ router.put('/update/:id', async (req, res) => {
 // @route  POST '/wishcards/message'
 // @access  Public, all users
 // @tested 	Not yet
-router.post('/message', async (req, res) => {
+router.post('/message', postMessageValidationRules(), validate, async (req, res) => {
   try {
     const { messageFrom, messageTo, message } = req.body;
     const newMessage = await MessageRepository.createNewMessage({
@@ -334,14 +358,12 @@ router.post('/message', async (req, res) => {
   }
 });
 
-
 // @desc   lock a wishcard
 // @route  POST '/wishcards/message'
 // @access  Public, all users
 // @tested 	Not yet
-router.post('/lock/:id', async (req, res) => {
+router.post('/lock/:id', lockWishCardValidationRules(), validate, async (req, res) => {
   try {
-
     const wishCardId = req.params.id;
 
     if (!req.session.user) return handleError(res, 400, 'User not found');
@@ -349,8 +371,10 @@ router.post('/lock/:id', async (req, res) => {
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
     if (!user) return handleError(res, 400, 'User not found');
 
-    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
-    if(wishcardAlreadyLockedByUser) {
+    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(
+      req.session.user._id,
+    );
+    if (wishcardAlreadyLockedByUser) {
       // user has locked wishcard and its still locked
       if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
@@ -359,7 +383,7 @@ router.post('/lock/:id', async (req, res) => {
 
     const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
 
-    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil})
+    io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
 
     res.status(200).send({
       success: true,
@@ -374,7 +398,7 @@ router.post('/lock/:id', async (req, res) => {
 // @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access
 // @tested 	No
-router.get('/defaults/:id', async (req, res) => {
+router.get('/defaults/:id', getDefaultCardsValidationRules(), validate, async (req, res) => {
   const ageCategory = Number(req.params.id);
   let itemChoices;
   if (ageCategory === 1) itemChoices = babies;
