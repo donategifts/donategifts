@@ -222,10 +222,9 @@ describe('Users', () => {
 
   describe('/POST users/signup', () => {
     it('it should not POST without fName', (done) => {
-      delete signupRequest.fName;
       agent
         .post('/users/signup')
-        .send(signupRequest)
+        .send({ ...signupRequest, fName: null })
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
@@ -236,10 +235,9 @@ describe('Users', () => {
     });
 
     it('it should not POST without lName', (done) => {
-      delete signupRequest.lName;
       agent
         .post('/users/signup')
-        .send(signupRequest)
+        .send({ ...signupRequest, lName: null })
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
@@ -250,31 +248,29 @@ describe('Users', () => {
     });
 
     it('it should not POST without email', (done) => {
-      delete signupRequest.email,
-        agent
-          .post('/users/signup')
-          .send(signupRequest)
-          .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.have.property('error');
-            res.body.error.msg.should.contain('Invalid value');
-            res.body.error.param.should.contain('email');
-            done();
-          });
+      agent
+        .post('/users/signup')
+        .send({ ...signupRequest, email: null })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('email');
+          done();
+        });
     });
 
     it('it should not POST without password', (done) => {
-      delete signupRequest.password,
-        agent
-          .post('/users/signup')
-          .send(signupRequest)
-          .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.have.property('error');
-            res.body.error.msg.should.contain('Invalid value');
-            res.body.error.param.should.contain('password');
-            done();
-          });
+      agent
+        .post('/users/signup')
+        .send({ ...signupRequest, password: null })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error');
+          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.param.should.contain('password');
+          done();
+        });
     });
 
     it('it should create User', (done) => {
@@ -351,10 +347,9 @@ describe('Users', () => {
     });
 
     it('it should show agency registration page after initial registration for partners', (done) => {
-      signupRequest.userRole = 'partner';
       agent
         .post('/users/signup')
-        .send(signupRequest)
+        .send({ ...signupRequest, userRole: 'partner' })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.success.should.equal(true);
