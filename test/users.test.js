@@ -330,6 +330,7 @@ describe('Users', () => {
         .post('/users/login')
         .send(loginRequest)
         .end((err, res) => {
+          console.log(res.text);
           res.should.have.status(403);
           res.text.should.contain('Username and/or password incorrect');
           done();
