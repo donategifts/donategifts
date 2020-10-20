@@ -327,7 +327,7 @@ router.post('/fb-signin', async (req, res) => {
     try {
       const newUser = await UserRepository.createNewUser({
         fName,
-        lName,
+        lName: lName || 'LastnameUnset',
         email,
         password: createDefaultPassword(),
         verificationHash: createEmailVerificationHash(),
