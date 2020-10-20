@@ -1,0 +1,522 @@
+/* 
+---------------
+New color scheme reference is in utils.css
+---------------
+*/
+
+/* ---------------home hero section */
+#home-bg {
+  background: url('../img/donategifts-new-hero.png') center center;
+  min-height: 90vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#about-bg {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 151, 99, 0.8),
+      rgba(188, 227, 97, 0.3),
+      rgba(255, 209, 90, 0.05)
+    ),
+    url('../img/kid-yellow-bg.jpg') center center;
+  min-height: 40vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+}
+
+.bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-h1 {
+  font-size: 4em;
+  text-transform: uppercase;
+}
+
+.text {
+  text-align: center;
+  color: #fff;
+}
+
+.text h4 {
+  font-size: 1.7em;
+  line-height: 1.2em;
+  /* text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99); */
+}
+
+.text button {
+  margin-top: 1.4em;
+}
+
+/* new addition start  ------------------------------*/
+.home-wish-title {
+  font-size: 3.5em;
+  color: rgba(51, 58, 100, 1);
+  text-align: center;
+  padding: 1em 0em 1em 0em;
+}
+
+.highlight {
+  text-decoration: underline;
+}
+
+.form-notification {
+  font-size: 1.2em;
+  text-align: center;
+  line-height: 1.7em;
+  background-color: rgba(185, 221, 145, 0.2);
+}
+
+/* new addition end  */
+
+/* --------------- howto, wrapper */
+.custom-wrapper {
+  /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
+  background: rgba(255, 246, 237, 0.5);
+}
+
+.how-to-img {
+  height: 310px;
+  width: auto;
+  margin-bottom: 1em;
+}
+
+/* ---------------section with row col */
+.custom-row {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  /* margin-top: 8vh; */
+}
+
+.custom-col {
+  display: flex;
+  flex-flow: column wrap;
+  flex-basis: auto;
+  flex: 1;
+  margin: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-col h4 {
+  color: #808080;
+}
+
+.custom-left {
+  order: 2;
+  width: 50%;
+}
+
+.custom-right {
+  order: 1;
+  width: 50%;
+}
+
+.custom-wrapper img {
+  border-radius: 10px;
+  width: 400px;
+}
+
+.list {
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 2em;
+}
+
+/* ---------------partners section */
+.partners-container img {
+  width: 100%;
+}
+
+.partners-container .col-lg-3 {
+  align-self: center;
+}
+
+.partners-container .partner-img {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-width: 200px;
+  min-height: 200px;
+}
+
+/* ---------------partners section end */
+
+
+/* ---------------responsive screen */
+@media screen and (min-width: 722px) and (max-width: 1024px) {
+  .custom-left {
+    order: 2;
+    width: 100vw !important;
+    margin-right: 20%;
+    margin-left: 20%;
+  }
+
+  .custom-right {
+    order: 1;
+    width: 100vw !important;
+  }
+
+  .subtext {
+    font-size: 1em;
+    line-height: 1.6em;
+    min-width: 100%;
+  }
+}
+
+@media screen and (max-width: 496px) {
+  img.grn-box {
+    width: 300px;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .custom-col {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .hide {
+    display: none;
+  }
+
+  .bg {
+    margin-bottom: 0;
+  }
+}
+
+/*
+# Button
+----------------------------------*/
+.btn {
+  padding: 18px 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: #262626;
+  outline: none;
+}
+
+.button-center {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.wishcard-btn {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+}
+
+#btn1 {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.grn-btn {
+  background-color: rgba(0, 161, 154, 1);
+  color: #fff;
+  border: none;
+}
+
+.grn-btn:hover {
+  background-color: #fff;
+  color: rgba(0, 161, 154, 1);
+  cursor: pointer;
+}
+
+.inverted-grn-btn {
+  background-color: #fff;
+  color: rgba(0, 161, 154, 1);
+  border: none;
+}
+
+.inverted-grn-btn:hover {
+  background-color: rgba(0, 161, 154, 1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn-grn-border {
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.btn-navy-border {
+  border-color: rgba(51, 58, 100, 1);
+  background: #fff;
+}
+
+.btn-navy-bg {
+  border: none;
+  background: rgba(51, 58, 100, 1);
+  color: #fff;
+}
+
+.btn-grn-bg {
+  border: none;
+  background: rgba(0, 161, 154, 1);
+  color: #fff;
+}
+
+/*
+# Icon Box
+----------------------------------*/
+.icon-box {
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  transition: all 0.35s;
+}
+
+.grn-bg {
+  background: rgba(0, 161, 154, 1);
+}
+
+.yel-bg-2 {
+  background: rgba(255, 187, 89, 0.7);
+}
+
+.yel-bg-3 {
+  background: rgba(255, 187, 89, 0.45);
+}
+
+.icon-box:hover,
+.icon-box.active {
+  border: none;
+  background: rgba(255, 187, 89, 1);
+  /* fallback for old browsers */
+  color: #fff;
+}
+
+/*fix the gradients if necessary!! -------------------*/
+/* --------------- icon box */
+.icon-box a {
+  outline: none;
+  list-style: none;
+}
+
+.icon-box a:hover,
+.icon-box a:active {
+  text-decoration: none;
+}
+
+.icon-box i {
+  color: #262626;
+}
+
+.icon-box .entry-title {
+  margin-top: 0.5em;
+  font-size: 2em;
+  font-weight: 600;
+  color: #262626;
+}
+
+.icon-box:hover .entry-title,
+.icon-box.active .entry-title {
+  color: #fff;
+}
+
+.icon-box p {
+  margin-top: 20px;
+  color: #595858;
+}
+
+.icon-box:hover p,
+.icon-box.active p {
+  color: #fff;
+}
+
+.sidepad {
+  padding: 7em 1em 6em 1em;
+}
+
+/*
+# Welcome
+--------------------------------*/
+.welcome-content .entry-title {
+  position: relative;
+  padding-bottom: 24px;
+  font-size: 36px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fa-smile-o,
+.fa-users {
+  font-size: 2.2em;
+}
+
+.fa-gift {
+  font-size: 2.5em;
+}
+
+.welcome-content .entry-title::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 64px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ff5a00;
+}
+
+.welcome-content .entry-content {
+  font-size: 14px;
+  line-height: 2;
+  color: #b7b7b7;
+}
+
+.home-page-welcome img {
+  display: block;
+  width: 100%;
+  border-radius: 15px;
+}
+
+@media screen and (max-width: 992px) {
+  .home-page-welcome img {
+    margin-bottom: 0.8em;
+  }
+}
+
+/*--------------------------------------------------------------
+# Sidebar
+--------------------------------------------------------------*/
+@media screen and (max-width: 992px) {
+  .sidebar {
+    margin-top: 96px;
+  }
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/*--------------------------------------------------------------
+# wishcards section - landing page
+--------------------------------------------------------------*/
+#card-fix {
+  border: none;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-radius: 20px;
+  background: rgba(255, 246, 237, 0.7);
+}
+
+#img-fix {
+  display: block;
+  object-fit: cover;
+  border-radius: 20px 20px 0px 0px;
+  height: 100%;
+}
+
+.card .btn-3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  transition: all 0.25s ease-in-out;
+}
+
+.card-body .card-text-container {
+  min-height: 225px;
+}
+
+.msg-icon {
+  background: rgba(255, 92, 111, 1);
+  padding: 0.6em 0.8em;
+  border: none;
+}
+
+.msg-icon .fa {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+#fb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  transition: all 0.25s ease-in-out;
+  background: rgba(59, 89, 152, 1);
+  padding: 0.6em 0.8em;
+}
+
+#fb .fa {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+/* new additions end */
+
+.wishcards {
+  position: relative;
+  padding: 3.5em 0;
+}
+
+/* height might need to change */
+.view.overlay {
+  height: 240px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 992px) {
+  .card {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 765px) {
+  .card-deck {
+    flex-direction: column !important;
+  }
+}
+
+@media screen and (min-width: 762px) and (max-width: 992px) {
+  .card-deck {
+    margin-right: 15px !important;
+    margin-left: 15px !important;
+    justify-content: space-between !important;
+  }
+
+  .card-deck .card {
+    flex: 1 0 auto !important;
+    /* max-width: 300px; */
+  }
+}
+
+/*--------------------------------------------------------------
+    Footer
+--------------------------------------------------------------*/
+.footer-bar {
+  padding: 23px 0;
+  font-size: 1.1em;
+  color: #fff;
+  text-align: center;
+  background: rgba(49, 49, 49, 1);
+}

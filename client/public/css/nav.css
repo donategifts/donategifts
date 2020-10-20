@@ -1,0 +1,82 @@
+/* Site Branding
+-------------------------------- logo-img may need changes-----*/
+#logo-img {
+  height: 95px;
+  width: auto;
+  margin-bottom: 3px;
+}
+
+@media screen and (min-width: 992px) {
+  .site-branding {
+    width: auto;
+  }
+}
+
+/*
+# Main Menu
+--------------------------------*/
+.site-navigation ul {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  z-index: 3;
+  width: 320px;
+  max-width: calc(100% - 120px);
+  height: 100%;
+  padding: 30px 15px;
+  margin: 0;
+  background: #fff;
+  list-style: none;
+  overflow-x: scroll;
+  transition: all 0.3s;
+}
+
+.site-navigation.show ul {
+  left: 0;
+}
+
+.site-navigation ul li {
+  margin: 0 15px;
+}
+
+.site-navigation ul li a {
+  display: block;
+  padding: 16px 0;
+  font-size: 1.2em;
+  font-weight: 500;
+  line-height: 1;
+  color: #262626;
+  text-decoration: none;
+  transition: color 0.35s;
+}
+
+button.navbar-toggler {
+  height: 60px;
+  margin-top: 20px;
+}
+
+.nav-item {
+  text-align: right;
+}
+
+@media screen and (min-width: 992px) {
+  .site-navigation ul {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 0;
+    overflow: auto;
+    background: transparent;
+  }
+
+  .site-navigation ul li a {
+    padding: 49px 0 30px;
+  }
+}
+
+.site-navigation ul li a:hover {
+  color: rgba(255, 92, 111, 1) !important;
+}
