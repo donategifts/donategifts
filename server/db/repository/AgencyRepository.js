@@ -8,7 +8,7 @@ async function getAgencyByUserId(userId) {
   }
 }
 
-async function getAgencyWishCards(agencyId, filter) {
+async function getAgencyWishCards(agencyId) {
     try {
         return Agency.findOne({_id: agencyId}).populate('wishCards').exec();
     } catch (error) {
