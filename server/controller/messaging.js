@@ -210,7 +210,7 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
     try {
       await axios({
         method: 'POST',
-        url: 'https://hooks.slack.com/services/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',
+        url: `${process.env.SLACK_INTEGRATION}`,
         header: {
           'Content-Type': 'application/json',
         },
