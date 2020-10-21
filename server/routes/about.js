@@ -11,7 +11,7 @@ const router = express.Router();
 // IMPORT WISHCARD MODEL
 const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
-const { sendMail } = require('../controller/email');
+const { sendMail, sendSlackFeedbackMessage } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
 const { log } = require('../helper/logger');
 
@@ -56,6 +56,18 @@ router.post('/email', async (req, res) => {
     return res.status(201).redirect('/');
   } catch (error) {
     handleError(res, 400, 'ERROR!');
+  }
+});
+
+router.post('/customer-service', async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+    await sendSlackFeedbackMessage(name, email, subject, message);
+    return res.status(200).send({
+      success: true,
+    });
+  } catch (error) {
+    return handleError(res, 400, 'Failed to send feedback!');
   }
 });
 

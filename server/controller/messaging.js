@@ -15,6 +15,7 @@ const nodemailer = require('nodemailer');
 const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
 const { log } = require('../helper/logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
@@ -159,8 +160,71 @@ const createEmailVerificationHash = () => {
   return result;
 };
 
+async function sendSlackFeedbackMessage(name, email, subject, message) {
+  const slackMessage = {
+    text: '@channel',
+    blocks: [],
+  };
+
+  if (name) {
+    slackMessage.blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `User: ${name}`,
+      },
+    });
+  }
+
+  if (email) {
+    slackMessage.blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `Email: ${email}`,
+      },
+    });
+  }
+
+  if (subject) {
+    slackMessage.blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `Subject: ${subject}`,
+      },
+    });
+  }
+
+  if (message) {
+    slackMessage.blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: message,
+      },
+    });
+  }
+
+  if (slackMessage.blocks.length > 0) {
+    try {
+      await axios({
+        method: 'POST',
+        url: 'https://hooks.slack.com/services/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',
+        header: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(slackMessage),
+      });
+    } catch (error) {
+      log(`Failed to send slack message: ${error}`);
+    }
+  }
+}
+
 module.exports = {
   sendMail,
+  sendSlackFeedbackMessage,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
