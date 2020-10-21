@@ -77,6 +77,15 @@ const WishCardSchema = new Schema(
         ref: 'Message',
       },
     ],
+    status: {
+        type: String,
+        enum: ['draft', 'live', 'donated'],
+        default: 'draft'
+    },
+    wishCardTo: {
+        type: Schema.Types.ObjectId,
+        ref: 'Agency',
+    },
   },
   {
     collection: 'wishcards',
