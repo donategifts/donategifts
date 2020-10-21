@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Error page | Unfortunately</title>
-    <%- include('./templates/header')-%>
 
-    <link rel="stylesheet" href="/public/css/error.css" />
-  </head>
-  <body>
-    <%- include('./templates/nav')-%>
-    <div id="home-bg" class="bg">
-      <div class="text-center">
-        <h1 class="banner-h1 cool-font">404</h1>
-        <h2 class="banner-h1 cool-font">How unfortunate, this page does not exist :(</h2>
-        <div class="quick-font font-md">
-          <span>For now take a look at those awesome Wish Cards until our devs fixed this</span>
-          <div class="container-form-btn">
-            <a href="/wishcards">
-              <button type="button" class="quick-font wishcard-btn grn-btn">See Wish Cards</button>
-            </a>
-          </div>
-        </div>
+<head>
+  <title>Error page | Unfortunately</title>
+  <%- include('./templates/header')-%>
+</head>
+
+<body>
+  <%- include('./templates/nav')-%>
+  <div class="err-banner p-1">
+    <div class="d-flex p-2 mb-2 flex-column container align-items-center">
+      <!-- <h2 id="navy" class="banner-h1 cool-font pt-5">404 NOT FOUND</h2> -->
+      <div class="row p-1 m-1">
+        <img class="img-fluid pt-5" src="/public/img/404-illustration.png" alt="404-illustration.png">
+      </div>
+      <div class="row mt-5">
+        <p class="quick-font font-md">Sorry, looks like this page does not exist.</p>
+      </div>
+      <div class="row">
+        <p class="quick-font font-md">Should we check out some wish cards instead?</p>
+      </div>
+
+      <div class="container-form-btn">
+        <a href="/wishcards">
+          <button type="button" class="px-5 py-4 quick-font wishcard-btn grn-btn">Browse Wish Cards</button>
+        </a>
       </div>
     </div>
-    <%- include('./templates/footer.ejs') %>
-  </body>
+  </div>
+
+  <%- include('./templates/footer.ejs') %>
+</body>
+
 </html>
