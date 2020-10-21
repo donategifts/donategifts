@@ -20,8 +20,10 @@
 * Patric Hoffmann
 * Ivan Repusic  
 * Jacob Jeevan  
+* Marco
+* Maria Nguyen
+* Markell
 * Jordan Huang  
-* Maria Nguyen  
 
 ## Usage
 
@@ -29,7 +31,9 @@ Install Mongo or use Docker to spin up a Docker container
 start container with:
 `docker-compose up`
 
-App will not run without config.env
+Dev Env runs with example/test config.env
+
+Production runs with config.env (keys protected)
 
 Dev server uses a separate db 
 
@@ -59,6 +63,6 @@ node app.js ||  npm start
 
 https://youtu.be/KhgQV0MTxlA
 
-- Version: 1.0
-- Copyrights: Stacy Sealky Lee
+- Release: v1.0
+- Copyrights: DonateGifts Inc.
 - Do not distribute this code without permission
