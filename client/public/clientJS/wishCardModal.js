@@ -44,7 +44,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             },
             error: (response, textStatus, errorThrown) => {
                 console.log(textStatus);
-                showToast('You already have reserved a wishcard')
+                showToast('You have already reserved a wishcard')
                 $('#modal-donate-btn').off();
             },
         });
