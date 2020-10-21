@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/stacysealky/donategifts#readme",
   "dependencies": {
+    "axios": "^0.20.0",
     "aws-sdk": "^2.775.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
