@@ -50,7 +50,7 @@
             <select class="custom-select">
               <option selected>Messages</option>
               <% for (let i = 0; i < defaultMessages.length; i++) { %>
-              <option value="<%" ="i%">> <%= defaultMessages[i] %></option>
+              <option value="<%= i %>"><%= defaultMessages[i] %></option>
               <% } %>
             </select>
             <input type="submit" id="submit" class="mt-4" value="Send Message" />

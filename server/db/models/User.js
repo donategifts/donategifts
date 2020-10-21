@@ -62,6 +62,11 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+    /** Facebook | Google | Default */
+    loginMode: {
+      type: String,
+      required: false,
+    },
   },
   {
     collection: 'users',

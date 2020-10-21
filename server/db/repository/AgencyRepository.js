@@ -2,7 +2,7 @@ const Agency = require('../models/Agency');
 
 async function getAgencyByUserId(userId) {
   try {
-    return Agency.findOne({ accountManager: userId });
+    return Agency.findOne({ accountManager: userId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Agency: ${error}`);
   }

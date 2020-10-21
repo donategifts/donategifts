@@ -47,11 +47,15 @@ const log = function doLog(req, error = '', additional = '') {
   if (typeof error === 'object') {
     e = `${error.toString()} ${error.stack || ''}`;
   }
-  writeFileSync(
-    `${path.join(__dirname, `../logs/${moment(new Date()).format('DD-MM-YYYY')}.log`)}`,
-    `${new Date().toISOString()} INFO: ${text} ${e}\n`,
-    { flag: 'a+' },
-  );
+
+  // only write into log directory if we aren't on production
+  if (process.env.NODE_ENV !== 'production') {
+    writeFileSync(
+      `${path.join(__dirname, `../logs/${moment(new Date()).format('DD-MM-YYYY')}.log`)}`,
+      `${new Date().toISOString()} INFO: ${text} ${e}\n`,
+      { flag: 'a+' },
+    );
+  }
 };
 
 module.exports = { log };
