@@ -24,7 +24,7 @@ const {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-} = require('../controller/email');
+} = require('../controller/messaging');
 const { handleError } = require('../helper/error');
 const { log } = require('../helper/logger');
 const {
