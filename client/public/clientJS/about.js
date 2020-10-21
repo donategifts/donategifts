@@ -20,9 +20,7 @@ $(function () {
         });
       },
       error: function (response) {
-        let txtToJson = JSON.parse(response.responseText);
-        let errorMsg = txtToJson.error;
-        showToast(errorMsg.msg);
+        showToast(response.responseJSON.message);
       },
     });
   });

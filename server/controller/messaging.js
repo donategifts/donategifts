@@ -162,7 +162,6 @@ const createEmailVerificationHash = () => {
 
 async function sendSlackFeedbackMessage(name, email, subject, message) {
   const slackMessage = {
-    text: '@channel',
     blocks: [],
   };
 
@@ -216,8 +215,10 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
         },
         data: JSON.stringify(slackMessage),
       });
-    } catch (error) {
-      log(`Failed to send slack message: ${error}`);
+
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 }

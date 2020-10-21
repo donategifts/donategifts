@@ -60,15 +60,16 @@ router.post('/email', async (req, res) => {
 });
 
 router.post('/customer-service', async (req, res) => {
-  try {
-    const { name, email, subject, message } = req.body;
-    await sendSlackFeedbackMessage(name, email, subject, message);
+  const { name, email, subject, message } = req.body;
+  const done = await sendSlackFeedbackMessage(name, email, subject, message);
+
+  if (done) {
     return res.status(200).send({
       success: true,
     });
-  } catch (error) {
-    return handleError(res, 400, 'Failed to send feedback!');
   }
+
+  return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
 });
 
 module.exports = router;
