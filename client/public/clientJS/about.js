@@ -9,8 +9,6 @@ $(function () {
         return obj;
       }, {});
 
-    console.log(formData);
-
     $.ajax({
       type: 'POST',
       url: '/about/customer-service',
