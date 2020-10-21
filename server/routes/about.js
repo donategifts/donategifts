@@ -13,7 +13,7 @@ const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
 const { sendMail, sendSlackFeedbackMessage } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
-const { log } = require('../helper/logger');
+const { log, logError } = require('../helper/logger');
 
 // @desc    Render about.html
 // @route   GET '/about'
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
   try {
     res.status(200).render('about', { user: res.locals.user });
   } catch (error) {
-    log(req, error);
+    logError(req, error);
   }
 });
 
@@ -48,14 +48,14 @@ router.post('/email', async (req, res) => {
     );
 
     if (mailResponse.error) {
-      log(req, mailResponse.error);
+      logError(req, mailResponse.error);
     } else {
       log(req, 'email successfully sent');
     }
 
     return res.status(201).redirect('/');
   } catch (error) {
-    handleError(res, 400, 'ERROR!');
+    handleError(res, 400, 'Failed to send Email!');
   }
 });
 

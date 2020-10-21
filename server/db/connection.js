@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { log } = require('../helper/logger');
+const { log, logError } = require('../helper/logger');
 
 function connect(app, port, hostname) {
   const options = {
@@ -12,7 +12,7 @@ function connect(app, port, hostname) {
   mongoose.set('useCreateIndex', true);
   mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
     if (err) {
-      log('Unable to connect to DB. Error:', err);
+      logError('Unable to connect to DB. Error:', err);
     } else {
       log(`Connected to Mongodb ${database.name ? database.name : database.connections[0].name}`);
 

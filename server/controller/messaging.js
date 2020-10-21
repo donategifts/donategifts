@@ -16,7 +16,7 @@ const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
-const { log } = require('../helper/logger');
+const { log, logError } = require('../helper/logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
   encoding: 'utf-8',
@@ -96,7 +96,6 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
 
       const data = await transporter.sendMail(mailOptions);
 
-      log(data);
       if (!data) {
         return { success: false };
       }
@@ -108,7 +107,7 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
     }
     return { success: false };
   } catch (e) {
-    log(e);
+    logError(e);
   }
 };
 

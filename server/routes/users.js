@@ -75,14 +75,7 @@ router.get('/login', redirectProfile, (req, res) => {
       fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
-    handleError(
-      res,
-      400,
-      JSON.stringify({
-        success: false,
-        error,
-      }),
-    );
+    handleError(res, 400, error);
   }
 });
 
@@ -295,12 +288,10 @@ router.post('/google-signin', async (req, res) => {
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during google login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No Valid google token provided!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
@@ -342,12 +333,10 @@ router.post('/fb-signin', async (req, res) => {
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during facebook login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No username and email provided from facebook!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
