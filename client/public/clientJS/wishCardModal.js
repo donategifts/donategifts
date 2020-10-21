@@ -5,7 +5,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let button = $(event.relatedTarget);
     console.log(button[0].dataset)
     // extract values from button that contain child name / amazonlink
-    let amazonUrl = button[0].dataset.valueUrl;
     let childName = button[0].dataset.valueName;
 
     let modalWarningMessage = ` Hello, before proceeding we want to make sure that you are certain that you want to donate. 
@@ -24,14 +23,10 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     if (isLoggedIn === 'false') {
         donateButton.html('Please login to donate')
         donateButton.prop('disabled', true)
-    } else {
-        let donationRedirect = document.getElementById("redirectAmazonUrl");
-        donationRedirect.href = amazonUrl;
     }
 
-
     donateButton.on('click', (event) => {
-
+        event.preventDefault();
         //('#wishCardDonateModal').find('.modal-body').html(modalWarningMessage);
 
         $.ajax({
@@ -39,11 +34,17 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             url: '/wishcards/lock/' + button[0].dataset.valueId,
             data: {},
             success: (response, textStatus, jqXHR) => {
-                console.log(response);
+                console.log(textStatus);
                 $('#modal-donate-btn').off();
+                modal.find('.modal-body').html('ADD STUFF IF USER DONATED OR NOT');
+
+                setTimeout(() => {
+                  window.open(button[0].dataset.valueUrl, '_blank');
+                }, 2000)
             },
             error: (response, textStatus, errorThrown) => {
-                console.log(response);
+                console.log(textStatus);
+                showToast('You have already reserved a wishcard')
                 $('#modal-donate-btn').off();
             },
         });
