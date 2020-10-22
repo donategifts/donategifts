@@ -76,6 +76,7 @@ const upload = multer({
 const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
+const AgencyRepository = require('../db/repository/AgencyRepository');
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
@@ -90,7 +91,7 @@ router.post('/', upload.single('wishCardImage'), async (req, res) => {
     });
   } else {
     try {
-      await WishCardRepository.createNewWishCard({
+      const newWishCard = await WishCardRepository.createNewWishCard({
         childBirthday: new Date(req.body.childBirthday),
         wishItemPrice: Number(req.body.wishItemPrice),
         wishCardImage: req.file.location,
@@ -106,7 +107,8 @@ router.post('/', upload.single('wishCardImage'), async (req, res) => {
         }, */
         ...req.body,
       });
-
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
       res.status(200).send('/wishcards/');
     } catch (error) {
       handleError(res, 400, error);
@@ -178,6 +180,27 @@ router.get('/', async (_req, res) => {
   } catch (error) {
     handleError(res, 400, error);
   }
+});
+
+// @desc    Retrun wishards that belong to the agency
+// @route   POST '/wishcards/me'
+// @access  Agency
+// @tested 	No
+router.get('/me', async (req, res) => {
+    try {
+      const filter = req.query.filter;
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+      // if filter param is present, filter wishcards based on it
+      const filteredWishCards = filter !== undefined ? agencyInfo.wishCards.filter(wishcard => wishcard.status === filter) : agencyInfo.wishCards;
+      res.status(200).send({
+        success: true,
+        error: null,
+        data: filteredWishCards
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
 });
 
 // @desc    search the wish cards by substring of wishItemName

@@ -8,6 +8,14 @@ async function getAgencyByUserId(userId) {
   }
 }
 
+async function getAgencyWishCards(agencyId) {
+    try {
+        return Agency.findOne({_id: agencyId}).populate('wishCards').exec();
+    } catch (error) {
+        throw new Error(`Failed to get Wishcards: ${error}`);
+    }
+}
+
 async function createNewAgency(agencyParams) {
   try {
     const newAgency = new Agency(agencyParams);
@@ -17,7 +25,17 @@ async function createNewAgency(agencyParams) {
   }
 }
 
+async function pushNewWishCardToAgency(id, wishCard) {
+    try {
+      return Agency.updateOne({ _id: id }, { $push: { wishCards: wishCard } }, { new: true }).exec();
+    } catch (error) {
+      throw new Error(`Failed to add wishcard to agency: ${error}`);
+    }
+}
+
 module.exports = {
   getAgencyByUserId,
+  getAgencyWishCards,
   createNewAgency,
+  pushNewWishCardToAgency,
 };
