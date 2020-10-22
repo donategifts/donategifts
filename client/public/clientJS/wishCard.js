@@ -15,39 +15,11 @@ function preventChildImageContextMenu(e) {
     }
 }
 
-let x = [];
+
 socket.on('block', event => {
 
     // Get today's date and time
-
-    let countDownDate = new Date(event.lockedUntil).getTime();
-    x[event.id] = setInterval(function () {
-
-        let now = new Date().getTime();
-
-        // Find the distance between now and the count down date
-        let distance = countDownDate -now;
-
-        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        let button = $('#donate-btn-'+event.id);
-
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        if (distance < 0) {
-            clearInterval(x[event.id]);
-            x[event.id] = null;
-            button.text("Donate Gift");
-            button.prop("disabled",false);
-        } else {
-            button.text("Locked for " + minutes + ":" + seconds);
-            button.prop("disabled",true);
-        }
-
-    }, 1000);
-
-
-
+    addCountdown(event.lockedUntil, event.id, '#donate-btn-'+event.id)
 
 });
 

@@ -1,4 +1,5 @@
 // TODO: ADD MORE ERROR HANDLING HERE
+const log = require('./logger');
 
 class ErrorHandler extends Error {
   constructor(statusCode, message, name) {
@@ -9,38 +10,27 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (res, code, error, status = 'error', success = false) => {
-  let statusCode;
-  let message;
-  let name;
+const handleError = (res, code, error) => {
+  let statusCode = 400;
+  let name = 'Error handler';
 
   if (typeof error === 'object') {
-    name = error.name;
+    if (error.name) {
+      name = error.name;
+    }
+
     statusCode = error.statusCode;
-    message = error.message;
-  } else if (typeof error === 'string') {
-    message = error;
   }
 
   statusCode = code || statusCode;
 
-  // MONGOOSE BAD OBJECT ID
-  if (name === 'CastError') {
-    message = 'Resource not found';
-    statusCode = 404;
-  }
-
-  // MONGOOSE VALIDATION ERROR
-  if (name === 'ValidationError') {
-    message = Object.values(error.errors).map((val) => val.message);
-    statusCode = 400;
-  }
+  log.error(`${name}:`, {
+    statusCode,
+    error,
+  });
 
   res.status(statusCode).send({
-    status,
-    success,
     statusCode,
-    message,
     error,
   });
 };
