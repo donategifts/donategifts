@@ -33,6 +33,8 @@ const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
+const log = require('./helper/logger');
+
 const app = express();
 
 // CORS SETUP
@@ -118,7 +120,6 @@ app.use(express.static('client'));
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
 const aboutRoute = require('./routes/about');
-const { logError, logWarn } = require('./helper/logger');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -134,7 +135,7 @@ app.get('/', (_req, res) => {
 
 // ERROR PAGE
 app.get('*', (req, res) => {
-  logWarn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
+  log.warn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
   res.status(404).render('404');
 });
 
@@ -145,9 +146,9 @@ app.use((err, req, res, _next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // TODO: send error message to slack channel
+  // TODO: send error message to slack/sentry?
 
-  logError(err);
+  log.error(err);
 
   // render the error page
   res.status(500);

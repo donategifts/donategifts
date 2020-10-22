@@ -16,7 +16,7 @@ const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
-const { log, logError } = require('../helper/logger');
+const log = require('../helper/logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
   encoding: 'utf-8',
@@ -81,7 +81,7 @@ const getTransport = async () => {
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject, message, attachments = undefined) => {
-  log('SENDMAIL');
+  log.info('SENDMAIL');
   try {
     const transporter = await getTransport();
 
@@ -100,14 +100,14 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
         return { success: false };
       }
       if (process.env.NODE_ENV === 'development') {
-        log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
+        log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
       return { success: true, data: '' };
     }
     return { success: false };
   } catch (e) {
-    logError(e);
+    log.error(e);
   }
 };
 

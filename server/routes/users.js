@@ -21,7 +21,7 @@ const {
   sendPasswordResetMail,
 } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
-const { log } = require('../helper/logger');
+const log = require('../helper/logger');
 const {
   redirectLogin,
   redirectProfile,
@@ -184,7 +184,7 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
 const sendEmail = async (email, verificationHash) => {
   const emailResponse = await sendVerificationEmail(email, verificationHash);
   const response = emailResponse ? emailResponse.data : '';
-  if (process.env.NODE_ENV === 'development') log(response);
+  if (process.env.NODE_ENV === 'development') log.info(response);
 };
 
 // @desc    Create a newUser, hash password, issue session

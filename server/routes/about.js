@@ -13,7 +13,7 @@ const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
 const { sendMail, sendSlackFeedbackMessage } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
-const { log, logError } = require('../helper/logger');
+const log = require('../helper/logger');
 
 // @desc    Render about.html
 // @route   GET '/about'
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
   try {
     res.status(200).render('about', { user: res.locals.user });
   } catch (error) {
-    logError(req, error);
+    log.error(req, error);
   }
 });
 
@@ -48,9 +48,9 @@ router.post('/email', async (req, res) => {
     );
 
     if (mailResponse.error) {
-      logError(req, mailResponse.error);
+      log.error(req, mailResponse.error);
     } else {
-      log(req, 'email successfully sent');
+      log.info(req, 'email successfully sent');
     }
 
     return res.status(201).redirect('/');

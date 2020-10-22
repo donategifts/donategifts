@@ -1,5 +1,5 @@
 // TODO: ADD MORE ERROR HANDLING HERE
-const { logError } = require('./logger');
+const log = require('./logger');
 
 class ErrorHandler extends Error {
   constructor(statusCode, message, name) {
@@ -24,7 +24,7 @@ const handleError = (res, code, error) => {
 
   statusCode = code || statusCode;
 
-  logError(`${name}:`, {
+  log.error(`${name}:`, {
     statusCode,
     error,
   });

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const { log } = require('./logger');
+const log = require('./logger');
 
 let socketOptions = {};
 let server;
@@ -34,7 +34,7 @@ const io = require('socket.io')(server, socketOptions);
 const port = 3000; // Enter any of the cloudflare ports.
 
 server.listen(port, () => {
-  log(`socket listening on: ${port}`);
+  log.info(`socket listening on: ${port}`);
 });
 
 module.exports = io;

@@ -1,28 +1,12 @@
-const { createLogger, format, transports } = require('winston');
+const { configure, getLogger, levels } = require('log4js');
 
-const logger = createLogger({
-  format: format.combine(
-    format.colorize(),
-    format.timestamp(),
-    format.align(),
-    format.printf((debug) => {
-      const { timestamp, level, message, ...args } = debug;
-
-      const ts = timestamp.slice(0, 19).replace('T', ' ');
-      return `${ts} [${level}]: ${message} ${
-        Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
-      }`;
-    }),
-  ),
-  transports: [new transports.Console()],
+configure({
+  appenders: {
+    console: { type: 'console', layout: { type: 'colored' } },
+  },
+  categories: {
+    default: { appenders: ['console'], level: levels.ALL },
+  },
 });
 
-const log = logger.info;
-const logWarn = logger.warn;
-const logError = logger.error;
-
-module.exports = {
-  log,
-  logWarn,
-  logError,
-};
+module.exports = getLogger();
