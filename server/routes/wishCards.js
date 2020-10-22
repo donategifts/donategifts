@@ -42,10 +42,24 @@ const {
 } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET,
-});
+let s3;
+let s3storage;
+
+if (process.env === 'production') {
+  s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_KEY,
+    secretAccessKey: process.env.AWS_SECRET,
+  });
+
+  s3storage = multerS3({
+    s3,
+    bucket: process.env.S3BUCKET,
+    acl: 'public-read',
+    key(req, file, cb) {
+      cb(null, uuidv4());
+    },
+  });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -53,15 +67,6 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
-  },
-});
-
-const s3storage = multerS3({
-  s3,
-  bucket: process.env.S3BUCKET,
-  acl: 'public-read',
-  key(req, file, cb) {
-    cb(null, uuidv4());
   },
 });
 
