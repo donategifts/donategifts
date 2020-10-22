@@ -79,7 +79,7 @@ const WishCardSchema = new Schema(
     ],
     status: {
         type: String,
-        enum: ['draft', 'live', 'donated'],
+        enum: ['draft', 'published', 'donated'],
         default: 'draft'
     },
     wishCardTo: {
