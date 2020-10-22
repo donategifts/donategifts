@@ -188,7 +188,7 @@ router.get('/', async (_req, res) => {
 // @tested 	No
 router.get('/me', async (req, res) => {
     try {
-      const filter = req.query.filter;
+      const {filter} = req.query;
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
       const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
       // if filter param is present, filter wishcards based on it
