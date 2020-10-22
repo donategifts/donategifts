@@ -181,7 +181,7 @@ router.post(
           ...req.body,
         });
 
-        res.status(200).send('/wishcards/');
+        res.status(200).send({ success: true, url: '/wishcards/' });
       } catch (error) {
         handleError(res, 400, error);
       }
