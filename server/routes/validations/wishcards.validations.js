@@ -9,7 +9,7 @@ const createWishcardValidationRules = () => {
     body('childLastName').notEmpty().isString(),
     body('childInterest').notEmpty().isString(),
     body('wishItemName').notEmpty().isString(),
-    body('wishItemPrice').notEmpty().isString(),
+    body('wishItemPrice').notEmpty().isNumeric(),
     body('wishItemURL').notEmpty().isString(),
     body('childStory').notEmpty().isString(),
   ];
