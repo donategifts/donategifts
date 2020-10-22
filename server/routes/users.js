@@ -180,6 +180,7 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
     agencyPhone,
     agencyBio,
     accountManager: req.session.user._id,
+    ...req.body,
   });
 
   try {
