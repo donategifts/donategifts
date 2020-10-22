@@ -164,6 +164,16 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
     blocks: [],
   };
 
+  if (process.env.NODE_ENV !== 'production') {
+    slackMessage.blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '------------- Message from testing / local environment -------------',
+      },
+    });
+  }
+
   if (name) {
     slackMessage.blocks.push({
       type: 'section',
