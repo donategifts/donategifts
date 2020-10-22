@@ -329,26 +329,32 @@ router.put(
 // @route  POST '/wishcards/message'
 // @access  Private, all users
 // @tested 	Not yet
-router.post('/message', redirectLogin, postMessageValidationRules(), validate, async (req, res) => {
-  try {
-    const { messageFrom, messageTo, message } = req.body;
-    const newMessage = await MessageRepository.createNewMessage({
-      messageFrom,
-      messageTo,
-      message,
-    });
+router.post(
+  '/message',
+  checkPermissions,
+  postMessageValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      const { messageFrom, messageTo, message } = req.body;
+      const newMessage = await MessageRepository.createNewMessage({
+        messageFrom,
+        messageTo,
+        message,
+      });
 
-    await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
+      await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
 
-    res.status(200).send({
-      success: true,
-      error: null,
-      data: newMessage,
-    });
-  } catch (error) {
-    handleError(res, 400, error);
-  }
-});
+      res.status(200).send({
+        success: true,
+        error: null,
+        data: newMessage,
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+  },
+);
 
 // @desc    lock a wishcard
 // @route   POST '/wishcards/message'
