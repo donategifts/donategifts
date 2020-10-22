@@ -20,6 +20,9 @@
           <li><a href="/users/signup">Sign Up</a></li>
           <li><a href="/users/login">Login</a></li>
           <% } else { %>
+          <% if (locals.user.userRole == 'partner') { %>
+            <li><a href="/users/agency/wishcard">My Wish Cards</a></li>
+          <% } %>
           <li><a href="/users/profile">My Profile</a></li>
           <li><a href="/users/logout">Log Out</a></li>
           <% } %>

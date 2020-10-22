@@ -187,6 +187,34 @@ const sendEmail = async (email, verificationHash) => {
   if (process.env.NODE_ENV === 'development') log.info(response);
 };
 
+// @desc    Retrun wishards that belong to the agency
+// @route   Get '/agency/wishcard'
+// @access  Logged user
+// @tested 	Yess
+router.get('/agency/wishcard', async (req, res) => {
+    try {
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+      // sort cards by status => published, draft, donated
+      const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
+        if (currentCard.status > nextCard.status)
+          return -1;
+        if (currentCard.status < nextCard.status)
+          return 1;
+        return 0;
+      });
+      res.render('agencyWishCards', { wishcards }, (error, html) => {
+        if (error) {
+          res.status(400).json({ success: false, error });
+        } else {
+          res.status(200).send(html);
+        }
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+});
+
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
 // @access  Public
