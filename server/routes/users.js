@@ -21,7 +21,7 @@ const {
   sendPasswordResetMail,
 } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
-const { log } = require('../helper/logger');
+const log = require('../helper/logger');
 const {
   redirectLogin,
   redirectProfile,
@@ -75,14 +75,7 @@ router.get('/login', redirectProfile, (req, res) => {
       fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
-    handleError(
-      res,
-      400,
-      JSON.stringify({
-        success: false,
-        error,
-      }),
-    );
+    handleError(res, 400, error);
   }
 });
 
@@ -191,7 +184,7 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
 const sendEmail = async (email, verificationHash) => {
   const emailResponse = await sendVerificationEmail(email, verificationHash);
   const response = emailResponse ? emailResponse.data : '';
-  if (process.env.NODE_ENV === 'development') log(response);
+  if (process.env.NODE_ENV === 'development') log.info(response);
 };
 
 // @desc    Create a newUser, hash password, issue session
@@ -295,12 +288,10 @@ router.post('/google-signin', async (req, res) => {
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during google login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No Valid google token provided!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
@@ -342,12 +333,10 @@ router.post('/fb-signin', async (req, res) => {
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during facebook login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No username and email provided from facebook!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 

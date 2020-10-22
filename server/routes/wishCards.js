@@ -84,11 +84,12 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 // @tested 	Yes
 router.post('/', upload.single('wishCardImage'), async (req, res) => {
   if (req.file === undefined) {
-    handleError(res, 400, {
-      success: false,
-      error: `Error: File must be in jpeg, jpg, gif, or png format. The file
+    handleError(
+      res,
+      400,
+      `Error: File must be in jpeg, jpg, gif, or png format. The file
         must also be less than 5 megabytes.`,
-    });
+    );
   } else {
     try {
       const newWishCard = await WishCardRepository.createNewWishCard({
@@ -175,7 +176,7 @@ router.get('/', async (_req, res) => {
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
-      socketUrl: process.env.SOCKET_URL
+      socketUrl: process.env.SOCKET_URL,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -357,14 +358,12 @@ router.post('/message', async (req, res) => {
   }
 });
 
-
 // @desc   lock a wishcard
 // @route  POST '/wishcards/message'
 // @access  Public, all users
 // @tested 	Not yet
 router.post('/lock/:id', async (req, res) => {
   try {
-
     const wishCardId = req.params.id;
 
     if (!req.session.user) return handleError(res, 400, 'User not found');
@@ -372,8 +371,10 @@ router.post('/lock/:id', async (req, res) => {
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
     if (!user) return handleError(res, 400, 'User not found');
 
-    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
-    if(wishcardAlreadyLockedByUser) {
+    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(
+      req.session.user._id,
+    );
+    if (wishcardAlreadyLockedByUser) {
       // user has locked wishcard and its still locked
 
       if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
@@ -383,7 +384,7 @@ router.post('/lock/:id', async (req, res) => {
 
     const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
 
-    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil})
+    io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
 
     res.status(200).send({
       success: true,

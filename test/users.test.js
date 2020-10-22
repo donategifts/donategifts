@@ -18,8 +18,8 @@ describe('Users', () => {
       fName: 'testFirstName',
       lName: 'testLastName',
       email: 'test@email.de',
-      password: 'testPassword',
-      passwordConfirm: 'testPassword',
+      password: 'testPassword1',
+      passwordConfirm: 'testPassword1',
       userRole: 'donor',
     };
     //Before each test we empty the database
@@ -228,7 +228,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.msg.should.contain('First name is required!');
           res.body.error.param.should.contain('fName');
           done();
         });
@@ -241,7 +241,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.msg.should.contain('Last name is required!');
           res.body.error.param.should.contain('lName');
           done();
         });
@@ -254,7 +254,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.msg.should.contain('Email is required!');
           res.body.error.param.should.contain('email');
           done();
         });
@@ -299,7 +299,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-          res.body.error.msg.should.contain('Invalid value');
+          res.body.error.msg.should.contain('Email is required!');
           res.body.error.param.should.contain('email');
           done();
         });

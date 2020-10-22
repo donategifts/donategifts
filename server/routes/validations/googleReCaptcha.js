@@ -1,5 +1,5 @@
 const superagent = require('superagent');
-const { log } = require('../../helper/logger');
+const log = require('../../helper/logger');
 
 // check if captcha token is valid
 // returns boolean
@@ -11,9 +11,9 @@ async function validateReCaptchaToken(token) {
   return (async () => {
     try {
       const res = await superagent.post(googleUrl);
-      log(res.body);
       return res.body.success;
     } catch (err) {
+      log.error(err);
       return false;
     }
   })();
