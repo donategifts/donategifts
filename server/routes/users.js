@@ -195,8 +195,14 @@ router.get('/agency/wishcard', async (req, res) => {
     try {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
       const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
-      // filter cards by status
-      const wishcards =  agencyInfo.wishCards.sort((a,b) => (a.status > b.status) ? 1 : ((b.status > a.status) ? -1 : 0));
+      // sort cards by status => published, draft, donated
+      const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
+        if (currentCard.status > nextCard.status)
+          return -1;
+        if (currentCard.status < nextCard.status)
+          return 1;
+        return 0;
+      });
       res.render('agencyWishCards', { wishcards }, (error, html) => {
         if (error) {
           res.status(400).json({ success: false, error });
