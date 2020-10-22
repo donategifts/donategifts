@@ -1,5 +1,7 @@
 const { body, validationResult, param } = require('express-validator');
-// const UserRepository = require('../../db/repository/UserRepository');
+const UserRepository = require('../../db/repository/UserRepository');
+const WishCardRepository = require('../../db/repository/WishCardRepository');
+const { getMessageChoices } = require('../../utils/defaultMessages');
 const { handleError } = require('../../helper/error');
 const { log } = require('../../helper/logger');
 
@@ -54,13 +56,32 @@ const updateWishCardValidationRules = () => {
 
 const postMessageValidationRules = () => {
   return [
-    body('messageFrom').notEmpty(),
-    /* .custom((value, { req }) => {
-        UserRepository.getUserByObjectId(req);
-      }) */ body(
-      'messageTo',
-    ).notEmpty(),
-    body('message').notEmpty(),
+    body('messageFrom')
+      .notEmpty()
+      .custom(async (value) => {
+        const foundUser = await UserRepository.getUserByObjectId(value._id);
+        if (!foundUser) {
+          throw new Error('User Error - User not found');
+        }
+        return true;
+      }),
+    body('messageTo')
+      .notEmpty()
+      .custom(async (value) => {
+        const foundWishcard = await WishCardRepository.getWishCardByObjectId(value._id);
+        if (!foundWishcard) {
+          throw new Error('Wishcard Error - Wishcard not found');
+        }
+      }),
+    body('message')
+      .notEmpty()
+      .custom((value, { req }) => {
+        const { messageFrom: user, messageTo: wishcard } = req.body;
+        const allMessages = getMessageChoices(user.fName, wishcard.ChildFirstName);
+        if (!allMessages.includes(value)) {
+          throw new Error('Messages Error - Message Choice not found');
+        }
+      }),
   ];
 };
 
