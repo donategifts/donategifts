@@ -104,9 +104,9 @@ const WishCardRepository = require('../db/repository/WishCardRepository');
 router.post(
   '/',
   checkPermissions,
+  upload.single('wishCardImage'),
   createWishcardValidationRules(),
   validate,
-  upload.single('wishCardImage'),
   async (req, res) => {
     if (req.file === undefined) {
       handleError(res, 400, {
@@ -148,9 +148,9 @@ router.post(
 router.post(
   '/guided/',
   checkPermissions,
+  upload.single('wishCardImage'),
   createGuidedWishcardValidationRules(),
   validate,
-  upload.single('wishCardImage'),
   async (req, res) => {
     if (req.file === undefined) {
       handleError(
