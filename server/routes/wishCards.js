@@ -42,6 +42,8 @@ const {
 } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
 
+const { getMessageChoices } = require('../utils/defaultMessages');
+
 let s3;
 let s3storage;
 
@@ -229,27 +231,6 @@ router.post('/search', searchValidationRules(), validate, async (req, res) => {
     handleError(res, 400, error);
   }
 });
-
-// This needs to be moved elsewhere during Cleanup
-const getMessageChoices = (userFirstName, childFirstName) => {
-  if (!userFirstName || !childFirstName) {
-    return [];
-  }
-  return [
-    `${userFirstName} sends you love, ${childFirstName}`,
-    'Happy Birthday to the sweetest kid in the entire world.',
-    'Happy birthday to a future superstar!',
-    `Happy birthday, ${childFirstName}`,
-    `Merry Christmas, ${childFirstName}`,
-    `Happy holidays, ${childFirstName}`,
-    `${childFirstName}, you are awesome!`,
-    `Lots of love and best wishes, ${childFirstName}`,
-    `${childFirstName}, hope you enjoy my gift!`,
-    'Merry Christmas and a Happy New Year',
-    `${childFirstName}, have a happy holiday`,
-    `Congratulations, ${childFirstName}`,
-  ];
-};
 
 const getPreviousMessages = async (wishcard) => {
   let messages = [];
