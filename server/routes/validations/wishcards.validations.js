@@ -1,4 +1,5 @@
 const { body, validationResult, param } = require('express-validator');
+// const UserRepository = require('../../db/repository/UserRepository');
 const { handleError } = require('../../helper/error');
 const { log } = require('../../helper/logger');
 
@@ -17,9 +18,20 @@ const createWishcardValidationRules = () => {
 
 const createGuidedWishcardValidationRules = () => {
   return [
-    body('itemChoice.Name').notEmpty().isString(),
-    body('itemChoice.Price').notEmpty().isNumeric(),
-    body('itemChoice.ItemURL').notEmpty().isString(),
+    body('itemChoice').custom((itemChoice) => {
+      const item = JSON.parse(itemChoice);
+      const { Name, Price, ItemURL } = item;
+      if (!Name || !Price || !ItemURL) {
+        throw new Error('Missing items');
+      } else if (typeof Name !== 'string') {
+        throw new Error('ItemChoice Name - Wrong fieldtype');
+      } else if (typeof Price !== 'number') {
+        throw new Error('ItemChoice Price - Wrong fieldtype');
+      } else if (typeof ItemURL !== 'string') {
+        throw new Error('ItemChoice String - Wrong fieldtype');
+      }
+      return true;
+    }),
     body('childBirthday').notEmpty().isString(),
     body('childFirstName').notEmpty().isString(),
     body('childLastName').notEmpty().isString(),
@@ -41,7 +53,15 @@ const updateWishCardValidationRules = () => {
 };
 
 const postMessageValidationRules = () => {
-  return [body('messageFrom').notEmpty(), body('messageTo').notEmpty(), body('message').notEmpty()];
+  return [
+    body('messageFrom').notEmpty(),
+    /* .custom((value, { req }) => {
+        UserRepository.getUserByObjectId(req);
+      }) */ body(
+      'messageTo',
+    ).notEmpty(),
+    body('message').notEmpty(),
+  ];
 };
 
 const getDefaultCardsValidationRules = () => {

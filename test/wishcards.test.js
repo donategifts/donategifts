@@ -35,9 +35,30 @@ let wishcardRequest = {
   childLastName: 'Slayer',
   childInterest: 'Slaying demons',
   wishItemName: 'Doom Slayer statue',
-  wishItemPrice: '20',
+  wishItemPrice: 20,
   wishItemURL: 'http://someamazonlink',
   childStory: 'Doom Slayer traveled to Mars and slayed demons',
+};
+
+let itemChoice = {
+  Name: 'Baby Activity Book - Peekaboo',
+  Price: 13,
+  ItemURL:
+    'https://www.amazon.com/gp/item-dispatch?registryID.1=3ERLGLFOY8E4M&registryItemID.1=I1OYPRM1WI7CMA&offeringID.1=ffVJa7sdWT8tHlQTydStzaNNxepB4TVnC1FL1Wj8jOKne2%252FA%252F%252FJ1Q0%252FjxWq5DBw85qzSopctj84FwkkbJCUuUwaDWxeZUFNo%252BaOtV4SXR3W10wdsETSGXHStfXl%252BWYkxQdPhWSwpFh4IJcUDPGeBhg%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
+};
+
+let guidedwishcardRequest = {
+  childBirthday: '09/10/2020',
+  childFirstName: 'John',
+  childLastName: 'John',
+  childInterest: 'Playing with toys',
+  childStory: 'John likes toys',
+  address1: '1000 Hollywood Hills',
+  city: 'San Fransisco',
+  state: 'CA',
+  zip: '70000',
+  country: 'US',
+  //itemChoice,
 };
 
 describe('Wishcard Routes - Authenticated & Verified User', () => {
@@ -133,8 +154,34 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       });
   });
 
-  /* it('POST /wishcards/guided - receives url - /wishcards', (done) => {});
-  it('POST /wishcards/search - Works as intended', (done) => {});
+  it('POST /wishcards/guided - receives url - /wishcards', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(true);
+        res.body.url.should.equal('/wishcards/');
+
+        WishCard.findOne({ childFirstName: guidedwishcardRequest.childFirstName }).then(
+          (wishcard) => {
+            itemChoice.Name.should.equal(wishcard.wishItemName);
+            itemChoice.Price.should.equal(wishcard.wishItemPrice);
+            done();
+          },
+        );
+      });
+  });
+  /*it('POST /wishcards/search - Works as intended', (done) => {});
   //it('PUT /wishcards/update/:id/ - renders wishcard Full Page', (done) => {});
   it('POST /wishcards/message - Receives JSON', (done) => {});
   it('POST /wishcards/lock/:id - Receives JSON', (done) => {}); */
