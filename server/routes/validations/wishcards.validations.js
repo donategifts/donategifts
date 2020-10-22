@@ -77,10 +77,11 @@ const postMessageValidationRules = () => {
       .notEmpty()
       .custom((value, { req }) => {
         const { messageFrom: user, messageTo: wishcard } = req.body;
-        const allMessages = getMessageChoices(user.fName, wishcard.ChildFirstName);
+        const allMessages = getMessageChoices(user.fName, wishcard.childFirstName);
         if (!allMessages.includes(value)) {
           throw new Error('Messages Error - Message Choice not found');
         }
+        return true;
       }),
   ];
 };

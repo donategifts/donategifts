@@ -1,12 +1,14 @@
 let User = require('../server/db/models/User');
 let Agency = require('../server/db/models/Agency');
+const WishCard = require('../server/db/models/WishCard');
+let Message = require('../server/db/models/Message');
+const { getMessageChoices } = require('../server/utils/defaultMessages');
 
 //Require the dev-dependencies
 let fs = require('fs');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server/app');
-const WishCard = require('../server/db/models/WishCard');
 //chai docs recommend using var
 var should = chai.should();
 
@@ -58,7 +60,6 @@ let guidedwishcardRequest = {
   state: 'CA',
   zip: '70000',
   country: 'US',
-  //itemChoice,
 };
 
 describe('Wishcard Routes - Authenticated & Verified User', () => {
@@ -182,9 +183,39 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       });
   });
   /*it('POST /wishcards/search - Works as intended', (done) => {});
-  //it('PUT /wishcards/update/:id/ - renders wishcard Full Page', (done) => {});
-  it('POST /wishcards/message - Receives JSON', (done) => {});
-  it('POST /wishcards/lock/:id - Receives JSON', (done) => {}); */
+  //it('PUT /wishcards/update/:id/ - renders wishcard Full Page', (done) => {});*/
+  it('POST /wishcards/message - Receives JSON', (done) => {
+    User.findOne({ fName: signupRequest.fName }).then((user) => {
+      WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
+        let messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
+        let message = messageChoices[0];
+
+        agent
+          .post('/wishcards/message')
+          .send({
+            messageFrom: user,
+            messageTo: wishcard,
+            message,
+          })
+          .end((err, res) => {
+            //console.log(res);
+            res.should.have.status(200);
+            res.body.should.have.property('success');
+            res.body.should.have.property('data');
+            res.body.success.should.equal(true);
+            res.body.data.should.have.property('messageFrom');
+            res.body.data.should.have.property('messageTo');
+            res.body.data.should.have.property('message');
+
+            Message.findOne({ messageFrom: user }).then((foundMessage) => {
+              res.body.data.message.should.equal(foundMessage.message);
+              done();
+            });
+          });
+      });
+    });
+  });
+  //it('POST /wishcards/lock/:id - Receives JSON', (done) => {});
 });
 
 /* describe('Wishcard Routes - Authenticated & Unverified User', () => {
