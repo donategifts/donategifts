@@ -37,10 +37,10 @@ $(document).ready(() => {
       cache: false,
       timeout: 600000,
       statusCode: {
-        200: function (route) {
+        200: function (response) {
           $('#wishCardForm')[0].reset();
           showToast('WishCard Created!');
-          setTimeout(() => location.assign(route), 2000);
+          setTimeout(() => location.assign(response.url), 2000);
         },
         400: function (response) {
           let txtToJson = JSON.parse(response.responseText);
