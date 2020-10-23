@@ -19,8 +19,8 @@ let signupRequest = {
   fName: 'testFirstName',
   lName: 'testLastName',
   email: 'test@email.de',
-  password: 'testPassword',
-  passwordConfirm: 'testPassword',
+  password: 'testPassword1',
+  passwordConfirm: 'testPassword1',
   userRole: 'partner',
 };
 
