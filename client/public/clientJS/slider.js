@@ -1,8 +1,8 @@
 /*
-* Author: Stacy Sealky Lee
-* FileName: slider.js
-* Purpose: This javascript file contains a function that displays the select value in the bubble from a custom range slider.
-*/
+ * Author: Stacy Sealky Lee
+ * FileName: slider.js
+ * Purpose: This javascript file contains a function that displays the select value in the bubble from a custom range slider.
+ */
 
 // const allRanges = document.querySelectorAll(".wrap-radio");
 
@@ -27,4 +27,4 @@
 // }
 
 //polyfil for date input
-if ( $('#birthday')[0].type != 'date' ) $('#birthday').datepicker();
+if ($('#birthday')[0].type != 'date') $('#birthday').datepicker();

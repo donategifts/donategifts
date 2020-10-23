@@ -98,6 +98,7 @@ const upload = multer({
 const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
+const AgencyRepository = require('../db/repository/AgencyRepository');
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
@@ -132,13 +133,13 @@ router.post(
           zip: req.body.address_zip,
           country: req.body.address_country,
         }, */
-          ...req.body,
-        });
-
-        res.status(200).send({ success: true, url: '/wishcards/' });
-      } catch (error) {
-        handleError(res, 400, error);
-      }
+        ...req.body,
+      });
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
+      res.status(200).send({ success: true, url: '/wishcards/'});
+    } catch (error) {
+      handleError(res, 400, error);
     }
   },
 );
@@ -214,6 +215,27 @@ router.get('/', redirectLogin, async (_req, res) => {
   } catch (error) {
     handleError(res, 400, error);
   }
+});
+
+// @desc    Retrun wishards that belong to the agency
+// @route   POST '/wishcards/me'
+// @access  Agency
+// @tested 	No
+router.get('/me', async (req, res) => {
+    try {
+      const {filter} = req.query;
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+      // if filter param is present, filter wishcards based on it
+      const filteredWishCards = filter !== undefined ? agencyInfo.wishCards.filter(wishcard => wishcard.status === filter) : agencyInfo.wishCards;
+      res.status(200).send({
+        success: true,
+        error: null,
+        data: filteredWishCards
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
 });
 
 // @desc    search the wish cards by substring of wishItemName
@@ -344,7 +366,7 @@ router.post(
       });
 
       await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
-
+      
       res.status(200).send({
         success: true,
         error: null,
@@ -369,22 +391,23 @@ router.post(
     try {
       const wishCardId = req.params.id;
 
-      const user = await UserRepository.getUserByObjectId(req.session.user._id);
-      if (!user) return handleError(res, 400, 'User not found');
+    if (!req.session.user) return handleError(res, 400, 'User not found');
 
-      const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(
-        req.session.user._id,
-      );
-      if (wishcardAlreadyLockedByUser) {
-        // user has locked wishcard and its still locked
-        if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
-          return handleError(res, 400, 'You already have a locked wishcard.');
-        }
+    const user = await UserRepository.getUserByObjectId(req.session.user._id);
+    if (!user) return handleError(res, 400, 'User not found');
+
+    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(
+      req.session.user._id,
+    );
+    if (wishcardAlreadyLockedByUser) {
+      // user has locked wishcard and its still locked
+
+      if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
+        return handleError(res, 400, 'You already have a locked wishcard.');
       }
 
       const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
-
-      io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
+    io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
 
       res.status(200).send({
         success: true,

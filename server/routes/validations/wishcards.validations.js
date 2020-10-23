@@ -3,9 +3,8 @@ const UserRepository = require('../../db/repository/UserRepository');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const { getMessageChoices } = require('../../utils/defaultMessages');
 const { handleError } = require('../../helper/error');
-const { log } = require('../../helper/logger');
 
-const createWishcardValidationRules = () => {
+const createWishCardValidationRules = () => {
   return [
     body('childBirthday').isString(),
     body('childFirstName').notEmpty().withMessage("Child's first Name is required").isString(),
@@ -103,7 +102,6 @@ const lockWishCardValidationRules = () => {
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    log(res, errors);
     return handleError(res, 400, errors.array({ onlyFirstError: true })[0]);
   }
   next();

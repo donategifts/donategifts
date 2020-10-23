@@ -14,13 +14,13 @@ $(function () {
       url: '/about/customer-service',
       data: formData,
       success: function () {
-        showToast('Message sent, thank you for your feedback!');
+        showToast('Message sent, thank you for your feedback!', true);
         $('#emailForm').each(function () {
           this.reset();
         });
       },
       error: function (response) {
-        showToast(response.responseJSON.message);
+        showToast(response.responseJSON.error);
       },
     });
   });

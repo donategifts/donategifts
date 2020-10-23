@@ -13,7 +13,6 @@
         <ul
           class="quick-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center"
         >
-          <li class="current-menu-item"><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="https://youtu.be/P4P6jEqTXs4" target="_blank">How To</a></li>
           <li><a href="/wishcards">Wish Cards</a></li>
@@ -21,6 +20,9 @@
           <li><a href="/users/signup">Sign Up</a></li>
           <li><a href="/users/login">Login</a></li>
           <% } else { %>
+          <% if (locals.user.userRole == 'partner') { %>
+            <li><a href="/users/agency/wishcard">My Wish Cards</a></li>
+          <% } %>
           <li><a href="/users/profile">My Profile</a></li>
           <li><a href="/users/logout">Log Out</a></li>
           <% } %>
@@ -43,7 +45,6 @@
     <div class="row mr-1">
       <div class="collapse d-lg-none w-100 ml-2" id="navbarToggleExternalContent">
         <ul class="quick-font navbar-nav mr-2 mt-2 mt-lg-0 ml-2">
-          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
           <li class="nav-item">
             <a href="https://youtu.be/P4P6jEqTXs4" target="_blank" class="nav-link">How To</a>

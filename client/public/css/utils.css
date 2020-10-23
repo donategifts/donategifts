@@ -193,6 +193,17 @@ button:focus {
   box-shadow: 20px 20px rgba(255, 187, 89, 1);
 }
 
+.err-banner {
+  height: 90vh;
+  background-color: rgba(248, 228, 201, 0.4);
+}
+
+.err-banner img {
+  max-height: 300px;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Hamburger Menu
 ----------------------------------------
 */

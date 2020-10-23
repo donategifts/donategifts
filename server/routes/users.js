@@ -26,7 +26,7 @@ const {
   sendPasswordResetMail,
 } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
-const { log } = require('../helper/logger');
+const log = require('../helper/logger');
 const {
   redirectLogin,
   redirectProfile,
@@ -80,14 +80,7 @@ router.get('/login', redirectProfile, (req, res) => {
       fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
-    handleError(
-      res,
-      400,
-      JSON.stringify({
-        success: false,
-        error,
-      }),
-    );
+    handleError(res, 400, error);
   }
 });
 
@@ -197,8 +190,36 @@ router.post('/agency', createAgencyValidationRules(), validate, async (req, res)
 const sendEmail = async (email, verificationHash) => {
   const emailResponse = await sendVerificationEmail(email, verificationHash);
   const response = emailResponse ? emailResponse.data : '';
-  if (process.env.NODE_ENV === 'development') log(response);
+  if (process.env.NODE_ENV === 'development') log.info(response);
 };
+
+// @desc    Retrun wishards that belong to the agency
+// @route   Get '/agency/wishcard'
+// @access  Logged user
+// @tested 	Yess
+router.get('/agency/wishcard', async (req, res) => {
+    try {
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+      // sort cards by status => published, draft, donated
+      const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
+        if (currentCard.status > nextCard.status)
+          return -1;
+        if (currentCard.status < nextCard.status)
+          return 1;
+        return 0;
+      });
+      res.render('agencyWishCards', { wishcards }, (error, html) => {
+        if (error) {
+          res.status(400).json({ success: false, error });
+        } else {
+          res.status(200).send(html);
+        }
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+});
 
 // @desc    Create a newUser, hash password, issue session
 // @route   POST '/users/signup'
@@ -301,12 +322,10 @@ router.post('/google-signin', googlesignupValidationRules(), validate, async (re
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during google login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No Valid google token provided!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
@@ -348,12 +367,10 @@ router.post('/fb-signin', fbsignupValidationRules(), validate, async (req, res) 
         url: '/users/profile',
       });
     } catch (error) {
-      log('DB error during facebook login!', error);
       return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
   }
 
-  log('No username and email provided from facebook!');
   return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
 });
 
