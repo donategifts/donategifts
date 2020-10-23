@@ -4,7 +4,7 @@ const WishCardRepository = require('../../db/repository/WishCardRepository');
 const { getMessageChoices } = require('../../utils/defaultMessages');
 const { handleError } = require('../../helper/error');
 
-const createWishCardValidationRules = () => {
+const createWishcardValidationRules = () => {
   return [
     body('childBirthday').isString(),
     body('childFirstName').notEmpty().withMessage("Child's first Name is required").isString(),
