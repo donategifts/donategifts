@@ -26,7 +26,7 @@ const s3 = new AWS.S3({
 
 let storage;
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.USER_AWS !== 'true') {
   storage = multer.diskStorage({
     destination: `${path.join(__dirname, '../../uploads/')}`,
     filename: (req, file, cb) => {
