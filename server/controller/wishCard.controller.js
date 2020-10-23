@@ -1,11 +1,10 @@
 const multer = require('multer');
 const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
-const { v4: uuidv4 } = require('uuid');
-const sharp = require('sharp');
+const multerS3 = require('multer-sharp-s3');
+const { v4: UUIDv4 } = require('uuid');
 const path = require('path');
-const { log } = require('../helper/logger');
 
+// -------------- multer setup --------------
 const fileFilter = (req, file, cb) => {
   // reject a file
   if (
@@ -20,80 +19,45 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// --------------- start s3 upload middleware  ---------------
-
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_KEY,
   secretAccessKey: process.env.AWS_SECRET,
 });
 
-const storage = multer.diskStorage({
-  destination: `${path.join(__dirname, 'uploads/')}`,
-  filename: (req, file, cb) => {
-    cb(null, file.filename);
-  },
-});
+let storage;
 
-const s3storage = multerS3({
-  s3,
-  bucket: process.env.S3BUCKET,
-  acl: 'public-read',
-  key(req, file, cb) {
-    cb(null, uuidv4());
-  },
-});
-
-function upload(req, file) {
-  const fileStorage = process.env.USE_AWS ? s3storage : storage;
-
-  fileStorage._handleFile(req, file, (error) => {
-    if (error) {
-      log.error(error);
-    }
+if (process.env.NODE_ENV === 'development') {
+  storage = multer.diskStorage({
+    destination: `${path.join(__dirname, '../../uploads/')}`,
+    filename: (req, file, cb) => {
+      cb(null, `${UUIDv4()}-${file.filename || file.originalname}.jpeg`);
+    },
+  });
+} else {
+  storage = multerS3({
+    s3,
+    bucket: process.env.S3BUCKET,
+    acl: 'public-read',
+    key(req, file, cb) {
+      // rename the file since we convert it to jpeg
+      cb(null, `${UUIDv4()}-${file.filename}.jpeg`);
+    },
+    // can use any of the sharp options here
+    resize: {
+      height: 640,
+    },
+    // convert all files to jpeg
+    toFormat: 'jpeg',
   });
 }
+// -------------- multer setup end --------------
 
-// --------------- end s3 upload middleware  ---------------
-
-// --------------- start memory upload middleware  ---------------
-
-const multerStorage = multer.memoryStorage();
-
-const loadInMemory = multer({
-  storage: multerStorage,
+const upload = multer({
+  storage,
   limits: {
     fileSize: 1024 * 1024 * 5, // up to 5 mbs
   },
   fileFilter,
 });
 
-// --------------- end memory upload middleware  ---------------
-
-// --------------- start resizing middleware  ---------------
-
-const resizeImage = async (req, res, next) => {
-  if (!req.file) {
-    return next();
-  }
-
-  const fileName = req.file.originalname.replace(/\..+$/, '');
-  const newFileName = `${new Date().toISOString()}-${fileName}.jpeg`;
-
-  const imageBuffer = await sharp(req.file.buffer)
-    .resize(650, 240)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toBuffer();
-
-  req.file.originalname = newFileName;
-  req.file.filename = newFileName;
-  req.file.buffer = Buffer.from(imageBuffer);
-
-  await Promise.resolve(upload(req, req.file));
-
-  return next();
-};
-
-// --------------- end resizing middleware  ---------------
-
-module.exports = { resizeImage, loadInMemory };
+module.exports = { upload };

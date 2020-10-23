@@ -34,102 +34,104 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 // @route   POST '/wishcards'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post(
-  '/',
-  WishCardController.loadInMemory.single('wishCardImage'),
-  WishCardController.resizeImage,
-  // WishCardController.uploadImageToS3.single('wishCardImage'),
-  async (req, res) => {
-    if (req.file === undefined) {
-      handleError(
-        res,
-        400,
-        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
-      );
-    } else {
-      try {
-        const { childBirthday, wishItemPrice } = req.body;
+router.post('/', WishCardController.upload.single('wishCardImage'), async (req, res) => {
+  if (req.file === undefined) {
+    handleError(
+      res,
+      400,
+      'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+    );
+  } else {
+    try {
+      const { childBirthday, wishItemPrice } = req.body;
 
-        const newWishCard = await WishCardRepository.createNewWishCard({
-          childBirthday: new Date(childBirthday),
-          wishItemPrice: Number(wishItemPrice),
-          wishCardImage: req.file.location,
-          createdBy: res.locals.user._id,
-          // Uncomment once address fields are added to profile page.
-          /* address: {
-          address1: req.body.address1,
-          address2: req.body.address2,
-          city: req.body.address_city,
-          state: req.body.address_state,
-          zip: req.body.address_zip,
-          country: req.body.address_country,
-        }, */
-          ...req.body,
-        });
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
-        res.status(200).send('/wishcards/');
-      } catch (error) {
-        handleError(res, 400, error);
+      let filePath = req.file.location;
+
+      if (process.env.NODE_ENV === 'development') {
+        filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
       }
+
+      const newWishCard = await WishCardRepository.createNewWishCard({
+        childBirthday: new Date(childBirthday),
+        wishItemPrice: Number(wishItemPrice),
+        wishCardImage: filePath,
+        createdBy: res.locals.user._id,
+        // Uncomment once address fields are added to profile page.
+        // address: {
+        //   address1: req.body.address1,
+        //   address2: req.body.address2,
+        //   city: req.body.address_city,
+        //   state: req.body.address_state,
+        //   zip: req.body.address_zip,
+        //   country: req.body.address_country,
+        // },
+        ...req.body,
+      });
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
+      res.status(200).send('/wishcards/');
+    } catch (error) {
+      handleError(res, 400, error);
     }
-  },
-);
+  }
+});
 
 // @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
 // @route   POST '/wishcards/guided/'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post(
-  '/guided/',
-  // WishCardController.uploadImageToS3.single('wishCardImage'),
-  async (req, res) => {
-    if (req.file === undefined) {
-      handleError(
-        res,
-        400,
-        `Error: File must be in jpeg, jpg, gif, or png format. The file
+router.post('/guided/', WishCardController.upload.single('wishCardImage'), async (req, res) => {
+  if (req.file === undefined) {
+    handleError(
+      res,
+      400,
+      `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-      );
-    } else {
-      try {
-        const {
-          childBirthday,
+    );
+  } else {
+    try {
+      const {
+        childBirthday,
+        address1,
+        address2,
+        address_city,
+        address_state,
+        address_zip,
+        address_country,
+      } = req.body;
+      let { itemChoice } = req.body;
+
+      let filePath = req.file.location;
+
+      if (process.env.NODE_ENV === 'development') {
+        filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+      }
+
+      itemChoice = JSON.parse(itemChoice);
+      await WishCardRepository.createNewWishCard({
+        childBirthday: new Date(childBirthday),
+        wishItemName: itemChoice.Name,
+        wishItemPrice: Number(itemChoice.Price),
+        wishItemURL: itemChoice.ItemURL,
+        wishCardImage: filePath,
+        createdBy: res.locals.user._id,
+        address: {
           address1,
           address2,
-          address_city,
-          address_state,
-          address_zip,
-          address_country,
-        } = req.body;
-        let { itemChoice } = req.body;
+          city: address_city,
+          state: address_state,
+          zip: address_zip,
+          country: address_country,
+        },
+        ...req.body,
+      });
 
-        itemChoice = JSON.parse(itemChoice);
-        await WishCardRepository.createNewWishCard({
-          childBirthday: new Date(childBirthday),
-          wishItemName: itemChoice.Name,
-          wishItemPrice: Number(itemChoice.Price),
-          wishItemURL: itemChoice.ItemURL,
-          wishCardImage: req.file.location,
-          createdBy: res.locals.user._id,
-          address: {
-            address1,
-            address2,
-            city: address_city,
-            state: address_state,
-            zip: address_zip,
-            country: address_country,
-          },
-          ...req.body,
-        });
-
-        res.status(200).send('/wishcards/');
-      } catch (error) {
-        handleError(res, 400, error);
-      }
+      res.status(200).send('/wishcards/');
+    } catch (error) {
+      handleError(res, 400, error);
     }
-  },
-);
+  }
+});
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
