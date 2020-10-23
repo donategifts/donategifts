@@ -46,6 +46,11 @@ $(document).ready(() => {
           let txtToJson = JSON.parse(response.responseText);
           showToast(txtToJson.error);
         },
+        403: function (responseObject) {
+          showToast('Access Forbidden: Your account lacks sufficient permissions');
+          let { url } = responseObject.responseJSON;
+          setTimeout(() => location.assign(url), 1200);
+        },
       },
     });
   });

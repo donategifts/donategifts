@@ -29,7 +29,7 @@ const {
 } = require('./validations/wishcards.validations');
 
 const { redirectLogin } = require('../helper/userHelper');
-const { checkPermissions, renderPermissions } = require('../helper/wishcardHelper');
+const { renderPermissions } = require('../helper/wishcardHelper');
 
 const {
   babies,
@@ -106,7 +106,7 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 // @tested 	Yes
 router.post(
   '/',
-  checkPermissions,
+  renderPermissions,
   upload.single('wishCardImage'),
   createWishcardValidationRules(),
   validate,
@@ -151,7 +151,7 @@ router.post(
 // @tested 	Yes
 router.post(
   '/guided/',
-  checkPermissions,
+  renderPermissions,
   upload.single('wishCardImage'),
   createGuidedWishcardValidationRules(),
   validate,
@@ -333,7 +333,7 @@ router.get('/get/random', async (req, res) => {
 // @tested 	Not yet
 router.put(
   '/update/:id',
-  checkPermissions,
+  renderPermissions,
   updateWishCardValidationRules(),
   validate,
   async (req, res) => {
@@ -357,7 +357,7 @@ router.put(
 // @tested  Yes
 router.post(
   '/message',
-  checkPermissions,
+  renderPermissions,
   postMessageValidationRules(),
   validate,
   async (req, res) => {

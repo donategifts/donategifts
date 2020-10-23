@@ -24,18 +24,6 @@ const IfNullOrNotVerifiedAgency = async (userInfo) => {
   return false;
 };
 
-const checkPermissions = async (req, res, next) => {
-  const { user, agency } = req.session;
-  const userInfo = { user, agency };
-  if (!user) {
-    res.status(403).redirect('/users/login');
-  } else if (await IfNullOrNotVerifiedAgency(userInfo)) {
-    res.status(403).redirect('/users/profile');
-  } else {
-    next();
-  }
-};
-
 const renderPermissions = async (req, res, next) => {
   const { user, agency } = req.session;
   const userInfo = { user, agency };
@@ -49,6 +37,5 @@ const renderPermissions = async (req, res, next) => {
 };
 
 module.exports = {
-  checkPermissions,
   renderPermissions,
 };

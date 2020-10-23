@@ -360,7 +360,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
     });
   });
 
-  it('POST /wishcards/ - Redirects to Profile', (done) => {
+  it('POST /wishcards/ - Object with profile url', (done) => {
     agent
       .post('/wishcards/')
       .type('form')
@@ -370,16 +370,17 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
         fs.readFileSync('client/public/img/card-sample-1.jpg'),
         'card-sample1.jpg',
       )
-      .redirects(1)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.contain('Welcome');
-        res.text.should.contain('Wish card creation feature is disabled for your account');
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/profile');
         done();
       });
   });
 
-  it('POST /wishcards/guided - Redirects to Profile', (done) => {
+  it('POST /wishcards/guided - Object with profile url', (done) => {
     agent
       .post('/wishcards/guided/')
       .type('form')
@@ -390,16 +391,17 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
         fs.readFileSync('client/public/img/card-sample-1.jpg'),
         'card-sample1.jpg',
       )
-      .redirects(1)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.contain('Welcome');
-        res.text.should.contain('Wish card creation feature is disabled for your account');
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/profile');
         done();
       });
   });
 
-  it('POST /wishcards/message - Redirects to Profile', (done) => {
+  it('POST /wishcards/message - Object with profile url', (done) => {
     User.findOne({ fName: signupRequest.fName }).then((user) => {
       WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
         let messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
@@ -412,11 +414,12 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
             messageTo: wishcard,
             message,
           })
-          .redirects(1)
           .end((err, res) => {
-            res.should.have.status(200);
-            res.text.should.contain('Welcome');
-            res.text.should.contain('Wish card creation feature is disabled for your account');
+            res.should.have.status(403);
+            res.body.should.have.property('success');
+            res.body.should.have.property('url');
+            res.body.success.should.equal(false);
+            res.body.url.should.equal('/users/profile');
             done();
           });
       });
@@ -445,7 +448,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
     });
   });
 
-  it('GET wishcard guided default choices -  Returns url object', (done) => {
+  it('GET wishcard guided default choices -  Object with profile url', (done) => {
     agent.get('/wishcards/defaults/1').end((err, res) => {
       res.should.have.status(403);
       res.body.should.have.property('success');
@@ -478,7 +481,7 @@ describe('Wishcard Routes - Unauthenticated User', () => {
       done();
     });
   });
-  it('POST /wishcards/ - Redirects to Login', (done) => {
+  it('POST /wishcards/ - Object with login url', (done) => {
     agent
       .post('/wishcards/')
       .type('form')
@@ -488,16 +491,17 @@ describe('Wishcard Routes - Unauthenticated User', () => {
         fs.readFileSync('client/public/img/card-sample-1.jpg'),
         'card-sample1.jpg',
       )
-      .redirects(1)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.contain('Sign Up to Donate Gifts');
-        res.body.should.be.an('object');
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/login');
         done();
       });
   });
 
-  it('POST /wishcards/guided - Redirects to Login', (done) => {
+  it('POST /wishcards/guided - Object with login url', (done) => {
     agent
       .post('/wishcards/guided/')
       .type('form')
@@ -508,16 +512,17 @@ describe('Wishcard Routes - Unauthenticated User', () => {
         fs.readFileSync('client/public/img/card-sample-1.jpg'),
         'card-sample1.jpg',
       )
-      .redirects(1)
       .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.contain('Sign Up to Donate Gifts');
-        res.body.should.be.an('object');
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/login');
         done();
       });
   });
 
-  it('GET wishcards - Redirects to Login', (done) => {
+  it('GET wishcards', (done) => {
     agent.get('/wishcards').end((err, res) => {
       res.should.have.status(200);
       res.text.should.contain('See Wish Cards');
@@ -527,21 +532,21 @@ describe('Wishcard Routes - Unauthenticated User', () => {
     });
   });
 
-  it('GET wishcard by Id - Redirects to Login', (done) => {
+  it('GET wishcard by Id - Redirects to login', (done) => {
     WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
       agent
         .get(`/wishcards/${foundWishcard._id}`)
         .redirects(1)
         .end((err, res) => {
-          res.should.have.status(200);
           res.text.should.contain('Sign Up to Donate Gifts');
+          res.should.have.status(200);
           res.body.should.be.an('object');
           done();
         });
     });
   });
 
-  it('GET wishcard guided default choices -  Returns url object', (done) => {
+  it('GET wishcard guided default choices -  Object with login url', (done) => {
     agent.get('/wishcards/defaults/1').end((err, res) => {
       res.should.have.status(403);
       res.body.should.have.property('success');

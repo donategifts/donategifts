@@ -27,7 +27,7 @@ $(document).ready(function () {
         $('.choicesContainer').replaceWith(html);
       },
       error: function (response) {
-        alert('Images could not be retrieved');
+        showToast('Images could not be retrieved');
       },
     });
   });
@@ -56,6 +56,11 @@ $(document).ready(function () {
           let { error } = responseObject.responseJSON;
           let { msg } = error;
           showToast(msg);
+        },
+        403: function (responseObject) {
+          showToast('Access Forbidden: Your account lacks sufficient permissions');
+          let { url } = responseObject.responseJSON;
+          setTimeout(() => location.assign(url), 1200);
         },
       },
     });
