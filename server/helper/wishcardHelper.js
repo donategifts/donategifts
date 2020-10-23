@@ -18,7 +18,7 @@ const IfNullOrNotVerifiedAgency = async (userInfo) => {
   const { user, agency } = userInfo;
   const foundAgency = await AgencyRepository.getAgencyByUserId(user._id);
   const info = { foundAgency, ...userInfo };
-  if (!foundAgency._id.equals(agency._id) || IfNull(info) || NotVerified(info)) {
+  if (IfNull(info) || !foundAgency._id.equals(agency._id) || NotVerified(info)) {
     return true;
   }
   return false;
