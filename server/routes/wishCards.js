@@ -420,7 +420,7 @@ router.get(
       if (error) {
         handleError(res, 400, error);
       } else {
-        res.send(html);
+        res.status(200).send({ success: true, html });
       }
     });
   },

@@ -6,7 +6,8 @@ $(document).ready(function () {
     url: `/wishcards/defaults/${ageCategory}`,
     statusCode: {
       200: function (responseObject) {
-        $('.choicesContainer').replaceWith(responseObject);
+        let { html } = responseObject;
+        $('.choicesContainer').replaceWith(html);
       },
       403: function (responseObject) {
         showToast('Access Forbidden: Your account lacks sufficient permissions');
@@ -21,7 +22,8 @@ $(document).ready(function () {
     $.ajax({
       type: 'GET',
       url: `/wishcards/defaults/${ageCategory}`,
-      success: function (html) {
+      success: function (responseObject) {
+        let { html } = responseObject;
         $('.choicesContainer').replaceWith(html);
       },
       error: function (response) {
@@ -50,9 +52,10 @@ $(document).ready(function () {
           showToast('WishCard Created!');
           setTimeout(() => location.assign(response.url), 2000);
         },
-        400: function (response) {
-          let txtToJson = JSON.parse(response.responseText);
-          showToast(txtToJson.error);
+        400: function (responseObject) {
+          let { error } = responseObject.responseJSON;
+          let { msg } = error;
+          showToast(msg);
         },
       },
     });
