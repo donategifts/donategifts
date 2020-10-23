@@ -461,16 +461,23 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
   //it('POST /wishcards/lock/:id - Redirects to Profile', (done) => {});
 
   after((done) => {
-    agent.get('/users/logout').end((err, res) => {
-      res.text.should.contain('Sign Up to Donate Gifts');
-      res.should.have.status(200);
-      res.body.should.be.an('object');
-      done();
+    WishCard.deleteMany({}).then(() => {
+      agent.get('/users/logout').end((err, res) => {
+        res.text.should.contain('Sign Up to Donate Gifts');
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        done();
+      });
     });
   });
 });
 
 describe('Wishcard Routes - Unauthenticated User', () => {
+  before((done) => {
+    WishCard.create(wishcardRequest).then(() => {
+      done();
+    });
+  });
   it('POST /wishcards/ - Redirects to Login', (done) => {
     agent
       .post('/wishcards/')
@@ -511,15 +518,13 @@ describe('Wishcard Routes - Unauthenticated User', () => {
   });
 
   it('GET wishcards - Redirects to Login', (done) => {
-    agent
-      .get('/wishcards')
-      .redirects(1)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.contain('Sign Up to Donate Gifts');
-        res.body.should.be.an('object');
-        done();
-      });
+    agent.get('/wishcards').end((err, res) => {
+      res.should.have.status(200);
+      res.text.should.contain('See Wish Cards');
+      res.text.should.not.contain('No wishcards');
+      res.text.should.contain(wishcardRequest.childFirstName);
+      done();
+    });
   });
 
   it('GET wishcard by Id - Redirects to Login', (done) => {
@@ -544,6 +549,12 @@ describe('Wishcard Routes - Unauthenticated User', () => {
       res.body.success.should.equal(false);
       res.body.url.should.equal('/users/login');
       done();
+    });
+
+    after((done) => {
+      WishCard.deleteMany({}).then(() => {
+        done();
+      });
     });
   });
 

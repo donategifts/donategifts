@@ -13,6 +13,7 @@ const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
+const fs = require('fs');
 const io = require('../helper/socket');
 
 const {
@@ -44,24 +45,19 @@ const { handleError } = require('../helper/error');
 
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-let s3;
-let s3storage;
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET,
+});
 
-if (process.env === 'production') {
-  s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_KEY,
-    secretAccessKey: process.env.AWS_SECRET,
-  });
-
-  s3storage = multerS3({
-    s3,
-    bucket: process.env.S3BUCKET,
-    acl: 'public-read',
-    key(req, file, cb) {
-      cb(null, uuidv4());
-    },
-  });
-}
+const s3storage = multerS3({
+  s3,
+  bucket: process.env.S3BUCKET,
+  acl: 'public-read',
+  key(req, file, cb) {
+    cb(null, uuidv4());
+  },
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -86,8 +82,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+if (!fs.existsSync('uploads/')) {
+  fs.mkdirSync('uploads/');
+}
+
 const upload = multer({
-  storage: process.env.USE_AWS ? s3storage : storage,
+  storage: process.env.USE_AWS === 'true' ? s3storage : storage,
   limits: {
     fileSize: 1024 * 1024 * 5, // up to 5 mbs
   },
@@ -119,7 +119,7 @@ router.post(
       });
     } else {
       try {
-        let newWishCard = await WishCardRepository.createNewWishCard({
+        const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(req.body.childBirthday),
           wishItemPrice: Number(req.body.wishItemPrice),
           wishCardImage: req.file.location,
@@ -195,9 +195,9 @@ router.post(
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
-// @access  Private, all users can see
+// @access  Public
 // @tested 	Yes
-router.get('/', redirectLogin, async (_req, res) => {
+router.get('/', async (_req, res) => {
   try {
     const wishcards = await WishCardRepository.getAllWishCards();
 
