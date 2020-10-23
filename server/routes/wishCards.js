@@ -9,6 +9,7 @@ const express = require('express');
 
 const router = express.Router();
 const moment = require('moment');
+const rateLimit = require('express-rate-limit');
 const io = require('../helper/socket');
 
 const {
@@ -30,11 +31,17 @@ const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
+// allow only 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
+
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/', WishCardController.upload.single('wishCardImage'), async (req, res) => {
+router.post('/', limiter, WishCardController.upload.single('wishCardImage'), async (req, res) => {
   if (req.file === undefined) {
     handleError(
       res,
@@ -80,58 +87,63 @@ router.post('/', WishCardController.upload.single('wishCardImage'), async (req, 
 // @route   POST '/wishcards/guided/'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/guided/', WishCardController.upload.single('wishCardImage'), async (req, res) => {
-  if (req.file === undefined) {
-    handleError(
-      res,
-      400,
-      `Error: File must be in jpeg, jpg, gif, or png format. The file
+router.post(
+  '/guided/',
+  limiter,
+  WishCardController.upload.single('wishCardImage'),
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-    );
-  } else {
-    try {
-      const {
-        childBirthday,
-        address1,
-        address2,
-        address_city,
-        address_state,
-        address_zip,
-        address_country,
-      } = req.body;
-      let { itemChoice } = req.body;
-
-      let filePath = req.file.location;
-
-      if (process.env.NODE_ENV === 'development') {
-        filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
-      }
-
-      itemChoice = JSON.parse(itemChoice);
-      await WishCardRepository.createNewWishCard({
-        childBirthday: new Date(childBirthday),
-        wishItemName: itemChoice.Name,
-        wishItemPrice: Number(itemChoice.Price),
-        wishItemURL: itemChoice.ItemURL,
-        wishCardImage: filePath,
-        createdBy: res.locals.user._id,
-        address: {
+      );
+    } else {
+      try {
+        const {
+          childBirthday,
           address1,
           address2,
-          city: address_city,
-          state: address_state,
-          zip: address_zip,
-          country: address_country,
-        },
-        ...req.body,
-      });
+          address_city,
+          address_state,
+          address_zip,
+          address_country,
+        } = req.body;
+        let { itemChoice } = req.body;
 
-      res.status(200).send('/wishcards/');
-    } catch (error) {
-      handleError(res, 400, error);
+        let filePath = req.file.location;
+
+        if (process.env.NODE_ENV === 'development') {
+          filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+        }
+
+        itemChoice = JSON.parse(itemChoice);
+        await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(childBirthday),
+          wishItemName: itemChoice.Name,
+          wishItemPrice: Number(itemChoice.Price),
+          wishItemURL: itemChoice.ItemURL,
+          wishCardImage: filePath,
+          createdBy: res.locals.user._id,
+          address: {
+            address1,
+            address2,
+            city: address_city,
+            state: address_state,
+            zip: address_zip,
+            country: address_country,
+          },
+          ...req.body,
+        });
+
+        res.status(200).send('/wishcards/');
+      } catch (error) {
+        handleError(res, 400, error);
+      }
     }
-  }
-});
+  },
+);
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
