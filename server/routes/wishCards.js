@@ -195,7 +195,7 @@ router.post(
 // @route   GET '/wishcards'
 // @access  Private, all users can see
 // @tested 	Yes
-router.get('/', async (_req, res) => {
+router.get('/', redirectLogin, async (_req, res) => {
   try {
     const wishcards = await WishCardRepository.getAllWishCards();
 
@@ -252,7 +252,7 @@ const getPreviousMessages = async (wishcard) => {
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  Private, all users (path led by "see more" button). See more btn is however is public.
-// @tested 	No
+// @tested 	Yes
 router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
@@ -325,10 +325,10 @@ router.put(
   },
 );
 
-// @desc   User can post a message to the wishcard
-// @route  POST '/wishcards/message'
+// @desc    User can post a message to the wishcard
+// @route   POST '/wishcards/message'
 // @access  Private, all users
-// @tested 	Not yet
+// @tested  Yes
 router.post(
   '/message',
   checkPermissions,

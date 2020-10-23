@@ -1,7 +1,7 @@
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
 const IfNull = ({ agency, foundAgency }) => {
-  if (agency === null || foundAgency === null) {
+  if (!agency || !foundAgency) {
     return true;
   }
   return false;
@@ -27,8 +27,8 @@ const IfNullOrNotVerifiedAgency = async (userInfo) => {
 const checkPermissions = async (req, res, next) => {
   const { user, agency } = req.session;
   const userInfo = { user, agency };
-  if (user === null) {
-    res.status(403).redirect('/login');
+  if (!user) {
+    res.status(403).redirect('/users/login');
   } else if (await IfNullOrNotVerifiedAgency(userInfo)) {
     res.status(403).redirect('/users/profile');
   } else {
@@ -39,10 +39,10 @@ const checkPermissions = async (req, res, next) => {
 const renderPermissions = async (req, res, next) => {
   const { user, agency } = req.session;
   const userInfo = { user, agency };
-  if (user === null) {
-    res.status(403).send({ url: '/login' });
+  if (!user) {
+    res.status(403).send({ success: false, url: '/users/login' });
   } else if (await IfNullOrNotVerifiedAgency(userInfo)) {
-    res.status(403).send({ url: '/users/profile' });
+    res.status(403).send({ success: false, url: '/users/profile' });
   } else {
     next();
   }
