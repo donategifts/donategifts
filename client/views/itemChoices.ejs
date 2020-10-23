@@ -2,7 +2,7 @@
     <% if (itemChoices) { %>
     <% for (let i = 0; i < itemChoices.length; i++) { %>
     <label>
-        <input type="radio" name="itemChoice" value="<%= JSON.stringify(itemChoices[i]) %>">
+        <input type="radio" name="itemChoice" required value="<%= JSON.stringify(itemChoices[i]) %>">
         <img class="card itemChoice" src="<%= itemChoices[i].Image %>" alt="Card image cap">
     </label>
     <% } %>
