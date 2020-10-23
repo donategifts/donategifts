@@ -8,10 +8,6 @@ serving all wishcard related routes
 const express = require('express');
 
 const router = express.Router();
-const multer = require('multer');
-const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
-const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const io = require('../helper/socket');
 
@@ -26,51 +22,7 @@ const {
   allAgesB,
 } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
-
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET,
-});
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
-
-const s3storage = multerS3({
-  s3,
-  bucket: process.env.S3BUCKET,
-  acl: 'public-read',
-  key(req, file, cb) {
-    cb(null, uuidv4());
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  // reject a file
-  if (
-    file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/gif' ||
-    file.mimetype === 'image/png'
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const upload = multer({
-  storage: process.env.USE_AWS ? s3storage : storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5, // up to 5 mbs
-  },
-  fileFilter,
-});
+const WishCardController = require('../controller/wishCard.controller');
 
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
@@ -82,23 +34,29 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 // @route   POST '/wishcards'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/', upload.single('wishCardImage'), async (req, res) => {
-  if (req.file === undefined) {
-    handleError(
-      res,
-      400,
-      `Error: File must be in jpeg, jpg, gif, or png format. The file
-        must also be less than 5 megabytes.`,
-    );
-  } else {
-    try {
-      const newWishCard = await WishCardRepository.createNewWishCard({
-        childBirthday: new Date(req.body.childBirthday),
-        wishItemPrice: Number(req.body.wishItemPrice),
-        wishCardImage: req.file.location,
-        createdBy: res.locals.user._id,
-        // Uncomment once address fields are added to profile page.
-        /* address: {
+router.post(
+  '/',
+  WishCardController.loadInMemory.single('wishCardImage'),
+  WishCardController.resizeImage,
+  // WishCardController.uploadImageToS3.single('wishCardImage'),
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+      );
+    } else {
+      try {
+        const { childBirthday, wishItemPrice } = req.body;
+
+        const newWishCard = await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(childBirthday),
+          wishItemPrice: Number(wishItemPrice),
+          wishCardImage: req.file.location,
+          createdBy: res.locals.user._id,
+          // Uncomment once address fields are added to profile page.
+          /* address: {
           address1: req.body.address1,
           address2: req.body.address2,
           city: req.body.address_city,
@@ -106,57 +64,72 @@ router.post('/', upload.single('wishCardImage'), async (req, res) => {
           zip: req.body.address_zip,
           country: req.body.address_country,
         }, */
-        ...req.body,
-      });
-      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-      await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
-      res.status(200).send('/wishcards/');
-    } catch (error) {
-      handleError(res, 400, error);
+          ...req.body,
+        });
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
+        res.status(200).send('/wishcards/');
+      } catch (error) {
+        handleError(res, 400, error);
+      }
     }
-  }
-});
+  },
+);
 
 // @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
 // @route   POST '/wishcards/guided/'
 // @access  Private, must be verified as a partner
 // @tested 	Yes
-router.post('/guided/', upload.single('wishCardImage'), async (req, res) => {
-  if (req.file === undefined) {
-    handleError(
-      res,
-      400,
-      `Error: File must be in jpeg, jpg, gif, or png format. The file
+router.post(
+  '/guided/',
+  // WishCardController.uploadImageToS3.single('wishCardImage'),
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-    );
-  } else {
-    try {
-      let { itemChoice } = req.body;
-      itemChoice = JSON.parse(itemChoice);
-      await WishCardRepository.createNewWishCard({
-        childBirthday: new Date(req.body.childBirthday),
-        wishItemName: itemChoice.Name,
-        wishItemPrice: Number(itemChoice.Price),
-        wishItemURL: itemChoice.ItemURL,
-        wishCardImage: req.file.location,
-        createdBy: res.locals.user._id,
-        address: {
-          address1: req.body.address1,
-          address2: req.body.address2,
-          city: req.body.address_city,
-          state: req.body.address_state,
-          zip: req.body.address_zip,
-          country: req.body.address_country,
-        },
-        ...req.body,
-      });
+      );
+    } else {
+      try {
+        const {
+          childBirthday,
+          address1,
+          address2,
+          address_city,
+          address_state,
+          address_zip,
+          address_country,
+        } = req.body;
+        let { itemChoice } = req.body;
 
-      res.status(200).send('/wishcards/');
-    } catch (error) {
-      handleError(res, 400, error);
+        itemChoice = JSON.parse(itemChoice);
+        await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(childBirthday),
+          wishItemName: itemChoice.Name,
+          wishItemPrice: Number(itemChoice.Price),
+          wishItemURL: itemChoice.ItemURL,
+          wishCardImage: req.file.location,
+          createdBy: res.locals.user._id,
+          address: {
+            address1,
+            address2,
+            city: address_city,
+            state: address_state,
+            zip: address_zip,
+            country: address_country,
+          },
+          ...req.body,
+        });
+
+        res.status(200).send('/wishcards/');
+      } catch (error) {
+        handleError(res, 400, error);
+      }
     }
-  }
-});
+  },
+);
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
@@ -188,20 +161,23 @@ router.get('/', async (_req, res) => {
 // @access  Agency
 // @tested 	No
 router.get('/me', async (req, res) => {
-    try {
-      const {filter} = req.query;
-      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
-      // if filter param is present, filter wishcards based on it
-      const filteredWishCards = filter !== undefined ? agencyInfo.wishCards.filter(wishcard => wishcard.status === filter) : agencyInfo.wishCards;
-      res.status(200).send({
-        success: true,
-        error: null,
-        data: filteredWishCards
-      });
-    } catch (error) {
-      handleError(res, 400, error);
-    }
+  try {
+    const { filter } = req.query;
+    const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+    const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+    // if filter param is present, filter wishcards based on it
+    const filteredWishCards =
+      filter !== undefined
+        ? agencyInfo.wishCards.filter((wishcard) => wishcard.status === filter)
+        : agencyInfo.wishCards;
+    res.status(200).send({
+      success: true,
+      error: null,
+      data: filteredWishCards,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    search the wish cards by substring of wishItemName
@@ -402,14 +378,34 @@ router.post('/lock/:id', async (req, res) => {
 router.get('/defaults/:id', async (req, res) => {
   const ageCategory = Number(req.params.id);
   let itemChoices;
-  if (ageCategory === 1) itemChoices = babies;
-  else if (ageCategory === 2) itemChoices = preschoolers;
-  else if (ageCategory === 3) itemChoices = kids6_8;
-  else if (ageCategory === 4) itemChoices = kids9_11;
-  else if (ageCategory === 5) itemChoices = teens;
-  else if (ageCategory === 6) itemChoices = youth;
-  else if (ageCategory === 7) itemChoices = allAgesA;
-  else itemChoices = allAgesB;
+
+  switch (ageCategory) {
+    case 1:
+      itemChoices = babies;
+      break;
+    case 2:
+      itemChoices = preschoolers;
+      break;
+    case 3:
+      itemChoices = kids6_8;
+      break;
+    case 4:
+      itemChoices = kids9_11;
+      break;
+    case 5:
+      itemChoices = teens;
+      break;
+    case 6:
+      itemChoices = youth;
+      break;
+    case 7:
+      itemChoices = allAgesA;
+      break;
+    default:
+      itemChoices = allAgesB;
+      break;
+  }
+
   res.render('itemChoices', { itemChoices }, (error, html) => {
     if (error) {
       handleError(res, 400, error);
