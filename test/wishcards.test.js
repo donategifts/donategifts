@@ -1,0 +1,569 @@
+let User = require('../server/db/models/User');
+let Agency = require('../server/db/models/Agency');
+const WishCard = require('../server/db/models/WishCard');
+let Message = require('../server/db/models/Message');
+const { getMessageChoices } = require('../server/utils/defaultMessages');
+
+//Require the dev-dependencies
+let fs = require('fs');
+let chai = require('chai');
+let chaiHttp = require('chai-http');
+let server = require('../server/app');
+//chai docs recommend using var
+var should = chai.should();
+
+chai.use(chaiHttp);
+let agent = chai.request.agent(server);
+
+let signupRequest = {
+  fName: 'testFirstName',
+  lName: 'testLastName',
+  email: 'test@email.de',
+  password: 'testPassword1',
+  passwordConfirm: 'testPassword1',
+  userRole: 'partner',
+};
+
+let agencyRequest = {
+  agencyName: 'testAgencyName',
+  agencyWebsite: 'http://testAgencyWebsite',
+  agencyPhone: '12334556',
+  agencyBio: 'testAgencyBio',
+};
+
+let wishcardRequest = {
+  childBirthday: '09/10/2020',
+  childFirstName: 'Doom',
+  childLastName: 'Slayer',
+  childInterest: 'Slaying demons',
+  wishItemName: 'Doom Slayer statue',
+  wishItemPrice: 20,
+  wishItemURL: 'http://someamazonlink',
+  childStory: 'Doom Slayer traveled to Mars and slayed demons',
+};
+
+let itemChoice = {
+  Name: 'Baby Activity Book - Peekaboo',
+  Price: 13,
+  ItemURL:
+    'https://www.amazon.com/gp/item-dispatch?registryID.1=3ERLGLFOY8E4M&registryItemID.1=I1OYPRM1WI7CMA&offeringID.1=ffVJa7sdWT8tHlQTydStzaNNxepB4TVnC1FL1Wj8jOKne2%252FA%252F%252FJ1Q0%252FjxWq5DBw85qzSopctj84FwkkbJCUuUwaDWxeZUFNo%252BaOtV4SXR3W10wdsETSGXHStfXl%252BWYkxQdPhWSwpFh4IJcUDPGeBhg%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
+};
+
+let guidedwishcardRequest = {
+  childBirthday: '09/10/2020',
+  childFirstName: 'John',
+  childLastName: 'John',
+  childInterest: 'Playing with toys',
+  childStory: 'John likes toys',
+  address1: '1000 Hollywood Hills',
+  city: 'San Fransisco',
+  state: 'CA',
+  zip: '70000',
+  country: 'US',
+};
+
+describe('Wishcard Routes - Authenticated & Verified User', () => {
+  before((done) => {
+    User.deleteMany({}).then(() => {
+      Agency.deleteMany({}).then(() => {
+        WishCard.deleteMany({}, (err) => {
+          agent
+            .get('/users/logout')
+            .redirects(1)
+            .end((err, res) => {
+              res.text.should.contain('Sign Up to Donate Gifts');
+              res.should.have.status(200);
+              res.body.should.be.an('object');
+            });
+          agent
+            .post('/users/signup')
+            .send(signupRequest)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.success.should.equal(true);
+              res.body.should.have.property('user');
+              res.body.user.should.have.property('fName');
+              res.body.user.should.have.property('lName');
+              res.body.user.should.have.property('email');
+              res.body.user.should.have.property('emailVerified');
+              res.body.user.should.have.property('verificationHash');
+              res.body.user.should.have.property('password');
+              res.body.user.should.have.property('userRole');
+              res.body.user.should.have.property('_id');
+              res.body.user.emailVerified.should.equal(false);
+              res.body.should.have.property('url');
+
+              agent.get('/users/agency').end((err, res) => {
+                res.should.have.status(200);
+                res.text.should.contain('agency registration page');
+
+                User.findOne({ email: signupRequest.email }).then((user) => {
+                  agent
+                    .post('/users/agency')
+                    .send({ ...agencyRequest, isVerified: true })
+                    .end((err, res) => {
+                      res.should.have.status(200);
+                      res.body.should.have.property('url');
+
+                      agent.get('/users/profile').end((err, res) => {
+                        res.should.have.status(200);
+                        res.text.should.contain('Welcome ' + user.fName);
+                        res.text.should.contain('Your email is unverified');
+                        res.text.should.not.contain(
+                          'Wish card creation feature is disabled for your account',
+                        );
+
+                        Agency.findOne({ accountManager: user._id }).then((agency) => {
+                          agency.agencyName.should.equal(agencyRequest.agencyName);
+                          const aUserId = agency.accountManager.toString();
+                          const userId = user._id.toString();
+                          aUserId.should.equal(userId);
+                          done();
+                        });
+                      });
+                    });
+                });
+              });
+            });
+        });
+      });
+    });
+  });
+
+  it('POST wishcards', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(wishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(true);
+        res.body.url.should.equal('/wishcards/');
+
+        WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
+          wishcardRequest.wishItemName.should.equal(wishcard.wishItemName);
+          wishcardRequest.wishItemPrice.should.equal(wishcard.wishItemPrice);
+          done();
+        });
+      });
+  });
+
+  it('POST wishcards/guided - receives url - /wishcards', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(true);
+        res.body.url.should.equal('/wishcards/');
+
+        WishCard.findOne({ childFirstName: guidedwishcardRequest.childFirstName }).then(
+          (wishcard) => {
+            itemChoice.Name.should.equal(wishcard.wishItemName);
+            itemChoice.Price.should.equal(wishcard.wishItemPrice);
+            done();
+          },
+        );
+      });
+  });
+
+  it('POST wishcards/message - Receives JSON', (done) => {
+    User.findOne({ fName: signupRequest.fName }).then((user) => {
+      WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
+        let messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
+        let message = messageChoices[0];
+
+        agent
+          .post('/wishcards/message')
+          .send({
+            messageFrom: user,
+            messageTo: wishcard,
+            message,
+          })
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success');
+            res.body.should.have.property('data');
+            res.body.success.should.equal(true);
+            res.body.data.should.have.property('messageFrom');
+            res.body.data.should.have.property('messageTo');
+            res.body.data.should.have.property('message');
+
+            Message.findOne({ messageFrom: user }).then((foundMessage) => {
+              res.body.data.message.should.equal(foundMessage.message);
+              done();
+            });
+          });
+      });
+    });
+  });
+
+  it('GET wishcards', (done) => {
+    agent.get('/wishcards').end((err, res) => {
+      res.should.have.status(200);
+      res.text.should.contain('See Wish Cards');
+      res.text.should.not.contain('No wishcards');
+      res.text.should.contain(wishcardRequest.childFirstName);
+      done();
+    });
+  });
+
+  it('GET wishcard by Id', (done) => {
+    WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
+      agent.get(`/wishcards/${foundWishcard._id}`).end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.contain(wishcardRequest.childFirstName);
+        res.text.should.contain(wishcardRequest.childInterest);
+        res.text.should.contain(wishcardRequest.childStory);
+        done();
+      });
+    });
+  });
+
+  it('GET wishcard guided default choices', (done) => {
+    agent
+      .get('/wishcards/defaults/1')
+      .redirects(1)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('success');
+        res.body.should.have.property('html');
+        res.body.success.should.equal(true);
+        res.body.html.should.contain(itemChoice.Name);
+        done();
+      });
+  });
+
+  //it('POST /wishcards/search - Works as intended', (done) => {});
+  //it('PUT /wishcards/update/:id/', (done) => {});
+  //it('POST /wishcards/lock/:id - Receives JSON', (done) => {});
+
+  after((done) => {
+    User.deleteMany({}).then(() => {
+      Agency.deleteMany({}).then(() => {
+        WishCard.deleteMany({}).then(() => {
+          agent.get('/users/logout').end((err, res) => {
+            res.text.should.contain('Sign Up to Donate Gifts');
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            done();
+          });
+        });
+      });
+    });
+  });
+});
+
+describe('Wishcard Routes - Authenticated & Unverified User', () => {
+  before((done) => {
+    User.deleteMany({}).then(() => {
+      Agency.deleteMany({}).then(() => {
+        WishCard.deleteMany({}).then(() => {
+          agent
+            .get('/users/logout')
+            .redirects(1)
+            .end((err, res) => {
+              res.text.should.contain('Sign Up to Donate Gifts');
+              res.should.have.status(200);
+              res.body.should.be.an('object');
+            });
+          agent
+            .post('/users/signup')
+            .send(signupRequest)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.success.should.equal(true);
+              res.body.should.have.property('user');
+              res.body.user.should.have.property('fName');
+              res.body.user.should.have.property('lName');
+              res.body.user.should.have.property('email');
+              res.body.user.should.have.property('emailVerified');
+              res.body.user.should.have.property('verificationHash');
+              res.body.user.should.have.property('password');
+              res.body.user.should.have.property('userRole');
+              res.body.user.should.have.property('_id');
+              res.body.user.emailVerified.should.equal(false);
+              res.body.should.have.property('url');
+
+              agent.get('/users/agency').end((err, res) => {
+                res.should.have.status(200);
+                res.text.should.contain('agency registration page');
+
+                User.findOne({ email: signupRequest.email }).then((user) => {
+                  agent
+                    .post('/users/agency')
+                    .send(agencyRequest)
+                    .end((err, res) => {
+                      res.should.have.status(200);
+                      res.body.should.have.property('url');
+
+                      agent.get('/users/profile').end((err, res) => {
+                        res.should.have.status(200);
+                        res.text.should.contain('Welcome ' + user.fName);
+                        res.text.should.contain('Your email is unverified');
+                        res.text.should.contain(
+                          'Wish card creation feature is disabled for your account',
+                        );
+
+                        Agency.create({ accountManager: user._id, ...agencyRequest }).then(
+                          (agency) => {
+                            agency.agencyName.should.equal(agencyRequest.agencyName);
+
+                            WishCard.create({ createdBy: user._id, ...wishcardRequest }).then(
+                              (wishcard) => {
+                                wishcard.childFirstName.should.equal(
+                                  wishcardRequest.childFirstName,
+                                );
+                              },
+                            );
+                            done();
+                          },
+                        );
+                      });
+                    });
+                });
+              });
+            });
+        });
+      });
+    });
+
+    after((done) => {
+      User.deleteMany({}).then(() => {
+        Agency.deleteMany({}).then(() => {
+          WishCard.deleteMany({}).then(() => {
+            agent.get('/users/logout').end((err, res) => {
+              res.text.should.contain('Sign Up to Donate Gifts');
+              res.should.have.status(200);
+              res.body.should.be.an('object');
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('POST /wishcards/ - Object with profile url', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(wishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/profile');
+        done();
+      });
+  });
+
+  it('POST /wishcards/guided - Object with profile url', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/profile');
+        done();
+      });
+  });
+
+  it('POST /wishcards/message - Object with profile url', (done) => {
+    User.findOne({ fName: signupRequest.fName }).then((user) => {
+      WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
+        let messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
+        let message = messageChoices[0];
+
+        agent
+          .post('/wishcards/message')
+          .send({
+            messageFrom: user,
+            messageTo: wishcard,
+            message,
+          })
+          .end((err, res) => {
+            res.should.have.status(403);
+            res.body.should.have.property('success');
+            res.body.should.have.property('url');
+            res.body.success.should.equal(false);
+            res.body.url.should.equal('/users/profile');
+            done();
+          });
+      });
+    });
+  });
+
+  it('GET wishcards', (done) => {
+    agent.get('/wishcards').end((err, res) => {
+      res.should.have.status(200);
+      res.text.should.contain('See Wish Cards');
+      res.text.should.not.contain('No wishcards');
+      res.text.should.contain(wishcardRequest.childFirstName);
+      done();
+    });
+  });
+
+  it('GET wishcard by Id', (done) => {
+    WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
+      agent.get(`/wishcards/${foundWishcard._id}`).end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.contain(wishcardRequest.childFirstName);
+        res.text.should.contain(wishcardRequest.childInterest);
+        res.text.should.contain(wishcardRequest.childStory);
+        done();
+      });
+    });
+  });
+
+  it('GET wishcard guided default choices -  Object with profile url', (done) => {
+    agent.get('/wishcards/defaults/1').end((err, res) => {
+      res.should.have.status(403);
+      res.body.should.have.property('success');
+      res.body.should.have.property('url');
+      res.body.success.should.equal(false);
+      res.body.url.should.equal('/users/profile');
+      done();
+    });
+  });
+
+  //it('POST /wishcards/search - Works as intended', (done) => {});
+  //it('PUT /wishcards/update/:id/', (done) => {});
+  //it('POST /wishcards/lock/:id - Redirects to Profile', (done) => {});
+
+  after((done) => {
+    WishCard.deleteMany({}).then(() => {
+      agent.get('/users/logout').end((err, res) => {
+        res.text.should.contain('Sign Up to Donate Gifts');
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        done();
+      });
+    });
+  });
+});
+
+describe('Wishcard Routes - Unauthenticated User', () => {
+  before((done) => {
+    WishCard.create(wishcardRequest).then(() => {
+      done();
+    });
+  });
+  it('POST /wishcards/ - Object with login url', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(wishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/login');
+        done();
+      });
+  });
+
+  it('POST /wishcards/guided - Object with login url', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(403);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(false);
+        res.body.url.should.equal('/users/login');
+        done();
+      });
+  });
+
+  it('GET wishcards', (done) => {
+    agent.get('/wishcards').end((err, res) => {
+      res.should.have.status(200);
+      res.text.should.contain('See Wish Cards');
+      res.text.should.not.contain('No wishcards');
+      res.text.should.contain(wishcardRequest.childFirstName);
+      done();
+    });
+  });
+
+  it('GET wishcard by Id - Redirects to login', (done) => {
+    WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
+      agent
+        .get(`/wishcards/${foundWishcard._id}`)
+        .redirects(1)
+        .end((err, res) => {
+          res.text.should.contain('Sign Up to Donate Gifts');
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          done();
+        });
+    });
+  });
+
+  it('GET wishcard guided default choices -  Object with login url', (done) => {
+    agent.get('/wishcards/defaults/1').end((err, res) => {
+      res.should.have.status(403);
+      res.body.should.have.property('success');
+      res.body.should.have.property('url');
+      res.body.success.should.equal(false);
+      res.body.url.should.equal('/users/login');
+      done();
+    });
+
+    after((done) => {
+      WishCard.deleteMany({}).then(() => {
+        done();
+      });
+    });
+  });
+
+  //it('POST /wishcards/search - Works as intended', (done) => {});
+  //it('PUT /wishcards/update/:id/ - Redirects to Login', (done) => {});
+  //it('POST /wishcards/lock/:id - Redirects to Login', (done) => {});
+});

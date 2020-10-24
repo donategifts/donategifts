@@ -63,9 +63,9 @@
 
 
                     <div class="row pt-4">
-                        <div class="col-lg-6 comf-font wrap-input1" data-validate="Name is required">
+                        <div class="col-lg-6 comf-font wrap-input1">
                             <label for="childFirstName">Child's First Name</label>
-                            <input id="childFirstName" class="input1" type="text" name="childFirstName"
+                            <input id="childFirstName" class="input1" type="text" name="childFirstName" required
                                 placeholder="Nick name is also ok">
                         </div>
 
@@ -89,9 +89,9 @@
                                 placeholder="Write something that the child likes to do">
                         </div>
 
-                        <div class="col-lg-6 comf-font wrap-input1" data-validate="Message is required">
+                        <div class="col-lg-6 comf-font wrap-input1">
                             <label for="childStory">Share their story</label>
-                            <textarea id="childStory" class="input1" name="childStory"
+                            <textarea id="childStory" class="input1" name="childStory" required
                                 placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child)"></textarea>
                         </div>
 
@@ -109,7 +109,7 @@
                                     <div class="uploader-right">
                                         <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
                                         <span class="file-wrapper">
-                                            <input type="file" name="wishCardImage" id="filetag"
+                                            <input type="file" required name="wishCardImage" id="filetag"
                                                 class="uploader upload-btn btn-large btn-alpha">
                                             <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
                                         </span>
