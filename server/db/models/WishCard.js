@@ -23,7 +23,7 @@ const WishCardSchema = new Schema(
       type: String,
     },
     wishItemPrice: {
-      type: String,
+      type: Number,
     },
     wishItemURL: {
       type: String,

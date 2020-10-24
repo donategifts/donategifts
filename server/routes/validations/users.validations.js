@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 const { handleError } = require('../../helper/error');
 
 const signupValidationRules = () => {
@@ -26,6 +26,14 @@ const signupValidationRules = () => {
     }),
     body('userRole', 'A role is required!').notEmpty().isString(),
   ];
+};
+
+const googlesignupValidationRules = () => {
+  return [body('id_token').exists()];
+};
+
+const fbsignupValidationRules = () => {
+  return [body('userName').exists(), body('email').exists().isEmail()];
 };
 
 const updateProfileValidationRules = () => {
@@ -59,7 +67,19 @@ const loginValidationRules = () => {
   ];
 };
 
-const passwordResetValidationRules = () => {
+const verifyHashValidationRules = () => {
+  return [param('hash').exists()];
+};
+
+const passwordRequestValidationRules = () => {
+  return [body('email').notEmpty().isEmail()];
+};
+
+const getPasswordResetValidationRules = () => {
+  return [param('token').exists()];
+};
+
+const postPasswordResetValidationRules = () => {
   return [
     body('password').notEmpty().isString().trim(),
     body('passwordConfirm')
@@ -88,9 +108,14 @@ const validate = (req, res, next) => {
 
 module.exports = {
   signupValidationRules,
+  googlesignupValidationRules,
+  fbsignupValidationRules,
+  verifyHashValidationRules,
+  passwordRequestValidationRules,
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  passwordResetValidationRules,
+  getPasswordResetValidationRules,
+  postPasswordResetValidationRules,
   validate,
 };

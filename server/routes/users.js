@@ -9,10 +9,15 @@ const router = express.Router();
 
 const {
   signupValidationRules,
+  googlesignupValidationRules,
+  fbsignupValidationRules,
+  verifyHashValidationRules,
+  passwordRequestValidationRules,
   updateProfileValidationRules,
   createAgencyValidationRules,
   loginValidationRules,
-  passwordResetValidationRules,
+  getPasswordResetValidationRules,
+  postPasswordResetValidationRules,
   validate,
 } = require('./validations/users.validations');
 const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
@@ -175,6 +180,7 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
     agencyPhone,
     agencyBio,
     accountManager: req.session.user._id,
+    ...req.body,
   });
 
   try {
@@ -284,55 +290,61 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
 // @route   POST '/google-signin'
 // @access  Public
 // @tested 	Not yet
-router.post('/google-signin', limiter, async (req, res) => {
-  const { id_token } = req.body;
+router.post(
+  '/google-signin',
+  limiter,
+  googlesignupValidationRules(),
+  validate,
+  async (req, res) => {
+    const { id_token } = req.body;
 
-  if (id_token) {
-    try {
-      const user = await verifyGoogleToken(id_token);
-      const fName = user.firstName;
-      const lName = user.lastName;
-      const email = user.mail;
+    if (id_token) {
+      try {
+        const user = await verifyGoogleToken(id_token);
+        const fName = user.firstName;
+        const lName = user.lastName;
+        const email = user.mail;
 
-      const dbUser = await UserRepository.getUserByEmail(email);
+        const dbUser = await UserRepository.getUserByEmail(email);
 
-      if (dbUser) {
-        req.session.user = dbUser;
-        res.locals.user = dbUser;
+        if (dbUser) {
+          req.session.user = dbUser;
+          res.locals.user = dbUser;
+          return res.status(200).send({
+            url: '/users/profile',
+          });
+        }
+
+        const newUser = await UserRepository.createNewUser({
+          fName,
+          lName,
+          email,
+          password: createDefaultPassword(),
+          verificationHash: createEmailVerificationHash(),
+          userRole: 'donor',
+          loginMode: 'Google',
+          emailVerified: true,
+        });
+
+        req.session.user = newUser;
+        res.locals.user = newUser;
         return res.status(200).send({
           url: '/users/profile',
         });
+      } catch (error) {
+        return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
       }
-
-      const newUser = await UserRepository.createNewUser({
-        fName,
-        lName,
-        email,
-        password: createDefaultPassword(),
-        verificationHash: createEmailVerificationHash(),
-        userRole: 'donor',
-        loginMode: 'Google',
-        emailVerified: true,
-      });
-
-      req.session.user = newUser;
-      res.locals.user = newUser;
-      return res.status(200).send({
-        url: '/users/profile',
-      });
-    } catch (error) {
-      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
     }
-  }
 
-  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-});
+    return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+  },
+);
 
 // @desc    handle facebook signup/login
 // @route   POST '/fb-signin'
 // @access  Public
 // @tested 	Not yet
-router.post('/fb-signin', limiter, async (req, res) => {
+router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (req, res) => {
   const { userName, email } = req.body;
 
   if (userName && email) {
@@ -440,7 +452,7 @@ router.get('/terms', async (req, res) => {
 // @route   GET '/users/verify'
 // @access  Public
 // @tested 	Not yet
-router.get('/verify/:hash', async (req, res) => {
+router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, res) => {
   try {
     const user = await UserRepository.getUserByVerificationHash(req.params.hash);
 
@@ -518,50 +530,59 @@ router.get('/password/request', async (req, res) => {
 // @route   GET '/users/choose'
 // @access  Private
 // @tested
-router.post('/password/request', limiter, async (req, res) => {
-  try {
-    if (!req.body.email) return handleError(res, 400, 'email missing');
+router.post(
+  '/password/request',
+  limiter,
+  passwordRequestValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      const userObject = await UserRepository.getUserByEmail(req.body.email);
 
-    const userObject = await UserRepository.getUserByEmail(req.body.email);
+      if (!userObject) return handleError(res, 400, 'user not found');
 
-    if (!userObject) return handleError(res, 400, 'user not found');
+      const resetToken = uuidv4();
+      userObject.passwordResetToken = resetToken;
+      userObject.passwordResetTokenExpires = moment().add(1, 'hours');
+      userObject.save();
 
-    const resetToken = uuidv4();
-    userObject.passwordResetToken = resetToken;
-    userObject.passwordResetTokenExpires = moment().add(1, 'hours');
-    userObject.save();
+      sendPasswordResetMail(userObject.email, resetToken);
 
-    sendPasswordResetMail(userObject.email, resetToken);
-
-    res.send({ success: true });
-  } catch (err) {
-    return handleError(res, 400, err);
-  }
-});
+      res.send({ success: true });
+    } catch (err) {
+      return handleError(res, 400, err);
+    }
+  },
+);
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/choose'
 // @access  Private
 // @tested
-router.get('/password/reset/:token', async (req, res) => {
-  try {
-    const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
+router.get(
+  '/password/reset/:token',
+  getPasswordResetValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
 
-    if (userObject) {
-      if (moment(userObject.passwordResetTokenExpires) > moment()) {
-        res.render('resetPassword', {
-          token: req.params.token,
-        });
+      if (userObject) {
+        if (moment(userObject.passwordResetTokenExpires) > moment()) {
+          res.render('resetPassword', {
+            token: req.params.token,
+          });
+        } else {
+          return handleError(res, 400, 'Password token expired');
+        }
       } else {
-        return handleError(res, 400, 'Password token expired');
+        return handleError(res, 400, 'User not found');
       }
-    } else {
-      return handleError(res, 400, 'User not found');
+    } catch (err) {
+      return handleError(res, 400, err);
     }
-  } catch (err) {
-    return handleError(res, 400, err);
-  }
-});
+  },
+);
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/choose'
@@ -570,7 +591,7 @@ router.get('/password/reset/:token', async (req, res) => {
 router.post(
   '/password/reset/:token',
   limiter,
-  passwordResetValidationRules(),
+  postPasswordResetValidationRules(),
   validate,
   async (req, res) => {
     try {
