@@ -95,9 +95,6 @@ const getDefaultCardsValidationRules = () => {
   return [param('id').notEmpty().withMessage('Id parameter is required')];
 };
 
-const lockWishCardValidationRules = () => {
-  return [param('id').notEmpty().withMessage('Id parameter is required')];
-};
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -115,6 +112,5 @@ module.exports = {
   updateWishCardValidationRules,
   postMessageValidationRules,
   getDefaultCardsValidationRules,
-  lockWishCardValidationRules,
   validate,
 };

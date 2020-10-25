@@ -13,6 +13,8 @@ const scrapeList = async url => {
     "country_code":"us"
   })
 
+  console.log(url)
+
   const response = await axios.get('https://app.scrapingbee.com/api/v1?'+urlParams, {});
 
   const $ = cheerio.load(response.data);
@@ -29,7 +31,7 @@ const scrapeList = async url => {
 
   if (results.length === 0) {
 
-    if ($('no-items-section').length > 0) {
+    if ($('#no-items-section').length > 0) {
       return [];
     } else {
       return false

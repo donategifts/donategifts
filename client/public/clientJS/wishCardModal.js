@@ -3,6 +3,7 @@
 $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // get reference to button that opened the modal
     let button = $(event.relatedTarget);
+
     console.log(button[0].dataset)
     // extract values from button that contain child name / amazonlink
     let childName = button[0].dataset.valueName;
@@ -25,7 +26,8 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     donateButton.off();
     donateButton.on('click', (event) => {
         event.preventDefault();
-        //('#wishCardDonateModal').find('.modal-body').html(modalWarningMessage);
+        //('#wishCardDonateModal').fin
+        //d('.modal-body').html(modalWarningMessage);
 
         $.ajax({
             type: 'POST',
@@ -33,16 +35,30 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             data: {},
             success: (response, textStatus, jqXHR) => {
 
-                modal.find('.modal-body').html('<div id="countdown"></div><button id="didthething">I did the thing</button><button id="didntdoit">I didnt do nothin</button>PRETTIFY THIS WITH TWO BUTTONS PLEASE THANKSBYE');
+
+                modal.find('.modal-body').html('' +
+                  '<div id="wait-' + button[0].dataset.valueId + '">' +
+                  'PLEASE WAIT THis can take up to 2 minutes</div> ' +
+                  '<div id="status-' + button[0].dataset.valueId + '"></div></div>' +
+                  '<div id="countdown-' + button[0].dataset.valueId + '"></div>' +
+                  '<div id="diditornot-' + button[0].dataset.valueId + '">' +
+                  ' <button id="didthething-' + button[0].dataset.valueId + '">I did the thing</button>' +
+                  ' <button id="didntdoit-' + button[0].dataset.valueId + '">I didnt do nothin</button>' +
+                  '</div>');
+                $('#wait-'+ button[0].dataset.valueId).hide();
+                $('#didthething-'+ button[0].dataset.valueId).prop('disabled', true);
+                $('#didntdoit-'+ button[0].dataset.valueId).prop('disabled', true);
 
                 let timer = 5;
-                const countDownDiv = $('#countdown');
+                const countDownDiv = $('#countdown-'+ button[0].dataset.valueId);
 
-                const countdown = setInterval(() => {
+                countdown[button[0].dataset.valueId] = setInterval(() => {
                     if (timer < 0) {
                         countDownDiv.hide();
                         //window.open(button[0].dataset.valueUrl, '_blank');
-                        clearInterval(countdown);
+                        $('#didthething-'+ button[0].dataset.valueId).prop('disabled', false);
+                        $('#didntdoit-'+ button[0].dataset.valueId).prop('disabled', false);
+                        clearInterval(countdown[button[0].dataset.valueId]);
                     }
                     countDownDiv.html('You will be redirect to Amazon in ' + timer);
                     timer--
@@ -50,13 +66,45 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 }, 1000);
 
                 socket.on('donated', event => {
+                    console.log('DONATION CONFIRMED')
 
-                    if (event.id === button[0].dataset.valueId && event.donatedBy === button[0].dataset.user){
-                        console.log('WOOOOOOHOOOOOO')
+                    if (event.id === button[0].dataset.valueId && event.donatedBy === button[0].dataset.valueUser){
+                        $('#status-'+ button[0].dataset.valueId).html('DONATION CONFIRMED')
+
                         //TODO show balloons and firework play party sounds
                     }
 
                 });
+
+                socket.on('not_donated', event => {
+
+                    if (event.id === button[0].dataset.valueId && event.donatedBy === button[0].dataset.valueUser){
+                        console.log('DONATION NOT CONFIRMED')
+                        $('#status-'+ button[0].dataset.valueId).html('DONATION NOT CONFIRMED')
+                        //TODO show balloons and firework play party sounds
+                    }
+
+                });
+
+                $('#didthething-'+ button[0].dataset.valueId).on('click', (event) => {
+                    console.log('CLICK')
+
+                    $('#wait-'+ button[0].dataset.valueId).show();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/wishcards/status/' + button[0].dataset.valueId,
+                        data: {},
+                        success: (response, textStatus, jqXHR) => {
+
+                            console.log(response)
+                        },
+                        error: (response, textStatus, errorThrown) => {
+
+                            console.log(response)
+
+                        },
+                    });
+                })
 
             },
             error: (response, textStatus, errorThrown) => {
@@ -70,6 +118,4 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
 });
 
-$(document).on('click', '#didthething', (event) => {
-    console.log('CLICK')
-})
+

@@ -6,7 +6,14 @@ serving all wishcard related routes
 
 // NPM DEPENDENCIES
 const express = require('express');
+const Bull = require('bull');
 
+const queue = new Bull('queue', {
+  limiter: {
+    max: 1,
+    duration: 30000
+  }
+});
 const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
@@ -20,7 +27,6 @@ const {
   updateWishCardValidationRules,
   postMessageValidationRules,
   getDefaultCardsValidationRules,
-  lockWishCardValidationRules,
   validate,
 } = require('./validations/wishcards.validations');
 
@@ -362,25 +368,6 @@ router.post(
   },
 );
 
-const checkIfItemIsDonated = (async (wishlist) => {
-
-  const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(wishlist.wishItemURL);
-  const wishListId = wishListArray[1];
-  const itemId = wishListArray[2];
-
-  if (wishListId) {
-    const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}` );
-
-    console.log(scrapeResponse);
-
-    if (!scrapeResponse) return false;
-
-    if (Object.keys(scrapeResponse).length > 0) {
-      return !JSON.stringify(scrapeResponse).includes(itemId);
-    }
-    return true
-  }
-})
 
 // @desc   lock a wishcard
 // @route  POST '/wishcards/message'
@@ -388,10 +375,11 @@ const checkIfItemIsDonated = (async (wishlist) => {
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
 
-router.post('/lock/:id', lockWishCardValidationRules, validate, async (req, res) => {
+router.post('/lock/:id', async (req, res) => {
   try {
 
     const wishCardId = req.params.id;
+    console.log(wishCardId)
 
     if (!req.session.user) return handleError(res, 400, 'User not found');
 
@@ -420,21 +408,11 @@ router.post('/lock/:id', lockWishCardValidationRules, validate, async (req, res)
     io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
 
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
-      const isDonated = await checkIfItemIsDonated(wishCard);
+      queue.add({wishCardId,
+        userId: req.session.user._id,
+        url:wishCard.wishItemURL,
+        price: wishCard.wishItemPrice});
 
-      if(isDonated) {
-        wishCard.isDonated = true;
-        wishCard.save();
-
-        await DonationsRepository.createNewDonation({
-          donationTo: wishCardId,
-          donationFrom: user._id,
-          donationPrice: wishCard.wishItemPrice,
-          donationConfirmed: true
-        });
-
-        io.emit('donated', {id: wishCardId, donatedBy: user._id});
-      }
     }, 10000)
 
     res.status(200).send({
@@ -495,6 +473,101 @@ router.get('/defaults/:id', async (req, res) => {
   },)
 });
 
+
+router.get('/status/:id', async (req, res) => {
+
+  try {
+    const wishCardId = req.params.id;
+
+    if (!req.session.user) return handleError(res, 400, 'User not found');
+
+    const user = await UserRepository.getUserByObjectId(req.session.user._id);
+    if (!user) return handleError(res, 400, 'User not found');
+
+    clearTimeout(blockedWishcardsTimer[wishCardId])
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    queue.add({wishCardId,
+      userId: req.session.user._id,
+      url:wishCard.wishItemURL,
+      price: wishCard.wishItemPrice});
+
+    res.status(200).send({
+      success: true,
+      error: null,
+    });
+
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+
+});
+
+
+queue.process(async (job, done) => {
+
+  const {wishCardId, userId, url, price} = job.data;
+
+  try {
+
+    let isDonated = true;
+    const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(url);
+    if(wishListArray) {
+
+      const wishListId = wishListArray[1];
+      const itemId = wishListArray[2];
+
+      if (wishListId) {
+        const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}` );
+
+        console.log(scrapeResponse)
+        if (!scrapeResponse) isDonated = false;
+
+        if (Object.keys(scrapeResponse).length > 0) {
+          isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
+        }
+
+        if(isDonated) {
+
+          const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+          wishCard.isDonated = true;
+          wishCard.save();
+
+          await DonationsRepository.createNewDonation({
+            donationTo: wishCardId,
+            donationFrom: userId,
+            donationPrice: price,
+            donationConfirmed: true
+          });
+
+          io.emit('donated', {id: wishCardId, donatedBy: userId});
+          done(true);
+          return true;
+
+        }
+        io.emit('not_donated', {id: wishCardId, donatedBy: userId});
+        done(false);
+
+      }
+      done(false)
+
+    }
+    done(false);
+
+  } catch (error) {
+    console.log(error);
+    io.emit('error_donation', {id: wishCardId, donatedBy: userId});
+    done(false);
+
+  }
+});
+
+
+queue.on('completed', (job, result) => {
+  console.log(job.data);
+  console.log(result);
+})
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access Private (only for verified partners)
