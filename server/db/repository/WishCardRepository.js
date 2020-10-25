@@ -63,9 +63,9 @@ async function pushNewWishCardMessage(id, message) {
   }
 }
 
-async function updateWishCardStatus(id, status) {
+async function updateWishCardStatus(id) {
     try {
-      return WishCard.updateOne({ _id: id }, {$set: { status }}).exec();
+      return WishCard.updateOne({ _id: id }, {$set: { status: 'published' }}).exec();
     } catch (error) {
       throw new Error(`Failed to update Wishcard messages: ${error}`);
     }

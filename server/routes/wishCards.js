@@ -280,7 +280,7 @@ router.put('/admin/', async (req, res) => {
         return res.status(401).render('401');
       }
       const {wishCardId} = req.body;
-      await WishCardRepository.updateWishCardStatus(wishCardId, "published");
+      await WishCardRepository.updateWishCardStatus(wishCardId);
       return res.status(200).send({
         success: true,
         error: null,
