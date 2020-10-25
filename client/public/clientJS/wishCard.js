@@ -18,7 +18,6 @@ function preventChildImageContextMenu(e) {
 
 socket.on('block', event => {
 
-    // Get today's date and time
     addCountdown(event.lockedUntil, event.id, '#donate-btn-'+event.id)
 
 });
@@ -28,6 +27,7 @@ socket.on('unblock', event => {
     let button = $('#donate-btn-'+event.id);
 
     clearInterval(x[event.id]);
+
     x[event.id] = null;
     button.text("Donate Gift");
     button.prop("disabled",false);

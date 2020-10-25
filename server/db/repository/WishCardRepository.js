@@ -57,9 +57,21 @@ async function pushNewWishCardMessage(id, message) {
 
 async function lockWishCard(id, userId) {
   try {
-    const wishCard = await getWishCardByObjectId(id).exec();
+    const wishCard = await getWishCardByObjectId(id);
     wishCard.isLockedBy = userId;
-    wishCard.isLockedUntil = moment().add(1, 'minutes');
+    wishCard.isLockedUntil = moment().add(10, 'seconds');
+    wishCard.save();
+    return wishCard;
+  } catch (error) {
+    throw new Error(`Failed to update Wishcard messages: ${error}`);
+  }
+}
+
+async function unLockWishCard(id) {
+  try {
+    const wishCard = await getWishCardByObjectId(id);
+    wishCard.isLockedBy = null;
+    wishCard.isLockedUntil =null;
     wishCard.save();
     return wishCard;
   } catch (error) {
@@ -75,4 +87,5 @@ module.exports = {
   getLockedWishcardsByUserId,
   pushNewWishCardMessage,
   lockWishCard,
+  unLockWishCard,
 };

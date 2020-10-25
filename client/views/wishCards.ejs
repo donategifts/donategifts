@@ -106,7 +106,11 @@
 									data-value-name="<%= wishcards[i].childFirstName %>"
 									data-value-id="<%= wishcards[i]._id %>"
 									data-value-loggedIn="<%= !!locals.user %>"
-									data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
+									<% if (locals.user) { %>
+										data-value-user="<%= locals.user._id %>"
+									<% } %>
+
+											data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
 									Gift</button>
 								</div>
 							</div>

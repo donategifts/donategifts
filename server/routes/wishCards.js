@@ -14,7 +14,7 @@ const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const io = require('../helper/socket');
-
+const scrapeList = require('../../scripts/amazon-scraper')
 const {
   babies,
   preschoolers,
@@ -76,6 +76,7 @@ const upload = multer({
 const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
+const DonationsRepository = require('../db/repository/DonationRepository');
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
@@ -90,6 +91,7 @@ router.post('/', upload.single('wishCardImage'), async (req, res) => {
     });
   } else {
     try {
+
       await WishCardRepository.createNewWishCard({
         childBirthday: new Date(req.body.childBirthday),
         wishItemPrice: Number(req.body.wishItemPrice),
@@ -335,10 +337,32 @@ router.post('/message', async (req, res) => {
 });
 
 
+const checkIfItemIsDonated = (async (wishlist) => {
+
+  const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(wishlist.wishItemURL);
+  const wishListId = wishListArray[1];
+  const itemId = wishListArray[2];
+
+  if (wishListId) {
+    const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}` );
+
+    console.log(scrapeResponse);
+
+    if (!scrapeResponse) return false;
+
+    if (Object.keys(scrapeResponse).length > 0) {
+      return !JSON.stringify(scrapeResponse).includes(itemId);
+    }
+    return true
+  }
+})
+
 // @desc   lock a wishcard
 // @route  POST '/wishcards/message'
 // @access  Public, all users
 // @tested 	Not yet
+const blockedWishcardsTimer = [];
+
 router.post('/lock/:id', async (req, res) => {
   try {
 
@@ -349,18 +373,44 @@ router.post('/lock/:id', async (req, res) => {
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
     if (!user) return handleError(res, 400, 'User not found');
 
+    // check if user already has a locked wishcard
     const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+
     if(wishcardAlreadyLockedByUser) {
       // user has locked wishcard and its still locked
-
-      if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
+      if (moment(wishcardAlreadyLockedByUser.isLockedUntil) >= moment()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
       }
     }
 
+    // check if wishcard is locked by someone else
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    if (moment(wishCard.isLockedUntil) > moment()) {
+      return handleError(res, 400, 'Wishcard has been locked by someone else.');
+    }
+
     const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
 
-    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil})
+    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
+
+    blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
+      const isDonated = await checkIfItemIsDonated(wishCard);
+
+      if(isDonated) {
+        wishCard.isDonated = true;
+        wishCard.save();
+
+        DonationsRepository.createNewDonation({
+          donationTo: wishCardId,
+          donationFrom: user._id,
+          donationPrice: wishCard.wishItemPrice,
+          donationConfirmed: true
+        });
+
+        io.emit('donated', {id: wishCardId, donatedBy: user._id});
+      }
+    }, 10000)
 
     res.status(200).send({
       success: true,
@@ -371,6 +421,36 @@ router.post('/lock/:id', async (req, res) => {
   }
 });
 
+
+
+
+
+router.post('/unlock/:id', async (req, res) => {
+  try {
+
+    const wishCardId = req.params.id;
+
+    if (!req.session.user) return handleError(res, 400, 'User not found');
+
+    const user = await UserRepository.getUserByObjectId(req.session.user._id);
+    if (!user) return handleError(res, 400, 'User not found');
+
+    const lockedWishcard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+    if(lockedWishcard && lockedWishcard.isLockedBy === req.session.user._id) {
+
+      WishCardRepository.unLockWishCard(wishCardId);
+      io.emit('unblock', {id: wishCardId});
+      clearTimeout(blockedWishcardsTimer[wishCardId])
+    }
+
+    res.status(200).send({
+      success: true,
+      error: null,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 // @desc
 // @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access
