@@ -3,6 +3,12 @@
     "airbnb-base",
     "prettier"
   ],
+  "plugins": [
+    "mocha"
+  ],
+  "env": {
+    "mocha": true
+  },
   "rules": {
     "camelcase": "off",
     "no-plusplus": "off",
