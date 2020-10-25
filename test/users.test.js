@@ -1,16 +1,14 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const User = require('../server/db/models/User');
-const Agency = require('../server/db/models/Agency');
+let User = require('../server/db/models/User');
+let Agency = require('../server/db/models/Agency');
 
-// Require the dev-dependencies
-const server = require('../server/app');
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should();
+//Require the dev-dependencies
+let chai = require('chai');
+let chaiHttp = require('chai-http');
+let server = require('../server/app');
+let should = chai.should();
 
 chai.use(chaiHttp);
-const agent = chai.request.agent(server);
+let agent = chai.request.agent(server);
 
 let signupRequest;
 
@@ -24,10 +22,10 @@ describe('Users', () => {
       passwordConfirm: 'testPassword1',
       userRole: 'donor',
     };
-    // Before each test we empty the database
-    User.deleteMany({ email: 'test@email.de' }, () => {
-      Agency.deleteMany({}, () => {
-        agent.get('/users/logout').end((_err, res) => {
+    //Before each test we empty the database
+    User.deleteMany({ email: 'test@email.de' }, (err) => {
+      Agency.deleteMany({}, (err) => {
+        agent.get('/users/logout').end((err, res) => {
           res.text.should.contain('Sign Up to Donate Gifts');
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -78,7 +76,7 @@ describe('Users', () => {
         hash += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
 
-      agent.get(`/users/verify/${hash}`).end((err, res) => {
+      agent.get('/users/verify/' + hash).end((err, res) => {
         res.should.have.status(400);
         res.text.should.contain('Verification failed');
         done();
@@ -107,12 +105,12 @@ describe('Users', () => {
             user.id.should.equal(res.body.user._id);
             user.email.should.equal(signupRequest.email);
 
-            agent.get(`/users/verify/${user.verificationHash}`).end((_, verifyRes) => {
-              verifyRes.should.have.status(200);
-              verifyRes.text.should.contain('Verification successful');
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
 
-              User.findOne({ email: signupRequest.email }).then((userResult) => {
-                userResult.emailVerified.should.equal(true);
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
                 done();
               });
             });
@@ -163,9 +161,9 @@ describe('Users', () => {
           User.findOne({ email: signupRequest.email }).then((user) => {
             user.id.should.equal(res.body.user._id);
 
-            agent.get('/users/profile').end((_, profileRes) => {
-              profileRes.text.should.contain(`Welcome ${user.fName}`);
-              profileRes.text.should.contain('Your email is unverified');
+            agent.get('/users/profile').end((err, res) => {
+              res.text.should.contain('Welcome ' + user.fName);
+              res.text.should.contain('Your email is unverified');
               done();
             });
           });
@@ -180,17 +178,17 @@ describe('Users', () => {
           res.should.have.status(200);
           User.findOne({ email: signupRequest.email }).then((user) => {
             user.emailVerified.should.equal(false);
-            agent.get(`/users/verify/${user.verificationHash}`).end((_err, verifyRes) => {
-              verifyRes.should.have.status(200);
-              verifyRes.text.should.contain('Verification successful');
+            agent.get('/users/verify/' + user.verificationHash).end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('Verification successful');
 
-              User.findOne({ email: signupRequest.email }).then((userResult) => {
-                userResult.emailVerified.should.equal(true);
+              User.findOne({ email: signupRequest.email }).then((user) => {
+                user.emailVerified.should.equal(true);
 
-                agent.get('/users/profile').end((_profileErr, profileRes) => {
-                  profileRes.should.have.status(200);
-                  profileRes.text.should.contain(`Welcome ${userResult.fName}`);
-                  profileRes.text.should.not.contain('Your email is unverified');
+                agent.get('/users/profile').end((err, res) => {
+                  res.should.have.status(200);
+                  res.text.should.contain('Welcome ' + user.fName);
+                  res.text.should.not.contain('Your email is unverified');
                   done();
                 });
               });
@@ -292,7 +290,7 @@ describe('Users', () => {
 
   describe('/POST users/login', () => {
     it('it should not login without email', (done) => {
-      const loginRequest = {
+      let loginRequest = {
         password: 'testPassword',
       };
       agent
@@ -308,7 +306,7 @@ describe('Users', () => {
     });
 
     it('it should not login without password', (done) => {
-      const loginRequest = {
+      let loginRequest = {
         email: 'test@Email.de',
       };
       agent
@@ -324,7 +322,7 @@ describe('Users', () => {
     });
 
     it("it should not login if user doesn't exist", (done) => {
-      const loginRequest = {
+      let loginRequest = {
         email: 'testEmail@email.de',
         password: 'testPassword',
       };
@@ -367,9 +365,9 @@ describe('Users', () => {
           res.body.user.emailVerified.should.equal(false);
           res.body.should.have.property('url');
 
-          agent.get('/users/agency').end((_, agencyRes) => {
-            agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
             done();
           });
         });
@@ -398,9 +396,9 @@ describe('Users', () => {
           agent
             .get('/users/profile')
             .redirects(1)
-            .end((_, profileRes) => {
-              profileRes.should.have.status(200);
-              profileRes.text.should.contain('agency registration page');
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.text.should.contain('agency registration page');
               done();
             });
         });
@@ -426,12 +424,12 @@ describe('Users', () => {
           res.body.user.emailVerified.should.equal(false);
           res.body.should.have.property('url');
 
-          agent.get('/users/agency').end((_, agencyRes) => {
-            agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
 
             User.findOne({ email: signupRequest.email }).then((user) => {
-              const agencyRequest = {
+              let agencyRequest = {
                 agencyName: 'testAgencyName',
                 agencyWebsite: 'http://testAgencyWebsite',
                 agencyPhone: '12334556',
@@ -441,14 +439,14 @@ describe('Users', () => {
               agent
                 .post('/users/agency')
                 .send(agencyRequest)
-                .end((_agencyErr, postAgencyRes) => {
-                  postAgencyRes.should.have.status(200);
-                  postAgencyRes.body.should.have.property('url');
+                .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.have.property('url');
 
-                  agent.get('/users/profile').end((_profileErr, profileRes) => {
-                    profileRes.should.have.status(200);
-                    profileRes.text.should.contain(`Welcome ${user.fName}`);
-                    profileRes.text.should.contain('Your email is unverified');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.should.have.status(200);
+                    res.text.should.contain('Welcome ' + user.fName);
+                    res.text.should.contain('Your email is unverified');
 
                     Agency.findOne({ accountManager: user._id }).then((agency) => {
                       agency.agencyName.should.equal(agencyRequest.agencyName);
@@ -484,12 +482,12 @@ describe('Users', () => {
           res.body.user.emailVerified.should.equal(false);
           res.body.should.have.property('url');
 
-          agent.get('/users/agency').end((_, agencyRes) => {
-            agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
 
-            User.findOne({ email: signupRequest.email }).then(() => {
-              const agencyRequest = {
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
                 agencyWebsite: 'http://testAgencyWebsite',
                 agencyPhone: '12334556',
                 agencyBio: 'testAgencyBio',
@@ -498,13 +496,13 @@ describe('Users', () => {
               agent
                 .post('/users/agency')
                 .send(agencyRequest)
-                .end((_agencyErr, postAgencyRes) => {
-                  postAgencyRes.should.have.status(400);
-                  postAgencyRes.body.should.have.property('error');
-                  postAgencyRes.body.error.msg.should.contain('Invalid value');
-                  postAgencyRes.body.error.param.should.contain('agencyName');
-                  agent.get('/users/profile').end((_profileErr, profileRes) => {
-                    profileRes.text.should.contain('agency registration page');
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyName');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
                     done();
                   });
                 });
@@ -533,12 +531,12 @@ describe('Users', () => {
           res.body.user.emailVerified.should.equal(false);
           res.body.should.have.property('url');
 
-          agent.get('/users/agency').end((_, agencyRes) => {
-            agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+          agent.get('/users/agency').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.contain('agency registration page');
 
-            User.findOne({ email: signupRequest.email }).then(() => {
-              const agencyRequest = {
+            User.findOne({ email: signupRequest.email }).then((user) => {
+              let agencyRequest = {
                 agencyName: 'testAgencyName',
                 agencyWebsite: 'http://testAgencyWebsite',
                 agencyBio: 'testAgencyBio',
@@ -547,13 +545,13 @@ describe('Users', () => {
               agent
                 .post('/users/agency')
                 .send(agencyRequest)
-                .end((_agencyErr, postAgencyRes) => {
-                  postAgencyRes.should.have.status(400);
-                  postAgencyRes.body.should.have.property('error');
-                  postAgencyRes.body.error.msg.should.contain('Invalid value');
-                  postAgencyRes.body.error.param.should.contain('agencyPhone');
-                  agent.get('/users/profile').end((_profileErr, profileRes) => {
-                    profileRes.text.should.contain('agency registration page');
+                .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.have.property('error');
+                  res.body.error.msg.should.contain('Invalid value');
+                  res.body.error.param.should.contain('agencyPhone');
+                  agent.get('/users/profile').end((err, res) => {
+                    res.text.should.contain('agency registration page');
                     done();
                   });
                 });

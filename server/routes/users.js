@@ -3,7 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
@@ -38,12 +37,6 @@ const {
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-
-// allow only 100 requests per 15 minutes
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-});
 
 // @desc    Render (home)
 // @route   GET '/users'
@@ -171,7 +164,7 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @route   POST '/users/agency'
 // @access  private, partners only
 // @tested 	No
-router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
+router.post('/agency', createAgencyValidationRules(), validate, async (req, res) => {
   const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
 
   await AgencyRepository.createNewAgency({
@@ -205,25 +198,27 @@ const sendEmail = async (email, verificationHash) => {
 // @access  Logged user
 // @tested 	Yess
 router.get('/agency/wishcard', async (req, res) => {
-  try {
-    const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-    const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
-    // sort cards by status => published, draft, donated
-    const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
-      if (currentCard.status > nextCard.status) return -1;
-      if (currentCard.status < nextCard.status) return 1;
-      return 0;
-    });
-    res.render('agencyWishCards', { wishcards }, (error, html) => {
-      if (error) {
-        res.status(400).json({ success: false, error });
-      } else {
-        res.status(200).send(html);
-      }
-    });
-  } catch (error) {
-    handleError(res, 400, error);
-  }
+    try {
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+      // sort cards by status => published, draft, donated
+      const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
+        if (currentCard.status > nextCard.status)
+          return -1;
+        if (currentCard.status < nextCard.status)
+          return 1;
+        return 0;
+      });
+      res.render('agencyWishCards', { wishcards }, (error, html) => {
+        if (error) {
+          res.status(400).json({ success: false, error });
+        } else {
+          res.status(200).send(html);
+        }
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
 });
 
 // @desc    Create a newUser, hash password, issue session
@@ -231,7 +226,7 @@ router.get('/agency/wishcard', async (req, res) => {
 // @access  Public
 // @tested 	Yes
 // TODO: display this message in signup.html client side as a notification alert.
-router.post('/signup', limiter, signupValidationRules(), validate, async (req, res) => {
+router.post('/signup', signupValidationRules(), validate, async (req, res) => {
   const { fName, lName, email, password, userRole, captchaToken } = req.body;
 
   // validate captcha code. False if its invalid
@@ -290,61 +285,55 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
 // @route   POST '/google-signin'
 // @access  Public
 // @tested 	Not yet
-router.post(
-  '/google-signin',
-  limiter,
-  googlesignupValidationRules(),
-  validate,
-  async (req, res) => {
-    const { id_token } = req.body;
+router.post('/google-signin', googlesignupValidationRules(), validate, async (req, res) => {
+  const { id_token } = req.body;
 
-    if (id_token) {
-      try {
-        const user = await verifyGoogleToken(id_token);
-        const fName = user.firstName;
-        const lName = user.lastName;
-        const email = user.mail;
+  if (id_token) {
+    try {
+      const user = await verifyGoogleToken(id_token);
+      const fName = user.firstName;
+      const lName = user.lastName;
+      const email = user.mail;
 
-        const dbUser = await UserRepository.getUserByEmail(email);
+      const dbUser = await UserRepository.getUserByEmail(email);
 
-        if (dbUser) {
-          req.session.user = dbUser;
-          res.locals.user = dbUser;
-          return res.status(200).send({
-            url: '/users/profile',
-          });
-        }
-
-        const newUser = await UserRepository.createNewUser({
-          fName,
-          lName,
-          email,
-          password: createDefaultPassword(),
-          verificationHash: createEmailVerificationHash(),
-          userRole: 'donor',
-          loginMode: 'Google',
-          emailVerified: true,
-        });
-
-        req.session.user = newUser;
-        res.locals.user = newUser;
+      if (dbUser) {
+        req.session.user = dbUser;
+        res.locals.user = dbUser;
         return res.status(200).send({
           url: '/users/profile',
         });
-      } catch (error) {
-        return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
       }
-    }
 
-    return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-  },
-);
+      const newUser = await UserRepository.createNewUser({
+        fName,
+        lName,
+        email,
+        password: createDefaultPassword(),
+        verificationHash: createEmailVerificationHash(),
+        userRole: 'donor',
+        loginMode: 'Google',
+        emailVerified: true,
+      });
+
+      req.session.user = newUser;
+      res.locals.user = newUser;
+      return res.status(200).send({
+        url: '/users/profile',
+      });
+    } catch (error) {
+      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+    }
+  }
+
+  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+});
 
 // @desc    handle facebook signup/login
 // @route   POST '/fb-signin'
 // @access  Public
 // @tested 	Not yet
-router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (req, res) => {
+router.post('/fb-signin', fbsignupValidationRules(), validate, async (req, res) => {
   const { userName, email } = req.body;
 
   if (userName && email) {
@@ -389,29 +378,15 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
 // @route   POST '/users/login'
 // @access  Public
 // @tested 	Not yet
-router.post(
-  '/login',
-  limiter,
-  loginValidationRules(),
-  validate,
-  redirectProfile,
-  async (req, res) => {
-    const { email, password } = req.body;
+router.post('/login', loginValidationRules(), validate, redirectProfile, async (req, res) => {
+  const { email, password } = req.body;
 
-    const user = await UserRepository.getUserByEmail(email);
-    if (user) {
-      if (await bcrypt.compare(password, user.password)) {
-        req.session.user = user;
-        res.locals.user = user;
-        return res.redirect('/users/profile');
-      }
-      return res.status(403).render('login', {
-        user: res.locals.user,
-        successNotification: null,
-        g_client_id: process.env.G_CLIENT_ID,
-        fb_client_id: process.env.FB_APP_ID,
-        errorNotification: { msg: 'Username and/or password incorrect' },
-      });
+  const user = await UserRepository.getUserByEmail(email);
+  if (user) {
+    if (await bcrypt.compare(password, user.password)) {
+      req.session.user = user;
+      res.locals.user = user;
+      return res.redirect('/users/profile');
     }
     return res.status(403).render('login', {
       user: res.locals.user,
@@ -420,8 +395,15 @@ router.post(
       fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Username and/or password incorrect' },
     });
-  },
-);
+  }
+  return res.status(403).render('login', {
+    user: res.locals.user,
+    successNotification: null,
+    g_client_id: process.env.G_CLIENT_ID,
+    fb_client_id: process.env.FB_APP_ID,
+    errorNotification: { msg: 'Username and/or password incorrect' },
+  });
+});
 
 // @desc    Render login.html
 // @route   GET '/users/logout'
@@ -530,30 +512,24 @@ router.get('/password/request', async (req, res) => {
 // @route   GET '/users/choose'
 // @access  Private
 // @tested
-router.post(
-  '/password/request',
-  limiter,
-  passwordRequestValidationRules(),
-  validate,
-  async (req, res) => {
-    try {
-      const userObject = await UserRepository.getUserByEmail(req.body.email);
+router.post('/password/request', passwordRequestValidationRules(), validate, async (req, res) => {
+  try {
+    const userObject = await UserRepository.getUserByEmail(req.body.email);
 
-      if (!userObject) return handleError(res, 400, 'user not found');
+    if (!userObject) return handleError(res, 400, 'user not found');
 
-      const resetToken = uuidv4();
-      userObject.passwordResetToken = resetToken;
-      userObject.passwordResetTokenExpires = moment().add(1, 'hours');
-      userObject.save();
+    const resetToken = uuidv4();
+    userObject.passwordResetToken = resetToken;
+    userObject.passwordResetTokenExpires = moment().add(1, 'hours');
+    userObject.save();
 
-      sendPasswordResetMail(userObject.email, resetToken);
+    sendPasswordResetMail(userObject.email, resetToken);
 
-      res.send({ success: true });
-    } catch (err) {
-      return handleError(res, 400, err);
-    }
-  },
-);
+    res.send({ success: true });
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+});
 
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/choose'
@@ -590,7 +566,6 @@ router.get(
 // @tested
 router.post(
   '/password/reset/:token',
-  limiter,
   postPasswordResetValidationRules(),
   validate,
   async (req, res) => {
