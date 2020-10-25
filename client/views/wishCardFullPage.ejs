@@ -25,13 +25,13 @@
           </h1>
           <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
           <div class="button-center">
-            <button type="button" id="donate-btn" class="wishcard-btn btn-grn-bg comf-font">
+            <button type="button" id="donate-btn" class="wishcard-btn btn-grn-bg quick-font">
               <a href="<%= wishcard.wishItemURL %>" target="_blank">Donate Gift</a>
             </button>
           </div>
         </div>
 
-        <div class="section-info mt-5 comf-font">
+        <div class="section-info mt-5 quick-font">
           <h4 class="pb-4 grn-font">Wish Card Details</h4>
           <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
           <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
@@ -40,7 +40,7 @@
           <p class="card-text">About Me : <%= wishcard.childStory %></p>
         </div>
 
-        <div class="write-msg mt-5 comf-font">
+        <div class="write-msg mt-5 quick-font">
           <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
           <p class="card-text">Select a message to send</p>
           <!-- After discussion, we decided to just do a pre-written phrase checkbox,
@@ -61,7 +61,7 @@
             wishcard model has 'messages' field which is an objectId array of 'Message'-->
         <div class="show-msg">
           <% if (messages.length === 0) { %>
-          <h6 class="comf-font">
+          <h6 class="quick-font">
             No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a
             message.
           </h6>
