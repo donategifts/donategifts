@@ -11,6 +11,7 @@ const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const io = require('../helper/socket');
+const sanitize = require('mongo-sanitize');
 
 const {
   createWishcardValidationRules,
@@ -258,7 +259,7 @@ router.put('/admin/', async (req, res) => {
       if (res.locals.user.userRole !== USER_ROLE) {
         return res.status(401).render('401');
       }
-      const {wishCardId} = req.body;
+      const wishCardId = sanitize(req.body.wishCardId);
       await WishCardRepository.updateWishCardStatus(wishCardId);
       return res.status(200).send({
         success: true,
