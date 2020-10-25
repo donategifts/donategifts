@@ -242,6 +242,59 @@ router.get('/me', async (req, res) => {
   }
 });
 
+// @desc    Retrun wishcards that have draft status
+// @route   GET '/wishcards/admin'
+// @access  User with admin role
+// @tested 	No
+router.get('/admin/', async (req, res) => {
+    try {
+      const WISHCARD_STATUS = "draft";
+      const USER_ROLE = "admin";
+      // only admin users can get access
+      if (res.locals.user.userRole !== USER_ROLE) {
+        return res.status(401).render('401');
+      }
+      // only retrieve wishcards that have a draft status
+      const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+      res.render('adminWishCards', { wishcards }, (error, html) => {
+        if (error) {
+          res.status(400).json({ success: false, error });
+        } else {
+          res.status(200).send(html);
+        }
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+});
+
+// @desc    Update wishcard
+// @route   PUT '/wishcards/admin'
+// @access  User with admin role
+// @tested 	No
+router.put('/admin/', async (req, res) => {
+    try {
+      const USER_ROLE = "admin";
+      // only admin users can get access
+      if (res.locals.user.userRole !== USER_ROLE) {
+        return res.status(401).render('401');
+      }
+      const {wishCardId} = req.body;
+      await WishCardRepository.updateWishCardStatus(wishCardId, "published");
+      return res.status(200).send({
+        success: true,
+        error: null,
+        data: null,
+      });
+    } catch (error) {
+        return res.status(200).send({
+            success: false,
+            error,
+            data: null,
+          });
+    }
+});
+
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
 // @access  Public
