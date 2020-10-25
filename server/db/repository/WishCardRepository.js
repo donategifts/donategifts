@@ -4,7 +4,7 @@ const WishCard = require('../models/WishCard');
 async function createNewWishCard(wishCardParams) {
   try {
     const newCard = new WishCard(wishCardParams);
-    await newCard.save();
+    return newCard.save();
   } catch (error) {
     throw new Error(`Failed to create new WishCard: ${error}`);
   }

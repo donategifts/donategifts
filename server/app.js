@@ -25,17 +25,23 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
-const cors = require('cors');
+const morgan = require('morgan');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
+const log = require('./helper/logger');
+
 const app = express();
 
-// CORS SETUP
-app.use(cors());
+// MORGAN REQUEST LOGGER
+if (process.env.NODE_ENV === 'development') {
+  // colorful output for dev environment
+  app.use(morgan('dev'));
+}
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
 app.set('views', path.join(__dirname, '../client/views'));
@@ -54,9 +60,6 @@ app.use('/uploads', express.static('./uploads'));
 // const hostname = '64.227.8.216';
 const hostname = '127.0.0.1';
 const port = 8081;
-
-// DB SET UP & APP LISTEN (server starts after db connection)
-MongooseConnection.connect(app, port, hostname);
 
 // SESSION SET UP
 app.use(
@@ -103,6 +106,15 @@ app.use(
     useUnifiedTopology: true,
   }),
 );
+
+// sanitize input data for mongo
+// replace with _ so that we cannot write it to db
+app.use(
+  mongoSanitize({
+    replaceWith: '_',
+  }),
+);
+
 app.use(cookieParser());
 // static files like css, js, images, fonts etc.
 app.use(express.static('client'));
@@ -125,8 +137,28 @@ app.get('/', (_req, res) => {
 });
 
 // ERROR PAGE
-app.get('*', (_req, res) => {
-  res.status(404).render('error');
+app.get('*', (req, res) => {
+  log.warn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
+  res.status(404).render('404');
 });
+
+// error handler
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, _next) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // TODO: send error message to slack/sentry?
+
+  log.error(err);
+
+  // render the error page
+  res.status(500);
+  res.render('500');
+});
+
+// DB SET UP & APP LISTEN (server starts after db connection)
+MongooseConnection.connect(app, port, hostname);
 
 module.exports = app;

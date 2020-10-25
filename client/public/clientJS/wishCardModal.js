@@ -8,7 +8,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let childName = button[0].dataset.valueName;
 
     let modalWarningMessage = `<h1>This wish card will be reserved for your donation</h1>
-        <h4>for 10 minutes to avoid duplicate donations.</h4> 
+        <h4>for 10 minutes to avoid duplicate donations.</h4>
         <h4>Once redirected to Amazon, please select ${childName}'s anonymized shipping address before you check out.</h4>`;
     // get modal reference and replace text
     modal = $(this);

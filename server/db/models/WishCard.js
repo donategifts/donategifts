@@ -23,7 +23,7 @@ const WishCardSchema = new Schema(
       type: String,
     },
     wishItemPrice: {
-      type: String,
+      type: Number,
     },
     wishItemURL: {
       type: String,
@@ -77,6 +77,15 @@ const WishCardSchema = new Schema(
         ref: 'Message',
       },
     ],
+    status: {
+        type: String,
+        enum: ['draft', 'published', 'donated'],
+        default: 'draft'
+    },
+    wishCardTo: {
+        type: Schema.Types.ObjectId,
+        ref: 'Agency',
+    },
   },
   {
     collection: 'wishcards',

@@ -1,12 +1,12 @@
 $(document).ready(function () {
-  $(".message").submit(function (e) {
+  $('.message').submit(function (e) {
     e.preventDefault();
 
-    let message = $(".custom-select option:selected").text();
+    let message = $('.custom-select option:selected').text();
 
     $.ajax({
-      type: "POST",
-      url: "/wishcards/message",
+      type: 'POST',
+      url: '/wishcards/message',
       data: {
         messageFrom: JSON.parse(messageFrom),
         messageTo: JSON.parse(messageTo),
@@ -18,6 +18,11 @@ $(document).ready(function () {
         },
         200: function (responseObject, textStatus, errorThrown) {
           window.location.reload();
+        },
+        403: function (responseObject) {
+          showToast('Access Forbidden: Your account lacks sufficient permissions');
+          let { url } = responseObject.responseJSON;
+          setTimeout(() => location.assign(url), 1200);
         },
       },
     });
