@@ -36,8 +36,8 @@ if (process.env.USE_AWS !== 'true') {
 } else {
   storage = multerS3({
     s3,
-    bucket: process.env.S3BUCKET,
-    acl: 'public-read',
+    Bucket: process.env.S3BUCKET,
+    ACL: 'public-read',
     key(req, file, cb) {
       // rename the file since we convert it to jpeg
       cb(null, `${UUIDv4()}-${file.filename}.jpeg`);
