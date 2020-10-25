@@ -9,7 +9,6 @@ function unlockCardButtonClick(e) {
     const cardId = e.target.dataset.valueId;
     // get reference to element so we can call it inside callback
     const elementRef = e.target;
-    alert(cardId);
     $.ajax({
         type: 'PUT',
         url: '/wishcards/admin',
