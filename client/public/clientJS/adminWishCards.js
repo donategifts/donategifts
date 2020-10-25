@@ -28,9 +28,11 @@ function unlockCardButtonClick(e) {
 }
 
 // remove wishcard from dom if card was published
+// removes child nodes from the specified div element
 function removeWishCardFromDOM(node) {
-    let t = "row justify-content-center";
-    if (node.parentNode.className !== t) {
+    // name of the div container for wishcards
+    let divName = "row justify-content-center";
+    if (node.parentNode.className !== divName) {
         removeWishCardFromDOM(node.parentNode);
     }
     else {
