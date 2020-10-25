@@ -99,6 +99,7 @@ const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
+const DonationsRepository = require('../db/repository/DonationRepository');
 
 // @desc    wishcard creation form sends data to db
 // @route   POST '/wishcards'
@@ -408,7 +409,7 @@ const checkIfItemIsDonated = (async (wishlist) => {
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
 
-router.post('/lock/:id', async (req, res) => {
+router.post('/lock/:id', lockWishCardValidationRules, validate, async (req, res) => {
   try {
 
     const wishCardId = req.params.id;
@@ -446,7 +447,7 @@ router.post('/lock/:id', async (req, res) => {
         wishCard.isDonated = true;
         wishCard.save();
 
-        DonationsRepository.createNewDonation({
+        await DonationsRepository.createNewDonation({
           donationTo: wishCardId,
           donationFrom: user._id,
           donationPrice: wishCard.wishItemPrice,
@@ -457,11 +458,14 @@ router.post('/lock/:id', async (req, res) => {
       }
     }, 10000)
 
-        const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
-        io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
-
-
-
+    res.status(200).send({
+      success: true,
+      error: null,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 
 router.post('/unlock/:id', async (req, res) => {
@@ -477,7 +481,7 @@ router.post('/unlock/:id', async (req, res) => {
     const lockedWishcard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
     if(lockedWishcard && lockedWishcard.isLockedBy === req.session.user._id) {
 
-      WishCardRepository.unLockWishCard(wishCardId);
+      await WishCardRepository.unLockWishCard(wishCardId);
       io.emit('unblock', {id: wishCardId});
       clearTimeout(blockedWishcardsTimer[wishCardId])
     }
@@ -505,12 +509,12 @@ router.get('/defaults/:id', async (req, res) => {
   else if (ageCategory === 6) itemChoices = youth;
   else if (ageCategory === 7) itemChoices = allAgesA;
   else itemChoices = allAgesB;
-  res.render('itemChoices', { itemChoices }, (error, html) => {
+  res.render('itemChoices', { itemChoices }, (error) => {
     if (error) {
       handleError(res, 400, error);
     }
-  },
-);
+  },)
+});
 
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
