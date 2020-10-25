@@ -509,30 +509,30 @@ router.get(
     let itemChoices;
 
     switch (ageCategory) {
-      case 1:
-        itemChoices = babies;
-        break;
-      case 2:
-        itemChoices = preschoolers;
-        break;
-      case 3:
-        itemChoices = kids6_8;
-        break;
-      case 4:
-        itemChoices = kids9_11;
-        break;
-      case 5:
-        itemChoices = teens;
-        break;
-      case 6:
-        itemChoices = youth;
-        break;
-      case 7:
-        itemChoices = allAgesA;
-        break;
-      default:
-        itemChoices = allAgesB;
-        break;
+    case 1:
+      itemChoices = babies;
+      break;
+    case 2:
+      itemChoices = preschoolers;
+      break;
+    case 3:
+      itemChoices = kids6_8;
+      break;
+    case 4:
+      itemChoices = kids9_11;
+      break;
+    case 5:
+      itemChoices = teens;
+      break;
+    case 6:
+      itemChoices = youth;
+      break;
+    case 7:
+      itemChoices = allAgesA;
+      break;
+    default:
+      itemChoices = allAgesB;
+      break;
     }
 
     res.render('itemChoices', { itemChoices }, (error, html) => {
