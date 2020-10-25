@@ -61,9 +61,9 @@ router.post(
   '/',
   limiter,
   renderPermissions,
+  WishCardController.upload.single('wishCardImage'),
   createWishcardValidationRules(),
   validate,
-  WishCardController.upload.single('wishCardImage'),
   async (req, res) => {
     if (req.file === undefined) {
       handleError(
@@ -99,7 +99,7 @@ router.post(
         });
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
-        res.status(200).send('/wishcards/');
+        res.status(200).send({ success: true, url: '/wishcards/' });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -115,9 +115,9 @@ router.post(
   '/guided/',
   limiter,
   renderPermissions,
+  WishCardController.upload.single('wishCardImage'),
   createGuidedWishcardValidationRules(),
   validate,
-  WishCardController.upload.single('wishCardImage'),
   async (req, res) => {
     if (req.file === undefined) {
       handleError(

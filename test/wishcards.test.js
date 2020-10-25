@@ -142,8 +142,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
         fs.readFileSync('client/public/img/card-sample-1.jpg'),
         'card-sample1.jpg',
       )
-      .end((err, res) => {
-        log.warn(res.body);
+      .end((_err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('success');
         res.body.should.have.property('url');
