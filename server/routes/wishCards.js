@@ -14,10 +14,12 @@ const queue = new Bull('queue', {
     duration: 30000
   }
 });
+
 const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
+const logger = require('../helper/logger');
 const io = require('../helper/socket');
 const scrapeList = require('../../scripts/amazon-scraper')
 const {
@@ -563,7 +565,7 @@ queue.process(async (job, done) => {
       if (wishListId) {
         const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}` );
 
-        console.log(scrapeResponse)
+        logger.debug(scrapeResponse)
         if (!scrapeResponse) isDonated = false;
 
         if (Object.keys(scrapeResponse).length > 0) {
@@ -599,7 +601,7 @@ queue.process(async (job, done) => {
     done(false);
 
   } catch (error) {
-    console.log(error);
+    logger.debug(error);
     io.emit('error_donation', {id: wishCardId, donatedBy: userId});
     done(false);
 
@@ -608,8 +610,8 @@ queue.process(async (job, done) => {
 
 
 queue.on('completed', (job, result) => {
-  console.log(job.data);
-  console.log(result);
+  logger.debug(job.data);
+  logger.debug(result);
 })
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
