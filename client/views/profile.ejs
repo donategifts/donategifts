@@ -82,6 +82,18 @@
             <p class="col-md-4 col-xs-12">Agency Verified: <%= agency.isVerified %></p>
             <p class="col-md-4 col-xs-12">Number of Wishcards: <%= agency.wishCards.length %></p>
           </div>
+          <div class="row justify-content-around">
+            <p class="col-md-4 col-xs-12">Agency Address: <%= agency.agencyAddress.address1 %></p>
+            <p class="col-md-4 col-xs-12">Number Address 2: <%= agency.agencyAddress.address2 %></p>
+          </div>
+          <div class="row justify-content-around">
+            <p class="col-md-4 col-xs-12">Agency City: <%= agency.agencyAddress.city %></p>
+            <p class="col-md-4 col-xs-12">Agency State: <%= agency.agencyAddress.state %></p>
+          </div>
+          <div class="row justify-content-around">
+            <p class="col-md-4 col-xs-12">Agency Country: <%= agency.agencyAddress.country %></p>
+            <p class="col-md-4 col-xs-12">Number ZipCode: <%= agency.agencyAddress.zipcode %></p>
+          </div>
         </div>
         <%}%>
 

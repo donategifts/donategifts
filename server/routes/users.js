@@ -172,13 +172,14 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @access  private, partners only
 // @tested 	No
 router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
-  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
+  const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
   await AgencyRepository.createNewAgency({
     agencyName,
     agencyWebsite,
     agencyPhone,
     agencyBio,
+    agencyAddress,
     accountManager: req.session.user._id,
     ...req.body,
   });
