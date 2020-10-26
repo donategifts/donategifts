@@ -41,7 +41,7 @@
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.10.9",
+    "mongoose": "^5.10.10",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-sharp-s3": "^0.2.1",
