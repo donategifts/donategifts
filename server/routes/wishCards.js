@@ -260,7 +260,7 @@ router.put('/admin/', async (req, res) => {
         return res.status(401).render('401');
       }
       const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-      await WishCardRepository.setWishCardStatus(wishCardId, "published");
+      await WishCardRepository.updateWishCardStatus(wishCardId, "published");
       return res.status(200).send({
         success: true,
         error: null,
