@@ -26,7 +26,7 @@
   "dependencies": {
     "async": "^3.2.0",
     "aws-sdk": "^2.776.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bull": "^3.18.0",
@@ -44,7 +44,7 @@
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.10.9",
+    "mongoose": "^5.10.10",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-sharp-s3": "^0.2.1",
@@ -61,7 +61,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.11.0",
+    "eslint": "^7.12.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.14.0",
     "eslint-plugin-import": "^2.22.1",
@@ -69,7 +69,7 @@
     "husky": "^4.3.0",
     "mocha": "^8.2.0",
     "nodemon": "^2.0.6",
-    "npm-check-updates": "^9.1.2",
+    "npm-check-updates": "^9.2.2",
     "prettier": "^2.1.2"
   },
   "husky": {
