@@ -198,6 +198,7 @@ router.get('/', async (_req, res) => {
       user: res.locals.user,
       wishcards,
       socketUrl: process.env.SOCKET_URL,
+      moment
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -369,6 +370,29 @@ router.post(
 );
 
 
+async function getLockedWishCards(req) {
+
+  const response = {
+    wishCardId: req.params.id
+  };
+
+  if (!req.session.user) {
+    response.error = 'User not found';
+    return response;
+  }
+
+  const user = await UserRepository.getUserByObjectId(req.session.user._id);
+  if (!user) {
+    response.error = 'User not found';
+    return response;
+  }
+  response.userId = user._id;
+  response.lockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+
+  return response;
+}
+
+
 // @desc   lock a wishcard
 // @route  POST '/wishcards/message'
 // @access  Public, all users
@@ -378,20 +402,13 @@ const blockedWishcardsTimer = [];
 router.post('/lock/:id', async (req, res) => {
   try {
 
-    const wishCardId = req.params.id;
-    console.log(wishCardId)
+    const {wishCardId, lockedWishcard, userId, error} = await getLockedWishCards(req);
 
-    if (!req.session.user) return handleError(res, 400, 'User not found');
+    if (error) handleError(res, 400, error)
 
-    const user = await UserRepository.getUserByObjectId(req.session.user._id);
-    if (!user) return handleError(res, 400, 'User not found');
-
-    // check if user already has a locked wishcard
-    const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
-
-    if(wishcardAlreadyLockedByUser) {
+    if(lockedWishcard) {
       // user has locked wishcard and its still locked
-      if (moment(wishcardAlreadyLockedByUser.isLockedUntil) >= moment()) {
+      if (moment(lockedWishcard.isLockedUntil) >= moment()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
       }
     }
@@ -403,19 +420,20 @@ router.post('/lock/:id', async (req, res) => {
       return handleError(res, 400, 'Wishcard has been locked by someone else.');
     }
 
-    const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);
+    const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, userId);
 
     io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
 
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
       queue.add({wishCardId,
-        userId: req.session.user._id,
+        userId,
         url:wishCard.wishItemURL,
         price: wishCard.wishItemPrice});
 
     }, 10000)
 
     res.status(200).send({
+      lockedUntil: lockedWishCard.isLockedUntil,
       success: true,
       error: null,
     });
@@ -428,15 +446,11 @@ router.post('/lock/:id', async (req, res) => {
 router.post('/unlock/:id', async (req, res) => {
   try {
 
-    const wishCardId = req.params.id;
+    const {wishCardId, lockedWishcard, userId, error} = await getLockedWishCards(req);
 
-    if (!req.session.user) return handleError(res, 400, 'User not found');
+    if (error) handleError(res, 400, error)
 
-    const user = await UserRepository.getUserByObjectId(req.session.user._id);
-    if (!user) return handleError(res, 400, 'User not found');
-
-    const lockedWishcard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
-    if(lockedWishcard && lockedWishcard.isLockedBy === req.session.user._id) {
+    if(lockedWishcard && lockedWishcard.isLockedBy === userId) {
 
       await WishCardRepository.unLockWishCard(wishCardId);
       io.emit('unblock', {id: wishCardId});
@@ -451,6 +465,9 @@ router.post('/unlock/:id', async (req, res) => {
     handleError(res, 400, error);
   }
 });
+
+
+
 // @desc
 // @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access

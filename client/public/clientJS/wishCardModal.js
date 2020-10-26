@@ -4,9 +4,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // get reference to button that opened the modal
     let button = $(event.relatedTarget);
 
-    console.log(button[0].dataset)
     // extract values from button that contain child name / amazonlink
     let childName = button[0].dataset.valueName;
+    const wishCardId = button[0].dataset.valueId;
 
     let modalWarningMessage = `<h1>This wish card will be reserved for your donation</h1>
         <h4>for 10 minutes to avoid duplicate donations.</h4>
@@ -31,34 +31,44 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
         $.ajax({
             type: 'POST',
-            url: '/wishcards/lock/' + button[0].dataset.valueId,
+            url: '/wishcards/lock/' + wishCardId,
             data: {},
             success: (response, textStatus, jqXHR) => {
 
+                console.log(response);
 
                 modal.find('.modal-body').html('' +
-                  '<div id="wait-' + button[0].dataset.valueId + '">' +
+                  '<div id="wait-' + wishCardId + '">' +
                   'PLEASE WAIT THis can take up to 2 minutes</div> ' +
-                  '<div id="status-' + button[0].dataset.valueId + '"></div></div>' +
-                  '<div id="countdown-' + button[0].dataset.valueId + '"></div>' +
-                  '<div id="diditornot-' + button[0].dataset.valueId + '">' +
-                  ' <button id="didthething-' + button[0].dataset.valueId + '">I did the thing</button>' +
-                  ' <button id="didntdoit-' + button[0].dataset.valueId + '">I didnt do nothin</button>' +
+                  '<div id="lockedCountdown-' + wishCardId + '"></div>' +
+                  '<div id="status-' + wishCardId + '"></div></div>' +
+                  '<div id="countdown-' + wishCardId + '"></div>' +
+                  '<div id="diditornot-' + wishCardId + '">' +
+                  ' <button id="didthething-' + wishCardId + '">I did the thing</button>' +
+                  ' <button id="didntdoit-' + wishCardId + '">I didnt do nothin</button>' +
                   '</div>');
-                $('#wait-'+ button[0].dataset.valueId).hide();
-                $('#didthething-'+ button[0].dataset.valueId).prop('disabled', true);
-                $('#didntdoit-'+ button[0].dataset.valueId).prop('disabled', true);
+
+                addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
+
+                const waitDiv = $('#wait-'+ wishCardId);
+                const statusDiv = $('#status-'+ wishCardId);
+                const didTheThingButton = $('#didthething-'+ wishCardId);
+                const didntDoItButton = $('#didntdoit-'+ wishCardId);
+                const countDownDiv = $('#countdown-'+ wishCardId);
+
+                waitDiv.hide();
+                didTheThingButton.prop('disabled', true);
+                didntDoItButton.prop('disabled', true);
 
                 let timer = 5;
-                const countDownDiv = $('#countdown-'+ button[0].dataset.valueId);
 
-                countdown[button[0].dataset.valueId] = setInterval(() => {
+                countdown[wishCardId] = setInterval(() => {
                     if (timer < 0) {
                         countDownDiv.hide();
                         //window.open(button[0].dataset.valueUrl, '_blank');
-                        $('#didthething-'+ button[0].dataset.valueId).prop('disabled', false);
-                        $('#didntdoit-'+ button[0].dataset.valueId).prop('disabled', false);
-                        clearInterval(countdown[button[0].dataset.valueId]);
+                        didTheThingButton.prop('disabled', false);
+                        didntDoItButton.prop('disabled', false);
+                        clearInterval(countdown[wishCardId]);
                     }
                     countDownDiv.html('You will be redirect to Amazon in ' + timer);
                     timer--
@@ -66,10 +76,10 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 }, 1000);
 
                 socket.on('donated', event => {
-                    console.log('DONATION CONFIRMED')
 
-                    if (event.id === button[0].dataset.valueId && event.donatedBy === button[0].dataset.valueUser){
-                        $('#status-'+ button[0].dataset.valueId).html('DONATION CONFIRMED')
+                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser){
+                        statusDiv.html('DONATION CONFIRMED')
+                        waitDiv.hide();
 
                         //TODO show balloons and firework play party sounds
                     }
@@ -78,21 +88,21 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                 socket.on('not_donated', event => {
 
-                    if (event.id === button[0].dataset.valueId && event.donatedBy === button[0].dataset.valueUser){
-                        console.log('DONATION NOT CONFIRMED')
-                        $('#status-'+ button[0].dataset.valueId).html('DONATION NOT CONFIRMED')
+                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser){
+                        waitDiv.hide();
+                        statusDiv.html('DONATION NOT CONFIRMED')
                         //TODO show balloons and firework play party sounds
                     }
 
                 });
 
-                $('#didthething-'+ button[0].dataset.valueId).on('click', (event) => {
+                didTheThingButton.on('click', (event) => {
                     console.log('CLICK')
 
-                    $('#wait-'+ button[0].dataset.valueId).show();
+                    $('#wait-'+ wishCardId).show();
                     $.ajax({
                         type: 'GET',
-                        url: '/wishcards/status/' + button[0].dataset.valueId,
+                        url: '/wishcards/status/' + wishCardId,
                         data: {},
                         success: (response, textStatus, jqXHR) => {
 
@@ -117,5 +127,32 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
 
 });
+
+let locked = [];
+function addCountdownToModal(lockedUntil, wishListId, elementId) {
+    let countDownDate = new Date(lockedUntil).getTime();
+
+    locked[wishListId] = setInterval(function () {
+        let now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        let distance = countDownDate - now;
+
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let element = $(elementId);
+
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        if (distance < 0) {
+            clearInterval(x[wishListId]);
+            locked[wishListId] = null;
+            element.text('');
+
+        } else {
+            element.text('Locked for you for ' + minutes + ':' + seconds);
+        }
+    }, 1000);
+}
 
 
