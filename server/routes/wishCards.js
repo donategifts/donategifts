@@ -517,30 +517,6 @@ router.post('/unlock/:id', async (req, res) => {
 });
 
 
-
-// @desc
-// @route   GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
-// @access
-// @tested 	No
-router.get('/defaults/:id', async (req, res) => {
-  const ageCategory = Number(req.params.id);
-  let itemChoices;
-  if (ageCategory === 1) itemChoices = babies;
-  else if (ageCategory === 2) itemChoices = preschoolers;
-  else if (ageCategory === 3) itemChoices = kids6_8;
-  else if (ageCategory === 4) itemChoices = kids9_11;
-  else if (ageCategory === 5) itemChoices = teens;
-  else if (ageCategory === 6) itemChoices = youth;
-  else if (ageCategory === 7) itemChoices = allAgesA;
-  else itemChoices = allAgesB;
-  res.render('itemChoices', { itemChoices }, (error) => {
-    if (error) {
-      handleError(res, 400, error);
-    }
-  },)
-});
-
-
 router.get('/status/:id', async (req, res) => {
 
   try {
