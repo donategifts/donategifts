@@ -444,7 +444,7 @@ async function getLockedWishCards(req) {
 
 
 // @desc   lock a wishcard
-// @route  POST '/wishcards/message'
+// @route  POST '/wishcards/lock'
 // @access  Public, all users
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
@@ -474,13 +474,13 @@ router.post('/lock/:id', async (req, res) => {
 
     io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
 
+    //in case user doesn't confirm donation, check after countdown runs out
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
       queue.add({wishCardId,
         userId,
         url:wishCard.wishItemURL,
         price: wishCard.wishItemPrice});
-
-    }, 10000)
+    }, process.env.WISHCARD_LOCK_IN_MINUTES*1000*60);
 
     res.status(200).send({
       lockedUntil: lockedWishCard.isLockedUntil,
@@ -516,7 +516,7 @@ router.post('/unlock/:id', async (req, res) => {
   }
 });
 
-
+//check if user has donated
 router.get('/status/:id', async (req, res) => {
 
   try {

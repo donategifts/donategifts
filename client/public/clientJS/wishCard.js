@@ -17,9 +17,7 @@ function preventChildImageContextMenu(e) {
 
 
 socket.on('block', event => {
-
     addCountdown(event.lockedUntil, event.id, '#donate-btn-'+event.id)
-
 });
 
 socket.on('unblock', (event) => {

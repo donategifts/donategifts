@@ -75,7 +75,7 @@ async function lockWishCard(id, userId) {
   try {
     const wishCard = await getWishCardByObjectId(id);
     wishCard.isLockedBy = userId;
-    wishCard.isLockedUntil = moment().add(10, 'seconds');
+    wishCard.isLockedUntil = moment().add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes');
     wishCard.save();
     return wishCard;
   } catch (error) {
