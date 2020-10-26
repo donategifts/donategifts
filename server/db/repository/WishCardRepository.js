@@ -40,11 +40,11 @@ async function getWishCardByObjectId(cardId) {
 }
 
 async function getWishCardsByStatus(status) {
-    try {
-        return WishCard.find({ status }).exec();
-    } catch (error) {
-        throw new Error(`Failed to get Wishcard: ${error}`);
-    }
+  try {
+    return WishCard.find({ status }).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Wishcard: ${error}`);
+  }
 }
 
 async function getLockedWishcardsByUserId(userId) {
@@ -64,11 +64,11 @@ async function pushNewWishCardMessage(id, message) {
 }
 
 async function updateWishCardStatus(id, status) {
-    try {
-      return WishCard.updateOne({ _id: id }, {$set: { status }}).exec();
-    } catch (error) {
-      throw new Error(`Failed to update Wishcard messages: ${error}`);
-    }
+  try {
+    return WishCard.updateOne({ _id: id }, {$set: { status }}).exec();
+  } catch (error) {
+    throw new Error(`Failed to update Wishcard messages: ${error}`);
+  }
 }
 
 async function lockWishCard(id, userId) {
