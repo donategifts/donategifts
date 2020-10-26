@@ -12,7 +12,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		<% for (var i = 0; i < wishcards.length; i++) { %>
-			<% if (moment(wishcards.isLockedUntil) > moment()) { %>
+			<% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
 			addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
 			<% } %>
 		<% } %>

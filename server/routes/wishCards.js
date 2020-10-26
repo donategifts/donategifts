@@ -474,7 +474,7 @@ router.post('/lock/:id', async (req, res) => {
 
     io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
 
-    //in case user doesn't confirm donation, check after countdown runs out
+    // in case user doesn't confirm donation, check after countdown runs out
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
       queue.add({wishCardId,
         userId,
@@ -516,7 +516,7 @@ router.post('/unlock/:id', async (req, res) => {
   }
 });
 
-//check if user has donated
+// check if user has donated
 router.get('/status/:id', async (req, res) => {
 
   try {

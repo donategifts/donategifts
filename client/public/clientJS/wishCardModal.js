@@ -91,7 +91,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser){
                         waitDiv.hide();
                         statusDiv.html('DONATION NOT CONFIRMED')
-                        //TODO show balloons and firework play party sounds
+                        //TODO show sad faces
                     }
 
                 });
@@ -105,11 +105,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                         url: '/wishcards/status/' + wishCardId,
                         data: {},
                         success: (response, textStatus, jqXHR) => {
-
                             console.log(response)
                         },
                         error: (response, textStatus, errorThrown) => {
-
                             console.log(response)
 
                         },
