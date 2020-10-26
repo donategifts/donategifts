@@ -26,6 +26,7 @@ jobs:
       - run: cp config/example-config.env config/config.env
       - run: npm ci
       - run: sudo docker run --name mongo -d -p 27017:27017 mongo
+      - run: sudo docker run --name redis -d -p 6379:6379 redis
       - run: npm run build --if-present
       - run: npm run lint
       - run: npm test
