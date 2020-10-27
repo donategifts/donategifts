@@ -256,6 +256,215 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
   // it('PUT /wishcards/update/:id/', (done) => {});
   // it('POST /wishcards/lock/:id - Receives JSON', (done) => {});
 
+  it('POST wishcards - Child First Name is Required', (done) => {
+    const newwishcardRequest = { ...wishcardRequest };
+    delete newwishcardRequest.childFirstName;
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(newwishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards - WishItem Name is Required', (done) => {
+    const newwishcardRequest = { ...wishcardRequest };
+    delete newwishcardRequest.wishItemName;
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(newwishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards - WishItem Price is required', (done) => {
+    const newwishcardRequest = { ...wishcardRequest };
+    delete newwishcardRequest.wishItemPrice;
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(newwishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards - Wishitem URL is required', (done) => {
+    const newwishcardRequest = { ...wishcardRequest };
+    delete newwishcardRequest.wishItemURL;
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(newwishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards - Image is Required', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field(wishcardRequest)
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Child First Name is Required', (done) => {
+    const newguidedwishcardRequest = { ...guidedwishcardRequest };
+    delete newguidedwishcardRequest.childFirstName;
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(newguidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Item is Required', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Item Name is Required', (done) => {
+    const newItemChoice = { ...itemChoice };
+    delete newItemChoice.Name;
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(newItemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Item Price is Required', (done) => {
+    const newItemChoice = { ...itemChoice };
+    delete newItemChoice.Price;
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(newItemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Item URL is Required', (done) => {
+    const newItemChoice = { ...itemChoice };
+    delete newItemChoice.ItemURL;
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(newItemChoice))
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - Image is Required', (done) => {
+    agent
+      .post('/wishcards/guided/')
+      .type('form')
+      .field(guidedwishcardRequest)
+      .field('itemChoice', JSON.stringify(itemChoice))
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('msg');
+        done();
+      });
+  });
+
   after((done) => {
     User.deleteMany({}).then(() => {
       Agency.deleteMany({}).then(() => {
