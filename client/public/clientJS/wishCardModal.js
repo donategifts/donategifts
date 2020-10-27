@@ -1,52 +1,156 @@
 // im not sure if this is the cleanest way to append dynamic data to modal
 // when modal is called, check what button called it and extract info like url and child name from it
 $('#wishCardDonateModal').on('show.bs.modal', function (event) {
-  // get reference to button that opened the modal
-  let button = $(event.relatedTarget);
-  console.log(button[0].dataset);
-  // extract values from button that contain child name / amazonlink
-  let childName = button[0].dataset.valueName;
+    // get reference to button that opened the modal
+    let button = $(event.relatedTarget);
 
-  let modalWarningMessage = ` Hello, before proceeding we want to make sure that you are certain that you want to donate. 
-    Since we can not follow the donation process from Amazon we trust that you will follow the process to the end 
-    and buy the selected item for ${childName}. Once you click on the "Donate gift" button you will be redirected to Amazon and we will 
-    inform ${childName} that the gift is on its way. If for some reason you are unable to place the order on Amazon but you have clicked 
-    on the donate gift button send us an email.
-    Thank you very much :)`;
-  // get modal reference and replace text
-  modal = $(this);
-  modal.find('.modal-body').html(modalWarningMessage);
-  // set  redirect on a ref element
+    // extract values from button that contain child name / amazonlink
+    let childName = button[0].dataset.valueName;
+    const wishCardId = button[0].dataset.valueId;
 
-  let isLoggedIn = button[0].dataset.valueLoggedin;
-  let donateButton = $('#modal-donate-btn');
-  if (isLoggedIn === 'false') {
-    donateButton.html('Please login to donate');
-    donateButton.prop('disabled', true);
-  }
+    let modalWarningMessage = `<h1>This wish card will be reserved for your donation</h1>
+        <h4>for 10 minutes to avoid duplicate donations.</h4>
+        <h4>Once redirected to Amazon, please select ${childName}'s anonymized shipping address before you check out.</h4>`;
+    // get modal reference and replace text
+    modal = $(this);
+    modal.find('.modal-body').html(modalWarningMessage);
+    // set  redirect on a ref element
 
-  donateButton.on('click', (event) => {
-    event.preventDefault();
-    //('#wishCardDonateModal').find('.modal-body').html(modalWarningMessage);
+    let isLoggedIn = button[0].dataset.valueLoggedin;
+    let donateButton =  $('#modal-donate-btn');
+    if (isLoggedIn === 'false') {
+        donateButton.html('Please login to donate')
+        donateButton.prop('disabled', true)
+    }
 
-    $.ajax({
-      type: 'POST',
-      url: '/wishcards/lock/' + button[0].dataset.valueId,
-      data: {},
-      success: (response, textStatus, jqXHR) => {
-        console.log(textStatus);
-        $('#modal-donate-btn').off();
-        modal.find('.modal-body').html('ADD STUFF IF USER DONATED OR NOT');
+    donateButton.off();
+    donateButton.on('click', (event) => {
+        event.preventDefault();
+        //('#wishCardDonateModal').fin
+        //d('.modal-body').html(modalWarningMessage);
 
-        setTimeout(() => {
-          window.open(button[0].dataset.valueUrl, '_blank');
-        }, 2000);
-      },
-      error: (response, textStatus, errorThrown) => {
-        console.log(textStatus);
-        showToast('You have already reserved a wishcard');
-        $('#modal-donate-btn').off();
-      },
-    });
-  });
+        $.ajax({
+            type: 'POST',
+            url: '/wishcards/lock/' + wishCardId,
+            data: {},
+            success: (response, textStatus, jqXHR) => {
+
+                console.log(response);
+
+                modal.find('.modal-body').html('' +
+                  '<div id="wait-' + wishCardId + '">' +
+                  'PLEASE WAIT THis can take up to 2 minutes</div> ' +
+                  '<div id="lockedCountdown-' + wishCardId + '"></div>' +
+                  '<div id="status-' + wishCardId + '"></div></div>' +
+                  '<div id="countdown-' + wishCardId + '"></div>' +
+                  '<div id="diditornot-' + wishCardId + '">' +
+                  ' <button id="didthething-' + wishCardId + '">I did the thing</button>' +
+                  ' <button id="didntdoit-' + wishCardId + '">I didnt do nothin</button>' +
+                  '</div>');
+
+                addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
+
+                const waitDiv = $('#wait-'+ wishCardId);
+                const statusDiv = $('#status-'+ wishCardId);
+                const didTheThingButton = $('#didthething-'+ wishCardId);
+                const didntDoItButton = $('#didntdoit-'+ wishCardId);
+                const countDownDiv = $('#countdown-'+ wishCardId);
+
+                waitDiv.hide();
+                didTheThingButton.prop('disabled', true);
+                didntDoItButton.prop('disabled', true);
+
+                let timer = 5;
+
+                countdown[wishCardId] = setInterval(() => {
+                    if (timer < 0) {
+                        countDownDiv.hide();
+                        //window.open(button[0].dataset.valueUrl, '_blank');
+                        didTheThingButton.prop('disabled', false);
+                        didntDoItButton.prop('disabled', false);
+                        clearInterval(countdown[wishCardId]);
+                    }
+                    countDownDiv.html('You will be redirect to Amazon in ' + timer);
+                    timer--
+
+                }, 1000);
+
+                socket.on('donated', event => {
+
+                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser){
+                        statusDiv.html('DONATION CONFIRMED')
+                        waitDiv.hide();
+
+                        //TODO show balloons and firework play party sounds
+                    }
+
+                });
+
+                socket.on('not_donated', event => {
+
+                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser){
+                        waitDiv.hide();
+                        statusDiv.html('DONATION NOT CONFIRMED')
+                        //TODO show sad faces
+                    }
+
+                });
+
+                didTheThingButton.on('click', (event) => {
+                    console.log('CLICK')
+
+                    $('#wait-'+ wishCardId).show();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/wishcards/status/' + wishCardId,
+                        data: {},
+                        success: (response, textStatus, jqXHR) => {
+                            console.log(response)
+                        },
+                        error: (response, textStatus, errorThrown) => {
+                            console.log(response)
+
+                        },
+                    });
+                })
+
+            },
+            error: (response, textStatus, errorThrown) => {
+                showToast(response.responseJSON.error)
+                $('#modal-donate-btn').prop('disabled', false)
+            },
+        });
+
+    })
+
+
 });
+
+let locked = [];
+function addCountdownToModal(lockedUntil, wishListId, elementId) {
+    let countDownDate = new Date(lockedUntil).getTime();
+
+    locked[wishListId] = setInterval(function () {
+        let now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        let distance = countDownDate - now;
+
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let element = $(elementId);
+
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        if (distance < 0) {
+            clearInterval(x[wishListId]);
+            locked[wishListId] = null;
+            element.text('');
+
+        } else {
+            element.text('Locked for you for ' + minutes + ':' + seconds);
+        }
+    }, 1000);
+}
+
+
