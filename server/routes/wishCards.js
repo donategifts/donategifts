@@ -242,7 +242,7 @@ router.get('/admin/', async (req, res) => {
     const USER_ROLE = "admin";
     // only admin users can get access
     if (res.locals.user.userRole !== USER_ROLE) {
-      return res.status(401).render('401');
+      return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
     const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
@@ -267,7 +267,7 @@ router.put('/admin/', async (req, res) => {
     const USER_ROLE = "admin";
     // only admin users can get access
     if (res.locals.user.userRole !== USER_ROLE) {
-      return res.status(401).render('401');
+      return res.status(404).render('404');
     }
     const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
     await WishCardRepository.updateWishCardStatus(wishCardId, "published");
