@@ -33,9 +33,9 @@
       </p>
       <% } %> <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
       <p class="mt-5 text-danger notify">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Wish card creation feature is disabled for your
-        account. <br />
-        It will be enabled after agency verification. <br />
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        Wish card creation feature is disabled for your
+        account. It will be enabled after agency verification.
         For a faster verification,
         <a href="mailto:donate.gifts.stacy@gmail.com" class="text-dark">click to email us</a>
       </p>
@@ -167,7 +167,8 @@
 
           <div class="col-lg-6 ml-auto quick-font wrap-input1">
             <label for="childLastName">Child's Last Name</label>
-            <input id="childLastName" class="input1" type="text" name="childLastName" placeholder="Initial is also ok" />
+            <input id="childLastName" class="input1" type="text" name="childLastName"
+              placeholder="Initial is also ok" />
           </div>
 
           <div class="col-lg-6 quick-font wrap-input1">
@@ -196,7 +197,7 @@
             help)</a> -->
           <div class="px-3 quick-font wrap-input1">
             <label for="wishItemURL">Wish Item Amazon URL
-              </label>
+            </label>
             <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
               placeholder="(copied product page hyperlink from the amazon search)" />
           </div>
@@ -246,41 +247,35 @@
 
         <h6 class="quick-font pb-2">Shipping address (where to deliver this item?)</h6>
 
-                    <div class="row">
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address1">Address Line 1</label>
-                            <input id="address1" class="input1" type="text" name="address1"
-                                placeholder="(e.g. 1004 Donate St.)">
-                        </div>
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address2">Address Line 2</label>
-                            <input id="address2" class="input1" type="text" name="address2"
-                                placeholder="(e.g. Suite 200)">
-                        </div>
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address_city">City</label>
-                            <input id="address_city" class="input1" type="text" name="address_city"
-                                placeholder="(e.g. Chicago )">
-                        </div>
-                    </div>
+        <div class="row">
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address1">Address Line 1</label>
+            <input id="address1" class="input1" type="text" name="address1" placeholder="(e.g. 1004 Donate St.)">
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address2">Address Line 2</label>
+            <input id="address2" class="input1" type="text" name="address2" placeholder="(e.g. Suite 200)">
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_city">City</label>
+            <input id="address_city" class="input1" type="text" name="address_city" placeholder="(e.g. Chicago )">
+          </div>
+        </div>
 
-                    <div class="row pb-2">
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address_state">State</label>
-                            <input id="address_state" class="input1" type="text" name="address_state"
-                                placeholder="(e.g. Illinois )">
-                        </div>
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address_zip">Zipcode</label>
-                            <input id="address_zip" class="input1" type="text" name="address_zip"
-                                placeholder="(e.g. 60640 )">
-                        </div>
-                        <div class="col-lg-4 quick-font wrap-input1">
-                            <label for="address_country">Country</label>
-                            <input id="address_country" class="input1" type="text" name="address_country"
-                                placeholder="(e.g. USA )">
-                        </div>
-                    </div>
+        <div class="row pb-2">
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_state">State</label>
+            <input id="address_state" class="input1" type="text" name="address_state" placeholder="(e.g. Illinois )">
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_zip">Zipcode</label>
+            <input id="address_zip" class="input1" type="text" name="address_zip" placeholder="(e.g. 60640 )">
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_country">Country</label>
+            <input id="address_country" class="input1" type="text" name="address_country" placeholder="(e.g. USA )">
+          </div>
+        </div>
 
 
         <div id="submit-btn" class="quick-font">
