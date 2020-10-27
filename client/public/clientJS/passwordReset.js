@@ -21,7 +21,9 @@ $(document).ready(function () {
             },
             error: function(response, textStatus, errorThrown) {
                 $("#submit-btn").prop("disabled",false);
-                showToast(response.responseJSON.err);
+                let txtToJson = response.responseJSON;
+                let { msg } = txtToJson.error;
+                showToast(msg);
             }
         })
     })

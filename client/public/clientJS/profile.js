@@ -43,8 +43,9 @@ $(document).ready(() => {
           setTimeout(() => location.assign(response.url), 2000);
         },
         400: function (response) {
-          let txtToJson = JSON.parse(response.responseText);
-          showToast(txtToJson.error);
+          let txtToJson = response.responseJSON;
+          let { msg } = txtToJson.error;
+          showToast(msg);
         },
         403: function (responseObject) {
           showToast('Access Forbidden: Your account lacks sufficient permissions');

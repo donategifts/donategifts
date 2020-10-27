@@ -127,14 +127,14 @@ router.put(
 
       // if no user id is present return forbidden status 403
       if (!req.session.user) {
-        return handleError(res, 403, 'No user id in request');
+        return handleError(res, 403, { msg: 'No user id in request' });
       }
 
       const candidate = await UserRepository.getUserByObjectId(req.session.user._id);
 
       // candidate with id not found in database, return not found status 404
       if (!candidate) {
-        return handleError(res, 404, 'User could not be found');
+        return handleError(res, 404, { msg: 'User could not be found' });
       }
 
       // update user and add aboutMe;
@@ -238,17 +238,15 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
     return handleError(res, 400, {
-      message: {
-        msg: 'Provided captcha token is not valid',
-        param: 'captchaToken',
-        location: 'body',
-      },
+      msg: 'Provided captcha token is not valid',
+      param: 'captchaToken',
+      location: 'body',
     });
   }
 
   const candidate = await UserRepository.getUserByEmail(email);
   if (candidate) {
-    return handleError(res, 409, 'This email is already taken. Try another');
+    return handleError(res, 409, { msg: 'This email is already taken. Try another' });
   }
   const hashedPassword = await hashPassword(password);
   const verificationHash = createEmailVerificationHash();
@@ -332,11 +330,11 @@ router.post(
           url: '/users/profile',
         });
       } catch (error) {
-        return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+        return handleError(res, 400, { msg: 'Error during login!\nTry again in a few minutes!' });
       }
     }
 
-    return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+    return handleError(res, 400, { msg: 'Error during login!\nTry again in a few minutes!' });
   },
 );
 
@@ -378,11 +376,11 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
         url: '/users/profile',
       });
     } catch (error) {
-      return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+      return handleError(res, 400, { msg: 'Error during login!\nTry again in a few minutes!' });
     }
   }
 
-  return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
+  return handleError(res, 400, { msg: 'Error during login!\nTry again in a few minutes!' });
 });
 
 // @desc    Render login.html
@@ -481,7 +479,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
         errorNotification: null,
       });
     }
-    return handleError(res, 400, 'Email Verification failed!');
+    return handleError(res, 400, { msg: 'Email Verification failed!' });
   } catch (error) {
     return res.status(400).render('login', {
       user: res.locals.user,
@@ -504,7 +502,7 @@ router.get('/choose', redirectLogin, async (req, res) => {
     if (user.userRole === 'partner') {
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
       if (!agency) {
-        return handleError(res, 404, 'Agency Not Found');
+        return handleError(res, 404, { msg: 'Agency Not Found' });
       }
       params = { ...params, agency };
     }
@@ -539,7 +537,7 @@ router.post(
     try {
       const userObject = await UserRepository.getUserByEmail(req.body.email);
 
-      if (!userObject) return handleError(res, 400, 'user not found');
+      if (!userObject) return handleError(res, 400, { msg: 'user not found' });
 
       const resetToken = uuidv4();
       userObject.passwordResetToken = resetToken;
@@ -573,10 +571,10 @@ router.get(
             token: req.params.token,
           });
         } else {
-          return handleError(res, 400, 'Password token expired');
+          return handleError(res, 400, { msg: 'Password token expired' });
         }
       } else {
-        return handleError(res, 400, 'User not found');
+        return handleError(res, 400, { msg: 'User not found' });
       }
     } catch (err) {
       return handleError(res, 400, err);
@@ -610,10 +608,10 @@ router.post(
 
           res.send({ success: true });
         } else {
-          return handleError(res, 400, 'Password token expired');
+          return handleError(res, 400, { msg: 'Password token expired' });
         }
       } else {
-        return handleError(res, 400, 'User not found');
+        return handleError(res, 400, { msg: 'User not found' });
       }
     } catch (err) {
       return handleError(res, 400, err);

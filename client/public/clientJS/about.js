@@ -20,7 +20,7 @@ $(function () {
         });
       },
       error: function (response) {
-        showToast(response.responseJSON.error);
+        showToast(response.responseJSON.error.msg);
       },
     });
   });

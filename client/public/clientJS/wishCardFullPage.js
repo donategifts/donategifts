@@ -14,7 +14,9 @@ $(document).ready(function () {
       },
       statusCode: {
         400: function (responseObject, textStatus, jqXHR) {
-          alert(responseObject.responseText);
+          let txtToJson = response.responseJSON;
+          let { msg } = txtToJson.error;
+          showToast(msg);
         },
         200: function (responseObject, textStatus, errorThrown) {
           window.location.reload();

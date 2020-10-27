@@ -14,7 +14,7 @@ function facebookLogin(fbUser) {
           },
           error: function (response) {
             let txtToJson = JSON.parse(response.responseText);
-            showToast(txtToJson.error);
+            showToast(txtToJson.error.msg);
           },
         });
       }
@@ -39,7 +39,7 @@ function googleLogin(googleUser) {
     },
     error: function (response) {
       let txtToJson = JSON.parse(response.responseText);
-      showToast(txtToJson.error);
+      showToast(txtToJson.error.msg);
     },
   });
 }
