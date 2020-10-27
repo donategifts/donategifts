@@ -66,10 +66,11 @@ router.post(
   validate,
   async (req, res) => {
     if (req.file === undefined) {
-      handleError(res, 400, {
-        msg:
-          'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
-      });
+      handleError(
+        res,
+        400,
+        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+      );
     } else {
       try {
         const { childBirthday, wishItemPrice } = req.body;
@@ -119,10 +120,12 @@ router.post(
   validate,
   async (req, res) => {
     if (req.file === undefined) {
-      handleError(res, 400, {
-        msg: `Error: File must be in jpeg, jpg, gif, or png format. The file
+      handleError(
+        res,
+        400,
+        `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-      });
+      );
     } else {
       try {
         const {
@@ -371,10 +374,10 @@ router.post(
     try {
       const wishCardId = req.params.id;
 
-      if (!req.session.user) return handleError(res, 400, { msg: 'User not found' });
+      if (!req.session.user) return handleError(res, 400, 'User not found');
 
       const user = await UserRepository.getUserByObjectId(req.session.user._id);
-      if (!user) return handleError(res, 400, { msg: 'User not found' });
+      if (!user) return handleError(res, 400, 'User not found');
 
       const wishcardAlreadyLockedByUser = await WishCardRepository.getLockedWishcardsByUserId(
         req.session.user._id,

@@ -13,10 +13,8 @@ $(document).ready(function () {
         message,
       },
       statusCode: {
-        400: function (responseObject, textStatus, jqXHR) {
-          let txtToJson = response.responseJSON;
-          let { msg } = txtToJson.error;
-          showToast(msg);
+        400: function (response, textStatus, jqXHR) {
+          showToast(response.responseJSON.error.msg);
         },
         200: function (responseObject, textStatus, errorThrown) {
           window.location.reload();

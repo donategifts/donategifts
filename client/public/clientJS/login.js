@@ -38,8 +38,7 @@ function googleLogin(googleUser) {
       location.assign(route.url);
     },
     error: function (response) {
-      let txtToJson = JSON.parse(response.responseText);
-      showToast(txtToJson.error.msg);
+      showToast(response.responseJSON.error.msg);
     },
   });
 }
