@@ -8,7 +8,7 @@
  */
 
 const dotenv = require('dotenv');
-
+const cors = require('cors');
 let configPath = './config/config.env';
 if (process.env.NODE_ENV === 'test') {
   configPath = './config/test.config.env';
@@ -42,6 +42,7 @@ if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
+app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
 app.set('views', path.join(__dirname, '../client/views'));
@@ -157,7 +158,6 @@ app.use((err, req, res, _next) => {
   res.status(500);
   res.render('500');
 });
-
 // DB SET UP & APP LISTEN (server starts after db connection)
 MongooseConnection.connect(app, port, hostname);
 
