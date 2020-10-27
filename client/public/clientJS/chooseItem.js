@@ -53,8 +53,8 @@ $(document).ready(function () {
           setTimeout(() => location.assign(response.url), 2000);
         },
         400: function (responseObject) {
-          let { error } = responseObject.responseJSON;
-          let { msg } = error;
+          let txtToJson = responseObject.responseJSON;
+          let { msg } = txtToJson.error;
           showToast(msg);
         },
         403: function (responseObject) {
