@@ -486,7 +486,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
       successNotification: null,
       g_client_id: process.env.G_CLIENT_ID,
       fb_client_id: process.env.FB_APP_ID,
-      errorNotification: 'Email Verification failed',
+      errorNotification: { msg: 'Email Verification failed' },
     });
   }
 });

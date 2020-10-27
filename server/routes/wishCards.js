@@ -386,7 +386,7 @@ router.post(
         // user has locked wishcard and its still locked
 
         if (moment(wishcardAlreadyLockedByUser.isLockedUntil) > moment()) {
-          return handleError(res, 400, { msg: 'You already have a locked wishcard.' });
+          return handleError(res, 400, 'You already have a locked wishcard.');
         }
 
         const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, user._id);

@@ -55,7 +55,7 @@ router.post('/email', async (req, res) => {
 
     return res.status(201).redirect('/');
   } catch (error) {
-    handleError(res, 400, { msg: 'Failed to send Email!' });
+    handleError(res, 400, 'Failed to send Email!');
   }
 });
 
@@ -69,9 +69,7 @@ router.post('/customer-service', async (req, res) => {
     });
   }
 
-  return handleError(res, 400, {
-    msg: 'Failed to send feedback! Please try again in a few minutes!',
-  });
+  return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
 });
 
 module.exports = router;
