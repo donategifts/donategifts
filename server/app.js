@@ -28,6 +28,7 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
+const {connectSocket} = require('./helper/socket')
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
@@ -37,6 +38,7 @@ const AgencyRepository = require('./db/repository/AgencyRepository');
 const log = require('./helper/logger');
 
 const app = express();
+io = connectSocket(app)
 
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
@@ -55,13 +57,7 @@ app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
 
-// DEV ENV
-// const hostname = '127.0.0.1';
-// const port = 8081;
-// LIVE ENV
-// const hostname = '64.227.8.216';
-const hostname = '127.0.0.1';
-const port = 8081;
+MongooseConnection.connect();
 
 // SESSION SET UP
 app.use(
@@ -160,6 +156,4 @@ app.use((err, req, res, _next) => {
   res.render('500');
 });
 // DB SET UP & APP LISTEN (server starts after db connection)
-MongooseConnection.connect(app, port, hostname);
-
 module.exports = app;

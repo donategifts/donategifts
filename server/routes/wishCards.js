@@ -20,7 +20,6 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const logger = require('../helper/logger');
-const io = require('../helper/socket');
 const scrapeList = require('../../scripts/amazon-scraper')
 const {
   createWishcardValidationRules,
@@ -36,6 +35,7 @@ const {
 const { redirectLogin } = require('../helper/userHelper');
 const { renderPermissions } = require('../helper/wishcardHelper');
 
+console.log(io)
 const {
   babies,
   preschoolers,
