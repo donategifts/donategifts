@@ -246,7 +246,7 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
     });
   }
 
-  const candidate = await UserRepository.getUserByEmail(email);
+  const candidate = await UserRepository.getUserByEmail(email.toLowerCase());
   if (candidate) {
     return handleError(res, 409, 'This email is already taken. Try another');
   }
@@ -256,7 +256,7 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const newUser = await UserRepository.createNewUser({
     fName,
     lName,
-    email,
+    email: email.toLowerCase(),
     verificationHash,
     password: hashedPassword,
     userRole,
@@ -303,7 +303,7 @@ router.post(
         const user = await verifyGoogleToken(id_token);
         const fName = user.firstName;
         const lName = user.lastName;
-        const email = user.mail;
+        const email = user.mail.toLowerCase();
 
         const dbUser = await UserRepository.getUserByEmail(email);
 
@@ -350,7 +350,7 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
   if (userName && email) {
     const [fName, lName] = userName.split(' ');
 
-    const dbUser = await UserRepository.getUserByEmail(email);
+    const dbUser = await UserRepository.getUserByEmail(email.toLowerCase());
 
     if (dbUser) {
       req.session.user = dbUser;
@@ -364,7 +364,7 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
       const newUser = await UserRepository.createNewUser({
         fName,
         lName: lName || 'LastnameUnset',
-        email,
+        email: email.toLowerCase(),
         password: createDefaultPassword(),
         verificationHash: createEmailVerificationHash(),
         userRole: 'donor',
