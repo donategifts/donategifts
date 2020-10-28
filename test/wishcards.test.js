@@ -112,7 +112,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
                         getProfileRes.text.should.contain(`Welcome ${user.fName}`);
                         getProfileRes.text.should.contain('Your email is unverified');
                         getProfileRes.text.should.not.contain(
-                          'Wish card creation feature is disabled for your account',
+                          'Wish card creation feature is disabled',
                         );
 
                         Agency.findOne({ accountManager: user._id }).then((agency) => {
@@ -529,7 +529,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
                         profileRes.text.should.contain(`Welcome ${user.fName}`);
                         profileRes.text.should.contain('Your email is unverified');
                         profileRes.text.should.contain(
-                          'Wish card creation feature is disabled for your account',
+                          'Wish card creation feature is disabled',
                         );
 
                         Agency.create({ accountManager: user._id, ...agencyRequest }).then(

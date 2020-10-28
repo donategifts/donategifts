@@ -3,19 +3,19 @@ const http = require('http');
 const https = require('https');
 const log = require('./logger');
 
-let socketOptions = {};
-let server;
+function connectSocket(app) {
+  let server;
+  if (process.env.LOCAL_DEVELOPMENT) {
+    server = http.createServer(app);
+  } else {
+    const options = {
+      key: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/cert.pem'),
+    };
+    server = https.createServer(app, options);
+  }
 
-if (process.env.LOCAL_DEVELOPMENT) {
-  server = http.createServer();
-} else {
-  const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/cert.pem'),
-  };
-  server = https.createServer(options);
-
-  socketOptions = {
+  const io = require('socket.io')(server, {
     handlePreflightRequest: (req, res) => {
       const headers = {
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -25,16 +25,13 @@ if (process.env.LOCAL_DEVELOPMENT) {
       res.writeHead(200, headers);
       res.end();
     },
-  };
+  });
+
+  server.listen(8081, () => {
+    log.info(`socket listening on: ${8081}`);
+  });
+
+  return io;
 }
 
-// eslint-disable-next-line import/order
-const io = require('socket.io')(server, socketOptions);
-
-const port = 3000; // Enter any of the cloudflare ports.
-
-server.listen(port, () => {
-  log.info(`socket listening on: ${port}`);
-});
-
-module.exports = io;
+module.exports = { connectSocket };
