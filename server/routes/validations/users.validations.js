@@ -42,16 +42,40 @@ const updateProfileValidationRules = () => {
 
 const createAgencyValidationRules = () => {
   return [
-    body('agencyName').notEmpty().isString().withMessage('Agency name is required!'),
+    body('agencyName')
+      .notEmpty()
+      .isString()
+      .withMessage('Agency name is required!'),
     body('agencyWebsite').optional(),
+    body('agencyAddress.address1')
+      .notEmpty()
+      .isLength({min: 5, max: undefined})
+      .withMessage('Address must containt at least 5 characters'),
+    body('agencyAddress.address2').optional(),
+    body('agencyAddress.city')
+      .notEmpty()
+      .isLength({min: 2, max: undefined})
+      .withMessage('City must containt at least 2 characters'),
+    body('agencyAddress.state')
+      .notEmpty()
+      .isLength({min: 2, max: undefined})
+      .withMessage('State must containt at least 2 characters'),
+    body('agencyAddress.country')
+      .notEmpty()
+      .isLength({min: 2, max: undefined})
+      .withMessage('Country must containt at least 2 characters'),
+    body('agencyAddress.zipcode')
+      .notEmpty()
+      .isLength({min: 5, max: undefined})
+      .withMessage('Zipcode must containt at least 5 characters'),
     body('agencyPhone')
       .notEmpty()
-      .isNumeric()
       .isLength({ min: 7, max: undefined })
       .withMessage('Phone number must be at least 7 characters long')
-      .matches(/^(?=\d).{7,}$/)
-      .withMessage('Phone number must contain only numbers'),
+      .matches(/^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/) 
+      .withMessage('Phone number must match format XXX-XXX-XXXX'),
     body('agencyBio').optional(),
+    
   ];
 };
 
