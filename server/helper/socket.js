@@ -14,7 +14,7 @@ function connectSocket(app) {
       cert: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/cert.pem'),
     };
     server = https.createServer(app, options)
-
+    log.info('SSL SERver')
   }
 
   const io = require("socket.io")(server, {
