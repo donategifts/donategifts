@@ -35,7 +35,6 @@ const {
 const { redirectLogin } = require('../helper/userHelper');
 const { renderPermissions } = require('../helper/wishcardHelper');
 
-console.log(io);
 const {
   babies,
   preschoolers,
