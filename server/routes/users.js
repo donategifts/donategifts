@@ -236,11 +236,9 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
     return handleError(res, 400, {
-      message: {
-        msg: 'Provided captcha token is not valid',
-        param: 'captchaToken',
-        location: 'body',
-      },
+      msg: 'Provided captcha token is not valid',
+      param: 'captchaToken',
+      location: 'body',
     });
   }
 
