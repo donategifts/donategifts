@@ -125,7 +125,7 @@
 	<!-- jquery -->
 
 	<script>
-		socket = io('<%= socketUrl %>');
+		var socket = io('<%= process.env.SOCKET_URL %>');
 	</script>
 
 	<script src="/public/clientJS/wishCard.js"></script>

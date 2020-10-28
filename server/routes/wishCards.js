@@ -191,7 +191,6 @@ router.get('/', async (_req, res) => {
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
-      socketUrl: process.env.SOCKET_URL,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -227,25 +226,25 @@ router.get('/me', async (req, res) => {
 // @access  User with admin role
 // @tested 	No
 router.get('/admin/', async (req, res) => {
-    try {
-      const WISHCARD_STATUS = "draft";
-      const USER_ROLE = "admin";
-      // only admin users can get access
-      if (res.locals.user.userRole !== USER_ROLE) {
-        return res.status(401).render('401');
-      }
-      // only retrieve wishcards that have a draft status
-      const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
-      res.render('adminWishCards', { wishcards }, (error, html) => {
-        if (error) {
-          res.status(400).json({ success: false, error });
-        } else {
-          res.status(200).send(html);
-        }
-      });
-    } catch (error) {
-      handleError(res, 400, error);
+  try {
+    const WISHCARD_STATUS = 'draft';
+    const USER_ROLE = 'admin';
+    // only admin users can get access
+    if (res.locals.user.userRole !== USER_ROLE) {
+      return res.status(401).render('401');
     }
+    // only retrieve wishcards that have a draft status
+    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    res.render('adminWishCards', { wishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    Update wishcard
@@ -253,22 +252,22 @@ router.get('/admin/', async (req, res) => {
 // @access  User with admin role
 // @tested 	No
 router.put('/admin/', async (req, res) => {
-    try {
-      const USER_ROLE = "admin";
-      // only admin users can get access
-      if (res.locals.user.userRole !== USER_ROLE) {
-        return res.status(401).render('401');
-      }
-      const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-      await WishCardRepository.updateWishCardStatus(wishCardId, "published");
-      return res.status(200).send({
-        success: true,
-        error: null,
-        data: null,
-      });
-    } catch (error) {
-        handleError(res, 400, error);
+  try {
+    const USER_ROLE = 'admin';
+    // only admin users can get access
+    if (res.locals.user.userRole !== USER_ROLE) {
+      return res.status(401).render('401');
     }
+    const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
+    await WishCardRepository.updateWishCardStatus(wishCardId, 'published');
+    return res.status(200).send({
+      success: true,
+      error: null,
+      data: null,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    search the wish cards by substring of wishItemName
