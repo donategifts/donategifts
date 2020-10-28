@@ -434,9 +434,7 @@ async function getLockedWishCards(req) {
     return response;
   }
   response.userId = user._id;
-  response.lockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
-    req.session.user._id,
-  );
+  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
 
   return response;
 }
@@ -449,13 +447,15 @@ const blockedWishcardsTimer = [];
 
 router.post('/lock/:id', async (req, res) => {
   try {
-    const { wishCardId, lockedWishcard, userId, error } = await getLockedWishCards(req);
 
-    if (error) handleError(res, 400, error);
+    const {wishCardId, alreadyLockedWishCard, userId, error} = await getLockedWishCards(req);
 
-    if (lockedWishcard) {
+    if (error) handleError(res, 400, error)
+
+    if(alreadyLockedWishCard) {
+
       // user has locked wishcard and its still locked
-      if (moment(lockedWishcard.isLockedUntil) >= moment()) {
+      if (new Date(alreadyLockedWishCard.isLockedUntil) >= new Date()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
       }
     }
@@ -463,7 +463,7 @@ router.post('/lock/:id', async (req, res) => {
     // check if wishcard is locked by someone else
     const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-    if (moment(wishCard.isLockedUntil) > moment()) {
+    if (new Date(wishCard.isLockedUntil) > new Date()) {
       return handleError(res, 400, 'Wishcard has been locked by someone else.');
     }
 
