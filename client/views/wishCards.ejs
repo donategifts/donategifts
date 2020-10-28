@@ -127,8 +127,10 @@
 	<!-- jquery -->
 
 	<script>
+  
 		countdown = []
-		socket = io('<%= socketUrl %>');
+    socket = io('<%= process.env.SOCKET_URL %>');
+
 	</script>
 
 	<script src="/public/clientJS/wishCard.js"></script>

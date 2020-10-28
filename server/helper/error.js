@@ -10,16 +10,20 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (res, code, error) => {
+const handleError = (res, code, errorMsg) => {
   let statusCode = 400;
   let name = 'Error handler';
+  let error;
 
-  if (typeof error === 'object') {
-    if (error.name) {
-      name = error.name;
+  if (typeof errorMsg === 'object') {
+    if (errorMsg.name) {
+      name = errorMsg.name;
     }
 
-    statusCode = error.statusCode;
+    statusCode = errorMsg.statusCode;
+    error = errorMsg;
+  } else if (typeof errorMsg === 'string') {
+    error = { msg: errorMsg };
   }
 
   statusCode = code || statusCode;
