@@ -569,7 +569,7 @@ router.get(
       const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
 
       if (userObject) {
-        if (moment(userObject.passwordResetTokenExpires) > moment()) {
+        if (new Date(userObject.passwordResetTokenExpires) > new Date()) {
           res.render('resetPassword', {
             token: req.params.token,
           });

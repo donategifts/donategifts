@@ -4,6 +4,13 @@ New color scheme reference is in utils.css
 ---------------
 */
 
+/* newly added - move later  */
+#left-align {
+  text-align: left !important;
+  padding: 1em 0em 1em 2em;
+}
+/* newly added - move later  */
+
 /* ---------------home hero section */
 #home-bg {
   background: url('../img/donategifts-new-hero.png') center center;
