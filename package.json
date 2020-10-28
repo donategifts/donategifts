@@ -51,7 +51,7 @@
     "nodemailer": "^6.4.14",
     "nodemailer-mailgun-transport": "^2.0.1",
     "querystring": "^0.2.0",
-    "sharp": "0.25.1",
+    "sharp": "0.25.4",
     "socket.io": "^2.3.0",
     "superagent": "6.1.0",
     "uuid": "^8.3.1",
