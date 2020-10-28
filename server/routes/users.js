@@ -398,7 +398,7 @@ router.post(
   async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await UserRepository.getUserByEmail(email);
+    const user = await UserRepository.getUserByEmail(email.toLowerCase());
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
         req.session.user = user;
