@@ -49,28 +49,28 @@ const createAgencyValidationRules = () => {
     body('agencyWebsite').optional(),
     body('agencyAddress.address1')
       .notEmpty()
-      .isLength({min: 5, max: undefined})
+      .isLength({min: 5 })
       .withMessage('Address must contain at least 5 characters'),
     body('agencyAddress.address2').optional(),
     body('agencyAddress.city')
       .notEmpty()
-      .isLength({min: 2, max: undefined})
+      .isLength({min: 2 })
       .withMessage('City must contain at least 2 characters'),
     body('agencyAddress.state')
       .notEmpty()
-      .isLength({min: 2, max: undefined})
+      .isLength({min: 2 })
       .withMessage('State must contain at least 2 characters'),
     body('agencyAddress.country')
       .notEmpty()
-      .isLength({min: 2, max: undefined})
+      .isLength({min: 2 })
       .withMessage('Country must contain at least 2 characters'),
     body('agencyAddress.zipcode')
       .notEmpty()
-      .isLength({min: 5, max: undefined})
+      .isLength({min: 5 })
       .withMessage('Zipcode must contain at least 5 characters'),
     body('agencyPhone')
       .notEmpty()
-      .isLength({ min: 7, max: undefined })
+      .isLength({ min: 7 })
       .withMessage('Phone number must be at least 7 characters long')
       .matches(/^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/) 
       .withMessage('Phone number must match format XXX-XXX-XXXX'),
