@@ -50,24 +50,24 @@ const createAgencyValidationRules = () => {
     body('agencyAddress.address1')
       .notEmpty()
       .isLength({min: 5, max: undefined})
-      .withMessage('Address must containt at least 5 characters'),
+      .withMessage('Address must contain at least 5 characters'),
     body('agencyAddress.address2').optional(),
     body('agencyAddress.city')
       .notEmpty()
       .isLength({min: 2, max: undefined})
-      .withMessage('City must containt at least 2 characters'),
+      .withMessage('City must contain at least 2 characters'),
     body('agencyAddress.state')
       .notEmpty()
       .isLength({min: 2, max: undefined})
-      .withMessage('State must containt at least 2 characters'),
+      .withMessage('State must contain at least 2 characters'),
     body('agencyAddress.country')
       .notEmpty()
       .isLength({min: 2, max: undefined})
-      .withMessage('Country must containt at least 2 characters'),
+      .withMessage('Country must contain at least 2 characters'),
     body('agencyAddress.zipcode')
       .notEmpty()
       .isLength({min: 5, max: undefined})
-      .withMessage('Zipcode must containt at least 5 characters'),
+      .withMessage('Zipcode must contain at least 5 characters'),
     body('agencyPhone')
       .notEmpty()
       .isLength({ min: 7, max: undefined })
