@@ -83,8 +83,6 @@ router.get('/login', redirectProfile, (req, res) => {
       user: res.locals.user,
       successNotification: null,
       errorNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -408,16 +406,12 @@ router.post(
       return res.status(403).render('login', {
         user: res.locals.user,
         successNotification: null,
-        g_client_id: process.env.G_CLIENT_ID,
-        fb_client_id: process.env.FB_APP_ID,
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
     return res.status(403).render('login', {
       user: res.locals.user,
       successNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Username and/or password incorrect' },
     });
   },
@@ -463,8 +457,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
           successNotification: {
             msg: 'Your email is already verified.',
           },
-          g_client_id: process.env.G_CLIENT_ID,
-          fb_client_id: process.env.FB_APP_ID,
           errorNotification: null,
         });
       }
@@ -476,8 +468,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
         successNotification: {
           msg: 'Email Verification successful',
         },
-        g_client_id: process.env.G_CLIENT_ID,
-        fb_client_id: process.env.FB_APP_ID,
         errorNotification: null,
       });
     }
@@ -486,8 +476,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Email Verification failed' },
     });
   }
