@@ -32,8 +32,8 @@ const {
   validate,
 } = require('./validations/wishcards.validations');
 
-const { redirectLogin } = require('../helper/userHelper');
-const { renderPermissions } = require('../helper/wishcardHelper');
+const { redirectLogin } = require('./middleware/login.middleware');
+const { renderPermissions } = require('./middleware/wishCard.middleware');
 
 const {
   babies,
@@ -46,7 +46,7 @@ const {
   allAgesB,
 } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
-const WishCardController = require('../controller/wishCard.controller');
+const WishCardController = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
 // IMPORT REPOSITORIES
@@ -434,7 +434,9 @@ async function getLockedWishCards(req) {
     return response;
   }
   response.userId = user._id;
-  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
+    req.session.user._id,
+  );
 
   return response;
 }
@@ -447,13 +449,11 @@ const blockedWishcardsTimer = [];
 
 router.post('/lock/:id', async (req, res) => {
   try {
+    const { wishCardId, alreadyLockedWishCard, userId, error } = await getLockedWishCards(req);
 
-    const {wishCardId, alreadyLockedWishCard, userId, error} = await getLockedWishCards(req);
+    if (error) handleError(res, 400, error);
 
-    if (error) handleError(res, 400, error)
-
-    if(alreadyLockedWishCard) {
-
+    if (alreadyLockedWishCard) {
       // user has locked wishcard and its still locked
       if (new Date(alreadyLockedWishCard.isLockedUntil) >= new Date()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
@@ -606,30 +606,30 @@ router.get(
     let itemChoices;
 
     switch (ageCategory) {
-    case 1:
-      itemChoices = babies;
-      break;
-    case 2:
-      itemChoices = preschoolers;
-      break;
-    case 3:
-      itemChoices = kids6_8;
-      break;
-    case 4:
-      itemChoices = kids9_11;
-      break;
-    case 5:
-      itemChoices = teens;
-      break;
-    case 6:
-      itemChoices = youth;
-      break;
-    case 7:
-      itemChoices = allAgesA;
-      break;
-    default:
-      itemChoices = allAgesB;
-      break;
+      case 1:
+        itemChoices = babies;
+        break;
+      case 2:
+        itemChoices = preschoolers;
+        break;
+      case 3:
+        itemChoices = kids6_8;
+        break;
+      case 4:
+        itemChoices = kids9_11;
+        break;
+      case 5:
+        itemChoices = teens;
+        break;
+      case 6:
+        itemChoices = youth;
+        break;
+      case 7:
+        itemChoices = allAgesA;
+        break;
+      default:
+        itemChoices = allAgesB;
+        break;
     }
 
     res.render('itemChoices', { itemChoices }, (error, html) => {
