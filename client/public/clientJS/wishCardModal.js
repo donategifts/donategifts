@@ -8,9 +8,16 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let childName = button[0].dataset.valueName;
     const wishCardId = button[0].dataset.valueId;
 
-    let modalWarningMessage = `<h1>This wish card will be reserved for your donation</h1>
-        <h4>for 10 minutes to avoid duplicate donations.</h4>
-        <h4>Once redirected to Amazon, please select ${childName}'s anonymized shipping address before you check out.</h4>`;
+    let modalWarningMessage = 
+    `<div class="quick-font donate-modal">
+        <h4 class="crayon-font donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
+        <img class="img-fluid modal-img" src="/public/img/setShippingReminder.svg" >
+        <p class="modal-p">Follow the new tab link to check out from Amazon.<br/>
+        While on the shipping page, under ‘Other Addresses’,
+        <strong>choose the gift registry address.</strong></p>
+        <p class="donate-subtitle">${childName}'s wish card will be reserved for <span class="highlighted">10 minutes</span> to avoid duplicate donations.</p>
+    </div>
+    `;
     // get modal reference and replace text
     modal = $(this);
     modal.find('.modal-body').html(modalWarningMessage);
@@ -19,7 +26,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let isLoggedIn = button[0].dataset.valueLoggedin;
     let donateButton =  $('#modal-donate-btn');
     if (isLoggedIn === 'false') {
-        donateButton.html('Please login to donate')
+        donateButton.html('Please log in to donate')
         donateButton.prop('disabled', true)
     }
 
@@ -143,7 +150,7 @@ function addCountdownToModal(lockedUntil, wishListId, elementId) {
 
         seconds = seconds < 10 ? '0' + seconds : seconds;
         if (distance < 0) {
-            clearInterval(x[wishListId]);
+            clearInterval(locked[wishListId]);
             locked[wishListId] = null;
             element.text('');
 

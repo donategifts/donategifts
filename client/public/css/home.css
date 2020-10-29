@@ -9,6 +9,59 @@ New color scheme reference is in utils.css
   text-align: left !important;
   padding: 1em 0em 1em 2em;
 }
+
+.donate-modal {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-img {
+  max-height: 300px !important;
+  margin-bottom: 1em;
+  padding-bottom: 0.8em;
+}
+
+.donate-modal-title {
+  font-size: 2.2em;
+  color: rgba(65, 66, 84, 1) !important;
+  padding-bottom: 0.8em;
+}
+
+.donate-subtitle {
+  font-size: 1em;
+  color: rgba(65, 66, 84, 1) !important;
+}
+
+.highlighted {
+  display: inline-flex;
+  background: rgba(255, 187, 89, 0.4);
+  text-decoration: none !important;
+}
+
+.modal-p {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.donate-modal-button {
+  padding: 1em 1em;
+  margin: 0.8em 4.2em 1.8em 4.2em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(0, 161, 154, 1);
+  color: #fff;
+}
+
+.donate-modal-button:hover {
+  background: rgba(65, 66, 84, 1);
+  color: #fff;
+}
+
 /* newly added - move later  */
 
 /* ---------------home hero section */
@@ -153,7 +206,6 @@ New color scheme reference is in utils.css
 }
 
 /* ---------------partners section end */
-
 
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
