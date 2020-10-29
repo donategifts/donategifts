@@ -16,7 +16,10 @@
     "no-underscore-dangle": "off",
     "indent": [
       "error",
-      2
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
     "global-require": "off"
   },
