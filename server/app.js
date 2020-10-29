@@ -8,6 +8,7 @@
  */
 
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 let configPath = './config/config.env';
 if (process.env.NODE_ENV === 'test') {
@@ -27,6 +28,7 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
+const { connectSocket } = require('./helper/socket');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
@@ -42,6 +44,7 @@ if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
+app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
 app.set('views', path.join(__dirname, '../client/views'));
@@ -53,13 +56,7 @@ app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
 
-// DEV ENV
-// const hostname = '127.0.0.1';
-// const port = 8081;
-// LIVE ENV
-// const hostname = '64.227.8.216';
-const hostname = '127.0.0.1';
-const port = 8081;
+MongooseConnection.connect();
 
 // SESSION SET UP
 app.use(
@@ -158,7 +155,7 @@ app.use((err, req, res, _next) => {
   res.render('500');
 });
 
-// DB SET UP & APP LISTEN (server starts after db connection)
-MongooseConnection.connect(app, port, hostname);
+// server start-up should happen after route registration and db connection
+io = connectSocket(app);
 
 module.exports = app;

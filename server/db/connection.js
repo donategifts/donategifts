@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const log = require('../helper/logger');
 
-function connect(app, port, hostname) {
+function connect() {
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -17,10 +17,6 @@ function connect(app, port, hostname) {
       log.info(
         `Connected to Mongodb ${database.name ? database.name : database.connections[0].name}`,
       );
-
-      app.listen(port, hostname, () => {
-        log.info(`Server running at http://${hostname}:${port}/`);
-      });
     }
   });
 }

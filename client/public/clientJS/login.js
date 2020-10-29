@@ -14,7 +14,7 @@ function facebookLogin(fbUser) {
           },
           error: function (response) {
             let txtToJson = JSON.parse(response.responseText);
-            showToast(txtToJson.error);
+            showToast(txtToJson.error.msg);
           },
         });
       }
@@ -38,8 +38,7 @@ function googleLogin(googleUser) {
       location.assign(route.url);
     },
     error: function (response) {
-      let txtToJson = JSON.parse(response.responseText);
-      showToast(txtToJson.error);
+      showToast(response.responseJSON.error.msg);
     },
   });
 }

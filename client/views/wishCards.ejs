@@ -10,12 +10,10 @@
 	<script src="/public/clientJS/utils.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
-
-
 		<% for (var i = 0; i < wishcards.length; i++) { %>
-
+			<% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
 			addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
-
+			<% } %>
 		<% } %>
 	</script>
 
@@ -106,7 +104,11 @@
 									data-value-name="<%= wishcards[i].childFirstName %>"
 									data-value-id="<%= wishcards[i]._id %>"
 									data-value-loggedIn="<%= !!locals.user %>"
-									data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
+									<% if (locals.user) { %>
+										data-value-user="<%= locals.user._id %>"
+									<% } %>
+
+											data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
 									Gift</button>
 								</div>
 							</div>
@@ -125,7 +127,10 @@
 	<!-- jquery -->
 
 	<script>
-		socket = io('<%= socketUrl %>');
+  
+		countdown = []
+    socket = io('<%= process.env.SOCKET_URL %>');
+
 	</script>
 
 	<script src="/public/clientJS/wishCard.js"></script>

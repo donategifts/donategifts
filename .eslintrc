@@ -13,6 +13,17 @@
     "camelcase": "off",
     "no-plusplus": "off",
     "consistent-return": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "global-require": "off"
+  },
+  "globals": {
+    "io": true
   }
 }

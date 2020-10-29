@@ -12,7 +12,13 @@ const createWishcardValidationRules = () => {
     body('childInterest').isString(),
     body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
     body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
-    body('wishItemURL').notEmpty().withMessage('Wish item url is required').isString(),
+    body('wishItemURL')
+      .notEmpty()
+      .withMessage('Wish item url is required')
+      .isString()
+      // https://regex101.com/r/yM5lU0/13 if you want to see it in action
+      .matches(/^(https(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
+      .withMessage('Wish item url has to be a valid amazon link!'),
     body('childStory').notEmpty().withMessage("Child's story is required").isString(),
   ];
 };
@@ -95,10 +101,6 @@ const getDefaultCardsValidationRules = () => {
   return [param('id').notEmpty().withMessage('Id parameter is required')];
 };
 
-const lockWishCardValidationRules = () => {
-  return [param('id').notEmpty().withMessage('Id parameter is required')];
-};
-
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -115,6 +117,5 @@ module.exports = {
   updateWishCardValidationRules,
   postMessageValidationRules,
   getDefaultCardsValidationRules,
-  lockWishCardValidationRules,
   validate,
 };
