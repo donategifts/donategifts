@@ -545,7 +545,9 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
                         profileRes.should.have.status(200);
                         profileRes.text.should.contain(`Welcome ${user.fName}`);
                         profileRes.text.should.contain('Your email is unverified');
+
                         profileRes.text.should.contain('Wish card creation feature is disabled');
+
 
                         Agency.create({ accountManager: user._id, ...agencyRequest }).then(
                           (agency) => {
