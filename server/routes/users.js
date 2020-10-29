@@ -28,13 +28,8 @@ const {
 } = require('../controller/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
-const {
-  redirectLogin,
-  redirectProfile,
-  verifyGoogleToken,
-  hashPassword,
-  createDefaultPassword,
-} = require('../helper/userHelper');
+const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
+const { redirectLogin, redirectProfile } = require('./middleware/login.middleware');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
@@ -237,11 +232,9 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
     return handleError(res, 400, {
-      message: {
-        msg: 'Provided captcha token is not valid',
-        param: 'captchaToken',
-        location: 'body',
-      },
+      msg: 'Provided captcha token is not valid',
+      param: 'captchaToken',
+      location: 'body',
     });
   }
 

@@ -116,7 +116,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
             },
             error: (response, textStatus, errorThrown) => {
-                showToast(response.responseJSON.error)
+                showToast(response.responseJSON.error.msg)
                 $('#modal-donate-btn').prop('disabled', false)
             },
         });

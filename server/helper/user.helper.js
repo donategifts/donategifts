@@ -1,22 +1,6 @@
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 
-const redirectLogin = (req, res, next) => {
-  if (!req.session.user) {
-    res.redirect('/users/login');
-  } else {
-    next();
-  }
-};
-
-const redirectProfile = (req, res, next) => {
-  if (req.session.user) {
-    res.redirect('/users/profile');
-  } else {
-    next();
-  }
-};
-
 async function verifyGoogleToken(token) {
   const oauthClient = new OAuth2Client(process.env.G_CLIENT_ID);
   const ticket = await oauthClient.verifyIdToken({
@@ -41,8 +25,6 @@ function createDefaultPassword() {
 }
 
 module.exports = {
-  redirectLogin,
-  redirectProfile,
   verifyGoogleToken,
   hashPassword,
   createDefaultPassword,

@@ -35,9 +35,7 @@ $(document).ready(function () {
         location.assign(response.url);
       },
       error: function (response, textStatus, errorThrown) {
-        let txtToJson = JSON.parse(response.responseText);
-        let errorMsg = txtToJson.error;
-        showToast(errorMsg.msg);
+        showToast(response.responseJSON.error.msg);
         $('#submit-btn').prop('disabled', false);
       },
     });
