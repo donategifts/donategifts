@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const users = [
   {
     fName: 'John',
@@ -6,7 +8,7 @@ const users = [
     emailVerified: true,
     verificationHash: 'randomString',
     userRole: 'Donor',
-    password: 'johndoe1!',
+    password: bcrypt.hashSync('johndoe', 10),
   },
   {
     fName: 'Jane',
@@ -14,7 +16,7 @@ const users = [
     email: 'janedoe@gmail.com',
     emailVerified: true,
     verificationHash: 'anotherRandomString',
-    password: 'janedoe1!',
+    password: bcrypt.hashSync('janedoe', 10),
     userRole: 'Partner',
   },
   {
@@ -23,7 +25,7 @@ const users = [
     email: 'rickybobby@gmail.com',
     emailVerified: true,
     verificationHash: 'oogabooga',
-    password: 'rickybobby1!',
+    password: bcrypt.hashSync('rickybobby', 10),
     userRole: 'admin',
   },
 ];
