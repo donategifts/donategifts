@@ -8,7 +8,7 @@ const users = [
     emailVerified: true,
     verificationHash: 'randomString',
     userRole: 'Donor',
-    password: bcrypt.hashSync('johndoe', 10),
+    password: bcrypt.hashSync('johndoe1!', 10),
   },
   {
     fName: 'Jane',
@@ -16,7 +16,7 @@ const users = [
     email: 'janedoe@gmail.com',
     emailVerified: true,
     verificationHash: 'anotherRandomString',
-    password: bcrypt.hashSync('janedoe', 10),
+    password: bcrypt.hashSync('janedoe1!', 10),
     userRole: 'Partner',
   },
   {
@@ -25,7 +25,7 @@ const users = [
     email: 'rickybobby@gmail.com',
     emailVerified: true,
     verificationHash: 'oogabooga',
-    password: bcrypt.hashSync('rickybobby', 10),
+    password: bcrypt.hashSync('rickybobby1!', 10),
     userRole: 'admin',
   },
 ];
