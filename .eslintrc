@@ -14,7 +14,10 @@
     "no-plusplus": "off",
     "consistent-return": "off",
     "no-underscore-dangle": "off",
-    "indent": ["error", 2],
+    "indent": [
+      "error",
+      2
+    ],
     "global-require": "off"
   },
   "globals": {

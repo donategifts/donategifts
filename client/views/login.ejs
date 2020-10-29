@@ -16,7 +16,7 @@
     <script>
       window.fbAsyncInit = function () {
         FB.init({
-          appId: '<%- fb_client_id %>',
+          appId: '<%- process.env.FB_APP_ID %>',
           cookie: true,
           xfbml: true,
           version: 'v8.0',
@@ -38,7 +38,7 @@
 
     <!-- google login -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="<%- g_client_id %>" />
+    <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
 
     <title>Sign Up to Donate Gifts</title>
 

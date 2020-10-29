@@ -11,8 +11,8 @@ const Bull = require('bull');
 const queue = new Bull('queue', {
   limiter: {
     max: 1,
-    duration: 30000
-  }
+    duration: 30000,
+  },
 });
 
 const router = express.Router();
@@ -20,7 +20,7 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const logger = require('../helper/logger');
-const scrapeList = require('../../scripts/amazon-scraper')
+const scrapeList = require('../../scripts/amazon-scraper');
 const {
   createWishcardValidationRules,
   createGuidedWishcardValidationRules,
@@ -35,7 +35,6 @@ const {
 const { redirectLogin } = require('../helper/userHelper');
 const { renderPermissions } = require('../helper/wishcardHelper');
 
-console.log(io)
 const {
   babies,
   preschoolers,
@@ -200,8 +199,6 @@ router.get('/', async (_req, res) => {
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards,
-      socketUrl: process.env.SOCKET_URL,
-      moment
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -238,8 +235,8 @@ router.get('/me', async (req, res) => {
 // @tested 	No
 router.get('/admin/', async (req, res) => {
   try {
-    const WISHCARD_STATUS = "draft";
-    const USER_ROLE = "admin";
+    const WISHCARD_STATUS = 'draft';
+    const USER_ROLE = 'admin';
     // only admin users can get access
     if (res.locals.user.userRole !== USER_ROLE) {
       return res.status(404).render('404');
@@ -264,13 +261,13 @@ router.get('/admin/', async (req, res) => {
 // @tested 	No
 router.put('/admin/', async (req, res) => {
   try {
-    const USER_ROLE = "admin";
+    const USER_ROLE = 'admin';
     // only admin users can get access
     if (res.locals.user.userRole !== USER_ROLE) {
       return res.status(404).render('404');
     }
     const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-    await WishCardRepository.updateWishCardStatus(wishCardId, "published");
+    await WishCardRepository.updateWishCardStatus(wishCardId, 'published');
     return res.status(200).send({
       success: true,
       error: null,
@@ -421,11 +418,9 @@ router.post(
   },
 );
 
-
 async function getLockedWishCards(req) {
-
   const response = {
-    wishCardId: req.params.id
+    wishCardId: req.params.id,
   };
 
   if (!req.session.user) {
@@ -439,11 +434,10 @@ async function getLockedWishCards(req) {
     return response;
   }
   response.userId = user._id;
-  response.lockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
 
   return response;
 }
-
 
 // @desc   lock a wishcard
 // @route  POST '/wishcards/lock'
@@ -454,13 +448,14 @@ const blockedWishcardsTimer = [];
 router.post('/lock/:id', async (req, res) => {
   try {
 
-    const {wishCardId, lockedWishcard, userId, error} = await getLockedWishCards(req);
+    const {wishCardId, alreadyLockedWishCard, userId, error} = await getLockedWishCards(req);
 
     if (error) handleError(res, 400, error)
 
-    if(lockedWishcard) {
+    if(alreadyLockedWishCard) {
+
       // user has locked wishcard and its still locked
-      if (moment(lockedWishcard.isLockedUntil) >= moment()) {
+      if (new Date(alreadyLockedWishCard.isLockedUntil) >= new Date()) {
         return handleError(res, 400, 'You already have a locked wishcard.');
       }
     }
@@ -468,21 +463,18 @@ router.post('/lock/:id', async (req, res) => {
     // check if wishcard is locked by someone else
     const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-    if (moment(wishCard.isLockedUntil) > moment()) {
+    if (new Date(wishCard.isLockedUntil) > new Date()) {
       return handleError(res, 400, 'Wishcard has been locked by someone else.');
     }
 
     const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, userId);
 
-    io.emit('block', {id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil});
+    io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
 
     // in case user doesn't confirm donation, check after countdown runs out
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
-      queue.add({wishCardId,
-        userId,
-        url:wishCard.wishItemURL,
-        price: wishCard.wishItemPrice});
-    }, process.env.WISHCARD_LOCK_IN_MINUTES*1000*60);
+      queue.add({ wishCardId, userId, url: wishCard.wishItemURL, price: wishCard.wishItemPrice });
+    }, process.env.WISHCARD_LOCK_IN_MINUTES * 1000 * 60);
 
     res.status(200).send({
       lockedUntil: lockedWishCard.isLockedUntil,
@@ -494,19 +486,16 @@ router.post('/lock/:id', async (req, res) => {
   }
 });
 
-
 router.post('/unlock/:id', async (req, res) => {
   try {
+    const { wishCardId, lockedWishcard, userId, error } = await getLockedWishCards(req);
 
-    const {wishCardId, lockedWishcard, userId, error} = await getLockedWishCards(req);
+    if (error) handleError(res, 400, error);
 
-    if (error) handleError(res, 400, error)
-
-    if(lockedWishcard && lockedWishcard.isLockedBy === userId) {
-
+    if (lockedWishcard && lockedWishcard.isLockedBy === userId) {
       await WishCardRepository.unLockWishCard(wishCardId);
-      io.emit('unblock', {id: wishCardId});
-      clearTimeout(blockedWishcardsTimer[wishCardId])
+      io.emit('unblock', { id: wishCardId });
+      clearTimeout(blockedWishcardsTimer[wishCardId]);
     }
 
     res.status(200).send({
@@ -520,7 +509,6 @@ router.post('/unlock/:id', async (req, res) => {
 
 // check if user has donated
 router.get('/status/:id', async (req, res) => {
-
   try {
     const wishCardId = req.params.id;
 
@@ -529,51 +517,48 @@ router.get('/status/:id', async (req, res) => {
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
     if (!user) return handleError(res, 400, 'User not found');
 
-    clearTimeout(blockedWishcardsTimer[wishCardId])
+    clearTimeout(blockedWishcardsTimer[wishCardId]);
     const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-    queue.add({wishCardId,
+    queue.add({
+      wishCardId,
       userId: req.session.user._id,
-      url:wishCard.wishItemURL,
-      price: wishCard.wishItemPrice});
+      url: wishCard.wishItemURL,
+      price: wishCard.wishItemPrice,
+    });
 
     res.status(200).send({
       success: true,
       error: null,
     });
-
   } catch (error) {
     handleError(res, 400, error);
   }
-
 });
 
-
 queue.process(async (job, done) => {
-
-  const {wishCardId, userId, url, price} = job.data;
+  const { wishCardId, userId, url, price } = job.data;
 
   try {
-
     let isDonated = true;
     const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(url);
-    if(wishListArray) {
-
+    if (wishListArray) {
       const wishListId = wishListArray[1];
       const itemId = wishListArray[2];
 
       if (wishListId) {
-        const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}` );
+        const scrapeResponse = await scrapeList(
+          `https://www.amazon.com/hz/wishlist/ls/${wishListId}`,
+        );
 
-        logger.debug(scrapeResponse)
+        logger.debug(scrapeResponse);
         if (!scrapeResponse) isDonated = false;
 
         if (Object.keys(scrapeResponse).length > 0) {
           isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
         }
 
-        if(isDonated) {
-
+        if (isDonated) {
           const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
           wishCard.isDonated = true;
@@ -583,36 +568,30 @@ queue.process(async (job, done) => {
             donationTo: wishCardId,
             donationFrom: userId,
             donationPrice: price,
-            donationConfirmed: true
+            donationConfirmed: true,
           });
 
-          io.emit('donated', {id: wishCardId, donatedBy: userId});
+          io.emit('donated', { id: wishCardId, donatedBy: userId });
           done(true);
           return true;
-
         }
-        io.emit('not_donated', {id: wishCardId, donatedBy: userId});
+        io.emit('not_donated', { id: wishCardId, donatedBy: userId });
         done(false);
-
       }
-      done(false)
-
+      done(false);
     }
     done(false);
-
   } catch (error) {
     logger.debug(error);
-    io.emit('error_donation', {id: wishCardId, donatedBy: userId});
+    io.emit('error_donation', { id: wishCardId, donatedBy: userId });
     done(false);
-
   }
 });
-
 
 queue.on('completed', (job, result) => {
   logger.debug(job.data);
   logger.debug(result);
-})
+});
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access Private (only for verified partners)
