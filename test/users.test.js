@@ -556,6 +556,13 @@ describe('Users', () => {
                 agencyName: 'testAgencyName',
                 agencyWebsite: 'http://testAgencyWebsite',
                 agencyBio: 'testAgencyBio',
+                agencyAddress: {
+                  address1: 'Test address',
+                  city: 'Test city',
+                  state: 'Test state',
+                  country: 'Test country',
+                  zipcode: '12345',
+                },
               };
 
               agent

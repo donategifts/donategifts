@@ -29,8 +29,15 @@ const signupRequest = {
 const agencyRequest = {
   agencyName: 'testAgencyName',
   agencyWebsite: 'http://testAgencyWebsite',
-  agencyPhone: '12334556',
+  agencyPhone: '111-222-3333',
   agencyBio: 'testAgencyBio',
+  agencyAddress: {
+    address1: 'Test address',
+    city: 'Test city',
+    state: 'Test state',
+    country: 'Test country',
+    zipcode: '12345',
+  },
 };
 
 const wishcardRequest = {
