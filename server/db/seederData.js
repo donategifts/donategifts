@@ -32,24 +32,30 @@ const users = [
 
 const wishcards = [
   {
+    approvedByAdmin: true,
     childFirstName: 'princess',
     chaldLastName: 'Elsa',
+    childInterest: 'playing video games',
     wishItemName: 'Amazon Gift Card LOL',
-    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishCardImage: 'https://picsum.photos/seed/picsum/300/300',
     wishItemUrl: 'https://www.google.com',
   },
   {
+    approvedByAdmin: true,
     childFirstName: 'princess',
     chaldLastName: 'Stacey',
+    childInterest: 'playing video games',
     wishItemName: 'Amazon Gift Card LOL',
-    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishCardImage: 'https://picsum.photos/seed/picsum/300/300',
     wishItemUrl: 'https://www.google.com',
   },
   {
+    approvedByAdmin: true,
     childFirstName: 'princess',
     chaldLastName: 'Patric',
+    childInterest: 'playing video games',
     wishItemName: 'Amazon Gift Card LOL',
-    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishCardImage: 'https://picsum.photos/seed/picsum/300/300',
     wishItemUrl: 'https://www.google.com',
   },
 ];
