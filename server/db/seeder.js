@@ -16,11 +16,8 @@ const importData = async () => {
     await WishCard.deleteMany();
     await User.insertMany(users);
     await WishCard.insertMany(wishcards);
-
-    // console.log('Data imported!');
     process.exit();
   } catch (error) {
-    // console.error(error);
     process.exit(1);
   }
 };
@@ -28,15 +25,12 @@ const importData = async () => {
 const destroyData = async () => {
   try {
     await User.deleteMany();
-
-    // console.log('Data Destroyed!');
+    await WishCard.deleteMany();
     process.exit();
   } catch (error) {
-    // console.error(`${error}`);
     process.exit(1);
   }
 };
-
 if (process.argv[2] === '-d') {
   destroyData();
 } else {
