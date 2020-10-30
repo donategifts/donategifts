@@ -111,10 +111,15 @@
     border: 0.5px solid #333a64;
     transition: all 0.2s ease-in-out;
     width: 100%;
-    &:hover {
-      background: #333a64;
-      color: #fff;
-    }
+  }
+
+  &__link--white:focus,
+  &__link--white:active {
+    outline: none;
+  }
+  &__link--white:hover {
+    background: #333a64;
+    color: #fff !important;
   }
 
   &-btn {
