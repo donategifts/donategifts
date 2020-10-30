@@ -63,9 +63,9 @@ async function pushNewWishCardMessage(id, message) {
   }
 }
 
-async function updateWishCardStatus(id, status) {
+async function updateWishCard(id, wishCardFields) {
   try {
-    return WishCard.updateOne({ _id: id }, {$set: { status }}).exec();
+    return WishCard.updateOne({ _id: id }, {$set: { ...wishCardFields }}).exec();
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
@@ -103,7 +103,7 @@ module.exports = {
   getLockedWishcardsByUserId,
   getWishCardsByStatus,
   pushNewWishCardMessage,
-  updateWishCardStatus,
+  updateWishCard,
   lockWishCard,
   unLockWishCard,
 };
