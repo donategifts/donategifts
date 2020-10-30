@@ -314,11 +314,11 @@ router.post('/search', searchValidationRules(), validate, async (req, res) => {
   try {
     const { wishitem, recent, active, childAge, limit } = req.body;
     const results = await WishCardController.getWishCardSearchResult(
-      wishitem,
-      recent,
-      active,
-      childAge,
-      limit,
+      mongoSanitize.sanitize(wishitem),
+      mongoSanitize.sanitize(recent),
+      mongoSanitize.sanitize(active),
+      mongoSanitize.sanitize(childAge),
+      mongoSanitize.sanitize(limit),
     );
     res.status(200).render('wishCards', {
       user: res.locals.user,
@@ -453,29 +453,6 @@ router.post(
   },
 );
 
-async function getLockedWishCards(req) {
-  const response = {
-    wishCardId: req.params.id,
-  };
-
-  if (!req.session.user) {
-    response.error = 'User not found';
-    return response;
-  }
-
-  const user = await UserRepository.getUserByObjectId(req.session.user._id);
-  if (!user) {
-    response.error = 'User not found';
-    return response;
-  }
-  response.userId = user._id;
-  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
-    req.session.user._id,
-  );
-
-  return response;
-}
-
 // @desc   lock a wishcard
 // @route  POST '/wishcards/lock'
 // @access  Public, all users
@@ -484,7 +461,12 @@ const blockedWishcardsTimer = [];
 
 router.post('/lock/:id', async (req, res) => {
   try {
-    const { wishCardId, alreadyLockedWishCard, userId, error } = await getLockedWishCards(req);
+    const {
+      wishCardId,
+      alreadyLockedWishCard,
+      userId,
+      error,
+    } = await WishCardController.getLockedWishCards(req);
 
     if (error) handleError(res, 400, error);
 
@@ -523,7 +505,12 @@ router.post('/lock/:id', async (req, res) => {
 
 router.post('/unlock/:id', async (req, res) => {
   try {
-    const { wishCardId, lockedWishcard, userId, error } = await getLockedWishCards(req);
+    const {
+      wishCardId,
+      lockedWishcard,
+      userId,
+      error,
+    } = await WishCardController.getLockedWishCards(req);
 
     if (error) handleError(res, 400, error);
 
