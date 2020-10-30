@@ -7,6 +7,11 @@ window.onload = function () {
 
 function unlockCardButtonClick(e) {
     const cardId = e.target.dataset.valueId;
+    const oldItemUrl = document.getElementById("oldWishItemUrl"+cardId);
+    const newItemUrl = document.getElementById("newWishItemUrl"+cardId);
+    // take new url if anything is isnide input box
+    let wishItemUrl = newItemUrl.value ? newItemUrl.value : oldItemUrl.href;
+    console.log(wishItemUrl);
     // get reference to element so we can call it inside callback
     const elementRef = e.target;
     $.ajax({
@@ -14,6 +19,7 @@ function unlockCardButtonClick(e) {
         url: '/wishcards/admin',
         data: {
           wishCardId: cardId,
+          wishItemURL: wishItemUrl,
         },
         success: function (response, textStatus, xhr) {
           showToast("Card status updated");
