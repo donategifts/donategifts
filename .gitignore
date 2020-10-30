@@ -18,5 +18,3 @@ config/config.env
 server/logs
 .eslintcache
 dump.*
-
-*.sh
