@@ -291,7 +291,6 @@ router.put('/admin/', async (req, res) => {
     }
     const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
     const wishItemURL = mongoSanitize.sanitize(req.body.wishItemURL);
-    console.log(wishItemURL);
     const wishCardModifiedFields = {
       wishItemURL,
       status: 'published',
