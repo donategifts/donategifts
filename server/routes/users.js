@@ -25,7 +25,7 @@ const {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-} = require('../controller/messaging');
+} = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
 const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');

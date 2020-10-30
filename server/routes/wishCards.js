@@ -46,7 +46,7 @@ const {
   allAgesB,
 } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
-const WishCardController = require('./middleware/wishCard.middleware');
+const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
 // IMPORT REPOSITORIES
@@ -55,6 +55,8 @@ const MessageRepository = require('../db/repository/MessageRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 const DonationsRepository = require('../db/repository/DonationRepository');
+
+const WishCardController = require('./controller/wishcard.controller');
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -70,7 +72,7 @@ router.post(
   '/',
   limiter,
   renderPermissions,
-  WishCardController.upload.single('wishCardImage'),
+  WishCardMiddleWare.upload.single('wishCardImage'),
   createWishcardValidationRules(),
   validate,
   async (req, res) => {
@@ -124,7 +126,7 @@ router.post(
   '/guided/',
   limiter,
   renderPermissions,
-  WishCardController.upload.single('wishCardImage'),
+  WishCardMiddleWare.upload.single('wishCardImage'),
   createGuidedWishcardValidationRules(),
   validate,
   async (req, res) => {
@@ -242,12 +244,12 @@ router.get('/admin/', async (req, res) => {
       return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
-    const wishcards =  await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
     // we need to append each wishcard with some agency details
     const wishCardsWithAgencyDetails = [];
-    
+
     // There seems to be no way of direct accessing all required information at on so to populate
-    // wishcard with agency info we grab wishcards with users and then have to loop through 
+    // wishcard with agency info we grab wishcards with users and then have to loop through
     // agencies with the user to get agency details. I added a reference for wishcards on agency model
     // but older entries are missing that information
     for (let i = 0; i < wishcards.length; i++) {
@@ -257,13 +259,13 @@ router.get('/admin/', async (req, res) => {
       // take only necessary fields from agency that will be displayed on wishcard
       const agencySimple = {
         agencyName: agencyDetails.agencyName,
-        agencyPhone: agencyDetails.agencyPhone 
-      }
+        agencyPhone: agencyDetails.agencyPhone,
+      };
       // merge some agency details with wishcard
-      const mergedObj = {...wishCard.toObject(), ...agencySimple};
+      const mergedObj = { ...wishCard.toObject(), ...agencySimple };
       wishCardsWithAgencyDetails.push(mergedObj);
     }
-    
+
     res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
       if (error) {
         handleError(res, 400, error);
@@ -292,7 +294,7 @@ router.put('/admin/', async (req, res) => {
     console.log(wishItemURL);
     const wishCardModifiedFields = {
       wishItemURL,
-      status: 'published'
+      status: 'published',
     };
     await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
     return res.status(200).send({
@@ -311,7 +313,14 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', searchValidationRules(), validate, async (req, res) => {
   try {
-    const results = await WishCardRepository.getWishCardsByItemName(req.body.wishitem);
+    const { wishitem, recent, active, childAge, limit } = req.body;
+    const results = await WishCardController.getWishCardSearchResult(
+      wishitem,
+      recent,
+      active,
+      childAge,
+      limit,
+    );
     res.status(200).render('wishCards', {
       user: res.locals.user,
       wishcards: results,

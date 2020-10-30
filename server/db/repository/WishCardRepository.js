@@ -12,22 +12,51 @@ async function createNewWishCard(wishCardParams) {
 
 async function getAllWishCards() {
   try {
-    return WishCard.find().exec();
+    return WishCard.find().limit(25).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards: ${error}`);
   }
 }
 
-async function getWishCardsByItemName(itemName) {
+async function getWishCardsByItemName(itemName, recent, activeCardsOnly, limit) {
   try {
-    return WishCard.find({
-      wishItemName: {
-        $regex: itemName,
-        $options: 'i',
-      },
-    }).exec();
+    const query = {
+      wishItemName: itemName,
+      isDonated: activeCardsOnly,
+    };
+
+    if (recent) {
+      // limit query for one week
+      query.createdAd = { $lt: moment().subtract(7, 'days').toDate() };
+    }
+
+    return WishCard.findOne(query).limit(limit).exec();
   } catch (error) {
-    throw new Error(`Failed to get Wishcards: ${error}`);
+    throw new Error(`Failed to get WishCards: ${error}`);
+  }
+}
+
+async function getWishCardsFuzzy(itemName, recent, activeCardsOnly, limit) {
+  try {
+    try {
+      const query = {
+        wishItemName: `${new RegExp(itemName, 'gi')}`,
+        childStory: `${new RegExp(itemName, 'gi')}`,
+        childInterest: `${new RegExp(itemName, 'gi')}`,
+        isDonated: activeCardsOnly,
+      };
+
+      if (recent) {
+        // limit query for one week
+        query.createdAd = { $lt: moment().subtract(7, 'days').toDate() };
+      }
+
+      return WishCard.findOne(query).limit(limit).exec();
+    } catch (error) {
+      throw new Error(`Failed to get WishCards: ${error}`);
+    }
+  } catch (error) {
+    throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
 }
 
@@ -65,7 +94,7 @@ async function pushNewWishCardMessage(id, message) {
 
 async function updateWishCard(id, wishCardFields) {
   try {
-    return WishCard.updateOne({ _id: id }, {$set: { ...wishCardFields }}).exec();
+    return WishCard.updateOne({ _id: id }, { $set: { ...wishCardFields } }).exec();
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
@@ -87,7 +116,7 @@ async function unLockWishCard(id) {
   try {
     const wishCard = await getWishCardByObjectId(id);
     wishCard.isLockedBy = null;
-    wishCard.isLockedUntil =null;
+    wishCard.isLockedUntil = null;
     wishCard.save();
     return wishCard;
   } catch (error) {
@@ -106,4 +135,5 @@ module.exports = {
   updateWishCard,
   lockWishCard,
   unLockWishCard,
+  getWishCardsFuzzy,
 };
