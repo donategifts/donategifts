@@ -1,0 +1,85 @@
+<div
+  class="modal fade"
+  id="loginModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="loginModalLongTitle"
+  aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="crayon-font font-lg center">Log In</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body rale-font">
+      <div class="container-fluid">
+
+        <form class="signup" action="/users/login" method="post">
+          <div class="wrap-input mg-btm" data-validate="Email is required">
+            <input
+              required
+              class="input-default quick-font"
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email : "
+              title="example: username@xyz.com"
+            />
+          </div>
+
+          <div class="wrap-input mg-btm2" data-validate="Password is required">
+            <input
+              required
+              class="input-default quick-font"
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password : "
+              pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+              title="Must contain at least one number and one lowercase letter, and at least 8 or more characters"
+            />
+          </div>
+
+          <a href="/users/password/request/">Forgot Password?</a>
+
+          <!-- submit button section -->
+          <div class="container-form-btn">
+            <button class="form-btn quick-font" type="submit">Log In</button>
+          </div>
+        </form>
+        
+        <div id="google-fb-login">
+          <div class="d-flex justify-content-center">
+            <div
+              class="g-signin2 mt-3"
+              data-width="228"
+              data-longtitle="true"
+              data-onsuccess="googleLogin"
+            ></div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div
+              class="fb-login-button mt-3"
+              data-size="large"
+              data-button-type="login_with"
+              data-layout="default"
+              data-auto-logout-link="false"
+              data-use-continue-as="false"
+              data-scope="public_profile,email"
+              data-onlogin="facebookLogin"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+
+  </div>
+</div>
+</div>

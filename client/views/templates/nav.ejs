@@ -18,7 +18,7 @@
           <li><a href="/wishcards">Wish Cards</a></li>
           <% if (!locals.user) { %>
           <li><a href="/users/signup">Sign Up</a></li>
-          <li><a href="/users/login">Login</a></li>
+          <li><a href="/users/login" data-toggle="modal" data-target="#loginModalCenter">Login</a></li>
           <% } else { %>
           <% if (locals.user.userRole == 'partner') { %>
             <li><a href="/users/agency/wishcard">My Wish Cards</a></li>
