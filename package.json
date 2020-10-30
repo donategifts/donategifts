@@ -10,8 +10,11 @@
     "test": "NODE_ENV=test mocha --timeout 10000 --exit",
     "start": "node server/app.js",
     "dev": "nodemon",
+    "compile:sass": "node-sass client\\public\\sass\\main.scss client\\public\\css\\style.css --output-style compressed",
     "lint": "eslint --fix --ext .js --ignore-path .eslintignore server/",
-    "upgradePackages": "ncu -u"
+    "upgradePackages": "ncu -u",
+    "watch:scss": "onchange \"client/public/sass/*.scss\" -- npm run compile:sass",
+    "watch:all": "parallelshell \"npm run watch:scss\" \"nodemon\""
   },
   "repository": {
     "type": "git",
@@ -67,9 +70,13 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-mocha": "^8.0.0",
     "husky": "^4.3.0",
+ 
     "mocha": "^8.2.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.6",
     "npm-check-updates": "^9.2.2",
+    "onchange": "^7.1.0",
+    "parallelshell": "^3.0.1",
     "prettier": "^2.1.2"
   },
   "husky": {

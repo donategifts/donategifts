@@ -154,7 +154,6 @@ New color scheme reference is in utils.css
 
 /* ---------------partners section end */
 
-
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
   .custom-left {
@@ -199,8 +198,8 @@ New color scheme reference is in utils.css
 }
 
 /*
-# Button
-----------------------------------*/
+  # Button
+  ----------------------------------*/
 .btn {
   padding: 18px 40px;
   border-radius: 20px;
@@ -215,14 +214,6 @@ New color scheme reference is in utils.css
   justify-content: center;
   display: flex;
   align-items: center;
-}
-
-.wishcard-btn {
-  padding: 1em 2em;
-  margin: 10px;
-  border-radius: 20px;
-  line-height: 1.2em;
-  outline: none;
 }
 
 #btn1 {
@@ -280,8 +271,8 @@ New color scheme reference is in utils.css
 }
 
 /*
-# Icon Box
-----------------------------------*/
+  # Icon Box
+  ----------------------------------*/
 .icon-box {
   padding: 40px;
   border-radius: 24px;
@@ -352,8 +343,8 @@ New color scheme reference is in utils.css
 }
 
 /*
-# Welcome
---------------------------------*/
+  # Welcome
+  --------------------------------*/
 .welcome-content .entry-title {
   position: relative;
   padding-bottom: 24px;
@@ -401,8 +392,8 @@ New color scheme reference is in utils.css
 }
 
 /*--------------------------------------------------------------
-# Sidebar
---------------------------------------------------------------*/
+  # Sidebar
+  --------------------------------------------------------------*/
 @media screen and (max-width: 992px) {
   .sidebar {
     margin-top: 96px;
@@ -415,8 +406,8 @@ New color scheme reference is in utils.css
 }
 
 /*--------------------------------------------------------------
-# wishcards section - landing page
---------------------------------------------------------------*/
+  # wishcards section - landing page
+  --------------------------------------------------------------*/
 #card-fix {
   border: none;
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
@@ -425,6 +416,12 @@ New color scheme reference is in utils.css
   flex-direction: column;
   border-radius: 20px;
   background: rgba(255, 246, 237, 0.7);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
+  }
 }
 
 #img-fix {
@@ -447,17 +444,6 @@ New color scheme reference is in utils.css
 
 .card-body .card-text-container {
   min-height: 225px;
-}
-
-.msg-icon {
-  background: rgba(255, 92, 111, 1);
-  padding: 0.6em 0.8em;
-  border: none;
-}
-
-.msg-icon .fa {
-  color: #fff;
-  font-size: 1.3em;
 }
 
 #fb {
@@ -518,8 +504,8 @@ New color scheme reference is in utils.css
 }
 
 /*--------------------------------------------------------------
-    Footer
---------------------------------------------------------------*/
+      Footer
+  --------------------------------------------------------------*/
 .footer-bar {
   padding: 23px 0;
   font-size: 1.1em;

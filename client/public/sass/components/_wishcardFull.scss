@@ -97,3 +97,72 @@
   border-radius: 10px;
   font-weight: bold;
 }
+
+.wishcard {
+  &__link--white,
+  &__link--white:link,
+  &__link--white:visited {
+    background-color: #fff;
+    color: #333a64;
+    padding: 12px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 0.5px solid #333a64;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    &:hover {
+      background: #333a64;
+      color: #fff;
+    }
+  }
+
+  &-btn {
+    padding: 1em 2em;
+    margin: 10px;
+    border-radius: 20px;
+    line-height: 1.2em;
+    outline: none;
+  }
+
+  &__button--blue {
+    appearance: none;
+    background: #333a64;
+    color: #fff;
+    outline: none;
+    padding: 12px 15px;
+    width: 100%;
+    border: 0.5px solid transparent;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background: #fff;
+      color: #333a64;
+      border: 0.5px solid #333a64;
+    }
+  }
+
+  &__icon--fixed {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    padding: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    transition: all 0.25s ease-in-out;
+    text-decoration: none;
+  }
+}
+
+.msg-icon {
+  background: $primary-yellow;
+  padding: 0.6em 0.8em;
+  border: none;
+  .fa {
+    color: #fff;
+    font-size: 1.3em;
+  }
+}
