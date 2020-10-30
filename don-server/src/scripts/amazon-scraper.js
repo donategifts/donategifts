@@ -15,13 +15,13 @@ const scrapeList = async url => {
 
   console.log(url)
 
-  const response = await axios.get('https://app.scrapingbee.com/api/v1?'+urlParams, {});
+  const response = await axios.get(`https://app.scrapingbee.com/api/v1?${urlParams}`, {});
 
   const $ = cheerio.load(response.data);
 
-  let results = [];
+  const results = [];
   $('.g-item-sortable').each((index, item) => {
-    let found = {
+    const found = {
       title: $(item).find('.a-link-normal').first().attr('title'),
       url: $(item).find('.a-button-text').first().attr('href'),
       price: $(item).find('.a-offscreen').text(),
@@ -33,9 +33,9 @@ const scrapeList = async url => {
 
     if ($('#no-items-section').length > 0) {
       return [];
-    } else {
-      return false
-    }
+    } 
+    return false
+    
   }
 
   return results

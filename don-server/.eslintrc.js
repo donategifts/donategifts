@@ -1,9 +1,10 @@
 module.exports = {
+  root: true,
   extends: ['airbnb-typescript', 'prettier', 'prettier/standard', 'prettier/@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 2019,
     sourceType: 'module',
-    project: './tsconfig.eslint.json',
+    project: './tsconfig.json',
   },
   plugins: ['mocha', 'prettier'],
   env: {
