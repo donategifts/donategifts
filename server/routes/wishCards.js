@@ -266,7 +266,7 @@ router.get('/admin/', async (req, res) => {
     
     res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
       if (error) {
-        res.status(400).json({ success: false, error });
+        handleError(res, 400, error);
       } else {
         res.status(200).send(html);
       }

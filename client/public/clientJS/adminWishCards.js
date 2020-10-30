@@ -7,8 +7,8 @@ window.onload = function () {
 
 function unlockCardButtonClick(e) {
     const cardId = e.target.dataset.valueId;
-    const oldItemUrl = document.getElementById("oldWishItemUrl"+cardId);
-    const newItemUrl = document.getElementById("newWishItemUrl"+cardId);
+    const oldItemUrl = $("#oldWishItemUrl"+cardId);
+    const newItemUrl = $("#newWishItemUrl"+cardId);
     // take new url if anything is isnide input box
     let wishItemUrl = newItemUrl.value ? newItemUrl.value : oldItemUrl.href;
     console.log(wishItemUrl);
@@ -26,9 +26,7 @@ function unlockCardButtonClick(e) {
           removeWishCardFromDOM(elementRef);
         },
         error: function (response, textStatus, errorThrown) {
-            console.log(response);
-            console.log(textStatus);
-            showToast("Could not update card status. Check console for error");
+            showToast(response.responseJSON.error.msg);
         },
       });
 }

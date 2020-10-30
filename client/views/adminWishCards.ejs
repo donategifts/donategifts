@@ -23,7 +23,7 @@
 		<!-- Dynamic Card Display now fixed and responsive-->
 		<div class="container">
 			<% if (wishCardsWithAgencyDetails.length === 0) { %>
-			<h1>No wishcards</h1>
+			    <h1>No wishcards</h1>
 			<% } else { %>
 			<div class="row justify-content-center">
                 <% for (var i = 0; i < wishCardsWithAgencyDetails.length; i++) { %>
@@ -43,7 +43,7 @@
 							<div class="card-text-container">
 								<!--Title-->
 								<h3 class="card-title text-center crayon-font">My name is
-									<%= wishCardsWithAgencyDetails[i].childFirstName %></h3>
+								<%= wishCardsWithAgencyDetails[i].childFirstName %></h3>
 								<!--Text-->
 								<div class="quick-font">
                                     <p class="card-text"><span class="font-weight-bold">Status : </span> <%= wishCardsWithAgencyDetails[i].status %></p>
@@ -51,13 +51,13 @@
 									<p class="card-text"><span class="font-weight-bold">Wish : </span> <%= wishCardsWithAgencyDetails[i].wishItemName.length > 25 ? wishCardsWithAgencyDetails[i].wishItemName.substring(0, 25) + "..." : wishCardsWithAgencyDetails[i].wishItemName %></p>
 									<p class="card-text"><span class="font-weight-bold">Item Price :</span> $<%= wishCardsWithAgencyDetails[i].wishItemPrice %></p>
 									<p ><span >Item Url:</span> <a id="oldWishItemUrl<%= wishCardsWithAgencyDetails[i]._id %>" href="<%= wishCardsWithAgencyDetails[i].wishItemURL %>">Link</a></p>
-                                    <input id="newWishItemUrl<%= wishCardsWithAgencyDetails[i]._id %>" class="input1" type="text" name="newWishItemUrl"
-                                     placeholder="Url for wish item..." />
-                                    <button type="button" id="donate-btn-<%= wishCardsWithAgencyDetails[i]._id %>"
-                                        data-value-id="<%= wishCardsWithAgencyDetails[i]._id %>"
-                                        class="col wishcard-btn btn-navy-bg">
-                                        Publish WishCard
-                                    </button>
+                  <input id="newWishItemUrl<%= wishCardsWithAgencyDetails[i]._id %>" class="input1" type="text" name="newWishItemUrl"
+                    placeholder="Url for wish item..." />
+                    <button type="button" id="donate-btn-<%= wishCardsWithAgencyDetails[i]._id %>"
+                      data-value-id="<%= wishCardsWithAgencyDetails[i]._id %>"
+                      class="col wishcard-btn btn-navy-bg">
+                      Publish WishCard
+                    </button>
 								</div>
 							</div>
 
