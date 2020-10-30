@@ -1,9 +1,9 @@
 const path = require('path');
-const { users, wishcards } = require('./seederData');
+const { users, wishcards, agency } = require('./seederData');
 
 const User = require('./models/User');
 const WishCard = require('./models/WishCard');
-
+const Agency = require('./models/Agency');
 const MongooseConnection = require('./connection');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
@@ -15,6 +15,10 @@ if (process.env.LOCAL_DEVELOPMENT) {
     try {
       await User.insertMany(users);
       await WishCard.insertMany(wishcards);
+      await Agency.create({
+        agency,
+        accountManager: User.findOne({ email: 'janedoe@gmail.com' }).select('_id').lean().exec(),
+      });
       process.exit();
     } catch (error) {
       process.exit(1);
@@ -23,10 +27,15 @@ if (process.env.LOCAL_DEVELOPMENT) {
 
   const deleteDataAndImport = async () => {
     try {
+      await Agency.deleteMany();
       await User.deleteMany();
       await WishCard.deleteMany();
       await User.insertMany(users);
       await WishCard.insertMany(wishcards);
+      await Agency.create({
+        agency,
+        accountManager: User.findOne({ email: 'janedoe@gmail.com' }).select('_id').exec(),
+      });
       process.exit();
     } catch (error) {
       process.exit(1);
@@ -35,6 +44,7 @@ if (process.env.LOCAL_DEVELOPMENT) {
 
   const destroyData = async () => {
     try {
+      await Agency.deleteMany();
       await User.deleteMany();
       await WishCard.deleteMany();
       process.exit();

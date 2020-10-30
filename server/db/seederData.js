@@ -60,4 +60,13 @@ const wishcards = [
   },
 ];
 
-module.exports = { users, wishcards };
+const agency = {
+  agencyName: 'SaveDaKids',
+  agencyWebsite: 'savedakids.com',
+  agencyPhone: '111-11-1111',
+  agencyBio: 'Commited to saving the kids!',
+  childrenAgeRange: '1-18',
+  joined: Date.now(),
+  isVerified: true,
+};
+module.exports = { users, wishcards, agency };
