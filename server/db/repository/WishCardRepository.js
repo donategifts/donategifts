@@ -18,17 +18,12 @@ async function getAllWishCards() {
   }
 }
 
-async function getWishCardsByItemName(itemName, recent, activeCardsOnly, limit) {
+async function getWishCardsByItemName(itemName, isDonated, limit) {
   try {
     const query = {
       wishItemName: itemName,
-      isDonated: activeCardsOnly,
+      isDonated,
     };
-
-    if (recent) {
-      // limit query for one week
-      query.createdAd = { $lt: moment().subtract(7, 'days').toDate() };
-    }
 
     return WishCard.findOne(query).limit(limit).exec();
   } catch (error) {
@@ -36,22 +31,32 @@ async function getWishCardsByItemName(itemName, recent, activeCardsOnly, limit) 
   }
 }
 
-async function getWishCardsFuzzy(itemName, recent, activeCardsOnly, limit) {
+async function getWishCardsFuzzy(itemName, isDonated, limit) {
   try {
     try {
       const query = {
-        wishItemName: `${new RegExp(itemName, 'gi')}`,
-        childStory: `${new RegExp(itemName, 'gi')}`,
-        childInterest: `${new RegExp(itemName, 'gi')}`,
-        isDonated: activeCardsOnly,
+        wishItemName: { $regex: new RegExp(itemName), $options: 'gi' },
+        childStory: { $regex: new RegExp(itemName), $options: 'gi' },
+        childInterest: { $regex: new RegExp(itemName), $options: 'gi' },
+        childFirstName: { $regex: new RegExp(itemName), $options: 'gi' },
+        childLastName: { $regex: new RegExp(itemName), $options: 'gi' },
+        isDonated,
       };
 
-      if (recent) {
-        // limit query for one week
-        query.createdAd = { $lt: moment().subtract(7, 'days').toDate() };
-      }
-
-      return WishCard.findOne(query).limit(limit).exec();
+      return WishCard.find({
+        $or: [
+          { wishItemName: query.wishItemName, isDonated },
+          { childStory: query.childStory, isDonated },
+          { childInterest: query.childInterest, isDonated },
+          {
+            childFirstName: query.childFirstName,
+            isDonated,
+          },
+          { childLastName: query.childLastName, isDonated },
+        ],
+      })
+        .limit(limit)
+        .exec();
     } catch (error) {
       throw new Error(`Failed to get WishCards: ${error}`);
     }

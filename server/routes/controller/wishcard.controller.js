@@ -2,24 +2,17 @@ const moment = require('moment');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
-async function getWishCardSearchResult(
-  itemName,
-  recent = true,
-  active = false,
-  childAge = 15,
-  limit = 25,
-) {
-  let activeCardsOnly = active;
+async function getWishCardSearchResult(itemName, isDonated = false, childAge = 15, limit = 25) {
   if (childAge < 15) {
-    activeCardsOnly = true;
+    // eslint-disable-next-line no-param-reassign
+    isDonated = true;
   }
 
   const itemNameResult =
-    (await WishCardRepository.getWishCardsByItemName(itemName, recent, activeCardsOnly, limit)) ||
-    [];
+    (await WishCardRepository.getWishCardsByItemName(itemName, isDonated, limit)) || [];
 
   const fuzzySearchResult =
-    (await WishCardRepository.getWishCardsFuzzy(itemName, recent, activeCardsOnly, limit)) || [];
+    (await WishCardRepository.getWishCardsFuzzy(itemName, isDonated, limit)) || [];
 
   // remove duplicates
   const allWishCards = [...new Set([...itemNameResult, ...fuzzySearchResult])];

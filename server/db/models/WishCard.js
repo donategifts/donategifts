@@ -40,7 +40,7 @@ const WishCardSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+      default: new Date(),
     },
     deliveryDate: {
       type: Date,
@@ -80,7 +80,7 @@ const WishCardSchema = new Schema(
     status: {
       type: String,
       enum: ['draft', 'published', 'donated'],
-      default: 'draft'
+      default: 'draft',
     },
     wishCardTo: {
       type: Schema.Types.ObjectId,
