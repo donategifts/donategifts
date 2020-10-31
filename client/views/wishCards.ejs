@@ -166,18 +166,19 @@
 		<!-- jquery -->
 
 		<script>
-
-				countdown =[]
 			socket = io('<%= process.env.SOCKET_URL %>');
-
 		</script>
-
 		<script src="/public/clientJS/wishCard.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
 			integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
 			</script>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script src="/public/clientJS/wishCardModal.js"></script>
+		<!--  this is for login toast -->
+		<% if(!locals.user) { %>
+		<script src="/public/clientJS/loginToast.js"> </script>
+		<% } %>
+
 
 
 		<!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'

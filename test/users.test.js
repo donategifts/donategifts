@@ -434,8 +434,15 @@ describe('Users', () => {
               const agencyRequest = {
                 agencyName: 'testAgencyName',
                 agencyWebsite: 'http://testAgencyWebsite',
-                agencyPhone: '12334556',
+                agencyPhone: '111-222-3333',
                 agencyBio: 'testAgencyBio',
+                agencyAddress: {
+                  address1: 'Test address',
+                  city: 'Test city',
+                  state: 'Test state',
+                  country: 'Test country',
+                  zipcode: '12345',
+                },
               };
 
               agent
@@ -491,8 +498,15 @@ describe('Users', () => {
             User.findOne({ email: signupRequest.email }).then(() => {
               const agencyRequest = {
                 agencyWebsite: 'http://testAgencyWebsite',
-                agencyPhone: '12334556',
+                agencyPhone: '111-222-3333',
                 agencyBio: 'testAgencyBio',
+                agencyAddress: {
+                  address1: 'Test address',
+                  city: 'Test city',
+                  state: 'Test state',
+                  country: 'Test country',
+                  zipcode: '12345',
+                },
               };
 
               agent
@@ -542,6 +556,13 @@ describe('Users', () => {
                 agencyName: 'testAgencyName',
                 agencyWebsite: 'http://testAgencyWebsite',
                 agencyBio: 'testAgencyBio',
+                agencyAddress: {
+                  address1: 'Test address',
+                  city: 'Test city',
+                  state: 'Test state',
+                  country: 'Test country',
+                  zipcode: '12345',
+                },
               };
 
               agent
