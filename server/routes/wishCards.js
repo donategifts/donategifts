@@ -312,10 +312,9 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', searchValidationRules(), validate, async (req, res) => {
   try {
-    const { wishitem, recent, active, childAge, limit } = req.body;
+    const { wishitem, active, childAge, limit } = req.body;
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      mongoSanitize.sanitize(recent),
       mongoSanitize.sanitize(active),
       mongoSanitize.sanitize(childAge),
       mongoSanitize.sanitize(limit),

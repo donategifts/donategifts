@@ -8,14 +8,16 @@ async function getWishCardSearchResult(itemName, isDonated = false, childAge = 1
     isDonated = true;
   }
 
-  const itemNameResult =
-    (await WishCardRepository.getWishCardsByItemName(itemName, isDonated, limit)) || [];
-
-  const fuzzySearchResult =
-    (await WishCardRepository.getWishCardsFuzzy(itemName, isDonated, limit)) || [];
+  const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
+    itemName.trim(),
+    isDonated,
+    limit,
+  );
 
   // remove duplicates
-  const allWishCards = [...new Set([...itemNameResult, ...fuzzySearchResult])];
+  const allWishCards = fuzzySearchResult.filter((elem, index, self) => {
+    return index === self.indexOf(elem);
+  });
 
   for (let i = 0; i < allWishCards.length; i++) {
     const birthday = moment(new Date(allWishCards[i].childBirthday));
@@ -24,7 +26,7 @@ async function getWishCardSearchResult(itemName, isDonated = false, childAge = 1
     allWishCards[i].age = today.diff(birthday, 'years');
   }
 
-  return allWishCards.filter((item) => (childAge < 15 ? item.age < childAge : item.age > childAge));
+  return allWishCards;
 }
 
 async function getLockedWishCards(req) {

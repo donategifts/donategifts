@@ -20,12 +20,9 @@ async function getAllWishCards() {
 
 async function getWishCardsByItemName(itemName, isDonated, limit) {
   try {
-    const query = {
-      wishItemName: itemName,
-      isDonated,
-    };
-
-    return WishCard.findOne(query).limit(limit).exec();
+    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated })
+      .limit(limit)
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get WishCards: ${error}`);
   }
@@ -33,25 +30,18 @@ async function getWishCardsByItemName(itemName, isDonated, limit) {
 
 async function getWishCardsFuzzy(itemName, isDonated, limit) {
   try {
-    const query = {
-      wishItemName: { $regex: new RegExp(itemName), $options: 'gi' },
-      childStory: { $regex: new RegExp(itemName), $options: 'gi' },
-      childInterest: { $regex: new RegExp(itemName), $options: 'gi' },
-      childFirstName: { $regex: new RegExp(itemName), $options: 'gi' },
-      childLastName: { $regex: new RegExp(itemName), $options: 'gi' },
-      isDonated,
-    };
-
     return WishCard.find({
-      $or: [
-        { wishItemName: query.wishItemName, isDonated },
-        { childStory: query.childStory, isDonated },
-        { childInterest: query.childInterest, isDonated },
+      $and: [
         {
-          childFirstName: query.childFirstName,
-          isDonated,
+          $or: [
+            { wishItemName: { $regex: itemName, $options: 'i' } },
+            { childStory: { $regex: itemName, $options: 'i' } },
+            { childInterest: { $regex: itemName, $options: 'i' } },
+            { childFirstName: { $regex: itemName, $options: 'i' } },
+            { childLastName: { $regex: itemName, $options: 'i' } },
+          ],
         },
-        { childLastName: query.childLastName, isDonated },
+        { isDonated },
       ],
     })
       .limit(limit)
