@@ -527,3 +527,85 @@ New color scheme reference is in utils.css
   text-align: center;
   background: rgba(49, 49, 49, 1);
 }
+
+/*--------------------------------------------------------------
+    Login Modal
+--------------------------------------------------------------*/
+.modal.login .modal-header,
+.modal.login .modal-footer {
+  border: none;
+}
+
+.modal.login .modal-content {
+  border-radius: 20px;
+}
+
+.modal.login h4 {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.modal.login .wrap-input {
+  margin-bottom: 10px;
+}
+
+.modal.login label {
+  margin-bottom: 0;
+}
+
+.modal.login input {
+  width: 100%;
+  border: 2px solid rgba(0, 161, 154, 1);
+  font-size: 1.5rem;
+  line-height: 3rem;
+}
+
+
+.modal.login .modal-body {
+  margin: 0px 40px;
+}
+
+.modal.login .forgot-container {
+  text-align: right;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.modal.login a {
+  color: rgba(0, 161, 154, 1) !important;
+}
+
+.modal.login .form-btn {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  background: rgba(0, 161, 154, 1);
+  font-size: 1.5rem;
+  line-height: 3rem;
+  color: white;
+}
+
+.modal.login .text-container {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.modal.login #google-fb-login {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.modal.login .signup-container {
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/*--------------------------------------------------------------
+    End Login Modal
+--------------------------------------------------------------*/
