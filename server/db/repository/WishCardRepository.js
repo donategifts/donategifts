@@ -33,33 +33,29 @@ async function getWishCardsByItemName(itemName, isDonated, limit) {
 
 async function getWishCardsFuzzy(itemName, isDonated, limit) {
   try {
-    try {
-      const query = {
-        wishItemName: { $regex: new RegExp(itemName), $options: 'gi' },
-        childStory: { $regex: new RegExp(itemName), $options: 'gi' },
-        childInterest: { $regex: new RegExp(itemName), $options: 'gi' },
-        childFirstName: { $regex: new RegExp(itemName), $options: 'gi' },
-        childLastName: { $regex: new RegExp(itemName), $options: 'gi' },
-        isDonated,
-      };
+    const query = {
+      wishItemName: { $regex: new RegExp(itemName), $options: 'gi' },
+      childStory: { $regex: new RegExp(itemName), $options: 'gi' },
+      childInterest: { $regex: new RegExp(itemName), $options: 'gi' },
+      childFirstName: { $regex: new RegExp(itemName), $options: 'gi' },
+      childLastName: { $regex: new RegExp(itemName), $options: 'gi' },
+      isDonated,
+    };
 
-      return WishCard.find({
-        $or: [
-          { wishItemName: query.wishItemName, isDonated },
-          { childStory: query.childStory, isDonated },
-          { childInterest: query.childInterest, isDonated },
-          {
-            childFirstName: query.childFirstName,
-            isDonated,
-          },
-          { childLastName: query.childLastName, isDonated },
-        ],
-      })
-        .limit(limit)
-        .exec();
-    } catch (error) {
-      throw new Error(`Failed to get WishCards: ${error}`);
-    }
+    return WishCard.find({
+      $or: [
+        { wishItemName: query.wishItemName, isDonated },
+        { childStory: query.childStory, isDonated },
+        { childInterest: query.childInterest, isDonated },
+        {
+          childFirstName: query.childFirstName,
+          isDonated,
+        },
+        { childLastName: query.childLastName, isDonated },
+      ],
+    })
+      .limit(limit)
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
