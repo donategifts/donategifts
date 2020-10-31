@@ -603,4 +603,25 @@ router.post(
   },
 );
 
+// @desc    Get agency details. 
+// @access  Private, only users
+router.get('/agency/address', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return handleError(res, 403, 'No user id in request');
+    }
+    const agencyDetail = await AgencyRepository.getAgencyByUserId(req.session.user._id);
+    res.status(200).send(
+      JSON.stringify({
+        success: true,
+        error: null,
+        data: agencyDetail,
+      }),
+    );
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+},
+);
+
 module.exports = router;

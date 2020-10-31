@@ -5,3 +5,27 @@
   align-items: center;
   font-size: 1.3em;
 }
+/*Login Toast Message and the links*/
+.login{
+  padding: 0 1.5em;
+  height: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.2em;
+  font-family: 'Quicksand', sans-serif;
+  font-size: large;
+  font-weight: bolder;
+  color: rgba(51, 58, 100, 1)
+}
+
+.link{
+  text-decoration: none;
+  color: white;
+  background-color: #333a64;
+  padding: 1em 1.5em;
+  margin: 5px;
+  border-radius: 12px;
+  line-height: 0.5em;
+  outline: none;
+}

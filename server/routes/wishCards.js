@@ -242,10 +242,31 @@ router.get('/admin/', async (req, res) => {
       return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
-    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
-    res.render('adminWishCards', { wishcards }, (error, html) => {
+    const wishcards =  await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    // we need to append each wishcard with some agency details
+    const wishCardsWithAgencyDetails = [];
+    
+    // There seems to be no way of direct accessing all required information at on so to populate
+    // wishcard with agency info we grab wishcards with users and then have to loop through 
+    // agencies with the user to get agency details. I added a reference for wishcards on agency model
+    // but older entries are missing that information
+    for (let i = 0; i < wishcards.length; i++) {
+      const wishCard = wishcards[i];
+      // eslint-disable-next-line no-await-in-loop
+      const agencyDetails = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
+      // take only necessary fields from agency that will be displayed on wishcard
+      const agencySimple = {
+        agencyName: agencyDetails.agencyName,
+        agencyPhone: agencyDetails.agencyPhone 
+      }
+      // merge some agency details with wishcard
+      const mergedObj = {...wishCard.toObject(), ...agencySimple};
+      wishCardsWithAgencyDetails.push(mergedObj);
+    }
+    
+    res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
       if (error) {
-        res.status(400).json({ success: false, error });
+        handleError(res, 400, error);
       } else {
         res.status(200).send(html);
       }
@@ -267,7 +288,13 @@ router.put('/admin/', async (req, res) => {
       return res.status(404).render('404');
     }
     const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-    await WishCardRepository.updateWishCardStatus(wishCardId, 'published');
+    const wishItemURL = mongoSanitize.sanitize(req.body.wishItemURL);
+    console.log(wishItemURL);
+    const wishCardModifiedFields = {
+      wishItemURL,
+      status: 'published'
+    };
+    await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
     return res.status(200).send({
       success: true,
       error: null,
