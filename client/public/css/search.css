@@ -13,3 +13,12 @@
 #margin-bottom {
   margin-bottom: 3em;
 }
+
+.container {
+  margin-top: 30px;
+}
+
+.filter-col {
+  padding-left: 10px;
+  padding-right: 10px;
+}

@@ -312,12 +312,16 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', searchValidationRules(), validate, async (req, res) => {
   try {
-    const { wishitem, active, childAge, limit } = req.body;
+    const { wishitem, limit } = req.body;
+    let donated = false;
+
+    if (mongoSanitize.sanitize(req.body.donated) === 'on') {
+      donated = true;
+    }
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      mongoSanitize.sanitize(active),
-      mongoSanitize.sanitize(childAge),
-      mongoSanitize.sanitize(limit),
+      donated,
+      parseInt(mongoSanitize.sanitize(limit), 10),
     );
     res.status(200).render('wishCards', {
       user: res.locals.user,

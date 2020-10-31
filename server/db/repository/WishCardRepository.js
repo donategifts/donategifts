@@ -41,7 +41,7 @@ async function getWishCardsFuzzy(itemName, isDonated, limit) {
             { childLastName: { $regex: itemName, $options: 'i' } },
           ],
         },
-        { isDonated },
+        { $or: [{ isDonated }, { isDonated: { $exists: false } }] },
       ],
     })
       .limit(limit)

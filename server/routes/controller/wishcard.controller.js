@@ -2,7 +2,7 @@ const moment = require('moment');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
-async function getWishCardSearchResult(itemName, isDonated = false, childAge = 15, limit = 25) {
+async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, childAge = 15) {
   if (childAge < 15) {
     // eslint-disable-next-line no-param-reassign
     isDonated = true;
