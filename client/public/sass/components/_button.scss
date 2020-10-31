@@ -1,0 +1,39 @@
+.button {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  transition: all 0.2s;
+  border: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  &--green {
+    @extend .button;
+    background: $primary-green;
+    color: #fff;
+    &:hover {
+      color: $primary-green;
+      background: #fff;
+    }
+    &-tan:hover {
+      background: $cream;
+    }
+  }
+
+  &--inverted-green {
+    @extend .button;
+    background: #fff !important;
+    color: $primary-green !important;
+    &:hover {
+      color: #fff !important;
+      background: $primary-green !important;
+    }
+  }
+}

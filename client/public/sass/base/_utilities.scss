@@ -1,48 +1,7 @@
-/* 
------------------------------
-file: utils.css
-desc: this file has all reusable utilities for css
------------------------------ 
-New Color Scheme Reference:
-primary red:
-    #ff5c6f
-    rgba(255, 92, 111, 1)
-primary orange:
-    #ff826b
-    rgba(255, 130, 107, 1)
-light cream:
-    #fff6ed
-    rgba(255, 246, 237, 1)
-cream:
-    #f8e4c9
-    rgba(248, 228, 201, 1)
-primary green:
-    #00a19a
-    rgba(0, 161, 154, 1)
-primary yellow:
-    #ffbb59
-    rgba(255, 187, 89, 1)
-secondary yellow:
-    #f9a14c
-    rgba(249, 161, 76, 1)
-primary navy:
-    #333a64
-    rgba(51, 58, 100, 1)
-secondary navy:
-    #414254
-    rgba(65, 66, 84, 1)
-dark grey:
-    #313131
-    rgba(49, 49, 49, 1)
------------------------------ 
-*/
-
-/* commonly used utils
-  ----------------------------------------
-  */
 body {
   margin: auto 0;
   overflow-x: hidden;
+  font-family: 'Quicksand', sans-serif !important;
 }
 
 a {
@@ -80,6 +39,18 @@ h-100 {
   align-items: center;
 }
 
+.font-300 {
+  font-weight: 300;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.lg-text {
+  font-size: 1.2em;
+  font-weight: 700;
+}
 /* Hamburger Menu
   ----------------------------------------
   */
@@ -102,39 +73,6 @@ h-100 {
   opacity: 1;
   left: 0;
   transition: 0.25s ease-in-out;
-}
-
-.hamburger-menu span:nth-child(1) {
-  top: 2px;
-}
-
-.hamburger-menu span:nth-child(2),
-.hamburger-menu span:nth-child(3) {
-  top: 10px;
-}
-
-.hamburger-menu span:nth-child(4) {
-  top: 18px;
-}
-
-.hamburger-menu.open span:nth-child(1) {
-  top: 18px;
-  width: 0;
-  left: 50%;
-}
-
-.hamburger-menu.open span:nth-child(2) {
-  transform: rotate(45deg);
-}
-
-.hamburger-menu.open span:nth-child(3) {
-  transform: rotate(-45deg);
-}
-
-.hamburger-menu.open span:nth-child(4) {
-  top: 18px;
-  width: 0;
-  left: 50%;
 }
 
 .bdr-2 {

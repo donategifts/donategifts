@@ -76,3 +76,36 @@ button.navbar-toggler {
 .nav-item {
   text-align: right;
 }
+
+.hamburger-menu span:nth-child(1) {
+  top: 2px;
+}
+
+.hamburger-menu span:nth-child(2),
+.hamburger-menu span:nth-child(3) {
+  top: 10px;
+}
+
+.hamburger-menu span:nth-child(4) {
+  top: 18px;
+}
+
+.hamburger-menu.open span:nth-child(1) {
+  top: 18px;
+  width: 0;
+  left: 50%;
+}
+
+.hamburger-menu.open span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.hamburger-menu.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.hamburger-menu.open span:nth-child(4) {
+  top: 18px;
+  width: 0;
+  left: 50%;
+}

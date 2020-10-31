@@ -225,15 +225,14 @@ New color scheme reference is in utils.css
   background-color: rgba(0, 161, 154, 1);
   color: #fff;
   border: none;
+  &:hover {
+    background-color: #fff;
+    color: rgba(0, 161, 154, 1);
+    cursor: pointer;
+  }
 }
 
-.grn-btn:hover {
-  background-color: #fff;
-  color: rgba(0, 161, 154, 1);
-  cursor: pointer;
-}
-
-.inverted-grn-btn {
+.grn-btn .inverted-grn-btn {
   background-color: #fff;
   color: rgba(0, 161, 154, 1);
   border: none;
