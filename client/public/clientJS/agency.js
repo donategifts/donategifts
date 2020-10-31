@@ -41,3 +41,10 @@ $(document).ready(function () {
     });
   });
 });
+
+window.onload = function() {
+  let phoneMask = IMask(
+    document.getElementById('agencyPhone'), {
+      mask: '000-000-0000'
+    });
+}
