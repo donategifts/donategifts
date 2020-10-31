@@ -3,6 +3,9 @@ orbs:
   node: circleci/node@3.0.0
 workflows:
   node-tests:
+    docker:
+      - image: redis
+      - image: mongo
     jobs:
       - node/test
 
