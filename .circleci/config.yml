@@ -10,6 +10,9 @@ jobs:
           name: Copy default config
           command: cp config/example-config.env config/config.env
       - run:
+          name: Install packages
+          command: npm ci
+      - run:
           name: Test with npm
           command: npm test
 
