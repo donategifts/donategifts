@@ -30,24 +30,27 @@ async function getWishCardsByItemName(itemName, isDonated, limit) {
 
 async function getWishCardsFuzzy(itemName, isDonated, limit) {
   try {
-    return WishCard.find({
-      $and: [
-        {
-          $or: [
-            { wishItemName: { $regex: itemName, $options: 'i' } },
-            { childStory: { $regex: itemName, $options: 'i' } },
-            { childInterest: { $regex: itemName, $options: 'i' } },
-            { childFirstName: { $regex: itemName, $options: 'i' } },
-            { childLastName: { $regex: itemName, $options: 'i' } },
+    return WishCard.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                { wishItemName: { $regex: itemName, $options: 'i' } },
+                { childStory: { $regex: itemName, $options: 'i' } },
+                { childInterest: { $regex: itemName, $options: 'i' } },
+                { childFirstName: { $regex: itemName, $options: 'i' } },
+                { childLastName: { $regex: itemName, $options: 'i' } },
+              ],
+            },
+            {
+              $or: [{ isDonated }, { isDonated: { $exists: false } }],
+            },
           ],
         },
-        {
-          $or: [{ isDonated }, { isDonated: { $exists: false } }],
-        },
-      ],
-    })
-      .limit(limit)
-      .exec();
+      },
+      { $sample: { size: limit } },
+    ]).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
