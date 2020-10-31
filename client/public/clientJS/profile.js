@@ -68,25 +68,32 @@ window.onload = function () {
       // if the address is already filled with data ask user to clear it first
       // so that we dont accidentally overwrite it
       if (checkIfAgencyAddressFormIsEmpty()) {
-        fetch('/users/agency/address')
-        .then((response) => response.json())
-        .then((data) => {
-          const agency = data.data;
-          if (agency.agencyAddress) {
-            updateAgencyAddressForm(agency);
-          }
-          else {
-            showToast("Agency address not present. Most likely that information is missing, contact administrator");
-          }
-        })
-        .catch((error) => {
-          showToast("Could not get agency address");
-        })
+        fetchAgencyData();
       }
       else {
-        showToast("Address form must be empty if we want to use agency address so that there is no accidental overwrite");
+        const confirmation = confirm('Do you want to overwrite the address with agency address?');
+        if (confirmation === true) {
+          fetchAgencyData();
+        }
       }
     }
+  }
+
+  function fetchAgencyData() {
+    fetch('/users/agency/address')
+      .then((response) => response.json())
+      .then((data) => {
+        const agency = data.data;
+        if (agency.agencyAddress) {
+          updateAgencyAddressForm(agency);
+        }
+        else {
+          showToast('Agency address not present. Most likely that information is missing, contact the administrator.');
+        }
+      })
+      .catch((error) => {
+        showToast('Could not get agency address.');
+      })
   }
 
   // get html nodes and input with agency details from backend
