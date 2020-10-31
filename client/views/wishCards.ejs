@@ -139,7 +139,6 @@
 
     <%- include('./templates/footer')-%>
     <!-- jquery -->
-
     <script>
       countdown = [];
       socket = io('<%= process.env.SOCKET_URL %>');
@@ -153,6 +152,10 @@
     ></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="/public/clientJS/wishCardModal.js"></script>
+    <!--  this is for login toast -->
+    <% if(!locals.user) { %>
+    <script src="/public/clientJS/loginToast.js"></script>
+    <% } %>
 
     <!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'
 	because it was breaking the whole page

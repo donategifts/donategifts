@@ -44,6 +44,7 @@ in the future, make individual donor, enterprise donor, foster care partner
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/imask@6.0.5/dist/imask.js"></script>
     <!-- js scripts -->
     <script src="/public/clientJS/agency.js"></script>
   </head>
@@ -84,6 +85,77 @@ in the future, make individual donor, enterprise donor, foster care partner
                 title="This helps us verify your organization"
               />
             </div>
+            <!-- agencyAddress -->
+            <div class="wrap-input mg-btm" data-validate="Agency address is required">
+                <input
+                  required
+                  class="input-default quick-font"
+                  type="text"
+                  name="agencyAddress1"
+                  id="agencyAddress1"
+                  placeholder="Organization Address: "
+                  title="agencyAddress1"
+                />
+            </div>
+           <!-- agencyAddress2 -->
+           <div class="wrap-input mg-btm">
+                <input
+                class="input-default quick-font"
+                type="text"
+                name="agencyAddress2"
+                id="agencyAddress2"
+                placeholder="Organization Address 2: "
+                title="agencyAddress2"
+                />
+            </div>
+            <!-- agencyCity -->
+            <div class="wrap-input mg-btm" data-validate="City is required">
+                <input
+                required
+                class="input-default quick-font"
+                type="text"
+                name="city"
+                id="city"
+                placeholder="Organization City: "
+                title="city"
+                />
+            </div>
+            <!-- agencyState -->
+            <div class="wrap-input mg-btm" data-validate="State is required">
+                <input
+                required
+                class="input-default quick-font"
+                type="text"
+                name="state"
+                id="state"
+                placeholder="Organization State: "
+                title="state"
+                />
+            </div>
+            <!-- agencyCity -->
+            <div class="wrap-input mg-btm" data-validate="Coutry is required">
+                <input
+                required
+                class="input-default quick-font"
+                type="text"
+                name="country"
+                id="country"
+                placeholder="Organization Country: "
+                title="country"
+                />
+            </div>
+            <!-- agencyZipCode -->
+            <div class="wrap-input mg-btm" data-validate="Zip code is required">
+                <input
+                required
+                class="input-default quick-font"
+                type="text"
+                name="zipcode"
+                id="zipcode"
+                placeholder="Organization Zip Code: "
+                title="zipcode"
+                />
+            </div>
             <!-- agencyPhone -->
             <div class="wrap-input mg-btm" data-validate="Phone number is required">
               <input
@@ -92,7 +164,7 @@ in the future, make individual donor, enterprise donor, foster care partner
                 type="text"
                 name="agencyPhone"
                 id="agencyPhone"
-                placeholder="Organization Phone Number : "
+                placeholder="Organization Phone Number in format: 123-456-7890"
                 title="agencyPhone"
               />
             </div>
