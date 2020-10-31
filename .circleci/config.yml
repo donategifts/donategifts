@@ -1,17 +1,18 @@
-
 jobs:
   test:
     docker:
+      - image: 'circleci/node:14'
       - image: 'mongo:latest'
       - image: 'redis:latest'
-    executor:
-      name: node/default
-      tag: '13.14'
     steps:
       - checkout
-      - node/install-packages
       - run:
-          command: npm run test
+          name: Copy default config
+          command: cp config/example-config.env config/config.env
+      - run:
+          name: Test with npm
+          command: npm test
+
 orbs:
   node: circleci/node@4.1.0
 version: 2.1
