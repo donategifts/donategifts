@@ -3,11 +3,6 @@ const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
 async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, childAge = 15) {
-  if (childAge < 15) {
-    // eslint-disable-next-line no-param-reassign
-    isDonated = true;
-  }
-
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     itemName.trim(),
     isDonated,
@@ -26,7 +21,9 @@ async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, 
     allWishCards[i].age = today.diff(birthday, 'years');
   }
 
-  return allWishCards;
+  return allWishCards.filter((item) =>
+    childAge < 15 ? item.age < childAge : item.age >= childAge,
+  );
 }
 
 async function getLockedWishCards(req) {
