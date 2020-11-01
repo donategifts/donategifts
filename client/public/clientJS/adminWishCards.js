@@ -7,6 +7,11 @@ window.onload = function () {
 
 function unlockCardButtonClick(e) {
     const cardId = e.target.dataset.valueId;
+    const oldItemUrl = $("#oldWishItemUrl"+cardId);
+    const newItemUrl = $("#newWishItemUrl"+cardId);
+    // take new url if anything is isnide input box
+    let wishItemUrl = newItemUrl.value ? newItemUrl.value : oldItemUrl.href;
+    console.log(wishItemUrl);
     // get reference to element so we can call it inside callback
     const elementRef = e.target;
     $.ajax({
@@ -14,15 +19,14 @@ function unlockCardButtonClick(e) {
         url: '/wishcards/admin',
         data: {
           wishCardId: cardId,
+          wishItemURL: wishItemUrl,
         },
         success: function (response, textStatus, xhr) {
           showToast("Card status updated");
           removeWishCardFromDOM(elementRef);
         },
         error: function (response, textStatus, errorThrown) {
-            console.log(response);
-            console.log(textStatus);
-            showToast("Could not update card status. Check console for error");
+            showToast(response.responseJSON.error.msg);
         },
       });
 }

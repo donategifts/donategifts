@@ -11,7 +11,7 @@ const router = express.Router();
 // IMPORT WISHCARD MODEL
 const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
-const { sendMail, sendSlackFeedbackMessage } = require('../controller/messaging');
+const { sendMail, sendSlackFeedbackMessage } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
 

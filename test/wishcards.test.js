@@ -9,7 +9,6 @@ const { getMessageChoices } = require('../server/utils/defaultMessages');
 
 // Require the dev-dependencies
 const server = require('../server/app');
-const log = require('../server/helper/logger');
 // chai docs recommend using var
 // eslint-disable-next-line no-unused-vars
 const should = chai.should();
@@ -29,8 +28,15 @@ const signupRequest = {
 const agencyRequest = {
   agencyName: 'testAgencyName',
   agencyWebsite: 'http://testAgencyWebsite',
-  agencyPhone: '12334556',
+  agencyPhone: '111-222-3333',
   agencyBio: 'testAgencyBio',
+  agencyAddress: {
+    address1: 'Test address',
+    city: 'Test city',
+    state: 'Test state',
+    country: 'Test country',
+    zipcode: '12345',
+  },
 };
 
 const wishcardRequest = {
@@ -40,7 +46,7 @@ const wishcardRequest = {
   childInterest: 'Slaying demons',
   wishItemName: 'Doom Slayer statue',
   wishItemPrice: 20,
-  wishItemURL: 'http://someamazonlink',
+  wishItemURL: 'https://www.amazon.com/asdf',
   childStory: 'Doom Slayer traveled to Mars and slayed demons',
 };
 
@@ -154,6 +160,24 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
           wishcardRequest.wishItemPrice.should.equal(wishcard.wishItemPrice);
           done();
         });
+      });
+  });
+
+  it('POST wishcards - should not be able to post with incorrect amazon link', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field({ ...wishcardRequest, wishItemURL: 'http://some.random.string' })
+      .attach(
+        'wishCardImage',
+        fs.readFileSync('client/public/img/card-sample-1.jpg'),
+        'card-sample1.jpg',
+      )
+      .end((_err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.error.msg.should.contain('Wish item url has to be a valid amazon link!');
+        done();
       });
   });
 
@@ -528,9 +552,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
                         profileRes.should.have.status(200);
                         profileRes.text.should.contain(`Welcome ${user.fName}`);
                         profileRes.text.should.contain('Your email is unverified');
-                        profileRes.text.should.contain(
-                          'Wish card creation feature is disabled',
-                        );
+                        profileRes.text.should.contain('Wish card creation feature is disabled');
 
                         Agency.create({ accountManager: user._id, ...agencyRequest }).then(
                           (agency) => {

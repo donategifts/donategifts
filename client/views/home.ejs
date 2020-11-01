@@ -140,6 +140,10 @@
       $('.preloader').fadeOut(1500);
     });
   </script>
+  <!--  this is for login toast -->
+  <% if(!locals.user) { %>
+    <script src="/public/clientJS/loginToast.js"></script>
+  <% } %>
 </body>
 
 </html>
