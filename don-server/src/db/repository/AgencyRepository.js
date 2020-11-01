@@ -10,7 +10,7 @@ async function getAgencyByUserId(userId) {
 
 async function getAgencyWishCards(agencyId) {
   try {
-    return Agency.findOne({_id: agencyId}).populate('wishCards').exec();
+    return Agency.findOne({ _id: agencyId }).populate('wishCards').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards: ${error}`);
   }

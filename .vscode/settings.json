@@ -1,0 +1,5 @@
+{
+  "eslint.options": {
+    "configFile": "./don-server/.eslintrc.js"
+  }
+}

@@ -34,11 +34,11 @@ const createGuidedWishcardValidationRules = () => {
         if (!Name || !Price || !ItemURL) {
           throw new Error('Missing items');
         } else if (typeof Name !== 'string') {
-          throw new Error('ItemChoice Name - Wrong fieldtype');
+          throw new TypeError('ItemChoice Name - Wrong fieldtype');
         } else if (typeof Price !== 'number') {
-          throw new Error('ItemChoice Price - Wrong fieldtype');
+          throw new TypeError('ItemChoice Price - Wrong fieldtype');
         } else if (typeof ItemURL !== 'string') {
-          throw new Error('ItemChoice String - Wrong fieldtype');
+          throw new TypeError('ItemChoice String - Wrong fieldtype');
         }
         return true;
       }),

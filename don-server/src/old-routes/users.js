@@ -190,7 +190,9 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
 const sendEmail = async (email, verificationHash) => {
   const emailResponse = await sendVerificationEmail(email, verificationHash);
   const response = emailResponse ? emailResponse.data : '';
-  if (process.env.NODE_ENV === 'development') log.info(response);
+  if (process.env.NODE_ENV === 'development') {
+    log.info(response);
+  }
 };
 
 // @desc    Retrun wishards that belong to the agency
@@ -203,8 +205,12 @@ router.get('/agency/wishcard', async (req, res) => {
     const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
     // sort cards by status => published, draft, donated
     const wishcards = agencyInfo.wishCards.sort((currentCard, nextCard) => {
-      if (currentCard.status > nextCard.status) return -1;
-      if (currentCard.status < nextCard.status) return 1;
+      if (currentCard.status > nextCard.status) {
+        return -1;
+      }
+      if (currentCard.status < nextCard.status) {
+        return 1;
+      }
       return 0;
     });
     res.render('agencyWishCards', { wishcards }, (error, html) => {
@@ -520,7 +526,9 @@ router.post(
     try {
       const userObject = await UserRepository.getUserByEmail(req.body.email);
 
-      if (!userObject) return handleError(res, 400, 'user not found');
+      if (!userObject) {
+        return handleError(res, 400, 'user not found');
+      }
 
       const resetToken = uuidv4();
       userObject.passwordResetToken = resetToken;

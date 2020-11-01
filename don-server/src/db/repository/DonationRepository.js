@@ -1,6 +1,5 @@
 const Donation = require('../models/Donation');
 
-
 async function createNewDonation(params) {
   try {
     const newDonation = new Donation(params);

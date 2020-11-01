@@ -22,7 +22,8 @@
   },
   "include": [
     "./src",
-    "./@types"
+    "./@types",
+    ".*.js",
   ],
   "exclude": [
     "node_modules",

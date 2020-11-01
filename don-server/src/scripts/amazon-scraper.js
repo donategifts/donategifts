@@ -1,19 +1,18 @@
 // request Classic
-const cheerio = require('cheerio')
+const cheerio = require('cheerio');
 const axios = require('axios');
 const querystring = require('querystring');
 
-const scrapeList = async url => {
-
+const scrapeList = async (url) => {
   const urlParams = querystring.stringify({
-    'api_key': process.env.SCRAPINGBEE_APIKEY,
-    'url': url,
-    'render_js': 'false',
-    'premium_proxy': 'true',
-    "country_code":"us"
-  })
+    api_key: process.env.SCRAPINGBEE_APIKEY,
+    url,
+    render_js: 'false',
+    premium_proxy: 'true',
+    country_code: 'us',
+  });
 
-  console.log(url)
+  console.log(url);
 
   const response = await axios.get(`https://app.scrapingbee.com/api/v1?${urlParams}`, {});
 
@@ -26,20 +25,17 @@ const scrapeList = async url => {
       url: $(item).find('.a-button-text').first().attr('href'),
       price: $(item).find('.a-offscreen').text(),
     };
-    results.push(found)
+    results.push(found);
   });
 
   if (results.length === 0) {
-
     if ($('#no-items-section').length > 0) {
       return [];
-    } 
-    return false
-    
+    }
+    return false;
   }
 
-  return results
-
+  return results;
 };
 
 module.exports = scrapeList;

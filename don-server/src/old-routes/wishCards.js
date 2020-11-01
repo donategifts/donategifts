@@ -451,7 +451,9 @@ router.post('/lock/:id', async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await getLockedWishCards(req);
 
-    if (error) handleError(res, 400, error);
+    if (error) {
+      handleError(res, 400, error);
+    }
 
     if (alreadyLockedWishCard) {
       // user has locked wishcard and its still locked
@@ -490,7 +492,9 @@ router.post('/unlock/:id', async (req, res) => {
   try {
     const { wishCardId, lockedWishcard, userId, error } = await getLockedWishCards(req);
 
-    if (error) handleError(res, 400, error);
+    if (error) {
+      handleError(res, 400, error);
+    }
 
     if (lockedWishcard && lockedWishcard.isLockedBy === userId) {
       await WishCardRepository.unLockWishCard(wishCardId);
@@ -512,10 +516,14 @@ router.get('/status/:id', async (req, res) => {
   try {
     const wishCardId = req.params.id;
 
-    if (!req.session.user) return handleError(res, 400, 'User not found');
+    if (!req.session.user) {
+      return handleError(res, 400, 'User not found');
+    }
 
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
-    if (!user) return handleError(res, 400, 'User not found');
+    if (!user) {
+      return handleError(res, 400, 'User not found');
+    }
 
     clearTimeout(blockedWishcardsTimer[wishCardId]);
     const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
@@ -552,7 +560,9 @@ queue.process(async (job, done) => {
         );
 
         logger.debug(scrapeResponse);
-        if (!scrapeResponse) isDonated = false;
+        if (!scrapeResponse) {
+          isDonated = false;
+        }
 
         if (Object.keys(scrapeResponse).length > 0) {
           isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
