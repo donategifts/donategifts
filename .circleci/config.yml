@@ -15,6 +15,9 @@ jobs:
       - run:
           name: Test with npm
           command: npm test
+      - run:
+          name: Check lint
+          command: npm run lint
 
 orbs:
   node: circleci/node@4.1.0
