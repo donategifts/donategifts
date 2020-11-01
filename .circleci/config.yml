@@ -23,7 +23,7 @@ jobs:
           command: npm run lint
       - run:
           name: connecting to devserver
-          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com pwd
+          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com pwd | echo $TEST
 
 
 version: 2.1
