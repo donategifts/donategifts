@@ -1,23 +1,32 @@
 jobs:
-  test:
+  test-deploy:
     docker:
       - image: 'circleci/node:14'
       - image: 'mongo:latest'
       - image: 'redis:latest'
     steps:
       - checkout
-      - run:
-          name: Copy default config
-          command: cp config/example-config.env config/config.env
-      - run:
-          name: Install packages
-          command: npm ci
-      - run:
-          name: Test with npm
-          command: npm test
-      - run:
-          name: Check lint
-          command: npm run lint
+      - node/with-cache:
+        - run:
+            name: Copy default config
+            command: cp config/example-config.env config/config.env
+        - run:
+            name: Install packages
+            command: npm ci --unsafe-perm
+        - run:
+            name: Test with npm
+            command: npm test
+        - run:
+            name: Check lint
+            command: npm run lint
+        - add_ssh_keys:
+            fingerprints:
+              - "6b:c1:82:ac:d3:ad:3c:73:22:f4:9b:8c:b4:2d:f5:6c"
+        - run:
+            name: connecting to devserver
+            command: ssh donategifts@dev.donate-gifts.com && pwd
+
+
 
 orbs:
   node: circleci/node@4.1.0
@@ -25,4 +34,8 @@ version: 2.1
 workflows:
   test_my_app:
     jobs:
-      - test
+      - test-deploy:
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
