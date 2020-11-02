@@ -1,15 +1,4 @@
-/*
- * Author: Stacy Sealky Lee
- * Class: CSC 337
- * Type: Final Project
- * FileName: controllers/email.js
- * FileDescription:
- *      When user fills out the 'Contact' form in about.html,
- *      it will use nodemailer and mailgun to send the user's message
- *      to the mailgun authorized email address
- *      all the req.body data from the 'Contact' form will be saved in our 'contacts' DB collection.
- *      Contact model lives in the models/Contact.js
- */
+
 // NPM DEPENDENCIES
 const nodemailer = require('nodemailer');
 const mailGun = require('nodemailer-mailgun-transport');

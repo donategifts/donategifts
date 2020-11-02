@@ -29,8 +29,8 @@ New color scheme reference is in utils.css
 }
 
 .donate-subtitle {
-  font-size: 1em;
-  color: rgba(65, 66, 84, 1) !important;
+  font-size: 1.2em;
+  color: #333a64 !important;
 }
 
 .highlighted {
@@ -44,6 +44,33 @@ New color scheme reference is in utils.css
   padding-right: 2em;
 }
 
+.donate-true {
+  padding: 1em 1em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(0, 161, 154, 1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.donate-false {
+  padding: 1em 1em;
+  /* margin: 0.8em 4.2em 1.8em 4.2em; */
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(49, 49, 49, 1);
+  color: #fff;
+  cursor: pointer;
+}
+
 .donate-modal-button {
   padding: 1em 1em;
   margin: 0.8em 4.2em 1.8em 4.2em;
@@ -55,12 +82,25 @@ New color scheme reference is in utils.css
   border: none;
   background: rgba(0, 161, 154, 1);
   color: #fff;
+  cursor: pointer;
 }
 
 .donate-modal-button:hover {
   background: rgba(65, 66, 84, 1);
   color: #fff;
 }
+
+.countdown {
+  font-size: 5.5em;
+  color: rgba(255, 92, 111, 1);
+}
+
+.modal-i {
+  font-size: 2em;
+  color: rgba(255, 92, 111, 1);
+  padding: 0.8em;
+}
+
 
 /* newly added - move later  */
 
