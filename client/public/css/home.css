@@ -562,11 +562,6 @@ New color scheme reference is in utils.css
   line-height: 3rem;
 }
 
-
-.modal.login .modal-body {
-  margin: 0px 40px;
-}
-
 .modal.login .forgot-container {
   text-align: right;
   width: 100%;
@@ -595,8 +590,8 @@ New color scheme reference is in utils.css
 
 .modal.login #google-fb-login {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .modal.login .signup-container {
@@ -604,6 +599,18 @@ New color scheme reference is in utils.css
   text-align: center;
   font-size: 1.1rem;
   margin-bottom: 20px;
+}
+
+@media screen and (min-width: 992px) {
+  .modal.login .modal-body {
+    margin: 0px 40px;
+  }
+
+  .modal.login #google-fb-login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
 }
 
 /*--------------------------------------------------------------
