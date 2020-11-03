@@ -49,7 +49,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             data: {},
             success: (response, textStatus, jqXHR) => {
 
-                window.open(amazonURL, '_blank');
+                // window.open(amazonURL, '_blank');
 
                 donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
                     <div id="lockedCountdown-${wishCardId}"></div>
@@ -75,8 +75,12 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                 let timer = 5;
 
+                //so we don't want this anymore???
+                //im confused 
                 countdown[wishCardId] = setInterval(() => {
                     if (timer < 0) {
+                        //opens the amazon link in a new tab
+                        window.open(amazonURL, '_blank');
                         countDownDiv.hide();
                         disableButton(donateDoneButton, false);
                         disableButton(donateNotDoneButton, false);
@@ -84,8 +88,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     }
                     countDownDiv.html('You will be redirect to Amazon in ' + timer);
                     timer--
-
+                    
                 }, 1000);
+
 
                 donateDoneButton.on('click', (event) => {
 
@@ -94,7 +99,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     </div>
                     Confirming your Donation - Please wait. This may take up to 2 minutes.`)
                     waitDiv.show();
-                    spinner.show();
+                    spinner.show();                    
 
                     $('#wait-' + wishCardId).show();
                     $.ajax({
