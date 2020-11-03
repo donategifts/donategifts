@@ -34,120 +34,97 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let donateBtnWrapper = $(`#donateBtnWrapper-${wishCardId}`);
     if (isLoggedIn === 'false') {
         reserveBtn.html('Please log in to donate')
-        reserveBtn.prop('disabled', true)
+        reserveBtn.on('click', ()  => location.assign("/users/login"))
     }
 
-    reserveBtn.off();
-    reserveBtn.on('click', (event) => {
-        event.preventDefault();
+    else {
 
-        // ^ this was added by Stacy
-        // unsure if this should be here so pls change if needed
-        $.ajax({
-            type: 'POST',
-            url: '/wishcards/lock/' + wishCardId,
-            data: {},
-            success: (response, textStatus, jqXHR) => {
+        reserveBtn.on('click', (event) => {
+            event.preventDefault();
+            window.open(amazonURL, '_blank');
 
-                // window.open(amazonURL, '_blank');
+            // ^ this was added by Stacy
+            // unsure if this should be here so pls change if needed
+            $.ajax({
+                type: 'POST',
+                url: '/wishcards/lock/' + wishCardId,
+                data: {},
+                success: (response, textStatus, jqXHR) => {
 
-                donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
-                    <div id="lockedCountdown-${wishCardId}"></div>
-                    <div id="status-${wishCardId}"></div>
-                    <div id="countdown-${wishCardId}"></div>`
+                    donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
+                        <div id="lockedCountdown-${wishCardId}"></div>
+                        <div id="status-${wishCardId}"></div>`
+                        );
+
+                    donateBtnWrapper.html(
+                        `<button class="donate-false" id="donateNotDone-${wishCardId}">I did not donate</button>
+                        <button class="donate-true" id="donateDone-${wishCardId}">I completed the checkout</button>`
                     );
 
-                donateBtnWrapper.html(
-                    `<button class="donate-false" id="donateNotDone-${wishCardId}">I did not donate</button>
-                    <button class="donate-true" id="donateDone-${wishCardId}">I completed the checkout</button>`
-                );
+                    addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
 
-                addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
+                    let waitDiv = $('#wait-' + wishCardId);
+                    let statusDiv = $('#status-' + wishCardId);
+                    let donateDoneButton = $('#donateDone-' + wishCardId);
+                    let spinner = $('#spinner-border');
 
-                let waitDiv = $('#wait-' + wishCardId);
-                let statusDiv = $('#status-' + wishCardId);
-                let donateDoneButton = $('#donateDone-' + wishCardId);
-                let donateNotDoneButton = $('#donateNotDone-' + wishCardId);
-                let countDownDiv = $('#countdown-' + wishCardId);
-                let spinner = $('#spinner-border');
-                disableButton(donateDoneButton, true);
-                disableButton(donateNotDoneButton, true);
+                    donateDoneButton.on('click', (event) => {
 
-                let timer = 5;
+                        $(`#lockedCountdown-${wishCardId}`).hide();
+                        waitDiv.html(`<div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                        </div>
+                        Confirming your Donation - Please wait. This may take up to 2 minutes.`)
+                        waitDiv.show();
+                        spinner.show();
 
-                //so we don't want this anymore???
-                //im confused 
-                countdown[wishCardId] = setInterval(() => {
-                    if (timer < 0) {
-                        //opens the amazon link in a new tab
-                        window.open(amazonURL, '_blank');
-                        countDownDiv.hide();
-                        disableButton(donateDoneButton, false);
-                        disableButton(donateNotDoneButton, false);
-                        clearInterval(countdown[wishCardId]);
-                    }
-                    countDownDiv.html('You will be redirect to Amazon in ' + timer);
-                    timer--
-                    
-                }, 1000);
+                        $('#wait-' + wishCardId).show();
+                        $.ajax({
+                            type: 'GET',
+                            url: '/wishcards/status/' + wishCardId,
+                            data: {},
+                            success: (response, textStatus, jqXHR) => {
+                                console.log(response)
+                            },
+                            error: (response, textStatus, errorThrown) => {
+                                console.log(response)
 
+                            },
+                        });
+                    })
 
-                donateDoneButton.on('click', (event) => {
+                    socket.on('donated', event => {
 
-                    waitDiv.html(`<div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                    </div>
-                    Confirming your Donation - Please wait. This may take up to 2 minutes.`)
-                    waitDiv.show();
-                    spinner.show();                    
+                        if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
+                            spinner.hide();
+                            statusDiv.html('Donation Confirmed')
+                            waitDiv.hide();
 
-                    $('#wait-' + wishCardId).show();
-                    $.ajax({
-                        type: 'GET',
-                        url: '/wishcards/status/' + wishCardId,
-                        data: {},
-                        success: (response, textStatus, jqXHR) => {
-                            console.log(response)
-                        },
-                        error: (response, textStatus, errorThrown) => {
-                            console.log(response)
+                        }
 
-                        },
                     });
-                })
 
-                socket.on('donated', event => {
+                    socket.on('not_donated', event => {
 
-                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
-                        spinner.hide();
-                        statusDiv.html('Donation Confirmed')
-                        waitDiv.hide();
+                        
+                        if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
+                            spinner.hide();
+                            waitDiv.hide();
+                            statusDiv.html('Donation Not Confirmed')
+                            //TODO show sad faces
+                            //TODO we should do an exit survey -stacy-
+                        }
 
-                    }
+                    });
 
-                });
-
-                socket.on('not_donated', event => {
-
-                    
-                    if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
-                        spinner.hide();
-                        waitDiv.hide();
-                        statusDiv.html('Donation Not Confirmed')
-                        //TODO show sad faces
-                        //TODO we should do an exit survey -stacy-
-                    }
-
-                });
-
-            },
-            error: (response, textStatus, errorThrown) => {
-                showToast(response.responseJSON.error.msg)
-                $('#modal-donate-btn').prop('disabled', false)
-            },
-        });
-
-    })
+                },
+                error: (response, textStatus, errorThrown) => {
+                    showToast(response.responseJSON.error.msg)
+                    $('#modal-donate-btn').prop('disabled', false)
+                },
+            });
+        })
+}
 
 
 });
