@@ -7,17 +7,16 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // extract values from button that contain child name / amazonlink
     let childName = button[0].dataset.valueName;
     const wishCardId = button[0].dataset.valueId;
+    const amazonURL = button[0].dataset.valueUrl;
 
     let modalWarningMessage =
-        `<div id="donateModalMsg-${wishCardId}">
-        <div class="quick-font donate-modal">
+        `<div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
         <h4 class="crayon-font donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
         <img class="img-fluid modal-img" src="/public/img/setShippingReminder.svg" >
         <p class="modal-p">Follow the new tab link to check out from Amazon.<br/>
         While on the shipping page, under ‘Other Addresses’,
         <strong>choose the gift registry address.</strong></p>
         <p class="donate-subtitle">${childName}'s wish will be reserved for <span class="highlighted">10 minutes</span> to avoid duplicate donations.</p>
-        </div>
         </div>
         <div id="donateBtnWrapper-${wishCardId}">
         <button type="button" id="modal-donate-btn" class="donate-modal-button quick-font">Reserve This Card For Donation</button>
@@ -50,7 +49,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             data: {},
             success: (response, textStatus, jqXHR) => {
 
-                console.log(response);
+                window.open(amazonURL, '_blank');
 
                 donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
                     <div id="lockedCountdown-${wishCardId}"></div>
@@ -79,7 +78,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 countdown[wishCardId] = setInterval(() => {
                     if (timer < 0) {
                         countDownDiv.hide();
-                        //window.open(button[0].dataset.valueUrl, '_blank');
                         disableButton(donateDoneButton, false);
                         disableButton(donateNotDoneButton, false);
                         clearInterval(countdown[wishCardId]);
@@ -90,7 +88,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 }, 1000);
 
                 donateDoneButton.on('click', (event) => {
-                    console.log('CLICK')
 
                     waitDiv.html(`<div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
