@@ -18,12 +18,40 @@
 				<% } %>
 		<% } %>
 	</script>
+	<!-- facebook login -->
+	<script>
+		window.fbAsyncInit = function () {
+			FB.init({
+				appId: '<%- process.env.FB_APP_ID %>',
+				cookie: true,
+				xfbml: true,
+				version: 'v8.0',
+			});
+			FB.AppEvents.logPageView();
+		};
+		(function (d, s, id) {
+			var js,
+				fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {
+				return;
+			}
+			js = d.createElement(s);
+			js.id = id;
+			js.src = 'https://connect.facebook.net/en_US/sdk.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		})(document, 'script', 'facebook-jssdk');
+	</script>
 
+	<!-- google login -->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
+	<script src="/public/clientJS/login.js"></script>
 </head>
 
 <body>
+	<%- include('./templates/loginModal')-%>
 	<%- include('./templates/nav')-%>
-	<div%- include('./templates/wishCardDonateModal')-%>
+	<%- include('./templates/wishCardDonateModal')-%>
 
 		<!-- Wish Card deck -->
 		<div class="wishcards">
@@ -140,15 +168,27 @@
 										</p>
 									</div>
 									<div class="quick-font row button-center mt-2">
-										<button type="button" class="col wishcard-btn btn-navy-border"><a
-												href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
-										<button type="button" id="donate-btn-<%= wishcards[i]._id %>" data-toggle="modal"
+										<button type="button" class="col wishcard-btn btn-navy-border">
+											<a href="/wishcards/<%= wishcards[i]._id %>">Read more</a>
+										</button>
+										<button
+											type="button"
+											id="donate-btn-<%= wishcards[i]._id %>"
+											class="col wishcard-btn btn-navy-bg"
+											data-toggle="modal"
 											data-value-url="<%= wishcards[i].wishItemURL %>"
-											data-value-name="<%= wishcards[i].childFirstName %>" data-value-id="<%= wishcards[i]._id %>"
-											data-value-loggedIn="<%= !!locals.user %>" <% if (locals.user) { %>
-											data-value-user="<%= locals.user._id %>" <% } %> data-target="#wishCardDonateModal"
-											class="col wishcard-btn btn-navy-bg">Donate
-											Gift</button>
+											data-value-name="<%= wishcards[i].childFirstName %>"
+											data-value-id="<%= wishcards[i]._id %>"
+											data-value-loggedIn="<%= !!locals.user %>"
+											<% if (locals.user) { %>
+												data-value-user="<%= locals.user._id %>"
+												data-target="#wishCardDonateModal"
+											<% } else { %>
+												data-target="#loginModalCenter"
+											<% } %>	
+										>
+												Donate Gift
+										</button>
 									</div>
 								</div>
 
