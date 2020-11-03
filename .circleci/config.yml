@@ -37,6 +37,8 @@ workflows:
     jobs:
       - test
       - deploy-dev:
+          requires:
+            - test
           filters:
             branches:
               only:
