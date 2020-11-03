@@ -1,4 +1,5 @@
  pwd
+ cd config
  rm config.env
  echo \"$MONGODB\" >> config.env
  echo NODE_ENV=development >> config.env
