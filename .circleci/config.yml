@@ -23,7 +23,7 @@ jobs:
           command: npm run lint
       - run:
           name: connecting to devserver
-          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "ls donategifts/scripts/ && bash ./donategifts/scripts/deployment.sh"
+          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && git reset --hard origin/circleci-project-setup && bash ./donategifts/scripts/deployment.sh"
 
 version: 2.1
 workflows:
