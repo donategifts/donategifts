@@ -42,6 +42,7 @@ jobs:
           command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && rm -rf node-modules && git clean -qdf && git reset --hard origin/production &&  pwd &&  cd config &&  echo \"$MONGODBLIVE\" > config.env &&  echo NODE_ENV=production >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRETLIVE >> config.env &&  echo SESS_LIFE=3600000 >> config.env &&  echo $MAILGUN_APIKEYLIVE >> config.env &&  echo $MAILGUN_DOMAINLIVE >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://donate-gifts.com >> config.env &&  echo $GOOGLE_CAPTCHALIVE >> config.env &&  echo LOCAL_DEVELOPMENT=false >> config.env &&  echo SOCKET_URL=wss://donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&  echo WISHCARD_LOCK_IN_MINUTES=10 >> config.env && npm ci && pm2 restart 0  "
 
 
+
 version: 2.1
 workflows:
   test:
@@ -68,4 +69,5 @@ workflows:
             branches:
               only:
                 - production
+
 
