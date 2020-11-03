@@ -33,7 +33,7 @@ version: 2.1
 workflows:
   test_my_app:
     jobs:
-      - test:
+      - test
       - deploy-dev:
           filters:
             branches:
