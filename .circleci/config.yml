@@ -38,6 +38,7 @@ workflows:
       - test
   deploy:
     jobs:
+      - test
       - deploy-dev:
           requires:
             - test
