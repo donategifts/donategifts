@@ -20,6 +20,8 @@ jobs:
           command: npm run lint
 
   deploy-dev:
+    machine:
+      enabled: true
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -31,7 +33,7 @@ jobs:
 
 version: 2.1
 workflows:
-  test_my_app:
+  test_and_deploy:
     jobs:
       - test
       - deploy-dev:
