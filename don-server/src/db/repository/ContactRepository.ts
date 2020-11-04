@@ -1,4 +1,4 @@
-const Contact = require('../models/Contact');
+import Contact from '../models/Contact';
 
 async function createNewContact(contactParams) {
   try {
@@ -9,6 +9,4 @@ async function createNewContact(contactParams) {
   }
 }
 
-module.exports = {
-  createNewContact,
-};
+export { createNewContact };

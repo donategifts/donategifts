@@ -1,8 +1,8 @@
-const Message = require('../models/Message');
+import Message, { findOne } from '../models/Message';
 
 async function getMessageByObjectId(messageId) {
   try {
-    return Message.findOne({ _id: messageId }).exec();
+    return findOne({ _id: messageId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Message: ${error}`);
   }
@@ -17,7 +17,4 @@ async function createNewMessage(messageParams) {
   }
 }
 
-module.exports = {
-  getMessageByObjectId,
-  createNewMessage,
-};
+export { getMessageByObjectId, createNewMessage };

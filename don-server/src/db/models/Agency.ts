@@ -1,11 +1,31 @@
-// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
-// TODO: edit the image file types
+import { Schema, Document, model, Model } from 'mongoose';
+import { TypeObjectId } from '../../interfaces/IGeneric';
 
-const mongoose = require('mongoose');
+export interface IDBAgency extends Document {
+  agencyName: string;
+  agencyWebsite: string;
+  agencyPhone: string;
+  accountManager: TypeObjectId<string>;
+  agencyBio: string;
+  agencyAddress: {
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    country: string;
+    zipcode: string;
+  };
+  childrenUnderCare: number;
+  childrenAgeRange: string;
+  agencyProfileImage: string;
+  wishCards: TypeObjectId<string>[];
+  joinedBy: TypeObjectId<string>[];
+  joined: Date;
+  isVerified: boolean;
+}
 
 // SCHEMA SETUP
-const { Schema } = mongoose;
-const AgencySchema = new Schema(
+const AgencySchema: Schema = new Schema(
   {
     agencyName: {
       type: String,
@@ -64,4 +84,4 @@ const AgencySchema = new Schema(
   },
 );
 
-module.exports = mongoose.model('Agency', AgencySchema);
+export const DBAgency: Model<IDBAgency> = model<IDBAgency>('Agency', AgencySchema);

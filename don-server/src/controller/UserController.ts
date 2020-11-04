@@ -1,17 +1,22 @@
 import { Controller, Get, Post, Put, Request, Response, Route, Body, Path, Res } from 'tsoa';
+import { UserRoles } from '../interfaces/IUser';
+import UserService from '../services/UserService';
 
 // TODO: check old routes for params like res, req, and additional query params
 
 @Route('/users')
 export default class Users extends Controller {
+  private userService: UserService;
+
   constructor() {
     super();
+    this.userService = new UserService();
   }
 
   @Response('400', 'Bad request')
   @Get('/profile')
-  public async getProfile(@Request() _req: any): Promise<void> {
-    // TODO: implementation needed
+  public async getUserRole(@Request() req: Express.Request): Promise<UserRoles> {
+    return this.userService.getUserRole(req.session.user._id);
   }
 
   @Response('400', 'Bad request')

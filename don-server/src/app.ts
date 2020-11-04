@@ -37,7 +37,7 @@ import * as log from './helper/logger';
 // eslint-disable-next-line import/order
 const MongoStore = require('connect-mongo')(session);
 
-let configPath = './config/config.env';
+let configPath = '../../config/config.env';
 if (process.env.NODE_ENV === 'test') {
   configPath = './config/test.config.env';
 }

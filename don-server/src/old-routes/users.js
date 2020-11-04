@@ -84,11 +84,7 @@ router.get('/login', redirectProfile, (req, res) => {
   }
 });
 
-// @desc    Render profile.html, grabs userId and render ejs data in static template
-// @route   GET '/users/profile'
-// @access  Private, only users
-// @tested 	Yes
-// TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
+// TYPESCRIPT CONVERT DONE
 router.get('/profile', redirectLogin, async (req, res) => {
   try {
     const { user } = req.session;

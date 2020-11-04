@@ -1,4 +1,4 @@
-const Donation = require('../models/Donation');
+import Donation from '../models/Donation';
 
 async function createNewDonation(params) {
   try {
@@ -9,6 +9,4 @@ async function createNewDonation(params) {
   }
 }
 
-module.exports = {
-  createNewDonation,
-};
+export { createNewDonation };
