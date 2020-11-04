@@ -46,34 +46,39 @@ New color scheme reference is in utils.css
 
 .donate-true {
   padding: 1em 1em;
+  margin-top: 0.5em;
   font-size: 1.15em;
   font-weight: bold;
   border-radius: 20px;
   line-height: 1.2em;
   outline: none;
   border: none;
-  background: rgba(0, 161, 154, 1);
+  background: rgba(255, 92, 111, 1);
   color: #fff;
   cursor: pointer;
 }
 
 .donate-false {
-  padding: 1em 1em;
-  /* margin: 0.8em 4.2em 1.8em 4.2em; */
+  padding: 1em 3em;
+  margin-top: 0.5em;
+  /* margin-left: 25%;
+  margin-right: 25%; */
   font-size: 1.15em;
   font-weight: bold;
   border-radius: 20px;
   line-height: 1.2em;
   outline: none;
   border: none;
-  background: rgba(49, 49, 49, 1);
-  color: #fff;
-  cursor: pointer;
+  background: rgba(49, 49, 49, 0.5);
+  color: rgba(255, 246, 237, 0.8);
+  /* cursor: pointer; */
 }
 
 .donate-modal-button {
-  padding: 1em 1em;
-  margin: 0.8em 4.2em 1.8em 4.2em;
+  padding: 1em 3em;
+  margin-top: 0.5em;
+  margin-left: 25%;
+  margin-right: 25%;
   font-size: 1.15em;
   font-weight: bold;
   border-radius: 20px;
@@ -83,6 +88,8 @@ New color scheme reference is in utils.css
   background: rgba(0, 161, 154, 1);
   color: #fff;
   cursor: pointer;
+  justify-content: center;
+  text-align: center;
 }
 
 .donate-modal-button:hover {
@@ -100,7 +107,6 @@ New color scheme reference is in utils.css
   color: rgba(255, 92, 111, 1);
   padding: 0.8em;
 }
-
 
 /* newly added - move later  */
 

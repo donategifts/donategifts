@@ -19,7 +19,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
         <p class="donate-subtitle">${childName}'s wish will be reserved for <span class="highlighted">10 minutes</span> to avoid duplicate donations.</p>
         </div>
         <div id="donateBtnWrapper-${wishCardId}">
-        <button type="button" id="modal-donate-btn" class="donate-modal-button quick-font">Reserve This Card For Donation</button>
+        <button type="button" id="modal-donate-btn" class="donate-modal-button quick-font">I'm ready to reserve this wish</button>
         </div>
         `;
 
@@ -34,17 +34,12 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     let donateBtnWrapper = $(`#donateBtnWrapper-${wishCardId}`);
     if (isLoggedIn === 'false') {
         reserveBtn.html('Please log in to donate')
-        reserveBtn.on('click', ()  => location.assign("/users/login"))
-    }
-
-    else {
+        reserveBtn.on('click', () => location.assign("/users/login"))
+    } else {
 
         reserveBtn.on('click', (event) => {
             event.preventDefault();
-            window.open(amazonURL, '_blank');
 
-            // ^ this was added by Stacy
-            // unsure if this should be here so pls change if needed
             $.ajax({
                 type: 'POST',
                 url: '/wishcards/lock/' + wishCardId,
@@ -53,13 +48,26 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
                         <div id="lockedCountdown-${wishCardId}"></div>
-                        <div id="status-${wishCardId}"></div>`
-                        );
+                        <div id="status-${wishCardId}"></div>`);
 
+                    //decided to make an additional Amazon button
                     donateBtnWrapper.html(
-                        `<button class="donate-false" id="donateNotDone-${wishCardId}">I did not donate</button>
-                        <button class="donate-true" id="donateDone-${wishCardId}">I completed the checkout</button>`
+                        `<div class="row"><button class="donate-modal-button" id="openAmazonBtn">I'm ready to checkout</button>
+                        <button class="donate-true" id="donateDone-${wishCardId}">I finished the checkout</button>
+                        <button class="donate-false" id="donateNotDone-${wishCardId}">Start over</button></div>`
                     );
+
+                    let openAmazonBtn = $('#openAmazonBtn');
+                    openAmazonBtn.on('click', (event) => {
+                        event.preventDefault();
+                        window.open(amazonURL, '_blank');
+
+                        // donateBtnWrapper.html(
+                        //     `<button class="donate-false" id="donateNotDone-${wishCardId}">I did not donate</button>
+                        //     <button class="donate-true" id="donateDone-${wishCardId}">I completed the checkout</button>`
+                        // );
+                    });
+
 
                     addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
 
@@ -106,13 +114,13 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     socket.on('not_donated', event => {
 
-                        
+
                         if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
                             spinner.hide();
                             waitDiv.hide();
                             statusDiv.html('Donation Not Confirmed')
                             //TODO show sad faces
-                            //TODO we should do an exit survey -stacy-
+                            //TODO we should do an exit survey eventually -stacy-
                         }
 
                     });
@@ -124,7 +132,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 },
             });
         })
-}
+    }
 
 
 });
@@ -135,8 +143,7 @@ function disableButton(ButtonElement, disable) {
     if (disable) {
         ButtonElement.prop('disabled', true);
         ButtonElement.prop('aria-disabled', true);
-    }
-    else {
+    } else {
         ButtonElement.prop('disabled', null);
         ButtonElement.prop('aria-disabled', false);
     }
