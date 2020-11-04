@@ -86,6 +86,12 @@ New color scheme reference is in utils.css
   background: rgba(255, 246, 237, 0.5);
 }
 
+@media only screen and (max-width: 768px) {
+  .custom-wrapper {
+    padding: 0 1.2rem;
+  }
+}
+
 .how-to-img {
   height: 310px;
   width: auto;
@@ -154,7 +160,6 @@ New color scheme reference is in utils.css
 
 /* ---------------partners section end */
 
-
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
   .custom-left {
@@ -169,11 +174,11 @@ New color scheme reference is in utils.css
     width: 100vw !important;
   }
 
-  .subtext {
+  /* .subtext {
     font-size: 1em;
     line-height: 1.6em;
     min-width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 496px) {
@@ -425,6 +430,11 @@ New color scheme reference is in utils.css
   flex-direction: column;
   border-radius: 20px;
   background: rgba(255, 246, 237, 0.7);
+  transition: all 0.3s ease-in-out;
+}
+#card-fix:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
 }
 
 #img-fix {
@@ -447,17 +457,6 @@ New color scheme reference is in utils.css
 
 .card-body .card-text-container {
   min-height: 225px;
-}
-
-.msg-icon {
-  background: rgba(255, 92, 111, 1);
-  padding: 0.6em 0.8em;
-  border: none;
-}
-
-.msg-icon .fa {
-  color: #fff;
-  font-size: 1.3em;
 }
 
 #fb {
@@ -616,3 +615,139 @@ New color scheme reference is in utils.css
 /*--------------------------------------------------------------
     End Login Modal
 --------------------------------------------------------------*/
+
+/* Custom scss transferred */
+
+.wishcard__link--white,
+.wishcard__link--white:link,
+.wishcard__link--white:visited {
+  background-color: #fff;
+  color: #333a64;
+  padding: 12px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border: 0.5px solid #333a64;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+.wishcard__link--white:focus,
+.wishcard__link--white:active {
+  outline: none;
+}
+
+.wishcard__link--white:hover {
+  background: #333a64;
+  color: #fff !important;
+}
+
+.wishcard-btn {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  transition: all 0.2s;
+  border: none;
+}
+
+.wishcard__button--blue {
+  appearance: none;
+  background: #333a64;
+  color: #fff;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+.wishcard__button--blue:hover {
+  background: #fff;
+  color: #333a64;
+  border: 0.5px solid #333a64;
+}
+
+.wishcard__icon--fixed {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  right: -10px;
+  border-radius: 50%;
+  padding: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  transition: all 0.25s ease-in-out;
+  text-decoration: none;
+}
+
+.msg-icon {
+  background: #ffbb59;
+  padding: 0.6em 0.8em;
+  border: none;
+}
+
+.msg-icon:hover {
+  text-decoration: none;
+}
+.fa-envelope {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+.bdr-2 {
+  border-radius: 20px !important;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+.button,
+.button--green,
+.button--inverted-green {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  transition: all 0.2s;
+  border: none;
+}
+.button:hover,
+.button--green:hover,
+.button--inverted-green:hover,
+.button:active,
+.button--green:active,
+.button--inverted-green:active,
+.button:focus,
+.button--green:focus,
+.button--inverted-green:focus {
+  outline: none;
+  text-decoration: none;
+}
+.button--green {
+  background: #00a19a;
+  color: #fff;
+}
+.button--green:hover {
+  color: #00a19a;
+  background: #fff;
+}
+.button--green-tan:hover {
+  background: #f8e4c9;
+}
+.button--inverted-green {
+  background: #fff !important;
+  color: #00a19a !important;
+}
+.button--inverted-green:hover {
+  color: #fff !important;
+  background: #00a19a !important;
+}
+
+.font-300 {
+  font-weight: 300;
+}
