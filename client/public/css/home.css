@@ -173,12 +173,6 @@ New color scheme reference is in utils.css
     order: 1;
     width: 100vw !important;
   }
-
-  /* .subtext {
-    font-size: 1em;
-    line-height: 1.6em;
-    min-width: 100%;
-  } */
 }
 
 @media screen and (max-width: 496px) {
