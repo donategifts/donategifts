@@ -19,7 +19,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
         <p class="donate-subtitle">${childName}'s wish will be reserved for <span class="highlighted">10 minutes</span> to avoid duplicate donations.</p>
         </div>
         <div id="donateBtnWrapper-${wishCardId}">
-        <button type="button" id="modal-donate-btn" class="donate-modal-button quick-font">I'm ready to reserve this wish</button>
+        <button type="button" id="modal-donate-btn" class="donate-modal-button quick-font">Reserve this wish for donation</button>
         </div>
         `;
 
