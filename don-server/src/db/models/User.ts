@@ -1,12 +1,28 @@
-// TODO: REVIEW THE RELATIONS OF THE SCHEMAS
-// TODO: ADD PASSWORD CONSTRAINTS
-// TODO: AUTHENTICATION & SECURITY & TOKENS FOR PASSWORD RESET
+import { Schema, Document, model, Model } from 'mongoose';
+import { IDBWishCard } from './WishCard';
+import { IDBUser } from './User';
+import { IDBDonation } from './Donation';
+import { TypeObjectId } from '../../common/generic/ObjectId';
+import { LoginMode, UserRoles } from '../../common/user/User';
 
-const mongoose = require('mongoose');
+export interface IDBUser extends Document {
+  fName: string;
+  lName: string;
+  email: string;
+  verificationHash: string;
+  emailVerified: boolean;
+  password: string;
+  passwordResetToken: string;
+  passwordResetTokenExpires: Date;
+  userRole: UserRoles;
+  wishCards: TypeObjectId<IDBWishCard>;
+  donationsMade: TypeObjectId<IDBDonation>;
+  joined: Date;
+  aboutMe: string;
+  loginMode: LoginMode;
+}
 
-// SCHEMA SETUP
-const { Schema } = mongoose;
-const UserSchema = new Schema(
+const UserSchema: Schema = new Schema(
   {
     fName: {
       type: String,
@@ -73,4 +89,4 @@ const UserSchema = new Schema(
   },
 );
 
-module.exports = mongoose.model('User', UserSchema);
+export const DBUser: Model<IDBUser> = model<IDBUser>('DBUser', UserSchema);

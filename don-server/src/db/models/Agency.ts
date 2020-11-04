@@ -1,11 +1,13 @@
 import { Schema, Document, model, Model } from 'mongoose';
-import { TypeObjectId } from '../../interfaces/IGeneric';
+import { IDBWishCard } from './WishCard';
+import { TypeObjectId } from '../../common/generic/ObjectId';
+import { IDBUser } from './User';
 
 export interface IDBAgency extends Document {
   agencyName: string;
   agencyWebsite: string;
   agencyPhone: string;
-  accountManager: TypeObjectId<string>;
+  accountManager: TypeObjectId<IDBUser>;
   agencyBio: string;
   agencyAddress: {
     address1: string;
@@ -18,8 +20,8 @@ export interface IDBAgency extends Document {
   childrenUnderCare: number;
   childrenAgeRange: string;
   agencyProfileImage: string;
-  wishCards: TypeObjectId<string>[];
-  joinedBy: TypeObjectId<string>[];
+  wishCards: TypeObjectId<IDBWishCard>[];
+  joinedBy: TypeObjectId<IDBUser>;
   joined: Date;
   isVerified: boolean;
 }
@@ -84,4 +86,4 @@ const AgencySchema: Schema = new Schema(
   },
 );
 
-export const DBAgency: Model<IDBAgency> = model<IDBAgency>('Agency', AgencySchema);
+export const DBAgency: Model<IDBAgency> = model<IDBAgency>('DBAgency', AgencySchema);

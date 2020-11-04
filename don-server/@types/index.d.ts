@@ -1,4 +1,4 @@
-import { ISession } from '../src/interfaces/ISession';
+import { ISession } from '../src/common/express/Session';
 
 declare global {
   export var io: any;

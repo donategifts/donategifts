@@ -1,12 +1,14 @@
-// This data model is for sending emails through nodemailer
-// Everything the user enters in the contact form in about.html
-// will be saved in the 'contact' collections in our DB
+import { Schema, Document, model, Model } from 'mongoose';
 
-const mongoose = require('mongoose');
+export interface IDBContact extends Document {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  sentDate: Date;
+}
 
-// SCHEMA SETUP
-const { Schema } = mongoose;
-const ContactSchema = new Schema(
+const ContactSchema: Schema = new Schema(
   {
     name: {
       type: String,
@@ -34,4 +36,4 @@ const ContactSchema = new Schema(
   },
 );
 
-module.exports = mongoose.model('Contact', ContactSchema);
+export const DBContact: Model<IDBContact> = model<IDBContact>('DBContact', ContactSchema);

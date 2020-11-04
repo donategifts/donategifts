@@ -1,8 +1,9 @@
-import { TypeObjectId } from '../../interfaces/IGeneric';
+import { TypeObjectId } from '../../common/generic/ObjectId';
 import { DBAgency, IDBAgency } from '../models/Agency';
+import { IDBUser } from '../models/User';
 
 export default class AgencyRepository {
-  async getAgencyByUserId(userId: TypeObjectId<string>): Promise<IDBAgency | null> {
+  async getAgencyByUserId(userId: TypeObjectId<IDBUser>): Promise<IDBAgency | null> {
     try {
       return DBAgency.findOne({ accountManager: userId }).exec();
     } catch (error) {
@@ -10,7 +11,7 @@ export default class AgencyRepository {
     }
   }
 
-  async getAgencyWishCards(agencyId: TypeObjectId<string>): Promise<IDBAgency | null> {
+  async getAgencyWishCards(agencyId: TypeObjectId<IDBAgency>): Promise<IDBAgency | null> {
     try {
       return DBAgency.findOne({ _id: agencyId }).populate('wishCards').exec();
     } catch (error) {

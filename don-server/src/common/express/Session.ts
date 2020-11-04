@@ -1,4 +1,4 @@
-import { TypeObjectId } from './IGeneric';
+import { TypeObjectId } from './Generic';
 
 export interface ISessionUser {
   _id: TypeObjectId<string>;

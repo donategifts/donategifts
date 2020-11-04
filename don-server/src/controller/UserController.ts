@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Request, Response, Route, Body, Path, Res } from 'tsoa';
-import { UserRoles } from '../interfaces/IUser';
+import { UserRoles } from '../common/user/User';
 import UserService from '../services/UserService';
 
 // TODO: check old routes for params like res, req, and additional query params
