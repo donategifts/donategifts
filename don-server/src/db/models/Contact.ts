@@ -1,12 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose';
-
-export interface IDBContact extends Document {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  sentDate: Date;
-}
+import { Schema, model, Model } from 'mongoose';
+import { IDBContact } from '../../common';
 
 const ContactSchema: Schema = new Schema(
   {

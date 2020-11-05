@@ -1,6 +1,5 @@
-import { TypeObjectId } from '../../common/generic/ObjectId';
-import { DBAgency, IDBAgency } from '../models/Agency';
-import { IDBUser } from '../models/User';
+import { TypeObjectId, IDBUser, IDBAgency } from '../../common';
+import { DBAgency } from '../models/Agency';
 
 export default class AgencyRepository {
   async getAgencyByUserId(userId: TypeObjectId<IDBUser>): Promise<IDBAgency | null> {

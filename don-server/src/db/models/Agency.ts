@@ -1,30 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose';
-import { IDBWishCard } from './WishCard';
-import { TypeObjectId } from '../../common/generic/ObjectId';
-import { IDBUser } from './User';
-
-export interface IDBAgency extends Document {
-  agencyName: string;
-  agencyWebsite: string;
-  agencyPhone: string;
-  accountManager: TypeObjectId<IDBUser>;
-  agencyBio: string;
-  agencyAddress: {
-    address1: string;
-    address2: string;
-    city: string;
-    state: string;
-    country: string;
-    zipcode: string;
-  };
-  childrenUnderCare: number;
-  childrenAgeRange: string;
-  agencyProfileImage: string;
-  wishCards: TypeObjectId<IDBWishCard>[];
-  joinedBy: TypeObjectId<IDBUser>;
-  joined: Date;
-  isVerified: boolean;
-}
+import { Schema, model, Model } from 'mongoose';
+import { IDBAgency } from '../../common';
 
 // SCHEMA SETUP
 const AgencySchema: Schema = new Schema(

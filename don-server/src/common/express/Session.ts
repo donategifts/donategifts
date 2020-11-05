@@ -1,7 +1,8 @@
-import { TypeObjectId } from './Generic';
+import type { IDBUser } from '../user';
+import type { TypeObjectId } from '../generic';
 
 export interface ISessionUser {
-  _id: TypeObjectId<string>;
+  _id: TypeObjectId<IDBUser>;
   userRole: 'partner' | 'donor';
 }
 

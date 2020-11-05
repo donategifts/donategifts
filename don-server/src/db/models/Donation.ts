@@ -1,6 +1,6 @@
 import { Schema, Document, model, Model } from 'mongoose';
 import { IDBWishCard } from './WishCard';
-import { TypeObjectId } from '../../common/generic/ObjectId';
+import { TypeObjectId } from '../../common';
 import { IDBUser } from './User';
 
 export interface IDBDonation extends Document {

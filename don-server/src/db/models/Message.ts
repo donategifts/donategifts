@@ -1,14 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose';
-import { IDBWishCard } from './WishCard';
-import { TypeObjectId } from '../../common/generic/ObjectId';
-import { IDBUser } from './User';
-
-export interface IDBMessage extends Document {
-  messageFrom: TypeObjectId<IDBUser>;
-  messageTo: TypeObjectId<IDBWishCard>;
-  message: string;
-  createdAt: Date;
-}
+import { Schema, model, Model } from 'mongoose';
+import { IDBMessage } from '../../common';
 
 const MessageSchema = new Schema(
   {

@@ -1,26 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose';
-import { IDBWishCard } from './WishCard';
-import { IDBUser } from './User';
-import { IDBDonation } from './Donation';
-import { TypeObjectId } from '../../common/generic/ObjectId';
-import { LoginMode, UserRoles } from '../../common/user/User';
-
-export interface IDBUser extends Document {
-  fName: string;
-  lName: string;
-  email: string;
-  verificationHash: string;
-  emailVerified: boolean;
-  password: string;
-  passwordResetToken: string;
-  passwordResetTokenExpires: Date;
-  userRole: UserRoles;
-  wishCards: TypeObjectId<IDBWishCard>;
-  donationsMade: TypeObjectId<IDBDonation>;
-  joined: Date;
-  aboutMe: string;
-  loginMode: LoginMode;
-}
+import { Schema, model, Model } from 'mongoose';
+import { IDBUser } from '../../common';
 
 const UserSchema: Schema = new Schema(
   {
