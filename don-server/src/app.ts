@@ -23,7 +23,7 @@ import * as mongoSanitize from 'express-mongo-sanitize';
 
 // custom
 import { connectSocket } from './helper/socket';
-import * as MongooseConnection from './db/connection';
+import MongooseConnection from './db/connection';
 import * as UserRepository from './db/repository/UserRepository';
 import * as AgencyRepository from './db/repository/AgencyRepository';
 
