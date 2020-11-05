@@ -46,15 +46,20 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 data: {},
                 success: (response, textStatus, jqXHR) => {
 
+                    // Hide modal header to prevent closing the modal
+                    $('.modal-header').hide();
+
                     donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
                         <div id="lockedCountdown-${wishCardId}"></div>
                         <div id="status-${wishCardId}"></div>`);
 
                     //decided to make an additional Amazon button
                     donateBtnWrapper.html(
-                        `<div class="row"><button class="donate-modal-button" id="openAmazonBtn">I'm ready to checkout</button>
-                        <button class="donate-true" id="donateDone-${wishCardId}">I finished the checkout</button>
-                        <button class="donate-false" id="donateNotDone-${wishCardId}">Start over</button></div>`
+                        `<div class="donate-button-container">
+                            <button class="donate-modal-button" id="openAmazonBtn">I'm ready to checkout</button>
+                            <button class="donate-true" id="donateDone-${wishCardId}">I finished the checkout</button>
+                        </div>
+                        <p class="donate-false" id="donateNotDone-${wishCardId}" onclick="$('#wishCardDonateModal').modal('hide')">Changed your mind? Click here to exit.</p>`
                     );
 
                     let openAmazonBtn = $('#openAmazonBtn');
@@ -78,11 +83,19 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     donateDoneButton.on('click', (event) => {
 
+                        // Hide modal header to prevent closing the modal
+                        $('.modal-header').hide();
+                        
+                        // Hide buttons
+                        $(`#donateBtnWrapper-${wishCardId}`).hide();
+
                         $(`#lockedCountdown-${wishCardId}`).hide();
-                        waitDiv.html(`<div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                        </div>
-                        Confirming your Donation - Please wait. This may take up to 2 minutes.`)
+                        waitDiv.html(
+                            `<div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p class="spinner-text">Confirming your Donation - Please wait. This may take up to 2 minutes.</p>`
+                        );
                         waitDiv.show();
                         spinner.show();
 

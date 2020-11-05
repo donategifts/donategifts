@@ -59,26 +59,20 @@ New color scheme reference is in utils.css
 }
 
 .donate-false {
-  padding: 1em 3em;
-  margin-top: 0.5em;
-  /* margin-left: 25%;
-  margin-right: 25%; */
-  font-size: 1.15em;
-  font-weight: bold;
-  border-radius: 20px;
-  line-height: 1.2em;
-  outline: none;
-  border: none;
-  background: rgba(49, 49, 49, 0.5);
-  color: rgba(255, 246, 237, 0.8);
-  /* cursor: pointer; */
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(65, 66, 84, 1);
+  cursor: pointer;
+}
+
+#modal-donate-btn {
+  margin: 1rem auto;
+  display: block;
 }
 
 .donate-modal-button {
   padding: 1em 3em;
   margin-top: 0.5em;
-  margin-left: 25%;
-  margin-right: 25%;
   font-size: 1.15em;
   font-weight: bold;
   border-radius: 20px;
@@ -106,6 +100,23 @@ New color scheme reference is in utils.css
   font-size: 2em;
   color: rgba(255, 92, 111, 1);
   padding: 0.8em;
+}
+
+.donate-button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1em 0;
+}
+
+@media screen and (max-width: 990px) {
+  .donate-button-container {
+    flex-direction: column;
+  }
+}
+
+.spinner-text {
+  margin-top: 1rem;
 }
 
 /* newly added - move later  */
