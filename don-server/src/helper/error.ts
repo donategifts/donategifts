@@ -1,26 +1,32 @@
-// TODO: ADD MORE ERROR HANDLING HERE
-const log = require('./logger');
+import { Response } from 'express';
+import logger from './logger';
+
+interface ICustomError extends Partial<Error> {
+  statusCode?: number;
+  msg: string;
+}
 
 class ErrorHandler extends Error {
-  constructor(statusCode, message, name) {
-    super();
+  statusCode: number;
+
+  constructor(statusCode: number, message: string, name: string) {
+    super(message);
     this.statusCode = statusCode;
-    this.message = message;
     this.name = name;
   }
 }
 
-const handleError = (res, code, errorMsg) => {
+const handleError = (res: Response, code: number, errorMsg: string | ICustomError): void => {
   let statusCode = 400;
   let name = 'Error handler';
-  let error;
+  let error = {} as ICustomError;
 
   if (typeof errorMsg === 'object') {
     if (errorMsg.name) {
       name = errorMsg.name;
     }
 
-    statusCode = errorMsg.statusCode;
+    statusCode = Number(errorMsg.statusCode);
     error = errorMsg;
   } else if (typeof errorMsg === 'string') {
     error = { msg: errorMsg };
@@ -28,7 +34,7 @@ const handleError = (res, code, errorMsg) => {
 
   statusCode = code || statusCode;
 
-  log.error(`${name}:`, {
+  logger.error(`${name}:`, {
     statusCode,
     error,
   });
@@ -39,7 +45,7 @@ const handleError = (res, code, errorMsg) => {
   });
 };
 
-module.exports = {
+export default {
   ErrorHandler,
   handleError,
 };
