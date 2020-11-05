@@ -1,7 +1,5 @@
-import { IDBUser } from '../db/models/User';
-import { UserRoles } from '../common/user/User';
+import { IDBUser, UserRoles, ObjectId } from '../common';
 import AgencyRepository from '../db/repository/AgencyRepository';
-import { ObjectId } from '../common/ObjectId';
 
 export default class UserService {
   private agencyRepository: AgencyRepository;
