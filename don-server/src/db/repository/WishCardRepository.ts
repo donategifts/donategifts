@@ -1,9 +1,9 @@
-import moment from 'moment';
-import WishCard, { find, findOne, updateOne } from '../models/WishCard';
+import * as moment from 'moment';
+import { DBWishCard } from '../models/WishCard';
 
 async function createNewWishCard(wishCardParams) {
   try {
-    const newCard = new WishCard(wishCardParams);
+    const newCard = new DBWishCard(wishCardParams);
     return newCard.save();
   } catch (error) {
     throw new Error(`Failed to create new WishCard: ${error}`);
@@ -12,7 +12,7 @@ async function createNewWishCard(wishCardParams) {
 
 async function getAllWishCards() {
   try {
-    return find().exec();
+    return DBWishCard.find().exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards: ${error}`);
   }
@@ -20,7 +20,7 @@ async function getAllWishCards() {
 
 async function getWishCardsByItemName(itemName) {
   try {
-    return find({
+    return DBWishCard.find({
       wishItemName: {
         $regex: itemName,
         $options: 'i',
@@ -33,7 +33,7 @@ async function getWishCardsByItemName(itemName) {
 
 async function getWishCardByObjectId(cardId) {
   try {
-    return findOne({ _id: cardId }).exec();
+    return DBWishCard.findOne({ _id: cardId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -41,7 +41,7 @@ async function getWishCardByObjectId(cardId) {
 
 async function getWishCardsByStatus(status) {
   try {
-    return find({ status }).exec();
+    return DBWishCard.find({ status }).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -49,7 +49,7 @@ async function getWishCardsByStatus(status) {
 
 async function getLockedWishcardsByUserId(userId) {
   try {
-    return findOne({ isLockedBy: userId }).exec();
+    return DBWishCard.findOne({ isLockedBy: userId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -57,7 +57,11 @@ async function getLockedWishcardsByUserId(userId) {
 
 async function pushNewWishCardMessage(id, message) {
   try {
-    return updateOne({ _id: id }, { $push: { messages: message } }, { new: true }).exec();
+    return DBWishCard.updateOne(
+      { _id: id },
+      { $push: { messages: message } },
+      { new: true },
+    ).exec();
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
@@ -65,7 +69,7 @@ async function pushNewWishCardMessage(id, message) {
 
 async function updateWishCardStatus(id, status) {
   try {
-    return updateOne({ _id: id }, { $set: { status } }).exec();
+    return DBWishCard.updateOne({ _id: id }, { $set: { status } }).exec();
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
@@ -74,9 +78,13 @@ async function updateWishCardStatus(id, status) {
 async function lockWishCard(id, userId) {
   try {
     const wishCard = await getWishCardByObjectId(id);
-    wishCard.isLockedBy = userId;
-    wishCard.isLockedUntil = moment().add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes');
-    wishCard.save();
+    if (wishCard) {
+      wishCard.isLockedBy = userId;
+      wishCard.isLockedUntil = moment()
+        .add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes')
+        .toDate();
+      wishCard.save();
+    }
     return wishCard;
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
@@ -86,10 +94,12 @@ async function lockWishCard(id, userId) {
 async function unLockWishCard(id) {
   try {
     const wishCard = await getWishCardByObjectId(id);
-    wishCard.isLockedBy = null;
-    wishCard.isLockedUntil = null;
-    wishCard.save();
-    return wishCard;
+    if (wishCard) {
+      wishCard.isLockedBy = null;
+      wishCard.isLockedUntil = null;
+      wishCard.save();
+      return wishCard;
+    }
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }

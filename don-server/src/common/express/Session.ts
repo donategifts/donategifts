@@ -7,6 +7,6 @@ export interface ISessionUser {
 }
 
 export interface ISession {
-  user: ISessionUser;
+  user: ISessionUser | null;
   agency: any;
 }

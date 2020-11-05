@@ -34,8 +34,8 @@ export interface IDBWishCard extends Document {
     zipcode: string;
   };
   isDonated: boolean;
-  isLockedBy: TypeObjectId<IDBUser>;
-  isLockedUntil: Date;
+  isLockedBy: TypeObjectId<IDBUser> | null;
+  isLockedUntil: Date | null;
   approvedByAdmin: boolean;
   messages: TypeObjectId<IDBMessage>[];
   status: WishCardStatus;

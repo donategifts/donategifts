@@ -24,15 +24,16 @@ import * as mongoSanitize from 'express-mongo-sanitize';
 // custom
 import { connectSocket } from './helper/socket';
 import MongooseConnection from './db/connection';
-import * as UserRepository from './db/repository/UserRepository';
-import * as AgencyRepository from './db/repository/AgencyRepository';
+import UserRepository from './db/repository/UserRepository';
+import AgencyRepository from './db/repository/AgencyRepository';
 
 // IMPORT ROUTE FILES
 import * as usersRoute from './old-routes/users';
 import * as wishCardsRoute from './old-routes/wishCards';
 import * as aboutRoute from './old-routes/about';
 
-import * as log from './helper/logger';
+import logger from './helper/logger';
+import { ISessionUser } from './common';
 
 // eslint-disable-next-line import/order
 const MongoStore = require('connect-mongo')(session);
@@ -46,6 +47,9 @@ dotenv.config({
 });
 
 const app = express();
+
+const userRepository = new UserRepository();
+const agencyRepository = new AgencyRepository();
 
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
@@ -89,11 +93,11 @@ app.use(
 app.use(async (req, res, next) => {
   const { user } = req.session;
   if (user) {
-    const result = await UserRepository.getUserByObjectId(user._id);
+    const result = await userRepository.getUserByObjectId(user._id);
     res.locals.user = result;
-    req.session.user = result;
+    req.session.user = result as ISessionUser;
     if (user.userRole === 'partner') {
-      const agency = await AgencyRepository.getAgencyByUserId(user._id);
+      const agency = await agencyRepository.getAgencyByUserId(user._id);
       if (agency !== null) {
         res.locals.agency = agency;
         req.session.agency = agency;
@@ -137,7 +141,7 @@ app.get('/', (_req, res) => {
 
 // ERROR PAGE
 app.get('*', (req, res) => {
-  log.warn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
+  logger.warn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
   res.status(404).render('404');
 });
 
@@ -150,7 +154,7 @@ app.use((err, req, res, _next) => {
 
   // TODO: send error message to slack/sentry?
 
-  log.error(err);
+  logger.error(err);
 
   // render the error page
   res.status(500);

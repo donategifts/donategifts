@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Put, Request, Response, Route, Body, Path, Res } from 'tsoa';
+import { Controller, Get, Post, Put, Request, Response, Route, Body, Path, Query } from 'tsoa';
 import { UserRoles } from '../common';
 import UserService from '../services/UserService';
 
 // TODO: check old routes for params like res, req, and additional query params
 
 @Route('/users')
-export default class Users extends Controller {
+export class Users extends Controller {
   private userService: UserService;
 
   constructor() {
@@ -16,7 +16,11 @@ export default class Users extends Controller {
   @Response('400', 'Bad request')
   @Get('/profile')
   public async getUserRole(@Request() req: Express.Request): Promise<UserRoles> {
-    return this.userService.getUserRole(req.session.user._id);
+    if (req.session.user) {
+      return this.userService.getUserRole(req.session.user._id);
+    }
+
+    throw new Error('No user provided in request object!');
   }
 
   @Response('400', 'Bad request')
@@ -33,7 +37,7 @@ export default class Users extends Controller {
 
   @Response('400', 'Bad request')
   @Get('/agency/wish-card')
-  public async getAgencyWishCards(@Res() _res: any, @Request() _req: any): Promise<void> {
+  public async getAgencyWishCards(@Request() _req: any): Promise<void> {
     // TODO: implementation needed
   }
 
@@ -63,7 +67,7 @@ export default class Users extends Controller {
 
   @Response('400', 'Bad request')
   @Get('/logout')
-  public async logout(@Request() _req: any, @Body() _body: any): Promise<void> {
+  public async logout(@Request() _req: any, @Query() _query: any): Promise<void> {
     // TODO: implementation needed
   }
 
@@ -75,7 +79,7 @@ export default class Users extends Controller {
 
   @Response('400', 'Bad request')
   @Get('/choose')
-  public async choose(@Body() _body: any): Promise<void> {
+  public async choose(@Query() _query: any): Promise<void> {
     // TODO: implementation needed
   }
 
@@ -89,7 +93,7 @@ export default class Users extends Controller {
   @Get('/password/reset/{token}')
   public async getPasswordResetToken(
     @Path('token') _token: any,
-    @Body() _body: any,
+    @Query() _query: any,
   ): Promise<void> {
     // TODO: implementation needed
   }

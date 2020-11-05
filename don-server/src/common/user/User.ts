@@ -1,5 +1,5 @@
 import type { Document } from 'mongoose';
-import type { IDBDonation } from '../../db/models/Donation';
+import type { IDBDonation } from '../donation';
 import type { TypeObjectId } from '../generic';
 import type { IDBWishCard } from '../wishcard';
 

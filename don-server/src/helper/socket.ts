@@ -2,10 +2,9 @@ import * as socket from 'socket.io';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
-import * as express from 'express';
 import logger from './logger';
 
-export const connectSocket = (app: typeof express): socket.Server => {
+export const connectSocket = (app): socket.Server => {
   let server: http.Server | https.Server;
   if (process.env.LOCAL_DEVELOPMENT) {
     server = http.createServer(app);
