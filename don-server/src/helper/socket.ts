@@ -5,7 +5,7 @@ import * as https from 'https';
 import * as express from 'express';
 import logger from './logger';
 
-function connectSocket(app: typeof express): socket.Server {
+export const connectSocket = (app: typeof express): socket.Server => {
   let server: http.Server | https.Server;
   if (process.env.LOCAL_DEVELOPMENT) {
     server = http.createServer(app);
@@ -35,6 +35,4 @@ function connectSocket(app: typeof express): socket.Server {
   });
 
   return io;
-}
-
-export { connectSocket };
+};
