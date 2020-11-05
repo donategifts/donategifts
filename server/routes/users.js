@@ -25,7 +25,7 @@ const {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-} = require('../controller/messaging');
+} = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
 const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
@@ -165,13 +165,14 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @access  private, partners only
 // @tested 	No
 router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
-  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
+  const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
   await AgencyRepository.createNewAgency({
     agencyName,
     agencyWebsite,
     agencyPhone,
     agencyBio,
+    agencyAddress,
     accountManager: req.session.user._id,
     ...req.body,
   });
@@ -600,6 +601,27 @@ router.post(
       return handleError(res, 400, err);
     }
   },
+);
+
+// @desc    Get agency details. 
+// @access  Private, only users
+router.get('/agency/address', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return handleError(res, 403, 'No user id in request');
+    }
+    const agencyDetail = await AgencyRepository.getAgencyByUserId(req.session.user._id);
+    res.status(200).send(
+      JSON.stringify({
+        success: true,
+        error: null,
+        data: agencyDetail,
+      }),
+    );
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+},
 );
 
 module.exports = router;

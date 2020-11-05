@@ -39,6 +39,7 @@ if (process.env.USE_AWS !== 'true') {
     s3,
     Bucket: process.env.S3BUCKET,
     ACL: 'public-read',
+    cacheControl: 'max-age=31536000',
     key(req, file, cb) {
       // rename the file since we convert it to jpeg
       cb(null, `${UUIDv4()}-${file.filename}.jpeg`);

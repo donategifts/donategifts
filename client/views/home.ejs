@@ -1,151 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
 
-<head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
+      gtag('config', 'UA-180152810-1');
+    </script>
+    <title>Holiday Gift Donation | Donate Gifts to Foster Kids -Virtual Toy Drive</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
 
-    gtag('config', 'UA-180152810-1');
-  </script>
-  <title>Holiday Gift Donation | Donate Gifts to Foster Kids -Virtual Toy Drive</title>
-  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <!-- Site SEO -->
+    <meta
+      name="description"
+      content="How to help children in foster care | Send holiday birthday gifts to foster kids easily by using embedded Amazon delivery"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="children, gift, wish, foster, donate" />
+    <%- include('./templates/header')-%>
+    <!-- facebook login -->
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '<%- process.env.FB_APP_ID %>',
+          cookie: true,
+          xfbml: true,
+          version: 'v8.0',
+        });
+        FB.AppEvents.logPageView();
+      };
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script>
 
-  <!-- Site SEO -->
-  <meta name="description"
-    content="How to help children in foster care | Send holiday birthday gifts to foster kids easily by using embedded Amazon delivery" />
-  <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="children, gift, wish, foster, donate" />
-  <%- include('./templates/header')-%>
-</head>
+    <!-- google login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
+    <script src="/public/clientJS/login.js"></script>
+  </head>
 
-<body>
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
-    nonce="XBZR4Yw2"></script>
-<%- include('./templates/nav')-%> <%-
-    include('./templates/wishCardDonateModal')-%>
-  <!-- header section-->
-  <div class="bg" id="home-bg">
-    <div class="text">
-      <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
-      <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
-      <h4 class="quick-font pb-1 hide">
-        Donate holiday & birthday gifts to the kids who may not otherwise get one
-      </h4>
-      <a href="/wishcards"><button type="button" class="quick-font wishcard-btn inverted-grn-btn" id="btn1">
-          See Wish Cards
-        </button></a>
+  <body>
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
+      nonce="XBZR4Yw2"
+    ></script>
+    <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
+    <!-- header section-->
+    <div class="bg" id="home-bg">
+      <div class="text">
+        <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
+        <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
+        <h4 class="quick-font pb-1 hide">
+          Donate holiday & birthday gifts to the kids who may not otherwise get one
+        </h4>
+        <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">
+          See Wish Cards</a
+        >
 
-      <button type="button" class="quick-font wishcard-btn grn-btn" id="btn1" data-toggle="modal"
-        data-target="#exampleModalCenter">
-        Super Easy Process
-      </button>
-    </div>
-  </div>
-
-  <%- include('./templates/homeModal')-%> <%- include('./templates/homeSampleCards')-%>
-
-  <!-- thank you section-->
-  <div class="custom-wrapper" id="about">
-    <div class="custom-row">
-      <div class="custom-col custom-left">
-        <img src="/public/img/kids-cover.jpg" alt="donation drop off near me" class="grn-box" />
+        <button
+          type="button"
+          class="button button--green lg-text"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Super Easy Process
+        </button>
       </div>
-      <div class="custom-col custom-right">
-        <h4 id="grn-font" class="crayon-font font-lg">We Need Your Help</h4>
-        <p id="left-align" class="subtext quick-font">
-          500,000+ kids spend time in foster care each year. 
-          And 4.2M+ youth are homeless in the U.S.
-          For many of them, Christmas time can be sad and lonely because they are undergoing
-          stressful situations. With your generosity and kindness, we are able to provide a moment
-          of happiness to the kids who are in crisis. By creating this platform, we wish to
-          provide effortless and convenient ways to share the joy of the holidays.<br />
-          Your gifts make it possible to bring happiness to the kids.
-        </p>
-        <p class="quick-font">Got any questions? We would love to hear from you.</p>
-        <a href="/about"><button type="button" class="quick-font wishcard-btn grn-btn" id="btn1">
-            How To Contact Us
-          </button></a>
-      </div>
     </div>
-  </div>
-  <!-- end of thank you section -->
+    <%- include('./templates/loginModal')-%> <%- include('./templates/homeModal')-%> <%-
+    include('./templates/homeSampleCards')-%>
 
-  <div class="partners-container mb-5">
-    <h1 class="crayon-font home-wish-title mt-3">Our Partner Agencies</h1>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/central-texas-table-of-grace-logo.png');"
-            class="partner-img"></div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/onehopeunited.png');" class="partner-img">
+    <!-- thank you section-->
+    <div class="custom-wrapper py-5">
+      <div class="container" id="about">
+        <h4 id="grn-font" class="crayon-font display-4 mb-3 text-center">We Need Your Help</h4>
+        <div class="row">
+          <div class="col-md-6 order-1 p-5">
+            <img
+              src="/public/img/kids-cover.jpg"
+              alt="donation drop off near me"
+              class="img-fluid grn-box"
+            />
+          </div>
+          <div class="col-md-6 text-center py-5 px-3">
+            <p class="text-left subtext quick-font">
+              500,000+ kids spend time in foster care each year. And 4.2M+ youth are homeless in the
+              U.S. For many of them, Christmas time can be sad and lonely because they are
+              undergoing stressful situations. With your generosity and kindness, we are able to
+              provide a moment of happiness to the kids who are in crisis. By creating this
+              platform, we wish to provide effortless and convenient ways to share the joy of the
+              holidays.<br />
+              Your gifts make it possible to bring happiness to the kids.
+            </p>
+            <p class="font-300 quick-font">Got any questions? We would love to hear from you.</p>
+            <a href="/about"
+              ><button type="button" class="button button--green" id="btn1">
+                How To Contact Us
+              </button></a
+            >
           </div>
         </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/new-alternatives-logo.png');"
-            class="partner-img"></div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/yos-org-logo.png');" class="partner-img">
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/partner-coalition-nyc.jpg');"
-            class="partner-img"></div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/fostering-hope-logo.jpg');"
-            class="partner-img"></div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3">
-          <div style="background: center / contain no-repeat url('/public/img/epworth-tran-logo.png');"
-            class="partner-img"></div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-lg-3 col-md-3 pb-5">
-          <div style="background: center / contain no-repeat url('/public/img/echoes-of-hope-logo.png');"
-            class="partner-img"></div>
-        </div>
-
       </div>
     </div>
-  </div>
-  <div class="mb-2 pb-2"></div>
+    <!-- End of thank you section -->
 
-  <%- include('./templates/footer')-%>
+    <div class="partners-container mb-5">
+      <h1 class="crayon-font home-wish-title mt-3">Our Partner Agencies</h1>
+      <div class="p-container container">
+        <div class="small3">
+          <ul class="small-ul" data-small3="">
+            <li>
+              <a href="https://centraltexastableofgrace.org/" target="_blank">
+                <img
+                  src="/public/img/central-texas-table-of-grace-logo.jpg"
+                  alt="Central Texas Table of Grace logo"
+                />
+              </a>
+            </li>
+            <li>
+              <a href="https://onehopeunited.org/" target="_blank">
+                <img src="/public/img/onehopeunited.png" alt="One Hope United logo" />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.newalternativesnyc.org/" target="_blank">
+                <img src="/public/img/new-alternatives-logo.png" alt="New Alternatives logo"
+              /></a>
+            </li>
+            <li>
+              <a href="https://www.yos.org/" target="_blank">
+                <img src="/public/img/yos-org-logo.png" alt="Youth Outreach Services logo"
+              /></a>
+            </li>
+            <li>
+              <img
+                src="/public/img/partner-coalition-nyc.jpg"
+                alt="Partner Coalition of NewYork City logo"
+              />
+            </li>
+            <li>
+              <a href="https://www.fosteringhopefoundation.org" target="_blank">
+                <img src="/public/img/fostering-hope-logo.jpg" alt="Fostering Hope logo"
+              /></a>
+            </li>
+            <li><img src="/public/img/epworth-tran-logo.png" alt="Epworth Village logo" /></li>
 
-  <script>
+            <li>
+              <a href="https://www.echoesofhope.org/" target="_blank">
+                <img src="/public/img/echoes-of-hope-logo.png" alt="Echoes of Hope logo"
+              /></a>
+            </li>
+            <li>
+              <a href="https://www.blueskiesforchildren.org/" target="_blank">
+                <img src="/public/img/blue-sky-agency-logo.png" alt="Blue Skies for Children logo"
+              /></a>
+            </li>
+            <li>
+              <a href="https://casala.org/" target="_blank">
+                <img src="/public/img/casa-la-logo.png" alt="CASA of Los Angeles logo"
+              /></a>
+            </li>
+            <li>
+              <a href="https://www.hartdistrict.org/" target="_blank">
+                <img src="/public/img/hart-district-logo.png" alt="William Hart district logo"
+              /></a>
+            </li>
+            <li>
+              <a href="https://www.nyap.org/" target="_blank">
+                <img src="/public/img/nyap-logo.png" alt="National Youth Advocate Program logo"
+              /></a>
+            </li>
+          </ul>
+          <span class="small-span"><i class="fa fa-arrow-circle-right fa-3x"></i></span>
+          <span class="small-span"><i class="fa fa-arrow-circle-left fa-3x"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./templates/footer')-%>
+
+    <script>
   
-		countdown = [];
-    socket = io('<%= process.env.SOCKET_URL %>');
-
-	</script>
-  <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="/public/clientJS/wishCardRandom.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-    integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-  </script>
-  <script src="/public/clientJS/wishCardModal.js"></script>
-  <!-- this is for the preloader -->
-  <script>
-    $(window).on('load', function () {
-      $('.preloader').fadeOut(1500);
-    });
-  </script>
-</body>
-
+      countdown = [];
+      socket = io('<%= process.env.SOCKET_URL %>');
+  
+    </script>
+    <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/public/clientJS/wishCardRandom.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/public/clientJS/wishCardModal.js"></script>
+    <!-- this is for the preloader -->
+    <script>
+      $(window).on('load', function () {
+        $('.preloader').fadeOut(1500);
+      });
+    </script>
+    <!--  this is for login toast -->
+    <% if(!locals.user) { %>
+    <script src="/public/clientJS/loginToast.js"></script>
+    <% } %>
+    <!--  this is for login toast -->
+    <script src="/public/clientJS/partnerCarousel.js"></script>
+  </body>
 </html>
