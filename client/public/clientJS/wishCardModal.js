@@ -132,7 +132,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                             spinner.hide();
                             waitDiv.hide();
                             statusDiv.html('Donation Not Confirmed')
-                            //TODO show sad faces
+                            
                             //TODO we should do an exit survey eventually -stacy-
                         }
 
