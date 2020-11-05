@@ -1,4 +1,5 @@
-import { ISession } from '../src/common/express/Session';
+/* eslint-disable */
+import { ISession } from '../src/common';
 
 declare global {
   export var io: any;
