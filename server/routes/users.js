@@ -25,16 +25,11 @@ const {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-} = require('../controller/messaging');
+} = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
-const {
-  redirectLogin,
-  redirectProfile,
-  verifyGoogleToken,
-  hashPassword,
-  createDefaultPassword,
-} = require('../helper/userHelper');
+const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
+const { redirectLogin, redirectProfile } = require('./middleware/login.middleware');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
@@ -83,8 +78,6 @@ router.get('/login', redirectProfile, (req, res) => {
       user: res.locals.user,
       successNotification: null,
       errorNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -172,13 +165,14 @@ router.get('/agency', redirectLogin, async (req, res) => {
 // @access  private, partners only
 // @tested 	No
 router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
-  const { agencyName, agencyWebsite, agencyPhone, agencyBio } = req.body;
+  const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
   await AgencyRepository.createNewAgency({
     agencyName,
     agencyWebsite,
     agencyPhone,
     agencyBio,
+    agencyAddress,
     accountManager: req.session.user._id,
     ...req.body,
   });
@@ -238,15 +232,13 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const isCaptchaValid = await validateReCaptchaToken(captchaToken);
   if (isCaptchaValid === false) {
     return handleError(res, 400, {
-      message: {
-        msg: 'Provided captcha token is not valid',
-        param: 'captchaToken',
-        location: 'body',
-      },
+      msg: 'Provided captcha token is not valid',
+      param: 'captchaToken',
+      location: 'body',
     });
   }
 
-  const candidate = await UserRepository.getUserByEmail(email);
+  const candidate = await UserRepository.getUserByEmail(email.toLowerCase());
   if (candidate) {
     return handleError(res, 409, 'This email is already taken. Try another');
   }
@@ -256,7 +248,7 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
   const newUser = await UserRepository.createNewUser({
     fName,
     lName,
-    email,
+    email: email.toLowerCase(),
     verificationHash,
     password: hashedPassword,
     userRole,
@@ -303,7 +295,7 @@ router.post(
         const user = await verifyGoogleToken(id_token);
         const fName = user.firstName;
         const lName = user.lastName;
-        const email = user.mail;
+        const email = user.mail.toLowerCase();
 
         const dbUser = await UserRepository.getUserByEmail(email);
 
@@ -350,7 +342,7 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
   if (userName && email) {
     const [fName, lName] = userName.split(' ');
 
-    const dbUser = await UserRepository.getUserByEmail(email);
+    const dbUser = await UserRepository.getUserByEmail(email.toLowerCase());
 
     if (dbUser) {
       req.session.user = dbUser;
@@ -364,7 +356,7 @@ router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (r
       const newUser = await UserRepository.createNewUser({
         fName,
         lName: lName || 'LastnameUnset',
-        email,
+        email: email.toLowerCase(),
         password: createDefaultPassword(),
         verificationHash: createEmailVerificationHash(),
         userRole: 'donor',
@@ -398,7 +390,7 @@ router.post(
   async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await UserRepository.getUserByEmail(email);
+    const user = await UserRepository.getUserByEmail(email.toLowerCase());
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
         req.session.user = user;
@@ -408,16 +400,12 @@ router.post(
       return res.status(403).render('login', {
         user: res.locals.user,
         successNotification: null,
-        g_client_id: process.env.G_CLIENT_ID,
-        fb_client_id: process.env.FB_APP_ID,
         errorNotification: { msg: 'Username and/or password incorrect' },
       });
     }
     return res.status(403).render('login', {
       user: res.locals.user,
       successNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Username and/or password incorrect' },
     });
   },
@@ -463,8 +451,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
           successNotification: {
             msg: 'Your email is already verified.',
           },
-          g_client_id: process.env.G_CLIENT_ID,
-          fb_client_id: process.env.FB_APP_ID,
           errorNotification: null,
         });
       }
@@ -476,8 +462,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
         successNotification: {
           msg: 'Email Verification successful',
         },
-        g_client_id: process.env.G_CLIENT_ID,
-        fb_client_id: process.env.FB_APP_ID,
         errorNotification: null,
       });
     }
@@ -486,8 +470,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,
-      g_client_id: process.env.G_CLIENT_ID,
-      fb_client_id: process.env.FB_APP_ID,
       errorNotification: { msg: 'Email Verification failed' },
     });
   }
@@ -568,7 +550,7 @@ router.get(
       const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
 
       if (userObject) {
-        if (moment(userObject.passwordResetTokenExpires) > moment()) {
+        if (new Date(userObject.passwordResetTokenExpires) > new Date()) {
           res.render('resetPassword', {
             token: req.params.token,
           });
@@ -619,6 +601,27 @@ router.post(
       return handleError(res, 400, err);
     }
   },
+);
+
+// @desc    Get agency details. 
+// @access  Private, only users
+router.get('/agency/address', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return handleError(res, 403, 'No user id in request');
+    }
+    const agencyDetail = await AgencyRepository.getAgencyByUserId(req.session.user._id);
+    res.status(200).send(
+      JSON.stringify({
+        success: true,
+        error: null,
+        data: agencyDetail,
+      }),
+    );
+  } catch (err) {
+    return handleError(res, 400, err);
+  }
+},
 );
 
 module.exports = router;

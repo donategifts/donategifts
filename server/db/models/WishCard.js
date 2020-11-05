@@ -78,13 +78,13 @@ const WishCardSchema = new Schema(
       },
     ],
     status: {
-        type: String,
-        enum: ['draft', 'published', 'donated'],
-        default: 'draft'
+      type: String,
+      enum: ['draft', 'published', 'donated'],
+      default: 'draft',
     },
     wishCardTo: {
-        type: Schema.Types.ObjectId,
-        ref: 'Agency',
+      type: Schema.Types.ObjectId,
+      ref: 'Agency',
     },
   },
   {

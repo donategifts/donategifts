@@ -6,7 +6,11 @@ configure({
   },
   categories: {
     default: { appenders: ['console'], level: levels.ALL },
+    development: { appenders: ['console'], level: levels.ALL },
+    production: { appenders: ['console'], level: levels.ALL },
+
   },
+
 });
 
-module.exports = getLogger();
+module.exports = getLogger(process.env.NODE_ENV);

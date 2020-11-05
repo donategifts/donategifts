@@ -6,137 +6,223 @@
 	<!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
 	<%- include('./templates/header')-%>
 	<link rel="stylesheet" href="/public/css/search.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+		integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+		crossorigin="anonymous"></script>
 	<script src="/public/clientJS/utils.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
-
-
 		<% for (var i = 0; i < wishcards.length; i++) { %>
-
-			addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
-
+			<% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
+				addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
+				<% } %>
 		<% } %>
 	</script>
+	<!-- facebook login -->
+	<script>
+		window.fbAsyncInit = function () {
+			FB.init({
+				appId: '<%- process.env.FB_APP_ID %>',
+				cookie: true,
+				xfbml: true,
+				version: 'v8.0',
+			});
+			FB.AppEvents.logPageView();
+		};
+		(function (d, s, id) {
+			var js,
+				fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {
+				return;
+			}
+			js = d.createElement(s);
+			js.id = id;
+			js.src = 'https://connect.facebook.net/en_US/sdk.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		})(document, 'script', 'facebook-jssdk');
+	</script>
 
+	<!-- google login -->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
+	<script src="/public/clientJS/login.js"></script>
 </head>
 
 <body>
+	<%- include('./templates/loginModal')-%>
 	<%- include('./templates/nav')-%>
 	<%- include('./templates/wishCardDonateModal')-%>
 
-	<!-- Wish Card deck -->
-	<div class="wishcards">
+		<!-- Wish Card deck -->
+		<div class="wishcards">
 
-		<!-- Search Bar -->
-		<div class="row justify-content-center quick-font" id="margin-bottom">
-			<div class="col-12 col-md-10 col-lg-8">
-				<!-- Search form -->
-				<form class="card card-sm" id="searchBar" action="/wishcards/search" method="POST">
-					<div class="card-body row no-gutters align-items-center">
-						<div class="col-auto">
-							<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
+			<!-- Search Bar -->
+			<div class="row justify-content-center quick-font" id="margin-bottom">
+				<div class="col-12 col-md-10 col-lg-8">
+					<!-- Search form -->
+					<form id="searchBar" action="/wishcards/search" method="POST">
+						<div class="card card-sm">
+							<div class="card-body row no-gutters align-items-center">
+								<div class="col-auto">
+									<i class="fa fa-search h4 text-body" aria-hidden="true"></i>
+								</div>
+								<div class="col">
+									<input class="form-control form-control-lg form-control-borderless" type="search" name="wishitem"
+										placeholder="Search Wish Cards">
+								</div>
+								<div class="col-auto">
+									<button class="btn btn-lg btn-success" type="submit">Search</button>
+								</div>
+							</div>
 						</div>
-						<div class="col">
-							<input class="form-control form-control-lg form-control-borderless" type="search"
-								name="wishitem" placeholder="Search Wish Cards">
+						<div class="col mt-3">
+							<div class="row">
+								<div id="filter-panel" class="collapse filter-card ml-auto">
+									<div class="card">
+										<div class="card-body form-inline">
+											<div class="form-group">
+												<label class="filter-col" style="margin-right:0;" for="card-limit">Card limit</label>
+												<select id="card-limit" class="form-control" name="limit">
+													<option value="10">10</option>
+													<option value="20">20</option>
+													<option value="25" selected="selected">25</option>
+													<option value="50">50</option>
+													<option value="100">100</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label class="filter-col" style="margin-right:0;" for="child-age">Age range</label>
+												<select id="child-age" class="form-control" name="childAge">
+													<option value="14" selected="selected">Kids younger than 15</option>
+													<option value="15">Kids older than 15</option>
+												</select>
+											</div>
+											<div class="form-group ml-4">
+												<div class="checkbox">
+													<label><input type="checkbox" style="margin-right: 10px;" name="donated" />Show already
+														donated ones</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col text-right mt-2">
+								<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+									Advanced Search
+								</button>
+							</div>
 						</div>
-						<div class="col-auto">
-							<button class="btn btn-lg btn-success" type="submit">Search</button>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
 
-		<!-- Dynamic Card Display now fixed and responsive-->
+			<!-- Dynamic Card Display now fixed and responsive-->
 
-		<div class="container">
-			<% if (wishcards.length === 0) { %>
-			<h1>No wishcards</h1>
-			<% } else { %>
-			<div class="row justify-content-center">
-				<% for (var i = 0; i < wishcards.length; i++) { %>
-				<div class="col-lg-4 col-xs-12 mb-5 mt-4">
+			<div class="container">
+				<% if (wishcards.length === 0) { %>
+				<h1>No wishcards</h1>
+				<% } else { %>
+				<div class="row justify-content-center">
+				  <% for (var i = 0; i < wishcards.length; i++) { %>
+				  <div class="col-lg-4 col-xs-12 mb-5">
 					<!-- Card -->
-					<div id="card-fix" class="card mb-3">
-						<!--Card image-->
-						<div class="view overlay">
-							<img id="img-fix" class="card-img-top" src="<%= wishcards[i].wishCardImage %>"
-								alt="Card image">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-
-							<div class="pb-2 row justify-content-center">
-								<a class='mx-2 btn-3 msg-icon' href='/wishcards/<%= wishcards[i]._id %>'>
-									<i class="fa fa-envelope-o" aria-hidden="true"></i>
-								</a>
-								<div id="fb" class="mx-2 btn-3" data-href="https://donate-gifts.com"
-									data-layout="button" data-size="large"><a target="_blank"
-										href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdonate-gifts.com%2F&amp;src=sdkpreparse"
-										class="fb-xfbml-parse-ignore"><i class="fa fa-facebook" aria-hidden="true"></i>
-										</i>
-									</a></div>
+					<div id="card-fix" class="card h-100">
+					  <!--Card image-->
+					  <div class="view overlay">
+						<img
+						  id="img-fix"
+						  class="card-img-top"
+						  src="<%= wishcards[i].wishCardImage %>"
+						  alt="Card image"
+						/>
+						<a href="#">
+						  <div class="mask rgba-white-slight"></div>
+						</a>
+					  </div>
+					  <!--Card content-->
+					  <div class="card-body">
+						<a href="/wishcards/<%= wishcards[i]._id %>" class="wishcard__icon--fixed msg-icon">
+						  <i class="far fa-envelope" aria-hidden="true"></i>
+						</a>
+						<div class="card-text-container">
+						  <!--Title-->
+						  <h3 class="card-title text-center crayon-font">
+							My name is <%= wishcards[i].childFirstName %>
+						  </h3>
+		
+						  <!--Text-->
+						  <div class="quick-font">
+							<p class="card-text">
+							  <span class="font-weight-bold">Wish : </span>
+							  <%= wishcards[i].wishItemName.length > 25 ?
+							  wishcards[i].wishItemName.substring(0, 25) + "..." : wishcards[i].wishItemName
+							  %>
+							</p>
+							<p class="card-text">
+							  <span class="font-weight-bold">Item Price :</span> $<%=
+							  wishcards[i].wishItemPrice %>
+							</p>
+							<p class="card-text">
+							  <span class="font-weight-bold">Interest : </span>
+							  <%= wishcards[i].childInterest.length > 30 ?
+							  wishcards[i].childInterest.substring(0, 30) + "..." :
+							  wishcards[i].childInterest %>
+							</p>
+						  </div>
+						  <div class="quick-font mt-4 row justify-content-center align-items-center">
+							<div class="col-sm-6 my-2 text-center">
+							  <a
+								href="/wishcards/<%= wishcards[i]._id %>"
+								class="wishcard__link--white bdr-2"
+								>Read more</a
+							  >
 							</div>
-
-							<div class="card-text-container">
-								<!--Title-->
-								<h3 class="card-title text-center crayon-font">My name is
-									<%= wishcards[i].childFirstName %></h3>
-
-								<!--Text-->
-								<div class="quick-font">
-									<p class="card-text"><span class="font-weight-bold">Age : </span> <%= wishcards[i].age %></p>
-									<p class="card-text"><span class="font-weight-bold">Wish : </span> <%= wishcards[i].wishItemName.length > 25 ? wishcards[i].wishItemName.substring(0, 25) + "..." : wishcards[i].wishItemName %></p>
-									<p class="card-text"><span class="font-weight-bold">Item Price :</span> $<%= wishcards[i].wishItemPrice %></p>
-									<p class="card-text"><span class="font-weight-bold">Interest : </span>
-										<%= wishcards[i].childInterest.length > 30 ? wishcards[i].childInterest.substring(0, 30) + "..." : wishcards[i].childInterest %>
-									</p>
-								</div>
-								<div class="quick-font row button-center mt-2">
-									<button type="button" class="col wishcard-btn btn-navy-border"><a
-											href="/wishcards/<%= wishcards[i]._id %>">Read more</a></button>
-									<button type="button" id="donate-btn-<%= wishcards[i]._id %>"
-									data-toggle="modal"
-									data-value-url="<%= wishcards[i].wishItemURL %>"
-									data-value-name="<%= wishcards[i].childFirstName %>"
-									data-value-id="<%= wishcards[i]._id %>"
-									data-value-loggedIn="<%= !!locals.user %>"
-									data-target="#wishCardDonateModal" class="col wishcard-btn btn-navy-bg">Donate
-									Gift</button>
-								</div>
+							<div class="col-sm-6 my-2 text-center">
+							  <button
+								type="button"
+								data-toggle="modal"
+								data-value-url="<%= wishcards[i].wishItemURL %>"
+								data-value-name="<%= wishcards[i].childFirstName %>"
+								data-value-id="<%= wishcards[i]._id %>"
+								data-value-loggedIn="<%= !!locals.user %>"
+								data-target="#wishCardDonateModal"
+								class="wishcard__button--blue bdr-2"
+							  >
+								Donate Gift
+							  </button>
 							</div>
-
+						  </div>
 						</div>
+					  </div>
 					</div>
+				  </div>
+				  <% } %>
 				</div>
 				<% } %>
-			</div>
-			<% } %>
-
+			  </div>
 		</div>
-	</div>
 
-	<%- include('./templates/footer')-%>
-	<!-- jquery -->
+		<%- include('./templates/footer')-%>
+		<!-- jquery -->
 
-	<script>
-		socket = io('<%= socketUrl %>');
-	</script>
+		<script>
+			socket = io('<%= process.env.SOCKET_URL %>');
+		</script>
+		<script src="/public/clientJS/wishCard.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+			integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
+			</script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script src="/public/clientJS/wishCardModal.js"></script>
+		<!--  this is for login toast -->
+		<% if(!locals.user) { %>
+		<script src="/public/clientJS/loginToast.js"> </script>
+		<% } %>
 
-	<script src="/public/clientJS/wishCard.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-		integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-	</script>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-	<script src="/public/clientJS/wishCardModal.js"></script>
 
 
-	<!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'
+		<!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'
 	because it was breaking the whole page
 	move it back when you fix the issue -->
 </body>
