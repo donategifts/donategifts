@@ -1,5 +1,16 @@
 export type TypeObjectId<T> = string & { type: T };
 
+export type APITypeObjectId<_T extends APIObjectType> = string;
+
+export enum APIObjectType {
+  User = 'User',
+  Agency = 'Agency',
+  Message = 'Message',
+  Donation = 'Donation',
+  Contact = 'Contact',
+  WishCard = 'WishCard',
+}
+
 const checkForHexRegExp = new RegExp('^[0-9a-fA-F]{24}$');
 
 function validateObjectId(id: string): boolean {
