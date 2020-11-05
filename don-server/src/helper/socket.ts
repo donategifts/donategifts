@@ -1,10 +1,12 @@
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-const log = require('./logger');
+import * as socket from 'socket.io';
+import * as fs from 'fs';
+import * as http from 'http';
+import * as https from 'https';
+import * as express from 'express';
+import logger from './logger';
 
-function connectSocket(app) {
-  let server;
+function connectSocket(app: typeof express): socket.Server {
+  let server: http.Server | https.Server;
   if (process.env.LOCAL_DEVELOPMENT) {
     server = http.createServer(app);
   } else {
@@ -13,15 +15,15 @@ function connectSocket(app) {
       cert: fs.readFileSync('/etc/letsencrypt/live/dev.donate-gifts.com/cert.pem'),
     };
 
-    server = https.createServer(app, options);
+    server = https.createServer(options, app);
   }
 
-  const io = require('socket.io')(server, {
-    handlePreflightRequest: (req, res) => {
+  const io = socket(server, {
+    handlePreflightRequest: (_, req, res) => {
       const headers = {
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Allow-Origin': req.headers.origin, // or the specific origin you want to give access to,
-        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Credentials': 'true',
       };
       res.writeHead(200, headers);
       res.end();
@@ -29,10 +31,10 @@ function connectSocket(app) {
   });
 
   server.listen(8081, () => {
-    log.info(`socket listening on: ${8081}`);
+    logger.info(`socket listening on: ${8081}`);
   });
 
   return io;
 }
 
-module.exports = { connectSocket };
+export { connectSocket };

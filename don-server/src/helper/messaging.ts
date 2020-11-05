@@ -1,22 +1,9 @@
-/*
- * Author: Stacy Sealky Lee
- * Class: CSC 337
- * Type: Final Project
- * FileName: controllers/email.js
- * FileDescription:
- *      When user fills out the 'Contact' form in about.html,
- *      it will use nodemailer and mailgun to send the user's message
- *      to the mailgun authorized email address
- *      all the req.body data from the 'Contact' form will be saved in our 'contacts' DB collection.
- *      Contact model lives in the models/Contact.js
- */
-// NPM DEPENDENCIES
-const nodemailer = require('nodemailer');
-const mailGun = require('nodemailer-mailgun-transport');
-const path = require('path');
-const fs = require('fs');
-const axios = require('axios');
-const log = require('./logger');
+import nodemailer from 'nodemailer';
+import mailGun from 'nodemailer-mailgun-transport';
+import * as path from 'path';
+import * as fs from 'fs';
+import axios from 'axios';
+import log from './logger';
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
   encoding: 'utf-8',
@@ -66,52 +53,62 @@ const getTransport = async () => {
     }
 
     // LIVE data
-  } else {
-    const auth = {
-      auth: {
-        api_key: process.env.MAILGUN_API_KEY,
-        domain: process.env.MAILGUN_DOMAIN,
-      },
-    };
-
-    return nodemailer.createTransport(mailGun(auth));
   }
+  const auth = {
+    auth: {
+      api_key: process.env.MAILGUN_API_KEY,
+      domain: process.env.MAILGUN_DOMAIN,
+    },
+  };
+
+  return nodemailer.createTransport(mailGun(auth));
 };
 
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
-const sendMail = async (from, to, subject, message, attachments = undefined) => {
-  log.info('SENDMAIL');
-  try {
-    const transporter = await getTransport();
+const sendMail = async (
+  from: string | undefined,
+  to: string,
+  subject: string,
+  message: string,
+  attachments = undefined,
+): Promise<{ success: boolean; data: string | undefined }> => {
+  const transporter = await getTransport();
 
-    if (transporter) {
-      const mailOptions = {
-        from,
-        to,
-        subject,
-        html: message,
-        attachments,
-      };
+  if (transporter) {
+    const mailOptions = {
+      from,
+      to,
+      subject,
+      html: message,
+      attachments,
+    };
 
+    try {
       const data = await transporter.sendMail(mailOptions);
 
       if (!data) {
-        return { success: false };
+        return { success: false, data: '' };
       }
       if (process.env.NODE_ENV === 'development') {
         log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
       return { success: true, data: '' };
+    } catch (error) {
+      throw new Error(`Failed to send mail: ${error}`);
     }
-    return { success: false };
-  } catch (e) {
-    log.error(e);
   }
+  return { success: false, data: '' };
 };
 
-const sendVerificationEmail = async (to, hash) => {
+const sendVerificationEmail = async (
+  to: string,
+  hash: string,
+): Promise<{
+  success: boolean;
+  data: string | undefined;
+}> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
     .replace('%headerPlaceHolder%', 'Verify Your Email Account')
@@ -127,11 +124,17 @@ const sendVerificationEmail = async (to, hash) => {
     to,
     'Donate-gifts.com Email verification',
     body,
-    templateAttachments,
+    (templateAttachments as unknown) as undefined,
   );
 };
 
-const sendPasswordResetMail = async (to, hash) => {
+const sendPasswordResetMail = async (
+  to: string,
+  hash: string,
+): Promise<{
+  success: boolean;
+  data: string | undefined;
+}> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/password/reset/${hash}`)
     .replace('%titlePlaceHolder%', 'Your password reset request')
@@ -144,11 +147,11 @@ const sendPasswordResetMail = async (to, hash) => {
     to,
     'Donate-gifts.com Password Reset',
     body,
-    templateAttachments,
+    (templateAttachments as unknown) as undefined,
   );
 };
 
-const createEmailVerificationHash = () => {
+const createEmailVerificationHash = (): string => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
@@ -159,8 +162,21 @@ const createEmailVerificationHash = () => {
   return result;
 };
 
-async function sendSlackFeedbackMessage(name, email, subject, message) {
-  const slackMessage = {
+async function sendSlackFeedbackMessage(
+  name: string,
+  email: string,
+  subject: string,
+  message: string,
+): Promise<boolean> {
+  const slackMessage: {
+    blocks: {
+      type: string;
+      text: {
+        type: string;
+        text: string;
+      };
+    }[];
+  } = {
     blocks: [],
   };
 
@@ -218,21 +234,22 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
     try {
       await axios({
         method: 'POST',
-        url: `${process.env.SLACK_INTEGRATION}`,
-        header: {
+        url: String(process.env.SLACK_INTEGRATION),
+        headers: {
           'Content-Type': 'application/json',
         },
         data: JSON.stringify(slackMessage),
       });
 
       return true;
-    } catch (_) {
-      return false;
+    } catch (error) {
+      throw new Error(`Failed to send slack message: ${error}`);
     }
   }
+  return false;
 }
 
-module.exports = {
+export = {
   sendMail,
   sendSlackFeedbackMessage,
   createEmailVerificationHash,
