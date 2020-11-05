@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { IDBMessage } from '../../common';
+import type { IDBMessage } from '../../common';
 
 const MessageSchema = new Schema(
   {

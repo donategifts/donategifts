@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { IDBAgency } from '../../common';
+import type { IDBAgency } from '../../common';
 
 // SCHEMA SETUP
 const AgencySchema: Schema = new Schema(

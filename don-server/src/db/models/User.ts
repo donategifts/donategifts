@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { IDBUser } from '../../common';
+import type { IDBUser } from '../../common';
 
 const UserSchema: Schema = new Schema(
   {

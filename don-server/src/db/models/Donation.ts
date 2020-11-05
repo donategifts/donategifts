@@ -1,15 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose';
-import { IDBWishCard } from './WishCard';
-import { TypeObjectId } from '../../common';
-import { IDBUser } from './User';
-
-export interface IDBDonation extends Document {
-  donationForm: TypeObjectId<IDBUser>;
-  donationTo: TypeObjectId<IDBWishCard>;
-  donationPrice: number;
-  donationConfirmed: boolean;
-  donationDate: Date;
-}
+import { Schema, model, Model } from 'mongoose';
+import type { IDBDonation } from '../../common';
 
 const DonationSchema: Schema = new Schema(
   {

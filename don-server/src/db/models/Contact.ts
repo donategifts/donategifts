@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { IDBContact } from '../../common';
+import type { IDBContact } from '../../common';
 
 const ContactSchema: Schema = new Schema(
   {

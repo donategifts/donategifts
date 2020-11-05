@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { IDBWishCard } from '../../common';
+import type { IDBWishCard } from '../../common';
 
 const WishCardSchema: Schema = new Schema(
   {

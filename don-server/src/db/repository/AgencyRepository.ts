@@ -1,4 +1,4 @@
-import { TypeObjectId, IDBUser, IDBAgency } from '../../common';
+import type { TypeObjectId, IDBUser, IDBAgency } from '../../common';
 import { DBAgency } from '../models/Agency';
 
 export default class AgencyRepository {
@@ -27,7 +27,7 @@ export default class AgencyRepository {
     }
   }
 
-  async pushNewWishCardToAgency(id: TypeObjectId<string>, wishCard): Promise<IDBAgency> {
+  async pushNewWishCardToAgency(id: TypeObjectId<IDBAgency>, wishCard): Promise<IDBAgency> {
     try {
       return DBAgency.updateOne(
         { _id: id },
