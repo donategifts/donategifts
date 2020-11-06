@@ -4,6 +4,7 @@ const users = [
   {
     fName: 'John',
     lName: 'Doe',
+<<<<<<< HEAD
     email: 'johndoe1@gmail.com',
     emailVerified: true,
     verificationHash: 'randomString1',
@@ -120,10 +121,18 @@ const users = [
     joined: Date.now(),
     aboutMe: 'A person passion to help kids of all ages.',
     loginMode: 'default',
+=======
+    email: 'johndoe@gmail.com',
+    emailVerified: true,
+    verificationHash: 'randomString',
+    userRole: 'Donor',
+    password: bcrypt.hashSync('johndoe1!', 10),
+>>>>>>> master
   },
   {
     fName: 'Jane',
     lName: 'Doe',
+<<<<<<< HEAD
     email: 'janedoe1@gmail.com',
     emailVerified: true,
     verificationHash: 'newRandomString1',
@@ -240,11 +249,28 @@ const users = [
     joined: Date.now(),
     aboutMe: 'A person passion to help kids of all ages.',
     loginMode: 'default',
+=======
+    email: 'janedoe@gmail.com',
+    emailVerified: true,
+    verificationHash: 'anotherRandomString',
+    password: bcrypt.hashSync('janedoe1!', 10),
+    userRole: 'Partner',
+  },
+  {
+    fName: 'Ricky',
+    lName: 'bobby',
+    email: 'rickybobby@gmail.com',
+    emailVerified: true,
+    verificationHash: 'oogabooga',
+    password: bcrypt.hashSync('rickybobby1!', 10),
+    userRole: 'admin',
+>>>>>>> master
   },
 ];
 
 const wishcards = [
   {
+<<<<<<< HEAD
     approvedByAdmin: true,
     childFirstName: 'princess',
     childLastName: 'Elsa',
@@ -530,3 +556,28 @@ const agency = {
   agencyProfileImage: 'https://source.unsplash.com/random/400x400',
 };
 module.exports = { users, wishcards, agency };
+=======
+    childFirstName: 'princess',
+    chaldLastName: 'Elsa',
+    wishItemName: 'Amazon Gift Card LOL',
+    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishItemUrl: 'https://www.google.com',
+  },
+  {
+    childFirstName: 'princess',
+    chaldLastName: 'Stacey',
+    wishItemName: 'Amazon Gift Card LOL',
+    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishItemUrl: 'https://www.google.com',
+  },
+  {
+    childFirstName: 'princess',
+    chaldLastName: 'Patric',
+    wishItemName: 'Amazon Gift Card LOL',
+    wishItemImage: 'https://picsum.photos/seed/picsum/300/300',
+    wishItemUrl: 'https://www.google.com',
+  },
+];
+
+module.exports = { users, wishcards };
+>>>>>>> master
