@@ -9,6 +9,116 @@ New color scheme reference is in utils.css
   text-align: left !important;
   padding: 1em 0em 1em 2em;
 }
+
+.donate-modal {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-img {
+  max-height: 300px !important;
+  margin-bottom: 1em;
+  padding-bottom: 0.8em;
+}
+
+.donate-modal-title {
+  font-size: 2.2em;
+  color: rgba(65, 66, 84, 1) !important;
+  padding-bottom: 0.8em;
+}
+
+.donate-subtitle {
+  font-size: 1.2em;
+  color: #333a64 !important;
+}
+
+.highlighted {
+  display: inline-flex;
+  background: rgba(255, 187, 89, 0.4);
+  text-decoration: none !important;
+}
+
+.modal-p {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.donate-true {
+  padding: 1em 1em;
+  margin-top: 0.5em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(255, 92, 111, 1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.donate-false {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(65, 66, 84, 1);
+  cursor: pointer;
+}
+
+#modal-donate-btn {
+  margin: 1rem auto;
+  display: block;
+}
+
+.donate-modal-button {
+  padding: 1em 3em;
+  margin-top: 0.5em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(0, 161, 154, 1);
+  color: #fff;
+  cursor: pointer;
+  justify-content: center;
+  text-align: center;
+}
+
+.donate-modal-button:hover {
+  background: rgba(65, 66, 84, 1);
+  color: #fff;
+}
+
+.countdown {
+  font-size: 5.5em;
+  color: rgba(255, 92, 111, 1);
+}
+
+.modal-i {
+  font-size: 2em;
+  color: rgba(255, 92, 111, 1);
+  padding: 0.8em;
+}
+
+.donate-button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1em 0;
+}
+
+@media screen and (max-width: 990px) {
+  .donate-button-container {
+    flex-direction: column;
+  }
+}
+
+.spinner-text {
+  margin-top: 1rem;
+}
+
 /* newly added - move later  */
 
 /* ---------------home hero section */
@@ -170,7 +280,7 @@ New color scheme reference is in utils.css
   text-shadow: 1px 2px 10px rgba(0, 0, 0, 1);
 }
 .small3 .small-span:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .small3 .small-span:first-of-type {
