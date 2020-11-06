@@ -7,9 +7,12 @@
 
     <link rel="stylesheet" href="/public/css/profile.css" />
     <link rel="stylesheet" href="/public/css/about.css" />
+
     <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- js scripts -->
+
+
     <script src="/public/clientJS/profile.js"></script>
   </head>
 
@@ -86,6 +89,7 @@
                   <p>Number ZipCode: <%= agency.agencyAddress.zipcode %></p>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -277,9 +281,8 @@
             </div>
 
             <div class="col-lg-6 ml-auto quick-font wrap-input1">
-              <label for="deliveryDate"
-                >Set last date for the wish item delivery (skip if no deadline)</label
-              >
+
+              <label for="deliveryDate">Set last date for the wish item delivery (skip if no deadline)</label>
               <input id="deliveryDate" class="input1" type="date" name="deliveryDate" />
             </div>
 
@@ -337,6 +340,7 @@
           </div>
 
           <h6 class="quick-font pb-2">Shipping address (where to deliver this item?)</h6>
+
           <label
             ><input type="checkbox" id="agencyAddressCheckBox" /> Use agency address as shipping
             address</label
@@ -371,6 +375,7 @@
                 name="address_city"
                 placeholder="(e.g. Chicago )"
               />
+
             </div>
           </div>
 
@@ -387,6 +392,7 @@
             </div>
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address_zip">Zipcode</label>
+
               <input
                 id="address_zip"
                 class="input1"
@@ -404,6 +410,7 @@
                 name="address_country"
                 placeholder="(e.g. USA )"
               />
+
             </div>
           </div>
 
@@ -416,10 +423,12 @@
       </div>
     </div>
     <% } %> <%- include('./templates/footer')-%>
+
     <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
       integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
       crossorigin="anonymous"
     ></script>
+
   </body>
 </html>

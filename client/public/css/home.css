@@ -141,24 +141,47 @@ New color scheme reference is in utils.css
   line-height: 2em;
 }
 
-/* ---------------partners section */
-.partners-container img {
-  width: 100%;
+/* ---------------partners slideshow section */
+.small3 {
+  overflow: hidden;
+  position: relative;
 }
 
-.partners-container .col-lg-3 {
-  align-self: center;
+.small3 .small-ul {
+  display: flex;
+  top: 0;
 }
 
-.partners-container .partner-img {
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 100%;
-  min-width: 200px;
-  min-height: 200px;
+.small3 .small-ul li {
+  list-style: none;
+  margin-left: 6%;
+}
+.small3 .small-ul li img {
+  max-width: 200px;
+  height: 160px;
+  width: auto;
+}
+.small3 .small-span {
+  position: absolute;
+  top: calc(50% - 20px);
+  opacity: 0.4;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 1px 2px 10px rgba(0, 0, 0, 1);
+}
+.small3 .small-span:hover {
+  opacity: 0.5;
 }
 
-/* ---------------partners section end */
+.small3 .small-span:first-of-type {
+  right: 10px;
+}
+
+.small3 .small-span:last-of-type {
+  left: 10px;
+}
+
+/* ---------------partners slideshow section end */
 
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
@@ -469,6 +492,35 @@ New color scheme reference is in utils.css
 #fb .fa {
   color: #fff;
   font-size: 1.3em;
+}
+
+.carousel {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.carousel-inner {
+  order: 1;
+}
+
+.carousel-control-left {
+  order: 0;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-control-right {
+  order: 2;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.carousel-control-next-icon {
+  right: 0;
 }
 
 /* new additions end */
