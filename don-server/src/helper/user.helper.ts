@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import { hash, genSalt } from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
 
 async function verifyGoogleToken(
@@ -22,8 +22,8 @@ async function verifyGoogleToken(
 }
 
 async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  const salt = await genSalt(10);
+  return hash(password, salt);
 }
 
 function createDefaultPassword(): string {

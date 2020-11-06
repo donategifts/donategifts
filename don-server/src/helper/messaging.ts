@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import mailGun from 'nodemailer-mailgun-transport';
+import { createTestAccount, createTransport, getTestMessageUrl } from 'nodemailer';
+import * as mailGun from 'nodemailer-mailgun-transport';
 import * as path from 'path';
 import * as fs from 'fs';
 import axios from 'axios';
@@ -38,10 +38,10 @@ const templateAttachments = [
 
 const getTransport = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-    const account = await nodemailer.createTestAccount();
+    const account = await createTestAccount();
 
     if (account) {
-      return nodemailer.createTransport({
+      return createTransport({
         host: account.smtp.host,
         port: account.smtp.port,
         secure: account.smtp.secure,
@@ -56,12 +56,12 @@ const getTransport = async () => {
   }
   const auth = {
     auth: {
-      api_key: process.env.MAILGUN_API_KEY,
-      domain: process.env.MAILGUN_DOMAIN,
+      api_key: String(process.env.MAILGUN_API_KEY),
+      domain: String(process.env.MAILGUN_DOMAIN),
     },
   };
 
-  return nodemailer.createTransport(mailGun(auth));
+  return createTransport(mailGun(auth));
 };
 
 // cb is callback, cb(err, null) means if err, get err, else null
@@ -72,7 +72,7 @@ const sendMail = async (
   subject: string,
   message: string,
   attachments = undefined,
-): Promise<{ success: boolean; data: string | undefined }> => {
+): Promise<{ success: boolean; data: string | false | undefined }> => {
   const transporter = await getTransport();
 
   if (transporter) {
@@ -91,8 +91,8 @@ const sendMail = async (
         return { success: false, data: '' };
       }
       if (process.env.NODE_ENV === 'development') {
-        log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
-        return { success: true, data: nodemailer.getTestMessageUrl(data) };
+        log.info('Preview URL: %s', getTestMessageUrl(data));
+        return { success: true, data: getTestMessageUrl(data) };
       }
       return { success: true, data: '' };
     } catch (error) {
@@ -107,7 +107,7 @@ const sendVerificationEmail = async (
   hash: string,
 ): Promise<{
   success: boolean;
-  data: string | undefined;
+  data: string | false | undefined;
 }> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
@@ -133,7 +133,7 @@ const sendPasswordResetMail = async (
   hash: string,
 ): Promise<{
   success: boolean;
-  data: string | undefined;
+  data: string | false | undefined;
 }> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/password/reset/${hash}`)
