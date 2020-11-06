@@ -494,6 +494,35 @@ New color scheme reference is in utils.css
   font-size: 1.3em;
 }
 
+.carousel {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.carousel-inner {
+  order: 1;
+}
+
+.carousel-control-left {
+  order: 0;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-control-right {
+  order: 2;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.carousel-control-next-icon {
+  right: 0;
+}
+
 /* new additions end */
 
 .wishcards {
