@@ -168,6 +168,16 @@ dark grey:
   color: #262626;
 }
 
+.highlighted {
+  color: rgba(51, 58, 100, 1);
+  font-weight: bolder;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.2em;
+  text-decoration: underline;
+}
+
 /* commonly used utils
 ----------------------------------------
 */
