@@ -52,23 +52,23 @@
   <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
   <script src="/public/clientJS/login.js"></script>
 </head>
-
-<body>
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
-    nonce="XBZR4Yw2"></script>
-  <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
-  <!-- header section-->
-  <div class="bg" id="home-bg">
-    <div class="text">
-      <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
-      <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
-      <h4 class="quick-font pb-1 hide">
-        Donate holiday & birthday gifts to the kids who may not otherwise get one
-      </h4>
-      <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">
-        See Wish Cards</a>
-
+  <body>
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
+      nonce="XBZR4Yw2"
+    ></script>
+    <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
+    <!-- header section-->
+    <div class="bg" id="home-bg">
+      <div class="text">
+        <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
+        <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
+        <h4 class="quick-font pb-1 hide">Donate holiday & birthday gifts to the kids who may not otherwise get one</h4>
+        <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1"> See Wish Cards</a>
       <button type="button" class="button button--green lg-text" data-toggle="modal" data-target="#exampleModalCenter">
         Super Easy Process
       </button>
@@ -157,6 +157,7 @@
           <a href="/about"><button type="button" class="button button--green" id="btn1">
               How To Contact Us
             </button></a>
+
         </div>
       </div>
     </div>
@@ -191,5 +192,4 @@
   <!--  this is for login toast -->
   <script src="/public/clientJS/partnerCarousel.js"></script>
 </body>
-
 </html>

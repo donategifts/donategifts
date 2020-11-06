@@ -120,11 +120,13 @@ app.use(express.static('client'));
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
 const aboutRoute = require('./routes/about');
+const howtoRoute = require('./routes/howTo');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
 app.use('/wishcards', wishCardsRoute);
 app.use('/about', aboutRoute);
+app.use('/howto', howtoRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {

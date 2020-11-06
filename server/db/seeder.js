@@ -1,11 +1,9 @@
 const path = require('path');
 const { users, wishcards, agency } = require('./seederData');
-
 const User = require('./models/User');
 const WishCard = require('./models/WishCard');
 const Agency = require('./models/Agency');
 const MongooseConnection = require('./connection');
-
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
 if (process.env.LOCAL_DEVELOPMENT) {
@@ -21,7 +19,6 @@ if (process.env.LOCAL_DEVELOPMENT) {
       });
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
@@ -38,12 +35,10 @@ if (process.env.LOCAL_DEVELOPMENT) {
       const user = userList[0];
       await Agency.create({
         agency,
-        // accountManager: User.findOne({ email: 'johndoe1@gmail.com' }, '_id').exec(),
         accountManager: user._id,
       });
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
@@ -55,7 +50,6 @@ if (process.env.LOCAL_DEVELOPMENT) {
       await WishCard.deleteMany();
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
