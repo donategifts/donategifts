@@ -74,7 +74,7 @@
                   />
                 </div>
                 <div class="col-auto">
-                  <button class="btn btn-lg btn-success" type="submit">Search</button>
+                  <button class="wishcard__button--blue bdr-2" type="submit">Search</button>
                 </div>
               </div>
             </div>
@@ -113,7 +113,13 @@
                 </div>
               </div>
               <div class="col text-right mt-2">
-                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+                <button
+                  type="button"
+                  class="wishcard__link--white bdr-2"
+                  style="width: auto"
+                  data-toggle="collapse"
+                  data-target="#filter-panel"
+                >
                   Advanced Search
                 </button>
               </div>
@@ -201,15 +207,14 @@
     </script>
     <script src="/public/clientJS/wishCard.js"></script>
     <script src="/public/clientJS/wishCardModal.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-			integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-			</script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+      crossorigin="anonymous"
+    ></script>
     <!--  this is for login toast -->
     <% if(!locals.user) { %>
     <script src="/public/clientJS/loginToast.js"></script>
     <% } %>
-
-</body>
-
+  </body>
 </html>
-
