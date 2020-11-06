@@ -20,9 +20,7 @@
     <div class="container">
       <div class="page-wrapper">
         <div class="section-title mt-5">
-          <h1 class="card-title text-center crayon-font grn-font">
-            <%= wishcard.childFirstName %>'s Wishcard
-          </h1>
+          <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
           <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
           <a
             type="button"
@@ -30,8 +28,9 @@
             class="button-center wishcard-btn btn-grn-bg quick-font"
             href="<%= wishcard.wishItemURL %>"
             target="_blank"
-            >Donate Gift</a
           >
+            Donate Gift
+          </a>
         </div>
 
         <div class="section-info mt-5 quick-font">
@@ -65,8 +64,7 @@
         <div class="show-msg">
           <% if (messages.length === 0) { %>
           <h6 class="quick-font">
-            No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a
-            message.
+            No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a message.
           </h6>
           <% } else { %>
           <div>

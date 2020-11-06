@@ -24,14 +24,14 @@
       <div class="container justify-content-center">
         <% if (!user.emailVerified) { %>
         <p class="mt-5 text-danger notify">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"> </i>Your email is unverified.
-          Some features are disabled until email is verified.
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"> </i>Your email is unverified. Some features are
+          disabled until email is verified.
         </p>
         <% } %> <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
         <p class="mt-5 text-danger notify">
           <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          Wish card creation feature is disabled for your account. It will be enabled after agency
-          verification. For a faster verification,
+          Wish card creation feature is disabled for your account. It will be enabled after agency verification. For a
+          faster verification,
           <a href="mailto:donate.gifts.stacy@gmail.com" class="text-dark">click to email us</a>
         </p>
         <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
@@ -40,35 +40,27 @@
           <div class="row justify-content-center">
             <div class="col-md-4 col-xs-12">
               <p><i class="fa fa-pencil"></i>Child has a specific wish item</p>
-              <a href="#wishCardForm"
-                ><button id="create-btn" type="button" class="wishcard-btn">
-                  Create Wish Card From Scratch
-                </button></a
-              >
+              <a href="#wishCardForm">
+                <button id="create-btn" type="button" class="wishcard-btn">Create Wish Card From Scratch</button>
+              </a>
             </div>
             <div class="col-md-4 col-xs-12">
-              <p>
-                <i class="fa fa-bolt" aria-hidden="true"></i>Not sure which wish item to ask for?
-              </p>
-              <a href="/users/choose"
-                ><button id="create-btn" type="button" class="wishcard-btn grn-btn">
+              <p><i class="fa fa-bolt" aria-hidden="true"></i>Not sure which wish item to ask for?</p>
+              <a href="/users/choose">
+                <button id="create-btn" type="button" class="wishcard-btn grn-btn">
                   Choose From Our Suggested List
-                </button></a
-              >
+                </button>
+              </a>
             </div>
             <div class="col-md-4 col-xs-12">
-              <p>
-                <i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
-              </p>
-              <a href="mailto:donate.gifts.stacy@gmail.com"
-                ><button id="create-btn" type="button" class="wishcard-btn">Email Us</button></a
-              >
+              <p><i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this</p>
+              <a href="mailto:donate.gifts.stacy@gmail.com">
+                <button id="create-btn" type="button" class="wishcard-btn">Email Us</button>
+              </a>
             </div>
             <div class="row justify-content-around">
               <p class="col-md-4 col-xs-12">Agency Address: <%= agency.agencyAddress.address1 %></p>
-              <p class="col-md-4 col-xs-12">
-                Number Address 2: <%= agency.agencyAddress.address2 %>
-              </p>
+              <p class="col-md-4 col-xs-12">Number Address 2: <%= agency.agencyAddress.address2 %></p>
             </div>
             <div class="row justify-content-around">
               <p class="col-md-4 col-xs-12">Agency City: <%= agency.agencyAddress.city %></p>
@@ -163,13 +155,7 @@
     <div class="container-fluid">
       <div class="create-wish-card">
         <!-- wishCardForm starts here-->
-        <form
-          class="container-fluid"
-          id="wishCardForm"
-          action="/wishcards"
-          method="POST"
-          enctype="multipart/form-data"
-        >
+        <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
           <h4 class="crayon-font wish-card-form-title">
             Create a wish card for the<br />
             child or youth under your care
@@ -268,9 +254,7 @@
             </div>
 
             <div class="col-lg-6 ml-auto quick-font wrap-input1">
-              <label for="deliveryDate"
-                >Set last date for the wish item delivery (skip if no deadline)</label
-              >
+              <label for="deliveryDate">Set last date for the wish item delivery (skip if no deadline)</label>
               <input id="deliveryDate" class="input1" type="date" name="deliveryDate" />
             </div>
 
@@ -300,15 +284,11 @@
               <div class="box">
                 <div class="content">
                   <p>
-                    Photo is required; if confidentiality is an issue, try using a photo of their
-                    hands making a heart, masked face, wearing sunglasses, cropping, etc.
+                    Photo is required; if confidentiality is an issue, try using a photo of their hands making a heart,
+                    masked face, wearing sunglasses, cropping, etc.
                   </p>
                   <div class="uploader-left">
-                    <img
-                      id="preview"
-                      src="/public/img/img-placeholder.png"
-                      alt="image-placeholder"
-                    />
+                    <img id="preview" src="/public/img/img-placeholder.png" alt="image-placeholder" />
                   </div>
                   <div class="uploader-right">
                     <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
@@ -328,40 +308,19 @@
           </div>
 
           <h6 class="quick-font pb-2">Shipping address (where to deliver this item?)</h6>
-          <label
-            ><input type="checkbox" id="agencyAddressCheckBox" /> Use agency address as shipping
-            address</label
-          >
+          <label><input type="checkbox" id="agencyAddressCheckBox" /> Use agency address as shipping address</label>
           <div class="row">
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address1">Address Line 1</label>
-              <input
-                id="address1"
-                class="input1"
-                type="text"
-                name="address1"
-                placeholder="(e.g. 1004 Donate St.)"
-              />
+              <input id="address1" class="input1" type="text" name="address1" placeholder="(e.g. 1004 Donate St.)" />
             </div>
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address2">Address Line 2</label>
-              <input
-                id="address2"
-                class="input1"
-                type="text"
-                name="address2"
-                placeholder="(e.g. Suite 200)"
-              />
+              <input id="address2" class="input1" type="text" name="address2" placeholder="(e.g. Suite 200)" />
             </div>
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address_city">City</label>
-              <input
-                id="address_city"
-                class="input1"
-                type="text"
-                name="address_city"
-                placeholder="(e.g. Chicago )"
-              />
+              <input id="address_city" class="input1" type="text" name="address_city" placeholder="(e.g. Chicago )" />
             </div>
           </div>
 
@@ -378,23 +337,11 @@
             </div>
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address_zip">Zipcode</label>
-              <input
-                id="address_zip"
-                class="input1"
-                type="text"
-                name="address_zip"
-                placeholder="(e.g. 60640 )"
-              />
+              <input id="address_zip" class="input1" type="text" name="address_zip" placeholder="(e.g. 60640 )" />
             </div>
             <div class="col-lg-4 quick-font wrap-input1">
               <label for="address_country">Country</label>
-              <input
-                id="address_country"
-                class="input1"
-                type="text"
-                name="address_country"
-                placeholder="(e.g. USA )"
-              />
+              <input id="address_country" class="input1" type="text" name="address_country" placeholder="(e.g. USA )" />
             </div>
           </div>
 
