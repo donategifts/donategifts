@@ -47,7 +47,11 @@ version: 2.1
 workflows:
   test:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore:
+                - master
   deploy:
     jobs:
       - test:
