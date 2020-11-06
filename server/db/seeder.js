@@ -1,22 +1,11 @@
 const path = require('path');
-<<<<<<< HEAD
 const { users, wishcards, agency } = require('./seederData');
-
 const User = require('./models/User');
 const WishCard = require('./models/WishCard');
 const Agency = require('./models/Agency');
-=======
-const { users, wishcards } = require('./seederData');
-
-const User = require('./models/User');
-const WishCard = require('./models/WishCard');
-
->>>>>>> master
 const MongooseConnection = require('./connection');
-
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
-<<<<<<< HEAD
 if (process.env.LOCAL_DEVELOPMENT) {
   MongooseConnection.connect();
 
@@ -30,7 +19,6 @@ if (process.env.LOCAL_DEVELOPMENT) {
       });
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
@@ -47,12 +35,10 @@ if (process.env.LOCAL_DEVELOPMENT) {
       const user = userList[0];
       await Agency.create({
         agency,
-        // accountManager: User.findOne({ email: 'johndoe1@gmail.com' }, '_id').exec(),
         accountManager: user._id,
       });
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
@@ -64,7 +50,6 @@ if (process.env.LOCAL_DEVELOPMENT) {
       await WishCard.deleteMany();
       process.exit();
     } catch (error) {
-      console.log(error);
       process.exit(1);
     }
   };
@@ -77,33 +62,4 @@ if (process.env.LOCAL_DEVELOPMENT) {
   }
 } else {
   process.exit();
-=======
-MongooseConnection.connect();
-
-const importData = async () => {
-  try {
-    await User.deleteMany();
-    await WishCard.deleteMany();
-    await User.insertMany(users);
-    await WishCard.insertMany(wishcards);
-    process.exit();
-  } catch (error) {
-    process.exit(1);
-  }
-};
-
-const destroyData = async () => {
-  try {
-    await User.deleteMany();
-    await WishCard.deleteMany();
-    process.exit();
-  } catch (error) {
-    process.exit(1);
-  }
-};
-if (process.argv[2] === '-d') {
-  destroyData();
-} else {
-  importData();
->>>>>>> master
 }
