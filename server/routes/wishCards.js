@@ -388,7 +388,6 @@ router.get('/get/random', async (req, res) => {
       wishcards = [];
     } else {
       wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
-      wishcards = wishcards.slice(0, 3);
     }
     res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
       if (error) {

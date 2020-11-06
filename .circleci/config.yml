@@ -28,7 +28,7 @@ jobs:
             - "6b:c1:82:ac:d3:ad:3c:73:22:f4:9b:8c:b4:2d:f5:6c"
       - run:
           name: deploying to devserver
-          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && rm -rf node-modules && git clean -qdf && git reset --hard origin/master &&  pwd &&  cd config &&  echo \"$MONGODB\" > config.env &&  echo NODE_ENV=development >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRET >> config.env &&  echo SESS_LIFE=3600000 >> config.env &&  echo MAILGUN_API_KEY=onlyneededforproduction >> config.env &&  echo MAILGUN_DOMAIN=onlyneededforproduction >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://dev.donate-gifts.com >> config.env &&  echo GOOGLE_CAPTCHA_KEY= >> config.env &&  echo LOCAL_DEVELOPMENT=false >> config.env &&  echo SOCKET_URL=wss://dev.donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&  echo WISHCARD_LOCK_IN_MINUTES=1 >> config.env && npm ci && pm2 restart 0  "
+          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && rm -rf node-modules && git clean -qdf && git reset --hard origin/master &&  pwd &&  cd config &&  echo \"$MONGODB\" > config.env &&  echo NODE_ENV=development >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRET >> config.env &&  echo SESS_LIFE=3600000 >> config.env &&  echo MAILGUN_API_KEY=onlyneededforproduction >> config.env &&  echo MAILGUN_DOMAIN=onlyneededforproduction >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://dev.donate-gifts.com >> config.env &&  echo GOOGLE_CAPTCHA_KEY= >> config.env &&  echo LOCAL_DEVELOPMENT=false >> config.env &&  echo SOCKET_URL=wss://dev.donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&  echo WISHCARD_LOCK_IN_MINUTES=1 >> config.env && cd .. && npm ci && pm2 stop all || true && pm2 start server/app.js  "
 
   deploy-prod:
     machine:
@@ -39,7 +39,7 @@ jobs:
             - "ab:ac:ca:64:39:93:c6:64:81:d8:50:cc:6b:a1:06:64"
       - run:
           name: deploying to prodserver
-          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && rm -rf node-modules && git clean -qdf && git reset --hard origin/production &&  pwd &&  cd config &&  echo \"$MONGODBLIVE\" > config.env &&  echo NODE_ENV=production >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRETLIVE >> config.env &&  echo SESS_LIFE=3600000 >> config.env &&  echo $MAILGUN_APIKEYLIVE >> config.env &&  echo $MAILGUN_DOMAINLIVE >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://donate-gifts.com >> config.env &&  echo $GOOGLE_CAPTCHALIVE >> config.env &&  echo LOCAL_DEVELOPMENT=false >> config.env &&  echo SOCKET_URL=wss://donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&  echo WISHCARD_LOCK_IN_MINUTES=10 >> config.env && npm ci && pm2 restart 0  "
+          command: ssh -o StrictHostKeyChecking=no donategifts@dev.donate-gifts.com "cd donategifts && rm -rf node-modules && git clean -qdf && git reset --hard origin/production &&  pwd &&  cd config &&  echo \"$MONGODBLIVE\" > config.env &&  echo NODE_ENV=production >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRETLIVE >> config.env &&  echo SESS_LIFE=3600000 >> config.env &&  echo $MAILGUN_APIKEYLIVE >> config.env &&  echo $MAILGUN_DOMAINLIVE >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://donate-gifts.com >> config.env &&  echo $GOOGLE_CAPTCHALIVE >> config.env &&  echo LOCAL_DEVELOPMENT=false >> config.env &&  echo SOCKET_URL=wss://donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&  echo WISHCARD_LOCK_IN_MINUTES=10 >> config.env && cd .. && npm ci && pm2 stop all || true && pm2 start server/app.js "
 
 
 
@@ -47,7 +47,11 @@ version: 2.1
 workflows:
   test:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore:
+                - master
   deploy:
     jobs:
       - test:
