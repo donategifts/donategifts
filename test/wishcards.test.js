@@ -103,7 +103,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
 
               agent.get('/users/agency').end((_agencyErr, agencyRes) => {
                 agencyRes.should.have.status(200);
-                agencyRes.text.should.contain('agency registration page');
+                agencyRes.text.should.contain('Register as a Foster Care Partner');
 
                 User.findOne({ email: signupRequest.email }).then((user) => {
                   agent
@@ -117,9 +117,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
                         getProfileRes.should.have.status(200);
                         getProfileRes.text.should.contain(`Welcome ${user.fName}`);
                         getProfileRes.text.should.contain('Your email is unverified');
-                        getProfileRes.text.should.not.contain(
-                          'Wish card creation feature is disabled',
-                        );
+                        getProfileRes.text.should.not.contain('Wish card creation feature is disabled');
 
                         Agency.findOne({ accountManager: user._id }).then((agency) => {
                           agency.agencyName.should.equal(agencyRequest.agencyName);
@@ -143,11 +141,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(wishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('success');
@@ -168,11 +162,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field({ ...wishcardRequest, wishItemURL: 'http://some.random.string' })
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -187,11 +177,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(itemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('success');
@@ -199,13 +185,11 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
         res.body.success.should.equal(true);
         res.body.url.should.equal('/wishcards/');
 
-        WishCard.findOne({ childFirstName: guidedwishcardRequest.childFirstName }).then(
-          (wishcard) => {
-            itemChoice.Name.should.equal(wishcard.wishItemName);
-            itemChoice.Price.should.equal(wishcard.wishItemPrice);
-            done();
-          },
-        );
+        WishCard.findOne({ childFirstName: guidedwishcardRequest.childFirstName }).then((wishcard) => {
+          itemChoice.Name.should.equal(wishcard.wishItemName);
+          itemChoice.Price.should.equal(wishcard.wishItemPrice);
+          done();
+        });
       });
   });
 
@@ -287,11 +271,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(newwishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -307,11 +287,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(newwishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -327,11 +303,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(newwishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -347,11 +319,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(newwishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((_err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -381,11 +349,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .type('form')
       .field(newguidedwishcardRequest)
       .field('itemChoice', JSON.stringify(itemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -399,11 +363,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .post('/wishcards/guided/')
       .type('form')
       .field(guidedwishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -420,11 +380,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(newItemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -441,11 +397,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(newItemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -462,11 +414,7 @@ describe('Wishcard Routes - Authenticated & Verified User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(newItemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have.property('error');
@@ -538,7 +486,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
 
               agent.get('/users/agency').end((_err, agencyRes) => {
                 agencyRes.should.have.status(200);
-                agencyRes.text.should.contain('agency registration page');
+                agencyRes.text.should.contain('Register as a Foster Care Partner');
 
                 User.findOne({ email: signupRequest.email }).then((user) => {
                   agent
@@ -554,20 +502,14 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
                         profileRes.text.should.contain('Your email is unverified');
                         profileRes.text.should.contain('Wish card creation feature is disabled');
 
-                        Agency.create({ accountManager: user._id, ...agencyRequest }).then(
-                          (agency) => {
-                            agency.agencyName.should.equal(agencyRequest.agencyName);
+                        Agency.create({ accountManager: user._id, ...agencyRequest }).then((agency) => {
+                          agency.agencyName.should.equal(agencyRequest.agencyName);
 
-                            WishCard.create({ createdBy: user._id, ...wishcardRequest }).then(
-                              (wishcard) => {
-                                wishcard.childFirstName.should.equal(
-                                  wishcardRequest.childFirstName,
-                                );
-                              },
-                            );
-                            done();
-                          },
-                        );
+                          WishCard.create({ createdBy: user._id, ...wishcardRequest }).then((wishcard) => {
+                            wishcard.childFirstName.should.equal(wishcardRequest.childFirstName);
+                          });
+                          done();
+                        });
                       });
                     });
                 });
@@ -598,11 +540,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
       .post('/wishcards/')
       .type('form')
       .field(wishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(403);
         res.body.should.have.property('success');
@@ -619,11 +557,7 @@ describe('Wishcard Routes - Authenticated & Unverified User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(itemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(403);
         res.body.should.have.property('success');
@@ -719,11 +653,7 @@ describe('Wishcard Routes - Unauthenticated User', () => {
       .post('/wishcards/')
       .type('form')
       .field(wishcardRequest)
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(403);
         res.body.should.have.property('success');
@@ -740,11 +670,7 @@ describe('Wishcard Routes - Unauthenticated User', () => {
       .type('form')
       .field(guidedwishcardRequest)
       .field('itemChoice', JSON.stringify(itemChoice))
-      .attach(
-        'wishCardImage',
-        fs.readFileSync('client/public/img/card-sample-1.jpg'),
-        'card-sample1.jpg',
-      )
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
       .end((err, res) => {
         res.should.have.status(403);
         res.body.should.have.property('success');

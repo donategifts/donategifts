@@ -1,40 +1,3 @@
-<!--
-* Author: Stacy Sealky Lee
-* FileName: agency.ejs
-* Description: agency registration page
-* TODO:
-Make the background of form green to yellow
-agencyName: {
-		type: String,
-		required: true
-	},
-	agencyWebsite: {
-		type: String
-	},
-	agencyPhone: {
-        type: Number,
-        required: true
-    },
-    accountManager: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
-    },
-    agencyBio: {
-		type: String
-    },
-    agencyAddress: {
-		type: String
-    },
-    childrenUnderCare: {
-		type: Number
-    },
-    childrenAgeRange: {
-		type: String
-	},
-	agencyProfileImage
-in the future, make individual donor, enterprise donor, foster care partner
--->
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -44,7 +7,6 @@ in the future, make individual donor, enterprise donor, foster care partner
 
     <link rel="stylesheet" href="../public/css/signup.css" />
     <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://unpkg.com/imask@6.0.5/dist/imask.js"></script>
     <!-- js scripts -->
     <script src="/public/clientJS/agency.js"></script>
@@ -88,30 +50,30 @@ in the future, make individual donor, enterprise donor, foster care partner
             </div>
             <!-- agencyAddress -->
             <div class="wrap-input mg-btm" data-validate="Agency address is required">
-                <input
-                  required
-                  class="input-default quick-font"
-                  type="text"
-                  name="agencyAddress1"
-                  id="agencyAddress1"
-                  placeholder="Organization Address: "
-                  title="agencyAddress1"
-                />
+              <input
+                required
+                class="input-default quick-font"
+                type="text"
+                name="agencyAddress1"
+                id="agencyAddress1"
+                placeholder="Organization Address: "
+                title="agencyAddress1"
+              />
             </div>
-           <!-- agencyAddress2 -->
-           <div class="wrap-input mg-btm">
-                <input
+            <!-- agencyAddress2 -->
+            <div class="wrap-input mg-btm">
+              <input
                 class="input-default quick-font"
                 type="text"
                 name="agencyAddress2"
                 id="agencyAddress2"
                 placeholder="Organization Address 2: "
                 title="agencyAddress2"
-                />
+              />
             </div>
             <!-- agencyCity -->
             <div class="wrap-input mg-btm" data-validate="City is required">
-                <input
+              <input
                 required
                 class="input-default quick-font"
                 type="text"
@@ -119,11 +81,11 @@ in the future, make individual donor, enterprise donor, foster care partner
                 id="city"
                 placeholder="Organization City: "
                 title="city"
-                />
+              />
             </div>
             <!-- agencyState -->
             <div class="wrap-input mg-btm" data-validate="State is required">
-                <input
+              <input
                 required
                 class="input-default quick-font"
                 type="text"
@@ -131,11 +93,11 @@ in the future, make individual donor, enterprise donor, foster care partner
                 id="state"
                 placeholder="Organization State: "
                 title="state"
-                />
+              />
             </div>
             <!-- agencyCity -->
             <div class="wrap-input mg-btm" data-validate="Coutry is required">
-                <input
+              <input
                 required
                 class="input-default quick-font"
                 type="text"
@@ -143,11 +105,11 @@ in the future, make individual donor, enterprise donor, foster care partner
                 id="country"
                 placeholder="Organization Country: "
                 title="country"
-                />
+              />
             </div>
             <!-- agencyZipCode -->
             <div class="wrap-input mg-btm" data-validate="Zip code is required">
-                <input
+              <input
                 required
                 class="input-default quick-font"
                 type="text"
@@ -155,7 +117,7 @@ in the future, make individual donor, enterprise donor, foster care partner
                 id="zipcode"
                 placeholder="Organization Zip Code: "
                 title="zipcode"
-                />
+              />
             </div>
             <!-- agencyPhone -->
             <div class="wrap-input mg-btm" data-validate="Phone number is required">
@@ -192,10 +154,5 @@ in the future, make individual donor, enterprise donor, foster care partner
     </div>
 
     <%- include('./templates/footer')-%>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>
