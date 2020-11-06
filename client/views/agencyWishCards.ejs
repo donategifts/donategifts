@@ -1,81 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>See Wish Cards | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/search.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+      integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-	<title>See Wish Cards | Donate Gifts</title>
-	<!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
-	<%- include('./templates/header')-%>
-	<link rel="stylesheet" href="/public/css/search.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+  <body>
+    <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
 
+    <!-- Wish Card deck -->
+    <div class="wishcards">
+      <!-- Dynamic Card Display now fixed and responsive-->
+      <div class="container">
+        <% if (wishcards.length === 0) { %>
+        <h1>No wishcards</h1>
+        <% } else { %>
+        <div class="row justify-content-center">
+          <% for (var i = 0; i < wishcards.length; i++) { %>
+          <div class="col-lg-4 col-xs-12 mb-5 mt-4">
+            <!-- Card -->
+            <div id="card-fix" class="card mb-3">
+              <!--Card image-->
+              <div class="view overlay">
+                <img id="img-fix" class="card-img-top" src="<%= wishcards[i].wishCardImage %>" alt="Card image" />
+                <a href="#">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card content-->
+              <div class="card-body">
+                <div class="card-text-container">
+                  <!--Title-->
+                  <h3 class="card-title text-center crayon-font">My name is <%= wishcards[i].childFirstName %></h3>
+                  <!--Text-->
+                  <div class="quick-font">
+                    <p class="card-text"><span class="font-weight-bold">Status : </span> <%= wishcards[i].status %></p>
+                    <p class="card-text"><span class="font-weight-bold">Age : </span> <%= wishcards[i].age %></p>
+                    <p class="card-text">
+                      <span class="font-weight-bold">Wish : </span> <%= wishcards[i].wishItemName.length > 25 ?
+                      wishcards[i].wishItemName.substring(0, 25) + "..." : wishcards[i].wishItemName %>
+                    </p>
+                    <p class="card-text">
+                      <span class="font-weight-bold">Item Price :</span> $<%= wishcards[i].wishItemPrice %>
+                    </p>
+                    <p class="card-text">
+                      <span class="font-weight-bold">Interest : </span>
+                      <%= wishcards[i].childInterest.length > 30 ? wishcards[i].childInterest.substring(0, 30) + "..." :
+                      wishcards[i].childInterest %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+        </div>
+        <% } %>
+      </div>
+    </div>
 
-</head>
-
-<body>
-	<%- include('./templates/nav')-%>
-	<%- include('./templates/wishCardDonateModal')-%>
-
-	<!-- Wish Card deck -->
-	<div class="wishcards">
-		<!-- Dynamic Card Display now fixed and responsive-->
-		<div class="container">
-			<% if (wishcards.length === 0) { %>
-			<h1>No wishcards</h1>
-			<% } else { %>
-			<div class="row justify-content-center">
-                <% for (var i = 0; i < wishcards.length; i++) { %>
-				<div class="col-lg-4 col-xs-12 mb-5 mt-4">
-					<!-- Card -->
-					<div id="card-fix" class="card mb-3">
-						<!--Card image-->
-						<div class="view overlay">
-							<img id="img-fix" class="card-img-top" src="<%= wishcards[i].wishCardImage %>"
-								alt="Card image">
-							<a href="#">
-								<div class="mask rgba-white-slight"></div>
-							</a>
-						</div>
-						<!--Card content-->
-						<div class="card-body">
-							<div class="card-text-container">
-								<!--Title-->
-								<h3 class="card-title text-center crayon-font">My name is
-									<%= wishcards[i].childFirstName %></h3>
-								<!--Text-->
-								<div class="quick-font">
-                                    <p class="card-text"><span class="font-weight-bold">Status : </span> <%= wishcards[i].status %></p>
-									<p class="card-text"><span class="font-weight-bold">Age : </span> <%= wishcards[i].age %></p>
-									<p class="card-text"><span class="font-weight-bold">Wish : </span> <%= wishcards[i].wishItemName.length > 25 ? wishcards[i].wishItemName.substring(0, 25) + "..." : wishcards[i].wishItemName %></p>
-									<p class="card-text"><span class="font-weight-bold">Item Price :</span> $<%= wishcards[i].wishItemPrice %></p>
-									<p class="card-text"><span class="font-weight-bold">Interest : </span>
-										<%= wishcards[i].childInterest.length > 30 ? wishcards[i].childInterest.substring(0, 30) + "..." : wishcards[i].childInterest %>
-									</p>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-				<% } %>
-			</div>
-			<% } %>
-
-		</div>
-	</div>
-
-	<%- include('./templates/footer')-%>
-	<!-- jquery -->
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-		integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-	</script>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-
-
-	<!-- sorry, the script that was here was moved to 'templates/donateButton.ejs'
-	because it was breaking the whole page
-	move it back when you fix the issue -->
-</body>
-
+    <%- include('./templates/footer')-%>
+  </body>
 </html>

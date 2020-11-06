@@ -494,6 +494,35 @@ New color scheme reference is in utils.css
   font-size: 1.3em;
 }
 
+.carousel {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.carousel-inner {
+  order: 1;
+}
+
+.carousel-control-left {
+  order: 0;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-control-right {
+  order: 2;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.carousel-control-next-icon {
+  right: 0;
+}
+
 /* new additions end */
 
 .wishcards {
@@ -724,6 +753,7 @@ New color scheme reference is in utils.css
 
 .button,
 .button--green,
+.button--blue,
 .button--inverted-green {
   padding: 1em 2em;
   margin: 10px;
@@ -732,15 +762,19 @@ New color scheme reference is in utils.css
   outline: none;
   transition: all 0.2s;
   border: none;
+  cursor: pointer;
 }
 .button:hover,
 .button--green:hover,
+.button--blue:hover,
 .button--inverted-green:hover,
 .button:active,
 .button--green:active,
+.button--blue:active,
 .button--inverted-green:active,
 .button:focus,
 .button--green:focus,
+.button--blue:focus,
 .button--inverted-green:focus {
   outline: none;
   text-decoration: none;
@@ -764,7 +798,78 @@ New color scheme reference is in utils.css
   color: #fff !important;
   background: #00a19a !important;
 }
+.button--blue {
+  background: #333a64;
+  color: #fff;
+}
+.button--blue:hover {
+  color: #333a64;
+  background: #fff;
+}
+
+.button--inverted-blue {
+  background: #fff !important;
+  color: #333a64 !important;
+}
+.button--inverted-blue:hover {
+  color: #fff !important;
+  background: #333a64 !important;
+}
 
 .font-300 {
   font-weight: 300;
+}
+
+.link--blue,
+.link--blue:link,
+.link--blue:visited {
+  background-color: #333a64 !important;
+  color: #ffffff !important;
+  padding: 1em 2em;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  border: 0.5px solid transparent;
+}
+
+.link--blue:focus,
+.link--blue:active {
+  outline: none;
+}
+
+.link--blue:hover {
+  background: #ffffff !important;
+  color: #333a64 !important;
+  text-decoration: none;
+  border: 0.5px solid #333a64;
+}
+.link--green,
+.link--green:link,
+.link--green:visited {
+  background-color: #00a19a !important;
+  color: #ffffff !important;
+  padding: 1em 2em;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  border: 0.5px solid transparent;
+}
+
+.link--green:focus,
+.link--green:active {
+  outline: none;
+}
+
+.link--green:hover {
+  background: #ffffff !important;
+  color: #00a19a !important;
+  text-decoration: none;
 }
