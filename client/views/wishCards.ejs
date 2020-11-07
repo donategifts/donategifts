@@ -5,20 +5,9 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/search.css" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
-      integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
-      crossorigin="anonymous"
-    ></script>
     <script src="/public/clientJS/utils.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-      <% for (var i = 0; i < wishcards.length; i++) { %>
-      	<% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
-      		addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
-      		<% } %>
-      <% } %>
-    </script>
+
     <!-- facebook login -->
     <script>
       window.fbAsyncInit = function () {
@@ -179,14 +168,19 @@
                       <button
                         type="button"
                         data-toggle="modal"
+                        id="donate-btn-<%= wishcards[i]._id %>"
                         data-value-url="<%= wishcards[i].wishItemURL %>"
                         data-value-name="<%= wishcards[i].childFirstName %>"
                         data-value-id="<%= wishcards[i]._id %>"
                         data-value-loggedIn="<%= !!locals.user %>"
-                        data-target="#wishCardDonateModal"
-                        class="wishcard__button--blue bdr-2"
+                        <%
+                        if
+                        (locals.user)
+                        {
+                        %
                       >
-                        Donate Gift
+                        data-value-user="<%= locals.user._id %>" data-target="#wishCardDonateModal" <% } else { %>
+                        data-target="#loginModalCenter" <% } %> class="wishcard__button--blue bdr-2" > Donate Gift
                       </button>
                     </div>
                   </div>
@@ -203,7 +197,13 @@
     <%- include('./templates/footer')-%>
     <script>
       countdown = [];
-      socket = io('<%= process.env.SOCKET_URL %>');
+
+      <% for (let i = 0; i < wishcards.length; i++) { %>
+        <% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
+          console.log("LOCKED WISHCARD")
+          addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
+        <% } %>
+      <% } %>
     </script>
     <script src="/public/clientJS/wishCard.js"></script>
     <script src="/public/clientJS/wishCardModal.js"></script>

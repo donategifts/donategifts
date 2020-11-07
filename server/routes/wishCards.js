@@ -5,13 +5,14 @@ serving all wishcard related routes
 */
 
 // NPM DEPENDENCIES
+
 const express = require('express');
 const Bull = require('bull');
 
 const queue = new Bull('queue', {
   limiter: {
     max: 1,
-    duration: 30000,
+    duration: process.env.LOCAL_DEVELOPMENT?1000:30000,
   },
 });
 
@@ -34,7 +35,6 @@ const {
 
 const { redirectLogin } = require('./middleware/login.middleware');
 const { renderPermissions } = require('./middleware/wishCard.middleware');
-
 const {
   babies,
   preschoolers,
@@ -560,7 +560,7 @@ router.get('/status/:id', async (req, res) => {
     handleError(res, 400, error);
   }
 });
-
+let testResponse = false;
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
@@ -572,6 +572,35 @@ queue.process(async (job, done) => {
       const itemId = wishListArray[2];
 
       if (wishListId) {
+        if (process.env.LOCAL_DEVELOPMENT) {
+
+          if (testResponse) {
+            const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+            wishCard.isDonated = true;
+            wishCard.save();
+
+            await DonationsRepository.createNewDonation({
+              donationTo: wishCardId,
+              donationFrom: userId,
+              donationPrice: price,
+              donationConfirmed: true,
+            });
+
+            io.emit('donated', { id: wishCardId, donatedBy: userId });
+            done(true);
+            testResponse = !testResponse;
+            return true;
+          }
+          io.emit('not_donated', { id: wishCardId, userId });
+          done(false);
+          testResponse = !testResponse;
+
+          return false;
+
+
+        }
+
         const scrapeResponse = await scrapeList(
           `https://www.amazon.com/hz/wishlist/ls/${wishListId}`,
         );
