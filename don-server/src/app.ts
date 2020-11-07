@@ -28,9 +28,7 @@ import UserRepository from './db/repository/UserRepository';
 import AgencyRepository from './db/repository/AgencyRepository';
 
 // IMPORT ROUTE FILES
-import * as usersRoute from './old-routes/users';
-import * as wishCardsRoute from './old-routes/wishCards';
-import * as aboutRoute from './old-routes/about';
+import { RegisterRoutes } from './routes';
 
 import { ISessionUser } from './common';
 
@@ -127,9 +125,7 @@ app.use(cookieParser());
 app.use(express.static('client'));
 
 // MOUNT ROUTERS
-app.use('/users', usersRoute);
-app.use('/wishcards', wishCardsRoute);
-app.use('/about', aboutRoute);
+RegisterRoutes(app);
 
 app.get('/', (_req, res) => {
   res.render('home', {
