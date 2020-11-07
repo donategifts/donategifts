@@ -9,6 +9,116 @@ New color scheme reference is in utils.css
   text-align: left !important;
   padding: 1em 0em 1em 2em;
 }
+
+.donate-modal {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-img {
+  max-height: 300px !important;
+  margin-bottom: 1em;
+  padding-bottom: 0.8em;
+}
+
+.donate-modal-title {
+  font-size: 2.2em;
+  color: rgba(65, 66, 84, 1) !important;
+  padding-bottom: 0.8em;
+}
+
+.donate-subtitle {
+  font-size: 1.2em;
+  color: #333a64 !important;
+}
+
+.highlighted {
+  display: inline-flex;
+  background: rgba(255, 187, 89, 0.4);
+  text-decoration: none !important;
+}
+
+.modal-p {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.donate-true {
+  padding: 1em 1em;
+  margin-top: 0.5em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(255, 92, 111, 1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.donate-false {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(65, 66, 84, 1);
+  cursor: pointer;
+}
+
+#modal-donate-btn {
+  margin: 1rem auto;
+  display: block;
+}
+
+.donate-modal-button {
+  padding: 1em 3em;
+  margin-top: 0.5em;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  border: none;
+  background: rgba(0, 161, 154, 1);
+  color: #fff;
+  cursor: pointer;
+  justify-content: center;
+  text-align: center;
+}
+
+.donate-modal-button:hover {
+  background: rgba(65, 66, 84, 1);
+  color: #fff;
+}
+
+.countdown {
+  font-size: 5.5em;
+  color: rgba(255, 92, 111, 1);
+}
+
+.modal-i {
+  font-size: 2em;
+  color: rgba(255, 92, 111, 1);
+  padding: 0.8em;
+}
+
+.donate-button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1em 0;
+}
+
+@media screen and (max-width: 990px) {
+  .donate-button-container {
+    flex-direction: column;
+  }
+}
+
+.spinner-text {
+  margin-top: 1rem;
+}
+
 /* newly added - move later  */
 
 /* ---------------home hero section */
@@ -86,6 +196,12 @@ New color scheme reference is in utils.css
   background: rgba(255, 246, 237, 0.5);
 }
 
+@media only screen and (max-width: 768px) {
+  .custom-wrapper {
+    padding: 0 1.2rem;
+  }
+}
+
 .how-to-img {
   height: 310px;
   width: auto;
@@ -135,25 +251,47 @@ New color scheme reference is in utils.css
   line-height: 2em;
 }
 
-/* ---------------partners section */
-.partners-container img {
-  width: 100%;
+/* ---------------partners slideshow section */
+.small3 {
+  overflow: hidden;
+  position: relative;
 }
 
-.partners-container .col-lg-3 {
-  align-self: center;
+.small3 .small-ul {
+  display: flex;
+  top: 0;
 }
 
-.partners-container .partner-img {
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 100%;
-  min-width: 200px;
-  min-height: 200px;
+.small3 .small-ul li {
+  list-style: none;
+  margin-left: 6%;
+}
+.small3 .small-ul li img {
+  max-width: 200px;
+  height: 160px;
+  width: auto;
+}
+.small3 .small-span {
+  position: absolute;
+  top: calc(50% - 20px);
+  opacity: 0.4;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 1px 2px 10px rgba(0, 0, 0, 1);
+}
+.small3 .small-span:hover {
+  opacity: 0.6;
 }
 
-/* ---------------partners section end */
+.small3 .small-span:first-of-type {
+  right: 10px;
+}
 
+.small3 .small-span:last-of-type {
+  left: 10px;
+}
+
+/* ---------------partners slideshow section end */
 
 /* ---------------responsive screen */
 @media screen and (min-width: 722px) and (max-width: 1024px) {
@@ -167,12 +305,6 @@ New color scheme reference is in utils.css
   .custom-right {
     order: 1;
     width: 100vw !important;
-  }
-
-  .subtext {
-    font-size: 1em;
-    line-height: 1.6em;
-    min-width: 100%;
   }
 }
 
@@ -425,6 +557,11 @@ New color scheme reference is in utils.css
   flex-direction: column;
   border-radius: 20px;
   background: rgba(255, 246, 237, 0.7);
+  transition: all 0.3s ease-in-out;
+}
+#card-fix:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
 }
 
 #img-fix {
@@ -449,17 +586,6 @@ New color scheme reference is in utils.css
   min-height: 225px;
 }
 
-.msg-icon {
-  background: rgba(255, 92, 111, 1);
-  padding: 0.6em 0.8em;
-  border: none;
-}
-
-.msg-icon .fa {
-  color: #fff;
-  font-size: 1.3em;
-}
-
 #fb {
   display: flex;
   align-items: center;
@@ -476,6 +602,35 @@ New color scheme reference is in utils.css
 #fb .fa {
   color: #fff;
   font-size: 1.3em;
+}
+
+.carousel {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.carousel-inner {
+  order: 1;
+}
+
+.carousel-control-left {
+  order: 0;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-control-right {
+  order: 2;
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.carousel-control-next-icon {
+  right: 0;
 }
 
 /* new additions end */
@@ -616,3 +771,215 @@ New color scheme reference is in utils.css
 /*--------------------------------------------------------------
     End Login Modal
 --------------------------------------------------------------*/
+
+/* Custom scss transferred */
+
+.wishcard__link--white,
+.wishcard__link--white:link,
+.wishcard__link--white:visited {
+  background-color: #fff;
+  color: #333a64;
+  padding: 12px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border: 0.5px solid #333a64;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+.wishcard__link--white:focus,
+.wishcard__link--white:active {
+  outline: none;
+}
+
+.wishcard__link--white:hover {
+  background: #333a64;
+  color: #fff !important;
+}
+
+.wishcard-btn {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  transition: all 0.2s;
+  border: none;
+}
+
+.wishcard__button--blue {
+  appearance: none;
+  background: #333a64;
+  color: #fff;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+.wishcard__button--blue:hover {
+  background: #fff;
+  color: #333a64;
+  border: 0.5px solid #333a64;
+}
+
+.wishcard__icon--fixed {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  right: -10px;
+  border-radius: 50%;
+  padding: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  transition: all 0.25s ease-in-out;
+  text-decoration: none;
+}
+
+.msg-icon {
+  background: #ffbb59;
+  padding: 0.6em 0.8em;
+  border: none;
+}
+
+.msg-icon:hover {
+  text-decoration: none;
+}
+.fa-envelope {
+  color: #fff;
+  font-size: 1.3em;
+}
+
+.bdr-2 {
+  border-radius: 20px !important;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+.button,
+.button--green,
+.button--blue,
+.button--inverted-green {
+  padding: 1em 2em;
+  margin: 10px;
+  border-radius: 20px;
+  line-height: 1.2em;
+  outline: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.button:hover,
+.button--green:hover,
+.button--blue:hover,
+.button--inverted-green:hover,
+.button:active,
+.button--green:active,
+.button--blue:active,
+.button--inverted-green:active,
+.button:focus,
+.button--green:focus,
+.button--blue:focus,
+.button--inverted-green:focus {
+  outline: none;
+  text-decoration: none;
+}
+.button--green {
+  background: #00a19a;
+  color: #fff;
+}
+.button--green:hover {
+  color: #00a19a;
+  background: #fff;
+}
+.button--green-tan:hover {
+  background: #f8e4c9;
+}
+.button--inverted-green {
+  background: #fff !important;
+  color: #00a19a !important;
+}
+.button--inverted-green:hover {
+  color: #fff !important;
+  background: #00a19a !important;
+}
+.button--blue {
+  background: #333a64;
+  color: #fff;
+}
+.button--blue:hover {
+  color: #333a64;
+  background: #fff;
+}
+
+.button--inverted-blue {
+  background: #fff !important;
+  color: #333a64 !important;
+}
+.button--inverted-blue:hover {
+  color: #fff !important;
+  background: #333a64 !important;
+}
+
+.font-300 {
+  font-weight: 300;
+}
+
+.link--blue,
+.link--blue:link,
+.link--blue:visited {
+  background-color: #333a64 !important;
+  color: #ffffff !important;
+  padding: 1em 2em;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  border: 0.5px solid transparent;
+}
+
+.link--blue:focus,
+.link--blue:active {
+  outline: none;
+}
+
+.link--blue:hover {
+  background: #ffffff !important;
+  color: #333a64 !important;
+  text-decoration: none;
+  border: 0.5px solid #333a64;
+}
+.link--green,
+.link--green:link,
+.link--green:visited {
+  background-color: #00a19a !important;
+  color: #ffffff !important;
+  padding: 1em 2em;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  border: 0.5px solid transparent;
+}
+
+.link--green:focus,
+.link--green:active {
+  outline: none;
+}
+
+.link--green:hover {
+  background: #ffffff !important;
+  color: #00a19a !important;
+  text-decoration: none;
+}

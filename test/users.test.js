@@ -369,7 +369,7 @@ describe('Users', () => {
 
           agent.get('/users/agency').end((_, agencyRes) => {
             agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+            agencyRes.text.should.contain('Register as a Foster Care Partner');
             done();
           });
         });
@@ -400,7 +400,7 @@ describe('Users', () => {
             .redirects(1)
             .end((_, profileRes) => {
               profileRes.should.have.status(200);
-              profileRes.text.should.contain('agency registration page');
+              profileRes.text.should.contain('Register as a Foster Care Partner');
               done();
             });
         });
@@ -428,7 +428,7 @@ describe('Users', () => {
 
           agent.get('/users/agency').end((_, agencyRes) => {
             agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+            agencyRes.text.should.contain('Register as a Foster Care Partner');
 
             User.findOne({ email: signupRequest.email }).then((user) => {
               const agencyRequest = {
@@ -493,7 +493,7 @@ describe('Users', () => {
 
           agent.get('/users/agency').end((_, agencyRes) => {
             agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+            agencyRes.text.should.contain('Register as a Foster Care Partner');
 
             User.findOne({ email: signupRequest.email }).then(() => {
               const agencyRequest = {
@@ -518,7 +518,7 @@ describe('Users', () => {
                   postAgencyRes.body.error.msg.should.contain('Invalid value');
                   postAgencyRes.body.error.param.should.contain('agencyName');
                   agent.get('/users/profile').end((_profileErr, profileRes) => {
-                    profileRes.text.should.contain('agency registration page');
+                    profileRes.text.should.contain('Register as a Foster Care Partner');
                     done();
                   });
                 });
@@ -549,7 +549,7 @@ describe('Users', () => {
 
           agent.get('/users/agency').end((_, agencyRes) => {
             agencyRes.should.have.status(200);
-            agencyRes.text.should.contain('agency registration page');
+            agencyRes.text.should.contain('Register as a Foster Care Partner');
 
             User.findOne({ email: signupRequest.email }).then(() => {
               const agencyRequest = {
@@ -574,7 +574,7 @@ describe('Users', () => {
                   postAgencyRes.body.error.msg.should.contain('Invalid value');
                   postAgencyRes.body.error.param.should.contain('agencyPhone');
                   agent.get('/users/profile').end((_profileErr, profileRes) => {
-                    profileRes.text.should.contain('agency registration page');
+                    profileRes.text.should.contain('Register as a Foster Care Partner');
                     done();
                   });
                 });
