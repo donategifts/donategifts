@@ -68,10 +68,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                         event.preventDefault();
                         window.open(amazonURL, '_blank');
 
-                        // donateBtnWrapper.html(
-                        //     `<button class="donate-false" id="donateNotDone-${wishCardId}">I did not donate</button>
-                        //     <button class="donate-true" id="donateDone-${wishCardId}">I completed the checkout</button>`
-                        // );
                     });
 
 
@@ -116,8 +112,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     })
 
                     socket.on('donated', event => {
-                        console.log(event)
-
                         if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
                             spinner.hide();
                             statusDiv.html('Donation Confirmed')
@@ -128,8 +122,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     });
 
                     socket.on('not_donated', event => {
-
-                        console.log(event)
 
                         if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
                             spinner.hide();
