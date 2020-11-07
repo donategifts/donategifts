@@ -2,7 +2,7 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 const log = require('./logger');
-
+let io;
 function connectSocket(app) {
   let server;
   if (process.env.LOCAL_DEVELOPMENT) {
@@ -16,16 +16,12 @@ function connectSocket(app) {
     server = https.createServer(app, options);
   }
 
-  const io = require('socket.io')(server, {
-    handlePreflightRequest: (req, res) => {
-      const headers = {
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Origin': req.headers.origin, // or the specific origin you want to give access to,
-        'Access-Control-Allow-Credentials': true,
-      };
-      res.writeHead(200, headers);
-      res.end();
-    },
+  io = require('socket.io')(server,  {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["content-type"]
+    }
   });
 
   server.listen(8081, () => {
@@ -34,5 +30,6 @@ function connectSocket(app) {
 
   return io;
 }
+
 
 module.exports = { connectSocket };

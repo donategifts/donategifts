@@ -116,6 +116,9 @@ app.use(cookieParser());
 // static files like css, js, images, fonts etc.
 app.use(express.static('client'));
 
+//needs to be declared before routes otherwise sockets wont be available in routes
+io = connectSocket(app);
+
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
@@ -157,7 +160,5 @@ app.use((err, req, res, _next) => {
   res.render('500');
 });
 
-// server start-up should happen after route registration and db connection
-io = connectSocket(app);
 
 module.exports = app;

@@ -2,10 +2,10 @@
 // when modal is called, check what button called it and extract info like url and child name from it
 $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // get reference to button that opened the modal
-    let button = $(event.relatedTarget);
+    const button = $(event.relatedTarget);
 
     // extract values from button that contain child name / amazonlink
-    let childName = button[0].dataset.valueName;
+    const childName = button[0].dataset.valueName;
     const wishCardId = button[0].dataset.valueId;
     const amazonURL = button[0].dataset.valueUrl;
 
@@ -24,22 +24,21 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
         `;
 
     // get modal reference and replace text
-    modal = $(this);
     $('.modal-body').html(modalWarningMessage);
-    let donateModalMessages = $(`#donateModalMsg-${wishCardId}`);
     // set  redirect on a ref element
 
-    let isLoggedIn = button[0].dataset.valueLoggedin;
-    let reserveBtn = $('#modal-donate-btn');
-    let donateBtnWrapper = $(`#donateBtnWrapper-${wishCardId}`);
+    const isLoggedIn = button[0].dataset.valueLoggedin;
+    const reserveBtn = $('#modal-donate-btn');
+
     if (isLoggedIn === 'false') {
         reserveBtn.html('Please log in to donate')
-        reserveBtn.on('click', () => location.assign("/users/login"))
+        $(document).on('click', '#modal-donate-btn', (event) => {
+            location.assign("/users/login")
+        });
     } else {
 
-        reserveBtn.on('click', (event) => {
+        $(document).on('click', '#modal-donate-btn', (event) => {
             event.preventDefault();
-
             $.ajax({
                 type: 'POST',
                 url: '/wishcards/lock/' + wishCardId,
@@ -49,20 +48,22 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     // Hide modal header to prevent closing the modal
                     $('.modal-header').hide();
 
+                    const donateModalMessages = $('.modal-body').find(`#donateModalMsg-${wishCardId}`);
                     donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
                         <div id="lockedCountdown-${wishCardId}"></div>
                         <div id="status-${wishCardId}"></div>`);
 
                     //decided to make an additional Amazon button
-                    donateBtnWrapper.html(
-                        `<div class="donate-button-container">
+                    const donateBtnWrapper = $('.modal-body').find(`#donateBtnWrapper-${wishCardId}`);
+                    donateBtnWrapper.html(`<div class="donate-button-container">
                             <button class="donate-modal-button" id="openAmazonBtn">I'm ready to checkout</button>
                             <button class="donate-true" id="donateDone-${wishCardId}">I finished the checkout</button>
                         </div>
                         <p class="donate-false" id="donateNotDone-${wishCardId}" onclick="$('#wishCardDonateModal').modal('hide')">Changed your mind? Click here to exit.</p>`
                     );
 
-                    let openAmazonBtn = $('#openAmazonBtn');
+
+                    let openAmazonBtn = $('.modal-body').find('#openAmazonBtn');
                     openAmazonBtn.on('click', (event) => {
                         event.preventDefault();
                         window.open(amazonURL, '_blank');
@@ -76,16 +77,16 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     addCountdownToModal(response.lockedUntil, wishCardId, '#lockedCountdown-' + wishCardId);
 
-                    let waitDiv = $('#wait-' + wishCardId);
-                    let statusDiv = $('#status-' + wishCardId);
-                    let donateDoneButton = $('#donateDone-' + wishCardId);
-                    let spinner = $('#spinner-border');
+                    let waitDiv = $('.modal-body').find('#wait-' + wishCardId);
+                    let statusDiv = $('.modal-body').find('#status-' + wishCardId);
+                    let donateDoneButton = $('.modal-body').find('#donateDone-' + wishCardId);
+                    let spinner = $('.modal-body').find('#spinner-border');
 
                     donateDoneButton.on('click', (event) => {
 
                         // Hide modal header to prevent closing the modal
                         $('.modal-header').hide();
-                        
+
                         // Hide buttons
                         $(`#donateBtnWrapper-${wishCardId}`).hide();
 
@@ -99,7 +100,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                         waitDiv.show();
                         spinner.show();
 
-                        $('#wait-' + wishCardId).show();
+                        $('.modal-body').find('#wait-' + wishCardId).show();
                         $.ajax({
                             type: 'GET',
                             url: '/wishcards/status/' + wishCardId,
@@ -115,6 +116,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     })
 
                     socket.on('donated', event => {
+                        console.log(event)
 
                         if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
                             spinner.hide();
@@ -127,12 +129,13 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     socket.on('not_donated', event => {
 
+                        console.log(event)
 
-                        if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
+                        if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
                             spinner.hide();
                             waitDiv.hide();
                             statusDiv.html('Donation Not Confirmed')
-                            
+
                             //TODO we should do an exit survey eventually -stacy-
                         }
 
@@ -174,7 +177,7 @@ function addCountdownToModal(lockedUntil, wishListId, elementId) {
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        let element = $(elementId);
+        let element = $('.modal-body').find(elementId);
 
         seconds = seconds < 10 ? '0' + seconds : seconds;
         if (distance < 0) {
