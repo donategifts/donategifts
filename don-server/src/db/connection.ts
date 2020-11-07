@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import logger from '../helper/logger';
+import { logger } from '../helper/common';
 
 export default class MongooseConnection {
   static async connect(): Promise<void> {

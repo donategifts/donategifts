@@ -22,7 +22,7 @@ import * as morgan from 'morgan';
 import * as mongoSanitize from 'express-mongo-sanitize';
 
 // custom
-import { connectSocket } from './helper/socket';
+import { connectSocket, logger } from './helper/common';
 import MongooseConnection from './db/connection';
 import UserRepository from './db/repository/UserRepository';
 import AgencyRepository from './db/repository/AgencyRepository';
@@ -32,7 +32,6 @@ import * as usersRoute from './old-routes/users';
 import * as wishCardsRoute from './old-routes/wishCards';
 import * as aboutRoute from './old-routes/about';
 
-import logger from './helper/logger';
 import { ISessionUser } from './common';
 
 // eslint-disable-next-line import/order

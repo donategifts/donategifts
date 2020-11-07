@@ -45,7 +45,4 @@ const handleError = (res: Response, code: number, errorMsg: string | ICustomErro
   });
 };
 
-export default {
-  ErrorHandler,
-  handleError,
-};
+export { ErrorHandler, handleError };
