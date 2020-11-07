@@ -592,7 +592,7 @@ queue.process(async (job, done) => {
             testResponse = !testResponse;
             return true;
           }
-          io.emit('not_donated', { id: wishCardId, userId: userId });
+          io.emit('not_donated', { id: wishCardId, userId });
           done(false);
           testResponse = !testResponse;
 

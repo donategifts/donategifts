@@ -116,7 +116,7 @@ app.use(cookieParser());
 // static files like css, js, images, fonts etc.
 app.use(express.static('client'));
 
-//needs to be declared before routes otherwise sockets wont be available in routes
+// needs to be declared before routes otherwise sockets wont be available in routes
 io = connectSocket(app);
 
 // IMPORT ROUTE FILES
