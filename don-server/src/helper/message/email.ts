@@ -36,7 +36,7 @@ const templateAttachments = [
 ];
 
 const getTransport = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV !== 'production') {
     const account = await createTestAccount();
 
     if (account) {

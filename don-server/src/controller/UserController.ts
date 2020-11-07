@@ -16,7 +16,7 @@ export class Users extends Controller {
   @Response('400', 'Bad request')
   @Get('/profile')
   public async getUserRole(@Request() req: Express.Request): Promise<UserRoles> {
-    if (req.session.user) {
+    if (req.session?.user) {
       return this.userService.getUserRole(req.session.user._id);
     }
 
@@ -42,7 +42,7 @@ export class Users extends Controller {
   }
 
   @Response('400', 'Bad request')
-  @Post('/sig-nup')
+  @Post('/sign-up')
   public async signUpUser(@Body() _body: any): Promise<void> {
     // TODO: implementation needed
   }

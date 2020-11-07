@@ -1,12 +1,10 @@
-/* eslint-disable */
-import { ISession } from '../src/common';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { ISessionUser } from '../src/common';
 
 declare global {
-  export var io: any;
-  export var it: any;
   namespace Express {
-    export interface Request {
-      session: ISession;
+    interface Session {
+      user: ISessionUser;
     }
   }
 }

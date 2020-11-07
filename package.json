@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stacysealky/donategifts.git"
+    "url": "git+https://github.com/donategifts/donategifts.git"
   },
   "author": "Stacy Sealky Lee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/stacysealky/donategifts/issues"
+    "url": "https://github.com/donategifts/donategifts/issues"
   },
-  "homepage": "https://github.com/stacysealky/donategifts#readme",
+  "homepage": "https://github.com/donategifts/donategifts#readme",
   "dependencies": {
     "aws-sdk": "^2.776.0",
     "axios": "^0.21.0",
