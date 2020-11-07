@@ -71,7 +71,7 @@ const sendMail = async (
   subject: string,
   message: string,
   attachments = undefined,
-): Promise<{ success: boolean; data: string | false | undefined }> => {
+): Promise<{ success: boolean; data?: string | boolean }> => {
   const transporter = await getTransport();
 
   if (transporter) {
@@ -106,7 +106,7 @@ const sendVerificationEmail = async (
   hash: string,
 ): Promise<{
   success: boolean;
-  data: string | false | undefined;
+  data?: string | boolean;
 }> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
@@ -132,7 +132,7 @@ const sendPasswordResetMail = async (
   hash: string,
 ): Promise<{
   success: boolean;
-  data: string | false | undefined;
+  data?: string | boolean;
 }> => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/password/reset/${hash}`)

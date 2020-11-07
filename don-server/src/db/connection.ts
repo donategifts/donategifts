@@ -3,10 +3,7 @@ import { logger } from '../helper/common';
 
 export default class MongooseConnection {
   static async connect(): Promise<void> {
-    const isInTest =
-      process.env.NODE_ENV !== 'production' &&
-      typeof global.it === 'function' &&
-      !process.env.ALLOW_MONGOOSE_TESTING;
+    const isInTest = process.env.NODE_ENV === 'test' && !process.env.ALLOW_MONGOOSE_TESTING;
 
     if (isInTest) {
       throw new Error(
