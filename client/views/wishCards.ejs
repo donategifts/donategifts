@@ -143,7 +143,6 @@
                 <div class="card-text-container">
                   <!--Title-->
                   <h3 class="card-title text-center crayon-font">My name is <%= wishcards[i].childFirstName %></h3>
-
                   <!--Text-->
                   <div class="quick-font">
                     <p class="card-text">
@@ -173,14 +172,15 @@
                         data-value-name="<%= wishcards[i].childFirstName %>"
                         data-value-id="<%= wishcards[i]._id %>"
                         data-value-loggedIn="<%= !!locals.user %>"
-                        <%
-                        if
-                        (locals.user)
-                        {
-                        %
+                        <% if (locals.user) { %>
+                        data-value-user="<%= locals.user._id %>"
+                        data-target="#wishCardDonateModal"
+                        <% } else { %>
+                        data-target="#loginModalCenter"
+                        <% } %>
+                        class="wishcard__button--blue bdr-2"
                       >
-                        data-value-user="<%= locals.user._id %>" data-target="#wishCardDonateModal" <% } else { %>
-                        data-target="#loginModalCenter" <% } %> class="wishcard__button--blue bdr-2" > Donate Gift
+                        Donate Gift
                       </button>
                     </div>
                   </div>
@@ -197,7 +197,6 @@
     <%- include('./templates/footer')-%>
     <script>
       countdown = [];
-
       <% for (let i = 0; i < wishcards.length; i++) { %>
         <% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
           console.log("LOCKED WISHCARD")
