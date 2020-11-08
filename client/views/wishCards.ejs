@@ -63,7 +63,7 @@
                   />
                 </div>
                 <div class="col-auto">
-                  <button class="btn btn-lg btn-success" type="submit">Search</button>
+                  <button class="wishcard__button--blue bdr-2" type="submit">Search</button>
                 </div>
               </div>
             </div>
@@ -102,7 +102,13 @@
                 </div>
               </div>
               <div class="col text-right mt-2">
-                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+                <button
+                  type="button"
+                  class="wishcard__link--white bdr-2"
+                  style="width: auto"
+                  data-toggle="collapse"
+                  data-target="#filter-panel"
+                >
                   Advanced Search
                 </button>
               </div>
@@ -137,7 +143,6 @@
                 <div class="card-text-container">
                   <!--Title-->
                   <h3 class="card-title text-center crayon-font">My name is <%= wishcards[i].childFirstName %></h3>
-
                   <!--Text-->
                   <div class="quick-font">
                     <p class="card-text">
@@ -167,12 +172,12 @@
                         data-value-name="<%= wishcards[i].childFirstName %>"
                         data-value-id="<%= wishcards[i]._id %>"
                         data-value-loggedIn="<%= !!locals.user %>"
-                      <% if (locals.user) { %>
+                        <% if (locals.user) { %>
                         data-value-user="<%= locals.user._id %>"
                         data-target="#wishCardDonateModal"
-                      <% } else { %>
+                        <% } else { %>
                         data-target="#loginModalCenter"
-                              <% } %>
+                        <% } %>
                         class="wishcard__button--blue bdr-2"
                       >
                         Donate Gift
@@ -192,7 +197,6 @@
     <%- include('./templates/footer')-%>
     <script>
       countdown = [];
-
       <% for (let i = 0; i < wishcards.length; i++) { %>
         <% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
           console.log("LOCKED WISHCARD")
@@ -202,13 +206,9 @@
     </script>
     <script src="/public/clientJS/wishCard.js"></script>
     <script src="/public/clientJS/wishCardModal.js"></script>
-
     <!--  this is for login toast -->
     <% if(!locals.user) { %>
     <script src="/public/clientJS/loginToast.js"></script>
     <% } %>
-
-</body>
-
+  </body>
 </html>
-
