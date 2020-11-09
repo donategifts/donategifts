@@ -31,7 +31,7 @@ if (process.env.USE_AWS !== 'true') {
   storage = multer.diskStorage({
     destination: `${path.join(__dirname, '../../uploads/')}`,
     filename: (req, file, cb) => {
-      cb(null, `${UUIDv4()}-${file.filename || file.originalname}.jpeg`);
+      cb(null, `${UUIDv4()}-${file.filename || path.parse(file.originalname).name}.jpeg`);
     },
   });
 } else {
@@ -42,7 +42,7 @@ if (process.env.USE_AWS !== 'true') {
     cacheControl: 'max-age=31536000',
     key(req, file, cb) {
       // rename the file since we convert it to jpeg
-      cb(null, `${UUIDv4()}-${file.filename}.jpeg`);
+      cb(null, `${UUIDv4()}-${path.parse(file.filename).name}.jpeg`);
     },
     // can use any of the sharp options here
     resize: {
