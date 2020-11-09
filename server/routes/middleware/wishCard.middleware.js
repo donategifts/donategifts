@@ -42,7 +42,7 @@ if (process.env.USE_AWS !== 'true') {
     cacheControl: 'max-age=31536000',
     key(req, file, cb) {
       // rename the file since we convert it to jpeg
-      cb(null, `${UUIDv4()}-${path.parse(file.filename).name}.jpeg`);
+      cb(null, `${UUIDv4()}.jpeg`);
     },
     // can use any of the sharp options here
     resize: {
