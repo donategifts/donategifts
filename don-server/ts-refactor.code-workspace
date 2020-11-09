@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "donategifts",
+			"path": "."
+		},
+		{
+			"name": "don-server",
+			"path": "don-server"
+		}
+	],
+	"settings": {}
+}

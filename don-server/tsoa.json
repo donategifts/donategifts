@@ -1,0 +1,30 @@
+{
+  "entryFile": "./src/controller/index.ts",
+  "noImplicitAdditionalProperties": "silently-remove-extras",
+  "spec": {
+    "outputDirectory": "./dist/swagger",
+    "spec": {
+      "servers": [
+        {
+          "url": "https://donate-gifts.com/api",
+          "description": "Production server"
+        },
+        {
+          "url": "https://dev.donate-gifts.com/api",
+          "description": "Test server"
+        },
+        {
+          "url": "http://localhost:8081/api",
+          "description": "local dev server"
+        }
+      ]
+    },
+    "specVersion": 3,
+    "yaml": true
+  },
+  "routes": {
+    "basePath": "/api",
+    "routesDir": "./src/routes",
+    "middleware": "express"
+  }
+}

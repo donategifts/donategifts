@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2019",
+    "lib": [
+      "es2019",
+      "DOM"
+    ],
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "emitDecoratorMetadata": true,
+    "composite": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "buildcache.tsbuildinfo"
+  },
+  "include": [
+    "./src",
+    "./@types",
+    ".*.js",
+  ],
+  "exclude": [
+    "node_modules",
+  ],
+}

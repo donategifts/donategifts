@@ -12,9 +12,10 @@ node_modules
 
 # Ignore files related to API keys
 .idea
-config/config.env
+config.env
 
 # generated logs folder
 server/logs
 .eslintcache
-dump.*
+dist
+buildcache.tsbuildinfo
