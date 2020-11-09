@@ -6,7 +6,7 @@
   font-size: 1.3em;
 }
 /*Login Toast Message and the links*/
-.login{
+.loginToastReminder{
   padding: 0 1.5em;
   height: 4em;
   display: flex;
