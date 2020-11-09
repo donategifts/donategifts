@@ -12,7 +12,7 @@ const Bull = require('bull');
 const queue = new Bull('queue', {
   limiter: {
     max: 1,
-    duration: process.env.LOCAL_DEVELOPMENT?1000:30000,
+    duration: process.env.LOCAL_DEVELOPMENT === 'true'?1000:30000,
   },
 });
 
@@ -189,7 +189,7 @@ router.post(
 // @tested 	Yes
 router.get('/', async (_req, res) => {
   try {
-    const wishcards = await WishCardRepository.getAllWishCards();
+    const wishcards = await WishCardRepository.getViewableWishCards(false);
 
     for (let i = 0; i < wishcards.length; i++) {
       const birthday = moment(new Date(wishcards[i].childBirthday));
@@ -494,6 +494,7 @@ router.post('/lock/:id', async (req, res) => {
     // in case user doesn't confirm donation, check after countdown runs out
     blockedWishcardsTimer[wishCardId] = setTimeout(async () => {
       queue.add({ wishCardId, userId, url: wishCard.wishItemURL, price: wishCard.wishItemPrice });
+      io.emit('countdown_ran_out', { id: wishCardId, userId });
     }, process.env.WISHCARD_LOCK_IN_MINUTES * 1000 * 60);
 
     res.status(200).send({
@@ -541,8 +542,6 @@ router.get('/status/:id', async (req, res) => {
 
     const user = await UserRepository.getUserByObjectId(req.session.user._id);
     if (!user) return handleError(res, 400, 'User not found');
-
-    clearTimeout(blockedWishcardsTimer[wishCardId]);
     const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
     queue.add({
@@ -572,12 +571,12 @@ queue.process(async (job, done) => {
       const itemId = wishListArray[2];
 
       if (wishListId) {
-        if (process.env.LOCAL_DEVELOPMENT) {
+        if (process.env.LOCAL_DEVELOPMENT === 'true') {
 
           if (testResponse) {
             const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-            wishCard.isDonated = true;
+            wishCard.status = 'donated';
             wishCard.save();
 
             await DonationsRepository.createNewDonation({
@@ -598,7 +597,6 @@ queue.process(async (job, done) => {
 
           return false;
 
-
         }
 
         const scrapeResponse = await scrapeList(
@@ -613,9 +611,13 @@ queue.process(async (job, done) => {
         }
 
         if (isDonated) {
+          clearTimeout(blockedWishcardsTimer[wishCardId]);
+
           const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-          wishCard.isDonated = true;
+          wishCard.status = 'donated';
+          wishCard.isLockedUntil = null;
+          wishCard.isLockedBy = null;
           wishCard.save();
 
           await DonationsRepository.createNewDonation({
@@ -626,11 +628,13 @@ queue.process(async (job, done) => {
           });
 
           io.emit('donated', { id: wishCardId, donatedBy: userId });
+
           done(true);
           return true;
         }
-        io.emit('not_donated', { id: wishCardId, donatedBy: userId });
+        io.emit('not_donated', { id: wishCardId, userId });
         done(false);
+        return true;
       }
       done(false);
     }
@@ -643,7 +647,7 @@ queue.process(async (job, done) => {
 });
 
 queue.on('completed', (job, result) => {
-  logger.debug(job.data);
+  logger.debug(job);
   logger.debug(result);
 });
 // @desc   Gets default wishcard options for guided wishcard creation

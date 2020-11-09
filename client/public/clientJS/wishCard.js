@@ -21,12 +21,21 @@ socket.on('block', event => {
 });
 
 socket.on('unblock', (event) => {
-  let button = $('#donate-btn-' + event.id);
+  const button = $('#donate-btn-' + event.id);
 
   clearInterval(x[event.id]);
   x[event.id] = null;
   button.text('Donate Gift');
   button.prop('disabled', false);
 });
+socket.on('donated', event => {
+  console.log(event)
+  const donateButton = $(document).find('#donate-btn-' + event.id);
+
+  clearInterval(x[event.id]);
+  x[event.id] = null;
+  donateButton.text('Donated!');
+  donateButton.prop('disabled', true);
+})
 // event listener that fires whenever a right click has occured
 window.addEventListener('contextmenu', preventChildImageContextMenu);
