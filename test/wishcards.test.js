@@ -48,6 +48,7 @@ const wishcardRequest = {
   wishItemPrice: 20,
   wishItemURL: 'https://www.amazon.com/asdf',
   childStory: 'Doom Slayer traveled to Mars and slayed demons',
+  status: 'published'
 };
 
 const itemChoice = {
