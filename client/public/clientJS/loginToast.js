@@ -1,4 +1,4 @@
-let msg = "<div class='loginToastReminder'>More features will be enabled if you log in. <span class='link'><a href=\"/users/signup\">Sign Up</a></span> or <span class='link'><a href=\"/users/login\">Login</a></span></div>"
+let msg = "<div class='loginToastReminder'>More features will be enabled if you log in. <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/users/signup\">Sign&nbsp;Up</a></span> or <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/users/login\">Login</a></span></div>"
 
 $(window).on('load', function() {
   setTimeout(function() {
