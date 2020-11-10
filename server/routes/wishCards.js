@@ -518,9 +518,8 @@ router.post('/unlock/:id', async (req, res) => {
 
     if (error) handleError(res, 400, error);
 
-    console.log(alreadyLockedWishCard, userId)
     if (alreadyLockedWishCard) {
-      if (`${alreadyLockedWishCard.isLockedBy}` === `${userId}`) {
+      if (String(alreadyLockedWishCard.isLockedBy) === String(userId)) {
         await WishCardRepository.unLockWishCard(wishCardId);
         io.emit('unblock', { id: wishCardId });
         clearTimeout(blockedWishcardsTimer[wishCardId]);

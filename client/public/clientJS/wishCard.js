@@ -29,7 +29,6 @@ socket.on('unblock', (event) => {
   button.prop('disabled', false);
 });
 socket.on('donated', event => {
-  console.log(event)
   const donateButton = $(document).find('#donate-btn-' + event.id);
 
   clearInterval(x[event.id]);
