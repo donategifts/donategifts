@@ -511,23 +511,33 @@ router.post('/unlock/:id', async (req, res) => {
   try {
     const {
       wishCardId,
-      lockedWishcard,
+      alreadyLockedWishCard,
       userId,
       error,
     } = await WishCardController.getLockedWishCards(req);
 
     if (error) handleError(res, 400, error);
 
-    if (lockedWishcard && lockedWishcard.isLockedBy === userId) {
-      await WishCardRepository.unLockWishCard(wishCardId);
-      io.emit('unblock', { id: wishCardId });
-      clearTimeout(blockedWishcardsTimer[wishCardId]);
+    console.log(alreadyLockedWishCard, userId)
+    if (alreadyLockedWishCard) {
+      if (''+alreadyLockedWishCard.isLockedBy === ''+userId) {
+        await WishCardRepository.unLockWishCard(wishCardId);
+        io.emit('unblock', { id: wishCardId });
+        clearTimeout(blockedWishcardsTimer[wishCardId]);
+
+        res.status(200).send({
+          success: true,
+          error: null,
+        });
+      } else {
+        handleError(res, 400, 'Wishcard locked by someone else');
+      }
+    } else {
+      handleError(res, 400, 'Wishcard not found');
     }
 
-    res.status(200).send({
-      success: true,
-      error: null,
-    });
+
+
   } catch (error) {
     handleError(res, 400, error);
   }

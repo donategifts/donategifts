@@ -60,8 +60,26 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                             <button class="donate-modal-button" id="openAmazonBtn">I'm ready to checkout</button>
                             <button class="donate-true" id="donateDone-${wishCardId}">I finished the checkout</button>
                         </div>
-                        <p class="donate-false" id="donateNotDone-${wishCardId}" onclick="$('#wishCardDonateModal').modal('hide')">Changed your mind? Click here to exit.</p>`
+                        <p class="donate-false" id="donateNotDone-${wishCardId}">Changed your mind? Click here to exit.</p>`
                     );
+
+                    $('.donate-false').on('click', event => {
+
+                        $('#wishCardDonateModal').modal('hide')
+                        $.ajax({
+                            type: 'POST',
+                            url: '/wishcards/unlock/' + wishCardId,
+                            data: {},
+                            success: (response, textStatus, jqXHR) => {
+                                console.log(response)
+                            },
+                            error: (response, textStatus, errorThrown) => {
+                                console.log(response)
+                                showToast(response.responseJSON.error.msg)
+                            },
+                        });
+
+                    })
 
                     const openAmazonBtn = modalBody.find('#openAmazonBtn');
                     openAmazonBtn.on('click', (event) => {
