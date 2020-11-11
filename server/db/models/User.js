@@ -42,7 +42,7 @@ const UserSchema = new Schema(
     userRole: String,
     /* ROLES: Donor, Partner, Admin */
     /* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS */
-    wishCards: [
+    savedWishCards: [
       {
         type: Schema.Types.ObjectId,
         ref: 'WishCard',

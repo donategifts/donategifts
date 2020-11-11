@@ -130,12 +130,7 @@ New color scheme reference is in utils.css
 }
 
 #about-bg {
-  background: linear-gradient(
-      180deg,
-      rgba(255, 151, 99, 0.8),
-      rgba(188, 227, 97, 0.3),
-      rgba(255, 209, 90, 0.05)
-    ),
+  background: linear-gradient(180deg, rgba(255, 151, 99, 0.8), rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.05)),
     url('../img/kid-yellow-bg.jpg') center center;
   min-height: 40vh;
   background-size: cover;
@@ -274,13 +269,12 @@ New color scheme reference is in utils.css
 .small3 .small-span {
   position: absolute;
   top: calc(50% - 20px);
-  opacity: 0.4;
+  opacity: 0.6;
   cursor: pointer;
   color: #fff;
-  text-shadow: 1px 2px 10px rgba(0, 0, 0, 1);
 }
 .small3 .small-span:hover {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .small3 .small-span:first-of-type {
@@ -551,7 +545,7 @@ New color scheme reference is in utils.css
 --------------------------------------------------------------*/
 #card-fix {
   border: none;
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -560,8 +554,8 @@ New color scheme reference is in utils.css
   transition: all 0.3s ease-in-out;
 }
 #card-fix:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 1.2rem 1.5rem rgba(0, 0, 0, 0.5);
 }
 
 #img-fix {
@@ -612,6 +606,7 @@ New color scheme reference is in utils.css
 
 .carousel-inner {
   order: 1;
+  padding: 0.8rem 1.3rem;
 }
 
 .carousel-control-left {
@@ -627,11 +622,24 @@ New color scheme reference is in utils.css
   width: 5%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+}
+
+.fa-arrow-circle-right,
+.fa-arrow-circle-left {
+  color: #333a64;
+}
+.fa-arrow-circle-right:hover,
+.fa-arrow-circle-left:hover {
+  opacity: 0.6;
 }
 
 .carousel-control-next-icon {
   right: 0;
+  background: none;
+}
+
+.carousel-control-prev-icon {
+  background: none;
 }
 
 /* new additions end */
