@@ -109,7 +109,7 @@ router.post(
           ...req.body,
         });
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard);
+        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
         res.status(200).send({ success: true, url: '/wishcards/' });
       } catch (error) {
         handleError(res, 400, error);
@@ -157,7 +157,7 @@ router.post(
         }
 
         itemChoice = JSON.parse(itemChoice);
-        await WishCardRepository.createNewWishCard({
+        const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemName: itemChoice.Name,
           wishItemPrice: Number(itemChoice.Price),
@@ -174,6 +174,9 @@ router.post(
           },
           ...req.body,
         });
+
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
 
         res.status(200).send({ success: true, url: '/wishcards/' });
       } catch (error) {

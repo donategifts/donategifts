@@ -33,9 +33,9 @@ async function createNewAgency(agencyParams) {
   }
 }
 
-async function pushNewWishCardToAgency(id, wishCard) {
+async function pushNewWishCardToAgency(id, wishCardId) {
   try {
-    return Agency.updateOne({ _id: id }, { $push: { wishCards: wishCard } }, { new: true }).exec();
+    return Agency.updateOne({ _id: id }, { $push: { wishCards: wishCardId } }, { new: true }).exec();
   } catch (error) {
     throw new Error(`Failed to add wishcard to agency: ${error}`);
   }
