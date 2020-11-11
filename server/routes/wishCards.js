@@ -431,7 +431,7 @@ router.put(
 // @tested  Yes
 router.post(
   '/message',
-  redirectLogin,
+  renderPermissions,
   postMessageValidationRules(),
   validate,
   async (req, res) => {
