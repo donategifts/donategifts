@@ -5,20 +5,8 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/search.css" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
-      integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
-      crossorigin="anonymous"
-    ></script>
     <script src="/public/clientJS/utils.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-      <% for (var i = 0; i < wishcards.length; i++) { %>
-      	<% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
-      		addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
-      		<% } %>
-      <% } %>
-    </script>
+
     <!-- facebook login -->
     <script>
       window.fbAsyncInit = function () {
@@ -74,7 +62,7 @@
                   />
                 </div>
                 <div class="col-auto">
-                  <button class="btn btn-lg btn-success" type="submit">Search</button>
+                  <button class="wishcard__button--blue bdr-2" type="submit">Search</button>
                 </div>
               </div>
             </div>
@@ -113,7 +101,13 @@
                 </div>
               </div>
               <div class="col text-right mt-2">
-                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+                <button
+                  type="button"
+                  class="wishcard__link--white bdr-2"
+                  style="width: auto"
+                  data-toggle="collapse"
+                  data-target="#filter-panel"
+                >
                   Advanced Search
                 </button>
               </div>
@@ -148,7 +142,6 @@
                 <div class="card-text-container">
                   <!--Title-->
                   <h3 class="card-title text-center crayon-font">My name is <%= wishcards[i].childFirstName %></h3>
-
                   <!--Text-->
                   <div class="quick-font">
                     <p class="card-text">
@@ -173,11 +166,17 @@
                       <button
                         type="button"
                         data-toggle="modal"
+                        id="donate-btn-<%= wishcards[i]._id %>"
                         data-value-url="<%= wishcards[i].wishItemURL %>"
                         data-value-name="<%= wishcards[i].childFirstName %>"
                         data-value-id="<%= wishcards[i]._id %>"
                         data-value-loggedIn="<%= !!locals.user %>"
+                        <% if (locals.user) { %>
+                        data-value-user="<%= locals.user._id %>"
                         data-target="#wishCardDonateModal"
+                        <% } else { %>
+                        data-target="#loginModalCenter"
+                        <% } %>
                         class="wishcard__button--blue bdr-2"
                       >
                         Donate Gift
@@ -197,19 +196,23 @@
     <%- include('./templates/footer')-%>
     <script>
       countdown = [];
-      socket = io('<%= process.env.SOCKET_URL %>');
+      <% for (let i = 0; i < wishcards.length; i++) { %>
+
+      <% if (wishcards[i].status === 'donated') { %>
+      $(document).find('#donate-btn-' + '<%= wishcards[i]._id %>').text('Donated!');
+      $(document).find('#donate-btn-' + '<%= wishcards[i]._id %>').prop('disabled', true);
+      <% } %>
+
+      <% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
+          addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
+        <% } %>
+      <% } %>
     </script>
     <script src="/public/clientJS/wishCard.js"></script>
     <script src="/public/clientJS/wishCardModal.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-			integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-			</script>
     <!--  this is for login toast -->
     <% if(!locals.user) { %>
     <script src="/public/clientJS/loginToast.js"></script>
     <% } %>
-
-</body>
-
+  </body>
 </html>
-

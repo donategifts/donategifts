@@ -6,7 +6,7 @@ const Agency = require('./models/Agency');
 const MongooseConnection = require('./connection');
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
-if (process.env.LOCAL_DEVELOPMENT) {
+if (process.env.LOCAL_DEVELOPMENT === 'true') {
   MongooseConnection.connect();
 
   const insertData = async () => {
