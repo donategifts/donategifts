@@ -395,19 +395,10 @@ router.post(
       if (await bcrypt.compare(password, user.password)) {
         req.session.user = user;
         res.locals.user = user;
-        return res.redirect('/users/profile');
+        return res.status(200).send({ success: true, url: "/users/profile" })
       }
-      return res.status(403).render('login', {
-        user: res.locals.user,
-        successNotification: null,
-        errorNotification: { msg: 'Username and/or password incorrect' },
-      });
     }
-    return res.status(403).render('login', {
-      user: res.locals.user,
-      successNotification: null,
-      errorNotification: { msg: 'Username and/or password incorrect' },
-    });
+    handleError(res, 403, 'Username and/or password incorrect');
   },
 );
 
