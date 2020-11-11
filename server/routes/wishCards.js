@@ -210,31 +210,32 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// @desc    Retrun wishards that belong to the agency
-// @route   POST '/wishcards/me'
+// @desc    Return wishcards that belong to the agency
+// @route   GET '/wishcards/me'
 // @access  Agency
 // @tested 	No
 router.get('/me', async (req, res) => {
   try {
-    const { filter } = req.query;
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
     const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
-    // if filter param is present, filter wishcards based on it
-    const filteredWishCards =
-      filter !== undefined
-        ? agencyInfo.wishCards.filter((wishcard) => wishcard.status === filter)
-        : agencyInfo.wishCards;
-    res.status(200).send({
-      success: true,
-      error: null,
-      data: filteredWishCards,
+
+    const draftWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'draft');
+    const activeWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'published');
+    const inactiveWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'donated');
+
+    res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
     });
   } catch (error) {
     handleError(res, 400, error);
   }
 });
 
-// @desc    Retrun wishcards that have draft status
+// @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
 // @tested 	No
