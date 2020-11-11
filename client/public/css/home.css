@@ -607,6 +607,7 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
+  
 }
 
 .carousel-inner {
