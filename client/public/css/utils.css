@@ -217,6 +217,10 @@ button:focus {
   align-items: center;
 }
 
+.wishcards-container {
+  max-width: 1366px;
+}
+
 /* Hamburger Menu
 ----------------------------------------
 */
