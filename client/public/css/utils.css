@@ -65,8 +65,7 @@ dark grey:
 
 @font-face {
   font-family: 'DK-Crayon-Crumble';
-  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'),
-    url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
+  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'), url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
 }
 
 /* fonts
@@ -215,6 +214,10 @@ button:focus {
   max-height: 300px;
   justify-content: center;
   align-items: center;
+}
+
+.wishcards-container {
+  max-width: 1366px;
 }
 
 /* Hamburger Menu
