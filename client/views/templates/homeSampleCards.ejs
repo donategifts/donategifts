@@ -1,7 +1,7 @@
 <!-- Wish Card deck -->
 <div class="wishcards">
   <h1 class="crayon-font home-wish-title">Become Our Secret Santa</h1>
-  <div class="container">
+  <div class="wishcards-container mx-auto">
     <% if (!locals.wishcards || wishcards.length === 0) { %>
     <h1>No wishcards to display</h1>
     <% } else { %>
@@ -11,7 +11,7 @@
         <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
           <div class="row justify-content-center">
             <% for (let j = i; j < i+3 && j < wishcards.length; j++) { %>
-            <div class="col-lg-4 col-xs-12 mb-5">
+            <div class="col-lg-4 col-xs-12 mb-5 px-4">
               <!-- Card -->
               <div id="card-fix" class="card mb-3">
                 <!--Card image-->

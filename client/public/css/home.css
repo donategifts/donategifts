@@ -269,12 +269,12 @@ New color scheme reference is in utils.css
 .small3 .small-span {
   position: absolute;
   top: calc(50% - 20px);
-
+  opacity: 0.6;
   cursor: pointer;
   color: #fff;
 }
 .small3 .small-span:hover {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .small3 .small-span:first-of-type {
