@@ -255,7 +255,6 @@ New color scheme reference is in utils.css
 .small3 .small-ul {
   display: flex;
   top: 0;
-  /* padding: none; */
 }
 
 .small3 .small-ul li {
@@ -270,10 +269,9 @@ New color scheme reference is in utils.css
 .small3 .small-span {
   position: absolute;
   top: calc(50% - 20px);
-  /* opacity: 0.4; */
+
   cursor: pointer;
   color: #fff;
-  /* text-shadow: 1px 2px 10px rgba(0, 0, 0, 1); */
 }
 .small3 .small-span:hover {
   opacity: 0.6;
@@ -623,7 +621,6 @@ New color scheme reference is in utils.css
   width: 5%;
   display: flex;
   align-items: center;
-  /* justify-content: flex-end; */
 }
 
 .fa-arrow-circle-right,
