@@ -124,12 +124,14 @@ const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
 const aboutRoute = require('./routes/about');
 const howtoRoute = require('./routes/howTo');
+const faqRoute = require('./routes/faq');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
 app.use('/wishcards', wishCardsRoute);
 app.use('/about', aboutRoute);
 app.use('/howto', howtoRoute);
+app.use('/faq', faqRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {
@@ -159,6 +161,5 @@ app.use((err, req, res, _next) => {
   res.status(500);
   res.render('500');
 });
-
 
 module.exports = app;
