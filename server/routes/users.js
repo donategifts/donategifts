@@ -543,10 +543,11 @@ router.post(
   async (req, res) => {
     try {
       const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
-
+      
       if (userObject) {
         if (moment(userObject.passwordResetTokenExpires) > moment()) {
-          userObject.password = hashPassword(req.body.password);
+          const newPassword = await hashPassword(req.body.password);
+          userObject.password = newPassword;
           userObject.passwordResetToken = null;
           userObject.passwordResetTokenExpires = null;
           userObject.save();
