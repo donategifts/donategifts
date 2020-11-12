@@ -122,15 +122,17 @@ io = connectSocket(app);
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
-const aboutRoute = require('./routes/about');
+const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
+const contactRoute = require('./routes/contact');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
 app.use('/wishcards', wishCardsRoute);
-app.use('/about', aboutRoute);
+app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
+app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 
 app.get('/', (_req, res) => {
