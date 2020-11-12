@@ -192,7 +192,7 @@ router.post(
 // @tested 	Yes
 router.get('/', async (_req, res) => {
   try {
-    const wishcards = await WishCardRepository.getViewableWishCards(false);
+    const wishcards = await WishCardRepository.getAllWishCards();
 
     for (let i = 0; i < wishcards.length; i++) {
       const birthday = moment(new Date(wishcards[i].childBirthday));
