@@ -10,9 +10,6 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     const amazonURL = button[0].dataset.valueUrl;
     const modalBody = $('.modal-body');
 
-    // make sure header with close button is shown
-    $('.modal-header').show();
-
     const modalWarningMessage =
         `<div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
         <h4 class="crayon-font donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
