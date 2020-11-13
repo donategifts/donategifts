@@ -52,7 +52,7 @@ workflows:
             branches:
               ignore:
                 - master
-  deploy:
+  deploy-dev:
     jobs:
       - test:
           filters:
@@ -66,6 +66,13 @@ workflows:
             branches:
               only:
                 - master
+  deploy-prod:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - production
       - deploy-prod:
           requires:
             - test
