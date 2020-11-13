@@ -3,24 +3,18 @@
   <div class="container">
     <div class="row justify-content-between ml-2">
       <a class="site-branding" href="/" rel="home"
-        ><img
-          class="d-block"
-          id="logo-img"
-          src="/public/img/new-donate-gifts-logo-2.png"
-          alt="logo"
+        ><img class="d-block" id="logo-img" src="/public/img/new-donate-gifts-logo-2.png" alt="logo"
       /></a>
       <nav class="site-navigation d-flex justify-content-end align-items-center">
-        <ul
-          class="quick-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center"
-        >
-          <li><a href="/about">About</a></li>
+        <ul class="quick-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+          <li><a href="/mission">Mission</a></li>
           <li><a href="/howto">How To</a></li>
           <li><a href="/wishcards">Wish Cards</a></li>
           <% if (!locals.user) { %>
           <li><a href="/users/signup">Sign Up</a></li>
           <li><a href="/users/login">Login</a></li>
           <% } else { %> <% if (locals.user.userRole == 'partner') { %>
-          <li><a href="/users/agency/wishcard">My Wish Cards</a></li>
+          <li><a href="/wishcards/me">My Wish Cards</a></li>
           <% } %> <% if (locals.user.userRole == 'admin') { %>
           <li><a href="/wishcards/admin/">Admin Panel</a></li>
           <% } %>

@@ -1,34 +1,23 @@
-/*
-    serving all 'about' related routes
-    '/about' is already mounted, so no need to start with it for each route.
-*/
-
-// NPM DEPENDENCIES
 const express = require('express');
 
 const router = express.Router();
-
+const log = require('../helper/logger');
 // IMPORT WISHCARD MODEL
 const ContactRepository = require('../db/repository/ContactRepository');
 // LOAD EMAIL SENDING FUNCTION
 const { sendMail, sendSlackFeedbackMessage } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
-const log = require('../helper/logger');
 
-// @desc    Render about.html
-// @route   GET '/about'
-// @access  Public
-// @tested 	Not yet
 router.get('/', (req, res) => {
   try {
-    res.status(200).render('about', { user: res.locals.user });
+    res.status(200).render('contact', { user: res.locals.user });
   } catch (error) {
     log.error(req, error);
   }
 });
 
 // @desc    saves user data and sends an email to us
-// @route   POST '/about/email'
+// @route   POST '/contact/email'
 // @access  Public
 // @tested 	Not yet
 router.post('/email', async (req, res) => {
@@ -40,12 +29,7 @@ router.post('/email', async (req, res) => {
       message: req.body.message,
     });
 
-    const mailResponse = await sendMail(
-      contact.email,
-      'stacy.sealky.lee@gmail.com',
-      contact.subject,
-      contact.message,
-    );
+    const mailResponse = await sendMail(contact.email, 'stacy.sealky.lee@gmail.com', contact.subject, contact.message);
 
     if (mailResponse.error) {
       log.error(req, mailResponse.error);
