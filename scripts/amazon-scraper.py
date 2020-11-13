@@ -24,8 +24,19 @@ PASSWORD = "****"
 UNKNOWN = "Unknown"
 
 headers = {
-    "User-Agent": "Web crawler"
+    'authority': 'www.amazon.com',
+    'pragma': 'no-cache',
+    'cache-control': 'no-cache',
+    'dnt': '1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'sec-fetch-site': 'none',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-dest': 'document',
+    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
 }
+
 
 ## Http address of the targeted url
 LINK_HEADER = "https://www.amazon.com"
@@ -47,26 +58,16 @@ def fetchData():
 
         # get items' prices
         item_prices = []
-        for prices in soup.find_all("span", "a-price-whole"):
-            item_prices.append(prices.text.strip().replace(".", "").replace(",", ""))
+        for items in soup.find_all("li", "g-item-sortable"):
 
-        # get contents from specific class or id
-        item_contents = soup.select(".a-size-base > a")
-        item_info = [["Name", "Price($)", "Link"]]
-        index = 0
-        if item_contents:
-            for item in item_contents:
-                content = item.contents
-                item_name = content[0].split(",")[0]
-                if (index >= len(item_prices)) :
-                     item_info.append([item_name, UNKNOWN, LINK_HEADER + item["href"]])
-                else:
-                     item_info.append([item_name, item_prices[index], LINK_HEADER + item["href"]])
+            print(items.get('data-price'))
+            print(items.find("a", "a-link-normal").get('title'))
+            addToCartUrl = items.find('a', 'a-button-text')
+            if (addToCartUrl):
+                print(addToCartUrl.get('href'))
+            
+            print(items.find('span', 'g-comment-quote').text)
 
-                index += 1
-            return item_info
-        else:
-            print("Failed to fetch data.")
     except requests.ConnectionError as theE:
         print("Connection Error. Make sure you are connected to the Internet.\n")
         print(str(theE))
@@ -79,66 +80,9 @@ def fetchData():
     except KeyboardInterrupt:
         print("Program was closed by someone")
 
-
-## write items's information to .csv file
-def writeToFile(item_info):
-
-    with open(FILE_NAME, "w") as f:
-        writer = csv.writer(f)
-
-        for item in item_info:
-            writer.writerow(item)
-
-## read items' information from .csv file
-def readFromFile():
-    item_info = []
-    with open(FILE_NAME) as File:
-        reader = csv.reader(File, delimiter = ",", quotechar = ",",
-                            quoting = csv.QUOTE_MINIMAL)
-        for row in reader:
-           if (row):
-               item_info.append(row)
-
-    return item_info
-
-
-## compare if the items' prices have changed, and notify the owner through email
-## if there is a change
-def comparePrice():
-    originalItems_info = readFromFile()
-    updatedItems_info = fetchData()
-
-    hasDropped = False
-    for i in range(1, len(originalItems_info)):
-        price1 = originalItems_info[i][1]
-        price2 = updatedItems_info[i][1]
-        if (price1 != UNKNOWN and price2 != UNKNOWN):
-            price1 = int(price1)
-            price2 = int(price2)
-            if (price1 > price2):
-                notify(originalItems_info[i], updatedItems_info[i])
-                hasDropped = True
-        else:
-            print("Unknown Price. Please visit item's link to find out more. \nLink: " + originalItems_info[i][2])
-
-    if hasDropped:
-        writeToFile(updatedItems_info)
-
-
-
 ## main class
 def main():
 
     item_info = fetchData()
-
-    if (item_info):
-        writeToFile(item_info)
-    while (True):
-        comparePrice()
-        print("Web Crawler's going to sleep for a day")
-        time.sleep(3600 * 24)
-        print("Web Crawler's awake!")
-
-    print("Done!")
 
 main()

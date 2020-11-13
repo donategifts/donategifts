@@ -1,0 +1,24 @@
+.form-control-borderless {
+  border: none;
+}
+
+.form-control-borderless:hover,
+.form-control-borderless:active,
+.form-control-borderless:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+#margin-bottom {
+  margin-bottom: 3em;
+}
+
+.container {
+  margin-top: 30px;
+}
+
+.filter-col {
+  padding-left: 10px;
+  padding-right: 10px;
+}
