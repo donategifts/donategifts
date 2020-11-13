@@ -1,0 +1,230 @@
+2020-10-17T22:20:58.572Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:20:58.575Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:22:18.529Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:22:18.530Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:23:25.142Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:23:25.144Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:25:10.902Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:25:10.903Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:25:34.390Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:25:34.392Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:26:27.031Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:26:27.032Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:28:12.112Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:28:12.120Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:28:39.247Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:28:39.248Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:30:52.999Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:30:53.002Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:31:34.181Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:31:34.197Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:31:58.532Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:31:58.534Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:38:54.233Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:38:54.235Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:39:13.908Z INFO: TypeError: Cannot read property '_id' of undefined    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:344:74    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)    at next (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/route.js:137:13)    at Route.dispatch (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/route.js:112:3)    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)    at /Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:281:22    at param (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:354:14)    at param (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:365:14)    at Function.process_params (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:410:3)    at next (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:275:10)    at Function.handle (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:174:3)    at router (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:47:12)    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)    at trim_prefix (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:317:13)    at /Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:284:7    at Function.process_params (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:335:12) TypeError: Cannot read property '_id' of undefined TypeError: Cannot read property '_id' of undefined
+    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:344:74
+    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:281:22
+    at param (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:354:14)
+    at param (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:365:14)
+    at Function.process_params (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:410:3)
+    at next (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:47:12)
+    at Layer.handle [as handle_request] (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:317:13)
+    at /Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/patric/Documents/work/donategifts/node_modules/express/lib/router/index.js:335:12)
+2020-10-17T22:41:00.107Z INFO: SENDMAIL 
+2020-10-17T22:41:01.797Z INFO: [object Object] 
+2020-10-17T22:41:01.798Z INFO: Preview URL: %s 
+2020-10-17T22:42:14.956Z INFO: ReferenceError: newMessage is not defined    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:367:13    at processTicksAndRejections (internal/process/task_queues.js:93:5)    at runNextTicks (internal/process/task_queues.js:62:3)    at processImmediate (internal/timers.js:431:9) ReferenceError: newMessage is not defined ReferenceError: newMessage is not defined
+    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:367:13
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:431:9)
+2020-10-17T22:43:34.013Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:43:34.035Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:43:51.074Z INFO: [object Object] 
+2020-10-17T22:44:40.119Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:44:40.120Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:44:54.972Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:44:54.973Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:45:05.174Z INFO: ReferenceError: newMessage is not defined    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:364:13    at processTicksAndRejections (internal/process/task_queues.js:93:5)    at runNextTicks (internal/process/task_queues.js:62:3)    at processImmediate (internal/timers.js:431:9) ReferenceError: newMessage is not defined ReferenceError: newMessage is not defined
+    at /Users/patric/Documents/work/donategifts/server/routes/wishCards.js:364:13
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:431:9)
+2020-10-17T22:45:52.452Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:45:52.453Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:46:21.581Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:46:21.582Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:49:18.908Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:49:18.911Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:55:12.852Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:55:12.854Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:56:14.594Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:56:14.595Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:58:18.011Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:58:18.014Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:59:45.553Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:59:45.554Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T22:59:49.246Z INFO: Connected to Mongodb donategifts 
+2020-10-17T22:59:49.251Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:01:03.792Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:01:03.793Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:01:12.042Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:01:12.043Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:11:16.167Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:11:16.169Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:11:27.675Z INFO: [object Object] 
+2020-10-17T23:11:39.048Z INFO: [object Object] 
+2020-10-17T23:11:39.063Z INFO: [object Object] 
+2020-10-17T23:15:44.689Z INFO: [object Object] 
+2020-10-17T23:16:25.380Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:16:25.380Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:16:28.348Z INFO: [object Object] 
+2020-10-17T23:16:28.355Z INFO: [object Object] 
+2020-10-17T23:17:17.753Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:17:17.754Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:17:19.714Z INFO: [object Object] 
+2020-10-17T23:17:19.721Z INFO: [object Object] 
+2020-10-17T23:17:56.984Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:17:56.986Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:18:25.235Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:18:25.236Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:18:36.501Z INFO: [object Object] 
+2020-10-17T23:18:36.507Z INFO: [object Object] 
+2020-10-17T23:18:49.112Z INFO: [object Object] 
+2020-10-17T23:19:24.338Z INFO: [object Object] 
+2020-10-17T23:19:24.350Z INFO: [object Object] 
+2020-10-17T23:24:39.416Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:24:39.419Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:25:54.874Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:25:54.875Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:28:04.388Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:28:04.389Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:28:14.906Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:28:14.907Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:28:49.926Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:28:49.928Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:29:13.814Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:29:13.815Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:29:23.532Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:29:23.535Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:31:34.556Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:31:34.557Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:34:54.277Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:34:54.279Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:38:07.239Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:38:07.241Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:39:31.931Z INFO: [object Object] 
+2020-10-17T23:45:01.937Z INFO: [object Object] 
+2020-10-17T23:45:08.536Z INFO: [object Object] 
+2020-10-17T23:45:13.666Z INFO: [object Object] 
+2020-10-17T23:45:30.384Z INFO: [object Object] 
+2020-10-17T23:47:27.763Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:47:27.779Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:48:06.794Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:48:06.796Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:51:18.186Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:51:18.187Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:52:25.153Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:52:25.154Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:53:25.103Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:53:25.104Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:54:04.050Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:54:04.051Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:54:21.740Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:54:21.741Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:54:41.884Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:54:41.887Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:55:25.689Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:55:25.691Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:56:17.126Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:56:17.128Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:56:41.457Z INFO: [object Object] 
+2020-10-17T23:57:14.892Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:57:14.894Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-17T23:57:20.589Z INFO: [object Object] 
+2020-10-17T23:58:45.613Z INFO: Connected to Mongodb donategifts 
+2020-10-17T23:58:45.614Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:00:05.597Z INFO: Connected to Mongodb donategifts 
+2020-10-18T00:00:05.598Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:00:25.588Z INFO: Connected to Mongodb donategifts 
+2020-10-18T00:00:25.590Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:01:03.438Z INFO: Connected to Mongodb donategifts 
+2020-10-18T00:01:03.439Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:01:35.512Z INFO: Connected to Mongodb donategifts 
+2020-10-18T00:01:35.517Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:03:03.274Z INFO: Connected to Mongodb donategifts 
+2020-10-18T00:03:03.276Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T00:03:47.081Z INFO: [object Object] 
+2020-10-18T09:06:28.015Z INFO: [object Object] 
+2020-10-18T09:06:28.026Z INFO: [object Object] 
+2020-10-18T09:06:28.029Z INFO: [object Object] 
+2020-10-18T09:06:35.248Z INFO: [object Object] 
+2020-10-18T09:08:16.724Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:08:16.725Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:13:20.343Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:13:20.345Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:13:31.892Z INFO: [object Object] 
+2020-10-18T09:14:30.410Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:14:30.412Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:14:54.537Z INFO: [object Object] 
+2020-10-18T09:15:30.826Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:15:30.828Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:15:39.513Z INFO: [object Object] 
+2020-10-18T09:16:08.904Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:16:08.906Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:17:33.592Z INFO: [object Object] 
+2020-10-18T09:17:39.581Z INFO: [object Object] 
+2020-10-18T09:17:46.742Z INFO: [object Object] 
+2020-10-18T09:18:12.031Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:18:12.032Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:18:18.008Z INFO: [object Object] 
+2020-10-18T09:18:41.590Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:18:41.592Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:19:06.169Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:19:06.172Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:19:19.081Z INFO: [object Object] 
+2020-10-18T09:19:54.547Z INFO: Connected to Mongodb donategifts 
+2020-10-18T09:19:54.548Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T09:20:00.385Z INFO: [object Object] 
+2020-10-18T19:03:54.280Z INFO: Connected to Mongodb donategifts 
+2020-10-18T19:03:54.291Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T19:07:37.345Z INFO: Connected to Mongodb donategifts-test 
+2020-10-18T19:07:37.347Z INFO: Server running at http://127.0.0.1:8081/ 
+2020-10-18T19:07:37.675Z INFO: SENDMAIL 
+2020-10-18T19:07:38.019Z INFO: SENDMAIL 
+2020-10-18T19:07:38.247Z INFO: SENDMAIL 
+2020-10-18T19:07:38.406Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'fName',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'fName',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.406Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'fName',  location: 'body'} [object Object] 
+2020-10-18T19:07:38.436Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'lName',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'lName',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.436Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'lName',  location: 'body'} [object Object] 
+2020-10-18T19:07:38.471Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'email',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'email',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.472Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'email',  location: 'body'} [object Object] 
+2020-10-18T19:07:38.514Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'password',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'password',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'password',      location: 'body'    },    {      value: 'testPassword',      msg: 'Password confirmation does not match password',      param: 'passwordConfirm',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.515Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'password',  location: 'body'} [object Object] 
+2020-10-18T19:07:38.714Z INFO: SENDMAIL 
+2020-10-18T19:07:38.868Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'email',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'email',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'email',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.868Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'email',  location: 'body'} [object Object] 
+2020-10-18T19:07:38.901Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'password',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'password',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:38.902Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'password',  location: 'body'} [object Object] 
+2020-10-18T19:07:39.120Z INFO: SENDMAIL 
+2020-10-18T19:07:39.222Z INFO: [object Object] 
+2020-10-18T19:07:39.299Z INFO: SENDMAIL 
+2020-10-18T19:07:39.434Z INFO: SENDMAIL 
+2020-10-18T19:07:39.649Z INFO: SENDMAIL 
+2020-10-18T19:07:39.687Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'agencyName',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'agencyName',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:39.688Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'agencyName',  location: 'body'} [object Object] 
+2020-10-18T19:07:39.760Z INFO: [object Object] 
+2020-10-18T19:07:39.833Z INFO: SENDMAIL 
+2020-10-18T19:07:39.882Z INFO: Result {  formatter: [Function: formatter],  errors: [    {      value: undefined,      msg: 'Invalid value',      param: 'agencyPhone',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'agencyPhone',      location: 'body'    },    {      value: undefined,      msg: 'Invalid value',      param: 'agencyPhone',      location: 'body'    }  ]} [object Object] 
+2020-10-18T19:07:39.882Z INFO: {  value: undefined,  msg: 'Invalid value',  param: 'agencyPhone',  location: 'body'} [object Object] 
+2020-10-18T20:24:49.832Z INFO: Connected to Mongodb donategifts 
+2020-10-18T20:24:49.834Z INFO: Server running at http://127.0.0.1:8081/ 
