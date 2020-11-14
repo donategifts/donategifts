@@ -55,12 +55,17 @@ if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
+
+// mongo connection needs to be established before admin-bro setup
 MongooseConnection.connect();
+
 AdminBro.registerAdapter(AdminBroMongoose);
+
 const adminBro = new AdminBro({
   resources: [User, Agency, Contact, Donation, Message, WishCard],
   rootPath: '/admin',
 });
+
 const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
   authenticate: async (email, password) => {
     const user = await UserRepository.getUserByEmail(email);
@@ -75,6 +80,7 @@ const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
 
 app.use(adminBro.options.rootPath, adminRouter);
 
+// middleware need to be setup after admin-bro setup
 app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
@@ -155,7 +161,6 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
-const { cookie } = require('express-validator');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
