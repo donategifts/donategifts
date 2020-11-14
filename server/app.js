@@ -107,7 +107,7 @@ app.use(
     cookie: {
       maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour
       sameSite: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false,
     },
   }),
 );
