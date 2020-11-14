@@ -10,6 +10,9 @@ jobs:
           name: Copy default config
           command: cp config/example-config.env config/config.env
       - run:
+          name: Install NPM 7
+          command: sudo npm install -g npm@7
+      - run:
           name: Install packages
           command: npm ci
       - run:
