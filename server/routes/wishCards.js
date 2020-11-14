@@ -34,7 +34,7 @@ const {
 } = require('./validations/wishcards.validations');
 
 const { redirectLogin } = require('./middleware/login.middleware');
-const { renderPermissions } = require('./middleware/wishCard.middleware');
+const { renderPermissions, checkVerifiedUser } = require('./middleware/wishCard.middleware');
 const {
   babies,
   preschoolers,
@@ -192,7 +192,7 @@ router.post(
 // @tested 	Yes
 router.get('/', async (_req, res) => {
   try {
-    const wishcards = await WishCardRepository.getViewableWishCards(false);
+    const wishcards = await WishCardRepository.getAllWishCards();
 
     for (let i = 0; i < wishcards.length; i++) {
       const birthday = moment(new Date(wishcards[i].childBirthday));
@@ -212,9 +212,9 @@ router.get('/', async (_req, res) => {
 
 // @desc    Return wishcards that belong to the agency
 // @route   GET '/wishcards/me'
-// @access  Agency
+// @access  Private, verified partner
 // @tested 	No
-router.get('/me', async (req, res) => {
+router.get('/me', renderPermissions, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
     const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
@@ -431,11 +431,11 @@ router.put(
 
 // @desc    User can post a message to the wishcard
 // @route   POST '/wishcards/message'
-// @access  Private, all users
+// @access  Private, all email verified donor users. 
 // @tested  Yes
 router.post(
   '/message',
-  renderPermissions,
+  checkVerifiedUser,
   postMessageValidationRules(),
   validate,
   async (req, res) => {
