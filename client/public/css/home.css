@@ -623,6 +623,19 @@ New color scheme reference is in utils.css
   align-items: center;
 }
 
+@media screen and (max-width: 980px) {
+  .carousel-control-left {
+    order: initial;
+  }
+  .carousel-control-right {
+    order: initial;
+  }
+}
+
+#mobile__carousel-controls {
+  margin-top: -20px;
+}
+
 .fa-arrow-circle-right,
 .fa-arrow-circle-left {
   color: #333a64;
@@ -990,4 +1003,17 @@ New color scheme reference is in utils.css
   background: #ffffff !important;
   color: #00a19a !important;
   text-decoration: none;
+}
+
+.mobile__carousel-wrapper {
+  display: none;
+}
+
+@media only screen and (max-width: 980px) {
+  #carouselExampleIndicators {
+    display: none;
+  }
+  .mobile__carousel-wrapper {
+    display: block;
+  }
 }

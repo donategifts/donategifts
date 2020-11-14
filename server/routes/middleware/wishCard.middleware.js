@@ -98,4 +98,16 @@ const renderPermissions = async (req, res, next) => {
   }
 };
 
-module.exports = { upload, renderPermissions };
+const checkVerifiedUser = async (req, res, next) => {
+  const { user } = req.session;
+  if (!user) {
+    res.status(403).send({ success: false, url: '/users/login' });
+  }
+  if (!user.emailVerified) {
+    res.status(403).send({ success: false, url: '/users/profile' });
+  } else {
+    next();
+  }
+};
+
+module.exports = { upload, renderPermissions, checkVerifiedUser };
