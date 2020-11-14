@@ -17,12 +17,12 @@ function connectSocket(app) {
     server = https.createServer(app, options);
   }
 
-  io = require('socket.io')(server,  {
+  io = require('socket.io')(server, {
     cors: {
-      origin: "*",
-      methods: ["GET", "POST"],
-      allowedHeaders: ["content-type"]
-    }
+      origin: '*',
+      methods: ['GET', 'POST'],
+      allowedHeaders: ['Content-Type'],
+    },
   });
 
   server.listen(8081, () => {
@@ -31,6 +31,5 @@ function connectSocket(app) {
 
   return io;
 }
-
 
 module.exports = { connectSocket };
