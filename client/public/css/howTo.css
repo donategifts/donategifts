@@ -24,3 +24,7 @@
 .howTo:active {
   outline: none;
 }
+
+#partner {
+  background: #fff;
+}
