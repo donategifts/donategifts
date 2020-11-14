@@ -28,12 +28,23 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
+const AdminBro = require('admin-bro');
+const AdminBroExpress = require('@admin-bro/express');
+const AdminBroMongoose = require('@admin-bro/mongoose');
+const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
+
+const Agency = require('./db/models/Agency');
+const Contact = require('./db/models/Contact');
+const Donation = require('./db/models/Donation');
+const Message = require('./db/models/Message');
+const User = require('./db/models/User');
+const WishCard = require('./db/models/WishCard');
 
 const log = require('./helper/logger');
 
@@ -44,6 +55,32 @@ if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
+
+// mongo connection needs to be established before admin-bro setup
+MongooseConnection.connect();
+
+AdminBro.registerAdapter(AdminBroMongoose);
+
+const adminBro = new AdminBro({
+  resources: [User, Agency, Contact, Donation, Message, WishCard],
+  rootPath: '/admin',
+});
+
+const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+  authenticate: async (email, password) => {
+    const user = await UserRepository.getUserByEmail(email);
+    const matched = await bcrypt.compare(password, user.password);
+    if (user && user.userRole === 'admin' && matched) {
+      return user;
+    }
+    return false;
+  },
+  cookiePassword: process.env.SESS_SECRET,
+});
+
+app.use(adminBro.options.rootPath, adminRouter);
+
+// middleware need to be setup after admin-bro setup
 app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
@@ -55,8 +92,6 @@ app.engine('html', ejs.renderFile);
 app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
 app.use('/uploads', express.static('./uploads'));
-
-MongooseConnection.connect();
 
 // SESSION SET UP
 app.use(

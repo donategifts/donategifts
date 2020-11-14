@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/stacysealky/donategifts#readme",
   "dependencies": {
+    "@admin-bro/express": "^3.0.1",
+    "@admin-bro/mongoose": "^1.1.0",
+    "admin-bro": "^3.3.1",
     "aws-sdk": "^2.787.0",
     "axios": "^0.21.0",
     "bcrypt": "^5.0.0",
