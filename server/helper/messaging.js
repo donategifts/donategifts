@@ -216,7 +216,6 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
 
       return true;
     } catch (error) {
-      console.log('dd' + error)
       log.error(error);
       return false;
     }
