@@ -4,7 +4,7 @@ const UserRepository = require('../../db/repository/UserRepository');
 
 async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, childAge = 15) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
-    itemName.trim(),
+    (itemName && itemName.trim()) || '',
     isDonated,
     limit,
   );
@@ -21,9 +21,11 @@ async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, 
     allWishCards[i].age = today.diff(birthday, 'years');
   }
 
-  return allWishCards.filter((item) =>
-    childAge < 15 ? item.age < childAge : item.age >= childAge,
-  );
+  if (isDonated) {
+    return allWishCards;
+  }
+
+  return allWishCards.filter((item) => (childAge < 15 ? item.age < childAge : item.age >= childAge));
 }
 
 async function getLockedWishCards(req) {
@@ -42,9 +44,7 @@ async function getLockedWishCards(req) {
     return response;
   }
   response.userId = user._id;
-  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
-    req.session.user._id,
-  );
+  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
 
   return response;
 }
