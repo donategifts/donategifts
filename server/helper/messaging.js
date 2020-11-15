@@ -70,7 +70,6 @@ const getTransport = async () => {
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject, message, attachments = undefined) => {
-  log.info('SENDMAIL');
   try {
     const transporter = await getTransport();
 
