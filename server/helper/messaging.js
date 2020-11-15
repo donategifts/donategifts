@@ -214,7 +214,8 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
       });
 
       return true;
-    } catch (_) {
+    } catch (error) {
+      log.error(error);
       return false;
     }
   }
