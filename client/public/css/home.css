@@ -888,6 +888,7 @@ New color scheme reference is in utils.css
 .button--blue,
 .button--inverted-green {
   padding: 1em 2em;
+  font-size: 1.3em;
   margin: 10px;
   border-radius: 20px;
   line-height: 1.2em;
