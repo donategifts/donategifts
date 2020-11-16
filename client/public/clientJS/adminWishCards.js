@@ -10,8 +10,7 @@ function unlockCardButtonClick(e) {
     const oldItemUrl = $("#oldWishItemUrl"+cardId);
     const newItemUrl = $("#newWishItemUrl"+cardId);
     // take new url if anything is isnide input box
-    let wishItemUrl = newItemUrl.value ? newItemUrl.value : oldItemUrl.href;
-    console.log(wishItemUrl);
+    let wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
     // get reference to element so we can call it inside callback
     const elementRef = e.target;
     $.ajax({

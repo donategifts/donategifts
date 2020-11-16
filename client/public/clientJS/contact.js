@@ -1,5 +1,5 @@
 $(function () {
-  $('#emailForm').submit(function (e) {
+  $('form').submit(function (e) {
     e.preventDefault();
 
     var formData = $(this)
