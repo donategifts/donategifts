@@ -26,6 +26,7 @@
   "dependencies": {
     "@admin-bro/express": "^3.0.1",
     "@admin-bro/mongoose": "^1.1.0",
+    "@log4js-node/logstashudp": "^1.2.1",
     "admin-bro": "^3.3.1",
     "aws-sdk": "^2.787.0",
     "axios": "^0.21.0",
@@ -54,6 +55,8 @@
     "nodemailer": "^6.4.15",
     "nodemailer-mailgun-transport": "^2.0.1",
     "querystring": "^0.2.0",
+    "request-ip": "^2.1.3",
+    "response-time": "^2.3.2",
     "sharp": "0.26.2",
     "socket.io": "^3.0.0",
     "superagent": "6.1.0",
