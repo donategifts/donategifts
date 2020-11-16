@@ -123,8 +123,8 @@ New color scheme reference is in utils.css
 
 /* ---------------home hero section */
 #home-bg {
-  background: url('../img/donategifts-new-hero.png') center center;
-  min-height: 90vh;
+  background: url('../img/new-hero.png') center center;
+  min-height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -155,7 +155,7 @@ New color scheme reference is in utils.css
 }
 
 .text h4 {
-  font-size: 1.7em;
+  font-size: 1.5em;
   line-height: 1.2em;
   /* text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99); */
 }
@@ -163,6 +163,8 @@ New color scheme reference is in utils.css
 .text button {
   margin-top: 1.4em;
 }
+
+
 
 /* new addition start  ------------------------------*/
 .home-wish-title {
@@ -321,6 +323,15 @@ New color scheme reference is in utils.css
 
   .bg {
     margin-bottom: 0;
+  }
+
+  .m-mobile {
+    margin-top: 1em;
+    margin-bottom: 2em;
+  }
+
+  #home-bg {
+    margin-bottom: -2em;
   }
 }
 
@@ -659,7 +670,7 @@ New color scheme reference is in utils.css
 
 .wishcards {
   position: relative;
-  padding: 3.5em 0;
+  padding: 3em 0;
 }
 
 /* height might need to change */
