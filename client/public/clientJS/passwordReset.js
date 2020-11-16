@@ -49,7 +49,13 @@ function getHostName() {
             return "http://localhost:8081";
         
         case "127.0.0.1":
-            return "http://localhost:8081"; 
+            return "http://localhost:8081";
+            
+        case "donate-gifts.com":
+            return "https://donate-gifts.com";
+
+        case "dev.donate-gifts.com":
+            return "https://dev.donate-gifts.com"
     
         default:
             return window.location.hostname
