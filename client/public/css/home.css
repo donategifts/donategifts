@@ -601,6 +601,7 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
+  
 }
 
 .carousel-inner {
@@ -887,6 +888,7 @@ New color scheme reference is in utils.css
 .button--blue,
 .button--inverted-green {
   padding: 1em 2em;
+  font-size: 1.3em;
   margin: 10px;
   border-radius: 20px;
   line-height: 1.2em;
@@ -963,7 +965,7 @@ New color scheme reference is in utils.css
   display: inline;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 100%;
+  /* width: 100%; */
   border: 0.5px solid transparent;
 }
 
@@ -990,7 +992,7 @@ New color scheme reference is in utils.css
   display: inline;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 100%;
+  /* width: 100%; */
   border: 0.5px solid transparent;
 }
 
