@@ -22,9 +22,10 @@ dotenv.config({
 const express = require('express');
 const bodyParser = require('body-parser');
 const responseTime = require('response-time')
+const requestIp = require('request-ip');
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const requestIp = require('request-ip');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
