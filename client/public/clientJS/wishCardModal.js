@@ -41,8 +41,8 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
         });
     } else {
         //remove existing click listeners to prevent stacking
-        $(document).off('click', '#modal-donate-btn')
         $(document).on('click', '#modal-donate-btn', (event) => {
+            $(document).off('click', '#modal-donate-btn')
             event.preventDefault();
             $.ajax({
                 type: 'POST',
