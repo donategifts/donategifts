@@ -66,6 +66,8 @@ app.use(responseTime(function (req, res, time) {
     && !req.originalUrl.includes('.jpg')
     && !req.originalUrl.includes('.js')
     && !req.originalUrl.includes('.svg')
+    && !req.originalUrl.includes('.jpeg')
+    && !req.originalUrl.includes('.woff')
     && !req.originalUrl.includes('.css')
     && !req.originalUrl.includes('.ico')
     || (res.statusCode > 304) ) {
