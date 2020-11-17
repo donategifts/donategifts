@@ -9,7 +9,7 @@ configure({
     logstash: {
       type: "log4js-logstash-tcp",
       host: "localhost",
-      port: 5000,
+      port: 5044,
     },
   },
   categories: {
