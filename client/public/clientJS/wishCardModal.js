@@ -40,8 +40,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             location.assign("/users/login")
         });
     } else {
-
+        //remove existing click listeners to prevent stacking
         $(document).on('click', '#modal-donate-btn', (event) => {
+            $(document).off('click', '#modal-donate-btn')
             event.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -68,13 +69,14 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     $('.donate-false').on('click', event => {
 
-                        $('#wishCardDonateModal').modal('hide')
                         $.ajax({
                             type: 'POST',
                             url: '/wishcards/unlock/' + wishCardId,
                             data: {},
                             success: (response, textStatus, jqXHR) => {
                                 console.log(response)
+                                $('#wishCardDonateModal').modal('hide')
+
                             },
                             error: (response, textStatus, errorThrown) => {
                                 console.log(response)

@@ -76,32 +76,32 @@ router.post(
       try {
         const { childBirthday, wishItemPrice } = req.body;
 
-        let filePath = req.file.location;
+        let filePath;
 
         if (process.env.NODE_ENV === 'development') {
-          filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
         }
-
+       
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
-          wishCardImage: filePath,
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          // Uncomment once address fields are added to profile page.
-          // address: {
-          //   address1: req.body.address1,
-          //   address2: req.body.address2,
-          //   city: req.body.address_city,
-          //   state: req.body.address_state,
-          //   zip: req.body.address_zip,
-          //   country: req.body.address_country,
-          // },
+          address: {
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.address_city,
+            state: req.body.address_state,
+            zip: req.body.address_zip,
+            country: req.body.address_country,
+          },
           ...req.body,
         });
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
         res.status(200).send({ success: true, url: '/wishcards/' });
-        log.info('Wishcard created', {type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id})
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -141,10 +141,11 @@ router.post(
         } = req.body;
         let { itemChoice } = req.body;
 
-        let filePath = req.file.location;
+        let filePath;
 
         if (process.env.NODE_ENV === 'development') {
-          filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
         }
 
         itemChoice = JSON.parse(itemChoice);
@@ -153,7 +154,7 @@ router.post(
           wishItemName: itemChoice.Name,
           wishItemPrice: Number(itemChoice.Price),
           wishItemURL: itemChoice.ItemURL,
-          wishCardImage: filePath,
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
           address: {
             address1,
@@ -385,6 +386,13 @@ router.get('/get/random', async (req, res) => {
     } else {
       wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
     }
+    const requiredLength = 3 * Math.ceil(wishcards.length / 3);
+    const rem = requiredLength - wishcards.length;
+    if (rem !== 0 && wishcards.length > 3) {
+      for (let j = 0; j < rem; j++) {
+        wishcards.push(wishcards[j]);
+      }
+    }
     res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
       if (error) {
         res.status(400).json({ success: false, error });
@@ -468,7 +476,7 @@ router.post('/lock/:id', async (req, res) => {
 
     const lockedWishCard = await WishCardRepository.lockWishCard(wishCardId, userId);
 
-    log.info('Wishcard blocked', {type: 'wishcard_blocked', wishCardId, userId})
+    log.info('Wishcard blocked', { type: 'wishcard_blocked', wishCardId, userId });
     io.emit('block', { id: wishCardId, lockedUntil: lockedWishCard.isLockedUntil });
 
     // in case user doesn't confirm donation, check after countdown runs out
@@ -497,7 +505,7 @@ router.post('/unlock/:id', async (req, res) => {
       if (String(alreadyLockedWishCard.isLockedBy) === String(userId)) {
         await WishCardRepository.unLockWishCard(wishCardId);
 
-        log.info('Wishcard unblocked', {type: 'wishcard_unblocked', wishCardId, userId})
+        log.info('Wishcard unblocked', { type: 'wishcard_unblocked', wishCardId, userId });
         io.emit('unblock', { id: wishCardId });
         clearTimeout(blockedWishcardsTimer[wishCardId]);
 
@@ -607,14 +615,14 @@ queue.process(async (job, done) => {
             donationConfirmed: true,
           });
 
-          log.info('Wishcard donated', {type: 'wishcard_donated', wishCardId, userId})
+          log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
           io.emit('donated', { id: wishCardId, donatedBy: userId });
 
           done(true);
           return true;
         }
 
-        log.info('Wishcard not donated', {type: 'wishcard_not_donated', wishCardId, userId})
+        log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
         io.emit('not_donated', { id: wishCardId, userId });
 
         done(false);
@@ -635,7 +643,8 @@ queue.on('completed', (job) => {
     type: 'scrapejob_done',
     userId: job.data.userId,
     wishCardId: job.data.wishCardId,
-    url: job.data.url})
+    url: job.data.url,
+  });
 });
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))

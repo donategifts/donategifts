@@ -22,9 +22,10 @@ dotenv.config({
 const express = require('express');
 const bodyParser = require('body-parser');
 const responseTime = require('response-time')
+const requestIp = require('request-ip');
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const requestIp = require('request-ip');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
@@ -65,6 +66,8 @@ app.use(responseTime(function (req, res, time) {
     && !req.originalUrl.includes('.jpg')
     && !req.originalUrl.includes('.js')
     && !req.originalUrl.includes('.svg')
+    && !req.originalUrl.includes('.jpeg')
+    && !req.originalUrl.includes('.woff')
     && !req.originalUrl.includes('.css')
     && !req.originalUrl.includes('.ico')
     || (res.statusCode > 304) ) {
@@ -117,7 +120,8 @@ app.engine('html', ejs.renderFile);
 // STATIC SET UP
 app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
-app.use('/uploads', express.static('./uploads'));
+app.use('./uploads', express.static('./uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // SESSION SET UP
 app.use(

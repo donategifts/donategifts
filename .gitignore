@@ -17,4 +17,4 @@ config/config.env
 server/logs
 .eslintcache
 dump.*
-.adminbro/bundle.js
+.adminbro
