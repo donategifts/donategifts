@@ -3,7 +3,6 @@ const { configure, getLogger, levels } = require('log4js');
 const appenderArray = ['console'];
 if (process.env.LOCAL_DEVELOPMENT) appenderArray.push('logstash');
 
-console.log(appenderArray)
 configure({
   appenders: {
     console: { type: 'console', layout: { type: 'colored' } },
