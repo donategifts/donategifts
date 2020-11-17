@@ -76,26 +76,26 @@ router.post(
       try {
         const { childBirthday, wishItemPrice } = req.body;
 
-        let filePath = req.file.location;
+        let filePath;
 
         if (process.env.NODE_ENV === 'development') {
-          filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
         }
-
+       
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
-          wishCardImage: filePath,
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          // Uncomment once address fields are added to profile page.
-          // address: {
-          //   address1: req.body.address1,
-          //   address2: req.body.address2,
-          //   city: req.body.address_city,
-          //   state: req.body.address_state,
-          //   zip: req.body.address_zip,
-          //   country: req.body.address_country,
-          // },
+          address: {
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.address_city,
+            state: req.body.address_state,
+            zip: req.body.address_zip,
+            country: req.body.address_country,
+          },
           ...req.body,
         });
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
@@ -141,10 +141,11 @@ router.post(
         } = req.body;
         let { itemChoice } = req.body;
 
-        let filePath = req.file.location;
+        let filePath;
 
         if (process.env.NODE_ENV === 'development') {
-          filePath = req.file.path.slice(req.file.path.indexOf('/uploads'), req.file.path.length);
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
         }
 
         itemChoice = JSON.parse(itemChoice);
@@ -153,7 +154,7 @@ router.post(
           wishItemName: itemChoice.Name,
           wishItemPrice: Number(itemChoice.Price),
           wishItemURL: itemChoice.ItemURL,
-          wishCardImage: filePath,
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
           address: {
             address1,
