@@ -16,7 +16,7 @@ $(document).ready(function () {
                 $("#submit-btn").prop("disabled",false);
                 showToast("Password Changed. You will be redirected to login page");
                 setTimeout(() => {
-                    window.location.replace(`${getHostName()}/users/login`);
+                    window.location.replace(`/users/login`);
                 }, 4000);
             },
             error: function(response, textStatus, errorThrown) {
@@ -37,27 +37,5 @@ window.onload = function() {
         } else {
             password2Element.setCustomValidity('');
         }
-    }
-}
-
-// get host name so that the user can be reddirected to login page after
-// password reset
-function getHostName() {
-    let hostName = window.location.hostname;
-    switch (hostName) {
-        case "localhost":
-            return "http://localhost:8081";
-        
-        case "127.0.0.1":
-            return "http://localhost:8081";
-            
-        case "donate-gifts.com":
-            return "https://donate-gifts.com";
-
-        case "dev.donate-gifts.com":
-            return "https://dev.donate-gifts.com"
-    
-        default:
-            return window.location.hostname
     }
 }
