@@ -120,7 +120,8 @@ app.engine('html', ejs.renderFile);
 // STATIC SET UP
 app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
-app.use('/uploads', express.static('./uploads'));
+app.use('./uploads', express.static('./uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // SESSION SET UP
 app.use(
