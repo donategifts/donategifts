@@ -39,6 +39,8 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
+const {sendDonationNotificationToSlack } = require('../helper/messaging');
+
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
@@ -565,7 +567,7 @@ queue.process(async (job, done) => {
       const itemId = wishListArray[2];
 
       if (wishListId) {
-        if (process.env.LOCAL_DEVELOPMENT === 'true') {
+        if (process.env.LOCAL_DEVELOPMENT) {
           if (testResponse) {
             const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
@@ -619,6 +621,8 @@ queue.process(async (job, done) => {
 
           log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
           io.emit('donated', { id: wishCardId, donatedBy: userId });
+          const user = await UserRepository.getUserByObjectId(userId);
+          sendDonationNotificationToSlack(user, wishCard)
 
           done(true);
           return true;
