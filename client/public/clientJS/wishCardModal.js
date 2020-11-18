@@ -9,9 +9,10 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     const wishCardId = button[0].dataset.valueId;
     const amazonURL = button[0].dataset.valueUrl;
     const modalBody = $('.modal-body');
+    const modalHeader = modalBody.find('.modal-header');
 
     // make sure header with close button is shown
-    $('.modal-header').show();
+    modalHeader.show();
 
     const modalWarningMessage =
         `<div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
@@ -27,21 +28,19 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
         </div>
         `;
 
-    // get modal reference and replace text
-    modalBody.html(modalWarningMessage);
     // set  redirect on a ref element
 
-    const isLoggedIn = button[0].dataset.valueLoggedin;
-    const reserveBtn = $('#modal-donate-btn');
+    const emailVerified = button[0].dataset.valueEmailverified;
 
-    if (isLoggedIn === 'false') {
-        reserveBtn.html('Please log in to donate')
-        $(document).on('click', '#modal-donate-btn', (event) => {
-            location.assign("/users/login")
-        });
+    if (emailVerified === 'false') {
+        modalBody.html(`<div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
+        <h3 class="crayon-font">Please verify your email address to enable donation gifting.</h3></div>`)
     } else {
-        //remove existing click listeners to prevent stacking
-        $(document).on('click', '#modal-donate-btn', (event) => {
+        // get modal reference and replace text
+        modalBody.html(modalWarningMessage);
+        const reserveBtn = modalBody.find('#modal-donate-btn');
+        // add click listener to button
+        reserveBtn.on('click', (event) => {
             $(document).off('click', '#modal-donate-btn')
             event.preventDefault();
             $.ajax({
@@ -51,7 +50,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 success: (response, textStatus, jqXHR) => {
 
                     // Hide modal header to prevent closing the modal
-                    $('.modal-header').hide();
+                    modalHeader.hide();
 
                     const donateModalMessages = modalBody.find(`#donateModalMsg-${wishCardId}`);
                     donateModalMessages.html(`<div id="wait-${wishCardId}"></div>
@@ -99,10 +98,11 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     const statusDiv = modalBody.find('#status-' + wishCardId);
                     const donateDoneButton = modalBody.find('#donateDone-' + wishCardId);
                     const spinner = modalBody.find('#spinner-border');
+                    const lockedCountdown = modalBody.find(`#lockedCountdown-${wishCardId}`);
 
                     donateDoneButton.on('click', (event) => {
 
-                        showLoadingView();
+                        showLoadingView(donateBtnWrapper, lockedCountdown);
 
                         modalBody.find('#wait-' + wishCardId).show();
                         $.ajax({
@@ -121,7 +121,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     socket.on('donated', event => {
 
                         if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
-                            $('.modal-header').show();
+                            modalHeader.show();
 
                             spinner.hide();
                             waitDiv.hide();
@@ -150,21 +150,21 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     socket.on('countdown_ran_out', event => {
 
                         if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
-                            showLoadingView();
+                            showLoadingView(donateBtnWrapper, lockedCountdown);
                         }
 
                     });
 
 
-                    function showLoadingView() {
+                    function showLoadingView(donateBtnWrapper, lockedCountdown) {
 
                         // Hide modal header to prevent closing the modal
-                        $('.modal-header').hide();
+                        modalHeader.hide();
 
                         // Hide buttons
-                        $(`#donateBtnWrapper-${wishCardId}`).hide();
+                        donateBtnWrapper.hide();
 
-                        $(`#lockedCountdown-${wishCardId}`).hide();
+                        lockedCountdown.hide();
                         waitDiv.html(
                           `<div class="spinner-border" role="status">
                                 <span class="sr-only">Loading...</span>

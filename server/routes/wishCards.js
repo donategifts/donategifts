@@ -39,7 +39,7 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-const {sendDonationNotificationToSlack } = require('../helper/messaging');
+const { sendDonationNotificationToSlack } = require('../helper/messaging');
 
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
@@ -458,7 +458,7 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
 
-router.post('/lock/:id', async (req, res) => {
+router.post('/lock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -499,7 +499,7 @@ router.post('/lock/:id', async (req, res) => {
   }
 });
 
-router.post('/unlock/:id', async (req, res) => {
+router.post('/unlock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -529,7 +529,7 @@ router.post('/unlock/:id', async (req, res) => {
 });
 
 // check if user has donated
-router.get('/status/:id', async (req, res) => {
+router.get('/status/:id', checkVerifiedUser, async (req, res) => {
   try {
     const wishCardId = req.params.id;
 
