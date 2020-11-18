@@ -1,7 +1,7 @@
 const { configure, getLogger, levels } = require('log4js');
 
 const appenderArray = ['console'];
-if (!!process.env.LOCAL_DEVELOPMENT) appenderArray.push('logstash');
+if (process.env.LOCAL_DEVELOPMENT === 'false') appenderArray.push('logstash');
 
 configure({
   appenders: {
