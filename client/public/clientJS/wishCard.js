@@ -102,7 +102,7 @@ function appendWishCards(response, end = false, remove = false) {
                     data-value-url="${wishCard.wishItemURL}"
                     data-value-name="${wishCard.childFirstName}"
                     data-value-id="${wishCard._id}"
-                    ${user ? `data-value-emailVerified="${user.emailVerified}"` : null}
+                    data-value-loggedIn="${!!user}"
                     ${
                       user
                         ? `
