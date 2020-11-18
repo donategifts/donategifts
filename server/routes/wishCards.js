@@ -319,7 +319,7 @@ router.post('/search', async (req, res) => {
       mongoSanitize.sanitize(wishitem),
       showDonated,
       parseInt(mongoSanitize.sanitize(limit), 10),
-      parseInt(mongoSanitize.sanitize(childAge), 10),
+      (childAge && parseInt(mongoSanitize.sanitize(childAge), 10)) || undefined,
       cardIds || [],
     );
 

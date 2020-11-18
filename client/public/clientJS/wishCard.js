@@ -136,18 +136,12 @@ $(document).ready(function () {
 
   $('#wishcard-container').hide();
 
-  var initialFormData = {
-    wishItem: '',
-    limit: 25,
-    childAge: 14,
-  };
-
   var cardIds = [];
 
   $.ajax({
     method: 'POST',
     url: '/wishcards/search',
-    data: initialFormData,
+    data: { limit: 25 },
     success: function (response) {
       response.wishcards.forEach((card) => cardIds.push(card._id));
 
