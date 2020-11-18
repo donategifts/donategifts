@@ -82,7 +82,7 @@ router.post(
           // locally when using multer images are saved inside this folder
           filePath = `/uploads/${req.file.filename}`;
         }
-       
+
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
@@ -308,7 +308,7 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, limit, donated, childAge } = req.body;
+    const { wishitem, limit, donated, childAge, cardIds } = req.body;
     let showDonated = false;
 
     if (donated === 'on') {
@@ -320,8 +320,10 @@ router.post('/search', async (req, res) => {
       showDonated,
       parseInt(mongoSanitize.sanitize(limit), 10),
       parseInt(mongoSanitize.sanitize(childAge), 10),
+      cardIds || [],
     );
-    res.status(200).render('wishCards', {
+
+    res.send({
       user: res.locals.user,
       wishcards: results,
     });
