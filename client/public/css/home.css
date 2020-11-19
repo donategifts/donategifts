@@ -58,6 +58,11 @@ New color scheme reference is in utils.css
   cursor: pointer;
 }
 
+.donate-true:hover {
+  background: rgba(136, 60, 69);
+  color: white;
+}
+
 .donate-false {
   margin-top: 1rem;
   text-align: center;
@@ -163,8 +168,6 @@ New color scheme reference is in utils.css
 .text button {
   margin-top: 1.4em;
 }
-
-
 
 /* new addition start  ------------------------------*/
 .home-wish-title {
@@ -612,7 +615,6 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
-  
 }
 
 .carousel-inner {
