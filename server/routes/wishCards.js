@@ -555,8 +555,8 @@ router.get('/status/:id', checkVerifiedUser, async (req, res) => {
   }
 });
 
-// Change to false to simulate/mock Unconfirmed/Not confirmed.
-let testResponse = true;
+// Allows simulated scraping to switch between confirmed/unconfirmed
+let testResponse = false;
 
 async function simulateScrape(wishcardInfo, callback) {
   const { wishCardId, userId, price } = wishcardInfo;
@@ -575,12 +575,12 @@ async function simulateScrape(wishcardInfo, callback) {
     });
 
     io.emit('donated', { id: wishCardId, donatedBy: userId });
-
+    testResponse = !testResponse;
     callback(true);
     return true;
   }
-  io.emit('donated', { id: wishCardId, donatedBy: userId });
-  callback(true);
+  io.emit('not_donated', { id: wishCardId, userId });
+  callback(false);
   testResponse = !testResponse;
   return true;
 }

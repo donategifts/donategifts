@@ -9,7 +9,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     const wishCardId = button[0].dataset.valueId;
     const amazonURL = button[0].dataset.valueUrl;
     const modalBody = $('.modal-body');
-    const modalHeader = modalBody.find('.modal-header');
+    const modalHeader = $('.modal-header');
 
     // make sure header with close button is shown
     modalHeader.show();
@@ -98,13 +98,12 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     const statusDiv = modalBody.find('#status-' + wishCardId);
                     const donateDoneButton = modalBody.find('#donateDone-' + wishCardId);
                     const spinner = modalBody.find('#spinner-border');
-                    const lockedCountdown = modalBody.find(`#lockedCountdown-${wishCardId}`);
 
                     donateDoneButton.on('click', (event) => {
 
-                        showLoadingView(donateBtnWrapper, lockedCountdown);
+                        showLoadingView();
 
-                        modalBody.find('#wait-' + wishCardId).show();
+                        //waitDiv.show();
                         $.ajax({
                             type: 'GET',
                             url: '/wishcards/status/' + wishCardId,
@@ -125,8 +124,8 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                             spinner.hide();
                             waitDiv.hide();
+                            donateBtnWrapper.hide();
                             clearInterval(locked[wishCardId]);
-
                             statusDiv.html('Donation Confirmed')
 
                         }
@@ -138,8 +137,8 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                         if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
                             spinner.hide();
                             waitDiv.hide();
-
-                            statusDiv.html('Donation Not Confirmed')
+                            donateDoneButton.html('Failed to verify donation - Try Again');
+                            statusDiv.html('We are unable to confirm your donation, feel free to try again. If not, you are welcome to <a href="/contact" target="_blank">contact us</a>');
 
                             //TODO we should do an exit survey eventually -stacy-
                         }
@@ -150,21 +149,16 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                     socket.on('countdown_ran_out', event => {
 
                         if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
-                            showLoadingView(donateBtnWrapper, lockedCountdown);
+                            showLoadingView();
                         }
 
                     });
 
 
-                    function showLoadingView(donateBtnWrapper, lockedCountdown) {
+                    function showLoadingView() {
 
                         // Hide modal header to prevent closing the modal
                         modalHeader.hide();
-
-                        // Hide buttons
-                        donateBtnWrapper.hide();
-
-                        lockedCountdown.hide();
                         waitDiv.html(
                           `<div class="spinner-border" role="status">
                                 <span class="sr-only">Loading...</span>
