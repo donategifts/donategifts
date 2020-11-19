@@ -38,34 +38,19 @@ dark grey:
 */
 
 /* ------------- new local fonts -------------- */
-@font-face {
-  font-family: 'Childrensans';
-  src: local('Childrensans'), url('../fonts/Childrensans.ttf');
-}
-
-@font-face {
+/* @font-face {
   font-family: 'DjbTeacherFont';
   src: local('DjbTeacherFont'), url('../fonts/DjbTeacherFont.ttf');
-}
+} */
 
 @font-face {
   font-family: 'DkCoolCrayon';
-  src: local('DkCoolCrayon'), url('../fonts/DkCoolCrayon.ttf');
-}
-
-@font-face {
-  font-family: 'DjbNumber2Pencil';
-  src: local('DjbNumber2Pencil'), url('../fonts/DjbNumber2Pencil.ttf');
-}
-
-@font-face {
-  font-family: 'DjbNumber2PencilBold';
-  src: local('DjbNumber2PencilBold'), url('../fonts/DjbNumber2PencilBold.ttf');
+  src: url('../fonts/dkcoolcrayon-webfont.woff') format('woff');
 }
 
 @font-face {
   font-family: 'DK-Crayon-Crumble';
-  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'), url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
+  src: url('../fonts/dk-crayon-crumble-webfont.woff') format('woff');
 }
 
 /* fonts
@@ -73,39 +58,19 @@ dark grey:
 */
 
 .cool-font {
-  font-family: 'DkCoolCrayon', 'Comfortaa', cursive;
+  font-family: 'DkCoolCrayon', sans-serif;
 }
 
 .teac-font {
-  font-family: 'DjbTeacherFont', 'Source Sans Pro', sans-serif;
-}
-
-.n2b-font {
-  font-family: 'DjbNumber2PencilBold', 'Source Sans Pro', sans-serif;
-}
-
-.n2-font {
-  font-family: 'DjbNumber2Pencil', 'Source Sans Pro', sans-serif;
-}
-
-.chldn-font {
-  font-family: 'Childrensans', 'Source Sans Pro', sans-serif;
+  font-family: 'DjbTeacherFont', sans-serif;
 }
 
 .quick-font {
   font-family: 'Quicksand', sans-serif;
 }
 
-.source-font {
-  font-family: 'Source Sans Pro', sans-serif;
-}
-
-.comf-font {
-  font-family: 'Comfortaa', cursive;
-}
-
 .crayon-font {
-  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
+  font-family: 'DK-Crayon-Crumble', sans-serif;
 }
 
 /* Text Styling
@@ -130,6 +95,10 @@ dark grey:
 
 .text-fix {
   line-height: 2em !important;
+}
+
+.force-flex {
+  display: flex !important;
 }
 
 #grn-font {

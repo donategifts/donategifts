@@ -16,7 +16,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     const modalWarningMessage =
         `<div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
         <h4 class="crayon-font donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
-        <img class="img-fluid modal-img" src="/public/img/setShippingReminder.svg" >
+        <img class="img-fluid modal-img" src="/public/img/shipping-info.png" >
         <p class="modal-p">Follow the new tab link to check out from Amazon.<br/>
         While on the shipping page, under ‘Other Addresses’,
         <strong>choose the gift registry address.</strong></p>
@@ -40,8 +40,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             location.assign("/users/login")
         });
     } else {
-
+        //remove existing click listeners to prevent stacking
         $(document).on('click', '#modal-donate-btn', (event) => {
+            $(document).off('click', '#modal-donate-btn')
             event.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -68,13 +69,14 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
 
                     $('.donate-false').on('click', event => {
 
-                        $('#wishCardDonateModal').modal('hide')
                         $.ajax({
                             type: 'POST',
                             url: '/wishcards/unlock/' + wishCardId,
                             data: {},
                             success: (response, textStatus, jqXHR) => {
                                 console.log(response)
+                                $('#wishCardDonateModal').modal('hide')
+
                             },
                             error: (response, textStatus, errorThrown) => {
                                 console.log(response)

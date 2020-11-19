@@ -14,9 +14,9 @@ function connect() {
     if (err) {
       log.error('Unable to connect to DB. Error:', err);
     } else {
-      log.info(
-        `Connected to Mongodb ${database.name ? database.name : database.connections[0].name}`,
-      );
+      log.info(`Connected to Mongodb ${database.name ? database.name : database.connections[0].name}`, {
+        type: 'mongo_startup',
+      });
     }
   });
 }
