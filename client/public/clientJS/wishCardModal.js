@@ -122,6 +122,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 lockedCountdown.hide();
               }
               statusDiv.html('Donation Confirmed');
+              statusDiv.show();
 
               $.ajax({
                 type: 'POST',
@@ -146,6 +147,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
               statusDiv.html(
                 'We are unable to confirm your donation, feel free to try again. If not, you are welcome to <a href="/contact" target="_blank">contact us</a>',
               );
+              statusDiv.show();
 
               //TODO we should do an exit survey eventually -stacy-
             }
@@ -161,6 +163,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
           function showLoadingView() {
             // Hide modal header to prevent closing the modal
             modalHeader.hide();
+            statusDiv.hide();
             waitDiv.html(
               `<div class="spinner-border" role="status">
                                 <span class="sr-only">Loading...</span>
