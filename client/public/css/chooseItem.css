@@ -1,3 +1,4 @@
+
 [type='radio'] {
   position: absolute;
   opacity: 0;
@@ -35,7 +36,7 @@ img.itemChoice {
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
-  color: rgba(139, 198, 77, 1);
-  border: rgba(139, 198, 77, 1) solid 2px;
+  color: rgba(0, 161, 154, 1);
+  border: rgba(0, 161, 154, 1) solid 2px;
   outline: none;
 }

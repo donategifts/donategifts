@@ -384,7 +384,8 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 // @tested 	No
 router.get('/get/random', async (req, res) => {
   try {
-    let wishcards = await WishCardRepository.getAllWishCards();
+    // let wishcards = await WishCardRepository.getAllWishCards();
+    let wishcards = await WishCardRepository.getViewableWishCards(false);
     if (!wishcards) {
       wishcards = [];
     } else {
