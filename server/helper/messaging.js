@@ -221,10 +221,30 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
   }
 }
 
+async function sendDonationNotificationToSlack(donor, wishCard) {
+
+  try {
+    await axios({
+      method: 'POST',
+      url: `${process.env.SLACK_INTEGRATION_DONATION}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({text:`${process.env.NODE_ENV} New Donation by ${donor.fName} ${donor.lName.substring(0,1)} for ${wishCard.childFirstName} ${wishCard.childLastName.substring(0, 1)}`}),
+    });
+
+    return true;
+  } catch (error) {
+    log.error(error);
+    return false;
+  }
+}
+
 module.exports = {
   sendMail,
   sendSlackFeedbackMessage,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
+  sendDonationNotificationToSlack
 };

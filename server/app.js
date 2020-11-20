@@ -21,7 +21,7 @@ dotenv.config({
 // EXPRESS SET UP
 const express = require('express');
 const bodyParser = require('body-parser');
-const responseTime = require('response-time')
+const responseTime = require('response-time');
 const requestIp = require('request-ip');
 
 const path = require('path');
@@ -36,6 +36,9 @@ const AdminBroExpress = require('@admin-bro/express');
 const AdminBroMongoose = require('@admin-bro/mongoose');
 const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
+
+// STRIPE TEST API KEY
+// const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
@@ -53,38 +56,40 @@ const log = require('./helper/logger');
 
 const app = express();
 
+
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
 
+app.use(
+  responseTime((req, res, time) => {
+    if (
+      (!req.originalUrl.includes('.png') &&
+        !req.originalUrl.includes('.jpg') &&
+        !req.originalUrl.includes('.js') &&
+        !req.originalUrl.includes('.svg') &&
+        !req.originalUrl.includes('.jpeg') &&
+        !req.originalUrl.includes('.woff') &&
+        !req.originalUrl.includes('.css') &&
+        !req.originalUrl.includes('.ico')) ||
+      res.statusCode > 304
+    ) {
+      const clientIp = requestIp.getClientIp(req);
 
-app.use(responseTime(function (req, res, time) {
-
-  if (!req.originalUrl.includes('.png')
-    && !req.originalUrl.includes('.jpg')
-    && !req.originalUrl.includes('.js')
-    && !req.originalUrl.includes('.svg')
-    && !req.originalUrl.includes('.jpeg')
-    && !req.originalUrl.includes('.woff')
-    && !req.originalUrl.includes('.css')
-    && !req.originalUrl.includes('.ico')
-    || (res.statusCode > 304) ) {
-
-    const clientIp = requestIp.getClientIp(req);
-
-    log.info('New request',{
-      type: 'request',
-      user: res.locals.user?String(res.locals.user._id).substring(0,10):'guest',
-      method: req.method,
-      statusCode: res.statusCode,
-      route: req.originalUrl,
-      responseTime: Math.ceil(time),
-      ip: clientIp
-    })
-  }
-}))
+      log.info('New request', {
+        type: 'request',
+        user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
+        method: req.method,
+        statusCode: res.statusCode,
+        route: req.originalUrl,
+        responseTime: Math.ceil(time),
+        ip: clientIp,
+      });
+    }
+  }),
+);
 // mongo connection needs to be established before admin-bro setup
 MongooseConnection.connect();
 

@@ -1,13 +1,3 @@
-@font-face {
-  font-family: 'DK-Crayon-Crumble';
-  src: url('../fonts/DK-Crayon-Crumble.ttf');
-  src: local('DK Crayon Crumble'), url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
-}
-
-#cray-font {
-  font-family: 'DK-Crayon-Crumble', 'Montserrat', sans-serif;
-}
-
 #profile-bg {
   /* background: linear-gradient(180deg, rgba(255, 151, 99, 1), rgba(188, 227, 97, 0.9), rgba(255, 209, 90, 1)); */
   min-height: 20vh;
@@ -17,7 +7,7 @@
 }
 
 .profile-title {
-  color: #8bc64d;
+  color: #00a19a;
 }
 
 .profile-title h1 {
@@ -40,7 +30,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  border-top: 3px dotted rgba(188, 227, 97, 0.6);
+  border-top: 3px dotted rgba(0, 161, 154, 0.6);
 }
 
 .fa-user,
@@ -55,7 +45,7 @@
 .wish-card-form-title {
   display: block;
   font-size: 2.7em;
-  color: #8bc64d;
+  color: #00a19a;
   line-height: 1.2;
   text-align: center;
   padding-top: 1.5em;
@@ -136,18 +126,18 @@
 }
 
 .file-wrapper:hover .upload-btn {
-  background-color: #8bc64d !important;
+  background-color: #00a19a !important;
 }
 
 .file-wrapper .upload-btn {
-  background-color: rgba(188, 227, 97, 0.3) !important;
+  background-color: rgba(0, 161, 154, 0.4) !important;
 }
 
 /* ---- Profile Content Section---- */
 
 .profile-header {
   padding: 1em 0;
-  background: linear-gradient(180deg, rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.02));
+  /* background: linear-gradient(180deg, rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.02)); */
   /* border-top: 2px dotted rgba(188,227,97, 0.6); */
 }
 
@@ -174,9 +164,10 @@
 
 /* organization info display */
 .org-wrapper {
-  background-color: rgba(255, 224, 172, 0.7);
+  background-color: rgba(255, 130, 107, 1);
   padding: 2em;
   border-radius: 10px;
+  color: #fff !important;
 }
 
 #create-btn {
@@ -194,7 +185,15 @@
 }
 
 .user-info {
-  background-color: rgba(188, 227, 97, 0.5);
+  background-color: rgba(0, 161, 154, 1);
+  padding: 2em;
+  border-radius: 10px;
+  font-size: 1em;
+  color: #fff !important;
+}
+
+.partner-only {
+  background-color:#f8e4c9;
   padding: 2em;
   border-radius: 10px;
   font-size: 1em;
@@ -204,8 +203,26 @@
   text-align: center;
   font-size: 1.2em;
   font-weight: bold;
+  color: rgba(255, 130, 107, 1) !important;
 }
 
 .create-title {
   font-weight: bold;
 }
+
+/* --------newly added by Stacy, move later if needed */
+.help-modal {
+  cursor: pointer;
+  color: #00a19a !important;
+}
+
+.custom-card {
+  border-radius: 15px;
+}
+
+.form-helper-title {
+  font-size: 1.4em !important;
+  color: #00a19a;
+}
+
+/* --------newly added by Stacy, move later if needed */

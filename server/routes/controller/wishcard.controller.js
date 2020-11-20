@@ -2,11 +2,12 @@ const moment = require('moment');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
-async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, childAge = 15) {
+async function getWishCardSearchResult(itemName, showDonated = false, limit = 25, childAge, cardIds) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     (itemName && itemName.trim()) || '',
-    isDonated,
+    showDonated,
     limit,
+    cardIds,
   );
 
   // remove duplicates
@@ -15,13 +16,21 @@ async function getWishCardSearchResult(itemName, isDonated = false, limit = 25, 
   });
 
   for (let i = 0; i < allWishCards.length; i++) {
-    const birthday = moment(new Date(allWishCards[i].childBirthday));
+    let childBirthday;
+
+    if (allWishCards[i].childBirthday) {
+      childBirthday = allWishCards[i].childBirthday;
+    } else {
+      childBirthday = new Date();
+    }
+
+    const birthday = moment(childBirthday);
     const today = moment(new Date());
 
-    allWishCards[i].age = today.diff(birthday, 'years');
+    allWishCards[i].age = today.diff(birthday, 'year');
   }
 
-  if (isDonated) {
+  if (showDonated || !childAge) {
     return allWishCards;
   }
 

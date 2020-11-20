@@ -39,6 +39,8 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
+const {sendDonationNotificationToSlack } = require('../helper/messaging');
+
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
 const MessageRepository = require('../db/repository/MessageRepository');
@@ -82,7 +84,7 @@ router.post(
           // locally when using multer images are saved inside this folder
           filePath = `/uploads/${req.file.filename}`;
         }
-       
+
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
@@ -308,7 +310,7 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, limit, donated, childAge } = req.body;
+    const { wishitem, limit, donated, childAge, cardIds } = req.body;
     let showDonated = false;
 
     if (donated === 'on') {
@@ -319,9 +321,11 @@ router.post('/search', async (req, res) => {
       mongoSanitize.sanitize(wishitem),
       showDonated,
       parseInt(mongoSanitize.sanitize(limit), 10),
-      parseInt(mongoSanitize.sanitize(childAge), 10),
+      (childAge && parseInt(mongoSanitize.sanitize(childAge), 10)) || undefined,
+      cardIds || [],
     );
-    res.status(200).render('wishCards', {
+
+    res.send({
       user: res.locals.user,
       wishcards: results,
     });
@@ -380,7 +384,8 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 // @tested 	No
 router.get('/get/random', async (req, res) => {
   try {
-    let wishcards = await WishCardRepository.getAllWishCards();
+    // let wishcards = await WishCardRepository.getAllWishCards();
+    let wishcards = await WishCardRepository.getViewableWishCards(false);
     if (!wishcards) {
       wishcards = [];
     } else {
@@ -563,7 +568,7 @@ queue.process(async (job, done) => {
       const itemId = wishListArray[2];
 
       if (wishListId) {
-        if (process.env.LOCAL_DEVELOPMENT === 'true') {
+        if (process.env.LOCAL_DEVELOPMENT) {
           if (testResponse) {
             const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
@@ -617,6 +622,8 @@ queue.process(async (job, done) => {
 
           log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
           io.emit('donated', { id: wishCardId, donatedBy: userId });
+          const user = await UserRepository.getUserByObjectId(userId);
+          sendDonationNotificationToSlack(user, wishCard)
 
           done(true);
           return true;
