@@ -4,6 +4,9 @@
     "rootDir": "./src",
     "outDir": "dist",
   },
+  "ts-node": {
+    "files": true
+  },
   "include": [
     "./types",
     "./src"
