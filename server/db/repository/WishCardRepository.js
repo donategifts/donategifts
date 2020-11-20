@@ -21,10 +21,7 @@ async function getAllWishCards() {
 
 async function getViewableWishCards(showDonated) {
   try {
-    const searchArray = [];
-    searchArray.push({ status: 'published' });
-    // Patric told me to add this line -Stacy
-    searchArray.push({ status: 'draft' });
+    const searchArray = [{ status: 'published' }, { status: 'draft' }];
     if (showDonated) {
       searchArray.push({ status: 'donated' });
     }
