@@ -6,7 +6,6 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  *
  */
-
 import { config } from 'dotenv';
 import * as cors from 'cors';
 import * as path from 'path';
@@ -70,16 +69,16 @@ const bootServer = async () => {
   // MIDDLEWARE for extracting user and agency from a session
   app.use(async (req, res, next) => {
     if (req.session) {
-      const { user } = req.session;
+      const { user } = req.session as any;
       if (user) {
         const result = await userRepository.getUserByObjectId(user._id);
         res.locals.user = result;
-        req.session.user = result as ISessionUser;
+        (req.session as any).user = result as ISessionUser;
         if (user.userRole === 'partner') {
           const agency = await agencyRepository.getAgencyByUserId(user._id);
           if (agency !== null) {
             res.locals.agency = agency;
-            req.session.agency = agency;
+            (req.session as any).agency = agency;
           }
         }
       }

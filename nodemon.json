@@ -1,9 +1,0 @@
-{
-  "watch": [
-    "server",
-    "client"
-  ],
-  "ext": "js",  
-  "exec": "node --inspect=0.0.0.0:9229 server/app.js"
-
-}

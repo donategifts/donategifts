@@ -3,10 +3,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2019,
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
   },
-  // TODO: use this after the removal of the old backend, mocha conflicts here
-  // plugins: ['@typescript-eslint', 'unicorn', 'mocha', 'import', 'prettier'],
   plugins: ['@typescript-eslint', 'unicorn', 'prettier'],
   globals: {
     io: true,
