@@ -6,7 +6,6 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  *
  */
-
 import { config } from 'dotenv';
 import * as cors from 'cors';
 import * as path from 'path';
@@ -105,7 +104,7 @@ const bootServer = async () => {
 
   app.use(cookieParser());
 
-  (global as any).io = connectSocket(app);
+  global.io = connectSocket(app);
 
   // MOUNT ROUTERS
   RegisterRoutes(app);

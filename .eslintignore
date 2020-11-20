@@ -1,4 +1,4 @@
 node_modules
 .eslintcache
 public
-don-server
+dist

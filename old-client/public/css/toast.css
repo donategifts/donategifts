@@ -1,0 +1,76 @@
+.custom-toast {
+  height: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3em;
+}
+
+/*Login Toast Message */
+.loginToastReminder {
+  height: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.2em;
+  font-family: 'Quicksand', sans-serif;
+  font-size: large;
+  font-weight: bolder;
+  color: rgba(51, 58, 100, 1)
+}
+
+.loginToastReminder__link {
+  color: white;
+  background-color: #333a64;
+  margin: 0.5em;
+  border-radius: 12px;
+  line-height: 0.5em;
+}
+
+.loginToastReminder__link:hover {
+  font-weight: bold;
+  background-color: rgba(51, 58, 100, 1);
+  color: #f8f8ff;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.loginToastReminder__link:active {
+  background-color: rgba(51, 58, 100, 1);
+  transform: translateY(4px);
+}
+
+#loginToastReminder__link__anchor {
+  display: block;
+  padding: 1em 1.5em;
+  text-decoration: none;
+}
+
+/*loginToast Media Queries.*/
+@media screen and (max-width: 600px) {
+  .loginToastReminder {
+    margin: 1%;
+    padding: 5% 0 3% 2%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    border-radius: 1.2em;
+  }
+
+  #loginToastReminder__link__anchor {
+    display: block;
+    padding: 1em 1.3em;
+    text-decoration: none;
+  }
+
+  /*Toast Close position location to top right corner. */
+  .loginToastReminder > .toast-close {
+    position: absolute;
+    top: 0px;
+    right: 3px;
+    margin: 5px;
+  }
+}
+
+/* End loginToast Media Queries.*/
+/* End Login Toast Message. */

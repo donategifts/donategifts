@@ -1,5 +1,3 @@
 {
-  "eslint.options": {
-    "configFile": "./don-server/.eslintrc.js"
-  }
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

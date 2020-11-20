@@ -16,8 +16,8 @@ export class Users extends Controller {
   @Response('400', 'Bad request')
   @Get('/profile')
   public async getUserRole(@Request() req: Express.Request): Promise<UserRoles> {
-    if (req.session?.user) {
-      return this.userService.getUserRole(req.session.user._id);
+    if ((req.session as any)?.user) {
+      return this.userService.getUserRole((req.session as any).user._id);
     }
 
     throw new Error('No user provided in request object!');

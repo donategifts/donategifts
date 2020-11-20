@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>See Wish Cards | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/search.css" />
+    <script src="/public/clientJS/utils.js"></script>
+
+    <!-- facebook login -->
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '<%- process.env.FB_APP_ID %>',
+          cookie: true,
+          xfbml: true,
+          version: 'v8.0',
+        });
+        FB.AppEvents.logPageView();
+      };
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script>
+
+    <!-- google login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
+    <script src="/public/clientJS/loginModal.js"></script>
+    <script src="/public/clientJS/socialLogin.js"></script>
+  </head>
+
+  <body>
+    <%- include('./templates/loginModal')-%> <%- include('./templates/nav')-%> <%-
+    include('./templates/wishCardDonateModal')-%>
+
+    <!-- Wish Card deck -->
+    <div class="wishcards">
+      <!-- Search Bar -->
+      <div class="row justify-content-center quick-font" id="margin-bottom">
+        <div class="col-12 col-md-10 col-lg-8">
+          <!-- Search form -->
+          <form id="searchBar" action="/wishcards/search" method="POST">
+            <div class="card card-sm">
+              <div class="card-body row no-gutters align-items-center">
+                <div class="col-auto">
+                  <i class="fa fa-search h4 text-body" aria-hidden="true"></i>
+                </div>
+                <div class="col">
+                  <input
+                    class="form-control form-control-lg form-control-borderless"
+                    type="search"
+                    name="wishitem"
+                    placeholder="Search Wish Cards"
+                  />
+                </div>
+                <div class="col-auto">
+                  <button class="wishcard__button--blue bdr-2" type="submit">Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="col mt-3">
+              <div class="row">
+                <div id="filter-panel" class="collapse filter-card ml-auto">
+                  <div class="card">
+                    <div class="card-body form-inline">
+                      <div class="form-group">
+                        <label class="filter-col" style="margin-right: 0" for="card-limit">Card limit</label>
+                        <select id="card-limit" class="form-control" name="limit">
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="25" selected="selected">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="filter-col" style="margin-right: 0" for="child-age">Age range</label>
+                        <select id="child-age" class="form-control" name="childAge">
+                          <option value="" selected="selected">Select an age to filter for</option>
+                          <option value="14">Kids younger than 15</option>
+                          <option value="15">Kids older than 15</option>
+                        </select>
+                      </div>
+                      <div class="form-group ml-4">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" style="margin-right: 10px" name="donated" />
+                            Show already donated ones
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right mt-2">
+                <button
+                  type="button"
+                  class="wishcard__link--white bdr-2"
+                  style="width: auto"
+                  data-toggle="collapse"
+                  data-target="#filter-panel"
+                >
+                  Advanced Search
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <div class="container">
+        <p class="loading">Loading wishcards</p>
+        <div id="wishcard-container" class="row justify-content-center">
+          <!-- jquery injected wishcards -->
+        </div>
+        <div class="row justify-content-center">
+          <button
+            id="load-more"
+            type="button"
+            class="wishcard__link--white bdr-2"
+            style="width: auto"
+          >
+            Load more
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./templates/footer')-%>
+    <script>
+      // DON'T REMOVE
+      countdown = [];
+      <% for (let i = 0; i < wishcards.length; i++) { %>
+        <% if (wishcards[i].status === 'donated') { %>
+          $(document).find('#donate-btn-' + '<%= wishcards[i]._id %>').text('Donated!');
+          $(document).find('#donate-btn-' + '<%= wishcards[i]._id %>').prop('disabled', true);
+        <% } %>
+
+        <% if (new Date(wishcards[i].isLockedUntil) > new Date()) { %>
+          addCountdown('<%= wishcards[i].isLockedUntil %>', '<%= wishcards[i]._id %>', '#donate-btn-<%= wishcards[i]._id %>')
+        <% } %>
+      <% } %>
+    </script>
+    <script src="/public/clientJS/wishCard.js"></script>
+    <script src="/public/clientJS/wishCardModal.js"></script>
+    <!--  this is for login toast -->
+    <% if(!locals.user) { %>
+    <script src="/public/clientJS/loginToast.js"></script>
+    <% } %>
+  </body>
+</html>
