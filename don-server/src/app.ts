@@ -69,16 +69,16 @@ const bootServer = async () => {
   // MIDDLEWARE for extracting user and agency from a session
   app.use(async (req, res, next) => {
     if (req.session) {
-      const { user } = req.session as any;
+      const { user } = req.session;
       if (user) {
         const result = await userRepository.getUserByObjectId(user._id);
         res.locals.user = result;
-        (req.session as any).user = result as ISessionUser;
+        req.session.user = result as ISessionUser;
         if (user.userRole === 'partner') {
           const agency = await agencyRepository.getAgencyByUserId(user._id);
           if (agency !== null) {
             res.locals.agency = agency;
-            (req.session as any).agency = agency;
+            req.session.agency = agency;
           }
         }
       }
@@ -104,7 +104,7 @@ const bootServer = async () => {
 
   app.use(cookieParser());
 
-  (global as any).io = connectSocket(app);
+  global.io = connectSocket(app);
 
   // MOUNT ROUTERS
   RegisterRoutes(app);
