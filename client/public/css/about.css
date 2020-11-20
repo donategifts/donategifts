@@ -91,25 +91,6 @@ textarea {
   justify-content: center;
 }
 
-.contact1-form-btn {
-  min-width: 193px;
-  height: 50px;
-  border-radius: 15px;
-  border: none;
-  background: rgba(249, 161, 76, 1);
-  font-size: 1em;
-  line-height: 1.5;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 25px;
-  transition: all 0.4s;
-}
-
-.contact1-form-btn:hover {
-  background: #333333;
-}
 
 /*------------------------------------------------------------------
 [ Responsive ]*/

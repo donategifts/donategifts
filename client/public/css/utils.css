@@ -101,12 +101,16 @@ dark grey:
   display: flex !important;
 }
 
+.force-text-center {
+  text-align: center !important;
+}
+
 #grn-font {
   color: rgba(0, 161, 154, 1);
 }
 
 .grn-font {
-  color: rgba(0, 161, 154, 1);
+  color: rgba(0, 161, 154, 1) !important;
 }
 
 .blue-font {

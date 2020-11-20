@@ -960,6 +960,16 @@ New color scheme reference is in utils.css
   background: #333a64 !important;
 }
 
+.button-submit {
+  background-color: #00a19a;
+  color: #fff !important;
+  padding: 0.6em 5em !important;
+}
+
+.button-submit:hover {  
+  background: rgba(255, 130, 107, 1) !important;
+}
+
 .font-300 {
   font-weight: 300;
 }
@@ -994,6 +1004,7 @@ New color scheme reference is in utils.css
 .link--green,
 .link--green:link,
 .link--green:visited {
+  font-size: 1.2em;
   background-color: #00a19a !important;
   color: #ffffff !important;
   padding: 1em 2em;

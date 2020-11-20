@@ -165,7 +165,7 @@ describe('Users', () => {
 
             agent.get('/users/profile').end((_, profileRes) => {
               profileRes.text.should.contain(`Welcome ${user.fName}`);
-              profileRes.text.should.contain('Your email is unverified');
+              profileRes.text.should.contain('Please verify your email');
               done();
             });
           });
@@ -190,7 +190,7 @@ describe('Users', () => {
                 agent.get('/users/profile').end((_profileErr, profileRes) => {
                   profileRes.should.have.status(200);
                   profileRes.text.should.contain(`Welcome ${userResult.fName}`);
-                  profileRes.text.should.not.contain('Your email is unverified');
+                  profileRes.text.should.not.contain('Please verify your email');
                   done();
                 });
               });
@@ -455,7 +455,7 @@ describe('Users', () => {
                   agent.get('/users/profile').end((_profileErr, profileRes) => {
                     profileRes.should.have.status(200);
                     profileRes.text.should.contain(`Welcome ${user.fName}`);
-                    profileRes.text.should.contain('Your email is unverified');
+                    profileRes.text.should.contain('Please verify your email');
 
                     Agency.findOne({ accountManager: user._id }).then((agency) => {
                       agency.agencyName.should.equal(agencyRequest.agencyName);
