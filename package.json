@@ -10,7 +10,7 @@
     "test": "echo NO TESTS FOR NEW SETUP",
     "start": "node server/app.js",
     "dev": "nodemon",
-    "lint": "eslint --fix --ext .js --ignore-path .eslintignore server/",
+    "lint": "eslint --fix --ext .js --ignore-path .eslintignore don-server/",
     "clean": "gulp clean",
     "superclean": "gulp superclean",
     "upgradePackages": "ncu -u"

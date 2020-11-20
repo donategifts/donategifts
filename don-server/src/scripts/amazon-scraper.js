@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // request Classic
 const cheerio = require('cheerio');
 const axios = require('axios');
@@ -19,7 +20,7 @@ const scrapeList = async (url) => {
   const $ = cheerio.load(response.data);
 
   const results = [];
-  $('.g-item-sortable').each((index, item) => {
+  $('.g-item-sortable').each((_index, item) => {
     const found = {
       title: $(item).find('.a-link-normal').first().attr('title'),
       url: $(item).find('.a-button-text').first().attr('href'),
