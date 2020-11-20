@@ -21,6 +21,9 @@ dotenv.config({
 // EXPRESS SET UP
 const express = require('express');
 const bodyParser = require('body-parser');
+const responseTime = require('response-time');
+const requestIp = require('request-ip');
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -28,12 +31,23 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
+const AdminBro = require('admin-bro');
+const AdminBroExpress = require('@admin-bro/express');
+const AdminBroMongoose = require('@admin-bro/mongoose');
+const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
+
+const Agency = require('./db/models/Agency');
+const Contact = require('./db/models/Contact');
+const Donation = require('./db/models/Donation');
+const Message = require('./db/models/Message');
+const User = require('./db/models/User');
+const WishCard = require('./db/models/WishCard');
 
 const log = require('./helper/logger');
 
@@ -44,6 +58,59 @@ if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
   app.use(morgan('dev'));
 }
+
+app.use(
+  responseTime((req, res, time) => {
+    if (
+      (!req.originalUrl.includes('.png') &&
+        !req.originalUrl.includes('.jpg') &&
+        !req.originalUrl.includes('.js') &&
+        !req.originalUrl.includes('.svg') &&
+        !req.originalUrl.includes('.jpeg') &&
+        !req.originalUrl.includes('.woff') &&
+        !req.originalUrl.includes('.css') &&
+        !req.originalUrl.includes('.ico')) ||
+      res.statusCode > 304
+    ) {
+      const clientIp = requestIp.getClientIp(req);
+
+      log.info('New request', {
+        type: 'request',
+        user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
+        method: req.method,
+        statusCode: res.statusCode,
+        route: req.originalUrl,
+        responseTime: Math.ceil(time),
+        ip: clientIp,
+      });
+    }
+  }),
+);
+// mongo connection needs to be established before admin-bro setup
+MongooseConnection.connect();
+
+AdminBro.registerAdapter(AdminBroMongoose);
+
+const adminBro = new AdminBro({
+  resources: [User, Agency, Contact, Donation, Message, WishCard],
+  rootPath: '/admin',
+});
+
+const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+  authenticate: async (email, password) => {
+    const user = await UserRepository.getUserByEmail(email);
+    const matched = await bcrypt.compare(password, user.password);
+    if (user && user.userRole === 'admin' && matched) {
+      return user;
+    }
+    return false;
+  },
+  cookiePassword: process.env.SESS_SECRET,
+});
+
+app.use(adminBro.options.rootPath, adminRouter);
+
+// middleware need to be setup after admin-bro setup
 app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
@@ -54,9 +121,8 @@ app.engine('html', ejs.renderFile);
 // STATIC SET UP
 app.use(express.static('./public'));
 app.use('/wishcards/uploads', express.static('./uploads'));
-app.use('/uploads', express.static('./uploads'));
-
-MongooseConnection.connect();
+app.use('./uploads', express.static('./uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // SESSION SET UP
 app.use(
@@ -72,7 +138,7 @@ app.use(
     cookie: {
       maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour
       sameSite: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false,
     },
   }),
 );
@@ -122,14 +188,18 @@ io = connectSocket(app);
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
-const aboutRoute = require('./routes/about');
+const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
+const faqRoute = require('./routes/faq');
+const contactRoute = require('./routes/contact');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
 app.use('/wishcards', wishCardsRoute);
-app.use('/about', aboutRoute);
+app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
+app.use('/contact', contactRoute);
+app.use('/faq', faqRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {
@@ -140,7 +210,6 @@ app.get('/', (_req, res) => {
 
 // ERROR PAGE
 app.get('*', (req, res) => {
-  log.warn('404, Not sure where he wants to go:', { ...req.session, route: req.url });
   res.status(404).render('404');
 });
 
@@ -159,6 +228,5 @@ app.use((err, req, res, _next) => {
   res.status(500);
   res.render('500');
 });
-
 
 module.exports = app;

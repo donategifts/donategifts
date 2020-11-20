@@ -1,5 +1,5 @@
 $(function () {
-  $('#emailForm').submit(function (e) {
+  $('form').submit(function (e) {
     e.preventDefault();
 
     var formData = $(this)
@@ -11,7 +11,7 @@ $(function () {
 
     $.ajax({
       type: 'POST',
-      url: '/about/customer-service',
+      url: '/contact/customer-service',
       data: formData,
       success: function () {
         showToast('Message sent, thank you for your feedback!', true);

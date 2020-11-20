@@ -123,19 +123,14 @@ New color scheme reference is in utils.css
 
 /* ---------------home hero section */
 #home-bg {
-  background: url('../img/donategifts-new-hero.png') center center;
-  min-height: 90vh;
+  background: url('../img/new-hero.png') center center;
+  min-height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 #about-bg {
-  background: linear-gradient(
-      180deg,
-      rgba(255, 151, 99, 0.8),
-      rgba(188, 227, 97, 0.3),
-      rgba(255, 209, 90, 0.05)
-    ),
+  background: linear-gradient(180deg, rgba(255, 151, 99, 0.8), rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.05)),
     url('../img/kid-yellow-bg.jpg') center center;
   min-height: 40vh;
   background-size: cover;
@@ -160,7 +155,7 @@ New color scheme reference is in utils.css
 }
 
 .text h4 {
-  font-size: 1.7em;
+  font-size: 1.5em;
   line-height: 1.2em;
   /* text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99); */
 }
@@ -168,6 +163,8 @@ New color scheme reference is in utils.css
 .text button {
   margin-top: 1.4em;
 }
+
+
 
 /* new addition start  ------------------------------*/
 .home-wish-title {
@@ -193,7 +190,7 @@ New color scheme reference is in utils.css
 /* --------------- howto, wrapper */
 .custom-wrapper {
   /* background: linear-gradient(180deg, rgba(139,198,77,0.08), rgba(139,198,77,0.7)); */
-  background: rgba(255, 246, 237, 0.5);
+  /* background: rgba(255, 246, 237, 0.5); */
 }
 
 @media only screen and (max-width: 768px) {
@@ -274,13 +271,12 @@ New color scheme reference is in utils.css
 .small3 .small-span {
   position: absolute;
   top: calc(50% - 20px);
-  opacity: 0.4;
+  opacity: 0.6;
   cursor: pointer;
   color: #fff;
-  text-shadow: 1px 2px 10px rgba(0, 0, 0, 1);
 }
 .small3 .small-span:hover {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .small3 .small-span:first-of-type {
@@ -327,6 +323,15 @@ New color scheme reference is in utils.css
 
   .bg {
     margin-bottom: 0;
+  }
+
+  .m-mobile {
+    margin-top: 1em;
+    margin-bottom: 2em;
+  }
+
+  #home-bg {
+    margin-bottom: -2em;
   }
 }
 
@@ -551,7 +556,7 @@ New color scheme reference is in utils.css
 --------------------------------------------------------------*/
 #card-fix {
   border: none;
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -560,8 +565,8 @@ New color scheme reference is in utils.css
   transition: all 0.3s ease-in-out;
 }
 #card-fix:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 1.2rem 1.5rem rgba(0, 0, 0, 0.5);
 }
 
 #img-fix {
@@ -607,10 +612,12 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
+  
 }
 
 .carousel-inner {
   order: 1;
+  padding: 0.8rem 1.3rem;
 }
 
 .carousel-control-left {
@@ -626,18 +633,44 @@ New color scheme reference is in utils.css
   width: 5%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+}
+
+@media screen and (max-width: 980px) {
+  .carousel-control-left {
+    order: initial;
+  }
+  .carousel-control-right {
+    order: initial;
+  }
+}
+
+#mobile__carousel-controls {
+  margin-top: -20px;
+}
+
+.fa-arrow-circle-right,
+.fa-arrow-circle-left {
+  color: #333a64;
+}
+.fa-arrow-circle-right:hover,
+.fa-arrow-circle-left:hover {
+  opacity: 0.6;
 }
 
 .carousel-control-next-icon {
   right: 0;
+  background: none;
+}
+
+.carousel-control-prev-icon {
+  background: none;
 }
 
 /* new additions end */
 
 .wishcards {
   position: relative;
-  padding: 3.5em 0;
+  padding: 3em 0;
 }
 
 /* height might need to change */
@@ -866,6 +899,7 @@ New color scheme reference is in utils.css
 .button--blue,
 .button--inverted-green {
   padding: 1em 2em;
+  font-size: 1.3em;
   margin: 10px;
   border-radius: 20px;
   line-height: 1.2em;
@@ -942,7 +976,7 @@ New color scheme reference is in utils.css
   display: inline;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 100%;
+  /* width: 100%; */
   border: 0.5px solid transparent;
 }
 
@@ -969,7 +1003,7 @@ New color scheme reference is in utils.css
   display: inline;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 100%;
+  /* width: 100%; */
   border: 0.5px solid transparent;
 }
 
@@ -982,4 +1016,17 @@ New color scheme reference is in utils.css
   background: #ffffff !important;
   color: #00a19a !important;
   text-decoration: none;
+}
+
+.mobile__carousel-wrapper {
+  display: none;
+}
+
+@media only screen and (max-width: 980px) {
+  #carouselExampleIndicators {
+    display: none;
+  }
+  .mobile__carousel-wrapper {
+    display: block;
+  }
 }

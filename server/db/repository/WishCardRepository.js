@@ -1,4 +1,5 @@
 const moment = require('moment');
+const mongoose = require('mongoose');
 const WishCard = require('../models/WishCard');
 
 async function createNewWishCard(wishCardParams) {
@@ -18,6 +19,20 @@ async function getAllWishCards() {
   }
 }
 
+async function getViewableWishCards(showDonated) {
+  try {
+    const searchArray = [];
+    searchArray.push({ status: 'published' });
+    if (showDonated) {
+      searchArray.push({ status: 'donated' });
+    }
+
+    return WishCard.find({ $or: searchArray }).limit(25).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Wishcards: ${error}`);
+  }
+}
+
 async function getWishCardsByItemName(itemName, isDonated, limit) {
   try {
     return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated })
@@ -28,29 +43,34 @@ async function getWishCardsByItemName(itemName, isDonated, limit) {
   }
 }
 
-async function getWishCardsFuzzy(itemName, isDonated, limit) {
+async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
   try {
+    const match = [{ isDonated }, { isDonated: { $exists: false } }];
+    let ids = [];
+    if (itemName) {
+      match.push(
+        { wishItemName: { $regex: itemName, $options: 'i' } },
+        { childStory: { $regex: itemName, $options: 'i' } },
+        { childInterest: { $regex: itemName, $options: 'i' } },
+        { childFirstName: { $regex: itemName, $options: 'i' } },
+        { childLastName: { $regex: itemName, $options: 'i' } },
+      );
+    }
+
+    if (cardIds) {
+      ids = cardIds.map((id) => id && mongoose.Types.ObjectId(id));
+    }
+
     return WishCard.aggregate([
       {
         $match: {
-          $and: [
-            {
-              $or: [
-                { wishItemName: { $regex: itemName, $options: 'i' } },
-                { childStory: { $regex: itemName, $options: 'i' } },
-                { childInterest: { $regex: itemName, $options: 'i' } },
-                { childFirstName: { $regex: itemName, $options: 'i' } },
-                { childLastName: { $regex: itemName, $options: 'i' } },
-              ],
-            },
-            {
-              $or: [{ isDonated }, { isDonated: { $exists: false } }],
-            },
-          ],
+          _id: { $nin: ids },
+          $or: match,
         },
       },
-      { $sample: { size: limit } },
-    ]).exec();
+    ])
+      .limit(limit)
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
@@ -123,6 +143,7 @@ async function unLockWishCard(id) {
 module.exports = {
   createNewWishCard,
   getAllWishCards,
+  getViewableWishCards,
   getWishCardsByItemName,
   getWishCardByObjectId,
   getLockedWishcardsByUserId,

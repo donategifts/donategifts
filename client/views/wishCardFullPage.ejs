@@ -22,6 +22,7 @@
         <div class="section-title mt-5">
           <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
           <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
+          <% if(false) { %>
           <a
             type="button"
             id="donate-btn"
@@ -30,7 +31,7 @@
             target="_blank"
           >
             Donate Gift
-          </a>
+          </a> <% } %>
         </div>
 
         <div class="section-info mt-5 quick-font">

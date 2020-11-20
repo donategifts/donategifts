@@ -70,7 +70,6 @@ const getTransport = async () => {
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject, message, attachments = undefined) => {
-  log.info('SENDMAIL');
   try {
     const transporter = await getTransport();
 
@@ -215,9 +214,29 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
       });
 
       return true;
-    } catch (_) {
+    } catch (error) {
+      log.error(error);
       return false;
     }
+  }
+}
+
+async function sendDonationNotificationToSlack(donor, wishCard) {
+
+  try {
+    await axios({
+      method: 'POST',
+      url: `${process.env.SLACK_INTEGRATION_DONATION}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({text:`${process.env.NODE_ENV} New Donation by ${donor.fName} ${donor.lName.substring(0,1)} for ${wishCard.childFirstName} ${wishCard.childLastName.substring(0, 1)}`}),
+    });
+
+    return true;
+  } catch (error) {
+    log.error(error);
+    return false;
   }
 }
 
@@ -227,4 +246,5 @@ module.exports = {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
+  sendDonationNotificationToSlack
 };
