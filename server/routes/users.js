@@ -172,7 +172,6 @@ router.post(
         }
         const profileImage = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
         await UserRepository.updateUserById(req.session.user._id, { profileImage });
-        console.log(profileImage);
         res.status(200).send(
           JSON.stringify({
             success: true,
