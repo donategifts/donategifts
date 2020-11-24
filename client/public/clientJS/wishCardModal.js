@@ -69,11 +69,9 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
               url: '/wishcards/unlock/' + wishCardId,
               data: {},
               success: (response, textStatus, jqXHR) => {
-                console.log(response);
                 $('#wishCardDonateModal').modal('hide');
               },
               error: (response, textStatus, errorThrown) => {
-                console.log(response);
                 showToast(response.responseJSON.error.msg);
               },
             });
@@ -100,11 +98,8 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
               type: 'GET',
               url: '/wishcards/status/' + wishCardId,
               data: {},
-              success: (response, textStatus, jqXHR) => {
-                console.log(response);
-              },
               error: (response, textStatus, errorThrown) => {
-                console.log(response);
+                showToast(response.responseJSON.error.msg);
               },
             });
           });
@@ -128,11 +123,7 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
                 type: 'POST',
                 url: '/wishcards/unlock/' + wishCardId,
                 data: {},
-                success: (response, textStatus, jqXHR) => {
-                  console.log(response);
-                },
                 error: (response, textStatus, errorThrown) => {
-                  console.log(response);
                   showToast(response.responseJSON.error.msg);
                 },
               });
