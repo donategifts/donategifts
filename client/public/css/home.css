@@ -164,8 +164,6 @@ New color scheme reference is in utils.css
   margin-top: 1.4em;
 }
 
-
-
 /* new addition start  ------------------------------*/
 .home-wish-title {
   font-size: 3.5em;
@@ -612,7 +610,6 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
-  
 }
 
 .carousel-inner {
@@ -966,8 +963,26 @@ New color scheme reference is in utils.css
   padding: 0.6em 5em !important;
 }
 
-.button-submit:hover {  
+.button-submit:hover {
   background: rgba(255, 130, 107, 1) !important;
+}
+
+.button-search {
+  padding: 12px 35px;
+}
+
+.button-filter {
+  margin-left: 1rem;
+}
+
+.button-apply {
+  max-width: 100px;
+  margin: 0 auto;
+  display: block;
+}
+
+.filter-card {
+  width: 100%;
 }
 
 .font-300 {
