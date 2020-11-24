@@ -63,15 +63,24 @@
                   />
                 </div>
                 <div class="col-auto">
-                  <button class="wishcard__button--blue bdr-2" type="submit">Search</button>
+                  <button class="wishcard__button--blue bdr-2 button-search" type="submit">Search</button>
+                </div>
+                <div class="col-auto">
+                  <button
+                  type="button"
+                  class="wishcard__link--white bdr-2 button-filter"
+                  style="width: auto"
+                  data-toggle="collapse"
+                  data-target="#filter-panel"
+                >Filter</button>
                 </div>
               </div>
             </div>
             <div class="col mt-3">
               <div class="row">
                 <div id="filter-panel" class="collapse filter-card ml-auto">
-                  <div class="card">
-                    <div class="card-body form-inline">
+                  <div class="card justify-content-center align-items-center">
+                    <div class="card-body d-flex flex-column">
                       <div class="form-group">
                         <label class="filter-col" style="margin-right: 0" for="card-limit">Card limit</label>
                         <select id="card-limit" class="form-control" name="limit">
@@ -82,35 +91,34 @@
                           <option value="100">100</option>
                         </select>
                       </div>
-                      <div class="form-group">
-                        <label class="filter-col" style="margin-right: 0" for="child-age">Age range</label>
-                        <select id="child-age" class="form-control" name="childAge">
-                          <option value="14" selected="selected">Kids younger than 15</option>
-                          <option value="15">Kids older than 15</option>
-                        </select>
+                      <div class="form-group ml-4">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" style="margin-right: 10px" name="younger" />
+                            Kids younger than 15
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group ml-4">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" style="margin-right: 10px" name="older" />
+                            Kids 15 and older
+                          </label>
+                        </div>
                       </div>
                       <div class="form-group ml-4">
                         <div class="checkbox">
                           <label>
                             <input type="checkbox" style="margin-right: 10px" name="donated" />
-                            Show already donated ones
+                            Show cards with donations
                           </label>
                         </div>
                       </div>
+                      <button class="wishcard__button--blue bdr-2 button-apply" type="submit">Apply</button>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col text-right mt-2">
-                <button
-                  type="button"
-                  class="wishcard__link--white bdr-2"
-                  style="width: auto"
-                  data-toggle="collapse"
-                  data-target="#filter-panel"
-                >
-                  Advanced Search
-                </button>
               </div>
             </div>
           </form>

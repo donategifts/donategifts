@@ -37,6 +37,9 @@ const AdminBroMongoose = require('@admin-bro/mongoose');
 const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
 
+// STRIPE TEST API KEY
+// const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
+
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
@@ -52,6 +55,7 @@ const WishCard = require('./db/models/WishCard');
 const log = require('./helper/logger');
 
 const app = express();
+
 
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {

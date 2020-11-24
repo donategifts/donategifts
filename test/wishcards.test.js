@@ -127,7 +127,7 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
                         agent.get('/users/profile').end((_getProfileErr, getProfileRes) => {
                           getProfileRes.should.have.status(200);
                           getProfileRes.text.should.contain(`Welcome ${user.fName}`);
-                          getProfileRes.text.should.not.contain('Your email is unverified');
+                          getProfileRes.text.should.not.contain('Please verify your email');
                           getProfileRes.text.should.not.contain('Wish card creation feature is disabled');
 
                           Agency.findOne({ accountManager: user._id }).then((agency) => {
@@ -519,7 +519,7 @@ describe('Wishcard Routes - Authenticated & Unverified Partner User', () => {
                       agent.get('/users/profile').end((_profileErr, profileRes) => {
                         profileRes.should.have.status(200);
                         profileRes.text.should.contain(`Welcome ${user.fName}`);
-                        profileRes.text.should.contain('Your email is unverified');
+                        profileRes.text.should.contain('Please verify your email');
                         profileRes.text.should.contain('Wish card creation feature is disabled');
 
                         Agency.create({ accountManager: user._id, ...agencyRequest }).then((agency) => {
@@ -876,7 +876,7 @@ describe('Wishcard Routes - Email Verified Donor User', () => {
                 agent.get('/users/profile').end((_getProfileErr, getProfileRes) => {
                   getProfileRes.should.have.status(200);
                   getProfileRes.text.should.contain(`Welcome ${user.fName}`);
-                  getProfileRes.text.should.not.contain('Your email is unverified');
+                  getProfileRes.text.should.not.contain('Please verify your email');
                   getProfileRes.text.should.contain('donor');
                   done();
                 });
@@ -1061,7 +1061,7 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
               agent.get('/users/profile').end((_getProfileErr, getProfileRes) => {
                 getProfileRes.should.have.status(200);
                 getProfileRes.text.should.contain(`Welcome ${user.fName}`);
-                getProfileRes.text.should.contain('Your email is unverified');
+                getProfileRes.text.should.contain('Please verify your email');
                 getProfileRes.text.should.contain('donor');
                 done();
               });
