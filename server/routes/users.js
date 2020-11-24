@@ -33,6 +33,7 @@ const { redirectLogin, redirectProfile } = require('./middleware/login.middlewar
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
+const DonationRepository = require('../db/repository/DonationRepository');
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -589,5 +590,27 @@ router.get('/agency/address', async (req, res) => {
   }
 },
 );
+
+router.get("/profile/donations", redirectLogin, async (req, res) => {
+  try {
+    const { user } = req.session;
+    let Donations;
+    if (user.userRole === 'partner') {
+      const { agency } = req.session;
+      Donations = DonationRepository.getDonationsByAgency(agency._id);
+    } else {
+      Donations = DonationRepository.getDonationsByUser(user._id);
+    }
+    res.render('donations', { Donations }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 module.exports = router;
