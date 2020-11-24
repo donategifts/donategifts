@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>See Donation History | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/search.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+        integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <%- include('./templates/nav')-%>
+
+    <div class="container">
+
+        <% if (locals.user.userRole === 'partner') {%>
+        <h3 class="cool-font">Donations Received</h3>
+        <% } else { %>
+        <h3 class="cool-font">My Donations</h3>
+        <% } %>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order Id</th>
+                    <% if (locals.user.userRole === 'partner') {%>
+                    <th scope="col">Donated By</th>
+                    <% } %>
+                    <th scope="col">Donated For</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < Donations.length; i++) { %>
+                <th scope="row"><%=i%></th>
+                <td><%= Donations[i]._id %></td>
+                <% if (locals.user.userRole === 'partner') {%>
+                <td><%= Donations[i].donationFrom.fName %></td>
+                <% } %>
+                <td><%= Donations[i].donationCard.ChildFirstName %></td>
+                <td><%= Donations[i].donationPrice %></td>
+                <td><%= Donations[i].donationCard.wishItemName %></td>
+                <td><%= Donations[i].donationDate %></td>
+                <td><%= Donations[i].status%></td>
+                <% } %>
+            </tbody>
+        </table>
+
+    </div>
+
+    <%- include('./templates/footer')-%>
+</body>
+
+</html>
