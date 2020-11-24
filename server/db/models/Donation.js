@@ -13,6 +13,10 @@ const DonationSchema = new Schema(
     },
     donationTo: {
       type: Schema.Types.ObjectId,
+      ref: 'Agency',
+    },
+    donationCard: {
+      type: Schema.Types.ObjectId,
       ref: 'WishCard',
     },
     donationPrice: {
@@ -24,6 +28,11 @@ const DonationSchema = new Schema(
     donationDate: {
       type: Date,
       default: Date.now,
+    },
+    status: {
+      type: String,
+      enum: ['In progress', 'Order placed', 'Order delivered'],
+      default: 'In progress',
     },
   },
   {
