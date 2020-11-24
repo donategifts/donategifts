@@ -129,6 +129,26 @@
   </header>
 
   <div class="container mb-5">
+    <div class="d-flex justify-content-center">
+      <div class="col-md-6 mb-3">
+        <!-- about-me section -->
+        <div class="card card-block custom-card">
+          <div class="profile-picture-card">
+            <h5>Profile picture</h5>
+            <% if(!user.profileImage){ %>
+              <img id="profilePicture" class="profile-picture" src="/public/img/default_profile_avatar.svg"/>
+              <% } else{ %>
+              <img id="profilePicture" class="profile-picture" src="<%= user.profileImage %>"/>
+            <% } %>
+            <div class="profile-picutre-button-container">
+              <input id="buttonUploadImage" name="img" type="file" accept="image/*" hidden/>
+              <label class="button-upload-image" for="buttonUploadImage">Upload image</label>
+              <button class="button-upload-image button-delete-image" id="buttonRemoveImage">Remove image</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6 mb-3">
         <!-- about-me section -->
@@ -137,7 +157,6 @@
             <i class="fa fa-user" aria-hidden="true"></i>About Me<img data-toggle="modal" data-target="#aboutMeModal"
               id="update-about-me" class="about-me-edit" src="/public/img/edit-profile.svg" alt="Edit profile" />
           </h5>
-
           <% if(user.aboutMe){ %>
           <p id="about-me" class="card-text p-4"><%= user.aboutMe %></p>
           <% } else{ %>
