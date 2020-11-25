@@ -85,13 +85,13 @@ router.post(
           // locally when using multer images are saved inside this folder
           filePath = `/uploads/${req.file.filename}`;
         }
-
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: res.locals.Agency._id,
+          wishCardTo: userAgency,
           address: {
             address1: req.body.address1,
             address2: req.body.address2,
@@ -102,7 +102,7 @@ router.post(
           },
           ...req.body,
         });
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+
         await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
         res.status(200).send({ success: true, url: '/wishcards/' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
@@ -153,6 +153,7 @@ router.post(
         }
 
         itemChoice = JSON.parse(itemChoice);
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemName: itemChoice.Name,
@@ -160,7 +161,7 @@ router.post(
           wishItemURL: itemChoice.ItemURL,
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: res.locals.Agency._id,
+          wishCardTo: userAgency,
           address: {
             address1,
             address2,
@@ -172,7 +173,6 @@ router.post(
           ...req.body,
         });
 
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
 
         res.status(200).send({ success: true, url: '/wishcards/' });
