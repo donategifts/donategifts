@@ -11,6 +11,7 @@ const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
 const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
+const { createNewDonation } = require('../db/repository/DonationRepository');
 
 const router = express.Router();
 
@@ -71,6 +72,14 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           item: wishCard.wishItemName,
           price: wishCard.wishItemPrice,
           agency: event.data.object.metadata.agencyName,
+        });
+
+        await createNewDonation({
+          donationFrom: user._id,
+          donationTo: wishCard.wishCardTo,
+          donationCard: wishCard._id,
+          donationPrice: wishCard.wishItemPrice,
+          donationConfirmed: true,
         });
 
         const response = emailResponse ? emailResponse.data : '';
