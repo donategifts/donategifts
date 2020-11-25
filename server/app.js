@@ -196,6 +196,7 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
+const checkoutRoute = require('./routes/checkout');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -204,6 +205,7 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
+app.use('/checkout', checkoutRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {
