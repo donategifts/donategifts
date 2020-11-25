@@ -256,7 +256,7 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
   }
 }
 
-async function sendDonationNotificationToSlack(donor, wishCard, event) {
+async function sendDonationNotificationToSlack(donor, wishCard, amount) {
   try {
     await axios({
       method: 'POST',
@@ -267,7 +267,7 @@ async function sendDonationNotificationToSlack(donor, wishCard, event) {
       data: JSON.stringify({
         text: `${process.env.NODE_ENV} New Donation by ${donor.fName} ${donor.lName.substring(0, 1)} for ${
           wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} wishcardId: ${wishCard._id}, amount: ${event.amount}`,
+        } ${wishCard.childLastName.substring(0, 1)} wishcardId: ${wishCard._id}, amount: ${amount}`,
       }),
     });
 
