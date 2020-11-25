@@ -382,7 +382,8 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-
+    const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
+    
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;
     // we are using amazon prime so all shipping is free
@@ -396,13 +397,15 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       processingFee: ((wishcard.wishItemPrice * processingFee) - wishcard.wishItemPrice).toFixed(2),
       shipping,
       tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
-      totalItemCost
+      totalItemCost,
+      agency
     };
 
     res.status(200).render('donate', {
       user: res.locals.user,
       wishcard: wishcard || [],
-      extendedPaymentInfo
+      extendedPaymentInfo,
+      agencyName: agency[1].agencyName
     });
 
   } catch (error) {

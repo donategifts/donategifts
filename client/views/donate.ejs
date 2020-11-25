@@ -35,13 +35,14 @@
             Donate Gift
           </a> <% } %>
         </div>
- 
+        
         <div class="section-info mt-5 quick-font">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
           <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
           <img id="img-kid-donate" src="<%= wishcard.wishCardImage %>" alt="Card image" />
           <h4 class="pb-4 grn-font">Wish Card Details</h4>
           <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
+          <p id="agencyName" class="card-text" hidden><%= agencyName %></p>
           <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
           <p class="card-text">Shipping : <%= extendedPaymentInfo.shipping %></p>
           <p class="card-text">Processing Fee : $<%= extendedPaymentInfo.processingFee %></p>

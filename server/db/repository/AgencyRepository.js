@@ -24,6 +24,14 @@ async function getAgencyWishCardsByStatus(status) {
   }
 }
 
+async function getAgencyByWishCardId(id) {
+  try {
+    return Agency.find({}).populate({path: 'wishCards', match: {_id: id}}).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Agency Wishcards: ${error}`);
+  }
+}
+
 async function createNewAgency(agencyParams) {
   try {
     const newAgency = new Agency(agencyParams);
@@ -45,6 +53,7 @@ module.exports = {
   getAgencyByUserId,
   getAgencyWishCards,
   getAgencyWishCardsByStatus,
+  getAgencyByWishCardId,
   createNewAgency,
   pushNewWishCardToAgency,
 };

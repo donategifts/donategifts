@@ -36,12 +36,16 @@ form.addEventListener('submit', function(event) {
     } else {
       // Send the token to your server.
       let wishCardId = document.getElementById("cardId");
+      let agencyName = document.getElementById("agencyName");
       fetch('/stripe/createIntent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({wishCardId: wishCardId.innerText}),
+        body: JSON.stringify({
+          wishCardId: wishCardId.innerText,
+          agencyName: agencyName.innerText,
+        }),
       })
         .then((response) => response.json())
         .then((data) => {
