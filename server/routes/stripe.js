@@ -79,7 +79,6 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           donationTo: wishCard.wishCardTo,
           donationCard: wishCard._id,
           donationPrice: wishCard.wishItemPrice,
-          donationConfirmed: true,
         });
 
         const response = emailResponse ? emailResponse.data : '';
