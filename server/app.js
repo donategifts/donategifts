@@ -56,7 +56,6 @@ const log = require('./helper/logger');
 
 const app = express();
 
-
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
@@ -196,6 +195,7 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
+const stripeRoute = require('./routes/stripe');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -204,6 +204,7 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
+app.use('/stripe', stripeRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {
