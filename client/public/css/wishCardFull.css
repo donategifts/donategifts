@@ -73,6 +73,12 @@
   height: auto;
 }
 
+#img-kid-donate {
+  border-radius: 20px;
+  width: 200px;
+  height: auto;
+}
+
 #donate-btn {
   width: 420px;
   border-radius: 10px;

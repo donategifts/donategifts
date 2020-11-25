@@ -58,6 +58,11 @@ New color scheme reference is in utils.css
   cursor: pointer;
 }
 
+.donate-true:hover {
+  background: rgba(136, 60, 69);
+  color: white;
+}
+
 .donate-false {
   margin-top: 1rem;
   text-align: center;
@@ -854,6 +859,22 @@ New color scheme reference is in utils.css
   border: 0.5px solid #333a64;
 }
 
+.wishcard__button--yellow {
+  appearance: none;
+  background: #ff9d32;
+  color: #fff;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+.wishcard__button--yellow:hover {
+  background: #fff;
+  color: #ff9d32;
+  border: 0.5px solid #ff9d32;
+}
+
 .wishcard__icon--fixed {
   position: absolute;
   display: flex;
@@ -947,6 +968,14 @@ New color scheme reference is in utils.css
   color: #333a64;
   background: #fff;
 }
+.button--yellow {
+  background: #ff9d32;
+  color: #fff;
+}
+.button--yellow:hover {
+  background: #ff9d32;
+  color: #fff;
+}
 
 .button--inverted-blue {
   background: #fff !important;
@@ -955,6 +984,15 @@ New color scheme reference is in utils.css
 .button--inverted-blue:hover {
   color: #fff !important;
   background: #333a64 !important;
+}
+
+.button--inverted-yellow {
+  background: #fff !important;
+  color: #ff9d32 !important;
+}
+.button--inverted-yellow:hover {
+  background: #fff !important;
+  color: #ff9d32 !important;
 }
 
 .button-submit {
@@ -969,16 +1007,17 @@ New color scheme reference is in utils.css
 
 .button-search {
   padding: 12px 35px;
+  border-radius: 3rem;
 }
 
 .button-filter {
-  margin-left: 1rem;
+  margin: 1rem 20px 0 20px;
+  border-radius: 3rem;
 }
 
 .button-apply {
-  max-width: 100px;
-  margin: 0 auto;
   display: block;
+  border-radius: 3rem;
 }
 
 .filter-card {
@@ -1054,5 +1093,80 @@ New color scheme reference is in utils.css
   }
   .mobile__carousel-wrapper {
     display: block;
+  }
+}
+
+/*--------------------------------------------------------------
+    Searchbar and filters
+--------------------------------------------------------------*/
+.search-bar-container {
+}
+
+.search-bar-container .card {
+  border-radius: 3rem;
+}
+
+.search-bar-container .card-body {
+  padding: 0;
+}
+
+#filter-panel .card {
+  border-radius: 3rem;
+}
+
+#filter-panel .card-body {
+  padding: 0;
+  margin-left: 1rem;
+}
+
+#filter-panel .form-group {
+  margin: 0;
+}
+
+#filter-panel label {
+  margin-bottom: 0;
+}
+
+.search-button-text {
+  margin-right: 1rem;
+}
+
+.button-search {
+  padding: 18px 20px;
+}
+
+.button-filter {
+  margin-top: 0;
+}
+
+.button-apply {
+  width: 110px;
+  /* height: 64px; */
+}
+
+.apply-button-text {
+  margin-right: 1rem;
+}
+
+@media only screen and (max-width: 540px) {
+  #filter-panel .card {
+    border: none;
+  }
+
+  #filter-panel .card-body {
+    margin-left: 0;
+  }
+
+  .button-apply {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .button-search {
+    padding: 18px 18px;
+  }
+
+  .button-filter {
+    margin-top: 1rem;
   }
 }

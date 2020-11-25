@@ -56,7 +56,6 @@ const log = require('./helper/logger');
 
 const app = express();
 
-
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
   // colorful output for dev environment
@@ -166,7 +165,14 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify (req, res, buf) {
+    const url = req.originalUrl;
+    if (url.startsWith('/stripe')) {
+      req.rawBody = buf.toString();
+    }
+  }
+}));
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -196,7 +202,7 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
-const checkoutRoute = require('./routes/checkout');
+const stripeRoute = require('./routes/stripe');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -205,7 +211,7 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
-app.use('/checkout', checkoutRoute);
+app.use('/stripe', stripeRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {

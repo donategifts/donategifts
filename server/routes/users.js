@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 
+// handle picture upload
+const WishCardMiddleWare = require('./middleware/wishCard.middleware');
+
 const router = express.Router();
 
 const {
@@ -145,6 +148,70 @@ router.put(
     }
   },
 );
+
+router.post(
+  '/profile/picture',
+  limiter,
+  WishCardMiddleWare.upload.single('profileImage'),
+  validate,
+  redirectLogin,
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+      );
+    } else {
+      try {
+        let filePath;
+
+        if (process.env.NODE_ENV === 'development') {
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
+        }
+        const profileImage = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
+        await UserRepository.updateUserById(req.session.user._id, { profileImage });
+        res.status(200).send(
+          JSON.stringify({
+            success: true,
+            error: null,
+            data: profileImage,
+          }),
+        );
+        log.info('Profile picture updated', { type: 'user_profile_picture_update', user: req.session.user._id });
+      } catch (error) {
+        handleError(res, 400, error);
+      }
+    }
+  });
+
+router.delete(
+  '/profile/picture',
+  limiter,
+  redirectLogin,
+  async (req, res) => {
+    try {
+      // if users had deleted picture replace it with string for the default avatar
+      const defaultImage= '/public/img/default_profile_avatar.svg';
+      await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });  
+      
+      res.status(200).send(
+        JSON.stringify({
+          success: true,
+          error: null,
+          data: defaultImage,
+        }),
+      );
+
+      log.info('Profile picture deleted', { type: 'user_profile_picture_delete', user: req.session.user._id });
+    }
+    catch (error) {
+      handleError(res, 400, error);
+    }
+  });
+
+
 
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
