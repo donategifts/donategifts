@@ -91,7 +91,7 @@ router.post(
           wishItemPrice: Number(wishItemPrice),
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: userAgency,
+          wishCardTo: userAgency._id,
           address: {
             address1: req.body.address1,
             address2: req.body.address2,
@@ -161,7 +161,7 @@ router.post(
           wishItemURL: itemChoice.ItemURL,
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: userAgency,
+          wishCardTo: userAgency._id,
           address: {
             address1,
             address2,
