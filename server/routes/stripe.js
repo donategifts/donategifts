@@ -79,7 +79,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         }
       }
 
-      await sendDonationNotificationToSlack(user, wishCard);
+      await sendDonationNotificationToSlack(user, wishCard, event);
       break;
     default:
       break;
