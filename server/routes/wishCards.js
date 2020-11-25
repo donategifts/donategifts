@@ -39,7 +39,7 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-const {sendDonationNotificationToSlack } = require('../helper/messaging');
+const { sendDonationNotificationToSlack } = require('../helper/messaging');
 
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
@@ -459,7 +459,7 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
 
-router.post('/lock/:id', async (req, res) => {
+router.post('/lock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -500,7 +500,7 @@ router.post('/lock/:id', async (req, res) => {
   }
 });
 
-router.post('/unlock/:id', async (req, res) => {
+router.post('/unlock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -530,7 +530,7 @@ router.post('/unlock/:id', async (req, res) => {
 });
 
 // check if user has donated
-router.get('/status/:id', async (req, res) => {
+router.get('/status/:id', checkVerifiedUser, async (req, res) => {
   try {
     const wishCardId = req.params.id;
 
@@ -555,85 +555,96 @@ router.get('/status/:id', async (req, res) => {
     handleError(res, 400, error);
   }
 });
+
+// Allows simulated scraping to switch between confirmed/unconfirmed
 let testResponse = false;
+
+async function simulateScrape(wishcardInfo, callback) {
+  const { wishCardId, userId, price } = wishcardInfo;
+  clearTimeout(blockedWishcardsTimer[wishCardId]);
+  if (testResponse) {
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    wishCard.status = 'donated';
+    wishCard.save();
+
+    await DonationsRepository.createNewDonation({
+      donationTo: wishCardId,
+      donationFrom: userId,
+      donationPrice: price,
+      donationConfirmed: true,
+    });
+
+    io.emit('donated', { id: wishCardId, donatedBy: userId });
+    testResponse = !testResponse;
+    callback(true);
+    return true;
+  }
+  io.emit('not_donated', { id: wishCardId, userId });
+  callback(false);
+  testResponse = !testResponse;
+  return true;
+}
+
+async function scrape(wishcardInfo, callback) {
+  const { wishCardId, userId, price, itemId, wishListId } = wishcardInfo;
+  let isDonated = true;
+  const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}`);
+
+  if (!scrapeResponse) isDonated = false;
+
+  if (Object.keys(scrapeResponse).length > 0) {
+    isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
+  }
+
+  if (isDonated) {
+    clearTimeout(blockedWishcardsTimer[wishCardId]);
+
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    wishCard.status = 'donated';
+    wishCard.isLockedUntil = null;
+    wishCard.isLockedBy = null;
+    wishCard.save();
+
+    await DonationsRepository.createNewDonation({
+      donationTo: wishCardId,
+      donationFrom: userId,
+      donationPrice: price,
+      donationConfirmed: true,
+    });
+
+    log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
+    io.emit('donated', { id: wishCardId, donatedBy: userId });
+    const user = await UserRepository.getUserByObjectId(userId);
+    sendDonationNotificationToSlack(user, wishCard);
+
+    callback(true);
+    return true;
+  }
+
+  log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
+  io.emit('not_donated', { id: wishCardId, userId });
+
+  callback(false);
+  return true;
+}
 
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
   try {
-    let isDonated = true;
     const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(url);
     if (wishListArray) {
       const wishListId = wishListArray[1];
       const itemId = wishListArray[2];
-
+      const wishcardInfo = { wishCardId, userId, price, itemId, wishListId };
       if (wishListId) {
         if (process.env.LOCAL_DEVELOPMENT) {
-          if (testResponse) {
-            const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
-
-            wishCard.status = 'donated';
-            wishCard.save();
-
-            await DonationsRepository.createNewDonation({
-              donationTo: wishCardId,
-              donationFrom: userId,
-              donationPrice: price,
-              donationConfirmed: true,
-            });
-
-            io.emit('donated', { id: wishCardId, donatedBy: userId });
-            done(true);
-            testResponse = !testResponse;
-            return true;
-          }
-
-          io.emit('not_donated', { id: wishCardId, userId });
-          done(false);
-          testResponse = !testResponse;
-
-          return false;
+          setTimeout(() => simulateScrape(wishcardInfo, done), 10000);
+        } else {
+          scrape(wishcardInfo, done);
         }
-
-        const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}`);
-
-        if (!scrapeResponse) isDonated = false;
-
-        if (Object.keys(scrapeResponse).length > 0) {
-          isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
-        }
-
-        if (isDonated) {
-          clearTimeout(blockedWishcardsTimer[wishCardId]);
-
-          const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
-
-          wishCard.status = 'donated';
-          wishCard.isLockedUntil = null;
-          wishCard.isLockedBy = null;
-          wishCard.save();
-
-          await DonationsRepository.createNewDonation({
-            donationTo: wishCardId,
-            donationFrom: userId,
-            donationPrice: price,
-            donationConfirmed: true,
-          });
-
-          log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
-          io.emit('donated', { id: wishCardId, donatedBy: userId });
-          const user = await UserRepository.getUserByObjectId(userId);
-          sendDonationNotificationToSlack(user, wishCard)
-
-          done(true);
-          return true;
-        }
-
-        log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
-        io.emit('not_donated', { id: wishCardId, userId });
-
-        done(false);
-        return true;
       }
       done(false);
     }
