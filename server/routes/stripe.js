@@ -1,5 +1,6 @@
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
+const mongoSanitize = require('express-mongo-sanitize');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
@@ -12,7 +13,7 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   const { wishCardId } = req.body;
 
   // Create a PaymentIntent with the order amount and currency
-  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+  const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
 
   if (wishCard) {
     const paymentIntent = await stripe.paymentIntents.create({
