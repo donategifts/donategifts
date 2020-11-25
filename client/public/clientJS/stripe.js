@@ -94,7 +94,7 @@ let orderComplete = function (paymentIntentId) {
     .querySelector('.result-message a')
     .setAttribute('href', 'https://dashboard.stripe.com/test/payments/' + paymentIntentId);
   document.querySelector('.result-message').classList.remove('hidden');
-  document.querySelector('button').disabled = true;
+  document.querySelector('#submit').setAttribute('disabled', 'true');
   showToast('Payment successfull', 'green');
 };
 
