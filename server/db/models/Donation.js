@@ -22,9 +22,6 @@ const DonationSchema = new Schema(
     donationPrice: {
       type: Number,
     },
-    donationConfirmed: {
-      type: Boolean,
-    },
     donationDate: {
       type: Date,
       default: Date.now,
