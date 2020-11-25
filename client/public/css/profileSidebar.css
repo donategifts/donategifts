@@ -1,0 +1,56 @@
+.profile-sidebar {
+  border-radius: 0 50px 0 0;
+  background: #333a64;
+  width: 250px;
+  color: white;
+  z-index: 1000;
+  grid-area: sidebar;
+}
+
+.profile-content {
+  grid-area: content;
+}
+
+.profile-wrapper {
+  display: grid;
+  grid-template-areas: 
+    "sidebar"
+    "content"
+}
+
+@media (min-width: 500px) {
+  .profile-wrapper {
+    grid-template-columns: 1fr 4fr;
+    grid-template-areas: 
+      "sidebar content"
+  }
+}
+
+.profile-sidebar .nav a{
+  padding: 16px 24px;
+  border-radius: 0 15px 15px 0;
+  background: none;
+  width: 90%;
+  color: #CFD8DC;
+  font-size: 14px;
+}
+
+.profile-sidebar .nav a:hover,
+.profile-sidebar .nav a.active{
+  background: white;
+  color: #333a64 !important;
+}
+
+.profile-sidebar .nav a i{
+  margin-right: 16px;
+}
+
+.profile-sidebar .avatar {
+  background: url('/public/img/kids-cover.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 125px;
+  margin: 40px auto;
+  max-width: 50%;
+  border-radius: 50%;
+}
