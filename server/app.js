@@ -166,8 +166,8 @@ app.use(async (req, res, next) => {
 
 // PARSERS SET UP
 app.use(bodyParser.json({
-  verify: function (req, res, buf) {
-    let url = req.originalUrl;
+  verify (req, res, buf) {
+    const url = req.originalUrl;
     if (url.startsWith('/stripe')) {
       req.rawBody = buf.toString();
     }
