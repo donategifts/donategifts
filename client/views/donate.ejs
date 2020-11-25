@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
+
+  <head>
+    <title>See Each Wish Card | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/wishCardFull.css" />
+    <link rel="stylesheet" href="/public/css/stripe.css" />
+    
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <!-- js scripts -->
+    <script src="/public/clientJS/wishCardFullPage.js"></script>
+  
+  </head>
+
+  <body>
+    <%- include('./templates/nav')-%>
+
+    <div class="container">
+     <div class="page-wrapper">
+        <div class="section-title mt-5">
+          <% if(false) { %>
+          <a
+            type="button"
+            id="donate-btn"
+            class="button-center wishcard-btn btn-grn-bg quick-font"
+            href="<%= wishcard.wishItemURL %>"
+            target="_blank"
+          >
+            Donate Gift
+          </a> <% } %>
+        </div>
+        
+        <div class="section-info mt-5 quick-font">
+          <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
+          <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
+          <img id="img-kid-donate" src="<%= wishcard.wishCardImage %>" alt="Card image" />
+          <h4 class="pb-4 grn-font">Wish Card Details</h4>
+          <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
+          <p id="agencyName" class="card-text" hidden><%= agencyName %></p>
+          <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
+          <p class="card-text">Shipping : <%= extendedPaymentInfo.shipping %></p>
+          <p class="card-text">Processing Fee : $<%= extendedPaymentInfo.processingFee %></p>
+          <p class="card-text">Item sales tax (7.12%) : $<%= extendedPaymentInfo.tax %></p>
+          <p class="card-text"></p>
+          <p class="card-text green">Total cost : $<%= extendedPaymentInfo.totalItemCost %></p>
+        </div>-->
+        <form action="stripe/create-payment-intent" method="post" id="payment-form">
+          <div class="form-row">
+            <label for="card-element">
+              Credit or debit card
+            </label>
+            <div id="card-element" class="form-control">
+            </div>
+            <!-- Used to display Element errors. -->
+            <div id="card-errors" role="alert"></div>
+          </div>
+          <button id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Pay</span>
+          </button>
+          <p class="result-message hidden" hidden>
+            Payment succeeded
+            <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+          </p>
+        </form>
+    </div>
+
+
+    <%- include('./templates/footer')-%>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/public/clientJS/stripe.js"></script>
+
+  </body>
+</html>

@@ -10,6 +10,7 @@ const UserRepository = require('../db/repository/UserRepository');
 const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
 const { sendDonationNotificationToSlack } = require('../helper/messaging');
+const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
 const router = express.Router();
 
@@ -21,14 +22,18 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   // Create a PaymentIntent with the order amount and currency
   const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
 
+  // By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
+  // so we need to multiple our price by 100. Genious explanation
+  const PENNY = 100;
+  const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice); 
   if (wishCard) {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: wishCard.wishItemPrice * 100,
+      amount: totalItemPrice * PENNY,
       currency: 'usd',
       receipt_email: email,
       metadata: {
-        wishCardId: wishCard._id,
-        userId: res.locals.user._id,
+        wishCardId: wishCard._id.toString(),
+        userId: res.locals.user._id.toString(),
         agencyName,
       },
     });
