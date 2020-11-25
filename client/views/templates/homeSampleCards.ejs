@@ -51,18 +51,14 @@
                         <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
                       </div>
                       <div class="col-sm-6 my-2 text-center">
-                        <button
+                        <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
                           type="button"
-                          data-toggle="modal"
-                          data-value-url="<%= wishcards[j].wishItemURL %>"
-                          data-value-name="<%= wishcards[j].childFirstName %>"
                           data-value-id="<%= wishcards[j]._id %>"
                           data-value-loggedIn="<%= !!locals.user %>"
-                          data-target="#wishCardDonateModal"
                           class="wishcard__button--blue bdr-2"
                         >
                           Donate Gift
-                        </button>
+                        </button></a>
                       </div>
                     </div>
                   </div>
