@@ -8,14 +8,14 @@
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/wishCardFull.css" />
     <link rel="stylesheet" href="/public/css/stripe.css" />
-    
+
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
     <!-- js scripts -->
     <script src="/public/clientJS/wishCardFullPage.js"></script>
-  
+
   </head>
 
   <body>
@@ -35,7 +35,7 @@
             Donate Gift
           </a> <% } %>
         </div>
-        
+
         <div class="section-info mt-5 quick-font">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
           <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
@@ -49,7 +49,7 @@
           <p class="card-text">Item sales tax (7.12%) : $<%= extendedPaymentInfo.tax %></p>
           <p class="card-text"></p>
           <p class="card-text green">Total cost : $<%= extendedPaymentInfo.totalItemCost %></p>
-        </div>-->
+        </div>
         <form action="stripe/create-payment-intent" method="post" id="payment-form">
           <div class="form-row">
             <label for="card-element">
@@ -69,12 +69,14 @@
             <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
           </p>
         </form>
+        </div>
     </div>
-
 
     <%- include('./templates/footer')-%>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="/public/clientJS/stripe.js"></script>
-
+    <script>
+        let stripe = Stripe('<%= process.env.STRIPE_API %>');
+    </script>
+  <script src="/public/clientJS/stripe.js"></script>
   </body>
 </html>

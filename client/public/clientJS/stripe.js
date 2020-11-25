@@ -1,4 +1,3 @@
-let stripe = Stripe('pk_test_51Hp0I6F177aMHvLVUh2Nlx4QZ112XNoskjnNFb0SjRA3gRETZvDWqGmmwrrvNJPQ19nbcxpKwgwa92kXDcchxtJ90084uml5mR');
 let elements = stripe.elements();
 
 // Custom styling can be passed to options when creating an Element.
@@ -9,14 +8,14 @@ let style = {
   },
 };
 
-let card = elements.create('card', {style: style});
+let card = elements.create('card', { style: style });
 
 // Add an instance of the card Element into the `card-element` <div>.
 card.mount('#card-element');
 
 // Handle real-time validation errors from the card Element.
-card.on('change', function(event) {
-  var displayError = document.getElementById('card-errors');
+card.on('change', function (event) {
+  let displayError = document.getElementById('card-errors');
   if (event.error) {
     displayError.textContent = event.error.message;
   } else {
@@ -26,17 +25,17 @@ card.on('change', function(event) {
 
 // Form submission.
 let form = document.getElementById('payment-form');
-form.addEventListener('submit', function(event) {
+form.addEventListener('submit', function (event) {
   event.preventDefault();
-  stripe.createToken(card).then(function(result) {
+  stripe.createToken(card).then(function (result) {
     if (result.error) {
       // Inform the user if there was an error.
-      var errorElement = document.getElementById('card-errors');
+      let errorElement = document.getElementById('card-errors');
       errorElement.textContent = result.error.message;
     } else {
       // Send the token to your server.
-      let wishCardId = document.getElementById("cardId");
-      let agencyName = document.getElementById("agencyName");
+      let wishCardId = document.getElementById('cardId');
+      let agencyName = document.getElementById('agencyName');
       fetch('/stripe/createIntent', {
         method: 'POST',
         headers: {
@@ -53,21 +52,21 @@ form.addEventListener('submit', function(event) {
         })
         .catch((error) => {
           console.error('Error:', error);
-          showToast('An error has occured while processing payment')
+          showToast('An error has occured while processing payment');
         });
     }
   });
 });
 
-let payWithCard = function(stripe, card, clientSecret) {
+let payWithCard = function (stripe, card, clientSecret) {
   loading(true);
   stripe
     .confirmCardPayment(clientSecret, {
       payment_method: {
-        card: card
-      }
+        card: card,
+      },
     })
-    .then(function(result) {
+    .then(function (result) {
       if (result.error) {
         showError(result.error.message);
       } else {
@@ -76,37 +75,34 @@ let payWithCard = function(stripe, card, clientSecret) {
     });
 };
 
-let loading = function(isLoading) {
+let loading = function (isLoading) {
   if (isLoading) {
     // Disable the button and show a spinner
-    document.querySelector("button").disabled = true;
-    document.querySelector("#spinner").classList.remove("hidden");
-    document.querySelector("#button-text").classList.add("hidden");
+    document.querySelector('button').disabled = true;
+    document.querySelector('#spinner').classList.remove('hidden');
+    document.querySelector('#button-text').classList.add('hidden');
   } else {
-    document.querySelector("button").disabled = false;
-    document.querySelector("#spinner").classList.add("hidden");
-    document.querySelector("#button-text").classList.remove("hidden");
+    document.querySelector('button').disabled = false;
+    document.querySelector('#spinner').classList.add('hidden');
+    document.querySelector('#button-text').classList.remove('hidden');
   }
-}
-
-let orderComplete = function(paymentIntentId) {
-  loading(false);
-  document
-    .querySelector(".result-message a")
-    .setAttribute(
-      "href",
-      "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-    );
-  document.querySelector(".result-message").classList.remove("hidden");
-  document.querySelector("button").disabled = true;
-  showToast("Payment successfull", "green");
 };
 
-let showError = function(errorMsgText) {
+let orderComplete = function (paymentIntentId) {
   loading(false);
-  var errorMsg = document.querySelector("#card-error");
+  document
+    .querySelector('.result-message a')
+    .setAttribute('href', 'https://dashboard.stripe.com/test/payments/' + paymentIntentId);
+  document.querySelector('.result-message').classList.remove('hidden');
+  document.querySelector('button').disabled = true;
+  showToast('Payment successfull', 'green');
+};
+
+let showError = function (errorMsgText) {
+  loading(false);
+  let errorMsg = document.querySelector('#card-error');
   errorMsg.textContent = errorMsgText;
-  setTimeout(function() {
-    errorMsg.textContent = "";
+  setTimeout(function () {
+    errorMsg.textContent = '';
   }, 4000);
 };
