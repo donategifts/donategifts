@@ -165,7 +165,14 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify (req, res, buf) {
+    const url = req.originalUrl;
+    if (url.startsWith('/stripe')) {
+      req.rawBody = buf.toString();
+    }
+  }
+}));
 app.use(
   bodyParser.urlencoded({
     extended: true,

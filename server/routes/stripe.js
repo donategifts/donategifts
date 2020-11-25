@@ -25,7 +25,7 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   // By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
   // so we need to multiple our price by 100. Genious explanation
   const PENNY = 100;
-  const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice); 
+  const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
   if (wishCard) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalItemPrice * PENNY,
@@ -52,7 +52,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`);
   }
