@@ -1,5 +1,6 @@
 let elements = stripe.elements();
 
+// Todo: this needs to be edited
 // Custom styling can be passed to options when creating an Element.
 let style = {
   base: {
