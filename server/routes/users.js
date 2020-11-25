@@ -594,14 +594,14 @@ router.get('/agency/address', async (req, res) => {
 router.get("/profile/donations", redirectLogin, async (req, res) => {
   try {
     const { user } = req.session;
-    let Donations;
+    let donations;
     if (user.userRole === 'partner') {
       const { agency } = req.session;
-      Donations = DonationRepository.getDonationsByAgency(agency._id);
+      donations = DonationRepository.getDonationsByAgency(agency._id);
     } else {
-      Donations = DonationRepository.getDonationsByUser(user._id);
+      donations = DonationRepository.getDonationsByUser(user._id);
     }
-    res.render('donations', { Donations }, (error, html) => {
+    res.render('donationHistory', { donations }, (error, html) => {
       if (error) {
         res.status(400).json({ success: false, error });
       } else {

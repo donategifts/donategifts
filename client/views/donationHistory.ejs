@@ -39,17 +39,17 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (let i = 0; i < Donations.length; i++) { %>
+                <% for (let i = 0; i < donations.length; i++) { %>
                 <th scope="row"><%=i%></th>
-                <td><%= Donations[i]._id %></td>
+                <td><%= donations[i]._id %></td>
                 <% if (locals.user.userRole === 'partner') {%>
-                <td><%= Donations[i].donationFrom.fName %></td>
+                <td><%= donations[i].donationFrom.fName %></td>
                 <% } %>
-                <td><%= Donations[i].donationCard.ChildFirstName %></td>
-                <td><%= Donations[i].donationPrice %></td>
-                <td><%= Donations[i].donationCard.wishItemName %></td>
-                <td><%= Donations[i].donationDate %></td>
-                <td><%= Donations[i].status%></td>
+                <td><%= donations[i].donationCard.ChildFirstName %></td>
+                <td><%= donations[i].donationPrice %></td>
+                <td><%= donations[i].donationCard.wishItemName %></td>
+                <td><%= donations[i].donationDate %></td>
+                <td><%= donations[i].status%></td>
                 <% } %>
             </tbody>
         </table>
