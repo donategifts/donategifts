@@ -94,26 +94,15 @@ function appendWishCards(response, end = false, remove = false) {
                   <a href="/wishcards/${wishCard._id}" class="wishcard__link--white bdr-2"> Read more </a>
                 </div>
                 <div class="col-sm-6 my-2 text-center">
-                  <button 
+                <a href="wishcards/donate/${wishCard._id}"><button 
                     type="button" 
-                    data-toggle="modal" 
-                    id="donate-btn-${wishCard._id}"
                     class="wishcard__button--blue bdr-2"
                     data-value-url="${wishCard.wishItemURL}"
                     data-value-name="${wishCard.childFirstName}"
                     data-value-id="${wishCard._id}"
-                    ${user ? `data-value-emailVerified="${user.emailVerified}"` : null}
-                    ${
-                      user
-                        ? `
-                          data-value-user="${user._id}"
-                          data-target="#wishCardDonateModal"
-                          `
-                        : 'data-target="#loginModalCenter"'
-                    } 
                   >
                     Donate Gift
-                  </button>
+                  </button></a>
                 </div>
               </div>
             </div>

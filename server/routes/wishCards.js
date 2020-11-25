@@ -21,6 +21,7 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const log = require('../helper/logger');
+const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 const scrapeList = require('../../scripts/amazon-scraper');
 const {
   createWishcardValidationRules,
@@ -373,6 +374,40 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
       messages,
       defaultMessages,
     });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
+
+router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
+    
+    // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
+    const processingFee = 1.08;
+    // we are using amazon prime so all shipping is free
+    const shipping = "FREE"
+    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are 
+    // doing all the shopping  
+    const tax = 1.0712;
+
+    const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+    const extendedPaymentInfo = {
+      processingFee: ((wishcard.wishItemPrice * processingFee) - wishcard.wishItemPrice).toFixed(2),
+      shipping,
+      tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
+      totalItemCost,
+      agency
+    };
+
+    res.status(200).render('donate', {
+      user: res.locals.user,
+      wishcard: wishcard || [],
+      extendedPaymentInfo,
+      agencyName: agency[1].agencyName
+    });
+
   } catch (error) {
     handleError(res, 400, error);
   }
