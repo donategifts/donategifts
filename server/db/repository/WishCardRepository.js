@@ -95,14 +95,6 @@ async function getLockedWishcardsByUserId(userId) {
   }
 }
 
-async function pushNewWishCardMessage(id, message) {
-  try {
-    return WishCard.updateOne({ _id: id }, { $push: { messages: message } }, { new: true }).exec();
-  } catch (error) {
-    throw new Error(`Failed to update Wishcard messages: ${error}`);
-  }
-}
-
 async function updateWishCard(id, wishCardFields) {
   try {
     return WishCard.updateOne({ _id: id }, { $set: { ...wishCardFields } }).exec();

@@ -462,8 +462,6 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
       message,
     });
 
-    await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
-
     res.status(200).send({
       success: true,
       error: null,
