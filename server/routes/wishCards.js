@@ -311,8 +311,13 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, limit, donated, childAge, cardIds } = req.body;
+    const { wishitem, donated, age, cardIds } = req.body;
     let showDonated = false;
+    let childAge = 14;
+
+    if (age && parseInt(age, 10) > 14) {
+      childAge = 15;
+    }
 
     if (donated === 'on') {
       showDonated = true;
@@ -321,8 +326,7 @@ router.post('/search', async (req, res) => {
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
       showDonated,
-      parseInt(mongoSanitize.sanitize(limit), 10),
-      (childAge && parseInt(mongoSanitize.sanitize(childAge), 10)) || undefined,
+      childAge,
       cardIds || [],
     );
 
@@ -383,31 +387,30 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
     const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
-    
+
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;
     // we are using amazon prime so all shipping is free
-    const shipping = "FREE"
-    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are 
-    // doing all the shopping  
+    const shipping = 'FREE';
+    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
+    // doing all the shopping
     const tax = 1.0712;
 
     const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
     const extendedPaymentInfo = {
-      processingFee: ((wishcard.wishItemPrice * processingFee) - wishcard.wishItemPrice).toFixed(2),
+      processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
       shipping,
       tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
       totalItemCost,
-      agency
+      agency,
     };
 
     res.status(200).render('donate', {
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
-      agencyName: agency[1].agencyName
+      agencyName: agency[1].agencyName,
     });
-
   } catch (error) {
     handleError(res, 400, error);
   }

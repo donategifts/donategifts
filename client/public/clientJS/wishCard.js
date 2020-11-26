@@ -130,7 +130,6 @@ $(document).ready(function () {
   $.ajax({
     method: 'POST',
     url: '/wishcards/search',
-    data: { limit: 25 },
     success: function (response) {
       response.wishcards.forEach((card) => cardIds.push(card._id));
 
