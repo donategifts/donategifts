@@ -38,14 +38,11 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
     const allMessages = getMessageChoices(donor.fName, card.childFirstName);
     // eslint-disable-next-line no-bitwise
     const message = allMessages[(allMessages.length * Math.random()) | 0];
-    const newMessage = await Message.create({
+    await Message.create({
       messageFrom: donor._id,
       messageTo: card._id,
       // eslint-disable-next-line no-undef
       message,
-    });
-    await card.updateOne({
-      $push: { messages: newMessage._id },
     });
   };
 

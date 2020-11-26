@@ -339,23 +339,6 @@ router.post('/search', async (req, res) => {
   }
 });
 
-const getPreviousMessages = async (wishcard) => {
-  let messages = [];
-  if (wishcard.messages.length > 0) {
-    messages = await Promise.all(
-      wishcard.messages.map(async (messageID) => {
-        const foundMessage = await MessageRepository.getMessageByObjectId(messageID);
-        const foundUser = await UserRepository.getUserByObjectId(foundMessage.messageFrom);
-        return {
-          message: foundMessage.message,
-          fromUser: foundUser.fName,
-        };
-      }),
-    );
-  }
-  return messages;
-};
-
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  Private, all users (path led by "see more" button). See more btn is however is public.
@@ -369,7 +352,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 
     wishcard.age = today.diff(birthday, 'years');
 
-    const messages = await getPreviousMessages(wishcard);
+    const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
     const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
     // create a page and have a dynamic link for see more
     res.status(200).render('wishCardFullPage', {

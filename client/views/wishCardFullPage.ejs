@@ -71,7 +71,7 @@
           <div>
             <% for (let i = 0; i < messages.length; i++) { %>
             <p><%= messages[i].message %></p>
-            <p>Sent by: <%= messages[i].fromUser %></p>
+            <p>Sent by: <%= messages[i].messageFrom.fName %></p>
             <!-- also add a timestamp here-->
             <% } %>
           </div>

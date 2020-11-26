@@ -71,12 +71,6 @@ const WishCardSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    messages: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Message',
-      },
-    ],
     status: {
       type: String,
       enum: ['draft', 'published', 'donated'],
