@@ -135,7 +135,6 @@ module.exports = {
   getWishCardByObjectId,
   getLockedWishcardsByUserId,
   getWishCardsByStatus,
-  pushNewWishCardMessage,
   updateWishCard,
   lockWishCard,
   unLockWishCard,
