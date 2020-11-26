@@ -40,16 +40,18 @@
             </thead>
             <tbody>
                 <% for (let i = 0; i < donations.length; i++) { %>
-                <th scope="row"><%=i%></th>
-                <td><%= donations[i]._id %></td>
-                <% if (locals.user.userRole === 'partner') {%>
-                <td><%= donations[i].donationFrom.fName %></td>
-                <% } %>
-                <td><%= donations[i].donationCard.ChildFirstName %></td>
-                <td><%= donations[i].donationPrice %></td>
-                <td><%= donations[i].donationCard.wishItemName %></td>
-                <td><%= donations[i].donationDate %></td>
-                <td><%= donations[i].status%></td>
+                <tr>
+                    <th scope="row"><%=i%></th>
+                    <td><%= donations[i]._id %></td>
+                    <% if (locals.user.userRole === 'partner') {%>
+                    <td><%= donations[i].donationFrom.fName %></td>
+                    <% } %>
+                    <td><%= donations[i].donationCard.childFirstName %></td>
+                    <td><%= donations[i].donationPrice %></td>
+                    <td><%= donations[i].donationCard.wishItemName %></td>
+                    <td><%= donations[i].donationDate %></td>
+                    <td><%= donations[i].status%></td>
+                </tr>
                 <% } %>
             </tbody>
         </table>

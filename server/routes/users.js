@@ -597,9 +597,9 @@ router.get("/profile/donations", redirectLogin, async (req, res) => {
     let donations;
     if (user.userRole === 'partner') {
       const { agency } = req.session;
-      donations = DonationRepository.getDonationsByAgency(agency._id);
+      donations = await DonationRepository.getDonationsByAgency(agency._id);
     } else {
-      donations = DonationRepository.getDonationsByUser(user._id);
+      donations = await DonationRepository.getDonationsByUser(user._id);
     }
     res.render('donationHistory', { donations }, (error, html) => {
       if (error) {

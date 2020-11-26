@@ -11,7 +11,7 @@ async function createNewDonation(params) {
 
 async function getDonationsByUser(UserId) {
   try {
-    return Donation.find({ donationFrom: UserId }).exec();
+    return Donation.find({ donationFrom: UserId }).populate('donationCard').populate('donationTo').exec();
   } catch (error) {
     throw new Error(`Failed to get User's Donations: ${error}`);
   }
@@ -19,7 +19,7 @@ async function getDonationsByUser(UserId) {
 
 async function getDonationsByAgency(AgencyId) {
   try {
-    return Donation.find({ donationTo: AgencyId }).exec();
+    return Donation.find({ donationTo: AgencyId }).populate('donationCard').populate('donationFrom').exec();
   } catch (error) {
     throw new Error(`Failed to get Agency's Donations: ${error}`);
   }
