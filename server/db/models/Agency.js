@@ -46,10 +46,6 @@ const AgencySchema = new Schema(
         ref: 'WishCard',
       },
     ],
-    joinedBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
     joined: {
       type: Date,
       default: Date.now,

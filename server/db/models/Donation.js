@@ -28,8 +28,8 @@ const DonationSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ['In progress', 'Order placed', 'Order delivered'],
-      default: 'In progress',
+      enum: ['Awaiting Order', 'Order placed', 'Order delivered'],
+      default: 'Awaiting Order',
     },
   },
   {

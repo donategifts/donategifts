@@ -313,8 +313,13 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, limit, donated, childAge, cardIds } = req.body;
+    const { wishitem, donated, age, cardIds } = req.body;
     let showDonated = false;
+    let childAge = 14;
+
+    if (age && parseInt(age, 10) > 14) {
+      childAge = 15;
+    }
 
     if (donated === 'on') {
       showDonated = true;
@@ -323,8 +328,7 @@ router.post('/search', async (req, res) => {
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
       showDonated,
-      parseInt(mongoSanitize.sanitize(limit), 10),
-      (childAge && parseInt(mongoSanitize.sanitize(childAge), 10)) || undefined,
+      childAge,
       cardIds || [],
     );
 
@@ -336,23 +340,6 @@ router.post('/search', async (req, res) => {
     handleError(res, 400, error);
   }
 });
-
-const getPreviousMessages = async (wishcard) => {
-  let messages = [];
-  if (wishcard.messages.length > 0) {
-    messages = await Promise.all(
-      wishcard.messages.map(async (messageID) => {
-        const foundMessage = await MessageRepository.getMessageByObjectId(messageID);
-        const foundUser = await UserRepository.getUserByObjectId(foundMessage.messageFrom);
-        return {
-          message: foundMessage.message,
-          fromUser: foundUser.fName,
-        };
-      }),
-    );
-  }
-  return messages;
-};
 
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
@@ -367,7 +354,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 
     wishcard.age = today.diff(birthday, 'years');
 
-    const messages = await getPreviousMessages(wishcard);
+    const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
     const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
     // create a page and have a dynamic link for see more
     res.status(200).render('wishCardFullPage', {
@@ -407,7 +394,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
-      agencyName: agency[1].agencyName,
+      agencyName: agency.agencyName,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -476,8 +463,6 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
       messageTo,
       message,
     });
-
-    await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
 
     res.status(200).send({
       success: true,

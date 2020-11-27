@@ -7,11 +7,11 @@ const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
+const DonationRepository = require('../db/repository/DonationRepository');
 const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
 const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
-const DonationRepository = require('../db/repository/DonationRepository');
 
 const router = express.Router();
 
@@ -60,19 +60,26 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   switch (event.type) {
     case 'payment_intent.succeeded':
-      const user = await UserRepository.getUserByObjectId(event.data.object.metadata.userId);
-      const wishCard = await WishCardRepository.getWishCardByObjectId(event.data.object.metadata.wishCardId);
+      try {
+        const user = await UserRepository.getUserByObjectId(event.data.object.metadata.userId);
+        const wishCard = await WishCardRepository.getWishCardByObjectId(event.data.object.metadata.wishCardId);
 
-      if (user) {
-        const emailResponse = await sendDonationConfirmationMail({
-          email: user.email,
-          firstName: user.fName,
-          lastName: user.lName,
-          childName: wishCard.childFirstName,
-          item: wishCard.wishItemName,
-          price: wishCard.wishItemPrice,
-          agency: event.data.object.metadata.agencyName,
-        });
+        if (user) {
+          const emailResponse = await sendDonationConfirmationMail({
+            email: user.email,
+            firstName: user.fName,
+            lastName: user.lName,
+            childName: wishCard.childFirstName,
+            item: wishCard.wishItemName,
+            price: wishCard.wishItemPrice,
+            agency: event.data.object.metadata.agencyName,
+          });
+
+          const response = emailResponse ? emailResponse.data : '';
+          if (process.env.NODE_ENV === 'development') {
+            log.info(response);
+          }
+        }
 
         await DonationRepository.createNewDonation({
           donationFrom: user._id,
@@ -81,14 +88,12 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           donationPrice: wishCard.wishItemPrice,
         });
 
-        const response = emailResponse ? emailResponse.data : '';
-        if (process.env.NODE_ENV === 'development') {
-          log.info(response);
-        }
+        await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount);
+        break;
+      } catch (error) {
+        log.debug(error);
+        break;
       }
-
-      await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount);
-      break;
     default:
       break;
   }

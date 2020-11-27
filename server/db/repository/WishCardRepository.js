@@ -13,7 +13,7 @@ async function createNewWishCard(wishCardParams) {
 
 async function getAllWishCards() {
   try {
-    return WishCard.find().limit(25).exec();
+    return WishCard.find().exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards: ${error}`);
   }
@@ -32,17 +32,15 @@ async function getViewableWishCards(showDonated) {
   }
 }
 
-async function getWishCardsByItemName(itemName, isDonated, limit) {
+async function getWishCardsByItemName(itemName, isDonated) {
   try {
-    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated })
-      .limit(limit)
-      .exec();
+    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated }).exec();
   } catch (error) {
     throw new Error(`Failed to get WishCards: ${error}`);
   }
 }
 
-async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
+async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
   try {
     const match = [{ isDonated }, { isDonated: { $exists: false } }];
     let ids = [];
@@ -67,9 +65,7 @@ async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
           $or: match,
         },
       },
-    ])
-      .limit(limit)
-      .exec();
+    ]).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
@@ -96,14 +92,6 @@ async function getLockedWishcardsByUserId(userId) {
     return WishCard.findOne({ isLockedBy: userId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
-  }
-}
-
-async function pushNewWishCardMessage(id, message) {
-  try {
-    return WishCard.updateOne({ _id: id }, { $push: { messages: message } }, { new: true }).exec();
-  } catch (error) {
-    throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
 }
 
@@ -147,7 +135,6 @@ module.exports = {
   getWishCardByObjectId,
   getLockedWishcardsByUserId,
   getWishCardsByStatus,
-  pushNewWishCardMessage,
   updateWishCard,
   lockWishCard,
   unLockWishCard,
