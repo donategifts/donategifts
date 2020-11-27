@@ -392,7 +392,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
-      agencyName: agency[1].agencyName,
+      agencyName: agency.agencyName,
     });
   } catch (error) {
     handleError(res, 400, error);
