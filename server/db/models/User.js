@@ -67,6 +67,9 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+    profileImage: {
+      type: String,
+    },
   },
   {
     collection: 'users',

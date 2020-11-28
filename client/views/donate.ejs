@@ -1,59 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
+<!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
 
-  <head>
-    <title>See Each Wish Card | Donate Gifts</title>
-    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
-    <%- include('./templates/header')-%>
-    <link rel="stylesheet" href="/public/css/wishCardFull.css" />
-    <link rel="stylesheet" href="/public/css/stripe.css" />
+<head>
+  <title>See Each Wish Card | Donate Gifts</title>
+  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+  <%- include('./templates/header')-%>
+  <link rel="stylesheet" href="/public/css/wishCardFull.css" />
+  <link rel="stylesheet" href="/public/css/stripe.css" />
 
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
-    <!-- js scripts -->
-    <script src="/public/clientJS/wishCardFullPage.js"></script>
+</head>
 
-  </head>
+<body>
+  <%- include('./templates/nav')-%>
 
-  <body>
-    <%- include('./templates/nav')-%>
+  <div class="container">
+    <div class="page-wrapper">
 
-    <div class="container">
-     <div class="page-wrapper">
-        <div class="section-title mt-5">
-          <% if(false) { %>
-          <a
-            type="button"
-            id="donate-btn"
-            class="button-center wishcard-btn btn-grn-bg quick-font"
-            href="<%= wishcard.wishItemURL %>"
-            target="_blank"
-          >
-            Donate Gift
-          </a> <% } %>
+      <!-- Todo: need to pass agency website URL and link to name -->
+      <div class="page-title mt-5">
+        <h2 class="text-center cool-font grn-font">Wish Donation Secure Checkout</h2>
+        <p class="quick-font"><span class="cap"><%= wishcard.childFirstName %></span>'s gift will be delivered to our partner agency,
+          <a href="" target="_blank" class="cap grn-font"><%= agencyName %></a>, after confirmed payment.</p>
+      </div>
+
+      <!-- start of left panel -->
+      <div class="receipt-info mt-5 quick-font">
+        <p>From this donation, you will receive</p>
+        <ul>
+          <li>100% tax-deductible receipt & shipping details</li>
+          <li>Notification with a delivery proof</li>
+          <li>Message & photo from <%= wishcard.childFirstName %> if partner agency permits</li>
+        </ul>
+        <div class="row">
+          <div class="col">
+            <!-- fix: current image height might be too tall. 
+            also we should plan to display item image 
+            as a second image in the later version  -->
+            <img class="img-fluid rounded-lg" src="<%= wishcard.wishCardImage %>" alt="wish card kid photo">
+          </div>
+        </div>
+        <div>
+          <p>Wish item: <%= wishcard.wishItemName %></p>
+          <p>Item Price: $<%= wishcard.wishItemPrice %></p>
         </div>
 
-        <div class="section-info mt-5 quick-font">
+        <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
-          <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
-          <img id="img-kid-donate" src="<%= wishcard.wishCardImage %>" alt="Card image" />
-          <h4 class="pb-4 grn-font">Wish Card Details</h4>
-          <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
           <p id="agencyName" class="card-text" hidden><%= agencyName %></p>
-          <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
-          <p class="card-text">Shipping : <%= extendedPaymentInfo.shipping %></p>
-          <p class="card-text">Processing Fee : $<%= extendedPaymentInfo.processingFee %></p>
-          <p class="card-text">Item sales tax (7.12%) : $<%= extendedPaymentInfo.tax %></p>
-          <p class="card-text"></p>
-          <p class="card-text green">Total cost : $<%= extendedPaymentInfo.totalItemCost %></p>
+          <div class="pt-2 d-flex justify-content-between">
+            <p>Subtotal</p>
+            <p>$<%= wishcard.wishItemPrice %>.00</p>
+          </div>
+          <div class="pt-1 d-flex justify-content-between">
+            <p>Shipping</p>
+            <p><%= extendedPaymentInfo.shipping %></p>
+          </div>
+          <div class="pt-1 d-flex justify-content-between">
+            <p>Processing Fee</p>
+            <p>$<%= extendedPaymentInfo.processingFee %></p>
+          </div>
+          <div class="pt-1 d-flex justify-content-between">
+            <p>Item sales tax</p>
+            <p>$<%= extendedPaymentInfo.tax %></p>
+          </div>
+          <div class="pt-1 d-flex justify-content-between">
+            <p>Total</p>
+            <p>$<%= extendedPaymentInfo.totalItemCost %></p>
+          </div>
         </div>
+      </div>
+      <!-- end of left panel -->
+
+      <div class="stripe-section mt-5 quick-font">
         <form action="stripe/create-payment-intent" method="post" id="payment-form">
           <div class="form-row">
             <label for="card-element">
-              Credit or debit card
+              Pay with card
             </label>
             <div id="card-element" class="form-control">
             </div>
@@ -64,19 +91,27 @@
             <div class="spinner hidden" id="spinner"></div>
             <span id="button-text">Pay</span>
           </button>
+          <!-- success msg show somewhere else not here -->
           <p class="result-message hidden">
-            Payment succeeded.
-            <a href="" target="_blank">Stripe dashboard.</a>
+            Payment succeeded
           </p>
         </form>
-        </div>
-    </div>
+      </div>
 
-    <%- include('./templates/footer')-%>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        let stripe = Stripe('<%= process.env.STRIPE_API %>');
-    </script>
+      <div class="security-guarantee">
+        <p class="quick-font">Secure Checkout Guaranteed</p>
+        <img class="img-fluid" src="/public/img/secure-cards.png" alt="secure checkout images">
+      </div>
+
+    </div>
+  </div>
+
+  <%- include('./templates/footer')-%>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    let stripe = Stripe('<%= process.env.STRIPE_API %>');
+  </script>
   <script src="/public/clientJS/stripe.js"></script>
-  </body>
+</body>
+
 </html>
