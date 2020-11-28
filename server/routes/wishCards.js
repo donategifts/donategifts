@@ -311,21 +311,21 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, donated, age, cardIds } = req.body;
-    let showDonated = false;
+    const { wishitem, hide_donated, age, cardIds } = req.body;
+    let hideDonated = false;
     let childAge = 14;
 
     if (age && parseInt(age, 10) > 14) {
       childAge = 15;
     }
 
-    if (donated === 'on') {
-      showDonated = true;
+    if (hide_donated === 'on') {
+      hideDonated = true;
     }
 
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      showDonated,
+      hideDonated,
       childAge,
       cardIds || [],
     );

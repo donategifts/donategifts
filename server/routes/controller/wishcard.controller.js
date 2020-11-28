@@ -2,10 +2,10 @@ const moment = require('moment');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
-async function getWishCardSearchResult(itemName, showDonated = false, childAge, cardIds) {
+async function getWishCardSearchResult(itemName, hideDonated = false, childAge, cardIds) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     (itemName && itemName.trim()) || '',
-    showDonated,
+    hideDonated,
     cardIds,
   );
 
@@ -29,7 +29,7 @@ async function getWishCardSearchResult(itemName, showDonated = false, childAge, 
     allWishCards[i].age = today.diff(birthday, 'year');
   }
 
-  if (showDonated || !childAge) {
+  if (!childAge) {
     return allWishCards;
   }
 

@@ -32,20 +32,24 @@ async function getViewableWishCards(showDonated) {
   }
 }
 
-async function getWishCardsByItemName(itemName, isDonated) {
+async function getWishCardsByItemName(itemName, status) {
   try {
-    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated }).exec();
+    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, status }).exec();
   } catch (error) {
     throw new Error(`Failed to get WishCards: ${error}`);
   }
 }
 
-async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
+async function getWishCardsFuzzy(itemName, hideDonated, cardIds) {
   try {
-    const match = [{ isDonated }, { isDonated: { $exists: false } }];
+    const searchMatch = [];
+    const statusMatch = [{ status: 'published' }];
+    if (!hideDonated) {
+      statusMatch.push({ status: 'donated' });
+    }
     let ids = [];
     if (itemName) {
-      match.push(
+      searchMatch.push(
         { wishItemName: { $regex: itemName, $options: 'i' } },
         { childStory: { $regex: itemName, $options: 'i' } },
         { childInterest: { $regex: itemName, $options: 'i' } },
@@ -58,14 +62,31 @@ async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
       ids = cardIds.map((id) => id && mongoose.Types.ObjectId(id));
     }
 
-    return WishCard.aggregate([
+    const matchPipeline = [
       {
         $match: {
           _id: { $nin: ids },
-          $or: match,
+          $or: statusMatch,
         },
       },
-    ]).exec();
+      {
+        $sort: {
+          status: -1,
+          createdAt: 1,
+        },
+      },
+    ];
+
+    if (itemName) {
+      matchPipeline.unshift({
+        $match: {
+          _id: { $nin: ids },
+          $or: searchMatch,
+        },
+      });
+    }
+
+    return WishCard.aggregate(matchPipeline).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
