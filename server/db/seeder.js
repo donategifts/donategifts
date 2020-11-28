@@ -15,13 +15,10 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
   MongooseConnection.connect();
 
   const createWishCard = async (partnerId, createdAgency, card) => {
-    const newWishcard = await WishCard.create({
+    await WishCard.create({
       ...card,
       createdBy: partnerId,
       wishCardTo: createdAgency._id,
-    });
-    await createdAgency.updateOne({
-      $push: { wishCards: newWishcard._id },
     });
   };
 

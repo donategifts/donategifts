@@ -40,12 +40,6 @@ const AgencySchema = new Schema(
     agencyProfileImage: {
       type: String,
     },
-    wishCards: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'WishCard',
-      },
-    ],
     joined: {
       type: Date,
       default: Date.now,

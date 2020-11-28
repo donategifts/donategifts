@@ -103,7 +103,6 @@ router.post(
           ...req.body,
         });
 
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
         res.status(200).send({ success: true, url: '/wishcards/' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
@@ -173,9 +172,8 @@ router.post(
           ...req.body,
         });
 
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
-
         res.status(200).send({ success: true, url: '/wishcards/' });
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -214,11 +212,11 @@ router.get('/', async (_req, res) => {
 router.get('/me', renderPermissions, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-    const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+    const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
 
-    const draftWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'draft');
-    const activeWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'published');
-    const inactiveWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'donated');
+    const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+    const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+    const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
     res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
       if (error) {
@@ -256,7 +254,7 @@ router.get('/admin/', async (req, res) => {
     for (let i = 0; i < wishcards.length; i++) {
       const wishCard = wishcards[i];
       // eslint-disable-next-line no-await-in-loop
-      const agencyDetails = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
+      const agencyDetails = wishCard.wishCardTo;
       // take only necessary fields from agency that will be displayed on wishcard
       const agencySimple = {
         agencyName: agencyDetails.agencyName,
@@ -371,7 +369,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-    const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
+    const agency = wishcard.wishCardTo;
 
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;

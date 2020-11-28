@@ -37,6 +37,7 @@ const { redirectLogin, redirectProfile } = require('./middleware/login.middlewar
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
+const WishCardRepository = require('../db/repository/WishCardRepository');
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -98,12 +99,18 @@ router.get('/profile', redirectLogin, async (req, res) => {
     const { user } = req.session;
     if (user.userRole === 'partner') {
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
+     
       // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
         return res.status(200).render('agency');
       }
+      const wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
+      const wishCardsLength = wishCards.length;
+      res.status(200).render('profile', { wishCardsLength })
     }
-    res.status(200).render('profile');
+    else {
+      res.status(200).render('profile');
+    }
   } catch (err) {
     return handleError(res, 400, err);
   }
