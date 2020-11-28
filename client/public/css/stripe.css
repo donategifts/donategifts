@@ -1,14 +1,13 @@
-
 /* Tokikko's edits -not using our color scheme
 please make edits */
 form {
   /* width: 30vw; */
-  min-width: 500px;
-  align-self: center;
-  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-    0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  /* min-width: 500px; */
+  /* align-self: center;
+  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1),
+    0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px;
-  padding: 40px;
+  padding: 40px; */
 }
 input {
   border-radius: 6px;
@@ -38,7 +37,7 @@ input {
   margin-top: 12px;
 }
 #card-element {
-  border-radius: 4px 4px 0 0 ;
+  border-radius: 4px 4px 0 0;
   padding: 12px;
   border: 1px solid rgba(50, 50, 93, 0.1);
   height: 44px;
@@ -68,7 +67,7 @@ input {
 .spinner:before,
 .spinner:after {
   position: absolute;
-  content: "";
+  content: '';
 }
 .spinner:before {
   width: 10.4px;
@@ -116,7 +115,7 @@ input {
 }
 @media only screen and (max-width: 600px) {
   form {
-    width: 80vw;
+    /* width: 80vw; */
   }
 }
 /* tokikko's edits end */
@@ -143,8 +142,8 @@ input {
 
 .stripe-section {
   grid-area: stripe;
-  padding: 2em;
-  margin-left: 2em;
+  /* padding: 2em; */
+  /* margin-left: 2em; */
   color: #262626;
 }
 
@@ -154,7 +153,6 @@ input {
   margin-bottom: 1em;
   text-align: center;
 }
-
 
 .cap {
   text-transform: capitalize;
@@ -193,3 +191,46 @@ input {
 }
 
 /* stacy' edit end */
+.checkout .page-title h2 {
+  font-size: 1.6rem;
+}
+
+.checkout .support-donations .btn {
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.btn-outline-primary.green {
+  color: rgba(0, 161, 154, 1);
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.btn-outline-primary.green:hover {
+  color: #fff;
+  background-color: rgba(0, 161, 154, 1);
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.checkout #submit {
+  background-color: rgba(0, 161, 154, 1);
+  color: #fff;
+  padding: 1em;
+  width: 100%;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.checkout .apple-pay-button,
+.checkout .google-pay-button {
+  background-color: #000;
+  color: #fff;
+  padding: 1em;
+  width: 100%;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
