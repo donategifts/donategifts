@@ -23,11 +23,16 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
   };
 
   const createDonation = async (donorId, agencyId, card) => {
+    const statusChoices = ['awaiting', 'placed', 'delivered'];
+    // eslint-disable-next-line no-bitwise
+    const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
     await Donation.create({
       donationFrom: donorId,
       donationTo: agencyId,
       donationCard: card._id,
       donationPrice: card.wishItemPrice,
+
+      status: newStatus,
     });
   };
 

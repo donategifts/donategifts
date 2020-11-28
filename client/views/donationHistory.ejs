@@ -50,7 +50,19 @@
                     <td><%= donations[i].donationPrice %></td>
                     <td><%= donations[i].donationCard.wishItemName %></td>
                     <td><%= donations[i].donationDate %></td>
-                    <td><%= donations[i].status%></td>
+                    <% if (donations[i].status === 'awaiting') { %>
+                    <td>
+                        Awaiting Order
+                    </td>
+                    <% }  else if (donations[i].status === 'placed') { %>
+                    <td>
+                        Order Placed
+                    </td>
+                    <% } else { %>
+                    <td>
+                        Order Delivered
+                    </td>
+                    <% } %>
                 </tr>
                 <% } %>
             </tbody>
