@@ -5,7 +5,7 @@ let elements = stripe.elements();
 let style = {
   base: {
     fontSize: '16px',
-    color: '#32325d',
+    color: '#00a19a',
   },
 };
 

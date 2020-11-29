@@ -1,6 +1,7 @@
-const fs = require('fs');
+// unused values commented out for now -stacy
+// const fs = require('fs');
 const http = require('http');
-const https = require('https');
+// const https = require('https');
 const log = require('./logger');
 
 let io;
