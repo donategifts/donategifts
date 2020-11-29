@@ -107,7 +107,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 // redirect to a thank you page
 router.get('/payment/success/:id', redirectLogin, async (req, res) => {
   try {
-    const  wishCardId  = req.params.id;
+    const wishCardId  = req.params.id;
     const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
     const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
     const currentDate = moment(Date.now());
