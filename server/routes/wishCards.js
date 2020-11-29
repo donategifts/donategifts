@@ -91,7 +91,7 @@ router.post(
           wishItemPrice: Number(wishItemPrice),
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: userAgency._id,
+          belongsTo: userAgency._id,
           address: {
             address1: req.body.address1,
             address2: req.body.address2,
@@ -160,7 +160,7 @@ router.post(
           wishItemURL: itemChoice.ItemURL,
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
-          wishCardTo: userAgency._id,
+          belongsTo: userAgency._id,
           address: {
             address1,
             address2,
@@ -254,7 +254,7 @@ router.get('/admin/', async (req, res) => {
     for (let i = 0; i < wishcards.length; i++) {
       const wishCard = wishcards[i];
       // eslint-disable-next-line no-await-in-loop
-      const agencyDetails = wishCard.wishCardTo;
+      const agencyDetails = wishCard.belongsTo;
       // take only necessary fields from agency that will be displayed on wishcard
       const agencySimple = {
         agencyName: agencyDetails.agencyName,
@@ -369,11 +369,11 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-   
-    // NOTE: 
+
+    // NOTE:
     // this agency object is returning undefined and breaking frontend
-    const agency = wishcard.wishCardTo;
-    
+    const agency = wishcard.belongsTo;
+
     console.log("test print");
     console.log(agency);
 
@@ -400,7 +400,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
     // I test printed the agency and wishcard object
     // and if we are still using agency array, the matching obj is the 1st one
     // but who knows ¯\_(ツ)_/¯
-  
+
     res.status(200).render('donate', {
       user: res.locals.user,
       wishcard: wishcard || [],

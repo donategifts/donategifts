@@ -73,7 +73,7 @@ async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
 
 async function getWishCardByObjectId(cardId) {
   try {
-    return WishCard.findOne({ _id: cardId }).populate('wishCardTo').exec();
+    return WishCard.findOne({ _id: cardId }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -81,7 +81,7 @@ async function getWishCardByObjectId(cardId) {
 
 async function getWishCardsByStatus(status) {
   try {
-    return WishCard.find({ status }).populate('wishCardTo').exec();
+    return WishCard.find({ status }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -129,7 +129,7 @@ async function unLockWishCard(id) {
 
 async function getWishCardByAgencyId(agencyId) {
   try {
-    return WishCard.find({ wishCardTo: agencyId }).exec();
+    return WishCard.find({ belongsTo: agencyId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Agency's Wishcards: ${error}`);
   }

@@ -83,7 +83,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
         await DonationRepository.createNewDonation({
           donationFrom: user._id,
-          donationTo: wishCard.wishCardTo,
+          donationTo: wishCard.belongsTo,
           donationCard: wishCard._id,
           donationPrice: wishCard.wishItemPrice,
         });
