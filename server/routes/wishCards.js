@@ -369,7 +369,13 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+   
+    // NOTE: 
+    // this agency object is returning undefined and breaking frontend
     const agency = wishcard.wishCardTo;
+    
+    console.log("test print");
+    console.log(agency);
 
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;
@@ -388,7 +394,9 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       agency,
     };
 
+
     // console.log(agency);
+
     // I test printed the agency and wishcard object
     // and if we are still using agency array, the matching obj is the 1st one
     // but who knows ¯\_(ツ)_/¯
@@ -397,7 +405,9 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
-      agency
+
+      agency,
+
     });
   } catch (error) {
     handleError(res, 400, error);
