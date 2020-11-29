@@ -1,5 +1,9 @@
 const bcrypt = require('bcrypt');
 
+function randomDate(start, end) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
 const donorUser = {
   fName: 'John',
   lName: 'Doe',
@@ -60,8 +64,33 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'donated',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
+  },
+  {
+    approvedByAdmin: true,
+    childFirstName: 'Patric',
+    childLastName: 'Princess',
+    childInterest: 'playing video games',
+    wishItemName: 'Amazon Gift Card LOL',
+    wishCardImage: 'https://source.unsplash.com/random/400x400',
+    wishItemURL:
+      'https://www.amazon.com/gp/item-dispatch?registryID.1=25G0Z099HL6MM&registryItemID.1=I1O9RO1YPYHIAY&offeringID.1=MQVghiAmdPee43XLIJC7O6kWUui9P98LhUCjO0h40whWzMUZCD7cEt0fKU%252BHR1EGx%252Fo28ERQSrDbhtckSAslzk0c97WwWaXJiWXNjy6X3Aidfe6cpu1OR6K9KNs1s6Jmlk8DBvPUg%252F2HZgxckwFTQipnJfDHLce%252FjNpFnk7FGJRbuiw2d0DE7w%253D%253D&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
+    wishItemPrice: '40',
+    childStory: 'Kid that needs a gift for the holidays',
+    deliveryDate: Date.now(),
+    occasion: 'Some Occasion',
+    address: {
+      address1: '1337 leet road',
+      city: 'Magic Kingdom',
+      state: 'Florida',
+      country: 'Merica',
+      zipcode: '78452',
+    },
+    status: 'published',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -82,8 +111,10 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'donated',
+    age: 21,
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -104,8 +135,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'donated',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -126,8 +158,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'donated',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -136,7 +169,8 @@ const wishcards = [
     childInterest: 'playing video games',
     wishItemName: 'Amazon Gift Card LOL',
     wishCardImage: 'https://source.unsplash.com/random/400x400',
-    wishItemURL: 'https://www.google.com',
+    wishItemURL:
+      'https://www.amazon.com/gp/item-dispatch?registryID.1=1G59GOMP7TWWL&registryItemID.1=I2GEAHF4IG70OQ&offeringID.1=KOpMfeBdDkwVCEdd3iLwzcg%252BuAvNV1yFQZ4WZd6zANLbt0Yru%252B8qTa1ZhDPOyCGOMjrUHXJWyEhpF6T5xvKmzUSfD5YbyHRIT3bHBPKYK6zijeQf31xLEVIi8D0bM8qiBozSqXn%252FXQh7U0AoYxlwiA8TbpZUxoXtnEcPKkZucW4UvD8SlLCakLpkDlzhG02X&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
     wishItemPrice: '40',
     childStory: 'Kid that needs a gift for the holidays',
     deliveryDate: Date.now(),
@@ -148,8 +182,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'draft',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -171,8 +206,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'draft',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -193,8 +229,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'published',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -215,8 +252,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'published',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -237,8 +275,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'draft',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -259,8 +298,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'published',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -281,8 +321,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'draft',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
   {
     approvedByAdmin: true,
@@ -303,8 +344,9 @@ const wishcards = [
       country: 'Merica',
       zipcode: '78452',
     },
-    isDonated: false,
     status: 'published',
+    childBirthday: randomDate(new Date('October 01, 2000 10:00:00'), new Date('October 01, 2010 10:00:00')),
+    createdAt: randomDate(new Date('October 01, 2020 10:00:00'), new Date()),
   },
 ];
 

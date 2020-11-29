@@ -56,10 +56,6 @@ const WishCardSchema = new Schema(
       country: { type: String },
       zipcode: { type: String },
     },
-    isDonated: {
-      type: Boolean,
-      default: false,
-    },
     isLockedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

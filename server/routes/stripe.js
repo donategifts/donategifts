@@ -27,7 +27,7 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   // so we need to multiple our price by 100. Genious explanation
   const PENNY = 100;
   let totalItemPrice = parseFloat(await calculateWishItemTotalPrice(wishCard.wishItemPrice));
-  if(userDonation) totalItemPrice += parseFloat(userDonation);
+  if (userDonation) totalItemPrice += parseFloat(userDonation);
   if (wishCard) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.floor(totalItemPrice * PENNY),
@@ -37,7 +37,7 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
         wishCardId: wishCard._id.toString(),
         userId: res.locals.user._id.toString(),
         agencyName,
-        userDonation
+        userDonation,
       },
     });
 
@@ -87,7 +87,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           donationFrom: user._id,
           donationTo: wishCard.belongsTo,
           donationCard: wishCard._id,
-          donationPrice: event.data.object.amount/100,
+          donationPrice: event.data.object.amount / 100,
         });
 
         await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount);
@@ -108,19 +108,19 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 // redirect to a thank you page
 router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) => {
   try {
-    const {id, totalAmount} = req.params;
+    const { id, totalAmount } = req.params;
     const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(id));
     const currentDate = moment(Date.now());
     const donationInformation = {
       email: res.locals.user.email,
       totalAmount,
-      orderDate: currentDate.format("MMM D YYYY"),
+      orderDate: currentDate.format('MMM D YYYY'),
       itemName: wishCard.wishItemName,
-      childName: wishCard.childFirstName
+      childName: wishCard.childFirstName,
     };
     res.status(200).render('successPayment', {
       user: res.locals.user,
-      donationInformation
+      donationInformation,
     });
   } catch (error) {
     handleError(res, 400, error);

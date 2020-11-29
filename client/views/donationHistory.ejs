@@ -6,7 +6,6 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/search.css" />
-
 </head>
 
 <body>
@@ -50,7 +49,6 @@
             </thead>
             <tbody>
                 <% for (let i = 0; i < donations.length; i++) { %>
-
                 <tr>
                     <th scope="row"><%=i%></th>
                     <td><%= donations[i]._id %></td>

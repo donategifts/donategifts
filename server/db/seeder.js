@@ -17,6 +17,7 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
   const createWishCard = async (partnerId, createdAgency, card) => {
     await WishCard.create({
       ...card,
+      childFirstName: `${card.childFirstName}-${card.status}-${card.createdAt.toDateString()}`,
       createdBy: partnerId,
       belongsTo: createdAgency._id,
     });
