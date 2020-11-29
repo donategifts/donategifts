@@ -311,8 +311,9 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, hide_donated, age, cardIds } = req.body;
+    const { wishitem, hide_donated, age, cardIds, recently_added } = req.body;
     let hideDonated = false;
+    let reverseSort = false;
     let childAge = 14;
 
     if (age && parseInt(age, 10) > 14) {
@@ -323,9 +324,14 @@ router.post('/search', async (req, res) => {
       hideDonated = true;
     }
 
+    if (recently_added === 'on') {
+      reverseSort = true;
+    }
+
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
       hideDonated,
+      reverseSort,
       childAge,
       cardIds || [],
     );

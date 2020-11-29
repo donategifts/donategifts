@@ -40,7 +40,7 @@ async function getWishCardsByItemName(itemName, status) {
   }
 }
 
-async function getWishCardsFuzzy(itemName, hideDonated, cardIds) {
+async function getWishCardsFuzzy(itemName, hideDonated, reverseSort, cardIds) {
   try {
     const searchMatch = [];
     const statusMatch = [{ status: 'published' }];
@@ -62,6 +62,11 @@ async function getWishCardsFuzzy(itemName, hideDonated, cardIds) {
       ids = cardIds.map((id) => id && mongoose.Types.ObjectId(id));
     }
 
+    let sortOrder = 1;
+    if (reverseSort) {
+      sortOrder = -1;
+    }
+
     const matchPipeline = [
       {
         $match: {
@@ -72,7 +77,7 @@ async function getWishCardsFuzzy(itemName, hideDonated, cardIds) {
       {
         $sort: {
           status: -1,
-          createdAt: 1,
+          createdAt: sortOrder,
         },
       },
     ];
