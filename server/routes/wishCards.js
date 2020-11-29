@@ -386,6 +386,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
     const tax = 1.0712;
 
     const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+
     const extendedPaymentInfo = {
       processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
       shipping,
