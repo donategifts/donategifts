@@ -101,7 +101,7 @@ let orderComplete = function (paymentIntentId) {
   loading(false);
   document.querySelector('.result-message').classList.remove('hidden');
   document.querySelector('#submit').setAttribute('disabled', 'true');
-  showToast('Payment successfull', 'green');
+  redirectAfterSuccessfullPayment();
 };
 
 let showError = function (errorMsgText) {
@@ -121,4 +121,10 @@ let addCashDonation = function (originalAmount, amount) {
 
   total.innerHTML = '$' + totalAmount;
   userDonation.innerHTML = '$' + amount;
+}
+
+let redirectAfterSuccessfullPayment = function () {
+  let wishCardId = document.getElementById('cardId');
+  let totalAmount = document.getElementById('total-cost');
+  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
 }
