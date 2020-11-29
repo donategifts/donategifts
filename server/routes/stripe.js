@@ -3,6 +3,7 @@ const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const mongoSanitize = require('express-mongo-sanitize');
 const bodyParser = require('body-parser');
+const moment = require('moment');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
@@ -87,6 +88,30 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   // Return a res to acknowledge receipt of the event
   res.json({ received: true });
+});
+
+// called from frontend after stripe payment confirmation
+// redirect to a thank you page
+router.get('/payment/success/:id', redirectLogin, async (req, res) => {
+  try {
+    const  wishCardId  = req.params.id;
+    const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
+    const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
+    const currentDate = moment(Date.now());
+    const donationInformation = {
+      email: res.locals.user.email,
+      totalAmount: totalItemPrice,
+      orderDate: currentDate.format("MMM D YYYY"),
+      itemName: wishCard.wishItemName,
+      childName: wishCard.childFirstName
+    };
+    res.status(200).render('successPayment', {
+      user: res.locals.user,
+      donationInformation
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 module.exports = router;

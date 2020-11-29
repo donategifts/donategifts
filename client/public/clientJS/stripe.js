@@ -97,7 +97,7 @@ let orderComplete = function (paymentIntentId) {
   loading(false);
   document.querySelector('.result-message').classList.remove('hidden');
   document.querySelector('#submit').setAttribute('disabled', 'true');
-  showToast('Payment successfull', 'green');
+  redirectAfterSuccessfullPayment();
 };
 
 let showError = function (errorMsgText) {
@@ -108,3 +108,8 @@ let showError = function (errorMsgText) {
     errorMsg.textContent = '';
   }, 4000);
 };
+
+let redirectAfterSuccessfullPayment = function () {
+  let wishCardId = document.getElementById('cardId');
+  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}`);
+}
