@@ -10,6 +10,15 @@ async function createNewDonation(params) {
   }
 }
 
+async function getDonationByWishCardId(wishCardId) {
+  try {
+    return Donation.findOne({ donationTo: wishCardId }).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Donation: ${error}`);
+  }
+}
+
 module.exports = {
   createNewDonation,
+  getDonationByWishCardId
 };

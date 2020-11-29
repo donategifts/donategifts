@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>See Wish Card Details | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+</head>
+
+<body>
+<%- include('./templates/nav')-%>
+<div class="bg" id="profile-bg">
+    <div class="profile-title">
+        <h1 id="cray-font">Details for Donation from <%= donation.donationDate %></h1>
+    </div>
+</div>
+<!-- Wish Card deck -->
+<div class="admin-donation">
+    <div class="container">
+        <div class="admin-wishcard-details">
+            <h3>Wishcard Details</h3>
+
+            Childname: <%= wishCard.childFirstName %> <%= wishCard.childLastName %>
+            Birthday: <%= wishCard.childBirthday %>
+            Wishitemname:  <%= wishCard.wishItemName %>
+            Wishitemprice:  <%= wishCard.wishItemPrice %>
+            Wishitemurl: <a href="<%= wishCard.wishItemURL %>"> <%= wishCard.wishItemURL %> </a>
+            Deliverydate: <%= wishCard.deliveryDate %>
+            Status: <%= wishCard.status %>
+
+            Address: <%= wishCard.address %>
+
+        </div>
+
+        <div class="admin-agency-details">
+            <h3>Agency Details</h3>
+
+            Name: <%= agency.agencyName %>
+            Website: <%= agency.agencyWebsite %>
+            Phone:  <%= agency.agencyPhone %>
+            Account Manager:
+                    <%= accountManager.fName %>  <%= accountManager.lName %>
+                    <%= accountManager.email %>
+            Address: <%= agency.agencyAddress %>
+
+        </div>
+
+        <div class="admin-donor-details">
+            <h3>Donor Details</h3>
+
+            Donor:
+            <%= donor.fName %>  <%= donor.lName %>
+            <%= donor.email %>
+
+        </div>
+    </div>
+</div>
+
+<%- include('./templates/footer')-%>
+<script src="/public/clientJS/adminWishCards.js"></script>
+</body>
+</html>

@@ -230,20 +230,19 @@ router.get('/me', renderPermissions, async (req, res) => {
   }
 });
 
+
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
 // @tested 	No
 router.get('/admin/', async (req, res) => {
   try {
-    const WISHCARD_STATUS = 'draft';
-    const USER_ROLE = 'admin';
     // only admin users can get access
-    if (res.locals.user.userRole !== USER_ROLE) {
+    if (res.locals.user.userRole !== 'admin') {
       return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
-    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
     // we need to append each wishcard with some agency details
     const wishCardsWithAgencyDetails = [];
 
@@ -304,6 +303,41 @@ router.put('/admin/', async (req, res) => {
     handleError(res, 400, error);
   }
 });
+
+router.get('/admin/:wishCardId', async (req, res) => {
+
+  if (res.locals.user.userRole !== 'admin') {
+    return res.status(404).render('404');
+  }
+
+  const {wishCardId} = req.query;
+
+  // this is fucking hideous
+  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+  if (!wishCard) handleError(res, 400, 'Wishcard not found');
+
+  const agency = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
+  if (!agency) handleError(res, 400, 'Agency not found');
+
+  const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
+  if (!donation) handleError(res, 400, 'Donation not found');
+
+  const donor = await UserRepository.getUserByObjectId(donation.donationFrom);
+  if (!donor) handleError(res, 400, 'Donor not found');
+
+  const accountManager = await UserRepository.getUserByObjectId(agency.accountManager)
+  if (!accountManager) handleError(res, 400, 'AccountManager not found');
+
+  res.render('adminDonationDetails', {
+    wishCard,
+    agency,
+    donation,
+    donor,
+    accountManager
+  })
+
+});
+
 
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
@@ -386,8 +420,10 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-    const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
+    console.log(wishcard)
+    const agency = await AgencyRepository.getAgencyByUserId(wishcard.createdBy);
 
+    console.log(agency)
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;
     // we are using amazon prime so all shipping is free
