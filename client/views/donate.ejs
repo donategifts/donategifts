@@ -29,7 +29,7 @@
         <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be delivered to our
           partner agency,
           <a class="help-modal org-font cap bold-text pointer" data-toggle="modal" data-target="#checkoutHelper">
-            <%= agencyName %> <i class="fa fa-info-circle" aria-hidden="true"></i>
+            <%= agency.agencyName %> <i class="fa fa-info-circle" aria-hidden="true"></i>
           </a>, after confirmed payment.</p>
       </div>
 
@@ -50,7 +50,7 @@
 
         <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
-          <p id="agencyName" class="card-text" hidden><%= agencyName %></p>
+          <p id="agencyName" class="card-text" hidden><%= agency.agencyName %></p>
           <div class="pt-2 d-flex justify-content-between">
             <p>Subtotal</p>
             <p>$<%= wishcard.wishItemPrice %>.00</p>
