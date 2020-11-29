@@ -55,9 +55,6 @@ function getDonateBtnForUser(wishCard) {
   return `<a href="wishcards/donate/${wishCard._id}"><button 
   type="button" 
   class="wishcard__button--blue bdr-2"
-  data-value-url="${wishCard.wishItemURL}"
-  data-value-name="${wishCard.childFirstName}"
-  data-value-id="${wishCard._id}"
 >
   Donate Gift
 </button></a>`;
@@ -71,9 +68,6 @@ function getDonatedBtnForUnauthenticated(wishCard) {
   type="button" 
   data-toggle="modal"
   class="wishcard__button--blue bdr-2"
-  data-value-url="${wishCard.wishItemURL}"
-  data-value-name="${wishCard.childFirstName}"
-  data-value-id="${wishCard._id}"
   data-target="#loginModalCenter"
 >
   Donate Gift
