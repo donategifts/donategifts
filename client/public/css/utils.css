@@ -77,7 +77,7 @@ dark grey:
 ----------------------------------------
 */
 .bold-text {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1em;
 }
 
@@ -114,11 +114,15 @@ dark grey:
 }
 
 .blue-font {
-  color: #333a64;
+  color: #333a64 !important;
 }
 
 .red-font {
-  color: #ff5c6f;
+  color: #ff5c6f !important;
+}
+
+.org-font {
+  color: #ff826b !important;
 }
 
 #navy {
@@ -127,6 +131,10 @@ dark grey:
 
 .org-bg {
   background: rgba(249, 161, 76, 1);
+}
+
+.font-md-2 {
+  font-size: 1.2em;
 }
 
 .font-md {

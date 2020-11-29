@@ -1,6 +1,5 @@
 const Donation = require('../models/Donation');
 
-
 async function createNewDonation(params) {
   try {
     const newDonation = new Donation(params);
@@ -10,15 +9,24 @@ async function createNewDonation(params) {
   }
 }
 
-async function getDonationByWishCardId(wishCardId) {
+async function getDonationsByUser(UserId) {
   try {
-    return Donation.findOne({ donationTo: wishCardId }).exec();
+    return Donation.find({ donationFrom: UserId }).populate('donationCard').populate('donationTo').exec();
   } catch (error) {
-    throw new Error(`Failed to get Donation: ${error}`);
+    throw new Error(`Failed to get User's Donations: ${error}`);
+  }
+}
+
+async function getDonationsByAgency(AgencyId) {
+  try {
+    return Donation.find({ donationTo: AgencyId }).populate('donationCard').populate('donationFrom').exec();
+  } catch (error) {
+    throw new Error(`Failed to get Agency's Donations: ${error}`);
   }
 }
 
 module.exports = {
   createNewDonation,
-  getDonationByWishCardId
+  getDonationsByUser,
+  getDonationsByAgency,
 };

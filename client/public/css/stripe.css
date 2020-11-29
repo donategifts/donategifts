@@ -1,15 +1,14 @@
-
 /* Tokikko's edits -not using our color scheme
 please make edits */
-form {
-  /* width: 30vw; */
+/* form {
+  width: 30vw;
   min-width: 500px;
   align-self: center;
-  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-    0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1),
+    0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px;
   padding: 40px;
-}
+} */
 input {
   border-radius: 6px;
   margin-bottom: 6px;
@@ -38,7 +37,7 @@ input {
   margin-top: 12px;
 }
 #card-element {
-  border-radius: 4px 4px 0 0 ;
+  border-radius: 4px 4px 0 0;
   padding: 12px;
   border: 1px solid rgba(50, 50, 93, 0.1);
   height: 44px;
@@ -68,7 +67,7 @@ input {
 .spinner:before,
 .spinner:after {
   position: absolute;
-  content: "";
+  content: '';
 }
 .spinner:before {
   width: 10.4px;
@@ -116,7 +115,7 @@ input {
 }
 @media only screen and (max-width: 600px) {
   form {
-    width: 80vw;
+    /* width: 80vw; */
   }
 }
 /* tokikko's edits end */
@@ -128,24 +127,31 @@ input {
   justify-content: center;
   display: flex;
   flex-direction: column;
+  /* margin-bottom: -5px; */
+}
+
+.page-title h2 {
+  font-size: 1.4em;
 }
 
 .receipt-info {
   grid-area: info;
-  margin-right: 2em;
-  color: #262626;
+  padding: 0 2em 0 0;
+  margin-right: 1.5em;
+  color: #313131;
 }
 
 .receipt {
   border-top: #d3d3d3 1px solid;
   border-bottom: #d3d3d3 1px solid;
+  padding: 0 2em 0 0;
 }
 
 .stripe-section {
   grid-area: stripe;
-  padding: 2em;
+  padding: 0 0 0 4em;
   margin-left: 2em;
-  color: #262626;
+  color: #313131;
 }
 
 .security-guarantee {
@@ -155,9 +161,22 @@ input {
   text-align: center;
 }
 
-
 .cap {
   text-transform: capitalize;
+}
+
+.grn {
+  border: 1px solid rgba(0, 161, 154, 1);
+}
+
+.force-no-mg {
+  margin-top: -10px !important;
+}
+
+.error-text {
+  color: #fff !important;
+  background-color: #ff826b !important;
+  padding: 0.3em 0;
 }
 
 .page-wrapper {
@@ -183,13 +202,102 @@ input {
       'guarantee guarantee guarantee guarantee';
   }
 
+  .page-title {
+    padding: 0 1em;
+  }
+
   .receipt-info {
+    padding: 0 1em;
     margin-right: 0;
   }
 
   .stripe-section {
+    padding: 0 1em;
     margin-left: 0;
   }
 }
 
+.img-height {
+  max-height: 200px !important;
+}
+
+
+.receipt-info .fa-heart {
+  color: #ff826b;
+}
+
+
+
+.text-center {
+  font-size: 1.8em !important;
+}
+
+.line-middle {
+  width: 100%; 
+  text-align: center; 
+  border-bottom: 1px solid #808080; 
+  line-height: 0.1em;
+  margin: 10px 0 20px; 
+} 
+
+.line-middle span { 
+   background:#fff; 
+   padding:0 10px; 
+}
+
+.fa-question-circle, .fa-info-circle {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 /* stacy' edit end */
+
+/* filip's edit start */
+.checkout .page-title h2 {
+  font-size: 1.6rem;
+}
+
+.checkout .support-donations .btn {
+  padding: 0.8em 1.3em;
+  border-radius: 10px;
+  margin: 0.2em;
+}
+
+.btn-outline-primary.green {
+  color: rgba(0, 161, 154, 1);
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.btn-outline-primary.green:hover {
+  color: #fff;
+  background-color: rgba(0, 161, 154, 1);
+  border-color: rgba(0, 161, 154, 1);
+}
+
+.checkout #submit {
+  background-color: rgba(0, 161, 154, 1);
+  color: #fff;
+  padding: 1em;
+  width: 100%;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.checkout .apple-pay-button,
+.checkout .google-pay-button {
+  background-color: #000;
+  color: #fff;
+  padding: 1em;
+  width: 100%;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+/* filip's edit end */

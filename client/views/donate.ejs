@@ -17,84 +17,113 @@
 
 <body>
   <%- include('./templates/nav')-%>
+  <!-- include checkoutHelper once agency variable issue is fixed -->
 
-  <div class="container">
+  <%- include('./templates/checkoutHelper2')-%>
+  <%- include('./templates/checkoutHelper3')-%>
+  <%- include('./templates/checkoutHelper4')-%>
+  <div class="container checkout">
     <div class="page-wrapper">
-
       <!-- Todo: need to pass agency website URL and link to name -->
-      <div class="page-title mt-5">
+      <div class="page-title mt-4">
         <h2 class="text-center cool-font grn-font">Wish Donation Secure Checkout</h2>
-        <p class="quick-font"><span class="cap"><%= wishcard.childFirstName %></span>'s gift will be delivered to our partner agency,
-          <a href="" target="_blank" class="cap grn-font"><%= agencyName %></a>, after confirmed payment.</p>
+        <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be delivered to our
+          partner agency,
+          <a class="help-modal org-font cap bold-text pointer" data-toggle="modal" data-target="#checkoutHelper">
+
+            agency.agencyName (replace later) <i class="fa fa-info-circle" aria-hidden="true"></i>
+
+          </a>, after confirmed payment.</p>
       </div>
 
       <!-- start of left panel -->
       <div class="receipt-info mt-5 quick-font">
-        <p>From this donation, you will receive</p>
-        <ul>
-          <li>100% tax-deductible receipt & shipping details</li>
-          <li>Notification with a delivery proof</li>
-          <li>Message & photo from <%= wishcard.childFirstName %> if partner agency permits</li>
-        </ul>
-        <div class="row">
-          <div class="col">
-            <!-- fix: current image height might be too tall. 
-            also we should plan to display item image 
-            as a second image in the later version  -->
-            <img class="img-fluid rounded-lg" src="<%= wishcard.wishCardImage %>" alt="wish card kid photo">
-          </div>
-        </div>
-        <div>
-          <p>Wish item: <%= wishcard.wishItemName %></p>
-          <p>Item Price: $<%= wishcard.wishItemPrice %></p>
-        </div>
+        <p>From this donation, you will receive: </p>
+        <p><i class="fa fa-heart" aria-hidden="true"></i> 100% tax-deductible receipt & shipping details <br />
+          <i class="fa fa-heart" aria-hidden="true"></i> Notification with a delivery proof <br />
+          <i class="fa fa-heart" aria-hidden="true"></i> Message & photo from <span
+            class="cap bold-text"><%= wishcard.childFirstName %></span> if partner agency permits</p>
+
+
+        <img class="img-height img-fluid rounded-lg" src="<%= wishcard.wishCardImage %>" alt="wish card kid photo">
+
+        <p class="mt-1">
+          Wish item: <%= wishcard.wishItemName %>
+        </p>
 
         <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
-          <p id="agencyName" class="card-text" hidden><%= agencyName %></p>
+
+          <p id="agencyName" class="card-text" hidden>agency.agencyName (replace once issue fixed)</p>
+
           <div class="pt-2 d-flex justify-content-between">
             <p>Subtotal</p>
             <p>$<%= wishcard.wishItemPrice %>.00</p>
           </div>
-          <div class="pt-1 d-flex justify-content-between">
+          <div class="d-flex justify-content-between bold-text force-no-mg">
             <p>Shipping</p>
             <p><%= extendedPaymentInfo.shipping %></p>
           </div>
-          <div class="pt-1 d-flex justify-content-between">
-            <p>Processing Fee</p>
+          <div class="d-flex justify-content-between force-no-mg">
+            <p>Processing fee <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper2">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a></p>
             <p>$<%= extendedPaymentInfo.processingFee %></p>
           </div>
-          <div class="pt-1 d-flex justify-content-between">
-            <p>Item sales tax</p>
+          <div class="d-flex justify-content-between force-no-mg">
+            <p>Item sales tax <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper3">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a></p>
             <p>$<%= extendedPaymentInfo.tax %></p>
           </div>
-          <div class="pt-1 d-flex justify-content-between">
+          <div class="d-flex justify-content-between grn-font bold-text force-no-mg">
             <p>Total</p>
             <p>$<%= extendedPaymentInfo.totalItemCost %></p>
           </div>
         </div>
       </div>
-      <!-- end of left panel -->
 
       <div class="stripe-section mt-5 quick-font">
+
+        <div class="support-donations pb-2">
+          <p class="support-text bold-text"><span class="cap"><%= user.fName%>,</span> would you like to support our cause?</p>
+          <p>Add cash donation to sponsor our project, <br/> so we can help more kids
+            <a class="help-modal grn-font pointer" data-toggle="modal" data-target="#checkoutHelper4">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> More Info
+            </a>
+          </p>
+          <button type="button" class="btn btn-outline-primary green">$5</button>
+          <button type="button" class="btn btn-outline-primary green">$10</button>
+          <button type="button" class="btn btn-outline-primary green">$50</button>
+          <button type="button" class="btn btn-outline-primary green">$100</button>
+          <button type="button" class="btn btn-outline-primary green">Enter Amount</button>
+        </div>
+
+        <p class="line-middle pt-5"><span>Pay with credit or debit card</span></p>
+
+
         <form action="stripe/create-payment-intent" method="post" id="payment-form">
-          <div class="form-row">
-            <label for="card-element">
-              Pay with card
-            </label>
-            <div id="card-element" class="form-control">
-            </div>
+          <div class="form-row mt-5">
+            <p>Name on card</p>
+            <input class="CheckoutInput Input Input--empty grn" autocomplete="ccname" autocorrect="off" spellcheck="false"
+              id="billingName" name="billingName" type="text" aria-invalid="false" value="">
+
+            <p class="pt-3">Card information</p>
+            <div id="card-element" class="form-control"></div>
+            
             <!-- Used to display Element errors. -->
-            <div id="card-errors" role="alert"></div>
+            <div id="card-errors" role="alert" class="error-text bold-text"></div>
+            <button id="submit" class="mt-4">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Pay</span>
+            </button>
           </div>
-          <button id="submit">
-            <div class="spinner hidden" id="spinner"></div>
-            <span id="button-text">Pay</span>
-          </button>
           <!-- success msg show somewhere else not here -->
           <p class="result-message hidden">
             Payment succeeded
           </p>
+          <!-- We'll put the error messages in this element -->
+          <div id="card-errors" role="alert"></div>
         </form>
       </div>
 
