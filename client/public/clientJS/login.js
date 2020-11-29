@@ -16,7 +16,7 @@ $(document).ready(function () {
       data: formData,
       success: function (response, textStatus, jqXHR) {
         $('#submit-btn').prop('disabled', false);
-        location.assign(response.url);
+        location.reload();
       },
       error: function (response, textStatus, errorThrown) {
         showToast(response.responseJSON.error.msg);
