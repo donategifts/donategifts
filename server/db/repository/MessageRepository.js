@@ -17,7 +17,16 @@ async function createNewMessage(messageParams) {
   }
 }
 
+async function getMessagesByWishCardId(wishcardId) {
+  try {
+    return Message.find({ messageTo: wishcardId }).populate('messageFrom').exec();
+  } catch (error) {
+    throw new Error(`Failed to get all Messages of the Wishcard: ${error}`);
+  }
+}
+
 module.exports = {
   getMessageByObjectId,
   createNewMessage,
+  getMessagesByWishCardId,
 };
