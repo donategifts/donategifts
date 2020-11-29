@@ -18,7 +18,7 @@
 <body>
   <%- include('./templates/nav')-%>
   <!-- include checkoutHelper once agency variable issue is fixed -->
-  
+
   <%- include('./templates/checkoutHelper2')-%>
   <%- include('./templates/checkoutHelper3')-%>
   <%- include('./templates/checkoutHelper4')-%>
@@ -30,7 +30,9 @@
         <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be delivered to our
           partner agency,
           <a class="help-modal org-font cap bold-text pointer" data-toggle="modal" data-target="#checkoutHelper">
+
             agency.agencyName (replace later) <i class="fa fa-info-circle" aria-hidden="true"></i>
+
           </a>, after confirmed payment.</p>
       </div>
 
@@ -51,7 +53,9 @@
 
         <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
+
           <p id="agencyName" class="card-text" hidden>agency.agencyName (replace once issue fixed)</p>
+
           <div class="pt-2 d-flex justify-content-between">
             <p>Subtotal</p>
             <p>$<%= wishcard.wishItemPrice %>.00</p>

@@ -394,7 +394,9 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       agency,
     };
 
-    
+
+    // console.log(agency);
+
     // I test printed the agency and wishcard object
     // and if we are still using agency array, the matching obj is the 1st one
     // but who knows ¯\_(ツ)_/¯
@@ -403,7 +405,9 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
+
       agency,
+
     });
   } catch (error) {
     handleError(res, 400, error);
