@@ -1,6 +1,5 @@
-const fs = require('fs');
+
 const http = require('http');
-const https = require('https');
 const log = require('./logger');
 
 let io;
