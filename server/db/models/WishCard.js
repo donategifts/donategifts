@@ -72,7 +72,7 @@ const WishCardSchema = new Schema(
       enum: ['draft', 'published', 'donated'],
       default: 'draft',
     },
-    wishCardTo: {
+    belongsTo: {
       type: Schema.Types.ObjectId,
       ref: 'Agency',
     },

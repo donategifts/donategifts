@@ -10,7 +10,8 @@
   grid-area: info;
   /* background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
   border-radius: 20px;
-  border: rgba(255, 209, 90, 1) dotted 4px;
+  /* border: rgba(255, 209, 90, 1) dotted 4px; */
+  background-color: rgba(255, 246, 237, 1);
   padding: 2em;
   margin-right: 2em;
   color: #262626;
@@ -20,7 +21,7 @@
   grid-area: write;
   /* background: linear-gradient(290deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
   border-radius: 20px;
-  border: rgba(255, 209, 90, 1) dotted 4px;
+  background-color: rgba(255, 246, 237, 1);
   padding: 2em;
   margin-left: 2em;
   color: #262626;
@@ -28,7 +29,8 @@
 
 .show-msg {
   grid-area: msg;
-  background: rgba(255, 209, 90, 0.6);
+  background-color: rgba(255, 246, 237, 1);
+  color: rgba(0, 161, 154, 1);
   border-radius: 10px;
   padding: 2em;
   margin-top: 3em;
@@ -96,7 +98,7 @@
 }
 
 #submit {
-  background-color: #8bc64d;
+  background-color: rgba(0, 161, 154, 1);
   color: #fff;
   padding: 1em;
   width: 360px;

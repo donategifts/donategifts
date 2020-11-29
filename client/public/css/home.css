@@ -351,6 +351,14 @@ New color scheme reference is in utils.css
   outline: none;
 }
 
+.btn-secondary {
+  color: #fff !important;
+}
+
+.btn-secondary:hover {
+  color: #000 !important;
+}
+
 .button-center {
   justify-content: center;
   display: flex;
@@ -925,6 +933,7 @@ New color scheme reference is in utils.css
   transition: all 0.2s;
   border: none;
   cursor: pointer;
+  display: inline-flex;
 }
 .button:hover,
 .button--green:hover,
@@ -946,9 +955,10 @@ New color scheme reference is in utils.css
   color: #fff;
 }
 .button--green:hover {
-  color: #00a19a;
-  background: #fff;
+  color: #00a19a !important;
+  background: #fff !important;
 }
+
 .button--green-tan:hover {
   background: #f8e4c9;
 }
@@ -1169,4 +1179,10 @@ New color scheme reference is in utils.css
   .button-filter {
     margin-top: 1rem;
   }
+}
+
+.no-donation {
+    height: 60vh;
+    text-align: center;
+    padding: 1em;
 }

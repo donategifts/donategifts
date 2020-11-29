@@ -1,0 +1,115 @@
+#donation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#donationConfirmation {
+  border-bottom: 1px solid rgb(172, 148, 148);
+  display: flex;
+  flex-direction: column;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  padding-bottom: 1 em;
+}
+
+#success-payment-logo {
+  width: 3.5em;
+  height: 3.5em;
+}
+
+.donation-order-number {
+  font-weight: bold;
+  font-size: large;
+}
+
+.donation-successful-message {
+  font-size: large;
+}
+
+.more-wishcards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#donationInfo {
+  border-bottom: 1px solid rgb(172, 148, 148);
+  display: flex;
+  flex-direction: row;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+
+.donation-info-labels p {
+  font-weight: bold;
+}
+
+.donation-info-label-value {
+  padding-left: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+}
+
+.donation-info-label-value p{
+  text-align: left;
+}
+#donation-bulletin {
+  list-style: none;
+}
+
+#donation-bulletin li::before {
+  content: "\2022";  /*This is code for a bullet point */
+  color: #00A19A;
+  font-weight: bold;
+  font-size: xx-large;
+  display: inline-block;
+  width: 1em; 
+  margin-left: -1em; 
+  margin-top: -1em;
+}
+
+li {
+  font-size: large;
+}
+
+.list-item-title-container {
+  padding-top: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-item-title-container p {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.list-item-container {
+  padding-left: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-items {
+  padding-left: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+}
+
+.li-item {
+}

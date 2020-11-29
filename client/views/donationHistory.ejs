@@ -6,9 +6,6 @@
     <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/search.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
-        integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
-        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,7 +20,19 @@
         <h3 class="cool-font">My Donations</h3>
         <% } %>
 
-        <table class="table table-striped">
+        <% if (donations.length === 0) {%>
+        <div class="no-donation quick-font">
+            <h4 class="mt-5">You have 0 donations to display</h4>
+            <p>Should we check out some wish cards first?</p>
+            <div class="container-form-btn">
+                <a href="/wishcards">
+                    <button type="button" class="px-5 py-4 quick-font wishcard-btn grn-btn">Browse Wish Cards</button>
+                </a>
+            </div>
+        </div>
+        <% } else { %>
+
+        <table class="table table-striped mt-4">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -64,10 +73,11 @@
                     </td>
                     <% } %>
                 </tr>
+
                 <% } %>
             </tbody>
         </table>
-
+        <% } %>
     </div>
 
     <%- include('./templates/footer')-%>

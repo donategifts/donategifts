@@ -19,7 +19,7 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
       ...card,
       childFirstName: `${card.childFirstName}-${card.status}-${card.createdAt.toDateString()}`,
       createdBy: partnerId,
-      wishCardTo: createdAgency._id,
+      belongsTo: createdAgency._id,
     });
   };
 

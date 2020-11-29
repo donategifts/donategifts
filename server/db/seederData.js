@@ -169,7 +169,8 @@ const wishcards = [
     childInterest: 'playing video games',
     wishItemName: 'Amazon Gift Card LOL',
     wishCardImage: 'https://source.unsplash.com/random/400x400',
-    wishItemURL: 'https://www.google.com',
+    wishItemURL:
+      'https://www.amazon.com/gp/item-dispatch?registryID.1=1G59GOMP7TWWL&registryItemID.1=I2GEAHF4IG70OQ&offeringID.1=KOpMfeBdDkwVCEdd3iLwzcg%252BuAvNV1yFQZ4WZd6zANLbt0Yru%252B8qTa1ZhDPOyCGOMjrUHXJWyEhpF6T5xvKmzUSfD5YbyHRIT3bHBPKYK6zijeQf31xLEVIi8D0bM8qiBozSqXn%252FXQh7U0AoYxlwiA8TbpZUxoXtnEcPKkZucW4UvD8SlLCakLpkDlzhG02X&session-id=146-5423461-6179443&isGift=0&submit.addToCart=1&quantity.1=1&ref_=lv_ov_lig_pab',
     wishItemPrice: '40',
     childStory: 'Kid that needs a gift for the holidays',
     deliveryDate: Date.now(),
