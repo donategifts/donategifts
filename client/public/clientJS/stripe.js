@@ -123,7 +123,6 @@ let addCashDonation = function (originalAmount, amount) {
   userDonation.innerHTML = '$' + amount;
 }
 
-
 let redirectAfterSuccessfullPayment = function () {
   let wishCardId = document.getElementById('cardId');
   window.location.replace(`/stripe/payment/success/${wishCardId.innerText}`);
