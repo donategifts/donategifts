@@ -1,22 +1,89 @@
 const path = require('path');
-const { users, wishcards, agency } = require('./seederData');
+const { allUsers, wishcards, agency } = require('./seederData');
 const User = require('./models/User');
 const WishCard = require('./models/WishCard');
 const Agency = require('./models/Agency');
+const Message = require('./models/Message');
+const Donation = require('./models/Donation');
+const { getMessageChoices } = require('../utils/defaultMessages');
+
 const MongooseConnection = require('./connection');
+
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
 if (process.env.LOCAL_DEVELOPMENT === 'true') {
   MongooseConnection.connect();
 
+  const createWishCard = async (partnerId, createdAgency, card) => {
+    await WishCard.create({
+      ...card,
+      createdBy: partnerId,
+      wishCardTo: createdAgency._id,
+    });
+  };
+
+  const createDonation = async (donorId, agencyId, card) => {
+    const statusChoices = ['awaiting', 'placed', 'delivered'];
+    // eslint-disable-next-line no-bitwise
+    const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
+    await Donation.create({
+      donationFrom: donorId,
+      donationTo: agencyId,
+      donationCard: card._id,
+      donationPrice: card.wishItemPrice,
+
+      status: newStatus,
+    });
+  };
+
+  const createMessage = async (donor, card) => {
+    const allMessages = getMessageChoices(donor.fName, card.childFirstName);
+    // eslint-disable-next-line no-bitwise
+    const message = allMessages[(allMessages.length * Math.random()) | 0];
+    await Message.create({
+      messageFrom: donor._id,
+      messageTo: card._id,
+      // eslint-disable-next-line no-undef
+      message,
+    });
+  };
+
+  const createRecords = async () => {
+    try {
+      const { donorUser, partnerUser, adminUser } = allUsers;
+      await User.insertMany([adminUser, partnerUser]);
+      const donor = await User.create(donorUser);
+      const partnerUserId = await User.findOne({ email: partnerUser.email }).select('_id').lean().exec();
+      const createdAgency = await Agency.create({
+        ...agency,
+        accountManager: partnerUserId,
+      });
+      await Promise.all(
+        wishcards.map(async (card) => {
+          await createWishCard(partnerUserId, createdAgency, card);
+        }),
+      );
+      const donatedCards = await WishCard.find({ status: 'donated' });
+      await Promise.all(
+        donatedCards.map(async (donatedCard) => {
+          await createDonation(donor._id, createdAgency, donatedCard);
+        }),
+      );
+
+      const allCards = await WishCard.find({});
+      await Promise.all(
+        allCards.map(async (card) => {
+          await createMessage(donor, card);
+        }),
+      );
+    } catch (error) {
+      process.exit(1);
+    }
+  };
+
   const insertData = async () => {
     try {
-      await User.insertMany(users);
-      await WishCard.insertMany(wishcards);
-      await Agency.create({
-        agency,
-        accountManager: User.findOne({ email: 'janedoe@gmail.com' }).select('_id').lean().exec(),
-      });
+      await createRecords();
       process.exit();
     } catch (error) {
       process.exit(1);
@@ -28,15 +95,10 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
       await Agency.deleteMany();
       await User.deleteMany();
       await WishCard.deleteMany();
+      await Message.deleteMany();
+      await Donation.deleteMany();
 
-      await User.insertMany(users);
-      await WishCard.insertMany(wishcards);
-      const userList = await User.find({});
-      const user = userList[0];
-      await Agency.create({
-        agency,
-        accountManager: user._id,
-      });
+      await createRecords();
       process.exit();
     } catch (error) {
       process.exit(1);
@@ -48,6 +110,9 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
       await Agency.deleteMany();
       await User.deleteMany();
       await WishCard.deleteMany();
+      await Message.deleteMany();
+      await Donation.deleteMany();
+
       process.exit();
     } catch (error) {
       process.exit(1);
