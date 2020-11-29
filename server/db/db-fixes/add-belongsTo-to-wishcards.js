@@ -16,6 +16,11 @@ async function addBelongsTo() {
   const wishcards = await WishCardRepository.getAllWishCards();
 
   wishcards.forEach(async (wishcard) => {
+    if (!wishcard.status || wishcard.status === 'draft') {
+      // eslint-disable-next-line no-param-reassign
+      wishcard.status = 'published';
+      wishcard.save();
+    }
 
     if (wishcard.createdBy) {
       const user = await UserRepository.getUserByObjectId(wishcard.createdBy);
