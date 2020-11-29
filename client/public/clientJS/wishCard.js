@@ -43,35 +43,15 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-function getDonatedBtn() {
-  return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
-}
-
-function getDonateBtnForUser(wishCard) {
-  if (wishCard.status === 'donated') {
-    return getDonatedBtn();
+function getDonatedBtn(user, wishCardId, wishCardStatus) {
+  if (wishCardStatus === 'donated') {
+    return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
+  } else if (user) {
+    return `<a href="wishcards/donate/${wishCardId}"><button type="button" class="wishcard__button--blue bdr-2"> Donate Gift </button></a>`;
+  } else {
+    return `<button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+    data-target="#loginModalCenter"> Donate Gift </button>`;
   }
-
-  return `<a href="wishcards/donate/${wishCard._id}"><button 
-  type="button" 
-  class="wishcard__button--blue bdr-2"
->
-  Donate Gift
-</button></a>`;
-}
-
-function getDonatedBtnForUnauthenticated(wishCard) {
-  if (wishCard.status === 'donated') {
-    return getDonatedBtn();
-  }
-  return `<button 
-  type="button" 
-  data-toggle="modal"
-  class="wishcard__button--blue bdr-2"
-  data-target="#loginModalCenter"
->
-  Donate Gift
-</button>`;
 }
 
 function appendWishCards(response, end = false, remove = false) {
@@ -125,7 +105,7 @@ function appendWishCards(response, end = false, remove = false) {
                   <a href="/wishcards/${wishCard._id}" class="wishcard__link--white bdr-2"> Read more </a>
                 </div>
                 <div class="col-sm-6 my-2 text-center">
-                ${user ? getDonateBtnForUser(wishCard) : getDonatedBtnForUnauthenticated(wishCard)}
+                ${getDonatedBtn(user, wishCard._id, wishCard.status)}
                 </div>
               </div>
             </div>
