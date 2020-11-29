@@ -18,7 +18,7 @@ if (process.env.LOCAL_DEVELOPMENT === 'true') {
     await WishCard.create({
       ...card,
       createdBy: partnerId,
-      wishCardTo: createdAgency._id,
+      belongsTo: createdAgency._id,
     });
   };
 

@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="/public/css/stripe.css" />
 
   <!-- jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 
 </head>
@@ -76,9 +75,13 @@
             </a></p>
             <p>$<%= extendedPaymentInfo.tax %></p>
           </div>
+          <div id="user-donation-div" class="d-flex justify-content-between force-no-mg">
+            <p>Cash donation</p>
+            <p id="user-donation">$0</p>
+          </div>
           <div class="d-flex justify-content-between grn-font bold-text force-no-mg">
             <p>Total</p>
-            <p>$<%= extendedPaymentInfo.totalItemCost %></p>
+            <p id="total-cost">$<%= extendedPaymentInfo.totalItemCost %></p>
           </div>
         </div>
       </div>
@@ -92,10 +95,10 @@
               <i class="fa fa-question-circle" aria-hidden="true"></i> More Info
             </a>
           </p>
-          <button type="button" class="btn btn-outline-primary green">$5</button>
-          <button type="button" class="btn btn-outline-primary green">$10</button>
-          <button type="button" class="btn btn-outline-primary green">$50</button>
-          <button type="button" class="btn btn-outline-primary green">$100</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 5);" class="btn btn-outline-primary green">$5</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 10);" class="btn btn-outline-primary green">$10</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 50);" class="btn btn-outline-primary green">$50</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 100);" class="btn btn-outline-primary green">$100</button>
           <button type="button" class="btn btn-outline-primary green">Enter Amount</button>
         </div>
 
@@ -110,7 +113,7 @@
 
             <p class="pt-3">Card information</p>
             <div id="card-element" class="form-control"></div>
-            
+
             <!-- Used to display Element errors. -->
             <div id="card-errors" role="alert" class="error-text bold-text"></div>
             <button id="submit" class="mt-4">
@@ -138,6 +141,7 @@
   <%- include('./templates/footer')-%>
   <script src="https://js.stripe.com/v3/"></script>
   <script>
+
     let stripe = Stripe('<%= process.env.STRIPE_API %>');
   </script>
   <script src="/public/clientJS/stripe.js"></script>
