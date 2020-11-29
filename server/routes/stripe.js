@@ -106,15 +106,14 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
 // called from frontend after stripe payment confirmation
 // redirect to a thank you page
-router.get('/payment/success/:id', redirectLogin, async (req, res) => {
+router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) => {
   try {
-    const wishCardId  = req.params.id;
-    const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
-    const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
+    const {id, totalAmount} = req.params;
+    const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(id));
     const currentDate = moment(Date.now());
     const donationInformation = {
       email: res.locals.user.email,
-      totalAmount: totalItemPrice,
+      totalAmount,
       orderDate: currentDate.format("MMM D YYYY"),
       itemName: wishCard.wishItemName,
       childName: wishCard.childFirstName

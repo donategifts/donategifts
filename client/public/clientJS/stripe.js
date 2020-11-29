@@ -125,5 +125,6 @@ let addCashDonation = function (originalAmount, amount) {
 
 let redirectAfterSuccessfullPayment = function () {
   let wishCardId = document.getElementById('cardId');
-  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}`);
+  let totalAmount = document.getElementById('total-cost');
+  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
 }
