@@ -43,7 +43,15 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
+function getDonatedBtn() {
+  return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
+}
+
 function getDonateBtnForUser(wishCard) {
+  if (wishCard.status === 'donated') {
+    return getDonatedBtn();
+  }
+
   return `<a href="wishcards/donate/${wishCard._id}"><button 
   type="button" 
   class="wishcard__button--blue bdr-2"
@@ -56,6 +64,9 @@ function getDonateBtnForUser(wishCard) {
 }
 
 function getDonatedBtnForUnauthenticated(wishCard) {
+  if (wishCard.status === 'donated') {
+    return getDonatedBtn();
+  }
   return `<button 
   type="button" 
   data-toggle="modal"
