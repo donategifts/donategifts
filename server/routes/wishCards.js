@@ -85,12 +85,13 @@ router.post(
           // locally when using multer images are saved inside this folder
           filePath = `/uploads/${req.file.filename}`;
         }
-
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
           address: {
             address1: req.body.address1,
             address2: req.body.address2,
@@ -101,8 +102,7 @@ router.post(
           },
           ...req.body,
         });
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
+
         res.status(200).send({ success: true, url: '/wishcards/' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
@@ -152,6 +152,7 @@ router.post(
         }
 
         itemChoice = JSON.parse(itemChoice);
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemName: itemChoice.Name,
@@ -159,6 +160,7 @@ router.post(
           wishItemURL: itemChoice.ItemURL,
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
           address: {
             address1,
             address2,
@@ -170,10 +172,8 @@ router.post(
           ...req.body,
         });
 
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
-
         res.status(200).send({ success: true, url: '/wishcards/' });
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -212,11 +212,11 @@ router.get('/', async (_req, res) => {
 router.get('/me', renderPermissions, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-    const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+    const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
 
-    const draftWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'draft');
-    const activeWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'published');
-    const inactiveWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'donated');
+    const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+    const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+    const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
     res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
       if (error) {
@@ -254,7 +254,7 @@ router.get('/admin/', async (req, res) => {
     for (let i = 0; i < wishcards.length; i++) {
       const wishCard = wishcards[i];
       // eslint-disable-next-line no-await-in-loop
-      const agencyDetails = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
+      const agencyDetails = wishCard.belongsTo;
       // take only necessary fields from agency that will be displayed on wishcard
       const agencySimple = {
         agencyName: agencyDetails.agencyName,
@@ -339,23 +339,6 @@ router.post('/search', async (req, res) => {
   }
 });
 
-const getPreviousMessages = async (wishcard) => {
-  let messages = [];
-  if (wishcard.messages.length > 0) {
-    messages = await Promise.all(
-      wishcard.messages.map(async (messageID) => {
-        const foundMessage = await MessageRepository.getMessageByObjectId(messageID);
-        const foundUser = await UserRepository.getUserByObjectId(foundMessage.messageFrom);
-        return {
-          message: foundMessage.message,
-          fromUser: foundUser.fName,
-        };
-      }),
-    );
-  }
-  return messages;
-};
-
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
 // @access  Private, all users (path led by "see more" button). See more btn is however is public.
@@ -369,7 +352,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 
     wishcard.age = today.diff(birthday, 'years');
 
-    const messages = await getPreviousMessages(wishcard);
+    const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
     const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
     // create a page and have a dynamic link for see more
     res.status(200).render('wishCardFullPage', {
@@ -386,7 +369,10 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-    const agency = await AgencyRepository.getAgencyByWishCardId(wishcard._id);
+
+    // NOTE:
+    // this agency object is returning undefined and breaking frontend
+    const agency = wishcard.belongsTo;
 
     // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
     const processingFee = 1.08;
@@ -397,6 +383,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
     const tax = 1.0712;
 
     const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+
     const extendedPaymentInfo = {
       processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
       shipping,
@@ -405,11 +392,20 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
       agency,
     };
 
+
+    // console.log(agency);
+
+    // I test printed the agency and wishcard object
+    // and if we are still using agency array, the matching obj is the 1st one
+    // but who knows ¯\_(ツ)_/¯
+
     res.status(200).render('donate', {
       user: res.locals.user,
       wishcard: wishcard || [],
       extendedPaymentInfo,
-      agencyName: agency[1].agencyName,
+
+      agency,
+
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -478,8 +474,6 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
       messageTo,
       message,
     });
-
-    await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
 
     res.status(200).send({
       success: true,
