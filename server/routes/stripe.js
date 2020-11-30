@@ -90,6 +90,9 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           donationPrice: event.data.object.amount / 100,
         });
 
+        wishCard.status = 'donated';
+        wishCard.save();
+
         log.info('Wishcard donated', { type: 'wishcard_donated',
           user: user._id,
           wishCardId: wishCard._id,
