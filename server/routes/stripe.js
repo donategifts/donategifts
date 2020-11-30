@@ -90,7 +90,13 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           donationPrice: event.data.object.amount / 100,
         });
 
-        await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount);
+        log.info('Wishcard donated', { type: 'wishcard_donated',
+          user: user._id,
+          wishCardId: wishCard._id,
+          amount: event.data.object.amount / 100,
+          agency: event.data.object.metadata.agencyName});
+
+        await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount / 100);
         break;
       } catch (error) {
         log.debug(error);
