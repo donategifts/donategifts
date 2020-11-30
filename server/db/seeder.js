@@ -11,7 +11,7 @@ const MongooseConnection = require('./connection');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
-if (process.env.LOCAL_DEVELOPMENT === 'true') {
+if (process.env.NODE_ENV === 'development') {
   MongooseConnection.connect();
 
   const createWishCard = async (partnerId, createdAgency, card) => {
