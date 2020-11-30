@@ -1,11 +1,10 @@
-
 const http = require('http');
 const log = require('./logger');
 
 let io;
 function connectSocket(app) {
   const server = http.createServer(app);
- 
+
   io = require('socket.io')(server, {
     cors: {
       origin: '*',

@@ -3,6 +3,7 @@ const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const mongoSanitize = require('express-mongo-sanitize');
 const bodyParser = require('body-parser');
+const moment = require('moment');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
@@ -18,24 +19,25 @@ const router = express.Router();
 const endpointSecret = process.env.STRIPE_SECRET;
 
 router.post('/createIntent', redirectLogin, async (req, res) => {
-  const { wishCardId, email, agencyName } = req.body;
-
+  const { wishCardId, email, agencyName, userDonation } = req.body;
   // Create a PaymentIntent with the order amount and currency
   const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
 
   // By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
   // so we need to multiple our price by 100. Genious explanation
   const PENNY = 100;
-  const totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
+  let totalItemPrice = parseFloat(await calculateWishItemTotalPrice(wishCard.wishItemPrice));
+  if (userDonation) totalItemPrice += parseFloat(userDonation);
   if (wishCard) {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalItemPrice * PENNY,
+      amount: Math.floor(totalItemPrice * PENNY),
       currency: 'usd',
       receipt_email: email,
       metadata: {
         wishCardId: wishCard._id.toString(),
         userId: res.locals.user._id.toString(),
         agencyName,
+        userDonation,
       },
     });
 
@@ -83,9 +85,9 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
         await DonationRepository.createNewDonation({
           donationFrom: user._id,
-          donationTo: wishCard.wishCardTo,
+          donationTo: wishCard.belongsTo,
           donationCard: wishCard._id,
-          donationPrice: wishCard.wishItemPrice,
+          donationPrice: event.data.object.amount / 100,
         });
 
         await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount);
@@ -100,6 +102,29 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   // Return a res to acknowledge receipt of the event
   res.json({ received: true });
+});
+
+// called from frontend after stripe payment confirmation
+// redirect to a thank you page
+router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) => {
+  try {
+    const { id, totalAmount } = req.params;
+    const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(id));
+    const currentDate = moment(Date.now());
+    const donationInformation = {
+      email: res.locals.user.email,
+      totalAmount,
+      orderDate: currentDate.format('MMM D YYYY'),
+      itemName: wishCard.wishItemName,
+      childName: wishCard.childFirstName,
+    };
+    res.status(200).render('successPayment', {
+      user: res.locals.user,
+      donationInformation,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 module.exports = router;
