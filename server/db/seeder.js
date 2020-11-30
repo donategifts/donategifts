@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
   };
 
   const createDonation = async (donorId, agencyId, card) => {
-    const statusChoices = ['awaiting', 'placed', 'delivered'];
+    const statusChoices = ['confirmed', 'ordered', 'delivered'];
     // eslint-disable-next-line no-bitwise
     const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
     await Donation.create({
