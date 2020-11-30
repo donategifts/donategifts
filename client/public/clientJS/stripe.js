@@ -137,7 +137,7 @@ let showCustomAmountInput = () => {
 }
 
 let addCashDonationFromCustomAmountInput = (originalAmount, e) => {
-  let amount = parseInt(e.value);
+  let amount = parseFloat(e.value);
   if (amount >= 0) {
     addCashDonation(originalAmount, amount);
   }
