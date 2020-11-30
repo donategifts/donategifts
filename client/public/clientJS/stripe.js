@@ -119,8 +119,8 @@ let addCashDonation = function (originalAmount, amount) {
 
   let totalAmount = originalAmount + amount;
 
-  total.innerHTML = '$' + totalAmount;
-  userDonation.innerHTML = '$' + amount;
+  total.innerHTML = '$' + Math.floor(totalAmount* 100) / 100;
+  userDonation.innerHTML = '$' + Math.floor(amount* 100) / 100;
 }
 
 let redirectAfterSuccessfullPayment = function () {
