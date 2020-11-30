@@ -127,7 +127,7 @@ let showCustomAmountInput = () => {
   let inputAmountElement = document.getElementById("customAmountValue");
   const isVisible = inputAmountElement.style.visibility === 'hidden';
   // if users hides the input reset total amount to 0
-  if (isVisible === false) {
+  if (!isVisible) {
     let totalAmount = document.getElementById('total-cost-hidden');
     let parsedTotalAmount = parseFloat(totalAmount.innerText);
     inputAmountElement.value = "";
