@@ -43,6 +43,17 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
+function getDonatedBtn(user, wishCardId, wishCardStatus) {
+  if (wishCardStatus === 'donated') {
+    return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
+  } else if (user) {
+    return `<a href="wishcards/donate/${wishCardId}"><button type="button" class="wishcard__button--blue bdr-2"> Donate Gift </button></a>`;
+  } else {
+    return `<button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+    data-target="#loginModalCenter"> Donate Gift </button>`;
+  }
+}
+
 function appendWishCards(response, end = false, remove = false) {
   $('#no-result').remove();
   if (remove) {
@@ -94,15 +105,7 @@ function appendWishCards(response, end = false, remove = false) {
                   <a href="/wishcards/${wishCard._id}" class="wishcard__link--white bdr-2"> Read more </a>
                 </div>
                 <div class="col-sm-6 my-2 text-center">
-                <a href="wishcards/donate/${wishCard._id}"><button 
-                    type="button" 
-                    class="wishcard__button--blue bdr-2"
-                    data-value-url="${wishCard.wishItemURL}"
-                    data-value-name="${wishCard.childFirstName}"
-                    data-value-id="${wishCard._id}"
-                  >
-                    Donate Gift
-                  </button></a>
+                ${getDonatedBtn(user, wishCard._id, wishCard.status)}
                 </div>
               </div>
             </div>

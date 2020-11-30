@@ -10,15 +10,13 @@
   <link rel="stylesheet" href="/public/css/stripe.css" />
 
   <!-- jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 
 </head>
 
 <body>
   <%- include('./templates/nav')-%>
-  <!-- include checkoutHelper once agency variable issue is fixed -->
-
+  <%- include('./templates/checkoutHelper')-%>
   <%- include('./templates/checkoutHelper2')-%>
   <%- include('./templates/checkoutHelper3')-%>
   <%- include('./templates/checkoutHelper4')-%>
@@ -27,12 +25,10 @@
       <!-- Todo: need to pass agency website URL and link to name -->
       <div class="page-title mt-4">
         <h2 class="text-center cool-font grn-font">Wish Donation Secure Checkout</h2>
-        <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be delivered to our
-          partner agency,
+        <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be
+          delivered to our partner agency, <br/>
           <a class="help-modal org-font cap bold-text pointer" data-toggle="modal" data-target="#checkoutHelper">
-
-            agency.agencyName (replace later) <i class="fa fa-info-circle" aria-hidden="true"></i>
-
+            <%= agency.agencyName %> <i class="fa fa-info-circle" aria-hidden="true"></i>
           </a>, after confirmed payment.</p>
       </div>
 
@@ -54,7 +50,7 @@
         <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
 
-          <p id="agencyName" class="card-text" hidden>agency.agencyName (replace once issue fixed)</p>
+          <p id="agencyName" class="card-text" hidden><%= agency.agencyName %></p>
 
           <div class="pt-2 d-flex justify-content-between">
             <p>Subtotal</p>
@@ -66,19 +62,23 @@
           </div>
           <div class="d-flex justify-content-between force-no-mg">
             <p>Processing fee <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper2">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </a></p>
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+              </a></p>
             <p>$<%= extendedPaymentInfo.processingFee %></p>
           </div>
           <div class="d-flex justify-content-between force-no-mg">
             <p>Item sales tax <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper3">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </a></p>
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+              </a></p>
             <p>$<%= extendedPaymentInfo.tax %></p>
+          </div>
+          <div id="user-donation-div" class="d-flex justify-content-between force-no-mg">
+            <p>Cash donation</p>
+            <p id="user-donation">$0</p>
           </div>
           <div class="d-flex justify-content-between grn-font bold-text force-no-mg">
             <p>Total</p>
-            <p>$<%= extendedPaymentInfo.totalItemCost %></p>
+            <p id="total-cost">$<%= extendedPaymentInfo.totalItemCost %></p>
           </div>
         </div>
       </div>
@@ -86,16 +86,21 @@
       <div class="stripe-section mt-5 quick-font">
 
         <div class="support-donations pb-2">
-          <p class="support-text bold-text"><span class="cap"><%= user.fName%>,</span> would you like to support our cause?</p>
-          <p>Add cash donation to sponsor our project, <br/> so we can help more kids
+          <p class="support-text bold-text"><span class="cap"><%= user.fName%>,</span> would you like to support our
+            cause?</p>
+          <p>Add cash donation to sponsor our project, <br /> so we can help more kids
             <a class="help-modal grn-font pointer" data-toggle="modal" data-target="#checkoutHelper4">
               <i class="fa fa-question-circle" aria-hidden="true"></i> More Info
             </a>
           </p>
-          <button type="button" class="btn btn-outline-primary green">$5</button>
-          <button type="button" class="btn btn-outline-primary green">$10</button>
-          <button type="button" class="btn btn-outline-primary green">$50</button>
-          <button type="button" class="btn btn-outline-primary green">$100</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 5);"
+            class="btn btn-outline-primary green">$5</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 10);"
+            class="btn btn-outline-primary green">$10</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 50);"
+            class="btn btn-outline-primary green">$50</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 100);"
+            class="btn btn-outline-primary green">$100</button>
           <button type="button" class="btn btn-outline-primary green">Enter Amount</button>
         </div>
 
@@ -105,12 +110,12 @@
         <form action="stripe/create-payment-intent" method="post" id="payment-form">
           <div class="form-row mt-5">
             <p>Name on card</p>
-            <input class="CheckoutInput Input Input--empty grn" autocomplete="ccname" autocorrect="off" spellcheck="false"
-              id="billingName" name="billingName" type="text" aria-invalid="false" value="">
+            <input class="CheckoutInput Input Input--empty grn" autocomplete="ccname" autocorrect="off"
+              spellcheck="false" id="billingName" name="billingName" type="text" aria-invalid="false" value="">
 
             <p class="pt-3">Card information</p>
             <div id="card-element" class="form-control"></div>
-            
+
             <!-- Used to display Element errors. -->
             <div id="card-errors" role="alert" class="error-text bold-text"></div>
             <button id="submit" class="mt-4">

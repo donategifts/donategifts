@@ -51,14 +51,23 @@
                         <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
                       </div>
                       <div class="col-sm-6 my-2 text-center">
-                        <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
+                        <% if (locals.user) { %> 
+                          <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
                           type="button"
-                          data-value-id="<%= wishcards[j]._id %>"
-                          data-value-loggedIn="<%= !!locals.user %>"
                           class="wishcard__button--blue bdr-2"
                         >
                           Donate Gift
                         </button></a>
+                      <% } else { %>
+                        <button 
+                          type="button" 
+                          data-toggle="modal"
+                          class="wishcard__button--blue bdr-2"
+                          data-target="#loginModalCenter"
+                        >
+                          Donate Gift
+                        </button>
+                      <% } %>
                       </div>
                     </div>
                   </div>
@@ -128,18 +137,15 @@
                           <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
                         </div>
                         <div class="col-sm-6 my-2 text-center">
-                          <button
-                            type="button"
-                            data-toggle="modal"
-                            data-value-url="<%= wishcards[j].wishItemURL %>"
-                            data-value-name="<%= wishcards[j].childFirstName %>"
-                            data-value-id="<%= wishcards[j]._id %>"
-                            data-value-loggedIn="<%= !!locals.user %>"
-                            data-target="#wishCardDonateModal"
-                            class="wishcard__button--blue bdr-2"
-                          >
+                        <% if (locals.user) { %>
+                        <a href="wishcards/donate/<%= wishcards[j]._id %>"><button type="button" class="wishcard__button--blue bdr-2">
                             Donate Gift
-                          </button>
+                          </button></a>
+                        <% } else { %>
+                        <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2" data-target="#loginModalCenter">
+                          Donate Gift
+                        </button>
+                        <% } %>
                         </div>
                       </div>
                     </div>
