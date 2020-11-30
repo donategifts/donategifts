@@ -253,6 +253,10 @@ input {
   cursor: pointer;
 }
 
+*:hover, *:active, *:focus {
+  outline: 0 !important;
+}
+
 /* stacy' edit end */
 
 /* filip's edit start */
@@ -271,10 +275,10 @@ input {
   border-color: rgba(0, 161, 154, 1);
 }
 
-.btn-outline-primary.green:hover {
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary:visited {
   color: #fff;
   background-color: rgba(0, 161, 154, 1);
-  border-color: rgba(0, 161, 154, 1);
+  outline: none;
 }
 
 .checkout #submit {

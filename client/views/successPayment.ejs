@@ -15,45 +15,43 @@
 <body>
   <%- include('./templates/nav')-%>
 
-  <div class="container-fluid">
+  <div class="container">
       <section id="donation" class="row justify-content-md-center flex-column">
         <section id="donationConfirmation" class="justify-content-md-center ">
           <div class="more-wishcards-container">
             <img id="success-payment-logo" class="center-block" src="/public/img/payments_success_checkmark.svg"/>
           </div>
           
-          <h4 id="grn-font" class="crayon-font display-4 mb-3 text-center">Thank you for your donation!</h4>
-          <p class="display-5 mb-6 text-center donation-successful-message">Your payment was successfull and we are processing your now</p>
+          <h4 id="grn-font" class="crayon-font display-4 mb-3 text-center">Thank you for your donation !</h4>
+          <p class="display-5 mb-6 text-center donation-successful-message">Your payment was successful and we are processing your order now.</p>
           <div class="more-wishcards-container">
-            <a href="/wishcards"><button  type="button" class="button button--green center quick-font center-block">See more Wish Cards</button></a>
+            <a href="/wishcards"><button  type="button" class="button button--green center quick-font center-block">See More Wish Cards</button></a>
           </div>
         </section>
-        <section id="donationInfo" class="justify-content-md-center">
+        <section id="donationInfo" class="justify-content-md-center quick-font">
           <div class="donation-info-labels">
-            <p class="display-5 mb-6 text-center ">Confirmation will be sent to</p>
+            <p class="display-5 mb-6 mt-2 text-center ">Confirmation will be sent to</p>
             <p class="display-5 mb-6 text-center">Donation order date</p>
             <p class="display-5 mb-6 text-center">Donated wish item</p>
             <p class="display-5 mb-6 text-center">Donated total amount</p>
           </div>
           <div class="donation-info-label-value">
-            <p class="display-5 mb-6 text-center "><%= donationInformation.email %></p>
+            <p class="display-5 mb-6 mt-2 text-center "><%= donationInformation.email %></p>
             <p class="display-5 mb-6 text-center "><%= donationInformation.orderDate %></p>
             <p class="display-5 mb-6 text-center "><%= donationInformation.itemName %></p>
             <p class="display-5 mb-6 text-center "><%= donationInformation.totalAmount %></p>
           </div>
          
         </section>
-        <section id="donationConfirmation" class="justify-content-md-center">
+        <section id="donationConfirmation" class="justify-content-md-center quick-font">
           <div class="list-item-title-container">
             <p class="">From this donation, you will recieve:</p>
           </div>
-          <div class="list-item-container">
-            <ul id="donation-bulletin" class="list-items">
-              <li class="display-5 mb-6 text-center li-item">100% tax-deductible receipt & shipping details</li> 
-              <li class="display-5 mb-6 text-center li-item">Notification with a delivery proof</li>
-              <li class="display-5 mb-6 text-center li-item">Message & photo from <%= donationInformation.childName %> if partner agency permits</li>
-            </ul>
-          </div>
+          <p class="you-will-get"><i class="fa fa-heart" aria-hidden="true"></i> 100% tax-deductible receipt & shipping details <br />
+            <i class="fa fa-heart" aria-hidden="true"></i> Notification with a delivery proof <br />
+            <i class="fa fa-heart" aria-hidden="true"></i> Message & photo from <span
+              class="cap bold-text"><%= donationInformation.childName %></span> if partner agency permits</p>
+         
         </section>
       </section>
      
