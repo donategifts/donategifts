@@ -7,35 +7,7 @@
     <link rel="stylesheet" href="/public/css/search.css" />
     <script src="/public/clientJS/utils.js"></script>
 
-    <!-- facebook login -->
-    <script>
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '<%- process.env.FB_APP_ID %>',
-          cookie: true,
-          xfbml: true,
-          version: 'v8.0',
-        });
-        FB.AppEvents.logPageView();
-      };
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'facebook-jssdk');
-    </script>
 
-    <!-- google login -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
-    <script src="/public/clientJS/loginModal.js"></script>
-    <script src="/public/clientJS/socialLogin.js"></script>
   </head>
 
   <body>
@@ -91,7 +63,7 @@
                       <div class="form-group-container d-flex flex-column flex-sm-row flex-fill justify-content-around">
                         <div class="form-group">
                           <div class="form-check">
-                            <input class="form-check-input" name="age" id="child-age-radio-younger" value="14" checked type="radio" style="margin-right: 10px" />
+                            <input class="form-check-input" name="younger" id="child-age-check-younger" value="14" checked type="checkbox" style="margin-right: 10px" />
                             <label class="form-check-label" for="child-age-radio-younger">
                               Age Under 15
                             </label>
@@ -99,8 +71,8 @@
                         </div>
                         <div class="form-group">
                           <div class="form-check">
-                            <input class="form-check-input" name="age" id="child-age-radio-older" value="15" type="radio" style="margin-right: 10px" />
-                            <label class="form-check-label" for="child-age-radio-older">
+                            <input class="form-check-input" name="older" id="child-age-check-older" value="15" checked type="checkbox" style="margin-right: 10px" />
+                            <label class="form-check-label" for="child-age-check-older">
                               Age 15 And Older
                             </label>
                           </div>
@@ -108,15 +80,15 @@
                         <div class="form-group">
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox" style="margin-right: 10px" name="hide_donated" />
-                              Exclude Donated Wishes
+                              <input type="checkbox" style="margin-right: 10px" value="true" checked name="showDonatedCheck" />
+                              Include Donated Wishes
                             </label>
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox" style="margin-right: 10px" name="recently_added" />
+                              <input type="checkbox" style="margin-right: 10px" value="true" name="recentlyAdded" />
                               Recently Added
                             </label>
                           </div>

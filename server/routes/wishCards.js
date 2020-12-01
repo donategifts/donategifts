@@ -231,20 +231,19 @@ router.get('/me', renderPermissions, async (req, res) => {
   }
 });
 
+
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
 // @tested 	No
 router.get('/admin/', async (req, res) => {
   try {
-    const WISHCARD_STATUS = 'draft';
-    const USER_ROLE = 'admin';
     // only admin users can get access
-    if (res.locals.user.userRole !== USER_ROLE) {
+    if (res.locals.user.userRole !== 'admin') {
       return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
-    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
     // we need to append each wishcard with some agency details
     const wishCardsWithAgencyDetails = [];
 
@@ -306,33 +305,63 @@ router.put('/admin/', async (req, res) => {
   }
 });
 
+router.get('/admin/:wishCardId', async (req, res) => {
+
+  if (res.locals.user.userRole !== 'admin') {
+    return res.status(404).render('404');
+  }
+
+  const {wishCardId} = req.params;
+
+  const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
+  if (!donation) return handleError(res, 400, 'Donation not found');
+
+  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager)
+  if (!accountManager) return handleError(res, 400, 'AccountManager not found');
+
+  res.render('adminDonationDetails', {
+    wishCard: donation.donationCard,
+    agency: donation.donationTo,
+    donation,
+    donor: donation.donationFrom,
+    accountManager
+  })
+
+});
+
+
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
 // @access  Public
 // @tested 	Yes
-router.post('/search', async (req, res) => {
+router.post('/search/:init?', async (req, res) => {
   try {
-    const { wishitem, hide_donated, age, cardIds, recently_added } = req.body;
-    let hideDonated = false;
-    let reverseSort = false;
-    let childAge = 14;
 
-    if (age && parseInt(age, 10) > 14) {
+    const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+
+    let childAge;
+    let showDonated = showDonatedCheck;
+
+    //only true on first visit of page
+    if (req.params.init) {
+      childAge = 0;
+      showDonated = true;
+    }
+
+    if (younger) {
+      childAge = 14;
+    }
+
+    if (older) {
       childAge = 15;
     }
 
-    if (hide_donated === 'on') {
-      hideDonated = true;
-    }
-
-    if (recently_added === 'on') {
-      reverseSort = true;
-    }
+    if (younger && older)  childAge = 0;
 
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      hideDonated,
-      reverseSort,
+      showDonated,
+      recentlyAdded,
       childAge,
 
       cardIds || [],
