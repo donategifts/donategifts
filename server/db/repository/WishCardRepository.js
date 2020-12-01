@@ -92,6 +92,7 @@ async function getWishCardsFuzzy(itemName, hideDonated, reverseSort, cardIds) {
     }
 
     return WishCard.aggregate(matchPipeline).exec();
+
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }

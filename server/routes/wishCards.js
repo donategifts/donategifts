@@ -86,6 +86,7 @@ router.post(
           filePath = `/uploads/${req.file.filename}`;
         }
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
@@ -333,6 +334,7 @@ router.post('/search', async (req, res) => {
       hideDonated,
       reverseSort,
       childAge,
+
       cardIds || [],
     );
 
@@ -622,6 +624,7 @@ async function simulateScrape(wishcardInfo, callback) {
   return true;
 }
 
+
 async function scrape(wishcardInfo, callback) {
   const { wishCardId, userId, price, itemId, wishListId } = wishcardInfo;
   let isDonated = true;
@@ -654,6 +657,7 @@ async function scrape(wishcardInfo, callback) {
     io.emit('donated', { id: wishCardId, donatedBy: userId });
     const user = await UserRepository.getUserByObjectId(userId);
     sendDonationNotificationToSlack(user, wishCard);
+
 
     callback(true);
     return true;

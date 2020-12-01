@@ -23,10 +23,18 @@
         <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
         <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
 
-        <a type="button" id="donate-btn" class="button-center wishcard-btn btn-grn-bg quick-font"
-          href="donate/<%= wishcard._id %>">
-          Donate Gift
-        </a>
+        <% if (wishcard.status === 'donated') { %>
+          <button type="button"  id="donate-btn" class="button-center wishcard-btn btn-grn-bg quick-font" disabled aria-disabled=true> Donated </button>
+        <% } else if (user){ %>
+          <a type="button" id="donate-btn" class="button-center wishcard-btn btn-grn-bg quick-font"
+             href="donate/<%= wishcard._id %>">
+            Donate Gift
+          </a>
+        <% } else { %>
+          <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+                  data-target="#loginModalCenter"> Donate Gift </button>
+        <% } %>
+
       </div>
 
       <div class="section-info mt-5 quick-font">
