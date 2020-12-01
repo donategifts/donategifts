@@ -49,8 +49,9 @@
             </thead>
             <tbody>
                 <% for (let i = 0; i < donations.length; i++) { %>
+
                 <tr>
-                    <th scope="row"><%=i%></th>
+                    <th scope="row"><%=(i+1)%></th>
                     <td><%= donations[i]._id %></td>
                     <% if (locals.user.userRole === 'partner') {%>
                     <td><%= donations[i].donationFrom.fName %></td>
@@ -59,11 +60,11 @@
                     <td><%= donations[i].donationPrice %></td>
                     <td><%= donations[i].donationCard.wishItemName %></td>
                     <td><%= donations[i].donationDate %></td>
-                    <% if (donations[i].status === 'awaiting') { %>
+                    <% if (donations[i].status === 'confirmed') { %>
                     <td>
                         Awaiting Order
                     </td>
-                    <% }  else if (donations[i].status === 'placed') { %>
+                    <% }  else if (donations[i].status === 'ordered') { %>
                     <td>
                         Order Placed
                     </td>

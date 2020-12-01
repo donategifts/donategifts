@@ -18,3 +18,5 @@ server/logs
 .eslintcache
 dump.*
 .adminbro
+
+server/db/seederCredentials.json

@@ -86,6 +86,7 @@ router.post(
           filePath = `/uploads/${req.file.filename}`;
         }
         const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
@@ -230,20 +231,19 @@ router.get('/me', renderPermissions, async (req, res) => {
   }
 });
 
+
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
 // @tested 	No
 router.get('/admin/', async (req, res) => {
   try {
-    const WISHCARD_STATUS = 'draft';
-    const USER_ROLE = 'admin';
     // only admin users can get access
-    if (res.locals.user.userRole !== USER_ROLE) {
+    if (res.locals.user.userRole !== 'admin') {
       return res.status(404).render('404');
     }
     // only retrieve wishcards that have a draft status
-    const wishcards = await WishCardRepository.getWishCardsByStatus(WISHCARD_STATUS);
+    const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
     // we need to append each wishcard with some agency details
     const wishCardsWithAgencyDetails = [];
 
@@ -305,6 +305,31 @@ router.put('/admin/', async (req, res) => {
   }
 });
 
+router.get('/admin/:wishCardId', async (req, res) => {
+
+  if (res.locals.user.userRole !== 'admin') {
+    return res.status(404).render('404');
+  }
+
+  const {wishCardId} = req.params;
+
+  const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
+  if (!donation) return handleError(res, 400, 'Donation not found');
+
+  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager)
+  if (!accountManager) return handleError(res, 400, 'AccountManager not found');
+
+  res.render('adminDonationDetails', {
+    wishCard: donation.donationCard,
+    agency: donation.donationTo,
+    donation,
+    donor: donation.donationFrom,
+    accountManager
+  })
+
+});
+
+
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
 // @access  Public
@@ -333,6 +358,7 @@ router.post('/search', async (req, res) => {
       hideDonated,
       reverseSort,
       childAge,
+
       cardIds || [],
     );
 
@@ -622,6 +648,7 @@ async function simulateScrape(wishcardInfo, callback) {
   return true;
 }
 
+
 async function scrape(wishcardInfo, callback) {
   const { wishCardId, userId, price, itemId, wishListId } = wishcardInfo;
   let isDonated = true;
@@ -654,6 +681,7 @@ async function scrape(wishcardInfo, callback) {
     io.emit('donated', { id: wishCardId, donatedBy: userId });
     const user = await UserRepository.getUserByObjectId(userId);
     sendDonationNotificationToSlack(user, wishCard);
+
 
     callback(true);
     return true;
