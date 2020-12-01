@@ -334,29 +334,33 @@ router.get('/admin/:wishCardId', async (req, res) => {
 // @route   POST '/wishcards/search'
 // @access  Public
 // @tested 	Yes
-router.post('/search', async (req, res) => {
+router.post('/search/:init?', async (req, res) => {
   try {
-    const { wishitem, hide_donated, age, cardIds, recently_added } = req.body;
-    let hideDonated = false;
-    let reverseSort = false;
-    let childAge = 14;
 
-    if (age && parseInt(age, 10) > 14) {
+    const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+
+    let childAge;
+    let showDonated = showDonatedCheck;
+
+    if (req.params.init) {
+      childAge = 0;
+      showDonated = true;
+    }
+
+    if (younger) {
+      childAge = 14;
+    }
+
+    if (older) {
       childAge = 15;
     }
 
-    if (hide_donated === 'on') {
-      hideDonated = true;
-    }
-
-    if (recently_added === 'on') {
-      reverseSort = true;
-    }
+    if (younger && older)  childAge = 0;
 
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      hideDonated,
-      reverseSort,
+      showDonated,
+      recentlyAdded,
       childAge,
 
       cardIds || [],

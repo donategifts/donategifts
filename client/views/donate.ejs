@@ -101,7 +101,7 @@
           <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 100);"
             class="btn btn-outline-primary green">$100</button>
           <button id="enableCustomAmount" type="button" class="btn btn-outline-primary green" onclick="showCustomAmountInput()">Enter Amount</button>
-          <input id="customAmountValue" class="CheckoutInput Input Input--empty grn" type="number"  min="0" style="visibility: hidden;"
+          <input id="customAmountValue" class="CheckoutInput Input Input--empty grn" type="number" step="0.01" min="0" style="visibility: hidden;"
            onkeyup="addCashDonationFromCustomAmountInput(<%= extendedPaymentInfo.totalItemCost %>, this)" >
         </div>
 
