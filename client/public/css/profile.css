@@ -225,4 +225,40 @@
   color: #00a19a;
 }
 
-/* --------newly added by Stacy, move later if needed */
+.profile-picture {
+  height: 10em;
+  width: 12em;
+  padding-bottom: 1em;
+}
+
+.profile-picture-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-picutre-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-bottom: 1em;
+}
+
+.button-upload-image {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button-delete-image {
+  background-color: #D02FA6;
+}
+

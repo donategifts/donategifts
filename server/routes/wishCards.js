@@ -21,6 +21,7 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const log = require('../helper/logger');
+const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 const scrapeList = require('../../scripts/amazon-scraper');
 const {
   createWishcardValidationRules,
@@ -39,7 +40,7 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-const {sendDonationNotificationToSlack } = require('../helper/messaging');
+const { sendDonationNotificationToSlack } = require('../helper/messaging');
 
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
@@ -84,12 +85,14 @@ router.post(
           // locally when using multer images are saved inside this folder
           filePath = `/uploads/${req.file.filename}`;
         }
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
 
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemPrice: Number(wishItemPrice),
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
           address: {
             address1: req.body.address1,
             address2: req.body.address2,
@@ -100,8 +103,7 @@ router.post(
           },
           ...req.body,
         });
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
+
         res.status(200).send({ success: true, url: '/wishcards/' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
@@ -151,6 +153,7 @@ router.post(
         }
 
         itemChoice = JSON.parse(itemChoice);
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
         const newWishCard = await WishCardRepository.createNewWishCard({
           childBirthday: new Date(childBirthday),
           wishItemName: itemChoice.Name,
@@ -158,6 +161,7 @@ router.post(
           wishItemURL: itemChoice.ItemURL,
           wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
           createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
           address: {
             address1,
             address2,
@@ -169,10 +173,8 @@ router.post(
           ...req.body,
         });
 
-        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-        await AgencyRepository.pushNewWishCardToAgency(userAgency._id, newWishCard._id);
-
         res.status(200).send({ success: true, url: '/wishcards/' });
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -211,11 +213,11 @@ router.get('/', async (_req, res) => {
 router.get('/me', renderPermissions, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-    const agencyInfo = await AgencyRepository.getAgencyWishCards(userAgency._id);
+    const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
 
-    const draftWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'draft');
-    const activeWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'published');
-    const inactiveWishcards = agencyInfo.wishCards.filter((wishcard) => wishcard.status === 'donated');
+    const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+    const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+    const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
     res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
       if (error) {
@@ -253,7 +255,7 @@ router.get('/admin/', async (req, res) => {
     for (let i = 0; i < wishcards.length; i++) {
       const wishCard = wishcards[i];
       // eslint-disable-next-line no-await-in-loop
-      const agencyDetails = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
+      const agencyDetails = wishCard.belongsTo;
       // take only necessary fields from agency that will be displayed on wishcard
       const agencySimple = {
         agencyName: agencyDetails.agencyName,
@@ -310,18 +312,29 @@ router.put('/admin/', async (req, res) => {
 // @tested 	Yes
 router.post('/search', async (req, res) => {
   try {
-    const { wishitem, limit, donated, childAge, cardIds } = req.body;
-    let showDonated = false;
+    const { wishitem, hide_donated, age, cardIds, recently_added } = req.body;
+    let hideDonated = false;
+    let reverseSort = false;
+    let childAge = 14;
 
-    if (donated === 'on') {
-      showDonated = true;
+    if (age && parseInt(age, 10) > 14) {
+      childAge = 15;
+    }
+
+    if (hide_donated === 'on') {
+      hideDonated = true;
+    }
+
+    if (recently_added === 'on') {
+      reverseSort = true;
     }
 
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
-      showDonated,
-      parseInt(mongoSanitize.sanitize(limit), 10),
-      (childAge && parseInt(mongoSanitize.sanitize(childAge), 10)) || undefined,
+      hideDonated,
+      reverseSort,
+      childAge,
+
       cardIds || [],
     );
 
@@ -333,23 +346,6 @@ router.post('/search', async (req, res) => {
     handleError(res, 400, error);
   }
 });
-
-const getPreviousMessages = async (wishcard) => {
-  let messages = [];
-  if (wishcard.messages.length > 0) {
-    messages = await Promise.all(
-      wishcard.messages.map(async (messageID) => {
-        const foundMessage = await MessageRepository.getMessageByObjectId(messageID);
-        const foundUser = await UserRepository.getUserByObjectId(foundMessage.messageFrom);
-        return {
-          message: foundMessage.message,
-          fromUser: foundUser.fName,
-        };
-      }),
-    );
-  }
-  return messages;
-};
 
 // @desc    Retrieve one wishcard by its _id
 // @route   GET '/wishcards/:id'
@@ -364,7 +360,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
 
     wishcard.age = today.diff(birthday, 'years');
 
-    const messages = await getPreviousMessages(wishcard);
+    const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
     const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
     // create a page and have a dynamic link for see more
     res.status(200).render('wishCardFullPage', {
@@ -372,6 +368,50 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
       wishcard: wishcard || [],
       messages,
       defaultMessages,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
+
+router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+
+    // NOTE:
+    // this agency object is returning undefined and breaking frontend
+    const agency = wishcard.belongsTo;
+
+    // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
+    const processingFee = 1.08;
+    // we are using amazon prime so all shipping is free
+    const shipping = 'FREE';
+    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
+    // doing all the shopping
+    const tax = 1.0712;
+
+    const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+
+    const extendedPaymentInfo = {
+      processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
+      shipping,
+      tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
+      totalItemCost,
+      agency,
+    };
+
+    // console.log(agency);
+
+    // I test printed the agency and wishcard object
+    // and if we are still using agency array, the matching obj is the 1st one
+    // but who knows ¯\_(ツ)_/¯
+
+    res.status(200).render('donate', {
+      user: res.locals.user,
+      wishcard: wishcard || [],
+      extendedPaymentInfo,
+
+      agency,
     });
   } catch (error) {
     handleError(res, 400, error);
@@ -441,8 +481,6 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
       message,
     });
 
-    await WishCardRepository.pushNewWishCardMessage(messageTo._id, newMessage);
-
     res.status(200).send({
       success: true,
       error: null,
@@ -459,7 +497,7 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
 // @tested 	Not yet
 const blockedWishcardsTimer = [];
 
-router.post('/lock/:id', async (req, res) => {
+router.post('/lock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -500,7 +538,7 @@ router.post('/lock/:id', async (req, res) => {
   }
 });
 
-router.post('/unlock/:id', async (req, res) => {
+router.post('/unlock/:id', checkVerifiedUser, async (req, res) => {
   try {
     const { wishCardId, alreadyLockedWishCard, userId, error } = await WishCardController.getLockedWishCards(req);
 
@@ -530,7 +568,7 @@ router.post('/unlock/:id', async (req, res) => {
 });
 
 // check if user has donated
-router.get('/status/:id', async (req, res) => {
+router.get('/status/:id', checkVerifiedUser, async (req, res) => {
   try {
     const wishCardId = req.params.id;
 
@@ -555,85 +593,98 @@ router.get('/status/:id', async (req, res) => {
     handleError(res, 400, error);
   }
 });
+
+// Allows simulated scraping to switch between confirmed/unconfirmed
 let testResponse = false;
+
+async function simulateScrape(wishcardInfo, callback) {
+  const { wishCardId, userId, price } = wishcardInfo;
+  clearTimeout(blockedWishcardsTimer[wishCardId]);
+  if (testResponse) {
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    wishCard.status = 'donated';
+    wishCard.save();
+
+    await DonationsRepository.createNewDonation({
+      donationTo: wishCardId,
+      donationFrom: userId,
+      donationPrice: price,
+      donationConfirmed: true,
+    });
+
+    io.emit('donated', { id: wishCardId, donatedBy: userId });
+    testResponse = !testResponse;
+    callback(true);
+    return true;
+  }
+  io.emit('not_donated', { id: wishCardId, userId });
+  callback(false);
+  testResponse = !testResponse;
+  return true;
+}
+
+
+async function scrape(wishcardInfo, callback) {
+  const { wishCardId, userId, price, itemId, wishListId } = wishcardInfo;
+  let isDonated = true;
+  const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}`);
+
+  if (!scrapeResponse) isDonated = false;
+
+  if (Object.keys(scrapeResponse).length > 0) {
+    isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
+  }
+
+  if (isDonated) {
+    clearTimeout(blockedWishcardsTimer[wishCardId]);
+
+    const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+    wishCard.status = 'donated';
+    wishCard.isLockedUntil = null;
+    wishCard.isLockedBy = null;
+    wishCard.save();
+
+    await DonationsRepository.createNewDonation({
+      donationTo: wishCardId,
+      donationFrom: userId,
+      donationPrice: price,
+      donationConfirmed: true,
+    });
+
+    log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
+    io.emit('donated', { id: wishCardId, donatedBy: userId });
+    const user = await UserRepository.getUserByObjectId(userId);
+    sendDonationNotificationToSlack(user, wishCard);
+
+
+    callback(true);
+    return true;
+  }
+
+  log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
+  io.emit('not_donated', { id: wishCardId, userId });
+
+  callback(false);
+  return true;
+}
 
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
   try {
-    let isDonated = true;
     const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(url);
     if (wishListArray) {
       const wishListId = wishListArray[1];
       const itemId = wishListArray[2];
-
+      const wishcardInfo = { wishCardId, userId, price, itemId, wishListId };
       if (wishListId) {
         if (process.env.LOCAL_DEVELOPMENT) {
-          if (testResponse) {
-            const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
-
-            wishCard.status = 'donated';
-            wishCard.save();
-
-            await DonationsRepository.createNewDonation({
-              donationTo: wishCardId,
-              donationFrom: userId,
-              donationPrice: price,
-              donationConfirmed: true,
-            });
-
-            io.emit('donated', { id: wishCardId, donatedBy: userId });
-            done(true);
-            testResponse = !testResponse;
-            return true;
-          }
-
-          io.emit('not_donated', { id: wishCardId, userId });
-          done(false);
-          testResponse = !testResponse;
-
-          return false;
+          setTimeout(() => simulateScrape(wishcardInfo, done), 10000);
+        } else {
+          scrape(wishcardInfo, done);
         }
-
-        const scrapeResponse = await scrapeList(`https://www.amazon.com/hz/wishlist/ls/${wishListId}`);
-
-        if (!scrapeResponse) isDonated = false;
-
-        if (Object.keys(scrapeResponse).length > 0) {
-          isDonated = !JSON.stringify(scrapeResponse).includes(itemId);
-        }
-
-        if (isDonated) {
-          clearTimeout(blockedWishcardsTimer[wishCardId]);
-
-          const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
-
-          wishCard.status = 'donated';
-          wishCard.isLockedUntil = null;
-          wishCard.isLockedBy = null;
-          wishCard.save();
-
-          await DonationsRepository.createNewDonation({
-            donationTo: wishCardId,
-            donationFrom: userId,
-            donationPrice: price,
-            donationConfirmed: true,
-          });
-
-          log.info('Wishcard donated', { type: 'wishcard_donated', wishCardId, userId });
-          io.emit('donated', { id: wishCardId, donatedBy: userId });
-          const user = await UserRepository.getUserByObjectId(userId);
-          sendDonationNotificationToSlack(user, wishCard)
-
-          done(true);
-          return true;
-        }
-
-        log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
-        io.emit('not_donated', { id: wishCardId, userId });
-
-        done(false);
-        return true;
       }
       done(false);
     }

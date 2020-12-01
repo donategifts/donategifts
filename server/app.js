@@ -65,29 +65,34 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(
   responseTime((req, res, time) => {
-    if (
-      (!req.originalUrl.includes('.png') &&
-        !req.originalUrl.includes('.jpg') &&
-        !req.originalUrl.includes('.js') &&
-        !req.originalUrl.includes('.svg') &&
-        !req.originalUrl.includes('.jpeg') &&
-        !req.originalUrl.includes('.woff') &&
-        !req.originalUrl.includes('.css') &&
-        !req.originalUrl.includes('.ico')) ||
-      res.statusCode > 304
-    ) {
-      const clientIp = requestIp.getClientIp(req);
 
-      log.info('New request', {
-        type: 'request',
-        user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
-        method: req.method,
-        statusCode: res.statusCode,
-        route: req.originalUrl,
-        responseTime: Math.ceil(time),
-        ip: clientIp,
-      });
+    if (process.env.NODE_ENV !== 'test') {
+
+      if (
+        (!req.originalUrl.includes('.png') &&
+          !req.originalUrl.includes('.jpg') &&
+          !req.originalUrl.includes('.js') &&
+          !req.originalUrl.includes('.svg') &&
+          !req.originalUrl.includes('.jpeg') &&
+          !req.originalUrl.includes('.woff') &&
+          !req.originalUrl.includes('.css') &&
+          !req.originalUrl.includes('.ico')) ||
+        res.statusCode > 304
+      ) {
+        const clientIp = requestIp.getClientIp(req);
+
+        log.info('New request', {
+          type: 'request',
+          user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
+          method: req.method,
+          statusCode: res.statusCode,
+          route: req.originalUrl,
+          responseTime: Math.ceil(time),
+          ip: clientIp,
+        });
+      }
     }
+
   }),
 );
 // mongo connection needs to be established before admin-bro setup
@@ -166,7 +171,14 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify (req, res, buf) {
+    const url = req.originalUrl;
+    if (url.startsWith('/stripe')) {
+      req.rawBody = buf.toString();
+    }
+  }
+}));
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -196,6 +208,7 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
+const stripeRoute = require('./routes/stripe');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -204,6 +217,7 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
+app.use('/stripe', stripeRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {

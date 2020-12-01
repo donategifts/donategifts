@@ -41,9 +41,10 @@
         <a href="mailto:donate.gifts.stacy@gmail.com" class="text-dark">click to email us</a>
       </p>
       <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
-        <%- include('./templates/formHelperModal')-%>
-        <%- include('./templates/formHelperModal2')-%>
-        <%- include('./templates/formHelperModal3')-%>
+      <%- include('./templates/formHelperModal')-%>
+      <%- include('./templates/formHelperModal2')-%>
+      <%- include('./templates/formHelperModal3')-%>
+
       <div class="partner-only my-5">
         <h4 class="create-title pb-5">Create Wish Cards</h4>
         <div class="row justify-content-center py-3 my-3">
@@ -79,7 +80,7 @@
         </div>
         <div class="row justify-content-around">
           <p class="col-md-4 col-xs-12">Agency Verified: <%= agency.isVerified %></p>
-          <p class="col-md-4 col-xs-12">Number of Wishcards: <%= agency.wishCards.length %></p>
+          <p class="col-md-4 col-xs-12">Number of Wishcards: <%= wishCardsLength %></p>
         </div>
         <% if (agency.agencyAddress.address1 != null) { %>
         <div class="row py-3 my-3">
@@ -128,6 +129,28 @@
       </div>
   </header>
 
+  <!-- profile photo section commented out 
+      function is not working -->
+  <!-- <div class="d-flex justify-content-center">    
+      <div class="col-md-6 mb-3">
+        <div class="card card-block custom-card">
+          <div class="profile-picture-card">
+            <h5>Profile picture</h5> -->
+  <!-- <% if(!user.profileImage){ %>
+              <img id="profilePicture" class="profile-picture" src="/public/img/default_profile_avatar.svg"/>
+              <% } else{ %>
+              <img id="profilePicture" class="profile-picture" src="<%= user.profileImage %>"/>
+            <% } %> -->
+  <!-- <div class="profile-picutre-button-container">
+              <input id="buttonUploadImage" name="img" type="file" accept="image/*" hidden />
+              <label class="button-upload-image" for="buttonUploadImage">Upload image</label>
+              <button class="button-upload-image button-delete-image" id="buttonRemoveImage">Remove image</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
   <div class="container mb-5">
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -137,7 +160,6 @@
             <i class="fa fa-user" aria-hidden="true"></i>About Me<img data-toggle="modal" data-target="#aboutMeModal"
               id="update-about-me" class="about-me-edit" src="/public/img/edit-profile.svg" alt="Edit profile" />
           </h5>
-
           <% if(user.aboutMe){ %>
           <p id="about-me" class="card-text p-4"><%= user.aboutMe %></p>
           <% } else{ %>
@@ -148,7 +170,8 @@
       <div class="col-md-6">
         <div class="card card-block custom-card">
           <h5 class="card-title"><i class="fa fa-gift" aria-hidden="true"></i>My Donations</h5>
-          <p class="card-text p-4">You have made 0 donations.</p>
+          <!-- <p class="card-text p-4">You have made 0 donations.</p> -->
+          <a href="/users/profile/donations" class="p-4 grn-font bold-text">See My Donation History</a>
         </div>
       </div>
     </div>
@@ -159,6 +182,7 @@
           <p class="card-text p-4">You have 0 messages.</p>
         </div>
       </div>
+
       <div class="col-md-6">
         <div class="card card-block custom-card">
           <h5 class="card-title"><i class="fa fa-users" aria-hidden="true"></i>Friends</h5>
@@ -273,7 +297,6 @@
                     <i class="fa fa-question-circle" aria-hidden="true"></i>why is this required
                   </a>
                 </p>
-                
                 <div class="uploader-left">
                   <img id="preview" src="/public/img/img-placeholder.png" alt="image-placeholder" />
                 </div>
@@ -327,7 +350,7 @@
           </div>
         </div>
 
-        <p class="force-text-center quick-font p-2 mt-2">Each wish will be submitted as a draft & will be published by our staff after review due to security policies.</p>
+        <p class="force-text-center quick-font p-2 mt-2">Each wish will be submitted as a draft & will be published by
 
         <div id="submit-btn" class="quick-font">
           <input value="Submit" type="submit" class="button button-submit d-inline-flex" />

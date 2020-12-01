@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 
+// handle picture upload
+const WishCardMiddleWare = require('./middleware/wishCard.middleware');
+
 const router = express.Router();
 
 const {
@@ -33,6 +36,8 @@ const { redirectLogin, redirectProfile } = require('./middleware/login.middlewar
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
+const DonationRepository = require('../db/repository/DonationRepository');
+const WishCardRepository = require('../db/repository/WishCardRepository');
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -94,12 +99,18 @@ router.get('/profile', redirectLogin, async (req, res) => {
     const { user } = req.session;
     if (user.userRole === 'partner') {
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
+     
       // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
         return res.status(200).render('agency');
       }
+      const wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
+      const wishCardsLength = wishCards.length;
+      res.status(200).render('profile', { wishCardsLength })
     }
-    res.status(200).render('profile');
+    else {
+      res.status(200).render('profile');
+    }
   } catch (err) {
     return handleError(res, 400, err);
   }
@@ -145,6 +156,70 @@ router.put(
     }
   },
 );
+
+router.post(
+  '/profile/picture',
+  limiter,
+  WishCardMiddleWare.upload.single('profileImage'),
+  validate,
+  redirectLogin,
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+      );
+    } else {
+      try {
+        let filePath;
+
+        if (process.env.NODE_ENV === 'development') {
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
+        }
+        const profileImage = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
+        await UserRepository.updateUserById(req.session.user._id, { profileImage });
+        res.status(200).send(
+          JSON.stringify({
+            success: true,
+            error: null,
+            data: profileImage,
+          }),
+        );
+        log.info('Profile picture updated', { type: 'user_profile_picture_update', user: req.session.user._id });
+      } catch (error) {
+        handleError(res, 400, error);
+      }
+    }
+  });
+
+router.delete(
+  '/profile/picture',
+  limiter,
+  redirectLogin,
+  async (req, res) => {
+    try {
+      // if users had deleted picture replace it with string for the default avatar
+      const defaultImage= '/public/img/default_profile_avatar.svg';
+      await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });  
+      
+      res.status(200).send(
+        JSON.stringify({
+          success: true,
+          error: null,
+          data: defaultImage,
+        }),
+      );
+
+      log.info('Profile picture deleted', { type: 'user_profile_picture_delete', user: req.session.user._id });
+    }
+    catch (error) {
+      handleError(res, 400, error);
+    }
+  });
+
+
 
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
@@ -589,5 +664,27 @@ router.get('/agency/address', async (req, res) => {
   }
 },
 );
+
+router.get("/profile/donations", redirectLogin, async (req, res) => {
+  try {
+    const { user } = req.session;
+    let donations;
+    if (user.userRole === 'partner') {
+      const { agency } = req.session;
+      donations = await DonationRepository.getDonationsByAgency(agency._id);
+    } else {
+      donations = await DonationRepository.getDonationsByUser(user._id);
+    }
+    res.render('donationHistory', { donations }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 module.exports = router;

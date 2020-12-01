@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
+
+<head>
+  <title>See Each Wish Card | Donate Gifts</title>
+  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+  <%- include('./templates/header')-%>
+  <link rel="stylesheet" href="/public/css/wishCardFull.css" />
+  <link rel="stylesheet" href="/public/css/stripe.css" />
+
+  <!-- jquery -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+
+</head>
+
+<body>
+  <%- include('./templates/nav')-%>
+  <%- include('./templates/checkoutHelper')-%>
+  <%- include('./templates/checkoutHelper2')-%>
+  <%- include('./templates/checkoutHelper3')-%>
+  <%- include('./templates/checkoutHelper4')-%>
+  <div class="container checkout">
+    <div class="page-wrapper">
+      <!-- Todo: need to pass agency website URL and link to name -->
+      <div class="page-title mt-4">
+        <h2 class="text-center cool-font grn-font">Wish Donation Secure Checkout</h2>
+        <p class="quick-font font-md-2"><span class="cap bold-text"><%= wishcard.childFirstName %></span>'s gift will be
+          delivered to our partner agency, <br/>
+          <a class="help-modal org-font cap bold-text pointer" data-toggle="modal" data-target="#checkoutHelper">
+            <%= agency.agencyName %> <i class="fa fa-info-circle" aria-hidden="true"></i>
+          </a>, after confirmed payment.</p>
+      </div>
+
+      <!-- start of left panel -->
+      <div class="receipt-info mt-5 quick-font">
+        <p>From this donation, you will receive: </p>
+        <p><i class="fa fa-heart" aria-hidden="true"></i> 100% tax-deductible receipt & shipping details <br />
+          <i class="fa fa-heart" aria-hidden="true"></i> Notification with a delivery proof <br />
+          <i class="fa fa-heart" aria-hidden="true"></i> Message & photo from <span
+            class="cap bold-text"><%= wishcard.childFirstName %></span> if partner agency permits</p>
+
+
+        <img class="img-height img-fluid rounded-lg" src="<%= wishcard.wishCardImage %>" alt="wish card kid photo">
+
+        <p class="mt-1">
+          Wish item: <%= wishcard.wishItemName %>
+        </p>
+
+        <div class="receipt">
+          <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
+
+          <p id="agencyName" class="card-text" hidden><%= agency.agencyName %></p>
+
+          <div class="pt-2 d-flex justify-content-between">
+            <p>Subtotal</p>
+            <p>$<%= wishcard.wishItemPrice %>.00</p>
+          </div>
+          <div class="d-flex justify-content-between bold-text force-no-mg">
+            <p>Shipping</p>
+            <p><%= extendedPaymentInfo.shipping %></p>
+          </div>
+          <div class="d-flex justify-content-between force-no-mg">
+            <p>Processing fee <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper2">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+              </a></p>
+            <p>$<%= extendedPaymentInfo.processingFee %></p>
+          </div>
+          <div class="d-flex justify-content-between force-no-mg">
+            <p>Item sales tax <a class="help-modal grn-font" data-toggle="modal" data-target="#checkoutHelper3">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+              </a></p>
+            <p>$<%= extendedPaymentInfo.tax %></p>
+          </div>
+          <div id="user-donation-div" class="d-flex justify-content-between force-no-mg">
+            <p>Cash donation</p>
+            <p id="user-donation">$0</p>
+          </div>
+          <div class="d-flex justify-content-between grn-font bold-text force-no-mg">
+            <p>Total</p>
+            <p id="total-cost">$<%= extendedPaymentInfo.totalItemCost %></p>
+          </div>
+        </div>
+      </div>
+      <div class="stripe-section mt-5 quick-font">
+
+        <div class="support-donations pb-2">
+          <p class="support-text bold-text"><span class="cap"><%= user.fName%>,</span> would you like to support our
+            cause?</p>
+          <p>Add cash donation to sponsor our project, <br /> so we can help more kids
+            <a class="help-modal grn-font pointer" data-toggle="modal" data-target="#checkoutHelper4">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> More Info
+            </a>
+          </p>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 5);"
+            class="btn btn-outline-primary green">$5</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 10);"
+            class="btn btn-outline-primary green">$10</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 50);"
+            class="btn btn-outline-primary green">$50</button>
+          <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 100);"
+            class="btn btn-outline-primary green">$100</button>
+          <button id="enableCustomAmount" type="button" class="btn btn-outline-primary green" onclick="showCustomAmountInput()">Enter Amount</button>
+          <input id="customAmountValue" class="CheckoutInput Input Input--empty grn" type="number"  min="0" style="visibility: hidden;"
+           onkeyup="addCashDonationFromCustomAmountInput(<%= extendedPaymentInfo.totalItemCost %>, this)" >
+        </div>
+
+        <p class="line-middle pt-5"><span>Pay with credit or debit card</span></p>
+
+
+        <form action="stripe/create-payment-intent" method="post" id="payment-form">
+          <div class="form-row mt-5">
+            <p>Name on card</p>
+            <input class="CheckoutInput Input Input--empty grn" autocomplete="ccname" autocorrect="off"
+              spellcheck="false" id="billingName" name="billingName" type="text" aria-invalid="false" value="">
+
+            <p class="pt-3">Card information</p>
+            <div id="card-element" class="form-control"></div>
+
+            <!-- Used to display Element errors. -->
+            <div id="card-errors" role="alert" class="error-text bold-text"></div>
+            <button id="submit" class="mt-4">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Pay</span>
+            </button>
+          </div>
+          <!-- success msg show somewhere else not here -->
+          <p class="result-message hidden">
+            Payment succeeded
+          </p>
+          <!-- We'll put the error messages in this element -->
+          <div id="card-errors" role="alert"></div>
+        </form>
+      </div>
+
+      <div class="security-guarantee">
+        <p class="quick-font">Secure Checkout Guaranteed</p>
+        <img class="img-fluid" src="/public/img/secure-cards.png" alt="secure checkout images">
+      </div>
+      <!-- Reference to use when reseting the hidden cost of an item. Currently that value is stored only inside functions -->
+      <p id="total-cost-hidden" hidden><%= extendedPaymentInfo.totalItemCost %></p>
+    </div>
+  </div>
+
+  <%- include('./templates/footer')-%>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    let stripe = Stripe('<%= process.env.STRIPE_API %>');
+  </script>
+  <script src="/public/clientJS/stripe.js"></script>
+</body>
+
+</html>

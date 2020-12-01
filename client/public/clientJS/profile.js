@@ -59,9 +59,13 @@ $(document).ready(() => {
 window.onload = function () {
   let buttonSaveProfile = document.getElementById('save-about-me-button');
   let agencyAddressCheckBox = document.getElementById('agencyAddressCheckBox');
+  let buttonUploadImage = document.getElementById('buttonUploadImage');
+  let buttonRemoveImage = document.getElementById('buttonRemoveImage');
 
   buttonSaveProfile.addEventListener('click', handleSaveAboutMeButtonClick);
   agencyAddressCheckBox.addEventListener('click', handleCheckBoxClick);
+  buttonUploadImage.addEventListener('change', updateProfileImage);
+  buttonRemoveImage.addEventListener('click', deleteProfileImage);
 
   function handleCheckBoxClick() {
     if (agencyAddressCheckBox.checked) {
@@ -160,5 +164,41 @@ window.onload = function () {
       });
   }
 
-  
-};
+  function updateProfileImage() {
+    const formData = new FormData();
+    formData.append('profileImage', buttonUploadImage.files[0]);
+    if (buttonUploadImage.files[0]) {
+      fetch('/users/profile/picture', {
+        method: 'POST',
+        body: formData 
+      })
+      .then(response => response.json())
+      .then((data) => {
+        replaceImage(data.data);
+      })
+      .catch((error) => {
+        showToast("Could not update profile picture");
+        console.log(error)
+      });
+    }   
+  };
+
+  function deleteProfileImage() {
+    fetch('/users/profile/picture', {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then((data) => {
+      replaceImage(data.data);
+    })
+    .catch((error) => {
+      showToast("Could not remove profile picture");
+      console.log(error)
+    });
+  }
+
+  function replaceImage(imagePath) {
+    const imgElement = document.getElementById('profilePicture');
+    imgElement.src = imagePath;
+  }
+}

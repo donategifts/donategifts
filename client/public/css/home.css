@@ -58,6 +58,11 @@ New color scheme reference is in utils.css
   cursor: pointer;
 }
 
+.donate-true:hover {
+  background: rgba(136, 60, 69);
+  color: white;
+}
+
 .donate-false {
   margin-top: 1rem;
   text-align: center;
@@ -163,8 +168,6 @@ New color scheme reference is in utils.css
 .text button {
   margin-top: 1.4em;
 }
-
-
 
 /* new addition start  ------------------------------*/
 .home-wish-title {
@@ -346,6 +349,14 @@ New color scheme reference is in utils.css
   line-height: 1;
   color: #262626;
   outline: none;
+}
+
+.btn-secondary {
+  color: #fff !important;
+}
+
+.btn-secondary:hover {
+  color: #000 !important;
 }
 
 .button-center {
@@ -612,7 +623,6 @@ New color scheme reference is in utils.css
 .carousel {
   display: flex;
   flex-flow: row nowrap;
-  
 }
 
 .carousel-inner {
@@ -857,6 +867,22 @@ New color scheme reference is in utils.css
   border: 0.5px solid #333a64;
 }
 
+.wishcard__button--yellow {
+  appearance: none;
+  background: #ff9d32;
+  color: #fff;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+.wishcard__button--yellow:hover {
+  background: #fff;
+  color: #ff9d32;
+  border: 0.5px solid #ff9d32;
+}
+
 .wishcard__icon--fixed {
   position: absolute;
   display: flex;
@@ -907,6 +933,7 @@ New color scheme reference is in utils.css
   transition: all 0.2s;
   border: none;
   cursor: pointer;
+  display: inline-flex;
 }
 .button:hover,
 .button--green:hover,
@@ -928,9 +955,10 @@ New color scheme reference is in utils.css
   color: #fff;
 }
 .button--green:hover {
-  color: #00a19a;
-  background: #fff;
+  color: #00a19a !important;
+  background: #fff !important;
 }
+
 .button--green-tan:hover {
   background: #f8e4c9;
 }
@@ -950,6 +978,14 @@ New color scheme reference is in utils.css
   color: #333a64;
   background: #fff;
 }
+.button--yellow {
+  background: #ff9d32;
+  color: #fff;
+}
+.button--yellow:hover {
+  background: #ff9d32;
+  color: #fff;
+}
 
 .button--inverted-blue {
   background: #fff !important;
@@ -960,14 +996,42 @@ New color scheme reference is in utils.css
   background: #333a64 !important;
 }
 
+.button--inverted-yellow {
+  background: #fff !important;
+  color: #ff9d32 !important;
+}
+.button--inverted-yellow:hover {
+  background: #fff !important;
+  color: #ff9d32 !important;
+}
+
 .button-submit {
   background-color: #00a19a;
   color: #fff !important;
   padding: 0.6em 5em !important;
 }
 
-.button-submit:hover {  
+.button-submit:hover {
   background: rgba(255, 130, 107, 1) !important;
+}
+
+.button-search {
+  padding: 12px 35px;
+  border-radius: 3rem;
+}
+
+.button-filter {
+  margin: 1rem 20px 0 20px;
+  border-radius: 3rem;
+}
+
+.button-apply {
+  display: block;
+  border-radius: 3rem;
+}
+
+.filter-card {
+  width: 100%;
 }
 
 .font-300 {
@@ -1040,4 +1104,85 @@ New color scheme reference is in utils.css
   .mobile__carousel-wrapper {
     display: block;
   }
+}
+
+/*--------------------------------------------------------------
+    Searchbar and filters
+--------------------------------------------------------------*/
+.search-bar-container {
+}
+
+.search-bar-container .card {
+  border-radius: 3rem;
+}
+
+.search-bar-container .card-body {
+  padding: 0;
+}
+
+#filter-panel .card {
+  border-radius: 3rem;
+}
+
+#filter-panel .card-body {
+  padding: 0;
+  margin-left: 1rem;
+}
+
+#filter-panel .form-group {
+  margin: 0;
+}
+
+#filter-panel label {
+  margin-bottom: 0;
+}
+
+.search-button-text {
+  margin-right: 1rem;
+}
+
+.button-search {
+  padding: 18px 20px;
+}
+
+.button-filter {
+  margin-top: 0;
+}
+
+.button-apply {
+  width: 110px;
+  /* height: 64px; */
+}
+
+.apply-button-text {
+  margin-right: 1rem;
+}
+
+@media only screen and (max-width: 540px) {
+  #filter-panel .card {
+    border: none;
+  }
+
+  #filter-panel .card-body {
+    margin-left: 0;
+  }
+
+  .button-apply {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .button-search {
+    padding: 18px 18px;
+  }
+
+  .button-filter {
+    margin-top: 1rem;
+  }
+}
+
+.no-donation {
+    height: 60vh;
+    text-align: center;
+    padding: 1em;
 }

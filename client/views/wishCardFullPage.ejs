@@ -1,89 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
+<!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
 
-  <head>
-    <title>See Each Wish Card | Donate Gifts</title>
-    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
-    <%- include('./templates/header')-%>
-    <link rel="stylesheet" href="/public/css/wishCardFull.css" />
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+  <title>See Each Wish Card | Donate Gifts</title>
+  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+  <%- include('./templates/header')-%>
+  <link rel="stylesheet" href="/public/css/wishCardFull.css" />
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- js scripts -->
-    <script src="/public/clientJS/wishCardFullPage.js"></script>
-  </head>
+  <!-- js scripts -->
+  <script src="/public/clientJS/wishCardFullPage.js"></script>
+</head>
 
-  <body>
-    <%- include('./templates/nav')-%>
+<body>
+  <%- include('./templates/nav')-%>
 
-    <div class="container">
-      <div class="page-wrapper">
-        <div class="section-title mt-5">
-          <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
-          <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
-          <% if(false) { %>
-          <a
-            type="button"
-            id="donate-btn"
-            class="button-center wishcard-btn btn-grn-bg quick-font"
-            href="<%= wishcard.wishItemURL %>"
-            target="_blank"
-          >
+  <div class="container">
+    <div class="page-wrapper">
+      <div class="section-title mt-5">
+        <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
+        <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
+
+        <% if (wishcard.status === 'donated') { %>
+          <button type="button"  id="donate-btn" class="button-center wishcard-btn btn-grn-bg quick-font" disabled aria-disabled=true> Donated </button>
+        <% } else if (user){ %>
+          <a type="button" id="donate-btn" class="button-center wishcard-btn btn-grn-bg quick-font"
+             href="donate/<%= wishcard._id %>">
             Donate Gift
-          </a> <% } %>
-        </div>
+          </a>
+        <% } else { %>
+          <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+                  data-target="#loginModalCenter"> Donate Gift </button>
+        <% } %>
 
-        <div class="section-info mt-5 quick-font">
-          <h4 class="pb-4 grn-font">Wish Card Details</h4>
-          <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
-          <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
-          <p class="card-text">Interest : <%= wishcard.childInterest %></p>
-          <p class="card-text" id="age">Age : <%= wishcard.age %></p>
-          <p class="card-text">About Me : <%= wishcard.childStory %></p>
-        </div>
+      </div>
 
-        <div class="write-msg mt-5 quick-font">
-          <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
-          <p class="card-text">Select a message to send</p>
-          <!-- After discussion, we decided to just do a pre-written phrase checkbox,
+      <div class="section-info mt-5 quick-font">
+        <h4 class="pb-4 grn-font">Wish Card Details</h4>
+        <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
+        <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
+        <p class="card-text">Interest : <%= wishcard.childInterest %></p>
+        <p class="card-text" id="age">Age : <%= wishcard.age %></p>
+        <p class="card-text">About Me : <%= wishcard.childStory %></p>
+      </div>
+
+      <div class="write-msg mt-5 quick-font">
+        <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
+        <p class="card-text">Select a message to send</p>
+        <!-- After discussion, we decided to just do a pre-written phrase checkbox,
                 instead of allowing people to write personal messages
                 to prevent possible profanity -->
-          <form class="message" action="/wishcards/message" method="post">
-            <select class="custom-select">
-              <option selected>Messages</option>
-              <% for (let i = 0; i < defaultMessages.length; i++) { %>
-              <option value="<%= i %>"><%= defaultMessages[i] %></option>
-              <% } %>
-            </select>
-            <input type="submit" id="submit" class="mt-4" value="Send Message" />
-          </form>
-        </div>
-
-        <!-- This part needs to show all users' messages sent to this wishcard
-            wishcard model has 'messages' field which is an objectId array of 'Message'-->
-        <div class="show-msg">
-          <% if (messages.length === 0) { %>
-          <h6 class="quick-font">
-            No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a message.
-          </h6>
-          <% } else { %>
-          <div>
-            <% for (let i = 0; i < messages.length; i++) { %>
-            <p><%= messages[i].message %></p>
-            <p>Sent by: <%= messages[i].fromUser %></p>
-            <!-- also add a timestamp here-->
+        <form class="message" action="/wishcards/message" method="post">
+          <select class="custom-select">
+            <option selected>Messages</option>
+            <% for (let i = 0; i < defaultMessages.length; i++) { %>
+            <option value="<%= i %>"><%= defaultMessages[i] %></option>
             <% } %>
-          </div>
+          </select>
+          <input type="submit" id="submit" class="mt-4" value="Send Message" />
+        </form>
+      </div>
+
+      <!-- This part needs to show all users' messages sent to this wishcard
+            wishcard model has 'messages' field which is an objectId array of 'Message'-->
+      <div class="show-msg">
+        <% if (messages.length === 0) { %>
+        <h6 class="quick-font">
+          No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a message.
+        </h6>
+        <% } else { %>
+        <div>
+          <% for (let i = 0; i < messages.length; i++) { %>
+          <p><%= messages[i].message %></p>
+          <p>Sent by: <%= messages[i].messageFrom.fName %></p>
+          <!-- also add a timestamp here-->
           <% } %>
         </div>
+        <% } %>
       </div>
     </div>
+  </div>
 
-    <%- include('./templates/footer')-%>
-    <script>
-      let messageFrom = `<%- JSON.stringify(user) %>`;
-      let messageTo = `<%- JSON.stringify(wishcard) %>`;
-    </script>
-  </body>
+  <%- include('./templates/footer')-%>
+  <script>
+    let messageFrom = `<%- JSON.stringify(user) %>`;
+    let messageTo = `<%- JSON.stringify(wishcard) %>`;
+  </script>
+</body>
+
 </html>
