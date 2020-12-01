@@ -342,6 +342,7 @@ router.post('/search/:init?', async (req, res) => {
     let childAge;
     let showDonated = showDonatedCheck;
 
+    //only true on first visit of page
     if (req.params.init) {
       childAge = 0;
       showDonated = true;
