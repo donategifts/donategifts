@@ -342,7 +342,7 @@ router.post('/search/:init?', async (req, res) => {
     let childAge;
     let showDonated = showDonatedCheck;
 
-    //only true on first visit of page
+    // only true on first visit of page
     if (req.params.init) {
       childAge = 0;
       showDonated = true;
@@ -384,10 +384,14 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 
-    const birthday = moment(new Date(wishcard.childBirthday));
-    const today = moment(new Date());
-
-    wishcard.age = today.diff(birthday, 'years');
+    let birthday;
+    if (wishcard.childBirthday) {
+      birthday = moment(new Date(wishcard.childBirthday));
+      const today = moment(new Date());
+      wishcard.age = today.diff(birthday, 'years');
+    } else {
+      wishcard.age = 'Not Provided';
+    }
 
     const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
     const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
