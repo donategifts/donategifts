@@ -7,6 +7,7 @@ async function getWishCardSearchResult(itemName, hideDonated = false, reverseSor
     (itemName && itemName.trim()) || '',
     hideDonated,
     reverseSort,
+
     cardIds,
   );
 
