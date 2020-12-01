@@ -269,7 +269,7 @@ async function sendDonationNotificationToSlack(donor, wishCard, amount) {
       data: JSON.stringify({
         text: `${process.env.NODE_ENV} New Donation by ${donor.fName} ${donor.lName.substring(0, 1)} for ${
           wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} wishcardId: ${wishCard._id}, amount: ${amount}`,
+        } ${wishCard.childLastName.substring(0, 1)} details: ${process.env.BASE_URL}/wishcards/admin/${wishCard._id}, amount: ${amount}`,
       }),
 
     });
