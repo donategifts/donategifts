@@ -719,11 +719,15 @@ New color scheme reference is in utils.css
     Footer
 --------------------------------------------------------------*/
 .footer-bar {
-  padding: 23px 0;
-  font-size: 1.1em;
+  padding: 10px 0;
+  font-size: 1em;
   color: #fff;
   text-align: center;
   background: rgba(49, 49, 49, 1);
+}
+
+.footer-bar .yellow {
+  font-size: 1.15em;
 }
 
 /*--------------------------------------------------------------
