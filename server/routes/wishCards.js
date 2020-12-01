@@ -313,8 +313,6 @@ router.get('/admin/:wishCardId', async (req, res) => {
 
   const {wishCardId} = req.params;
 
-  // this is fucking hideous
-
   const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
   if (!donation) return handleError(res, 400, 'Donation not found');
 
