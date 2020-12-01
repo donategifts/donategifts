@@ -39,7 +39,7 @@
             <tbody>
                 <% for (let i = 0; i < donations.length; i++) { %>
                 <tr>
-                    <th scope="row"><%=i%></th>
+                    <th scope="row"><%=(i+1)%></th>
                     <td><%= donations[i]._id %></td>
                     <% if (locals.user.userRole === 'partner') {%>
                     <td><%= donations[i].donationFrom.fName %></td>

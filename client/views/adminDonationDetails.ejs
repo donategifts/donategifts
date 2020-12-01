@@ -19,37 +19,36 @@
         <div class="admin-wishcard-details">
             <h3>Wishcard Details</h3>
 
-            Childname: <%= wishCard.childFirstName %> <%= wishCard.childLastName %>
-            Birthday: <%= wishCard.childBirthday %>
-            Wishitemname:  <%= wishCard.wishItemName %>
-            Wishitemprice:  <%= wishCard.wishItemPrice %>
-            Wishitemurl: <a href="<%= wishCard.wishItemURL %>"> <%= wishCard.wishItemURL %> </a>
-            Deliverydate: <%= wishCard.deliveryDate %>
-            Status: <%= wishCard.status %>
-
-            Address: <%= wishCard.address %>
+            Childname: <%= wishCard.childFirstName %> <%= wishCard.childLastName %><br>
+            Birthday: <%= wishCard.childBirthday %><br>
+            Wishitemname:  <%= wishCard.wishItemName %><br>
+            Wishitemprice:  <%= wishCard.wishItemPrice %><br>
+            Wishitemurl: <a href="<%= wishCard.wishItemURL %>"> <%= wishCard.wishItemURL %> </a><br>
+            Deliverydate: <%= wishCard.deliveryDate %><br>
+            Status: <%= wishCard.status %><br>
+            Address: <%= JSON.stringify(wishCard.address, null, 2); %><br>
 
         </div>
 
         <div class="admin-agency-details">
             <h3>Agency Details</h3>
 
-            Name: <%= agency.agencyName %>
-            Website: <%= agency.agencyWebsite %>
-            Phone:  <%= agency.agencyPhone %>
-            Account Manager:
-                    <%= accountManager.fName %>  <%= accountManager.lName %>
-                    <%= accountManager.email %>
-            Address: <%= agency.agencyAddress %>
+            Name: <%= agency.agencyName %><br>
+            Website: <%= agency.agencyWebsite %><br>
+            Phone:  <%= agency.agencyPhone %><br>
+            Account Manager:<br>
+                    <%= accountManager.fName %>  <%= accountManager.lName %><br>
+                    <%= accountManager.email %><br>
+            Address: <%= agency.agencyAddress %><br>
 
         </div>
 
         <div class="admin-donor-details">
             <h3>Donor Details</h3>
 
-            Donor:
-            <%= donor.fName %>  <%= donor.lName %>
-            <%= donor.email %>
+            Donor:<br>
+            <%= donor.fName %>  <%= donor.lName %><br>
+            <%= donor.email %><br>
 
         </div>
     </div>

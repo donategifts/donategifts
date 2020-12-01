@@ -310,29 +310,21 @@ router.get('/admin/:wishCardId', async (req, res) => {
     return res.status(404).render('404');
   }
 
-  const {wishCardId} = req.query;
+  const {wishCardId} = req.params;
 
   // this is fucking hideous
-  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
-  if (!wishCard) handleError(res, 400, 'Wishcard not found');
-
-  const agency = await AgencyRepository.getAgencyByUserId(wishCard.createdBy);
-  if (!agency) handleError(res, 400, 'Agency not found');
 
   const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
-  if (!donation) handleError(res, 400, 'Donation not found');
+  if (!donation) return handleError(res, 400, 'Donation not found');
 
-  const donor = await UserRepository.getUserByObjectId(donation.donationFrom);
-  if (!donor) handleError(res, 400, 'Donor not found');
-
-  const accountManager = await UserRepository.getUserByObjectId(agency.accountManager)
-  if (!accountManager) handleError(res, 400, 'AccountManager not found');
+  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager)
+  if (!accountManager) return handleError(res, 400, 'AccountManager not found');
 
   res.render('adminDonationDetails', {
-    wishCard,
-    agency,
+    wishCard: donation.donationCard,
+    agency: donation.donationTo,
     donation,
-    donor,
+    donor: donation.donationFrom,
     accountManager
   })
 
