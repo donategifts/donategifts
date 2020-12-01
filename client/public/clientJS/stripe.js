@@ -37,9 +37,11 @@ form.addEventListener('submit', function (event) {
       loading(false);
     } else {
       // Send the token to your server.
-      
+
       let wishCardId = document.getElementById('cardId');
       let agencyName = document.getElementById('agencyName');
+      let userDonation =  document.getElementById('user-donation').innerHTML.replace('$', '');
+
       fetch('/stripe/createIntent', {
         method: 'POST',
         headers: {
@@ -48,7 +50,8 @@ form.addEventListener('submit', function (event) {
         body: JSON.stringify({
           wishCardId: wishCardId.innerText,
           agencyName: agencyName.innerText,
-        }),
+          userDonation: userDonation
+    }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -72,6 +75,7 @@ let payWithCard = function (stripe, card, clientSecret) {
       },
     })
     .then(function (result) {
+      console.log(result)
       if (result.error) {
         showError(result.error.message);
       } else {
@@ -97,7 +101,7 @@ let orderComplete = function (paymentIntentId) {
   loading(false);
   document.querySelector('.result-message').classList.remove('hidden');
   document.querySelector('#submit').setAttribute('disabled', 'true');
-  showToast('Payment successfull', 'green');
+  redirectAfterSuccessfullPayment();
 };
 
 let showError = function (errorMsgText) {
@@ -108,3 +112,39 @@ let showError = function (errorMsgText) {
     errorMsg.textContent = '';
   }, 4000);
 };
+
+let addCashDonation = function (originalAmount, amount) {
+  const total = document.getElementById('total-cost');
+  const userDonation = document.getElementById('user-donation');
+
+  let totalAmount = originalAmount + amount;
+
+  total.innerHTML = '$' + Math.floor(totalAmount* 100) / 100;
+  userDonation.innerHTML = '$' + Math.floor(amount* 100) / 100;
+}
+
+let showCustomAmountInput = () => {
+  let inputAmountElement = document.getElementById("customAmountValue");
+  const isVisible = inputAmountElement.style.visibility === 'hidden';
+  // if users hides the input reset total amount to 0
+  if (!isVisible) {
+    let totalAmount = document.getElementById('total-cost-hidden');
+    let parsedTotalAmount = parseFloat(totalAmount.innerText);
+    inputAmountElement.value = "";
+    addCashDonation(parsedTotalAmount, 0);
+  }
+  inputAmountElement.style.visibility = isVisible ? 'visible' : 'hidden';
+}
+
+let addCashDonationFromCustomAmountInput = (originalAmount, e) => {
+  let amount = parseFloat(e.value);
+  if (amount >= 0) {
+    addCashDonation(originalAmount, amount);
+  }
+}
+
+let redirectAfterSuccessfullPayment = function () {
+  let wishCardId = document.getElementById('cardId');
+  let totalAmount = document.getElementById('total-cost');
+  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
+}

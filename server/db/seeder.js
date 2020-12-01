@@ -11,19 +11,20 @@ const MongooseConnection = require('./connection');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
-if (process.env.LOCAL_DEVELOPMENT === 'true') {
+if (process.env.NODE_ENV === 'development') {
   MongooseConnection.connect();
 
   const createWishCard = async (partnerId, createdAgency, card) => {
     await WishCard.create({
       ...card,
+      childFirstName: `${card.childFirstName}-${card.status}-${card.createdAt.toDateString()}`,
       createdBy: partnerId,
-      wishCardTo: createdAgency._id,
+      belongsTo: createdAgency._id,
     });
   };
 
   const createDonation = async (donorId, agencyId, card) => {
-    const statusChoices = ['awaiting', 'placed', 'delivered'];
+    const statusChoices = ['confirmed', 'ordered', 'delivered'];
     // eslint-disable-next-line no-bitwise
     const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
     await Donation.create({

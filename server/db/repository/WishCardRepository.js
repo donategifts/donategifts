@@ -32,20 +32,24 @@ async function getViewableWishCards(showDonated) {
   }
 }
 
-async function getWishCardsByItemName(itemName, isDonated) {
+async function getWishCardsByItemName(itemName, status) {
   try {
-    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated }).exec();
+    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, status }).exec();
   } catch (error) {
     throw new Error(`Failed to get WishCards: ${error}`);
   }
 }
 
-async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
+async function getWishCardsFuzzy(itemName, hideDonated, reverseSort, cardIds) {
   try {
-    const match = [{ isDonated }, { isDonated: { $exists: false } }];
+    const searchMatch = [];
+    const statusMatch = [{ status: 'published' }];
+    if (!hideDonated) {
+      statusMatch.push({ status: 'donated' });
+    }
     let ids = [];
     if (itemName) {
-      match.push(
+      searchMatch.push(
         { wishItemName: { $regex: itemName, $options: 'i' } },
         { childStory: { $regex: itemName, $options: 'i' } },
         { childInterest: { $regex: itemName, $options: 'i' } },
@@ -58,14 +62,37 @@ async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
       ids = cardIds.map((id) => id && mongoose.Types.ObjectId(id));
     }
 
-    return WishCard.aggregate([
+    let sortOrder = 1;
+    if (reverseSort) {
+      sortOrder = -1;
+    }
+
+    const matchPipeline = [
       {
         $match: {
           _id: { $nin: ids },
-          $or: match,
+          $or: statusMatch,
         },
       },
-    ]).exec();
+      {
+        $sort: {
+          status: -1,
+          createdAt: sortOrder,
+        },
+      },
+    ];
+
+    if (itemName) {
+      matchPipeline.unshift({
+        $match: {
+          _id: { $nin: ids },
+          $or: searchMatch,
+        },
+      });
+    }
+
+    return WishCard.aggregate(matchPipeline).exec();
+
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
@@ -73,7 +100,7 @@ async function getWishCardsFuzzy(itemName, isDonated, cardIds) {
 
 async function getWishCardByObjectId(cardId) {
   try {
-    return WishCard.findOne({ _id: cardId }).populate('wishCardTo').exec();
+    return WishCard.findOne({ _id: cardId }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -81,7 +108,7 @@ async function getWishCardByObjectId(cardId) {
 
 async function getWishCardsByStatus(status) {
   try {
-    return WishCard.find({ status }).populate('wishCardTo').exec();
+    return WishCard.find({ status }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -129,7 +156,7 @@ async function unLockWishCard(id) {
 
 async function getWishCardByAgencyId(agencyId) {
   try {
-    return WishCard.find({ wishCardTo: agencyId }).exec();
+    return WishCard.find({ belongsTo: agencyId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Agency's Wishcards: ${error}`);
   }
