@@ -7,35 +7,7 @@
     <link rel="stylesheet" href="/public/css/search.css" />
     <script src="/public/clientJS/utils.js"></script>
 
-    <!-- facebook login -->
-    <script>
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '<%- process.env.FB_APP_ID %>',
-          cookie: true,
-          xfbml: true,
-          version: 'v8.0',
-        });
-        FB.AppEvents.logPageView();
-      };
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'facebook-jssdk');
-    </script>
 
-    <!-- google login -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
-    <script src="/public/clientJS/loginModal.js"></script>
-    <script src="/public/clientJS/socialLogin.js"></script>
   </head>
 
   <body>
