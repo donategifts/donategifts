@@ -25,8 +25,20 @@ async function getDonationsByAgency(AgencyId) {
   }
 }
 
+async function getDonationByWishCardId(wishCardId) {
+  try {
+    return Donation.findOne({ donationCard: wishCardId })
+      .populate('donationCard')
+      .populate('donationFrom')
+      .populate('donationTo').exec();
+  } catch (error) {
+    throw new Error(`Failed to get Agency's Donations: ${error}`);
+  }
+}
+
 module.exports = {
   createNewDonation,
   getDonationsByUser,
   getDonationsByAgency,
+  getDonationByWishCardId
 };

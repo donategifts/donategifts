@@ -82,7 +82,6 @@
           </div>
         </div>
       </div>
-
       <div class="stripe-section mt-5 quick-font">
 
         <div class="support-donations pb-2">
@@ -101,7 +100,9 @@
             class="btn btn-outline-primary green">$50</button>
           <button type="button" onclick="addCashDonation(<%= extendedPaymentInfo.totalItemCost %>, 100);"
             class="btn btn-outline-primary green">$100</button>
-          <button type="button" class="btn btn-outline-primary green">Enter Amount</button>
+          <button id="enableCustomAmount" type="button" class="btn btn-outline-primary green" onclick="showCustomAmountInput()">Enter Amount</button>
+          <input id="customAmountValue" class="CheckoutInput Input Input--empty grn" type="number" step="0.01" min="0" style="visibility: hidden;"
+           onkeyup="addCashDonationFromCustomAmountInput(<%= extendedPaymentInfo.totalItemCost %>, this)" >
         </div>
 
         <p class="line-middle pt-5"><span>Pay with credit or debit card</span></p>
@@ -136,7 +137,8 @@
         <p class="quick-font">Secure Checkout Guaranteed</p>
         <img class="img-fluid" src="/public/img/secure-cards.png" alt="secure checkout images">
       </div>
-
+      <!-- Reference to use when reseting the hidden cost of an item. Currently that value is stored only inside functions -->
+      <p id="total-cost-hidden" hidden><%= extendedPaymentInfo.totalItemCost %></p>
     </div>
   </div>
 

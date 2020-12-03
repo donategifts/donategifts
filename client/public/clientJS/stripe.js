@@ -119,8 +119,28 @@ let addCashDonation = function (originalAmount, amount) {
 
   let totalAmount = originalAmount + amount;
 
-  total.innerHTML = '$' + totalAmount;
-  userDonation.innerHTML = '$' + amount;
+  total.innerHTML = '$' + Math.floor(totalAmount* 100) / 100;
+  userDonation.innerHTML = '$' + Math.floor(amount* 100) / 100;
+}
+
+let showCustomAmountInput = () => {
+  let inputAmountElement = document.getElementById("customAmountValue");
+  const isVisible = inputAmountElement.style.visibility === 'hidden';
+  // if users hides the input reset total amount to 0
+  if (!isVisible) {
+    let totalAmount = document.getElementById('total-cost-hidden');
+    let parsedTotalAmount = parseFloat(totalAmount.innerText);
+    inputAmountElement.value = "";
+    addCashDonation(parsedTotalAmount, 0);
+  }
+  inputAmountElement.style.visibility = isVisible ? 'visible' : 'hidden';
+}
+
+let addCashDonationFromCustomAmountInput = (originalAmount, e) => {
+  let amount = parseFloat(e.value);
+  if (amount >= 0) {
+    addCashDonation(originalAmount, amount);
+  }
 }
 
 let redirectAfterSuccessfullPayment = function () {

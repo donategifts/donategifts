@@ -40,11 +40,12 @@ async function getWishCardsByItemName(itemName, status) {
   }
 }
 
-async function getWishCardsFuzzy(itemName, hideDonated, reverseSort, cardIds) {
+async function getWishCardsFuzzy(itemName, showDonated, reverseSort, cardIds) {
   try {
+    console.log(showDonated)
     const searchMatch = [];
     const statusMatch = [{ status: 'published' }];
-    if (!hideDonated) {
+    if (showDonated) {
       statusMatch.push({ status: 'donated' });
     }
     let ids = [];
@@ -92,6 +93,7 @@ async function getWishCardsFuzzy(itemName, hideDonated, reverseSort, cardIds) {
     }
 
     return WishCard.aggregate(matchPipeline).exec();
+
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
