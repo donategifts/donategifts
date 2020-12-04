@@ -17,7 +17,16 @@ async function createNewAgency(agencyParams) {
   }
 }
 
+async function getAllVerifiedAgencies() {
+  try {
+    return Agency.find({isVerified: false}).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Total Agencies: ${error}`);
+  }
+}
+
 module.exports = {
   getAgencyByUserId,
   createNewAgency,
+  getAllVerifiedAgencies
 };

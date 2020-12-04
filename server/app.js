@@ -174,6 +174,7 @@ const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
 const stripeRoute = require('./routes/stripe');
+const statusSection = require('./routes/homeStatusSection');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -183,6 +184,7 @@ app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
+app.use('/', statusSection);
 
 app.get('/', (_req, res) => {
   res.render('home', {

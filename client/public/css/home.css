@@ -252,6 +252,59 @@ New color scheme reference is in utils.css
   line-height: 2em;
 }
 
+/*----------------Status Section-------------*/
+
+/*Status Container*/
+.status-section {
+  width: 80%;
+  padding: 3% 0;
+  align-content: center;
+}
+
+/*The 3 status sections*/
+.status {
+  padding-top: 25px;
+  padding-bottom: 0;
+  font-size: 18px;
+  height: 19rem;
+  width: 19rem;
+  margin-bottom: 2px;
+  background-color: greenyellow;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.status-info {
+  padding: 2%;
+  background-color: #00a19a;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* Padding when in rows on small screens. */
+.circle {
+  padding: 0.5rem;
+}
+
+.status-numbers {
+  font-size: 8rem;
+  font-weight: 900;
+}
+
+/* When it's Dec 25 */
+.xMasDay {
+  display: flex;
+  align-self: center;
+  text-align: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+/*----------------End Status Section-------------*/
+
 /* ---------------partners slideshow section */
 .small3 {
   overflow: hidden;

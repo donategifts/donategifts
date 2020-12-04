@@ -95,6 +95,35 @@
     <%- include('./templates/loginModal')-%>  
     <%- include('./templates/homeSampleCards')-%>
 
+    <!--    Start Status Section -->
+    <div class="status-section container-fluid justify-content-center">
+      <div class="status-info row-auto">
+        <div class="col-md-auto">
+          <div class= "circle">
+            <p id="status_christmas" class="status">
+              <span id="tilChristmas"class="status-numbers"> </span><br/>
+              <span class="status_christmas_line"></span>
+            </p>
+          </div>
+        </div>
+        <div class="col-md-auto ">
+          <div class="circle">
+            <p class="status"><span class="status-numbers"> <%= cardsNeedDonations%> </span><br /> children
+              awaiting <br/> your donation
+            </p>
+          </div>
+        </div>
+        <div class="col-md-auto ">
+          <div class="circle">
+            <p class="status"><span class="status-numbers"> <%= totalAgencies%> </span><br /> agencies
+              partnered </br>with DonateGifts
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    End Status Section-->
+
     <div class="partners-container mb-5">
       <h1 class="crayon-font home-wish-title mt-3">Our Partner Agencies</h1>
       <div class="container-fluid">
@@ -214,7 +243,10 @@
     <% if(!locals.user) { %>
     <script src="/public/clientJS/loginToast.js"></script>
     <% } %>
-    <!--  this is for login toast -->
+    <!--  Partners Carousel Section -->
     <script src="/public/clientJS/partnerCarousel.js"></script>
+
+    <!-- Status Section  -->
+    <script src="/public/clientJS/homePageStatusSection.js"></script>
   </body>
 </html>
