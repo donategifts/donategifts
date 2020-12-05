@@ -64,13 +64,22 @@
     ></script>
     <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
     <!-- header section-->
-    <div class="bg" id="home-bg">
-      <div class="text">
-        <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
+ 
+      <div class="container-fluid text-center text-white d-flex justify-content-center align-items-center " id="home-bg">
+        <div class="row ">
+          <div class="col-12 ">
+            <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
         <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
         <h4 class="quick-font pb-1 m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one</h4>
         <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">See Wish Cards</a>
         <a href="/howto" class="button button--green lg-text" id="btn-1">Super Easy Process</a>
+          </div>
+        </div>
+        <!-- <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
+        <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
+        <h4 class="quick-font pb-1 m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one</h4>
+        <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">See Wish Cards</a>
+        <a href="/howto" class="button button--green lg-text" id="btn-1">Super Easy Process</a> -->
 
         <!-- Super Easy Process modal is outdated and commented out for now. -->
         <!-- <button
@@ -82,7 +91,7 @@
           Super Easy Process
         </button> -->
       </div>
-    </div>
+
     <%- include('./templates/loginModal')-%>  
     <%- include('./templates/homeSampleCards')-%>
 
