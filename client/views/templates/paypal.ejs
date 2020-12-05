@@ -1,0 +1,49 @@
+<script src="https://www.paypal.com/sdk/js?client-id=AXD48_4DpQPm8uoB_OJWGCSg9WclcyhY4LG97Ehdgl3nCcKcBR9nEt7dCP2O9NGSToQE1nu5Hz1oEreC"></script>
+<script>
+    let totalAmount = 0;
+    let wishCardId;
+    let userDonation;
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      console.log('order' + totalAmount)
+      return actions.order.create({
+        purchase_units: [{
+          reference_id: `${wishCardId}%${userDonation}`,
+          amount: {
+            value: parseFloat(totalAmount),
+          },
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+       // redirectAfterSuccessfullPayment();
+      });
+    },
+    onClick: function () {
+      totalAmount = document.getElementById('total-cost').innerHTML.replace('$', '');
+      wishCardId = document.getElementById('cardId').innerText;
+      userDonation =  document.getElementById('user-donation').innerHTML.replace('$', '');
+      console.log('click' + totalAmount)
+    }
+  }).render('#paypal-button-container'); // Display payment options on your web page
+
+    let addCashDonation = function (originalAmount, amount) {
+      const total = document.getElementById('total-cost');
+      const userDonation = document.getElementById('user-donation');
+
+      let totalAmount = originalAmount + amount;
+
+      total.innerHTML = '$' + Math.floor(totalAmount* 100) / 100;
+      userDonation.innerHTML = '$' + Math.floor(amount* 100) / 100;
+    }
+
+    let redirectAfterSuccessfullPayment = function () {
+      let wishCardId = document.getElementById('cardId');
+      let totalAmount = document.getElementById('total-cost');
+      window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
+    }
+
+
+</script>

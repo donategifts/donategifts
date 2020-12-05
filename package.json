@@ -12,7 +12,7 @@
     "dev": "nodemon",
     "lint": "eslint --fix --ext .js --ignore-path .eslintignore server/",
     "upgradePackages": "ncu -u",
-    "autoprefix": "npx postcss *.css --use autoprefixer -d ." 
+    "autoprefix": "npx postcss *.css --use autoprefixer -d ."
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,7 @@
     "multer-sharp-s3": "^0.2.1",
     "nodemailer": "^6.4.16",
     "nodemailer-mailgun-transport": "^2.0.1",
+    "paypal-rest-sdk": "^1.8.1",
     "postcss": "^8.1.14",
     "postcss-cli": "^8.3.0",
     "querystring": "^0.2.0",
