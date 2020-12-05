@@ -43,6 +43,14 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
+function getReadMoreBtn(user, wishCardId) {
+  if (user) {
+    return  `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2"> Read more </a>`
+  }
+  return `<button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
+  data-target="#loginModalCenter"> Read More </button>`
+}
+
 function getDonatedBtn(user, wishCardId, wishCardStatus) {
   if (wishCardStatus === 'donated') {
     return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
@@ -102,7 +110,7 @@ function appendWishCards(response, end = false, remove = false) {
               </div>
               <div class="quick-font mt-4 row justify-content-center align-items-center">
                 <div class="col-sm-6 my-2 text-center">
-                  <a href="/wishcards/${wishCard._id}" class="wishcard__link--white bdr-2"> Read more </a>
+                ${getReadMoreBtn(user, wishCard._id)}
                 </div>
                 <div class="col-sm-6 my-2 text-center">
                 ${getDonatedBtn(user, wishCard._id, wishCard.status)}
