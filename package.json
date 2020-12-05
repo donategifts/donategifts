@@ -28,7 +28,6 @@
     "@admin-bro/express": "^3.0.1",
     "@admin-bro/mongoose": "^1.1.0",
     "@log4js-node/logstashudp": "^1.2.1",
-    "admin-bro": "^3.3.1",
     "autoprefixer": "^10.0.4",
     "aws-sdk": "^2.792.0",
     "axios": "^0.21.0",
