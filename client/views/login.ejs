@@ -53,8 +53,8 @@
     <% if (locals.email) { %>
     <p><%= email%></p>
     <%}%>
-    <div class="signup-bg">
-      <div class="d-flex container justify-content-center mg-top-btm">
+    <div class="signup-bg d-flex container-fluid justify-content-center py-5">
+      
         <div class="wrap-box">
           <!-- form section -->
           <form class="signup" action="/users/login" method="post">
@@ -94,7 +94,7 @@
               />
             </div>
 
-            <a href="/users/password/request/">Forgot Password?</a>
+            <a href="/users/password/request/" class="text-white">Forgot Password?</a>
 
             <!-- submit button section -->
             <div class="container-form-btn">
@@ -120,7 +120,7 @@
             </div>
           </div>
         </div>
-      </div>
+  
     </div>
 
     <%- include('./templates/footer')-%> <% if (locals.successNotification) { %>

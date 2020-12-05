@@ -42,13 +42,18 @@
                       </p>
                       <p class="card-text">
                         <span class="font-weight-bold">Interest : </span>
-                        <%= wishcards[j].childInterest.length > 30 ? wishcards[j].childInterest.substring(0, 30) + "..."
+                        <%= wishcards[j].childInterest.length > 25 ? wishcards[j].childInterest.substring(0, 25) + "..."
                         : wishcards[j].childInterest %>
                       </p>
                     </div>
                     <div class="quick-font mt-4 row justify-content-center align-items-center">
                       <div class="col-sm-6 my-2 text-center">
-                        <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                        <% if (locals.user) { %>
+                          <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                        <% } else { %>
+                          <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
+                          data-target="#loginModalCenter"> Read More </button>
+                        <% } %>
                       </div>
                       <div class="col-sm-6 my-2 text-center">
                         <% if (locals.user) { %> 
@@ -128,13 +133,18 @@
                         </p>
                         <p class="card-text">
                           <span class="font-weight-bold">Interest : </span>
-                          <%= wishcards[j].childInterest.length > 30 ? wishcards[j].childInterest.substring(0, 30) +
+                          <%= wishcards[j].childInterest.length > 25 ? wishcards[j].childInterest.substring(0, 25) +
                           "..." : wishcards[j].childInterest %>
                         </p>
                       </div>
                       <div class="quick-font mt-4 row justify-content-center align-items-center">
                         <div class="col-sm-6 my-2 text-center">
-                          <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                          <% if (locals.user) { %>
+                            <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                          <% } else { %>
+                            <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
+                            data-target="#loginModalCenter"> Read More </button>
+                          <% } %>
                         </div>
                         <div class="col-sm-6 my-2 text-center">
                         <% if (locals.user) { %>
