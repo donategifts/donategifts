@@ -58,10 +58,8 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
 });
 
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
-
-  console.log(req.body)
-
-  paypal.notification.webhookEvent.getAndVerify(req.body, (error, response) => {
+  
+  paypal.notification.webhookEvent.getAndVerify(req.rawBody, (error, response) => {
     if (error) {
       log.info(error);
       throw error;
