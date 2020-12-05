@@ -31,26 +31,12 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
-const AdminBro = require('admin-bro');
-const AdminBroExpress = require('@admin-bro/express');
-const AdminBroMongoose = require('@admin-bro/mongoose');
-const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
-
-// STRIPE TEST API KEY
-// const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
-
-const Agency = require('./db/models/Agency');
-const Contact = require('./db/models/Contact');
-const Donation = require('./db/models/Donation');
-const Message = require('./db/models/Message');
-const User = require('./db/models/User');
-const WishCard = require('./db/models/WishCard');
 
 const log = require('./helper/logger');
 
@@ -97,27 +83,6 @@ app.use(
 );
 // mongo connection needs to be established before admin-bro setup
 MongooseConnection.connect();
-
-AdminBro.registerAdapter(AdminBroMongoose);
-
-const adminBro = new AdminBro({
-  resources: [User, Agency, Contact, Donation, Message, WishCard],
-  rootPath: '/admin',
-});
-
-const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-  authenticate: async (email, password) => {
-    const user = await UserRepository.getUserByEmail(email);
-    const matched = await bcrypt.compare(password, user.password);
-    if (user && user.userRole === 'admin' && matched) {
-      return user;
-    }
-    return false;
-  },
-  cookiePassword: process.env.SESS_SECRET,
-});
-
-app.use(adminBro.options.rootPath, adminRouter);
 
 // middleware need to be setup after admin-bro setup
 app.use(cors());
