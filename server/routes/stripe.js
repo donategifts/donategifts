@@ -24,7 +24,7 @@ paypal.configure({
 });
 
 
-const handleDonation = async (userId, wishCardId, amount, userDonation, agencyName) => {
+const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
 
   const user = await UserRepository.getUserByObjectId(userId);
   const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
@@ -44,25 +44,27 @@ const handleDonation = async (userId, wishCardId, amount, userDonation, agencyNa
     if (process.env.NODE_ENV === 'development') {
       log.info(response);
     }
+
+    await DonationRepository.createNewDonation({
+      donationFrom: user._id,
+      donationTo: wishCard.belongsTo,
+      donationCard: wishCard._id,
+      donationPrice: amount,
+    });
+
+    // wishCard.status = 'donated';
+    // wishCard.save();
+
+    log.info('Wishcard donated', { type: 'wishcard_donated',
+      user: user._id,
+      wishCardId: wishCard._id,
+      amount,
+      agency: agencyName});
+
+    await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
   }
 
-  await DonationRepository.createNewDonation({
-    donationFrom: user._id,
-    donationTo: wishCard.belongsTo,
-    donationCard: wishCard._id,
-    donationPrice: amount,
-  });
 
-  // wishCard.status = 'donated';
-  // wishCard.save();
-
-  log.info('Wishcard donated', { type: 'wishcard_donated',
-    user: user._id,
-    wishCardId: wishCard._id,
-    amount,
-    agency: agencyName});
-
-  await sendDonationNotificationToSlack(user, wishCard, amount);
 
 }
 
