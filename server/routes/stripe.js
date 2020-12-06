@@ -52,8 +52,8 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
       donationPrice: amount,
     });
 
-    // wishCard.status = 'donated';
-    // wishCard.save();
+    wishCard.status = 'donated';
+    wishCard.save();
 
     log.info('Wishcard donated', { type: 'wishcard_donated',
       user: user._id,
@@ -109,6 +109,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   const sig = req.headers['stripe-signature'];
 
+  // STRIPE WEBHOOK
   if(sig) {
 
     const endpointSecret = process.env.STRIPE_SECRET;
@@ -118,6 +119,8 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
       event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
       if (lastWishcardDonation !==  event.data.object.metadata.wishCardId) {
+        lastWishcardDonation = event.data.object.metadata.wishCardId;
+
         await handleDonation(
           'Stripe',
           event.data.object.metadata.userId,
@@ -126,7 +129,6 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
           event.data.object.metadata.userDonation,
           event.data.object.metadata.agencyName)
 
-        lastWishcardDonation = event.data.object.metadata.wishCardId;
       }
 
 
@@ -135,6 +137,8 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
     }
 
   }
+
+  // PAYPAL WEBHOOK
   if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
 
     paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
@@ -153,14 +157,6 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         const userDonation = data[2];
         const agencyName = data[3];
         const amount = req.body.resource.purchase_units[0].amount.value;
-
-        log.info(data)
-        log.info(userId)
-        log.info(wishCardId)
-        log.info(userDonation)
-        log.info(amount)
-        log.info(agencyName)
-
 
         await handleDonation('Paypal', userId, wishCardId, amount, userDonation, agencyName);
 
