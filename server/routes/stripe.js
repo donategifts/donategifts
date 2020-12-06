@@ -8,11 +8,11 @@ const paypal = require('paypal-rest-sdk');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
-// const UserRepository = require('../db/repository/UserRepository');
+const UserRepository = require('../db/repository/UserRepository');
 // const DonationRepository = require('../db/repository/DonationRepository');
 // const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
-// const { sendDonationNotificationToSlack } = require('../helper/messaging');
+const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
 
@@ -62,7 +62,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
 
-    paypal.notification.webhookEvent.getAndVerify(req.rawBody, (error, response) => {
+    paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
       if (error) {
         log.info(error);
         throw error;
@@ -81,6 +81,12 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         log.info(wishCardId)
         log.info(userDonation)
         log.info(amount)
+
+        const user = await UserRepository.getUserByObjectId(userId);
+        const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+        await sendDonationNotificationToSlack('PayPal', userDonation, user, wishCard, amount);
+
 
       }
     });
