@@ -52,8 +52,8 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
       donationPrice: amount,
     });
 
-     wishCard.status = 'donated';
-     wishCard.save();
+    wishCard.status = 'donated';
+    wishCard.save();
 
     log.info('Wishcard donated', { type: 'wishcard_donated',
       user: user._id,
@@ -109,7 +109,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   const sig = req.headers['stripe-signature'];
 
-  //STRIPE WEBHOOK
+  // STRIPE WEBHOOK
   if(sig) {
 
     const endpointSecret = process.env.STRIPE_SECRET;
@@ -138,7 +138,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 
   }
 
-  //PAYPAL WEBHOOK
+  // PAYPAL WEBHOOK
   if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
 
     paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
