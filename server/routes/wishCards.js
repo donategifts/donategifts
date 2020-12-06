@@ -307,7 +307,7 @@ router.put('/admin/', async (req, res) => {
 
 router.get('/admin/:wishCardId', async (req, res) => {
 
-  if (res.locals.user.userRole !== 'admin') {
+  if ( !res.locals.user || res.locals.user.userRole !== 'admin') {
     return res.status(404).render('404');
   }
 
