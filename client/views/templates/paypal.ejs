@@ -3,13 +3,14 @@
     let totalAmount = 0;
     let wishCardId;
     let userDonation;
+    let userId;
 
   paypal.Buttons({
     createOrder: function(data, actions) {
       console.log('order' + totalAmount)
       return actions.order.create({
         purchase_units: [{
-          reference_id: `${wishCardId}%${userDonation}`,
+          reference_id: `${userId}%${wishCardId}%${userDonation}`,
           amount: {
             value: parseFloat(totalAmount),
           },
@@ -24,6 +25,7 @@
     onClick: function () {
       totalAmount = document.getElementById('total-cost').innerHTML.replace('$', '');
       wishCardId = document.getElementById('cardId').innerText;
+      userId = document.getElementById('userId').innerText;
       userDonation =  document.getElementById('user-donation').innerHTML.replace('$', '');
       console.log('click' + totalAmount)
     }

@@ -58,15 +58,34 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
 });
 
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
-  
-  paypal.notification.webhookEvent.getAndVerify(req.rawBody, (error, response) => {
-    if (error) {
-      log.info(error);
-      throw error;
-    } else {
-      log.info(response);
-    }
-  });
+
+
+  if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
+
+    paypal.notification.webhookEvent.getAndVerify(req.rawBody, (error, response) => {
+      if (error) {
+        log.info(error);
+        throw error;
+      } else {
+
+        log.info(response);
+
+        const data = req.body.resource.purchase_units[0].reference_id.split('%');
+        const userId = data[0];
+        const wishCardId = data[1];
+        const userDonation = data[2];
+        const amount = req.body.resource.purchase_units[0].amount.value;
+
+        log.info(data)
+        log.info(userId)
+        log.info(wishCardId)
+        log.info(userDonation)
+        log.info(amount)
+
+      }
+    });
+  }
+
 
   /*
   const user = await UserRepository.getUserByObjectId(event.data.object.metadata.userId);
