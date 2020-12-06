@@ -7,22 +7,23 @@ serving all wishcard related routes
 // NPM DEPENDENCIES
 
 const express = require('express');
-const Bull = require('bull');
 
-const queue = new Bull('queue', {
+// const Bull = require('bull');
+
+/* const queue = new Bull('queue', {
   limiter: {
     max: 1,
     duration: process.env.LOCAL_DEVELOPMENT === 'true' ? 1000 : 30000,
   },
 });
-
+*/
 const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const log = require('../helper/logger');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
-const scrapeList = require('../../scripts/amazon-scraper');
+// const scrapeList = require('../../scripts/amazon-scraper');
 const {
   createWishcardValidationRules,
   createGuidedWishcardValidationRules,
@@ -40,7 +41,7 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-const { sendDonationNotificationToSlack } = require('../helper/messaging');
+// const { sendDonationNotificationToSlack } = require('../helper/messaging');
 
 // IMPORT REPOSITORIES
 const UserRepository = require('../db/repository/UserRepository');
@@ -523,7 +524,7 @@ router.post('/message', checkVerifiedUser, postMessageValidationRules(), validat
     handleError(res, 400, error);
   }
 });
-
+/*
 // @desc   lock a wishcard
 // @route  POST '/wishcards/lock'
 // @access  Public, all users
@@ -703,6 +704,8 @@ async function scrape(wishcardInfo, callback) {
   return true;
 }
 
+*/
+/*
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
@@ -737,6 +740,8 @@ queue.on('completed', (job) => {
     url: job.data.url,
   });
 });
+
+*/
 // @desc   Gets default wishcard options for guided wishcard creation
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access Private (only for verified partners)
