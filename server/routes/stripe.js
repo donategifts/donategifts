@@ -103,6 +103,8 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   }
 });
 
+let lastWishcardDonation = '';
+
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
 
   const sig = req.headers['stripe-signature'];
@@ -115,12 +117,18 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
     try {
       event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
-      await handleDonation(
-        event.data.object.metadata.userId,
-        event.data.object.metadata.wishCardId,
-        event.data.object.amount/100,
-        event.data.object.userDonation,
-        event.data.object.metadata.agencyName)
+      if (lastWishcardDonation !==  event.data.object.metadata.wishCardId) {
+        await handleDonation(
+          'Stripe',
+          event.data.object.metadata.userId,
+          event.data.object.metadata.wishCardId,
+          event.data.object.amount/100,
+          event.data.object.metadata.userDonation,
+          event.data.object.metadata.agencyName)
+
+        lastWishcardDonation = event.data.object.metadata.wishCardId;
+      }
+
 
     } catch (err) {
       res.status(400).send(`Webhook Error: ${err.message}`);
@@ -134,6 +142,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         log.info(error);
         throw error;
       } else {
+
 
         // needed to shut up lint
         log.info(response);
@@ -152,7 +161,8 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         log.info(amount)
         log.info(agencyName)
 
-        await handleDonation(userId, wishCardId, amount, userDonation, agencyName);
+
+        await handleDonation('Paypal', userId, wishCardId, amount, userDonation, agencyName);
 
       }
     });
