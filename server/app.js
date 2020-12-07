@@ -38,6 +38,10 @@ const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
+// For mini-status Section.
+const WishCardRepository = require('./db/repository/WishCardRepository');
+
+
 const log = require('./helper/logger');
 
 const app = express();
@@ -185,7 +189,6 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 
 app.get('/', async (_req, res) => {
-  const WishCardRepository = require('./db/repository/WishCardRepository');
   const wCards = await WishCardRepository.getWishCardsByStatus('published');
   const cardsNeedDonations = wCards.length;
 

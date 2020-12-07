@@ -49,10 +49,17 @@ const limiter = rateLimit({
 // @route   GET '/users'
 // @access  Public
 // @tested 	Yes
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
   try {
+    const wCards = await WishCardRepository.getWishCardsByStatus('published');
+    const cardsNeedDonations = wCards.length;
+
+    const verifiedAgencies = await AgencyRepository.getAllVerifiedAgencies();
+    const totalAgencies = verifiedAgencies.length;
     res.status(200).render('home', {
       user: res.locals.user,
+      cardsNeedDonations,
+      totalAgencies,
     });
   } catch (err) {
     return handleError(res, 400, err);
