@@ -163,13 +163,6 @@ async function getWishCardByAgencyId(agencyId) {
   }
 }
 
-async function getNotDonatedCards() {
-  try {
-    return WishCard.find({ isDonated: false, status: 'published' }).exec();
-  } catch (error) {
-    throw new Error(`Failed to get notDonated: ${error}`);
-  }
-}
 
 module.exports = {
   createNewWishCard,
@@ -184,5 +177,4 @@ module.exports = {
   unLockWishCard,
   getWishCardsFuzzy,
   getWishCardByAgencyId,
-  getNotDonatedCards
 };

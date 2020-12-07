@@ -256,51 +256,102 @@ New color scheme reference is in utils.css
 
 /*Status Container*/
 .status-section {
-  width: 80%;
-  padding: 3% 0;
+  background-image: url("../img/desktop-paper-bg.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 30rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-content: center;
 }
 
 /*The 3 status sections*/
 .status {
-  padding-top: 25px;
-  padding-bottom: 0;
-  font-size: 18px;
+  padding-top: 30px;
   height: 19rem;
   width: 19rem;
-  margin-bottom: 2px;
-  background-color: greenyellow;
   text-align: center;
-  border-radius: 100%;
+  font-family: 'DkCoolCrayon', sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.wreath {
+  position: absolute;
+  align-self: center;
+}
+
+.wreath2 {
+  width: 215px;
+  height: 104px;
+  position: absolute;
+  align-self: center;
+}
+
+.wreath3 {
+  width: 215px;
+  height: 90px;
+  position: absolute;
+  align-self: center;
 }
 
 .status-info {
-  padding: 2%;
-  background-color: #00a19a;
-  border-radius: 8px;
   display: flex;
-  justify-content: space-evenly;
-}
-
-/* Padding when in rows on small screens. */
-.circle {
-  padding: 0.5rem;
 }
 
 .status-numbers {
-  font-size: 8rem;
-  font-weight: 900;
+  color: #ff5c6f !important;
+  font-family: 'DkCoolCrayon', sans-serif;
+  margin-top: 4.5rem;
+  font-size: 5rem;
 }
 
 /* When it's Dec 25 */
 .xMasDay {
-  display: flex;
+  margin-top: 4.5rem;
+  font-size: 2rem;
+  color: #ff5c6f !important;
+}
+
+.status_christmas_line {
+  position: absolute;
+  margin-top: 11.5rem;
+  width: 10rem;
   align-self: center;
-  text-align: center;
-  justify-content: center;
-  padding: 1rem;
-  font-size: 3rem;
-  font-weight: 900;
+  color: #333a64 !important;
+}
+
+.status-text {
+  color: #333a64 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .status-section {
+    background-image: url("../img/mobile-paper-bg.svg");
+    background-size: cover;
+    max-width: 600px;
+    height: fit-content;
+  }
+
+  .status-info {
+    max-width: 600px;
+    margin: 5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 980px) {
+  .status {
+    width: 15rem;
+    height: 18rem;
+  }
 }
 
 /*----------------End Status Section-------------*/
