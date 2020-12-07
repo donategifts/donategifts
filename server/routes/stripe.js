@@ -8,12 +8,13 @@ const paypal = require('paypal-rest-sdk');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
-// const UserRepository = require('../db/repository/UserRepository');
-// const DonationRepository = require('../db/repository/DonationRepository');
-// const { sendDonationConfirmationMail } = require('../helper/messaging');
+const UserRepository = require('../db/repository/UserRepository');
+const DonationRepository = require('../db/repository/DonationRepository');
+const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
-// const { sendDonationNotificationToSlack } = require('../helper/messaging');
+const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
+
 
 
 paypal.configure({
@@ -21,6 +22,51 @@ paypal.configure({
   'client_id': process.env.PAYPAL_CLIENT_ID,
   'client_secret': process.env.PAYPAL_SECRET
 });
+
+
+const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
+
+  const user = await UserRepository.getUserByObjectId(userId);
+  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+  if (user) {
+    const emailResponse = await sendDonationConfirmationMail({
+      email: user.email,
+      firstName: user.fName,
+      lastName: user.lName,
+      childName: wishCard.childFirstName,
+      item: wishCard.wishItemName,
+      price: wishCard.wishItemPrice,
+      agency: agencyName,
+    });
+
+    const response = emailResponse ? emailResponse.data : '';
+    if (process.env.NODE_ENV === 'development') {
+      log.info(response);
+    }
+
+    await DonationRepository.createNewDonation({
+      donationFrom: user._id,
+      donationTo: wishCard.belongsTo,
+      donationCard: wishCard._id,
+      donationPrice: amount,
+    });
+
+    wishCard.status = 'donated';
+    wishCard.save();
+
+    log.info('Wishcard donated', { type: 'wishcard_donated',
+      user: user._id,
+      wishCardId: wishCard._id,
+      amount,
+      agency: agencyName});
+
+    await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
+  }
+
+
+
+}
 
 const router = express.Router();
 
@@ -57,55 +103,69 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   }
 });
 
+let lastWishcardDonation = '';
+
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
-  
-  paypal.notification.webhookEvent.getAndVerify(req.rawBody, (error, response) => {
-    if (error) {
-      log.info(error);
-      throw error;
-    } else {
-      log.info(response);
+
+  const sig = req.headers['stripe-signature'];
+
+  // STRIPE WEBHOOK
+  if(sig) {
+
+    const endpointSecret = process.env.STRIPE_SECRET;
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+
+      if (lastWishcardDonation !==  event.data.object.metadata.wishCardId) {
+        lastWishcardDonation = event.data.object.metadata.wishCardId;
+
+        await handleDonation(
+          'Stripe',
+          event.data.object.metadata.userId,
+          event.data.object.metadata.wishCardId,
+          event.data.object.amount/100,
+          event.data.object.metadata.userDonation,
+          event.data.object.metadata.agencyName)
+
+      }
+
+
+    } catch (err) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
     }
-  });
 
-  /*
-  const user = await UserRepository.getUserByObjectId(event.data.object.metadata.userId);
-  const wishCard = await WishCardRepository.getWishCardByObjectId(event.data.object.metadata.wishCardId);
-
-  if (user) {
-    const emailResponse = await sendDonationConfirmationMail({
-      email: user.email,
-      firstName: user.fName,
-      lastName: user.lName,
-      childName: wishCard.childFirstName,
-      item: wishCard.wishItemName,
-      price: wishCard.wishItemPrice,
-      agency: event.data.object.metadata.agencyName,
-    });
-
-    const response = emailResponse ? emailResponse.data : '';
-    if (process.env.NODE_ENV === 'development') {
-      log.info(response);
-    }
   }
 
-  await DonationRepository.createNewDonation({
-    donationFrom: user._id,
-    donationTo: wishCard.belongsTo,
-    donationCard: wishCard._id,
-    donationPrice: event.data.object.amount / 100,
-  });
+  // PAYPAL WEBHOOK
+  if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
 
-  wishCard.status = 'donated';
-  wishCard.save();
+    paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
+      if (error) {
+        log.info(error);
+        throw error;
+      } else {
 
-  log.info('Wishcard donated', { type: 'wishcard_donated',
-    user: user._id,
-    wishCardId: wishCard._id,
-    amount: event.data.object.amount / 100,
-    agency: event.data.object.metadata.agencyName});
 
-  await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount / 100);
+        // needed to shut up lint
+        log.info(response);
+
+        const data = req.body.resource.purchase_units[0].reference_id.split('%');
+        const userId = data[0];
+        const wishCardId = data[1];
+        const userDonation = data[2];
+        const agencyName = data[3];
+        const amount = req.body.resource.purchase_units[0].amount.value;
+
+        await handleDonation('Paypal', userId, wishCardId, amount, userDonation, agencyName);
+
+      }
+    });
+  }
+
+
+  /*
 
   */
   // Return a res to acknowledge receipt of the event
@@ -134,5 +194,6 @@ router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) 
     handleError(res, 400, error);
   }
 });
+
 
 module.exports = router;

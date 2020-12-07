@@ -49,7 +49,7 @@
 
         <div class="receipt">
           <p class="card-text" id="cardId" hidden><%= wishcard._id %></p>
-
+          <p class="card-text" id="userId" hidden><%= user._id %></p>
           <p id="agencyName" class="card-text" hidden><%= agency.agencyName %></p>
 
           <div class="pt-2 d-flex justify-content-between">
@@ -105,8 +105,7 @@
            onkeyup="addCashDonationFromCustomAmountInput(<%= extendedPaymentInfo.totalItemCost %>, this)" >
         </div>
 
-        <p class="line-middle pt-5"><span>Pay with Paypal, credit or debit card</span></p>
-        <!--
+        <p class="line-middle pt-5"><span>Donate with credit card or PayPal</span></p>
 
                <form action="stripe/create-payment-intent" method="post" id="payment-form">
                  <div class="form-row mt-5">
@@ -118,21 +117,21 @@
                    <div id="card-element" class="form-control"></div>
 
                    <!-- Used to display Element errors. -->
-        <!--  <div id="card-errors" role="alert" class="error-text bold-text"></div>
+         <div id="card-errors" role="alert" class="error-text bold-text"></div>
           <button id="submit" class="mt-4">
             <div class="spinner hidden" id="spinner"></div>
-            <span id="button-text">Pay</span>
+            <span id="button-text">Pay with Credit Card</span>
           </button>
         </div>
         <!-- success msg show somewhere else not here -->
-        <!--    <p class="result-message hidden">
+           <p class="result-message hidden">
               Payment succeeded
             </p>
             <!-- We'll put the error messages in this element -->
-        <!--    <div id="card-errors" role="alert"></div>
+                 <div id="card-errors" role="alert"></div>
           </form>
-        -->
 
+        <br><br>
         <div id="smart-button-container">
           <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
         </div>
