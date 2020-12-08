@@ -1,10 +1,6 @@
 /*
- * Author: Stacy Sealky Lee
- * FileName: app.js
- * FileDescription:
  * The set up codes are in an order,
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
- *
  */
 
 const dotenv = require('dotenv');
@@ -174,6 +170,7 @@ const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
 const stripeRoute = require('./routes/stripe');
+const communityRoute = require('./routes/community');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -183,6 +180,7 @@ app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
+app.use('/community', communityRoute);
 
 app.get('/', (_req, res) => {
   res.render('home', {
