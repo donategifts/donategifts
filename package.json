@@ -12,7 +12,7 @@
     "dev": "nodemon",
     "lint": "eslint --fix --ext .js --ignore-path .eslintignore server/",
     "upgradePackages": "ncu -u",
-    "autoprefix": "npx postcss *.css --use autoprefixer -d ." 
+    "autoprefix": "npx postcss *.css --use autoprefixer -d ."
   },
   "repository": {
     "type": "git",
