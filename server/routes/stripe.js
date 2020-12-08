@@ -4,6 +4,7 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 const mongoSanitize = require('express-mongo-sanitize');
 const bodyParser = require('body-parser');
 const moment = require('moment');
+const paypal = require('paypal-rest-sdk');
 const { handleError } = require('../helper/error');
 const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
@@ -14,9 +15,62 @@ const log = require('../helper/logger');
 const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
+
+
+paypal.configure({
+  'mode': process.env.NODE_ENV === 'development'?'sandbox':'live', // sandbox or live
+  'client_id': process.env.PAYPAL_CLIENT_ID,
+  'client_secret': process.env.PAYPAL_SECRET
+});
+
+
+const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
+
+  const user = await UserRepository.getUserByObjectId(userId);
+  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+
+  if (user) {
+    const emailResponse = await sendDonationConfirmationMail({
+      email: user.email,
+      firstName: user.fName,
+      lastName: user.lName,
+      childName: wishCard.childFirstName,
+      item: wishCard.wishItemName,
+      price: wishCard.wishItemPrice,
+      agency: agencyName,
+    });
+
+    const response = emailResponse ? emailResponse.data : '';
+    if (process.env.NODE_ENV === 'development') {
+      log.info(response);
+    }
+
+    await DonationRepository.createNewDonation({
+      donationFrom: user._id,
+      donationTo: wishCard.belongsTo,
+      donationCard: wishCard._id,
+      donationPrice: amount,
+    });
+
+    wishCard.status = 'donated';
+    wishCard.save();
+
+    log.info('Wishcard donated', { type: 'wishcard_donated',
+      user: user._id,
+      wishCardId: wishCard._id,
+      amount,
+      agency: agencyName});
+
+    await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
+  }
+
+
+
+}
+
 const router = express.Router();
 
-const endpointSecret = process.env.STRIPE_SECRET;
+// const endpointSecret = process.env.STRIPE_SECRET;
 
 router.post('/createIntent', redirectLogin, async (req, res) => {
   const { wishCardId, email, agencyName, userDonation } = req.body;
@@ -49,66 +103,71 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
   }
 });
 
+let lastWishcardDonation = '';
+
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
+
   const sig = req.headers['stripe-signature'];
 
-  let event;
+  // STRIPE WEBHOOK
+  if(sig) {
 
-  try {
-    event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+    const endpointSecret = process.env.STRIPE_SECRET;
+    let event;
 
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      try {
-        const user = await UserRepository.getUserByObjectId(event.data.object.metadata.userId);
-        const wishCard = await WishCardRepository.getWishCardByObjectId(event.data.object.metadata.wishCardId);
+    try {
+      event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
-        if (user) {
-          const emailResponse = await sendDonationConfirmationMail({
-            email: user.email,
-            firstName: user.fName,
-            lastName: user.lName,
-            childName: wishCard.childFirstName,
-            item: wishCard.wishItemName,
-            price: wishCard.wishItemPrice,
-            agency: event.data.object.metadata.agencyName,
-          });
+      if (lastWishcardDonation !==  event.data.object.metadata.wishCardId) {
+        lastWishcardDonation = event.data.object.metadata.wishCardId;
 
-          const response = emailResponse ? emailResponse.data : '';
-          if (process.env.NODE_ENV === 'development') {
-            log.info(response);
-          }
-        }
+        await handleDonation(
+          'Stripe',
+          event.data.object.metadata.userId,
+          event.data.object.metadata.wishCardId,
+          event.data.object.amount/100,
+          event.data.object.metadata.userDonation,
+          event.data.object.metadata.agencyName)
 
-        await DonationRepository.createNewDonation({
-          donationFrom: user._id,
-          donationTo: wishCard.belongsTo,
-          donationCard: wishCard._id,
-          donationPrice: event.data.object.amount / 100,
-        });
-
-        wishCard.status = 'donated';
-        wishCard.save();
-
-        log.info('Wishcard donated', { type: 'wishcard_donated',
-          user: user._id,
-          wishCardId: wishCard._id,
-          amount: event.data.object.amount / 100,
-          agency: event.data.object.metadata.agencyName});
-
-        await sendDonationNotificationToSlack(user, wishCard, event.data.object.amount / 100);
-        break;
-      } catch (error) {
-        log.debug(error);
-        break;
       }
-    default:
-      break;
+
+
+    } catch (err) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
   }
 
+  // PAYPAL WEBHOOK
+  if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
+
+    paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
+      if (error) {
+        log.info(error);
+        throw error;
+      } else {
+
+
+        // needed to shut up lint
+        log.info(response);
+
+        const data = req.body.resource.purchase_units[0].reference_id.split('%');
+        const userId = data[0];
+        const wishCardId = data[1];
+        const userDonation = data[2];
+        const agencyName = data[3];
+        const amount = req.body.resource.purchase_units[0].amount.value;
+
+        await handleDonation('Paypal', userId, wishCardId, amount, userDonation, agencyName);
+
+      }
+    });
+  }
+
+
+  /*
+
+  */
   // Return a res to acknowledge receipt of the event
   res.json({ received: true });
 });
@@ -135,5 +194,6 @@ router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) 
     handleError(res, 400, error);
   }
 });
+
 
 module.exports = router;

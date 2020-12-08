@@ -113,15 +113,6 @@ let showError = function (errorMsgText) {
   }, 4000);
 };
 
-let addCashDonation = function (originalAmount, amount) {
-  const total = document.getElementById('total-cost');
-  const userDonation = document.getElementById('user-donation');
-
-  let totalAmount = originalAmount + amount;
-
-  total.innerHTML = '$' + Math.floor(totalAmount* 100) / 100;
-  userDonation.innerHTML = '$' + Math.floor(amount* 100) / 100;
-}
 
 let showCustomAmountInput = () => {
   let inputAmountElement = document.getElementById("customAmountValue");
@@ -143,8 +134,3 @@ let addCashDonationFromCustomAmountInput = (originalAmount, e) => {
   }
 }
 
-let redirectAfterSuccessfullPayment = function () {
-  let wishCardId = document.getElementById('cardId');
-  let totalAmount = document.getElementById('total-cost');
-  window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
-}
