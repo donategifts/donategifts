@@ -51,9 +51,7 @@ const limiter = rateLimit({
 // @tested 	Yes
 router.get('/', (req, res) => {
   try {
-    res.status(200).render('home', {
-      user: res.locals.user,
-    });
+    res.status(200).redirect('/');
   } catch (err) {
     return handleError(res, 400, err);
   }
@@ -99,7 +97,7 @@ router.get('/profile', redirectLogin, async (req, res) => {
     const { user } = req.session;
     if (user.userRole === 'partner') {
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
-     
+
       // If user hadn't filled out agency info, redirect them to form
       if (!agency) {
         return res.status(200).render('agency');
@@ -202,8 +200,8 @@ router.delete(
     try {
       // if users had deleted picture replace it with string for the default avatar
       const defaultImage= '/public/img/default_profile_avatar.svg';
-      await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });  
-      
+      await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });
+
       res.status(200).send(
         JSON.stringify({
           success: true,
@@ -618,7 +616,7 @@ router.post(
   async (req, res) => {
     try {
       const userObject = await UserRepository.getUserByPasswordResetToken(req.params.token);
-      
+
       if (userObject) {
         if (moment(userObject.passwordResetTokenExpires) > moment()) {
           const newPassword = await hashPassword(req.body.password);
@@ -644,7 +642,7 @@ router.post(
   },
 );
 
-// @desc    Get agency details. 
+// @desc    Get agency details.
 // @access  Private, only users
 router.get('/agency/address', async (req, res) => {
   try {
