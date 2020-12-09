@@ -58,6 +58,11 @@ const wishcardRequest = {
   wishItemURL: 'https://www.amazon.com/asdf',
   childStory: 'Doom Slayer traveled to Mars and slayed demons',
   status: 'published',
+  address1: 'Taisho-dori 13',
+  address_city: 'Fukuoka',
+  address_state: 'Fukuoka Prefecture',
+  address_country: 'Japan',
+  address_zip: '13055'
 };
 
 const itemChoice = {
@@ -73,11 +78,12 @@ const guidedwishcardRequest = {
   childLastName: 'John',
   childInterest: 'Playing with toys',
   childStory: 'John likes toys',
-  address1: '1000 Hollywood Hills',
-  city: 'San Fransisco',
-  state: 'CA',
-  zip: '70000',
-  country: 'US',
+  status: 'published',
+  address1: 'Taisho-dori 13',
+  address_city: 'Fukuoka',
+  address_state: 'Fukuoka Prefecture',
+  address_country: 'Japan',
+  address_zip: '13055'
 };
 
 describe('Wishcard Routes - Authenticated & Verified Partner User', () => {

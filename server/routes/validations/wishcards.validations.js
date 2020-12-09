@@ -20,6 +20,32 @@ const createWishcardValidationRules = () => {
       .matches(/^(https(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
       .withMessage('Wish item url has to be a valid amazon link!'),
     body('childStory').notEmpty().withMessage("Child's story is required").isString(),
+    body('address1')
+      .notEmpty()
+      .withMessage('Address cannot be empty')
+      .isLength({min: 5 })
+      .withMessage('Address must contain at least 5 characters'),
+    body('address2').optional(),
+    body('address_city')
+      .notEmpty()
+      .withMessage('City cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('City must contain at least 2 characters'),
+    body('address_state')
+      .notEmpty()
+      .withMessage('State cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('State must contain at least 2 characters'),
+    body('address_country')
+      .notEmpty()
+      .withMessage('Country cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('Country must contain at least 2 characters'),
+    body('address_zip')
+      .notEmpty()
+      .withMessage('Zip cannot be empty')
+      .isLength({min: 5 })
+      .withMessage('Zipcode must contain at least 5 characters'),
   ];
 };
 
@@ -47,6 +73,32 @@ const createGuidedWishcardValidationRules = () => {
     body('childLastName').isString(),
     body('childInterest').isString(),
     body('childStory').notEmpty().withMessage("Child's story is required").isString(),
+    body('address1')
+      .notEmpty()
+      .withMessage('Address cannot be empty')
+      .isLength({min: 5 })
+      .withMessage('Address must contain at least 5 characters'),
+    body('address2').optional(),
+    body('address_city')
+      .notEmpty()
+      .withMessage('City cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('City must contain at least 2 characters'),
+    body('address_state')
+      .notEmpty()
+      .withMessage('State cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('State must contain at least 2 characters'),
+    body('address_country')
+      .notEmpty()
+      .withMessage('Country cannot be empty')
+      .isLength({min: 2 })
+      .withMessage('Country must contain at least 2 characters'),
+    body('address_zip')
+      .notEmpty()
+      .withMessage('Zip cannot be empty')
+      .isLength({min: 5 })
+      .withMessage('Zipcode must contain at least 5 characters'),
   ];
 };
 
