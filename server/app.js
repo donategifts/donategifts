@@ -171,6 +171,7 @@ const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
+const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -181,13 +182,8 @@ app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
+app.use('/', indexRoute);
 
-app.get('/', (_req, res) => {
-  res.render('home', {
-    user: res.locals.user,
-    wishcards: [],
-  });
-});
 
 // ERROR PAGE
 app.get('*', (req, res) => {
