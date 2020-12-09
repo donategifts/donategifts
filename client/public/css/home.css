@@ -135,6 +135,22 @@ New color scheme reference is in utils.css
   background-repeat: no-repeat;
 }
 
+/* mobile screen bg changes */
+@media only screen and (max-width: 600px) {
+  #home-bg {
+    background: url('../img/mobile-hero-2.svg') center center;
+    height: 835px; 
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .banner-h1 {
+    margin-top: 0.5em;
+    padding-top: 0.1em;
+    font-size: 3.8em;
+    text-transform: uppercase;
+  }  
+}
+
 #about-bg {
   background: linear-gradient(180deg, rgba(255, 151, 99, 0.8), rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.05)),
     url('../img/kid-yellow-bg.jpg') center center;
@@ -318,6 +334,7 @@ New color scheme reference is in utils.css
   .custom-col {
     padding: 20px;
   }
+  
 }
 
 @media screen and (max-width: 992px) {
@@ -332,10 +349,6 @@ New color scheme reference is in utils.css
   .m-mobile {
     margin-top: 1em;
     margin-bottom: 2em;
-  }
-
-  #home-bg {
-    margin-bottom: -2em;
   }
 }
 
