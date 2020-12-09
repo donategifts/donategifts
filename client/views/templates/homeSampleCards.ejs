@@ -47,7 +47,7 @@
                       </p>
                     </div>
                     <div class="quick-font mt-4 row justify-content-center align-items-center">
-                      <div class="col-sm-6 my-2 text-center">
+                      <div class="col-sm-6 text-center">
                         <% if (locals.user) { %>
                           <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
                         <% } else { %>
@@ -55,7 +55,7 @@
                           data-target="#loginModalCenter"> Read More </button>
                         <% } %>
                       </div>
-                      <div class="col-sm-6 my-2 text-center">
+                      <div class="col-sm-6 text-center">
                         <% if (locals.user) { %> 
                           <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
                           type="button"
