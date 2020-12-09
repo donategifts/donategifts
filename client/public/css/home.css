@@ -138,8 +138,8 @@ New color scheme reference is in utils.css
 /* mobile screen bg changes */
 @media only screen and (max-width: 600px) {
   #home-bg {
-    background: url('../img/mobile-hero-2.svg') center center;
-    height: 835px;
+    background: url('../img/mb-hero-2.svg') center center;
+    min-height: 835px;
     background-size: cover;
     background-repeat: no-repeat;
   }
@@ -334,7 +334,6 @@ New color scheme reference is in utils.css
   .custom-col {
     padding: 20px;
   }
-
 }
 
 @media screen and (max-width: 992px) {
@@ -1214,9 +1213,10 @@ New color scheme reference is in utils.css
 
 /*Status Container*/
 .status-section {
-  background-image: url("../img/desktop-paper-bg.svg");
+  background-image: url("../img/paper-bg-2.svg");
   background-size: cover;
   background-repeat: no-repeat;
+  /* background-color: rgba(255, 246, 237, 1); */
   min-height: 30rem;
   width: 100%;
   display: flex;
@@ -1289,9 +1289,8 @@ New color scheme reference is in utils.css
 
 @media screen and (max-width: 600px) {
   .status-section {
-    background-image: url("../img/mobile-paper-bg.svg");
+    background-image: url("../img/paper-bg-mobile-2.svg");
     background-size: cover;
-    max-width: 600px;
     height: fit-content;
   }
 
