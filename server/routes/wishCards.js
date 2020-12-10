@@ -459,7 +459,7 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
 router.get('/get/random', async (req, res) => {
   try {
     // let wishcards = await WishCardRepository.getAllWishCards();
-    let wishcards = await WishCardRepository.getViewableWishCards(false);
+    let wishcards = await WishCardRepository.getWishCardsByStatus('published');
     if (!wishcards) {
       wishcards = [];
     } else {
