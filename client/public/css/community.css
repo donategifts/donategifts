@@ -15,3 +15,7 @@
 .post-image {
   max-width: 400px;
 }
+
+.card-border {
+  border-radius: 2em;
+}
