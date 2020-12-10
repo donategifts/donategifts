@@ -384,6 +384,8 @@ router.post('/search/:init?', async (req, res) => {
 router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    // this agency object is returning undefined and breaking frontend
+    const agency = wishcard.belongsTo;
 
     let birthday;
     if (wishcard.childBirthday) {
@@ -402,6 +404,7 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
       wishcard: wishcard || [],
       messages,
       defaultMessages,
+      agency,
     });
   } catch (error) {
     handleError(res, 400, error);
