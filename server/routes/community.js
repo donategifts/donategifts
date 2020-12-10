@@ -6,6 +6,7 @@ const log = require('../helper/logger');
 const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { redirectLogin } = require('./middleware/login.middleware');
+const { donationPostValidation, validate } = require('./validations/donationPost.validations');
 const PostRepository = require('../db/repository/PostRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
@@ -24,6 +25,8 @@ router.post(
   '/',  
   WishCardMiddleWare.upload.single('postImage'),
   redirectLogin,
+  donationPostValidation(),
+  validate,
   async (req, res) => {
     try {
       const { user } = req.session;

@@ -12,6 +12,10 @@ document.addEventListener('submit', function (event) {
   })
   .then(response => response.json())
   .then((data) => {
+    if (data.statusCode >= 300) {
+      showToast(data.error.msg);
+      return;
+    }
     showToast("Post published");
     location.reload();
   })
@@ -20,3 +24,22 @@ document.addEventListener('submit', function (event) {
     console.log(error)
   });
 });
+
+
+document.getElementById("postImage").onchange = function(){
+  displayImagePreview();
+}
+
+function displayImagePreview() {
+  const inputElement = document.getElementById("postImage");
+  const image = inputElement.files[0];
+  if (image) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(image);
+    fileReader.addEventListener("load", function () {
+      const imageElementContainer = document.getElementById("imagePreview");
+      imageElementContainer.innerHTML = '<img class="display-image" src="' + this.result + '" />';
+    });    
+  }
+}
+
