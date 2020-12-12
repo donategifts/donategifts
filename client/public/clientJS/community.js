@@ -5,14 +5,13 @@ document.addEventListener('submit', function (event) {
   const formData = new FormData();
   formData.append('postImage', buttonUploadPostImage.files[0]);
   formData.append('postText', postTextInput.value);
-  console.log(formData)
   fetch('/community/', {
     method: 'POST',
     body: formData 
   })
   .then(response => response.json())
   .then((data) => {
-    if (data.statusCode >= 300) {
+    if (data.statusCode >= 400) {
       showToast(data.error.msg);
       return;
     }
@@ -21,7 +20,6 @@ document.addEventListener('submit', function (event) {
   })
   .catch((error) => {
     showToast("Post could not be saved");
-    console.log(error)
   });
 });
 
