@@ -10,7 +10,7 @@ function facebookLogin(fbUser) {
             email: response.email,
           },
           success: function (route) {
-            location.assign(route.url);
+            location.reload();
           },
           error: function (response) {
             let txtToJson = JSON.parse(response.responseText);
@@ -35,7 +35,7 @@ function googleLogin(googleUser) {
       id_token,
     },
     success: function (route) {
-      location.assign(route.url);
+      location.reload();
     },
     error: function (response) {
       showToast(response.responseJSON.error.msg);
