@@ -13,7 +13,7 @@ async function createNewWishCard(wishCardParams) {
 
 async function getAllWishCards() {
   try {
-    return WishCard.find().limit(25).exec();
+    return WishCard.find().exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcards: ${error}`);
   }
@@ -21,8 +21,7 @@ async function getAllWishCards() {
 
 async function getViewableWishCards(showDonated) {
   try {
-    const searchArray = [];
-    searchArray.push({ status: 'published' });
+    const searchArray = [{ status: 'published' }, { status: 'draft' }];
     if (showDonated) {
       searchArray.push({ status: 'donated' });
     }
@@ -33,22 +32,25 @@ async function getViewableWishCards(showDonated) {
   }
 }
 
-async function getWishCardsByItemName(itemName, isDonated, limit) {
+async function getWishCardsByItemName(itemName, status) {
   try {
-    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, isDonated })
-      .limit(limit)
-      .exec();
+    return WishCard.find({ wishItemName: { $regex: itemName, $options: 'i' }, status }).exec();
   } catch (error) {
     throw new Error(`Failed to get WishCards: ${error}`);
   }
 }
 
-async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
+async function getWishCardsFuzzy(itemName, showDonated, reverseSort, cardIds) {
   try {
-    const match = [{ isDonated }, { isDonated: { $exists: false } }];
+    console.log(showDonated)
+    const searchMatch = [];
+    const statusMatch = [{ status: 'published' }];
+    if (showDonated) {
+      statusMatch.push({ status: 'donated' });
+    }
     let ids = [];
     if (itemName) {
-      match.push(
+      searchMatch.push(
         { wishItemName: { $regex: itemName, $options: 'i' } },
         { childStory: { $regex: itemName, $options: 'i' } },
         { childInterest: { $regex: itemName, $options: 'i' } },
@@ -61,16 +63,37 @@ async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
       ids = cardIds.map((id) => id && mongoose.Types.ObjectId(id));
     }
 
-    return WishCard.aggregate([
+    let sortOrder = 1;
+    if (reverseSort) {
+      sortOrder = -1;
+    }
+
+    const matchPipeline = [
       {
         $match: {
           _id: { $nin: ids },
-          $or: match,
+          $or: statusMatch,
         },
       },
-    ])
-      .limit(limit)
-      .exec();
+      {
+        $sort: {
+          status: -1,
+          createdAt: sortOrder,
+        },
+      },
+    ];
+
+    if (itemName) {
+      matchPipeline.unshift({
+        $match: {
+          _id: { $nin: ids },
+          $or: searchMatch,
+        },
+      });
+    }
+
+    return WishCard.aggregate(matchPipeline).exec();
+
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }
@@ -78,7 +101,7 @@ async function getWishCardsFuzzy(itemName, isDonated, limit, cardIds) {
 
 async function getWishCardByObjectId(cardId) {
   try {
-    return WishCard.findOne({ _id: cardId }).exec();
+    return WishCard.findOne({ _id: cardId }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -86,7 +109,7 @@ async function getWishCardByObjectId(cardId) {
 
 async function getWishCardsByStatus(status) {
   try {
-    return WishCard.find({ status }).exec();
+    return WishCard.find({ status }).populate('belongsTo').exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
   }
@@ -97,14 +120,6 @@ async function getLockedWishcardsByUserId(userId) {
     return WishCard.findOne({ isLockedBy: userId }).exec();
   } catch (error) {
     throw new Error(`Failed to get Wishcard: ${error}`);
-  }
-}
-
-async function pushNewWishCardMessage(id, message) {
-  try {
-    return WishCard.updateOne({ _id: id }, { $push: { messages: message } }, { new: true }).exec();
-  } catch (error) {
-    throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
 }
 
@@ -140,6 +155,14 @@ async function unLockWishCard(id) {
   }
 }
 
+async function getWishCardByAgencyId(agencyId) {
+  try {
+    return WishCard.find({ belongsTo: agencyId }).exec();
+  } catch (error) {
+    throw new Error(`Failed to get Agency's Wishcards: ${error}`);
+  }
+}
+
 module.exports = {
   createNewWishCard,
   getAllWishCards,
@@ -148,9 +171,9 @@ module.exports = {
   getWishCardByObjectId,
   getLockedWishcardsByUserId,
   getWishCardsByStatus,
-  pushNewWishCardMessage,
   updateWishCard,
   lockWishCard,
   unLockWishCard,
   getWishCardsFuzzy,
+  getWishCardByAgencyId,
 };

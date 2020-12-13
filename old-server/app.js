@@ -1,10 +1,6 @@
 /*
- * Author: Stacy Sealky Lee
- * FileName: app.js
- * FileDescription:
  * The set up codes are in an order,
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
- *
  */
 
 const dotenv = require('dotenv');
@@ -31,10 +27,6 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
-const AdminBro = require('admin-bro');
-const AdminBroExpress = require('@admin-bro/express');
-const AdminBroMongoose = require('@admin-bro/mongoose');
-const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
 
 // custom db connection
@@ -42,16 +34,10 @@ const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
-const Agency = require('./db/models/Agency');
-const Contact = require('./db/models/Contact');
-const Donation = require('./db/models/Donation');
-const Message = require('./db/models/Message');
-const User = require('./db/models/User');
-const WishCard = require('./db/models/WishCard');
-
 const log = require('./helper/logger');
 
 const app = express();
+
 
 // MORGAN REQUEST LOGGER
 if (process.env.NODE_ENV === 'development') {
@@ -61,54 +47,38 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(
   responseTime((req, res, time) => {
-    if (
-      (!req.originalUrl.includes('.png') &&
-        !req.originalUrl.includes('.jpg') &&
-        !req.originalUrl.includes('.js') &&
-        !req.originalUrl.includes('.svg') &&
-        !req.originalUrl.includes('.jpeg') &&
-        !req.originalUrl.includes('.woff') &&
-        !req.originalUrl.includes('.css') &&
-        !req.originalUrl.includes('.ico')) ||
-      res.statusCode > 304
-    ) {
-      const clientIp = requestIp.getClientIp(req);
 
-      log.info('New request', {
-        type: 'request',
-        user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
-        method: req.method,
-        statusCode: res.statusCode,
-        route: req.originalUrl,
-        responseTime: Math.ceil(time),
-        ip: clientIp,
-      });
+    if (process.env.NODE_ENV !== 'test') {
+
+      if (
+        (!req.originalUrl.includes('.png') &&
+          !req.originalUrl.includes('.jpg') &&
+          !req.originalUrl.includes('.js') &&
+          !req.originalUrl.includes('.svg') &&
+          !req.originalUrl.includes('.jpeg') &&
+          !req.originalUrl.includes('.woff') &&
+          !req.originalUrl.includes('.css') &&
+          !req.originalUrl.includes('.ico')) ||
+        res.statusCode > 304
+      ) {
+        const clientIp = requestIp.getClientIp(req);
+
+        log.info('New request', {
+          type: 'request',
+          user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
+          method: req.method,
+          statusCode: res.statusCode,
+          route: req.originalUrl,
+          responseTime: Math.ceil(time),
+          ip: clientIp,
+        });
+      }
     }
+
   }),
 );
 // mongo connection needs to be established before admin-bro setup
 MongooseConnection.connect();
-
-AdminBro.registerAdapter(AdminBroMongoose);
-
-const adminBro = new AdminBro({
-  resources: [User, Agency, Contact, Donation, Message, WishCard],
-  rootPath: '/admin',
-});
-
-const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-  authenticate: async (email, password) => {
-    const user = await UserRepository.getUserByEmail(email);
-    const matched = await bcrypt.compare(password, user.password);
-    if (user && user.userRole === 'admin' && matched) {
-      return user;
-    }
-    return false;
-  },
-  cookiePassword: process.env.SESS_SECRET,
-});
-
-app.use(adminBro.options.rootPath, adminRouter);
 
 // middleware need to be setup after admin-bro setup
 app.use(cors());
@@ -162,7 +132,14 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify (req, res, buf) {
+    const url = req.originalUrl;
+    if (url.startsWith('/stripe')) {
+      req.rawBody = buf.toString();
+    }
+  }
+}));
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -192,6 +169,9 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
+const stripeRoute = require('./routes/stripe');
+const communityRoute = require('./routes/community');
+const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -200,13 +180,10 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
+app.use('/stripe', stripeRoute);
+app.use('/community', communityRoute);
+app.use('/', indexRoute);
 
-app.get('/', (_req, res) => {
-  res.render('home', {
-    user: res.locals.user,
-    wishcards: [],
-  });
-});
 
 // ERROR PAGE
 app.get('*', (req, res) => {

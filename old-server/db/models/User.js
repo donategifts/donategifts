@@ -39,21 +39,12 @@ const UserSchema = new Schema(
     passwordResetTokenExpires: {
       type: Date,
     },
-    userRole: String,
+    userRole: {
+      type: String,
+      enum: ['donor', 'partner', 'admin'],
+    },
     /* ROLES: Donor, Partner, Admin */
     /* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS */
-    savedWishCards: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'WishCard',
-      },
-    ],
-    donationsMade: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Donation',
-      },
-    ],
     joined: {
       type: Date,
       default: Date.now,
@@ -66,6 +57,9 @@ const UserSchema = new Schema(
     loginMode: {
       type: String,
       required: false,
+    },
+    profileImage: {
+      type: String,
     },
   },
   {

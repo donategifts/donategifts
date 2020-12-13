@@ -1,0 +1,17 @@
+.agency-profile {
+  max-width: 150px;
+  width: 50%;
+  height: auto;
+}
+
+.community {
+  background-color: #fff6ed;
+}
+
+#post-text {
+  resize: none;
+}
+
+.post-image {
+  max-width: 400px;
+}

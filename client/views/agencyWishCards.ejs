@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>See Wish Cards | Donate Gifts</title>
+  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+  <%- include('./templates/header')-%>
+  <link rel="stylesheet" href="/public/css/search.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+    integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
+
+  <!-- Wish Card deck -->
+  <div class="wishcards">
+    <!-- Dynamic Card Display now fixed and responsive-->
+    <div class="container">
+      <h3 class="cool-font">Draft Wishcards</h3>
+      <% if (draftWishcards.length === 0) { %>
+      <h6 class="cool-font">No draft wishcards</h6>
+      <% } else { %>
+      <div class="row justify-content-center">
+        <% for (var i = 0; i < draftWishcards.length; i++) { %>
+        <div class="col-lg-4 col-xs-12 mb-5 mt-4">
+          <!-- Card -->
+          <div id="card-fix" class="card mb-3">
+            <!--Card image-->
+            <div class="view overlay">
+              <img id="img-fix" class="card-img-top" src="<%= draftWishcards[i].wishCardImage %>" alt="Card image" />
+              <a href="#">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Card content-->
+            <div class="card-body">
+              <div class="card-text-container">
+                <!--Title-->
+                <h3 class="card-title text-center crayon-font">My name is <%= draftWishcards[i].childFirstName %></h3>
+                <!--Text-->
+                <div class="quick-font">
+                  <p class="card-text"><span class="font-weight-bold">Status : </span> <%= draftWishcards[i].status %>
+                  </p>
+                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= draftWishcards[i].age %></p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Wish : </span> <%= draftWishcards[i].wishItemName.length > 25 ?
+                      draftWishcards[i].wishItemName.substring(0, 25) + "..." : draftWishcards[i].wishItemName %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Item Price :</span> $<%= draftWishcards[i].wishItemPrice %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Interest : </span>
+                    <%= draftWishcards[i].childInterest.length > 30 ? draftWishcards[i].childInterest.substring(0, 30) + "..." :
+                      draftWishcards[i].childInterest %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+
+      <br></br>
+      <h3 class="cool-font">Active Wishcards</h3>
+      <% if (activeWishcards.length === 0) { %>
+      <h6 class="cool-font">You have 0 active wishcards</h6>
+      <% } else { %>
+      <div class="row justify-content-center">
+        <% for (var i = 0; i < activeWishcards.length; i++) { %>
+        <div class="col-lg-4 col-xs-12 mb-5 mt-4">
+          <!-- Card -->
+          <div id="card-fix" class="card mb-3">
+            <!--Card image-->
+            <div class="view overlay">
+              <img id="img-fix" class="card-img-top" src="<%= activeWishcards[i].wishCardImage %>" alt="Card image" />
+              <a href="#">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Card content-->
+            <div class="card-body">
+              <div class="card-text-container">
+                <!--Title-->
+                <h3 class="card-title text-center crayon-font">My name is <%= activeWishcards[i].childFirstName %></h3>
+                <!--Text-->
+                <div class="quick-font">
+                  <p class="card-text"><span class="font-weight-bold">Status : </span> <%= activeWishcards[i].status %>
+                  </p>
+                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= activeWishcards[i].age %></p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Wish : </span> <%= activeWishcards[i].wishItemName.length > 25 ?
+                      activeWishcards[i].wishItemName.substring(0, 25) + "..." : activeWishcards[i].wishItemName %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Item Price :</span> $<%= activeWishcards[i].wishItemPrice %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Interest : </span>
+                    <%= activeWishcards[i].childInterest.length > 30 ? activeWishcards[i].childInterest.substring(0, 30) + "..." :
+                      activeWishcards[i].childInterest %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+
+      <br></br>
+      <h3 class="cool-font">Inactive Wishcards</h3>
+      <% if (inactiveWishcards.length === 0) { %>
+      <h6 class="cool-font">You have 0 inactive wishcards</h6>
+      <% } else { %>
+      <div class="row justify-content-center">
+        <% for (var i = 0; i < inactiveWishcards.length; i++) { %>
+        <div class="col-lg-4 col-xs-12 mb-5 mt-4">
+          <!-- Card -->
+          <div id="card-fix" class="card mb-3">
+            <!--Card image-->
+            <div class="view overlay">
+              <img id="img-fix" class="card-img-top" src="<%= inactiveWishcards[i].wishCardImage %>" alt="Card image" />
+              <a href="#">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Card content-->
+            <div class="card-body">
+              <div class="card-text-container">
+                <!--Title-->
+                <h3 class="card-title text-center crayon-font">My name is <%= inactiveWishcards[i].childFirstName %>
+                </h3>
+                <!--Text-->
+                <div class="quick-font">
+                  <p class="card-text"><span class="font-weight-bold">Status : </span>
+                    <%= inactiveWishcards[i].status %>
+                  </p>
+                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= inactiveWishcards[i].age %></p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Wish : </span> <%= inactiveWishcards[i].wishItemName.length > 25 ?
+                      inactiveWishcards[i].wishItemName.substring(0, 25) + "..." : inactiveWishcards[i].wishItemName %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Item Price :</span> $<%= inactiveWishcards[i].wishItemPrice %>
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Interest : </span>
+                    <%= inactiveWishcards[i].childInterest.length > 30 ? inactiveWishcards[i].childInterest.substring(0, 30) + "..." :
+                      inactiveWishcards[i].childInterest %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+
+  <%- include('./templates/footer')-%>
+</body>
+
+</html>

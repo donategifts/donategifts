@@ -16,6 +16,7 @@
 
 <body>
   <%- include('./templates/nav')-%>
+  <%- include('./templates/formHelperModal3')-%>
 
   <!-- Wish Card Form Section-->
   <div class="container-fluid">
@@ -27,17 +28,6 @@
           Faster wish card creation <br />
           Choose the item from our suggestion
         </h4>
-
-        <!-- <p class="form-notification source-font pb-2">Note: With this method, you don't have to make an Amazon
-                    list or even have an Amazon account.
-                    Once you fill out the form, that's it!</p> -->
-
-        <!-- So we want to make the Age Group label clickable
-                and show/hide the select options
-                and display images in bootstrap columns
-                once user clicks the image
-                then select the value and pass the data
-                to the backend -->
 
         <div class="mb-5 pt-5">
           <div class="quick-font">
@@ -95,10 +85,13 @@
             <main class="col-lg-6 ml-auto">
               <div class="box">
                 <div class="content">
-                  <p>Photo is required; if
-                    confidentiality is
-                    an issue, try using a photo of their hands making a heart, masked face,
-                    wearing sunglasses, cropping, etc.</p>
+                  <p>
+                    Child's photo is required; if confidentiality is an issue, try using a photo of their
+                    hands making a heart, masked face, wearing sunglasses, cropping, etc.
+                    <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper3">
+                      <i class="fa fa-question-circle" aria-hidden="true"></i>why is this required
+                    </a>
+                  </p>
                   <div class="uploader-left">
                     <img id="preview" src="/public/img/img-placeholder.png" alt="image-placeholder">
                   </div>
@@ -129,7 +122,7 @@
             </div>
           </div>
 
-          <h6 class="quick-font pb-2">Shipping address (where to deliver this item?)</h6>
+          <h6 class="grn-font quick-font pb-2">Shipping address (where to deliver this item?)</h6>
 
           <div class="row">
             <div class="col-lg-4 quick-font wrap-input1">
@@ -161,13 +154,12 @@
             </div>
           </div>
 
+          <p class="force-text-center quick-font p-2 mt-2">Each wish will be submitted as a draft & will be published by our staff after review due to security policies.</p>
 
-
-          <div id="submit-btn" class="quick-font pt-5">
-            <div class="contact1-form-btn">
-              <input value="Submit" type="submit" class="contact1-form-btn">
-            </div>
+          <div id="submit-btn" class="quick-font">
+            <input value="Submit" type="submit" class="button button-submit d-inline-flex" />
           </div>
+          
       </form>
     </div>
   </div>

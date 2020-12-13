@@ -1,5 +1,4 @@
-
-// NPM DEPENDENCIES
+const moment = require('moment');
 const nodemailer = require('nodemailer');
 const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
@@ -10,6 +9,37 @@ const log = require('./logger');
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
   encoding: 'utf-8',
 });
+const donationTemplate = fs.readFileSync(path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'), {
+  encoding: 'utf-8',
+});
+
+const donationTemplateAttachments = [
+  {
+    filename: 'new-donate-gifts-logo-2.png',
+    path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+    cid: 'new-donate-gifts-logo-2.png',
+  },
+  {
+    filename: 'email-gifts-illustration-removebg-preview.png',
+    path: path.resolve(__dirname, '../resources/email/email-gifts-illustration-removebg-preview.png'),
+    cid: 'email-gifts-illustration-removebg-preview.png',
+  },
+  {
+    filename: 'instagram2x.png',
+    path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+    cid: 'instagram2x.png',
+  },
+  {
+    filename: 'mail2x.png',
+    path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+    cid: 'mail2x.png',
+  },
+  {
+    filename: 'website2x.png',
+    path: path.resolve(__dirname, '../resources/email/website2x.png'),
+    cid: 'website2x.png',
+  },
+];
 const templateAttachments = [
   {
     filename: 'instagram2x.png',
@@ -99,24 +129,35 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
   }
 };
 
+const sendDonationConfirmationMail = async ({ email, firstName, lastName, childName, item, price, agency }) => {
+  const body = donationTemplate
+    .replace('%firstName%', firstName)
+    .replace(RegExp('%childName%', 'g'), childName)
+    .replace('%fullName%', `${firstName} ${lastName}`)
+    .replace('%item%', item)
+    .replace('%price%', price)
+    .replace('%agency%', agency)
+    // Jan 1st, 2020 <- date formatting
+    .replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
+
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    email,
+    'Donate-gifts.com Donation Receipt',
+    body,
+    donationTemplateAttachments,
+  );
+};
+
 const sendVerificationEmail = async (to, hash) => {
   const body = template
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
     .replace('%headerPlaceHolder%', 'Verify Your Email Account')
     .replace('%titlePlaceHolder%', 'Thank you for creating an account!')
-    .replace(
-      '%bodyPlaceHolder%',
-      'Please confirm your email address to continue using our services.',
-    )
+    .replace('%bodyPlaceHolder%', 'Please confirm your email address to continue using our services.')
     .replace('%buttonText%', 'Confirm Your Email');
 
-  return sendMail(
-    process.env.DEFAULT_EMAIL,
-    to,
-    'Donate-gifts.com Email verification',
-    body,
-    templateAttachments,
-  );
+  return sendMail(process.env.DEFAULT_EMAIL, to, 'Donate-gifts.com Email verification', body, templateAttachments);
 };
 
 const sendPasswordResetMail = async (to, hash) => {
@@ -127,13 +168,7 @@ const sendPasswordResetMail = async (to, hash) => {
     .replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
     .replace('%buttonText%', 'Reset Password');
 
-  return sendMail(
-    process.env.DEFAULT_EMAIL,
-    to,
-    'Donate-gifts.com Password Reset',
-    body,
-    templateAttachments,
-  );
+  return sendMail(process.env.DEFAULT_EMAIL, to, 'Donate-gifts.com Password Reset', body, templateAttachments);
 };
 
 const createEmailVerificationHash = () => {
@@ -221,7 +256,7 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
   }
 }
 
-async function sendDonationNotificationToSlack(donor, wishCard) {
+async function sendDonationNotificationToSlack(service, userDonation, donor, wishCard, amount) {
 
   try {
     await axios({
@@ -230,7 +265,13 @@ async function sendDonationNotificationToSlack(donor, wishCard) {
       header: {
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify({text:`${process.env.NODE_ENV} New Donation by ${donor.fName} ${donor.lName.substring(0,1)} for ${wishCard.childFirstName} ${wishCard.childLastName.substring(0, 1)}`}),
+
+      data: JSON.stringify({
+        text: `${process.env.NODE_ENV} New ${service} Donation by ${donor.fName} ${donor.lName.substring(0, 1)} for ${
+          wishCard.childFirstName
+        } ${wishCard.childLastName.substring(0, 1)} details: ${process.env.BASE_URL}/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
+      }),
+
     });
 
     return true;
@@ -246,5 +287,6 @@ module.exports = {
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-  sendDonationNotificationToSlack
+  sendDonationNotificationToSlack,
+  sendDonationConfirmationMail,
 };

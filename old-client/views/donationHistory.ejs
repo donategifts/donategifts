@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>See Donation History | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/search.css" />
+</head>
+
+<body>
+
+    <%- include('./templates/nav')-%>
+
+    <div class="container">
+
+        <% if (locals.user.userRole === 'partner') {%>
+        <h3 class="cool-font">Donations Received</h3>
+        <% } else { %>
+        <h3 class="cool-font">My Donations</h3>
+        <% } %>
+
+        <% if (donations.length === 0) {%>
+        <div class="no-donation quick-font">
+            <h4 class="mt-5">You have 0 donations to display</h4>
+            <p>Should we check out some wish cards first?</p>
+            <div class="container-form-btn">
+                <a href="/wishcards">
+                    <button type="button" class="px-5 py-4 quick-font wishcard-btn grn-btn">Browse Wish Cards</button>
+                </a>
+            </div>
+        </div>
+        <% } else { %>
+
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order Id</th>
+                    <% if (locals.user.userRole === 'partner') {%>
+                    <th scope="col">Donated By</th>
+                    <% } %>
+                    <th scope="col">Donated For</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < donations.length; i++) { %>
+
+                <tr>
+                    <th scope="row"><%=(i+1)%></th>
+                    <td><%= donations[i]._id %></td>
+                    <% if (locals.user.userRole === 'partner') {%>
+                    <td><%= donations[i].donationFrom.fName %></td>
+                    <% } %>
+                    <td><%= donations[i].donationCard.childFirstName %></td>
+                    <td><%= donations[i].donationPrice %></td>
+                    <td><%= donations[i].donationCard.wishItemName %></td>
+                    <td><%= donations[i].donationDate %></td>
+                    <% if (donations[i].status === 'confirmed') { %>
+                    <td>
+                        Awaiting Order
+                    </td>
+                    <% }  else if (donations[i].status === 'ordered') { %>
+                    <td>
+                        Order Placed
+                    </td>
+                    <% } else { %>
+                    <td>
+                        Order Delivered
+                    </td>
+                    <% } %>
+                </tr>
+
+                <% } %>
+            </tbody>
+        </table>
+        <% } %>
+    </div>
+
+    <%- include('./templates/footer')-%>
+</body>
+
+</html>
