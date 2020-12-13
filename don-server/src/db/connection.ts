@@ -6,9 +6,7 @@ export default class MongooseConnection {
     const isInTest = process.env.NODE_ENV === 'test' && !process.env.ALLOW_MONGOOSE_TESTING;
 
     if (isInTest) {
-      throw new Error(
-        'MongooseConnection.connect has been called during a test, you should mock this call!',
-      );
+      throw new Error('MongooseConnection.connect has been called during a test, you should mock this call!');
     }
 
     try {

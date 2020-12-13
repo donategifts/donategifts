@@ -57,11 +57,7 @@ async function getLockedWishcardsByUserId(userId) {
 
 async function pushNewWishCardMessage(id, message) {
   try {
-    return DBWishCard.updateOne(
-      { _id: id },
-      { $push: { messages: message } },
-      { new: true },
-    ).exec();
+    return DBWishCard.updateOne({ _id: id }, { $push: { messages: message } }, { new: true }).exec();
   } catch (error) {
     throw new Error(`Failed to update Wishcard messages: ${error}`);
   }
@@ -80,9 +76,7 @@ async function lockWishCard(id, userId) {
     const wishCard = await getWishCardByObjectId(id);
     if (wishCard) {
       wishCard.isLockedBy = userId;
-      wishCard.isLockedUntil = moment()
-        .add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes')
-        .toDate();
+      wishCard.isLockedUntil = moment().add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes').toDate();
       wishCard.save();
     }
     return wishCard;

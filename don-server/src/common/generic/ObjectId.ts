@@ -41,8 +41,7 @@ export const getObjectIdAsString = (objectId: TypeObjectId<any>): string => {
   }
 
   // also fast
-  const strType =
-    ((objectId && objectId.constructor === String) || typeof objectId === 'string') && objectId;
+  const strType = ((objectId && objectId.constructor === String) || typeof objectId === 'string') && objectId;
   if (strType) {
     return strType;
   }

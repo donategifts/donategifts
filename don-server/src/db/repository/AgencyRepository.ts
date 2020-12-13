@@ -29,11 +29,7 @@ export default class AgencyRepository {
 
   async pushNewWishCardToAgency(id: TypeObjectId<IDBAgency>, wishCard): Promise<IDBAgency> {
     try {
-      return DBAgency.updateOne(
-        { _id: id },
-        { $push: { wishCards: wishCard } },
-        { new: true },
-      ).exec();
+      return DBAgency.updateOne({ _id: id }, { $push: { wishCards: wishCard } }, { new: true }).exec();
     } catch (error) {
       throw new Error(`Failed to add wishcard to agency: ${error}`);
     }
