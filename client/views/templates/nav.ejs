@@ -10,7 +10,6 @@
           <li><a href="/mission">Mission</a></li>
           <li><a href="/howto">How To</a></li>
           <li><a href="/community">Community</a></li>
-          <!-- <li><a href="/community">Community</a></li> -->
           <% if (!locals.user) { %>
           <li><a href="/users/signup">Sign Up</a></li>
           <li><a href="/users/login">Log In</a></li>
@@ -19,10 +18,8 @@
           <% } %> <% if (locals.user.userRole == 'admin') { %>
           <li><a href="/wishcards/admin/">Admin Panel</a></li>
           <% } %>
-          <li><a href="/users/profile">My Profile</a></li>
-          <!-- <li><a href="/users/profile/donations">Donation History</a></li> -->
-          <li><a href="/community">Community</a></li>
-         <li><a href="/users/logout">Log Out</a></li>
+          <li><a href="/users/profile">Profile</a></li>
+          <li><a href="/users/logout">Log Out</a></li>
           <% } %>
         </ul>
       </nav>
@@ -42,12 +39,12 @@
           <li class="nav-item">
             <a href="/howto" class="nav-link">How To</a>
           </li>
-          <!-- <li class="nav-item"><a href="/community" class="nav-link">Community</a></li> -->
+          <li class="nav-item"><a href="/community" class="nav-link">Community</a></li>
           <% if (!locals.user) { %>
           <li class="nav-item"><a href="/users/signup" class="nav-link">Sign Up</a></li>
           <li class="nav-item"><a href="/users/login" class="nav-link">Log In</a></li>
           <% } else { %>
-          <li class="nav-item"><a href="/users/profile" class="nav-link">My Profile</a></li>
+          <li class="nav-item"><a href="/users/profile" class="nav-link">Profile</a></li>
           <!-- <li class="nav-item"><a href="/users/profile/donations" class="nav-link">Donation History</a></li> -->
           <li class="nav-item"><a href="/users/logout" class="nav-link">Log Out</a></li>
           <% } %>
