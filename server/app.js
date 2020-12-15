@@ -1,10 +1,6 @@
 /*
- * Author: Stacy Sealky Lee
- * FileName: app.js
- * FileDescription:
  * The set up codes are in an order,
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
- *
  */
 
 const dotenv = require('dotenv');
@@ -31,26 +27,12 @@ const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
-const AdminBro = require('admin-bro');
-const AdminBroExpress = require('@admin-bro/express');
-const AdminBroMongoose = require('@admin-bro/mongoose');
-const bcrypt = require('bcrypt');
 const { connectSocket } = require('./helper/socket');
-
-// STRIPE TEST API KEY
-// const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
-
-const Agency = require('./db/models/Agency');
-const Contact = require('./db/models/Contact');
-const Donation = require('./db/models/Donation');
-const Message = require('./db/models/Message');
-const User = require('./db/models/User');
-const WishCard = require('./db/models/WishCard');
 
 const log = require('./helper/logger');
 
@@ -97,27 +79,6 @@ app.use(
 );
 // mongo connection needs to be established before admin-bro setup
 MongooseConnection.connect();
-
-AdminBro.registerAdapter(AdminBroMongoose);
-
-const adminBro = new AdminBro({
-  resources: [User, Agency, Contact, Donation, Message, WishCard],
-  rootPath: '/admin',
-});
-
-const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-  authenticate: async (email, password) => {
-    const user = await UserRepository.getUserByEmail(email);
-    const matched = await bcrypt.compare(password, user.password);
-    if (user && user.userRole === 'admin' && matched) {
-      return user;
-    }
-    return false;
-  },
-  cookiePassword: process.env.SESS_SECRET,
-});
-
-app.use(adminBro.options.rootPath, adminRouter);
 
 // middleware need to be setup after admin-bro setup
 app.use(cors());
@@ -209,6 +170,8 @@ const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
 const stripeRoute = require('./routes/stripe');
+const communityRoute = require('./routes/community');
+const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
 app.use('/users', usersRoute);
@@ -218,13 +181,9 @@ app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
+app.use('/community', communityRoute);
+app.use('/', indexRoute);
 
-app.get('/', (_req, res) => {
-  res.render('home', {
-    user: res.locals.user,
-    wishcards: [],
-  });
-});
 
 // ERROR PAGE
 app.get('*', (req, res) => {
