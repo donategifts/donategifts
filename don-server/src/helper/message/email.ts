@@ -112,10 +112,7 @@ const sendVerificationEmail = async (
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
     .replace('%headerPlaceHolder%', 'Verify Your Email Account')
     .replace('%titlePlaceHolder%', 'Thank you for creating an account!')
-    .replace(
-      '%bodyPlaceHolder%',
-      'Please confirm your email address to continue using our services.',
-    )
+    .replace('%bodyPlaceHolder%', 'Please confirm your email address to continue using our services.')
     .replace('%buttonText%', 'Confirm Your Email');
 
   return sendMail(
