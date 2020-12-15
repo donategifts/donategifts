@@ -11,9 +11,9 @@ const { donationPostValidation, validate } = require('./validations/donationPost
 const PostRepository = require('../db/repository/PostRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
-router.get('/', async (req, res) => {
+router.get('/', redirectLogin, async (req, res) => {
   try {
-    const { user } = req.session;
+    const { user } = req.session; 
     const posts = await PostRepository.getAllPosts();
     res.status(200).render('community', { user, posts, moment });
   } catch (error) {
@@ -56,7 +56,8 @@ router.post(
       const newPost = {
         message: mongoSanitize.sanitize(req.body.postText),
         image: profileImage || null,
-        belongsTo: agency
+        belongsTo: agency, 
+        agency
       };
 
       await PostRepository.createNewPost(newPost);
