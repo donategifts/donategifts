@@ -3,6 +3,18 @@
 <!-- TODO: before user can leave a message, check if user is signed in first, if not, redirect to log in -->
 
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-180152810-1');
+  </script>
   <title>Thank you</title>
   <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
   <%- include('./templates/header')-%>
