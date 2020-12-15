@@ -17,7 +17,13 @@ async function createNewAgency(agencyParams) {
   }
 }
 
+async function getVerifiedAgencies() {
+  return Agency.find({ isVerified: true }).exec();
+}
+
 module.exports = {
   getAgencyByUserId,
   createNewAgency,
+  getVerifiedAgencies
+
 };

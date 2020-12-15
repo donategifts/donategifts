@@ -1,4 +1,4 @@
-<script src="https://www.paypal.com/sdk/js?client-id=<%= process.env.PAYPAL_CLIENT_ID %>"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<%= process.env.PAYPAL_CLIENT_ID %>&disable-funding=credit,card"></script>
 <script>
     let totalAmount = 0;
     let wishCardId;
