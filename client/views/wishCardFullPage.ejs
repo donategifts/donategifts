@@ -39,11 +39,13 @@
 
       <div class="section-info mt-5 quick-font">
         <h4 class="pb-4 grn-font">Wish Card Details</h4>
-        <p class="card-text">Wish Item : <%= wishcard.wishItemName %></p>
-        <p class="card-text">Item Price : $<%= wishcard.wishItemPrice %></p>
-        <p class="card-text">Interest : <%= wishcard.childInterest %></p>
-        <p class="card-text" id="age">Age : <%= wishcard.age %></p>
-        <p class="card-text">About Me : <%= wishcard.childStory %></p>
+        <p class="card-text pb-1" id="age"><span class="font-weight-bold">Age :</span> <%= wishcard.age %></p>
+        <p class="card-text pb-1"><span class="font-weight-bold">Interest :</span> <%= wishcard.childInterest %></p>
+        <!-- <p class="card-text pb-1"><span class="font-weight-bold">Agency Name :</span> agency.agencyName -- NOT USED DUE TO FAILING TEST</p> -->
+        <p class="card-text pb-1"><span class="font-weight-bold">Wish Item :</span> <%= wishcard.wishItemName %></p>
+        <p class="card-text pb-1"><span class="font-weight-bold">Item Price :</span> $<%= wishcard.wishItemPrice %></p>
+        <!-- <p class="card-text"><span class="font-weight-bold">Item Details :</span> <a href="<%= wishcard.wishItemURL %>" target="_blank" class="blue-font"><i class="fa fa-external-link" aria-hidden="true"></i> (view only, not for check out)</a></p> -->
+        <p class="card-text"><span class="font-weight-bold">About Me :</span> <%= wishcard.childStory %></p>
       </div>
 
       <div class="write-msg mt-5 quick-font">
