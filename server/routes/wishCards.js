@@ -464,8 +464,7 @@ router.get('/get/random', async (req, res) => {
     let wishcards = [];
     wishcards = await WishCardRepository.getWishCardsByStatus('published');
     if (!wishcards || wishcards.length < 6) {
-      const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
-      wishcards.push(...donatedWishCards);
+      wishcards = await WishCardRepository.getViewableWishCards(true);
     }
     wishcards.sort(() => Math.random() - 0.5);
     const requiredLength = 3 * Math.ceil(wishcards.length / 3);
