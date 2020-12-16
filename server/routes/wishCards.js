@@ -461,12 +461,13 @@ router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin
 router.get('/get/random', async (req, res) => {
   try {
     // let wishcards = await WishCardRepository.getAllWishCards();
-    let wishcards = await WishCardRepository.getWishCardsByStatus('published');
-    if (!wishcards) {
-      wishcards = [];
-    } else {
-      wishcards.sort(() => Math.random() - 0.5); // [wishcard object, wishcard object, wishcard object]
+    let wishcards = [];
+    wishcards = await WishCardRepository.getWishCardsByStatus('published');
+    if (!wishcards || wishcards.length < 6) {
+      const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
+      wishcards.push(...donatedWishCards);
     }
+    wishcards.sort(() => Math.random() - 0.5);
     const requiredLength = 3 * Math.ceil(wishcards.length / 3);
     const rem = requiredLength - wishcards.length;
     if (rem !== 0 && wishcards.length > 3) {
