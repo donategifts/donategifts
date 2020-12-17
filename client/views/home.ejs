@@ -99,16 +99,16 @@
     <div class="status-section container-fluid justify-content-center">
       <div class="status-info row-auto">
         <div class="col-md">
-          <div class= "circle">
+          <div class= "circle text-center">
             <p id="status_christmas" class="status">
               <img class="wreath" src="../public/img/wreath-1.svg" alt="wreathpic">
-              <span id="tilChristmas"class="status-numbers"> <%= christmasData.days %>  </span><br/>
-              <span class="status_christmas_line"><%= christmasData.text %></span>
+              <span id="tilChristmas"class="status-numbers"> <%= christmasData.days %>  </span>
+              <span class="status-text"><%= christmasData.text %></span>
             </p>
           </div>
         </div>
         <div class="col-md">
-          <div class="circle">
+          <div class="circle text-center">
             <p class="status">
               <img class="wreath2" src="../public/img/wreath-2.svg" alt="wreathpic">
               <span class="status-numbers"> <%= undonatedCards%> </span>
@@ -118,7 +118,7 @@
           </div>
         </div>
         <div class="col-md">
-          <div class="circle">
+          <div class="circle text-center">
             <p class="status">
               <img class="wreath3" src="../public/img/wreath-3.svg" alt="wreathpic">
               <span class="status-numbers"> <%= verifiedAgencies%> </span>
@@ -130,7 +130,7 @@
       </div>
     </div>
     <!--    End Status Section-->
-    
+
     <div class="partners-container mb-5">
       <h1 class="crayon-font home-wish-title mt-3">Our Partner Agencies</h1>
       <div class="container-fluid">
