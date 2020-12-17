@@ -57,23 +57,35 @@
                         <% } %>
                       </div>
                       <div class="col-sm-6 text-center">
-                        <% if (locals.user) { %> 
-                          <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
-                          type="button"
-                          class="wishcard__button--blue bdr-2"
+                        <% if (wishcards[j].status === 'donated') { %>
+                        <button
+                                type="button"
+                                class="wishcard__button--blue bdr-2"
+                                disabled
                         >
-                          Donate Gift
-                        </button></a>
-                      <% } else { %>
-                        <button 
-                          type="button" 
-                          data-toggle="modal"
-                          class="wishcard__button--blue bdr-2"
-                          data-target="#loginModalCenter"
-                        >
-                          Donate Gift
+                          Donated
                         </button>
-                      <% } %>
+
+                        <% } else { %>
+
+                          <% if (locals.user) { %>
+                            <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
+                            type="button"
+                            class="wishcard__button--blue bdr-2"
+                          >
+                            Donate Gift
+                          </button></a>
+                        <% } else { %>
+                          <button
+                            type="button"
+                            data-toggle="modal"
+                            class="wishcard__button--blue bdr-2"
+                            data-target="#loginModalCenter"
+                          >
+                            Donate Gift
+                          </button>
+                        <% } %>
+                        <% } %>
                       </div>
                     </div>
                   </div>
