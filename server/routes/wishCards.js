@@ -477,7 +477,7 @@ router.get('/get/random', async (req, res) => {
         for (let j = 0; j < rem; j++) {
           wishcards.push(wishcards[j]);
         }
-    }
+      }
 
 
     }
