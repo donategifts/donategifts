@@ -466,7 +466,7 @@ router.get('/get/random', async (req, res) => {
     console.log(wishcards.length)
     if (!wishcards || wishcards.length < 6) {
 
-      const donatedWishCards = await WishCardRepository.getViewableWishCards(true);
+      const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
       wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length))
     } else {
       
