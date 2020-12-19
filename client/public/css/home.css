@@ -590,7 +590,7 @@ New color scheme reference is in utils.css
 }
 #card-fix:hover {
   transform: translateY(-2px);
-  box-shadow: 0 1.2rem 1.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1.2rem 1.5rem rgba(0, 0, 0, 0.6);
 }
 
 #img-fix {
@@ -610,6 +610,10 @@ New color scheme reference is in utils.css
   width: 2.7rem;
   height: 2.7rem;
   transition: all 0.25s ease-in-out;
+}
+
+.card-text {
+  margin-bottom: 0.4em;
 }
 
 .card-body .card-text-container {

@@ -1,11 +1,15 @@
-.agency-profile {
-  max-width: 150px;
-  width: 50%;
-  height: auto;
+.agency-profile-logo, .post-logo {
+  max-height: 150px;
+  height: 50%;
+  width: auto;
 }
 
 .community {
   background-color: #fff6ed;
+}
+
+.post-date {
+  font-size: 0.9em;
 }
 
 #post-text {
@@ -14,4 +18,45 @@
 
 .post-image {
   max-width: 400px;
+}
+
+.card-border {
+  border-radius: 1em;
+}
+
+.card-columns .card-body {
+  margin-top: -5em;
+}
+
+.card-columns {
+  display: inline-block;
+}
+
+.display-image {
+  width: 40px;
+  height: 40px;
+}
+
+@media (min-width: 34em) {
+  .card-columns {
+      -webkit-column-count: 1;
+      -moz-column-count: 1;
+      column-count: 1;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+  }
 }
