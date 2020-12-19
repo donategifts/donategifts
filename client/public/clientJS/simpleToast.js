@@ -1,7 +1,7 @@
 // js lib used from here -> https://github.com/apvarun/toastify-js
 // lib is loaded from cdn in footer js since its used everywhere on page
 
-// since we only change toast message
+// since we only change toast messaging
 // wrap it so there is less code around
 function showToast(message, success = false, duration= 3000, offset={x:0, y:0}, className= 'custom-toast') {
   var color = success ? '#32a852' : '#8e4dff';

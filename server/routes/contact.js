@@ -43,7 +43,7 @@ router.post('/email', async (req, res) => {
   }
 });
 
-router.post('/customer-service', async (req, res) => {
+router.post('/customer-services', async (req, res) => {
   const { name, email, subject, message } = req.body;
   const done = await sendSlackFeedbackMessage(name, email, subject, message);
 

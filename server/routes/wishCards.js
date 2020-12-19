@@ -511,11 +511,11 @@ router.put('/update/:id', renderPermissions, updateWishCardValidationRules(), va
   }
 });
 
-// @desc    User can post a message to the wishcard
-// @route   POST '/wishcards/message'
+// @desc    User can post a messaging to the wishcard
+// @route   POST '/wishcards/messaging'
 // @access  Private, all email verified donor users.
 // @tested  Yes
-router.post('/message', checkVerifiedUser, postMessageValidationRules(), validate, async (req, res) => {
+router.post('/messaging', checkVerifiedUser, postMessageValidationRules(), validate, async (req, res) => {
   try {
     const { messageFrom, messageTo, message } = req.body;
     const newMessage = await MessageRepository.createNewMessage({

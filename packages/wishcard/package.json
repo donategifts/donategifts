@@ -1,0 +1,25 @@
+{
+	"name": "@donategifts/wishcard",
+	"description": "donate gifts wishcard resources",
+	"version": "1.0.0",
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -b tsconfig.json",
+		"watch": "tsc --watch",
+		"test": "mocha",
+		"prepublishOnly": "npm run build"
+	},
+	"types": "dist/index.d.ts",
+	"dependencies": {
+		"@donategifts/common": "^1.0.0",
+		"@donategifts/db-connection": "^1.0.0",
+		"moment": "^2.29.1"
+	},
+	"devDependencies": {}
+}

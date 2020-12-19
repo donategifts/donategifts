@@ -99,7 +99,7 @@ let loading = function (isLoading) {
 
 let orderComplete = function (paymentIntentId) {
   loading(false);
-  document.querySelector('.result-message').classList.remove('hidden');
+  document.querySelector('.result-messaging').classList.remove('hidden');
   document.querySelector('#submit').setAttribute('disabled', 'true');
   redirectAfterSuccessfullPayment();
 };

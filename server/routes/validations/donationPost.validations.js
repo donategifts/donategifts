@@ -5,9 +5,9 @@ const donationPostValidation = () => {
   return [
     body('postText')
       .notEmpty()
-      .withMessage('Message can not be empty')
+      .withMessage('messaging can not be empty')
       .isLength({min: 30 })
-      .withMessage('Message must contain at least 30 characters'),
+      .withMessage('messaging must contain at least 30 characters'),
   ];
 };
 

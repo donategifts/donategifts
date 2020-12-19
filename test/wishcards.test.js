@@ -211,14 +211,14 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
       });
   });
 
-  it('POST wishcards/message - Receives JSON', (done) => {
+  it('POST wishcards/messaging - Receives JSON', (done) => {
     User.findOne({ fName: partnerUser.fName }).then((user) => {
       WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
         const messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
         const message = messageChoices[0];
 
         agent
-          .post('/wishcards/message')
+          .post('/wishcards/messaging')
           .send({
             messageFrom: user,
             messageTo: wishcard,
@@ -594,14 +594,14 @@ describe('Wishcard Routes - Authenticated & Unverified Partner User', () => {
       });
   });
 
-  it('POST /wishcards/message - Object with profile url', (done) => {
+  it('POST /wishcards/messaging - Object with profile url', (done) => {
     User.findOne({ fName: partnerUser.fName }).then((user) => {
       WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
         const messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
         const message = messageChoices[0];
 
         agent
-          .post('/wishcards/message')
+          .post('/wishcards/messaging')
           .send({
             messageFrom: user,
             messageTo: wishcard,
@@ -925,14 +925,14 @@ describe('Wishcard Routes - Email Verified Donor User', () => {
       });
   });
 
-  it('POST wishcards/message - Receives JSON', (done) => {
+  it('POST wishcards/messaging - Receives JSON', (done) => {
     User.findOne({ fName: donorUser.fName }).then((user) => {
       WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
         const messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
         const message = messageChoices[0];
 
         agent
-          .post('/wishcards/message')
+          .post('/wishcards/messaging')
           .send({
             messageFrom: user,
             messageTo: wishcard,
@@ -1109,14 +1109,14 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
       });
   });
 
-  it('POST wishcards/message - Object with profile url', (done) => {
+  it('POST wishcards/messaging - Object with profile url', (done) => {
     User.findOne({ fName: donorUser.fName }).then((user) => {
       WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
         const messageChoices = getMessageChoices(user.fName, wishcard.childFirstName);
         const message = messageChoices[0];
 
         agent
-          .post('/wishcards/message')
+          .post('/wishcards/messaging')
           .send({
             messageFrom: user,
             messageTo: wishcard,

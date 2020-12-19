@@ -1,0 +1,24 @@
+{
+	"name": "@donategifts/db-connection",
+	"description": "donate gifts db-connection resources",
+	"version": "1.0.0",
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -b tsconfig.json",
+		"watch": "tsc --watch",
+		"test": "mocha",
+		"prepublishOnly": "npm run build"
+	},
+	"types": "dist/index.d.ts",
+	"dependencies": {
+		"mongoose": "^5.11.8",
+		"@donategifts/helper": "^1.0.0"
+	},
+	"devDependencies": {}
+}

@@ -14,7 +14,7 @@ $(function () {
       url: '/contact/customer-service',
       data: formData,
       success: function () {
-        showToast('Message sent, thank you for your feedback!', true);
+        showToast('messaging sent, thank you for your feedback!', true);
         $('#emailForm').each(function () {
           this.reset();
         });

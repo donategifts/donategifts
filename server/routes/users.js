@@ -271,7 +271,7 @@ const sendEmail = async (email, verificationHash) => {
 // @route   POST '/users/signup'
 // @access  Public
 // @tested 	Yes
-// TODO: display this message in signup.html client side as a notification alert.
+// TODO: display this messaging in signup.html client side as a notification alert.
 router.post('/signup', limiter, signupValidationRules(), validate, async (req, res) => {
   const { fName, lName, email, password, userRole, captchaToken } = req.body;
 

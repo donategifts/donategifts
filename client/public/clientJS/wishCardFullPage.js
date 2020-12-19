@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $('.message').submit(function (e) {
+  $('.messaging').submit(function (e) {
     e.preventDefault();
 
     let message = $('.custom-select option:selected').text();

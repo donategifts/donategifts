@@ -118,7 +118,7 @@ const postMessageValidationRules = () => {
   return [
     body('messageFrom')
       .notEmpty()
-      .withMessage('Message From - User is required')
+      .withMessage('messaging From - User is required')
       .custom(async (value) => {
         const foundUser = await UserRepository.getUserByObjectId(value._id);
         if (!foundUser) {
@@ -128,7 +128,7 @@ const postMessageValidationRules = () => {
       }),
     body('messageTo')
       .notEmpty()
-      .withMessage('Message To - Wishcard is required')
+      .withMessage('messaging To - Wishcard is required')
       .custom(async (value) => {
         const foundWishcard = await WishCardRepository.getWishCardByObjectId(value._id);
         if (!foundWishcard) {
@@ -137,12 +137,12 @@ const postMessageValidationRules = () => {
       }),
     body('message')
       .notEmpty()
-      .withMessage('Message is required')
+      .withMessage('messaging is required')
       .custom((value, { req }) => {
         const { messageFrom: user, messageTo: wishcard } = req.body;
         const allMessages = getMessageChoices(user.fName, wishcard.childFirstName);
         if (!allMessages.includes(value)) {
-          throw new Error('Message Error - Message Choice not found');
+          throw new Error('messaging Error - messaging Choice not found');
         }
         return true;
       }),

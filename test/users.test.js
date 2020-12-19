@@ -142,7 +142,7 @@ describe('Users', () => {
       });
     });
 
-    it('should get profile when logged in and display unverified email message', (done) => {
+    it('should get profile when logged in and display unverified email messaging', (done) => {
       agent
         .post('/users/signup')
         .send(signupRequest)
@@ -172,7 +172,7 @@ describe('Users', () => {
         });
     });
 
-    it('should not display unverified email message once email is verified', (done) => {
+    it('should not display unverified email messaging once email is verified', (done) => {
       agent
         .post('/users/signup')
         .send(signupRequest)

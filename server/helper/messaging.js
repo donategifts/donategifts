@@ -192,7 +192,7 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '------------- Message from testing / local environment -------------',
+        text: '------------- messaging from testing / local environment -------------',
       },
     });
   }

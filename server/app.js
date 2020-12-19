@@ -197,7 +197,7 @@ app.use((err, req, res, _next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // TODO: send error message to slack/sentry?
+  // TODO: send error messaging to slack/sentry?
 
   log.error(err);
 

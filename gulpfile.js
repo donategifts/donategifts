@@ -1,23 +1,46 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { parallel, task } = require('gulp');
 const del = require('del');
+const glob = require('glob');
+const childProcess = require('child_process');
 
-task('cleanModules', () => {
-  return del(['./node_modules', './don-frontend/node_modules', './don-server/node_modules']);
+task('cleanModules', function () {
+	return del(['./node_modules', '**/node_modules'], { force: true, dot: true });
 });
 
-task('cleanDist', () => {
-  return del(['./don-server/dist', './don-frontend/dist']);
+task('cleanTmp', function () {
+	return del(['**/tsconfig.tsbuildinfo'], { force: true, dot: true });
 });
 
-task('cleanBuildInfo', () => {
-  return del([
-    './tsconfig.tsbuildinfo',
-    './don-frontend/tsconfig.tsbuildinfo',
-    './don-server/tsconfig.tsbuildinfo',
-  ]);
+task('cleanDist', function () {
+	return del(['./dist', '**/dist'], {
+		force: true,
+		dot: true,
+	});
 });
 
-exports.superclean = parallel('cleanDist', 'cleanModules', 'cleanBuildInfo');
+task('updatePackages', function (cb) {
+	const check = pkgJsonPath => {
+		try {
+			return childProcess
+				.execSync(`npx ncu --timeout 240000 -x ejs,webpack,socket.io,mongoose --packageFile ${pkgJsonPath} -u`)
+				.toString();
+		} catch (error) {
+			console.log(`exec error: ${error.message}`);
+			process.exit(error.status);
+		}
+	};
+	glob('./**/*/package.json', {}, (er, files) => {
+		files.forEach(file => {
+			if (file.includes('node_modules')) {
+				return;
+			}
+			// console.log(`command to update: ncu --packageFileDir --packageFile ${file} -u -i`);
+			console.log(check(file));
+		});
+		cb();
+	});
+});
 
-exports.clean = parallel('cleanDist', 'cleanBuildInfo');
+exports.superclean = parallel('cleanDist', 'cleanTmp', 'cleanModules');
+
+exports.clean = parallel('cleanDist', 'cleanTmp');
