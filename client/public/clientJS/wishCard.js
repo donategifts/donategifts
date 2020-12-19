@@ -43,25 +43,6 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-function getReadMoreBtn(user, wishCardId) {
-  if (user) {
-    return  `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2"> Read more </a>`
-  }
-  return `<button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-  data-target="#loginModalCenter"> Read More </button>`
-}
-
-function getDonatedBtn(user, wishCardId, wishCardStatus) {
-  if (wishCardStatus === 'donated') {
-    return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
-  } else if (user) {
-    return `<a href="wishcards/donate/${wishCardId}"><button type="button" class="wishcard__button--blue bdr-2"> Donate Gift </button></a>`;
-  } else {
-    return `<button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
-    data-target="#loginModalCenter"> Donate Gift </button>`;
-  }
-}
-
 function appendWishCards(response, end = false, remove = false) {
   $('#no-result').remove();
   if (remove) {
@@ -110,10 +91,29 @@ function appendWishCards(response, end = false, remove = false) {
               </div>
               <div class="quick-font mt-4 row justify-content-center align-items-center">
                 <div class="col-sm-6 my-2 text-center">
-                ${getReadMoreBtn(user, wishCard._id)}
+                  <a href="/wishcards/${wishCard._id}" class="wishcard__link--white bdr-2"> Read more </a>
                 </div>
                 <div class="col-sm-6 my-2 text-center">
-                ${getDonatedBtn(user, wishCard._id, wishCard.status)}
+                  <button 
+                    type="button" 
+                    data-toggle="modal" 
+                    id="donate-btn-${wishCard._id}"
+                    class="wishcard__button--blue bdr-2"
+                    data-value-url="${wishCard.wishItemURL}"
+                    data-value-name="${wishCard.childFirstName}"
+                    data-value-id="${wishCard._id}"
+                    data-value-loggedIn="${!!user}"
+                    ${
+                      user
+                        ? `
+                          data-value-user="${user._id}"
+                          data-target="#wishCardDonateModal"
+                          `
+                        : 'data-target="#loginModalCenter"'
+                    } 
+                  >
+                    Donate Gift
+                  </button>
                 </div>
               </div>
             </div>
@@ -140,7 +140,8 @@ $(document).ready(function () {
 
   $.ajax({
     method: 'POST',
-    url: '/wishcards/search/1',
+    url: '/wishcards/search',
+    data: { limit: 25 },
     success: function (response) {
       response.wishcards.forEach((card) => cardIds.push(card._id));
 
