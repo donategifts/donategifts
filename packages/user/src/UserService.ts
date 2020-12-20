@@ -1,12 +1,10 @@
 import { IUser, UserRoles, ObjectId } from '@donategifts/common';
 import { AgencyRepository } from '@donategifts/agency';
+import { injectable } from 'inversify';
 
+@injectable()
 export class UserService {
-	private agencyRepository: AgencyRepository;
-
-	constructor() {
-		this.agencyRepository = new AgencyRepository();
-	}
+	constructor(private agencyRepository: typeof AgencyRepository = AgencyRepository) {}
 
 	public async getUserRole(id: string): Promise<UserRoles> {
 		const agency = await this.agencyRepository.getAgencyByUserId(ObjectId<IUser>(id));

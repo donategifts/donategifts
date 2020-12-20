@@ -1,5 +1,5 @@
-import { IUser } from '../user';
-import { TypeObjectId } from '../generic';
+import type { IUser } from '../user';
+import type { TypeObjectId } from '../generic';
 
 export interface ISessionUser {
 	_id: TypeObjectId<IUser>;

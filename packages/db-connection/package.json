@@ -18,7 +18,8 @@
 	"types": "dist/index.d.ts",
 	"dependencies": {
 		"mongoose": "^5.11.8",
-		"@donategifts/helper": "^1.0.0"
+		"@donategifts/helper": "^1.0.0",
+		"inversify": "^5.0.5"
 	},
 	"devDependencies": {}
 }

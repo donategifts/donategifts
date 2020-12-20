@@ -42,8 +42,8 @@ const bootServer = async () => {
 	await MongooseConnection.connect();
 	const MongoStore = connectMongo(session);
 
-	const userRepository = new UserRepository();
-	const agencyRepository = new AgencyRepository();
+	const userRepository = UserRepository;
+	const agencyRepository = AgencyRepository;
 
 	app.use(cors);
 

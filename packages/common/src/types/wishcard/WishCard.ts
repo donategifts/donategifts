@@ -1,7 +1,7 @@
-import { IAgency } from '../agency';
-import { TypeObjectId } from '../generic';
-import { IMessage } from '../message';
-import { IUser } from '../user';
+import type { IAgency } from '../agency';
+import type { TypeObjectId } from '../generic';
+import type { IMessage } from '../message';
+import type { IUser } from '../user';
 
 export enum WishCardStatus {
 	Draft = 'draft',

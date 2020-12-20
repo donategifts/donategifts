@@ -1,4 +1,4 @@
-import { TypeObjectId } from '../generic';
+import type { TypeObjectId } from '../generic';
 
 /** tsoaModel */
 export interface IContact {

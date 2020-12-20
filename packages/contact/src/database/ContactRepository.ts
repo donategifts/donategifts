@@ -1,10 +1,14 @@
+import { inject, injectable } from 'inversify';
 import { DBContact } from './DBContact';
 
+// TODO: needs typing
+@injectable()
 export class ContactRepository {
+	constructor(@inject(DBContact) private dbContact: typeof DBContact) {}
+
 	async createNewContact(contactParams) {
 		try {
-			const contact = new DBContact(contactParams);
-			return contact.save();
+			return this.dbContact.create(contactParams);
 		} catch (error) {
 			throw new Error(`Failed to create new Contact: ${error}`);
 		}

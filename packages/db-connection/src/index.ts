@@ -1,4 +1,8 @@
-export * from './MongooseConnection';
+import { Container } from 'inversify';
+import { MongooseConnection as mongooseConnection } from './MongooseConnection';
+
+const container = new Container({ autoBindInjectable: true, defaultScope: 'Singleton' });
+
 export {
 	Document,
 	Schema,
@@ -9,3 +13,5 @@ export {
 	Connection,
 	MongooseFilterQuery,
 } from 'mongoose';
+
+export const MongooseConnection: mongooseConnection = container.get(mongooseConnection);

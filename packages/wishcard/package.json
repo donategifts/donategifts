@@ -19,7 +19,8 @@
 	"dependencies": {
 		"@donategifts/common": "^1.0.0",
 		"@donategifts/db-connection": "^1.0.0",
-		"moment": "^2.29.1"
+		"moment": "^2.29.1",
+		"inversify": "^5.0.5"
 	},
 	"devDependencies": {}
 }

@@ -1,10 +1,15 @@
 // IMPORT USER MODEL
+import { inject, injectable } from 'inversify';
 import { DBUser } from './DBUser';
 
+// TODO: needs typing!!
+@injectable()
 export class UserRepository {
+	constructor(@inject(DBUser) private dbUser: typeof DBUser) {}
+
 	async getUserByObjectId(id) {
 		try {
-			return DBUser.findOne({ _id: id }).exec();
+			return this.dbUser.findOne({ _id: id }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -12,7 +17,7 @@ export class UserRepository {
 
 	async dpdateUserById(id, updateParams) {
 		try {
-			await DBUser.updateOne({ _id: id }, { $set: updateParams }).exec();
+			await this.dbUser.updateOne({ _id: id }, { $set: updateParams }).exec();
 		} catch (error) {
 			throw new Error(`Failed to update user: ${error}`);
 		}
@@ -20,7 +25,7 @@ export class UserRepository {
 
 	async detUserByEmail(email) {
 		try {
-			return DBUser.findOne({ email }).exec();
+			return this.dbUser.findOne({ email }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -28,7 +33,7 @@ export class UserRepository {
 
 	async detUserByVerificationHash(verificationHash) {
 		try {
-			return DBUser.findOne({ verificationHash }).exec();
+			return this.dbUser.findOne({ verificationHash }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -36,8 +41,7 @@ export class UserRepository {
 
 	async dreateNewUser(params) {
 		try {
-			const newUser = new DBUser(params);
-			return newUser.save();
+			return this.dbUser.create(params);
 		} catch (error) {
 			throw new Error(`Failed to create new User: ${error}`);
 		}
@@ -45,7 +49,7 @@ export class UserRepository {
 
 	async detUserByPasswordResetToken(tokenId) {
 		try {
-			return DBUser.findOne({ passwordResetToken: tokenId }).exec();
+			return this.dbUser.findOne({ passwordResetToken: tokenId }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get User: ${error}`);
 		}
@@ -53,7 +57,7 @@ export class UserRepository {
 
 	async detUserEmailVerification(userId, verified) {
 		try {
-			await DBUser.updateOne({ _id: userId }, { $set: { emailVerified: verified } });
+			await this.dbUser.updateOne({ _id: userId }, { $set: { emailVerified: verified } }).exec();
 		} catch (error) {
 			throw new Error(`Failed to set email verification: ${error}`);
 		}

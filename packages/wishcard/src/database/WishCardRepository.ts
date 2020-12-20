@@ -1,11 +1,15 @@
+import { inject, injectable } from 'inversify';
 import * as moment from 'moment';
 import { DBWishCard } from './DBWishCard';
 
+// TODO: needs typing!!
+@injectable()
 export class WishCardRepository {
+	constructor(@inject(DBWishCard) private dbWishCard: typeof DBWishCard) {}
+
 	async createNewWishCard(wishCardParams) {
 		try {
-			const newCard = new DBWishCard(wishCardParams);
-			return newCard.save();
+			return this.dbWishCard.create(wishCardParams);
 		} catch (error) {
 			throw new Error(`Failed to create new WishCard: ${error}`);
 		}
@@ -13,7 +17,7 @@ export class WishCardRepository {
 
 	async getAllWishCards() {
 		try {
-			return DBWishCard.find().exec();
+			return this.dbWishCard.find().lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcards: ${error}`);
 		}
@@ -21,12 +25,15 @@ export class WishCardRepository {
 
 	async getWishCardsByItemName(itemName) {
 		try {
-			return DBWishCard.find({
-				wishItemName: {
-					$regex: itemName,
-					$options: 'i',
-				},
-			}).exec();
+			return this.dbWishCard
+				.find({
+					wishItemName: {
+						$regex: itemName,
+						$options: 'i',
+					},
+				})
+				.lean()
+				.exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcards: ${error}`);
 		}
@@ -34,7 +41,7 @@ export class WishCardRepository {
 
 	async getWishCardByObjectId(cardId) {
 		try {
-			return DBWishCard.findOne({ _id: cardId }).exec();
+			return this.dbWishCard.findOne({ _id: cardId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -42,7 +49,7 @@ export class WishCardRepository {
 
 	async getWishCardsByStatus(status) {
 		try {
-			return DBWishCard.find({ status }).exec();
+			return this.dbWishCard.find({ status }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -50,7 +57,7 @@ export class WishCardRepository {
 
 	async getLockedWishcardsByUserId(userId) {
 		try {
-			return DBWishCard.findOne({ isLockedBy: userId }).exec();
+			return this.dbWishCard.findOne({ isLockedBy: userId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -58,11 +65,10 @@ export class WishCardRepository {
 
 	async pushNewWishCardMessage(id, message) {
 		try {
-			return DBWishCard.updateOne(
-				{ _id: id },
-				{ $push: { messages: message } },
-				{ new: true },
-			).exec();
+			return this.dbWishCard
+				.updateOne({ _id: id }, { $push: { messages: message } }, { new: true })
+				.lean()
+				.exec();
 		} catch (error) {
 			throw new Error(`Failed to update Wishcard messages: ${error}`);
 		}
@@ -70,7 +76,7 @@ export class WishCardRepository {
 
 	async updateWishCardStatus(id, status) {
 		try {
-			return DBWishCard.updateOne({ _id: id }, { $set: { status } }).exec();
+			return this.dbWishCard.updateOne({ _id: id }, { $set: { status } }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to update Wishcard messages: ${error}`);
 		}
@@ -101,6 +107,8 @@ export class WishCardRepository {
 				wishCard.save();
 				return wishCard;
 			}
+
+			return null;
 		} catch (error) {
 			throw new Error(`Failed to update Wishcard messages: ${error}`);
 		}

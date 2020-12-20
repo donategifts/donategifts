@@ -1,6 +1,6 @@
 import { TypeObjectId } from '../generic';
-import { IUser } from '../user';
-import { IWishCard } from '../wishcard';
+import type { IUser } from '../user';
+import type { IWishCard } from '../wishcard';
 
 export interface IAgency {
 	_id: TypeObjectId<IAgency>;

@@ -19,7 +19,8 @@
 	"dependencies": {
 		"@donategifts/wishcard": "^1.0.0",
 		"@donategifts/common": "^1.0.0",
-		"@donategifts/db-connection": "^1.0.0"
+		"@donategifts/db-connection": "^1.0.0",
+		"inversify": "^5.0.5"
 	},
 	"devDependencies": {}
 }

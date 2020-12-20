@@ -1,9 +1,14 @@
+import { inject, injectable } from 'inversify';
 import { DBMessage } from './DBMessage';
 
+// TODO: needs typing!!
+@injectable()
 export class MessageRepository {
+	constructor(@inject(DBMessage) private dbMessage: typeof DBMessage) {}
+
 	async getMessageByObjectId(messageId) {
 		try {
-			return DBMessage.findOne({ _id: messageId }).exec();
+			return this.dbMessage.findOne({ _id: messageId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Message: ${error}`);
 		}
@@ -11,8 +16,7 @@ export class MessageRepository {
 
 	async createNewMessage(messageParams) {
 		try {
-			const newMessage = new DBMessage(messageParams);
-			return newMessage.save();
+			return this.dbMessage.create(messageParams);
 		} catch (error) {
 			throw new Error(`Failed to create new Message: ${error}`);
 		}

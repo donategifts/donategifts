@@ -1,6 +1,6 @@
-import { IDonation } from '../donation';
-import { TypeObjectId } from '../generic';
-import { IWishCard } from '../wishcard';
+import type { IDonation } from '../donation';
+import type { TypeObjectId } from '../generic';
+import type { IWishCard } from '../wishcard';
 
 export enum UserRoles {
 	Agency = 'agency',

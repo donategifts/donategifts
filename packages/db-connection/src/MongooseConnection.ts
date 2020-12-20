@@ -1,8 +1,10 @@
 import * as mongoose from 'mongoose';
 import { logger } from '@donategifts/helper';
+import { injectable } from 'inversify';
 
+@injectable()
 export class MongooseConnection {
-	static async connect(): Promise<void> {
+	async connect(): Promise<void> {
 		const isInTest = process.env.NODE_ENV === 'test' && !process.env.ALLOW_MONGOOSE_TESTING;
 
 		if (isInTest) {

@@ -6,11 +6,8 @@ import { UserService } from '@donategifts/user';
 
 @Route('/users')
 export class Users extends Controller {
-	private userService: UserService;
-
-	constructor() {
+	constructor(private userService: typeof UserService = UserService) {
 		super();
-		this.userService = new UserService();
 	}
 
 	@Response('400', 'Bad request')
@@ -91,7 +88,10 @@ export class Users extends Controller {
 
 	@Response('400', 'Bad request')
 	@Get('/password/reset/{token}')
-	public async getPasswordResetToken(@Path('token') _token: any, @Query() _query: any): Promise<void> {
+	public async getPasswordResetToken(
+		@Path('token') _token: any,
+		@Query() _query: any,
+	): Promise<void> {
 		// TODO: implementation needed
 	}
 

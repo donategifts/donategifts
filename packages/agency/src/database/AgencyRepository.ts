@@ -1,6 +1,9 @@
+import { injectable } from 'inversify';
 import { TypeObjectId, IUser, IAgency } from '@donategifts/common';
 import { DBAgency } from './DBAgency';
 
+// TODO: needs typing
+@injectable()
 export class AgencyRepository {
 	async getAgencyByUserId(userId: TypeObjectId<IUser>): Promise<IAgency | null> {
 		try {
