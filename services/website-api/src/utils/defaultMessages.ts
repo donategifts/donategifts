@@ -1,4 +1,4 @@
-const getMessageChoices = (userFirstName, childFirstName) => {
+export const getMessageChoices = (userFirstName: string, childFirstName: string): string[] => {
 	if (!userFirstName || !childFirstName) {
 		return [];
 	}
@@ -16,8 +16,4 @@ const getMessageChoices = (userFirstName, childFirstName) => {
 		`${childFirstName}, have a happy holiday`,
 		`Congratulations, ${childFirstName}`,
 	];
-};
-
-module.exports = {
-	getMessageChoices,
 };

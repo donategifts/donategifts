@@ -4,33 +4,33 @@ import * as path from 'path';
 import * as fs from 'fs';
 import logger from './logger';
 
-const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
+const template = fs.readFileSync(path.resolve(__dirname, './resources/email/emailTemplate.html'), {
 	encoding: 'utf-8',
 });
 const templateAttachments = [
 	{
 		filename: 'instagram2x.png',
-		path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+		path: path.resolve(__dirname, './resources/email/instagram2x.png'),
 		cid: 'instagram2x.png', // same cid value as in the html img src
 	},
 	{
 		filename: 'website2x.png',
-		path: path.resolve(__dirname, '../resources/email/website2x.png'),
+		path: path.resolve(__dirname, './resources/email/website2x.png'),
 		cid: 'website2x.png', // same cid value as in the html img src
 	},
 	{
 		filename: 'mail2x.png',
-		path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+		path: path.resolve(__dirname, './resources/email/mail2x.png'),
 		cid: 'mail2x.png', // same cid value as in the html img src
 	},
 	{
 		filename: 'new-donate-gifts-logo-2.png',
-		path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+		path: path.resolve(__dirname, './resources/email/new-donate-gifts-logo-2.png'),
 		cid: 'new-donate-gifts-logo-2.png', // same cid value as in the html img src
 	},
 	{
 		filename: 'Img1_2x.jpg',
-		path: path.resolve(__dirname, '../resources/email/Img1_2x.jpg'),
+		path: path.resolve(__dirname, './resources/email/Img1_2x.jpg'),
 		cid: 'Img1_2x.jpg', // same cid value as in the html img src
 	},
 ];

@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 // request Classic
-const cheerio = require('cheerio');
-const axios = require('axios');
-const querystring = require('querystring');
+import cheerio from 'cheerio';
 
-const scrapeList = async url => {
+import * as querystring from 'querystring';
+import axios from 'axios';
+
+export const scrapeList = async (url: string): Promise<any[] | false> => {
 	const urlParams = querystring.stringify({
 		api_key: process.env.SCRAPINGBEE_APIKEY,
 		url,
@@ -19,7 +19,7 @@ const scrapeList = async url => {
 
 	const $ = cheerio.load(response.data);
 
-	const results = [];
+	const results: any[] = [];
 	$('.g-item-sortable').each((_index, item) => {
 		const found = {
 			title: $(item).find('.a-link-normal').first().attr('title'),
@@ -38,5 +38,3 @@ const scrapeList = async url => {
 
 	return results;
 };
-
-module.exports = scrapeList;
