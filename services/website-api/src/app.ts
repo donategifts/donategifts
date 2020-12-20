@@ -26,15 +26,18 @@ import { ISessionUser } from '@donategifts/common';
 import { MongooseConnection } from '@donategifts/db-connection';
 import { RegisterRoutes } from './routes';
 
-let configPath = path.join(__dirname, '../../config/config.env');
+// load from config if not production, otherwise use from docker
+if (process.env.NODE_ENV !== 'production') {
+	let configPath = path.join(__dirname, '../../config/config.env');
 
-if (process.env.NODE_ENV === 'test') {
-	configPath = path.join(__dirname, '../../config/test.config.env');
+	if (process.env.NODE_ENV === 'test') {
+		configPath = path.join(__dirname, '../../config/test.config.env');
+	}
+
+	config({
+		path: configPath,
+	});
 }
-
-config({
-	path: configPath,
-});
 
 const app = express();
 
