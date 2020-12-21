@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import * as moment from 'moment';
+import { IAgency, IWishCard, TypeObjectId } from '@donategifts/common';
 import { DBWishCard } from './DBWishCard';
 
 // TODO: needs typing!!
@@ -111,6 +112,14 @@ export class WishCardRepository {
 			return null;
 		} catch (error) {
 			throw new Error(`Failed to update Wishcard messages: ${error}`);
+		}
+	}
+
+	async getWishCardsByAgencyId(id: TypeObjectId<IAgency>): Promise<IWishCard[]> {
+		try {
+			return this.dbWishCard.find({ belongsTo: id }).lean().exec();
+		} catch (error) {
+			throw new Error(`Failed to get Wishcards for Agency ${id}: ${error}`);
 		}
 	}
 }

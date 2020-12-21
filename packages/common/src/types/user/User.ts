@@ -5,6 +5,7 @@ import type { IWishCard } from '../wishcard';
 export enum UserRoles {
 	Agency = 'agency',
 	Donor = 'donor',
+	Partner = 'partner',
 }
 
 export enum LoginMode {

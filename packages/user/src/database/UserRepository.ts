@@ -7,7 +7,7 @@ import { DBUser } from './DBUser';
 export class UserRepository {
 	constructor(@inject(DBUser) private dbUser: typeof DBUser) {}
 
-	async getUserByObjectId(id: TypeObjectId<IUser>): Promise<IUser> {
+	public async getUserByObjectId(id: TypeObjectId<IUser>): Promise<IUser> {
 		try {
 			return this.dbUser.findOne({ _id: id }).lean().exec();
 		} catch (error) {
@@ -15,15 +15,18 @@ export class UserRepository {
 		}
 	}
 
-	async updateUserById(id: TypeObjectId<IUser>, updateParams: Partial<IUser>): Promise<void> {
+	public async updateUserById(
+		id: TypeObjectId<IUser>,
+		updateParams: Partial<IUser>,
+	): Promise<IUser> {
 		try {
-			await this.dbUser.updateOne({ _id: id }, { $set: updateParams }).exec();
+			return this.dbUser.updateOne({ _id: id }, { $set: updateParams }).exec();
 		} catch (error) {
 			throw new Error(`Failed to update user: ${error}`);
 		}
 	}
 
-	async getUserByEmail(email: string): Promise<IUser> {
+	public async getUserByEmail(email: string): Promise<IUser> {
 		try {
 			return this.dbUser.findOne({ email }).lean().exec();
 		} catch (error) {
@@ -31,7 +34,7 @@ export class UserRepository {
 		}
 	}
 
-	async getUserByVerificationHash(verificationHash: string): Promise<IUser> {
+	public async getUserByVerificationHash(verificationHash: string): Promise<IUser> {
 		try {
 			return this.dbUser.findOne({ verificationHash }).lean().exec();
 		} catch (error) {
@@ -39,15 +42,15 @@ export class UserRepository {
 		}
 	}
 
-	async createNewUser(params: IUser): Promise<IUser> {
+	public async createNewUser(params: Omit<IUser, '_id'>): Promise<IUser> {
 		try {
-			return this.dbUser.create(params);
+			return this.dbUser.create(params as IUser);
 		} catch (error) {
 			throw new Error(`Failed to create new User: ${error}`);
 		}
 	}
 
-	async getUserByPasswordResetToken(tokenId: string): Promise<IUser> {
+	public async getUserByPasswordResetToken(tokenId: string): Promise<IUser> {
 		try {
 			return this.dbUser.findOne({ passwordResetToken: tokenId }).lean().exec();
 		} catch (error) {
@@ -55,7 +58,7 @@ export class UserRepository {
 		}
 	}
 
-	async detUserEmailVerification(id: TypeObjectId<IUser>, verified: boolean): Promise<void> {
+	public async setUserEmailVerification(id: TypeObjectId<IUser>, verified: boolean): Promise<void> {
 		try {
 			await this.dbUser.updateOne({ _id: id }, { $set: { emailVerified: verified } }).exec();
 		} catch (error) {

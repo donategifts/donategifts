@@ -37,7 +37,7 @@ export interface IDBWishCard extends Document {
 	approvedByAdmin: boolean;
 	messages: TypeObjectId<IMessage>[];
 	status: WishCardStatus;
-	wishCardTo: TypeObjectId<IAgency>;
+	belongsTo: TypeObjectId<IAgency>;
 }
 
 const wishCardSchema: Schema = new Schema({
@@ -116,7 +116,7 @@ const wishCardSchema: Schema = new Schema({
 		enum: ['draft', 'published', 'donated'],
 		default: 'draft',
 	},
-	wishCardTo: {
+	belongsTo: {
 		type: Schema.Types.ObjectId,
 		ref: 'Agency',
 	},
