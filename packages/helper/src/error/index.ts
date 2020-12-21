@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import logger from './logger';
+import logger from '../logger';
 
 interface ICustomError extends Partial<Error> {
 	statusCode?: number;

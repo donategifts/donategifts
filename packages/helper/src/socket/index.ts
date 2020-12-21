@@ -2,9 +2,9 @@
 import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
-import logger from './logger';
+import logger from '../logger';
 
-export const connectSocket = (app): any => {
+const connectSocket = (app): any => {
 	let server: http.Server | https.Server;
 	if (process.env.LOCAL_DEVELOPMENT) {
 		server = http.createServer(app);
@@ -36,3 +36,5 @@ export const connectSocket = (app): any => {
 
 	return io;
 };
+
+export { connectSocket };

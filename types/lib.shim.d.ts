@@ -2,7 +2,7 @@
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ISessionUser, IDBAgency } from '../../../packages/common/src/types';
+import { IUser, IAgency } from '@donategifts/common';
 
 declare global {
 	var io: any;
@@ -10,7 +10,7 @@ declare global {
 
 declare module 'express-session' {
 	interface SessionData {
-		user: ISessionUser;
-		agency: IDBAgency;
+		user: IUser;
+		agency: IAgency;
 	}
 }

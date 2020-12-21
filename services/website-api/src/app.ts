@@ -6,12 +6,14 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  *
  */
+import 'reflect-metadata';
 import { config } from 'dotenv';
 import * as cors from 'cors';
 import * as path from 'path';
 
 // EXPRESS SET UP
 import * as express from 'express';
+import * as basicAuth from 'express-basic-auth';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
@@ -22,7 +24,6 @@ import * as connectMongo from 'connect-mongo';
 import { connectSocket, logger } from '@donategifts/helper';
 import { UserRepository } from '@donategifts/user';
 import { AgencyRepository } from '@donategifts/agency';
-import { ISessionUser } from '@donategifts/common';
 import { MongooseConnection } from '@donategifts/db-connection';
 import { RegisterRoutes } from './routes';
 
@@ -44,11 +45,6 @@ const app = express();
 const bootServer = async () => {
 	await MongooseConnection.connect();
 	const MongoStore = connectMongo(session);
-
-	const userRepository = UserRepository;
-	const agencyRepository = AgencyRepository;
-
-	app.use(cors);
 
 	// SESSION SET UP
 	app.use(
@@ -74,11 +70,11 @@ const bootServer = async () => {
 		if (req.session) {
 			const { user } = req.session;
 			if (user) {
-				const result = await userRepository.getUserByObjectId(user._id);
+				const result = await UserRepository.getUserByObjectId(user._id);
 				res.locals.user = result;
-				req.session.user = result as ISessionUser;
+				req.session.user = result;
 				if (user.userRole === 'partner') {
-					const agency = await agencyRepository.getAgencyByUserId(user._id);
+					const agency = await AgencyRepository.getAgencyByUserId(user._id);
 					if (agency !== null) {
 						res.locals.agency = agency;
 						req.session.agency = agency;
@@ -112,6 +108,44 @@ const bootServer = async () => {
 	// MOUNT ROUTERS
 	RegisterRoutes(app);
 
+	app.get('/api/website-api', (_req, res) => {
+		res.send(
+			`
+				<html lang="en">
+					<head>
+					<title>Status Page</title>
+						<meta name="viewport" content="width=device-width, initial-scale=1">
+					</head>
+					<body>
+					  <h1></div>website-api</h1>
+					  Environment: ${process.env.NODE_ENV}<br>
+					  Version: ${process.env.npm_package_version} (${process.env.RELEASE})<br>
+					  <br>
+					  <a href="/website-api/openapi.yaml" target="_blank">OpenApi3 Definition</a> (Open <a target="_blank" href="https://editor.swagger.io/?url=https://donate-gifts.com/website-api/openapi.yaml">editor.swagger.io</a>)<br>
+					  <br>
+						<hr>
+					  <small>${process.env.npm_package_name} - ${new Date().toLocaleString()}</small>
+					</body>		
+				</html>
+			`,
+		);
+	});
+
+	app.get(
+		'/api/website-api/openapi.yaml',
+		cors<express.Request>(),
+		basicAuth({
+			users: {
+				docs: 'needAllInfo',
+			},
+			challenge: true,
+			realm: 'website-api-doc',
+		}),
+		(_req, res) => {
+			res.sendFile(path.resolve(__dirname, './swagger/swagger.yaml'));
+		},
+	);
+
 	// error handler
 	app.use((err, req, res, _next) => {
 		res.locals.message = err.message;
@@ -130,4 +164,4 @@ bootServer().catch(err => {
 	process.exit(1);
 });
 
-export default app;
+export { app };

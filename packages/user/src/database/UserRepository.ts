@@ -1,21 +1,21 @@
 // IMPORT USER MODEL
 import { inject, injectable } from 'inversify';
+import { IUser, TypeObjectId } from '@donategifts/common';
 import { DBUser } from './DBUser';
 
-// TODO: needs typing!!
 @injectable()
 export class UserRepository {
 	constructor(@inject(DBUser) private dbUser: typeof DBUser) {}
 
-	async getUserByObjectId(id) {
+	async getUserByObjectId(id: TypeObjectId<IUser>): Promise<IUser> {
 		try {
-			return this.dbUser.findOne({ _id: id }).exec();
+			return this.dbUser.findOne({ _id: id }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
 	}
 
-	async dpdateUserById(id, updateParams) {
+	async updateUserById(id: TypeObjectId<IUser>, updateParams: Partial<IUser>): Promise<void> {
 		try {
 			await this.dbUser.updateOne({ _id: id }, { $set: updateParams }).exec();
 		} catch (error) {
@@ -23,23 +23,23 @@ export class UserRepository {
 		}
 	}
 
-	async detUserByEmail(email) {
+	async getUserByEmail(email: string): Promise<IUser> {
 		try {
-			return this.dbUser.findOne({ email }).exec();
+			return this.dbUser.findOne({ email }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
 	}
 
-	async detUserByVerificationHash(verificationHash) {
+	async getUserByVerificationHash(verificationHash: string): Promise<IUser> {
 		try {
-			return this.dbUser.findOne({ verificationHash }).exec();
+			return this.dbUser.findOne({ verificationHash }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
 	}
 
-	async dreateNewUser(params) {
+	async createNewUser(params: IUser): Promise<IUser> {
 		try {
 			return this.dbUser.create(params);
 		} catch (error) {
@@ -47,17 +47,17 @@ export class UserRepository {
 		}
 	}
 
-	async detUserByPasswordResetToken(tokenId) {
+	async getUserByPasswordResetToken(tokenId: string): Promise<IUser> {
 		try {
-			return this.dbUser.findOne({ passwordResetToken: tokenId }).exec();
+			return this.dbUser.findOne({ passwordResetToken: tokenId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get User: ${error}`);
 		}
 	}
 
-	async detUserEmailVerification(userId, verified) {
+	async detUserEmailVerification(id: TypeObjectId<IUser>, verified: boolean): Promise<void> {
 		try {
-			await this.dbUser.updateOne({ _id: userId }, { $set: { emailVerified: verified } }).exec();
+			await this.dbUser.updateOne({ _id: id }, { $set: { emailVerified: verified } }).exec();
 		} catch (error) {
 			throw new Error(`Failed to set email verification: ${error}`);
 		}

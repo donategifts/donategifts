@@ -3,7 +3,7 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { Users } from './../controller/UserController';
+import { Users } from './../controller/user/UserController';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -24,7 +24,7 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/api/users/profile',
+        app.get('/website-api/users/profile',
             function (request: any, response: any, next: any) {
             const args = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
@@ -46,7 +46,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/api/users/profile',
+        app.put('/website-api/users/profile',
             function (request: any, response: any, next: any) {
             const args = {
                     _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
@@ -69,7 +69,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/agency',
+        app.post('/website-api/users/agency',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -91,7 +91,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/agency/wish-card',
+        app.get('/website-api/users/agency/wish-card',
             function (request: any, response: any, next: any) {
             const args = {
                     _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
@@ -113,7 +113,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/sign-up',
+        app.post('/website-api/users/sign-up',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -135,7 +135,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/google',
+        app.post('/website-api/users/google',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -157,7 +157,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/facebook',
+        app.post('/website-api/users/facebook',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -179,7 +179,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/login',
+        app.post('/website-api/users/login',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -201,7 +201,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/logout',
+        app.get('/website-api/users/logout',
             function (request: any, response: any, next: any) {
             const args = {
                     _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
@@ -224,7 +224,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/verify/:hash',
+        app.get('/website-api/users/verify/:hash',
             function (request: any, response: any, next: any) {
             const args = {
                     _hash: {"in":"path","name":"hash","required":true,"dataType":"any"},
@@ -246,7 +246,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/choose',
+        app.get('/website-api/users/choose',
             function (request: any, response: any, next: any) {
             const args = {
                     _query: {"in":"query","name":"_query","required":true,"dataType":"any"},
@@ -268,7 +268,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/password/reset',
+        app.post('/website-api/users/password/reset',
             function (request: any, response: any, next: any) {
             const args = {
                     _body: {"in":"body","name":"_body","required":true,"dataType":"any"},
@@ -290,7 +290,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/password/reset/:token',
+        app.get('/website-api/users/password/reset/:token',
             function (request: any, response: any, next: any) {
             const args = {
                     _token: {"in":"path","name":"token","required":true,"dataType":"any"},
@@ -313,7 +313,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users/password/reset/:token',
+        app.post('/website-api/users/password/reset/:token',
             function (request: any, response: any, next: any) {
             const args = {
                     _req: {"in":"request","name":"_req","required":true,"dataType":"object"},

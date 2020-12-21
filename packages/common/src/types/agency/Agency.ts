@@ -1,4 +1,4 @@
-import { TypeObjectId } from '../generic';
+import type { TypeObjectId } from '../generic';
 import type { IUser } from '../user';
 import type { IWishCard } from '../wishcard';
 

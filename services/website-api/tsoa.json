@@ -23,7 +23,7 @@
     "yaml": true
   },
   "routes": {
-    "basePath": "/api",
+    "basePath": "/website-api",
     "routesDir": "./src/routes",
     "middleware": "express"
   }
