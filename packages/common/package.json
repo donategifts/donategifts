@@ -1,0 +1,21 @@
+{
+	"name": "@donategifts/common",
+	"description": "donate gifts common resources",
+	"version": "1.0.0",
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -b tsconfig.json",
+		"watch": "tsc --watch",
+		"test": "mocha",
+		"prepublishOnly": "npm run build"
+	},
+	"types": "dist/index.d.ts",
+	"dependencies": {},
+	"devDependencies": {}
+}

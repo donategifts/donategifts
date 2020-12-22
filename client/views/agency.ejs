@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-180152810-1');
+    </script>
+    <title>Register as a Foster Care Partner</title>
+
+    <%- include('./templates/header')-%>
+
+    <link rel="stylesheet" href="../public/css/signup.css" />
+    <link rel="stylesheet" href="../public/css/agency.css" />
+    <!-- jquery -->
+    <script src="https://unpkg.com/imask@6.0.5/dist/imask.js"></script>
+    <!-- js scripts -->
+    <script src="/public/clientJS/agency.js"></script>
+  </head>
+
+  <body>
+    <%- include('./templates/nav')-%>
+
+    <div class="signup-bg py-5">
+      <div class="container pt-3 pb-4">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="agency-form-wrapper">
+              <div class="sign-row lg title-text crayon-font mg-sm">
+                Last Step: Register Your Agency
+               
+              </div>
+              <form class="signup-agency" action="/users/agency" method="post">
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="agencyname" class="agency__label">Agency Name</label>
+                    <input name="agencyName" type="text" class="agency__input" id="agencyName" placeholder="Agency Name:" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="agencyWebsite" class="agency__label">Agency Website</label>
+                    <input name="agencyWebsite" type="text" class="agency__input" id="agencyWebsite" placeholder="Agency Website(if any):" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="agencyAddress1" class="agency__label">Agency Address</label>
+                    <input name="agencyAddress1" type="text" class="agency__input" id="agencyAddress1" placeholder="Agency Address Line 1:"/>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="agencyAddress2" class="agency__label">Agency Address</label>
+                    <input name="agencyAddress2" type="text" class="agency__input" id="agencyAddress2" placeholder="Address Line 2:"/>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="city" class="agency__label">City</label>
+                    <input name="city" type="text" class="agency__input" id="city" placeholder="City:"/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="state" class="agency__label">State</label>
+                    <input name="state" type="text" class="agency__input" id="state" placeholder="State:"/>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="zipcode" class="agency__label">Zip Code</label>
+                    <input name="zipcode" type="text" class="agency__input" id="zipcode" placeholder="Zipcode:"/>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="country" class="agency__label">Country</label>
+                    <input name="country" type="text" class="agency__input" id="country" placeholder="Country:"/>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="agencyPhone" class="agency__label">Phone</label>
+                    <input name="agencyPhone" type="text" class="agency__input" id="agencyPhone" placeholder="Phone Number: 123-456-7890"/>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="agencyBio" class="agency__label">Description</label>
+                    <textarea name="agencyBio" type="text" class="agency__textarea" id="agencyBio" placeholder="Agency Description:"></textarea>
+                  </div>
+                </div>
+                <div class="form-group text-center">
+                  <button type="submit" class="agency__button">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./templates/footer')-%>
+  </body>
+</html>

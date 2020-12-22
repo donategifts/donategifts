@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- TODO: before user can leave a messaging, check if user is signed in first, if not, redirect to log in -->
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-180152810-1');
+  </script>
+  <title>Thank you</title>
+  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+  <%- include('./templates/header')-%>
+  <link rel="stylesheet" href="/public/css/successPayment.css" />
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+
+</head>
+
+<body>
+  <%- include('./templates/nav')-%>
+
+  <div class="container">
+      <section id="donation" class="row justify-content-md-center flex-column">
+        <section id="donationConfirmation" class="justify-content-md-center ">
+          <div class="more-wishcards-container">
+            <img id="success-payment-logo" class="center-block" src="/public/img/payments_success_checkmark.svg"/>
+          </div>
+          
+          <h4 id="grn-font" class="crayon-font display-4 mb-3 text-center">Thank you for your donation !</h4>
+          <p class="display-5 mb-6 text-center donation-successful-message">Your payment was successful and we are processing your order now.</p>
+          <div class="more-wishcards-container">
+            <a href="/wishcards"><button  type="button" class="button button--green center quick-font center-block">See More Wish Cards</button></a>
+          </div>
+        </section>
+        <section id="donationInfo" class="justify-content-md-center quick-font">
+          <div class="donation-info-labels">
+            <p class="display-5 mb-6 mt-2 text-center ">Confirmation will be sent to</p>
+            <p class="display-5 mb-6 text-center">Donation order date</p>
+            <p class="display-5 mb-6 text-center">Donated wish item</p>
+            <p class="display-5 mb-6 text-center">Donated total amount</p>
+          </div>
+          <div class="donation-info-label-value">
+            <p class="display-5 mb-6 mt-2 text-center "><%= donationInformation.email %></p>
+            <p class="display-5 mb-6 text-center "><%= donationInformation.orderDate %></p>
+            <p class="display-5 mb-6 text-center "><%= donationInformation.itemName %></p>
+            <p class="display-5 mb-6 text-center "><%= donationInformation.totalAmount %></p>
+          </div>
+         
+        </section>
+        <section id="donationConfirmation" class="justify-content-md-center quick-font">
+          <div class="list-item-title-container">
+            <p class="">From this donation, you will recieve:</p>
+          </div>
+          <p class="you-will-get"><i class="fa fa-heart" aria-hidden="true"></i> 100% tax-deductible receipt & shipping details <br />
+            <i class="fa fa-heart" aria-hidden="true"></i> Notification with a delivery proof <br />
+            <i class="fa fa-heart" aria-hidden="true"></i> Message & photo from <span
+              class="cap bold-text"><%= donationInformation.childName %></span> if partner agency permits</p>
+         
+        </section>
+      </section>
+     
+  </div>
+
+  <%- include('./templates/footer')-%>
+  
+</body>
+
+</html>

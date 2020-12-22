@@ -3,20 +3,20 @@
 VS-workspace.code-workspace
 .settings
 .project
-
-# Ignore image file folder
 uploads
-# Ignore node_modules folder
 node_modules
-
 # Ignore files related to API keys
 .idea
-config/config.env
-
+services/website-api/config/config.env
 # generated logs folder
 server/logs
 .eslintcache
 dump.*
 .adminbro
 
+# build files
+dist
+tsconfig.tsbuildinfo
 server/db/seederCredentials.json
+
+.npmrc

@@ -1,23 +1,23 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { parallel, task } = require('gulp');
 const del = require('del');
+const glob = require('glob');
+const childProcess = require('child_process');
 
-task('cleanModules', () => {
-  return del(['./node_modules', './don-frontend/node_modules', './don-server/node_modules']);
+task('cleanModules', function () {
+	return del(['./node_modules', '**/node_modules'], { force: true, dot: true });
 });
 
-task('cleanDist', () => {
-  return del(['./don-server/dist', './don-frontend/dist']);
+task('cleanTmp', function () {
+	return del(['**/tsconfig.tsbuildinfo'], { force: true, dot: true });
 });
 
-task('cleanBuildInfo', () => {
-  return del([
-    './tsconfig.tsbuildinfo',
-    './don-frontend/tsconfig.tsbuildinfo',
-    './don-server/tsconfig.tsbuildinfo',
-  ]);
+task('cleanDist', function () {
+	return del(['./dist', '**/dist'], {
+		force: true,
+		dot: true,
+	});
 });
 
-exports.superclean = parallel('cleanDist', 'cleanModules', 'cleanBuildInfo');
+exports.superclean = parallel('cleanDist', 'cleanTmp', 'cleanModules');
 
-exports.clean = parallel('cleanDist', 'cleanBuildInfo');
+exports.clean = parallel('cleanDist', 'cleanTmp');
