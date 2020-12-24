@@ -1,10 +1,24 @@
-import { Controller, Get, Post, Put, Request, Response, Route, Body, Path, Query } from 'tsoa';
+import {
+	Controller,
+	Get,
+	Post,
+	Put,
+	Request,
+	Response,
+	Route,
+	Body,
+	Path,
+	Query,
+	Security,
+	Tags,
+} from '@tsoa/runtime';
 import { UserRoles } from '@donategifts/common';
 import { UserService } from '@donategifts/user';
 
 // TODO: check old routes for params like res, req, and additional query params
 
-@Route('/users')
+@Route('/user')
+@Tags('user')
 export class Users extends Controller {
 	constructor(private userService: typeof UserService = UserService) {
 		super();
@@ -22,6 +36,7 @@ export class Users extends Controller {
 
 	@Response('400', 'Bad request')
 	@Put('/profile')
+	@Security('WEBSITE-BASIC')
 	public async updateProfile(@Request() _req: any, @Body() _body: any): Promise<void> {
 		// TODO: implementation needed
 	}
@@ -34,6 +49,7 @@ export class Users extends Controller {
 
 	@Response('400', 'Bad request')
 	@Get('/agency/wish-card')
+	@Security('WEBSITE-BASIC')
 	public async getAgencyWishCards(@Request() _req: any): Promise<void> {
 		// TODO: implementation needed
 	}
@@ -64,6 +80,7 @@ export class Users extends Controller {
 
 	@Response('400', 'Bad request')
 	@Get('/logout')
+	@Security('WEBSITE-BASIC')
 	public async logout(@Request() _req: any, @Query() _query: any): Promise<void> {
 		// TODO: implementation needed
 	}

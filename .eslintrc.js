@@ -1,11 +1,10 @@
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		ecmaVersion: 2019,
 		sourceType: 'module',
 		project: './tsconfig.eslint.json',
 	},
-	plugins: ['@typescript-eslint', 'unicorn', 'prettier'],
+	plugins: ['prettier', '@typescript-eslint', 'unicorn', 'import', 'mocha'],
 	globals: {
 		io: true,
 	},
@@ -21,7 +20,10 @@ module.exports = {
 		// Allow debugger during development
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
 		// Allow console log during development, but put out warnings, except for warn and error
-		'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn', { allow: ['warn', 'error'] }],
+		'no-console': [
+			process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+			{ allow: ['warn', 'error'] },
+		],
 		// Prefer const over let
 		'prefer-const': [
 			'error',
@@ -93,7 +95,8 @@ module.exports = {
 
 		'@typescript-eslint/explicit-member-accessibility': 0,
 
-		indent: ['error', 'tab'],
+		indent: [2, 'tab', { SwitchCase: 1 }],
+
 		// Allow unresolved imports
 		'import/extensions': [
 			'error',
@@ -140,13 +143,14 @@ module.exports = {
 		browser: true,
 		node: true,
 	},
+	// order important, keep as is
 	extends: [
 		'airbnb-typescript/base',
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',
-		'prettier/standard',
 		'prettier/@typescript-eslint',
+		'prettier/standard',
 	],
 	settings: {
 		'import/resolver': {

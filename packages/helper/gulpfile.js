@@ -1,6 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const syncy = require('syncy');
 
-exports.default = done =>
+exports.default = (done) =>
 	syncy(
 		[
 			'./src/email/**/*.png',
@@ -19,6 +20,6 @@ exports.default = done =>
 		.then(() => {
 			done();
 		})
-		.catch(err => {
+		.catch((err) => {
 			done(err);
 		});
