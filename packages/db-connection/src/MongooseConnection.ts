@@ -16,7 +16,7 @@ export class MongooseConnection {
 		try {
 			mongoose.set('useCreateIndex', true);
 
-			mongoose.Model.on('index', err => {
+			mongoose.Model.on('index', (err) => {
 				if (err) {
 					logger.error('Mongoose create index error', err);
 				}
@@ -38,12 +38,12 @@ export class MongooseConnection {
 			});
 
 			// If the connection throws an error
-			mongoose.connection.on('error', err => {
+			mongoose.connection.on('error', (err) => {
 				logger.info(`Mongoose default connection error: ${err}`);
 			});
 
 			// If the connection throws an error
-			mongoose.connection.on('index', err => {
+			mongoose.connection.on('index', (err) => {
 				if (err) {
 					logger.error(`Mongoose indexing error: ${err}`);
 				}

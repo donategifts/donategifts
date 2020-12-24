@@ -25,7 +25,7 @@ import { connectSocket, logger } from '@donategifts/helper';
 import { UserRepository } from '@donategifts/user';
 import { AgencyRepository } from '@donategifts/agency';
 import { MongooseConnection } from '@donategifts/db-connection';
-import { RegisterRoutes } from './routes';
+import { RegisterRoutes } from './routes/routes';
 
 // load from config if not production, otherwise use from docker
 if (process.env.NODE_ENV !== 'production') {
@@ -85,6 +85,17 @@ const bootServer = async () => {
 		next();
 	});
 
+	// healthcheck route
+	app.use('/website-api/healthcheck', (_req, res) => {
+		res
+			.status(200)
+			.send(
+				`${process.env.npm_package_name} (${
+					process.env.npm_package_version
+				}) up and running - ${Date.now()}`,
+			);
+	});
+
 	// PARSERS SET UP
 	app.use(bodyParser.json());
 	app.use(
@@ -108,7 +119,7 @@ const bootServer = async () => {
 	// MOUNT ROUTERS
 	RegisterRoutes(app);
 
-	app.get('/api/website-api', (_req, res) => {
+	app.get('/website-api', (_req, res) => {
 		res.send(
 			`
 				<html lang="en">
@@ -132,11 +143,11 @@ const bootServer = async () => {
 	});
 
 	app.get(
-		'/api/website-api/openapi.yaml',
+		'/website-api/openapi.yaml',
 		cors<express.Request>(),
 		basicAuth({
 			users: {
-				docs: 'needAllInfo',
+				hurrdurrpurr: 'camelCaseWithCamelToe',
 			},
 			challenge: true,
 			realm: 'website-api-doc',
@@ -155,11 +166,14 @@ const bootServer = async () => {
 
 		logger.error(err);
 
-		res.status(500);
+		res.status(500).send({
+			status: 500,
+			message: err.toString(),
+		});
 	});
 };
 
-bootServer().catch(err => {
+bootServer().catch((err) => {
 	logger.error(err);
 	process.exit(1);
 });

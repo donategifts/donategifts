@@ -1,5 +1,5 @@
 // request Classic
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 import * as querystring from 'querystring';
 import axios from 'axios';
