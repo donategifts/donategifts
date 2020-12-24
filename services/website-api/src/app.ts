@@ -167,7 +167,6 @@ const bootServer = async () => {
 		logger.error(err);
 
 		res.status(500).send({
-			status: 500,
 			message: err.toString(),
 		});
 	});
