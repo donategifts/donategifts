@@ -17,6 +17,7 @@
   <section class="community">
 
     <div class="container">
+  
       <div class="row mb-4">
         <div class="col-12">
           <% if (user.userRole == 'partner') { %>
@@ -64,8 +65,24 @@
 
     <div class="container pb-5">
       <div class="card-columns">
+
+        <!-- Hardcoded YouTube Video -->        
+        <div class="card my-3 py-4 px-1 border-white card-border quick-font">
+          <div class="row px-3">
+            <div class="col-12">
+              <img src="/public/img/fostering-hope-logo.jpg" alt="partner agency logo"
+                class="img-fluid rounded float-left mr-2 post-logo">
+              <h6 class="bold-text">Fostering Hope Foundation</h6>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="videoWrapper">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/IUPDXnvnJCQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
         <% if (posts) { %> <% for (let i = 0; i < posts.length; i++) { %>
-          
         <div class="card my-3 py-4 px-1 border-white card-border quick-font">
           <div class="row px-3">
             <div class="col-12">

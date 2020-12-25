@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Who we are | Donate Gifts</title>
+    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <%- include('./templates/header')-%>
+    <link rel="stylesheet" href="/public/css/about.css" />
+</head>
+
+<body>
+    <%- include('./templates/nav')-%>
+    <section class="team-section my-5 text-center">
+
+        <div class="container pt-1">
+            <h1 class="h1-responsive font-weight-bold cool-font red-font my-2 mb-5">Meet Our Pets</h1>
+            <div class="row">
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/stacy-dog.jpeg" alt="stacy-dog" class="img-fluid">
+                </div>
+
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/patric-dog.jpg" alt="patric-dog" class="img-fluid">
+                </div>
+
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/stacy-dog-2.jpeg" alt="stacy-dog-2" class="img-fluid">
+                </div>
+            </div>
+            <div class="row mt-3 mb-5">
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/marco-cat.jpg" alt="marco cat" class="profile-pic-rect">
+                </div>
+
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/tokikko-cat.jpg" alt="tokikko-cat" class="img-fluid">
+                </div>
+
+                <div class="img-crop mx-auto m-2">
+                    <img src="/public/img/team/markell-hedgehog.jpg" alt="markell-hedgehog" class="profile-pic-rect">
+                </div>
+            </div>
+
+            <h1 class="h1-responsive font-weight-bold cool-font red-font my-2 pt-5">The Volunteers</h1>
+            <h5 class="quick-font w-responsive mx-auto mb-5">Our kind volunteers work tirelessly to create positive changes</h5>
+    
+            <div class="row">
+    
+                <div class="col-md-3 mb-md-0 mb-5 team-card-2 m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Stacy Sealky Lee</h4>
+                    <div class="desc">
+                        <p class=""><strong>Founder | Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>We are all born with the ability to change someone’s life. What
+                            matters
+                            to me the most in life is to utilize my abilities to improve other people’s
+                            well-being.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-md-0 mb-5 team-card m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Patric Hoffmann</h4>
+                    <div class="desc">
+                        <p class=""><strong>Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>The mission of helping children in need is very personally important to me.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-md-0 mb-5 team-card-2 m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Ivan Repusic</h4>
+                    <div class="desc">
+                        <p class=""><strong>Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>I like to use my time to do something meaningful.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-md-3 mb-md-0 mb-5 team-card m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Marco Shuster</h4>
+                    <div class="desc">
+                        <p class=""><strong>Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>I was looking for an open source project to contribute to for fun and also a bit for my portfolio.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-md-0 mb-5 team-card-2 m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Markell Richards</h4>
+                    <div class="desc">
+                        <p class=""><strong>Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>DonateGifts has given me the opportunity to help children in need as well as advance my skills as a software developer.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-md-0 mb-5 team-card m-2 mx-auto">
+                    <h4 class="grn-font font-weight-bold mt-4 mb-3 quick-font">Jacob John Jeevan</h4>
+                    <div class="desc">
+                        <p class=""><strong>Software Developer</strong></p>
+                        <p><strong>Q: </strong> Why are you working for this project?</p>
+                        <p class="px-4"><strong>A: </strong>I was looking for open source projects to contribute to (mostly to improve my own portfolio). This was the perfect opportunity to grow and learn, while contributing to a meaningful cause.</p>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+
+    </section>
+    <%- include('./templates/footer')-%>
+</body>
+
+</html>
