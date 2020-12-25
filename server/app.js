@@ -169,6 +169,7 @@ const missionRoute = require('./routes/mission');
 const howtoRoute = require('./routes/howTo');
 const faqRoute = require('./routes/faq');
 const contactRoute = require('./routes/contact');
+const teamRoute = require('./routes/team');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
 const indexRoute = require('./routes/index');
@@ -182,6 +183,7 @@ app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
+app.use('/team', teamRoute);
 app.use('/', indexRoute);
 
 
