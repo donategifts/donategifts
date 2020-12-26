@@ -469,7 +469,7 @@ router.get('/get/random', async (req, res) => {
       const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
       wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length))
     } else {
-      
+
       wishcards.sort(() => Math.random() - 0.5);
       const requiredLength = 3 * Math.ceil(wishcards.length / 3);
       const rem = requiredLength - wishcards.length;
