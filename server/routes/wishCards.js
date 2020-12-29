@@ -25,27 +25,18 @@ const log = require('../helper/logger');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 // const scrapeList = require('../../scripts/amazon-scraper');
 const {
-	createWishcardValidationRules,
-	createGuidedWishcardValidationRules,
-	getByIdValidationRules,
-	updateWishCardValidationRules,
-	postMessageValidationRules,
-	getDefaultCardsValidationRules,
-	validate,
+  createWishcardValidationRules,
+  createGuidedWishcardValidationRules,
+  getByIdValidationRules,
+  updateWishCardValidationRules,
+  postMessageValidationRules,
+  getDefaultCardsValidationRules,
+  validate,
 } = require('./validations/wishcards.validations');
 
 const { redirectLogin } = require('./middleware/login.middleware');
 const { renderPermissions, checkVerifiedUser } = require('./middleware/wishCard.middleware');
-const {
-	babies,
-	preschoolers,
-	kids6_8,
-	kids9_11,
-	teens,
-	youth,
-	allAgesA,
-	allAgesB,
-} = require('../utils/defaultItems');
+const { babies, preschoolers, kids6_8, kids9_11, teens, youth, allAgesA, allAgesB } = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
@@ -63,8 +54,8 @@ const WishCardController = require('./controller/wishcard.controller');
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
 });
 
 // @desc    wishcard creation form sends data to db
@@ -72,59 +63,55 @@ const limiter = rateLimit({
 // @access  Private, verified partner
 // @tested 	Yes
 router.post(
-	'/',
-	limiter,
-	renderPermissions,
-	WishCardMiddleWare.upload.single('wishCardImage'),
-	createWishcardValidationRules(),
-	validate,
-	async (req, res) => {
-		if (req.file === undefined) {
-			handleError(
-				res,
-				400,
-				'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
-			);
-		} else {
-			try {
-				const { childBirthday, wishItemPrice } = req.body;
+  '/',
+  limiter,
+  renderPermissions,
+  WishCardMiddleWare.upload.single('wishCardImage'),
+  createWishcardValidationRules(),
+  validate,
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        'Error: File must be in jpeg, jpg, gif, or png format. The file must also be less than 5 megabytes.',
+      );
+    } else {
+      try {
+        const { childBirthday, wishItemPrice } = req.body;
 
-				let filePath;
+        let filePath;
 
-				if (process.env.NODE_ENV === 'development') {
-					// locally when using multer images are saved inside this folder
-					filePath = `/uploads/${req.file.filename}`;
-				}
-				const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+        if (process.env.NODE_ENV === 'development') {
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
+        }
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
 
-				const newWishCard = await WishCardRepository.createNewWishCard({
-					childBirthday: new Date(childBirthday),
-					wishItemPrice: Number(wishItemPrice),
-					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
-					createdBy: res.locals.user._id,
-					belongsTo: userAgency._id,
-					address: {
-						address1: req.body.address1,
-						address2: req.body.address2,
-						city: req.body.address_city,
-						state: req.body.address_state,
-						zip: req.body.address_zip,
-						country: req.body.address_country,
-					},
-					...req.body,
-				});
+        const newWishCard = await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(childBirthday),
+          wishItemPrice: Number(wishItemPrice),
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
+          createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
+          address: {
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.address_city,
+            state: req.body.address_state,
+            zip: req.body.address_zip,
+            country: req.body.address_country,
+          },
+          ...req.body,
+        });
 
-				res.status(200).send({ success: true, url: '/wishcards/' });
-				log.info('Wishcard created', {
-					type: 'wishcard_created',
-					agency: userAgency._id,
-					wishCardId: newWishCard._id,
-				});
-			} catch (error) {
-				handleError(res, 400, error);
-			}
-		}
-	},
+        res.status(200).send({ success: true, url: '/wishcards/' });
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
+      } catch (error) {
+        handleError(res, 400, error);
+      }
+    }
+  },
 );
 
 // @desc    wishcard creation form (guided process, i.e. uses default toy choices) sends data to db
@@ -132,72 +119,68 @@ router.post(
 // @access  Private, verified partners
 // @tested 	Yes
 router.post(
-	'/guided/',
-	limiter,
-	renderPermissions,
-	WishCardMiddleWare.upload.single('wishCardImage'),
-	createGuidedWishcardValidationRules(),
-	validate,
-	async (req, res) => {
-		if (req.file === undefined) {
-			handleError(
-				res,
-				400,
-				`Error: File must be in jpeg, jpg, gif, or png format. The file
+  '/guided/',
+  limiter,
+  renderPermissions,
+  WishCardMiddleWare.upload.single('wishCardImage'),
+  createGuidedWishcardValidationRules(),
+  validate,
+  async (req, res) => {
+    if (req.file === undefined) {
+      handleError(
+        res,
+        400,
+        `Error: File must be in jpeg, jpg, gif, or png format. The file
         mst also be less than 5 megabytes.`,
-			);
-		} else {
-			try {
-				const {
-					childBirthday,
-					address1,
-					address2,
-					address_city,
-					address_state,
-					address_zip,
-					address_country,
-				} = req.body;
-				let { itemChoice } = req.body;
+      );
+    } else {
+      try {
+        const {
+          childBirthday,
+          address1,
+          address2,
+          address_city,
+          address_state,
+          address_zip,
+          address_country,
+        } = req.body;
+        let { itemChoice } = req.body;
 
-				let filePath;
+        let filePath;
 
-				if (process.env.NODE_ENV === 'development') {
-					// locally when using multer images are saved inside this folder
-					filePath = `/uploads/${req.file.filename}`;
-				}
+        if (process.env.NODE_ENV === 'development') {
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
+        }
 
-				itemChoice = JSON.parse(itemChoice);
-				const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-				const newWishCard = await WishCardRepository.createNewWishCard({
-					childBirthday: new Date(childBirthday),
-					wishItemName: itemChoice.Name,
-					wishItemPrice: Number(itemChoice.Price),
-					wishItemURL: itemChoice.ItemURL,
-					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
-					createdBy: res.locals.user._id,
-					belongsTo: userAgency._id,
-					address: {
-						address1,
-						address2,
-						city: address_city,
-						state: address_state,
-						zip: address_zip,
-						country: address_country,
-					},
-					...req.body,
-				});
+        itemChoice = JSON.parse(itemChoice);
+        const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+        const newWishCard = await WishCardRepository.createNewWishCard({
+          childBirthday: new Date(childBirthday),
+          wishItemName: itemChoice.Name,
+          wishItemPrice: Number(itemChoice.Price),
+          wishItemURL: itemChoice.ItemURL,
+          wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
+          createdBy: res.locals.user._id,
+          belongsTo: userAgency._id,
+          address: {
+            address1,
+            address2,
+            city: address_city,
+            state: address_state,
+            zip: address_zip,
+            country: address_country,
+          },
+          ...req.body,
+        });
 
-				res.status(200).send({ success: true, url: '/wishcards/' });
-				log.info('Wishcard created', {
-					type: 'wishcard_created',
-					agency: userAgency._id,
-					wishCardId: newWishCard._id,
-				});
-			} catch (error) {
-				handleError(res, 400, error);
-			}
-		}
-	},
+        res.status(200).send({ success: true, url: '/wishcards/' });
+        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
+      } catch (error) {
+        handleError(res, 400, error);
+      }
+    }
+  },
 );
 
 // @desc    Render wishCards.html which will show all wishcards
@@ -205,23 +188,23 @@ router.post(
 // @access  Public
 // @tested 	Yes
 router.get('/', async (_req, res) => {
-	try {
-		const wishcards = await WishCardRepository.getAllWishCards();
+  try {
+    const wishcards = await WishCardRepository.getAllWishCards();
 
-		for (let i = 0; i < wishcards.length; i++) {
-			const birthday = moment(new Date(wishcards[i].childBirthday));
-			const today = moment(new Date());
+    for (let i = 0; i < wishcards.length; i++) {
+      const birthday = moment(new Date(wishcards[i].childBirthday));
+      const today = moment(new Date());
 
-			wishcards[i].age = today.diff(birthday, 'years');
-		}
+      wishcards[i].age = today.diff(birthday, 'years');
+    }
 
-		res.status(200).render('wishCards', {
-			user: res.locals.user,
-			wishcards,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+    res.status(200).render('wishCards', {
+      user: res.locals.user,
+      wishcards,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    Return wishcards that belong to the agency
@@ -229,73 +212,70 @@ router.get('/', async (_req, res) => {
 // @access  Private, verified partner
 // @tested 	No
 router.get('/me', renderPermissions, async (req, res) => {
-	try {
-		const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-		const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
+  try {
+    const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+    const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
 
-		const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
-		const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
-		const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
+    const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+    const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+    const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
-		res.render(
-			'agencyWishCards',
-			{ draftWishcards, activeWishcards, inactiveWishcards },
-			(error, html) => {
-				if (error) {
-					res.status(400).json({ success: false, error });
-				} else {
-					res.status(200).send(html);
-				}
-			},
-		);
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+    res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
+
 
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
 // @tested 	No
 router.get('/admin/', async (req, res) => {
-	try {
-		// only admin users can get access
-		if (res.locals.user.userRole !== 'admin') {
-			return res.status(404).render('404');
-		}
-		// only retrieve wishcards that have a draft status
-		const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
-		// we need to append each wishcard with some agency details
-		const wishCardsWithAgencyDetails = [];
+  try {
+    // only admin users can get access
+    if (res.locals.user.userRole !== 'admin') {
+      return res.status(404).render('404');
+    }
+    // only retrieve wishcards that have a draft status
+    const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
+    // we need to append each wishcard with some agency details
+    const wishCardsWithAgencyDetails = [];
 
-		// There seems to be no way of direct accessing all required information at on so to populate
-		// wishcard with agency info we grab wishcards with users and then have to loop through
-		// agencies with the user to get agency details. I added a reference for wishcards on agency model
-		// but older entries are missing that information
-		for (let i = 0; i < wishcards.length; i++) {
-			const wishCard = wishcards[i];
-			// eslint-disable-next-line no-await-in-loop
-			const agencyDetails = wishCard.belongsTo;
-			// take only necessary fields from agency that will be displayed on wishcard
-			const agencySimple = {
-				agencyName: agencyDetails.agencyName,
-				agencyPhone: agencyDetails.agencyPhone,
-			};
-			// merge some agency details with wishcard
-			const mergedObj = { ...wishCard.toObject(), ...agencySimple };
-			wishCardsWithAgencyDetails.push(mergedObj);
-		}
+    // There seems to be no way of direct accessing all required information at on so to populate
+    // wishcard with agency info we grab wishcards with users and then have to loop through
+    // agencies with the user to get agency details. I added a reference for wishcards on agency model
+    // but older entries are missing that information
+    for (let i = 0; i < wishcards.length; i++) {
+      const wishCard = wishcards[i];
+      // eslint-disable-next-line no-await-in-loop
+      const agencyDetails = wishCard.belongsTo;
+      // take only necessary fields from agency that will be displayed on wishcard
+      const agencySimple = {
+        agencyName: agencyDetails.agencyName,
+        agencyPhone: agencyDetails.agencyPhone,
+      };
+      // merge some agency details with wishcard
+      const mergedObj = { ...wishCard.toObject(), ...agencySimple };
+      wishCardsWithAgencyDetails.push(mergedObj);
+    }
 
-		res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
-			if (error) {
-				handleError(res, 400, error);
-			} else {
-				res.status(200).send(html);
-			}
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+    res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
+      if (error) {
+        handleError(res, 400, error);
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    Update wishcard
@@ -303,100 +283,98 @@ router.get('/admin/', async (req, res) => {
 // @access  User with admin role
 // @tested 	No
 router.put('/admin/', async (req, res) => {
-	try {
-		const USER_ROLE = 'admin';
-		// only admin users can get access
-		if (res.locals.user.userRole !== USER_ROLE) {
-			return res.status(404).render('404');
-		}
-		const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-		const wishItemURL = mongoSanitize.sanitize(req.body.wishItemURL);
-		const wishCardModifiedFields = {
-			wishItemURL,
-			status: 'published',
-		};
-		await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
-		return res.status(200).send({
-			success: true,
-			error: null,
-			data: null,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+  try {
+    const USER_ROLE = 'admin';
+    // only admin users can get access
+    if (res.locals.user.userRole !== USER_ROLE) {
+      return res.status(404).render('404');
+    }
+    const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
+    const wishItemURL = mongoSanitize.sanitize(req.body.wishItemURL);
+    const wishCardModifiedFields = {
+      wishItemURL,
+      status: 'published',
+    };
+    await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
+    return res.status(200).send({
+      success: true,
+      error: null,
+      data: null,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 router.get('/admin/:wishCardId', async (req, res) => {
-	if (!res.locals.user || res.locals.user.userRole !== 'admin') {
-		return res.status(404).render('404');
-	}
 
-	const { wishCardId } = req.params;
+  if ( !res.locals.user || res.locals.user.userRole !== 'admin') {
+    return res.status(404).render('404');
+  }
 
-	const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
-	if (!donation) {
-		return handleError(res, 400, 'Donation not found');
-	}
+  const {wishCardId} = req.params;
 
-	const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager);
-	if (!accountManager) {
-		return handleError(res, 400, 'AccountManager not found');
-	}
+  const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
+  if (!donation) return handleError(res, 400, 'Donation not found');
 
-	res.render('adminDonationDetails', {
-		wishCard: donation.donationCard,
-		agency: donation.donationTo,
-		donation,
-		donor: donation.donationFrom,
-		accountManager,
-	});
+  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager)
+  if (!accountManager) return handleError(res, 400, 'AccountManager not found');
+
+  res.render('adminDonationDetails', {
+    wishCard: donation.donationCard,
+    agency: donation.donationTo,
+    donation,
+    donor: donation.donationFrom,
+    accountManager
+  })
+
 });
+
 
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
 // @access  Public
 // @tested 	Yes
 router.post('/search/:init?', async (req, res) => {
-	try {
-		const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+  try {
 
-		let childAge;
-		let showDonated = showDonatedCheck;
+    const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
 
-		// only true on first visit of page
-		if (req.params.init) {
-			childAge = 0;
-			showDonated = true;
-		}
+    let childAge;
+    let showDonated = showDonatedCheck;
 
-		if (younger) {
-			childAge = 14;
-		}
+    // only true on first visit of page
+    if (req.params.init) {
+      childAge = 0;
+      showDonated = true;
+    }
 
-		if (older) {
-			childAge = 15;
-		}
+    if (younger) {
+      childAge = 14;
+    }
 
-		if (younger && older) {
-			childAge = 0;
-		}
+    if (older) {
+      childAge = 15;
+    }
 
-		const results = await WishCardController.getWishCardSearchResult(
-			mongoSanitize.sanitize(wishitem),
-			showDonated,
-			recentlyAdded,
-			childAge,
+    if (younger && older)  childAge = 0;
 
-			cardIds || [],
-		);
+    const results = await WishCardController.getWishCardSearchResult(
+      mongoSanitize.sanitize(wishitem),
+      showDonated,
+      recentlyAdded,
+      childAge,
 
-		res.send({
-			user: res.locals.user,
-			wishcards: results,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+      cardIds || [],
+    );
+
+    res.send({
+      user: res.locals.user,
+      wishcards: results,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    Retrieve one wishcard by its _id
@@ -404,171 +382,157 @@ router.post('/search/:init?', async (req, res) => {
 // @access  Private, all users (path led by "see more" button). See more btn is however is public.
 // @tested 	Yes
 router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req, res) => {
-	try {
-		const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-		// this agency object is returning undefined and breaking frontend
-		// const agency = wishcard.belongsTo;
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    // this agency object is returning undefined and breaking frontend
+    // const agency = wishcard.belongsTo;
 
-		let birthday;
-		if (wishcard.childBirthday) {
-			birthday = moment(new Date(wishcard.childBirthday));
-			const today = moment(new Date());
-			wishcard.age = today.diff(birthday, 'years');
-		} else {
-			wishcard.age = 'Not Provided';
-		}
+    let birthday;
+    if (wishcard.childBirthday) {
+      birthday = moment(new Date(wishcard.childBirthday));
+      const today = moment(new Date());
+      wishcard.age = today.diff(birthday, 'years');
+    } else {
+      wishcard.age = 'Not Provided';
+    }
 
-		const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
-		const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
-		// create a page and have a dynamic link for see more
-		res.status(200).render('wishCardFullPage', {
-			user: res.locals.user,
-			wishcard: wishcard || [],
-			messages,
-			defaultMessages,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+    const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
+    const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
+    // create a page and have a dynamic link for see more
+    res.status(200).render('wishCardFullPage', {
+      user: res.locals.user,
+      wishcard: wishcard || [],
+      messages,
+      defaultMessages,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
-router.get(
-	'/donate/:id',
-	redirectLogin,
-	getByIdValidationRules(),
-	redirectLogin,
-	async (req, res) => {
-		try {
-			const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 
-			// NOTE:
-			// this agency object is returning undefined and breaking frontend
-			const agency = wishcard.belongsTo;
+    // NOTE:
+    // this agency object is returning undefined and breaking frontend
+    const agency = wishcard.belongsTo;
 
-			// fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
-			const processingFee = 1.08;
-			// we are using amazon prime so all shipping is free
-			const shipping = 'FREE';
-			// Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
-			// doing all the shopping
-			const tax = 1.0712;
+    // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
+    const processingFee = 1.08;
+    // we are using amazon prime so all shipping is free
+    const shipping = 'FREE';
+    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
+    // doing all the shopping
+    const tax = 1.0712;
 
-			const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+    const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
 
-			const extendedPaymentInfo = {
-				processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
-				shipping,
-				tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
-				totalItemCost,
-				agency,
-			};
+    const extendedPaymentInfo = {
+      processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
+      shipping,
+      tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
+      totalItemCost,
+      agency,
+    };
 
-			// console.log(agency);
+    // console.log(agency);
 
-			// I test printed the agency and wishcard object
-			// and if we are still using agency array, the matching obj is the 1st one
-			// but who knows ¯\_(ツ)_/¯
+    // I test printed the agency and wishcard object
+    // and if we are still using agency array, the matching obj is the 1st one
+    // but who knows ¯\_(ツ)_/¯
 
-			res.status(200).render('donate', {
-				user: res.locals.user,
-				wishcard: wishcard || [],
-				extendedPaymentInfo,
+    res.status(200).render('donate', {
+      user: res.locals.user,
+      wishcard: wishcard || [],
+      extendedPaymentInfo,
 
-				agency,
-			});
-		} catch (error) {
-			handleError(res, 400, error);
-		}
-	},
-);
+      agency,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 // @desc    display 3 wishcards randomly in the sample wishcard section of index.html
 // @route   GET '/wishcards/get/random'
 // @access  Public
 // @tested 	No
 router.get('/get/random', async (req, res) => {
-	try {
-		// let wishcards = await WishCardRepository.getAllWishCards();
-		let wishcards = [];
-		wishcards = await WishCardRepository.getWishCardsByStatus('published');
-		console.log(wishcards.length);
-		if (!wishcards || wishcards.length < 6) {
-			const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
-			wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length));
-		} else {
-			wishcards.sort(() => Math.random() - 0.5);
-			const requiredLength = 3 * Math.ceil(wishcards.length / 3);
-			const rem = requiredLength - wishcards.length;
-			if (rem !== 0 && wishcards.length > 3) {
-				for (let j = 0; j < rem; j++) {
-					wishcards.push(wishcards[j]);
-				}
-			}
-		}
-		res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
-			if (error) {
-				res.status(400).json({ success: false, error });
-			} else {
-				res.status(200).send(html);
-			}
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
+  try {
+    // let wishcards = await WishCardRepository.getAllWishCards();
+    let wishcards = [];
+    wishcards = await WishCardRepository.getWishCardsByStatus('published');
+    console.log(wishcards.length)
+    if (!wishcards || wishcards.length < 6) {
+
+      const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
+      wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length))
+    } else {
+
+      wishcards.sort(() => Math.random() - 0.5);
+      const requiredLength = 3 * Math.ceil(wishcards.length / 3);
+      const rem = requiredLength - wishcards.length;
+      if (rem !== 0 && wishcards.length > 3) {
+        for (let j = 0; j < rem; j++) {
+          wishcards.push(wishcards[j]);
+        }
+      }
+
+
+    }
+    res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
+      if (error) {
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
 });
 
 // @desc    update one wishcard by id
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only for verified partners
 // @tested 	Not yet
-router.put(
-	'/update/:id',
-	renderPermissions,
-	updateWishCardValidationRules(),
-	validate,
-	async (req, res) => {
-		// what are we doing here?
-		try {
-			const result = await WishCardRepository.getWishCardByObjectId(req.params.id);
-			// WHERE ARE WE EDITING THIS ON THE FRONT END?
-			//     - in /users/profile
-			//     - all wishcards created by this user should display
-			//     - then add a pencil icon for edit function
-			result.save();
-		} catch (error) {
-			handleError(res, 400, error);
-		}
-	},
-);
+router.put('/update/:id', renderPermissions, updateWishCardValidationRules(), validate, async (req, res) => {
+  // what are we doing here?
+  try {
+    const result = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    // WHERE ARE WE EDITING THIS ON THE FRONT END?
+    //     - in /users/profile
+    //     - all wishcards created by this user should display
+    //     - then add a pencil icon for edit function
+    result.save();
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
-// @desc    User can post a messaging to the wishcard
-// @route   POST '/wishcards/messaging'
+// @desc    User can post a message to the wishcard
+// @route   POST '/wishcards/message'
 // @access  Private, all email verified donor users.
 // @tested  Yes
-router.post(
-	'/messaging',
-	checkVerifiedUser,
-	postMessageValidationRules(),
-	validate,
-	async (req, res) => {
-		try {
-			const { messageFrom, messageTo, message } = req.body;
-			const newMessage = await MessageRepository.createNewMessage({
-				messageFrom,
-				messageTo,
-				message,
-			});
+router.post('/message', checkVerifiedUser, postMessageValidationRules(), validate, async (req, res) => {
+  try {
+    const { messageFrom, messageTo, message } = req.body;
+    const newMessage = await MessageRepository.createNewMessage({
+      messageFrom,
+      messageTo,
+      message,
+    });
 
-			res.status(200).send({
-				success: true,
-				error: null,
-				data: newMessage,
-			});
-		} catch (error) {
-			handleError(res, 400, error);
-		}
-	},
-);
+    res.status(200).send({
+      success: true,
+      error: null,
+      data: newMessage,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 /*
 // @desc   lock a wishcard
 // @route  POST '/wishcards/lock'
@@ -791,50 +755,44 @@ queue.on('completed', (job) => {
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access Private (only for verified partners)
 // @tested No
-router.get(
-	'/defaults/:id',
-	renderPermissions,
-	getDefaultCardsValidationRules(),
-	validate,
-	async (req, res) => {
-		const ageCategory = Number(req.params.id);
-		let itemChoices;
+router.get('/defaults/:id', renderPermissions, getDefaultCardsValidationRules(), validate, async (req, res) => {
+  const ageCategory = Number(req.params.id);
+  let itemChoices;
 
-		switch (ageCategory) {
-		case 1:
-			itemChoices = babies;
-			break;
-		case 2:
-			itemChoices = preschoolers;
-			break;
-		case 3:
-			itemChoices = kids6_8;
-			break;
-		case 4:
-			itemChoices = kids9_11;
-			break;
-		case 5:
-			itemChoices = teens;
-			break;
-		case 6:
-			itemChoices = youth;
-			break;
-		case 7:
-			itemChoices = allAgesA;
-			break;
-		default:
-			itemChoices = allAgesB;
-			break;
-		}
+  switch (ageCategory) {
+    case 1:
+      itemChoices = babies;
+      break;
+    case 2:
+      itemChoices = preschoolers;
+      break;
+    case 3:
+      itemChoices = kids6_8;
+      break;
+    case 4:
+      itemChoices = kids9_11;
+      break;
+    case 5:
+      itemChoices = teens;
+      break;
+    case 6:
+      itemChoices = youth;
+      break;
+    case 7:
+      itemChoices = allAgesA;
+      break;
+    default:
+      itemChoices = allAgesB;
+      break;
+  }
 
-		res.render('itemChoices', { itemChoices }, (error, html) => {
-			if (error) {
-				handleError(res, 400, error);
-			} else {
-				res.status(200).send({ success: true, html });
-			}
-		});
-	},
-);
+  res.render('itemChoices', { itemChoices }, (error, html) => {
+    if (error) {
+      handleError(res, 400, error);
+    } else {
+      res.status(200).send({ success: true, html });
+    }
+  });
+});
 
 module.exports = router;
