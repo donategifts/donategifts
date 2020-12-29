@@ -27,4 +27,4 @@ const MessageSchema = new Schema({
 	},
 });
 
-export const DBMessage: Model<IDBMessage> = model<IDBMessage>('DBMessage', MessageSchema);
+export const DBMessage: Model<IDBMessage> = model<IDBMessage>('Messages', MessageSchema);

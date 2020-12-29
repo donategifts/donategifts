@@ -30,8 +30,8 @@ const connectSocket = (app): any => {
 		},
 	});
 
-	server.listen(8081, () => {
-		logger.info(`socket listening on: ${8081}`);
+	server.listen(3010, () => {
+		logger.info(`socket listening on: 3010`);
 	});
 
 	return io;

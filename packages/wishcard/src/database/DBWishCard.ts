@@ -122,4 +122,4 @@ const wishCardSchema: Schema = new Schema({
 	},
 });
 
-export const DBWishCard: Model<IDBWishCard> = model<IDBWishCard>('DBWishCard', wishCardSchema);
+export const DBWishCard: Model<IDBWishCard> = model<IDBWishCard>('WishCards', wishCardSchema);

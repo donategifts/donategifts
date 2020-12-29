@@ -80,4 +80,4 @@ const agencySchema: Schema = new Schema({
 	},
 });
 
-export const DBAgency: Model<IDBAgency> = model<IDBAgency>('DBAgency', agencySchema);
+export const DBAgency: Model<IDBAgency> = model<IDBAgency>('Agencies', agencySchema);

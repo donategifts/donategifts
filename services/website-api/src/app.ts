@@ -65,8 +65,18 @@ const bootServer = async () => {
 		}),
 	);
 
+	// log all requests
+	app.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
+		logger.info({
+			method: req.method,
+			ip: req.ip,
+			url: req.url,
+		});
+		next();
+	});
+
 	// MIDDLEWARE for extracting user and agency from a session
-	app.use(async (req, res, next) => {
+	app.use(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 		if (req.session) {
 			const { user } = req.session;
 			if (user) {
@@ -86,7 +96,7 @@ const bootServer = async () => {
 	});
 
 	// healthcheck route
-	app.use('/website-api/healthcheck', (_req, res) => {
+	app.use('/website-api/healthcheck', (_req: express.Request, res: express.Response) => {
 		res
 			.status(200)
 			.send(
@@ -119,7 +129,7 @@ const bootServer = async () => {
 	// MOUNT ROUTERS
 	RegisterRoutes(app);
 
-	app.get('/website-api', (_req, res) => {
+	app.get('/website-api', (_req: express.Request, res: express.Response) => {
 		res.send(
 			`
 				<html lang="en">
@@ -152,24 +162,31 @@ const bootServer = async () => {
 			challenge: true,
 			realm: 'website-api-doc',
 		}),
-		(_req, res) => {
+		(_req: express.Request, res: express.Response) => {
 			res.sendFile(path.resolve(__dirname, './swagger/swagger.yaml'));
 		},
 	);
 
 	// error handler
-	app.use((err, req, res, _next) => {
-		res.locals.message = err.message;
-		res.locals.error = req.app.get('env') === 'development' ? err : {};
+	app.use(
+		(
+			err: { message: any; toString: () => any },
+			req: express.Request,
+			res: express.Response,
+			_next: express.NextFunction,
+		) => {
+			res.locals.message = err.message;
+			res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-		// TODO: send error messaging to slack/sentry?
+			// TODO: send error messaging to slack/sentry?
 
-		logger.error(err);
+			logger.error(err);
 
-		res.status(500).send({
-			message: err.toString(),
-		});
-	});
+			res.status(500).send({
+				message: err.toString(),
+			});
+		},
+	);
 };
 
 bootServer().catch((err) => {
