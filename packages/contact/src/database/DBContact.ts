@@ -33,4 +33,4 @@ const contactSchema: Schema = new Schema({
 	},
 });
 
-export const DBContact: Model<IDBContact> = model<IDBContact>('DBContact', contactSchema);
+export const DBContact: Model<IDBContact> = model<IDBContact>('Contact', contactSchema);

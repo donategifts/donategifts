@@ -88,4 +88,4 @@ const userSchema: Schema = new Schema({
 	},
 });
 
-export const DBUser: Model<IDBUser> = model<IDBUser>('DBUser', userSchema);
+export const DBUser: Model<IDBUser> = model<IDBUser>('Users', userSchema);

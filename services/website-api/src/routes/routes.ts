@@ -15,6 +15,33 @@ const models: TsoaRoute.Models = {
         "enums": ["agency","donor","partner"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LoginMode": {
+        "dataType": "refEnum",
+        "enums": ["Facebook","Google","Default"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAPIUser": {
+        "dataType": "refObject",
+        "properties": {
+            "_id": {"dataType":"string","required":true},
+            "fName": {"dataType":"string","required":true},
+            "lName": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "verificationHash": {"dataType":"string","required":true},
+            "emailVerified": {"dataType":"boolean","required":true},
+            "password": {"dataType":"string","required":true},
+            "passwordResetToken": {"dataType":"string","required":true},
+            "passwordResetTokenExpires": {"dataType":"datetime","required":true},
+            "userRole": {"ref":"UserRoles","required":true},
+            "wishCards": {"dataType":"string","required":true},
+            "donationsMade": {"dataType":"string","required":true},
+            "joined": {"dataType":"datetime","required":true},
+            "aboutMe": {"dataType":"string","required":true},
+            "loginMode": {"ref":"LoginMode","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -25,7 +52,29 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.get('/website-api/user/get-users',
+            function (request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new Users();
+
+
+            const promise = controller.getUsers.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/website-api/user/profile',
+            authenticateMiddleware([{"WEBSITE-BASIC":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},

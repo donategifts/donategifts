@@ -31,4 +31,4 @@ const donationSchema: Schema = new Schema({
 	},
 });
 
-export const DBDonation: Model<IDBDonation> = model<IDBDonation>('DBDonation', donationSchema);
+export const DBDonation: Model<IDBDonation> = model<IDBDonation>('Donations', donationSchema);

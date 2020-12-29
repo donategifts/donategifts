@@ -9,7 +9,7 @@ if [[ -n "$1" ]]
     mongoexport --uri="$1"  --collection=agencies  --out=agencies.json
     mongoexport --uri="$1"  --collection=messages  --out=messages.json
     mongoexport --uri="$1"  --collection=wishcards  --out=wishcards.json
-    
+
     mongoimport --uri="mongodb://localhost/donategifts" --collection=users --file=users.json
     mongoimport --uri="mongodb://localhost/donategifts" --collection=agencies --file=agencies.json
     mongoimport --uri="mongodb://localhost/donategifts" --collection=messages --file=messages.json

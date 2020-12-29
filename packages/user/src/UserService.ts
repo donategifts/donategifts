@@ -37,6 +37,10 @@ export class UserService {
 		}
 	}
 
+	public async getUsers(): Promise<IUser[]> {
+		return this.userRepository.getUsers();
+	}
+
 	public async getUserRole(id: string): Promise<UserRoles> {
 		const agency = await this.agencyRepository.getAgencyByUserId(ObjectId<IUser>(id));
 
