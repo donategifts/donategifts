@@ -16,7 +16,7 @@
     "upgradeDeps": "npx ncu -x ejs,webpack,socket.io -u && npx lerna exec --no-bail -- npx ncu -x ejs,webpack,socket.io -u"
   },
   "author": "Stacy Sealky Lee",
-  "license": "ISC",
+  "license": "NPOSL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/donategifts/donategifts.git"
