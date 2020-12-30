@@ -1,7 +1,6 @@
 {
 	"name": "website-api",
 	"version": "1.0.0",
-	"description": "",
 	"private": true,
 	"scripts": {
 		"test": "mocha --timeout 10000 --exit",
@@ -11,10 +10,7 @@
 		"generate:tsoa-routes": "tsoa routes -c tsoa.json",
 		"generate:tsoa-spec": "tsoa spec -c tsoa.json"
 	},
-	"author": "",
 	"dependencies": {
-		"@admin-bro/express": "^3.0.1",
-		"@admin-bro/mongoose": "^1.1.0",
 		"@donategifts/agency": "^1.0.0",
 		"@donategifts/common": "^1.0.0",
 		"@donategifts/contact": "^1.0.0",
