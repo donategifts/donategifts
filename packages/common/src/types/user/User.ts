@@ -1,6 +1,4 @@
-import type { IDonation } from '../donation';
 import type { TypeObjectId } from '../generic';
-import type { IWishCard } from '../wishcard';
 
 export enum UserRoles {
 	Agency = 'agency',
@@ -23,12 +21,11 @@ export interface IUser {
 	verificationHash: string;
 	emailVerified: boolean;
 	password: string;
-	passwordResetToken: string;
-	passwordResetTokenExpires: Date;
+	passwordResetToken?: string;
+	passwordResetTokenExpires?: Date;
 	userRole: UserRoles;
-	wishCards: TypeObjectId<IWishCard>;
-	donationsMade: TypeObjectId<IDonation>;
 	joined: Date;
-	aboutMe: string;
+	aboutMe?: string;
 	loginMode: LoginMode;
+	profileImage?: string;
 }

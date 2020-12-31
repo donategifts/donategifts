@@ -7,11 +7,7 @@ import { DBUser } from './DBUser';
 export class UserRepository {
 	constructor(@inject(DBUser) private dbUser: typeof DBUser) {}
 
-	public async getUsers(): Promise<IUser[]> {
-		return this.dbUser.find().lean().exec();
-	}
-
-	public async getUserByObjectId(id: TypeObjectId<IUser>): Promise<IUser> {
+	public async getUserById(id: TypeObjectId<IUser>): Promise<IUser> {
 		try {
 			return this.dbUser.findOne({ _id: id }).lean().exec();
 		} catch (error) {
@@ -46,9 +42,9 @@ export class UserRepository {
 		}
 	}
 
-	public async createNewUser(params: Omit<IUser, '_id'>): Promise<IUser> {
+	public async createNewUser(params: IUser): Promise<IUser> {
 		try {
-			return this.dbUser.create(params as IUser);
+			return this.dbUser.create(params);
 		} catch (error) {
 			throw new Error(`Failed to create new User: ${error}`);
 		}

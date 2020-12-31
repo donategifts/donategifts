@@ -8,12 +8,11 @@ export interface IAPIUser {
 	verificationHash: string;
 	emailVerified: boolean;
 	password: string;
-	passwordResetToken: string;
-	passwordResetTokenExpires: Date;
+	passwordResetToken?: string;
+	passwordResetTokenExpires?: Date;
 	userRole: UserRoles;
-	wishCards: string;
-	donationsMade: string;
 	joined: Date;
-	aboutMe: string;
+	aboutMe?: string;
 	loginMode: LoginMode;
+	profileImage?: string;
 }
