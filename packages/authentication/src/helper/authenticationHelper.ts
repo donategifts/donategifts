@@ -1,7 +1,7 @@
 import { hash, genSalt } from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
 import * as superagent from 'superagent';
-import logger from '../logger';
+import { logger } from '@donategifts/helper';
 
 async function verifyGoogleToken(
 	token: string,

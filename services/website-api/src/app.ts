@@ -65,22 +65,12 @@ const bootServer = async () => {
 		}),
 	);
 
-	// log all requests
-	app.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
-		logger.info({
-			method: req.method,
-			ip: req.ip,
-			url: req.url,
-		});
-		next();
-	});
-
 	// MIDDLEWARE for extracting user and agency from a session
 	app.use(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 		if (req.session) {
 			const { user } = req.session;
 			if (user) {
-				const result = await UserRepository.getUserByObjectId(user._id);
+				const result = await UserRepository.getUserById(user._id);
 				res.locals.user = result;
 				req.session.user = result;
 				if (user.userRole === 'partner') {
@@ -92,6 +82,17 @@ const bootServer = async () => {
 				}
 			}
 		}
+		next();
+	});
+
+	// log all requests
+	app.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
+		logger.info({
+			method: req.method,
+			ip: req.ip,
+			url: req.url,
+			session: req.session?.user ? { user: req.session.user } : 'guest',
+		});
 		next();
 	});
 

@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@donategifts/agency": "^1.0.0",
+		"@donategifts/authentication": "^1.0.0",
 		"@donategifts/common": "^1.0.0",
 		"@donategifts/contact": "^1.0.0",
 		"@donategifts/db-connection": "^1.0.0",

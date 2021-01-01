@@ -12,9 +12,7 @@ import {
 	Security,
 	Tags,
 } from '@tsoa/runtime';
-import { UserRoles } from '@donategifts/common';
 import { UserService } from '@donategifts/user';
-import { IAPIUser } from './types/IAPIUser';
 
 // TODO: check old routes for params like res, req, and additional query params
 
@@ -25,22 +23,16 @@ export class Users extends Controller {
 		super();
 	}
 
-	@Response('400', 'Bad request')
-	@Get('/get-users')
-	public async getUsers(): Promise<IAPIUser[]> {
-		return this.userService.getUsers();
-	}
-
-	@Response('400', 'Bad request')
-	@Get('/profile')
-	@Security('WEBSITE-BASIC')
-	public async getUserRole(@Request() req: Express.Request): Promise<UserRoles> {
-		if ((req.session as any)?.user) {
-			return this.userService.getUserRole((req.session as any).user._id);
-		}
-
-		throw new Error('No user provided in request object!');
-	}
+	// @Response('400', 'Bad request')
+	// @Get('/profile')
+	// @Security('WEBSITE-BASIC')
+	// public async getUserData(@Request() req: Express.Request): Promise<UserRoles> {
+	// 	if (req.session.user) {
+	// 		return this.userService.getUserProfileData(req.session.user._id);
+	// 	}
+	//
+	// 	throw new Error('No user provided in request object!');
+	// }
 
 	@Response('400', 'Bad request')
 	@Put('/profile')

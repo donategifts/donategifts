@@ -1,12 +1,5 @@
 import { Schema, model, Model, Document } from '@donategifts/db-connection';
-import type {
-	IUser,
-	TypeObjectId,
-	UserRoles,
-	IWishCard,
-	IDonation,
-	LoginMode,
-} from '@donategifts/common';
+import type { IUser, TypeObjectId, UserRoles, LoginMode } from '@donategifts/common';
 
 export interface IDBUser extends Document {
 	_id: TypeObjectId<IUser>;
@@ -16,14 +9,13 @@ export interface IDBUser extends Document {
 	verificationHash: string;
 	emailVerified: boolean;
 	password: string;
-	passwordResetToken: string;
-	passwordResetTokenExpires: Date;
+	passwordResetToken?: string;
+	passwordResetTokenExpires?: Date;
 	userRole: UserRoles;
-	wishCards: TypeObjectId<IWishCard>;
-	donationsMade: TypeObjectId<IDonation>;
 	joined: Date;
-	aboutMe: string;
+	aboutMe?: string;
 	loginMode: LoginMode;
+	profileImage?: string;
 }
 
 const userSchema: Schema = new Schema({
@@ -58,21 +50,12 @@ const userSchema: Schema = new Schema({
 	passwordResetTokenExpires: {
 		type: Date,
 	},
-	userRole: String,
+	userRole: {
+		type: String,
+		enum: ['donor', 'partner', 'admin'],
+	},
 	/* ROLES: Donor, Partner, Admin */
 	/* IF THE USER IS PARTNER OR ADMIN, THEY CAN CREATE WISH CARDS */
-	wishCards: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'WishCard',
-		},
-	],
-	donationsMade: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Donation',
-		},
-	],
 	joined: {
 		type: Date,
 		default: Date.now,
@@ -85,6 +68,9 @@ const userSchema: Schema = new Schema({
 	loginMode: {
 		type: String,
 		required: false,
+	},
+	profileImage: {
+		type: String,
 	},
 });
 
