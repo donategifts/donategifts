@@ -1,11 +1,9 @@
 import axios from 'axios';
+import { ISlackFeedbackMsg } from './types/ISlackFeedbackMsg';
+import { IDonationSlack } from './types/IDonationSlack';
 
-async function sendSlackFeedbackMessage(
-	name: string,
-	email: string,
-	subject: string,
-	message: string,
-): Promise<boolean> {
+async function sendSlackFeedbackMessage(slackEmail: ISlackFeedbackMsg): Promise<boolean> {
+	const { name, email, subject, message } = slackEmail;
 	const slackMessage: {
 		blocks: {
 			type: string;
@@ -87,4 +85,31 @@ async function sendSlackFeedbackMessage(
 	return false;
 }
 
-export { sendSlackFeedbackMessage };
+async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Promise<boolean> {
+	const { service, userDonation, donor, wishCard, amount } = donationInfo;
+	try {
+		await axios({
+			method: 'POST',
+			url: String(process.env.SLACK_INTEGRATION_DONATION),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: JSON.stringify({
+				text: `${process.env.NODE_ENV} New ${service} Donation by ${
+					donor.fName
+				} ${donor.lName.substring(0, 1)} for ${
+					wishCard.childFirstName
+				} ${wishCard.childLastName.substring(0, 1)} details: ${
+					process.env.BASE_URL
+				}/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
+			}),
+		});
+
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
+
+export { sendSlackFeedbackMessage, sendDonationNotificationToSlack };
