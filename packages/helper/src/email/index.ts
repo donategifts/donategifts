@@ -3,6 +3,8 @@ import * as mailGun from 'nodemailer-mailgun-transport';
 import * as path from 'path';
 import * as fs from 'fs';
 import logger from '../logger';
+import { IEmail } from './types/IEmail';
+import { IDonationConfirmationEmail } from './types/IDonationConfirmationEmail';
 
 const template = fs.readFileSync(path.resolve(__dirname, './resources/emailTemplate.html'), {
 	encoding: 'utf-8',
@@ -32,6 +34,44 @@ const templateAttachments = [
 		filename: 'Img1_2x.jpg',
 		path: path.resolve(__dirname, './resources/Img1_2x.jpg'),
 		cid: 'Img1_2x.jpg', // same cid value as in the html img src
+	},
+];
+
+const donationTemplate = fs.readFileSync(
+	path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+	{
+		encoding: 'utf-8',
+	},
+);
+
+const donationTemplateAttachments = [
+	{
+		filename: 'new-donate-gifts-logo-2.png',
+		path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+		cid: 'new-donate-gifts-logo-2.png',
+	},
+	{
+		filename: 'email-gifts-illustration-removebg-preview.png',
+		path: path.resolve(
+			__dirname,
+			'../resources/email/email-gifts-illustration-removebg-preview.png',
+		),
+		cid: 'email-gifts-illustration-removebg-preview.png',
+	},
+	{
+		filename: 'instagram2x.png',
+		path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+		cid: 'instagram2x.png',
+	},
+	{
+		filename: 'mail2x.png',
+		path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+		cid: 'mail2x.png',
+	},
+	{
+		filename: 'website2x.png',
+		path: path.resolve(__dirname, '../resources/email/website2x.png'),
+		cid: 'website2x.png',
 	},
 ];
 
@@ -66,12 +106,10 @@ const getTransport = async () => {
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (
-	from: string | undefined,
-	to: string,
-	subject: string,
-	message: string,
-	attachments = undefined,
+	emailInformation: IEmail,
 ): Promise<{ success: boolean; data?: string | boolean }> => {
+	const { from, to, subject, message, attachments } = emailInformation;
+
 	const transporter = await getTransport();
 
 	if (transporter) {
@@ -118,13 +156,15 @@ const sendVerificationEmail = async (
 		)
 		.replace('%buttonText%', 'Confirm Your Email');
 
-	return sendMail(
-		process.env.DEFAULT_EMAIL,
+	const newEmail: IEmail = {
+		from: process.env.DEFAULT_EMAIL,
 		to,
-		'Donate-gifts.com Email verification',
-		body,
-		(templateAttachments as unknown) as undefined,
-	);
+		subject: 'Donate-gifts.com Email verification',
+		message: body,
+		attachments: templateAttachments,
+	};
+
+	return sendMail(newEmail);
 };
 
 const sendPasswordResetMail = async (
@@ -141,13 +181,14 @@ const sendPasswordResetMail = async (
 		.replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
 		.replace('%buttonText%', 'Reset Password');
 
-	return sendMail(
-		process.env.DEFAULT_EMAIL,
+	const newEmail: IEmail = {
+		from: process.env.DEFAULT_EMAIL,
 		to,
-		'Donate-gifts.com Password Reset',
-		body,
-		(templateAttachments as unknown) as undefined,
-	);
+		subject: 'Donate-gifts.com Password Reset',
+		message: body,
+		attachments: templateAttachments,
+	};
+	return sendMail(newEmail);
 };
 
 const createEmailVerificationHash = (): string => {
@@ -161,4 +202,34 @@ const createEmailVerificationHash = (): string => {
 	return result;
 };
 
-export { sendMail, createEmailVerificationHash, sendVerificationEmail, sendPasswordResetMail };
+const sendDonationConfirmationMail = async (
+	emailInformation: IDonationConfirmationEmail,
+): Promise<{ success: boolean; data?: boolean | string }> => {
+	const { email, firstName, lastName, childName, item, price, agency } = emailInformation;
+	const body = donationTemplate
+		.replace('%firstName%', firstName)
+		.replace(RegExp('%childName%', 'g'), childName)
+		.replace('%fullName%', `${firstName} ${lastName}`)
+		.replace('%item%', item)
+		.replace('%price%', price)
+		.replace('%agency%', agency)
+		// Jan 1st, 2020 <- date formatting
+		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
+
+	const newEmail: IEmail = {
+		from: process.env.DEFAULT_EMAIL,
+		to: email,
+		subject: 'Donate-gifts.com Donation Receipt',
+		message: body,
+		attachments: donationTemplateAttachments,
+	};
+	return sendMail(newEmail);
+};
+
+export {
+	sendMail,
+	createEmailVerificationHash,
+	sendVerificationEmail,
+	sendPasswordResetMail,
+	sendDonationConfirmationMail,
+};
