@@ -30,7 +30,7 @@
     "@log4js-node/logstashudp": "^1.2.1",
     "autoprefixer": "^10.0.4",
     "aws-sdk": "^2.792.0",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bull": "^3.18.1",
