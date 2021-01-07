@@ -15,7 +15,7 @@ on:
       - reopened
       - ready_for_review
     branches:
-      - master
+      - v2
 
 env:
   NODE_VERSION: '15'
