@@ -7,6 +7,7 @@
 		"build": "lerna run build --no-private",
 		"build:packages": "lerna run build --concurrency 3 --scope={$(bash ./scripts/get-package-names.sh ./packages)}",
 		"build:services": "lerna run build --concurrency 1 --scope={$(bash ./scripts/get-package-names.sh ./services)}",
+		"build:service": "lerna run build --scope website-api",
 		"clean": "lerna run clean && gulp clean",
 		"dev": "nodemon",
 		"lint": "eslint --cache --fix --ext .js,.ts --ignore-path .eslintignore packages/",

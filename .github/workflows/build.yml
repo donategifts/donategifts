@@ -157,5 +157,5 @@ jobs:
         with:
           changed-files: ${{ needs.prebuild.outputs.services_files }}
           tsBuildInfoFile: 'buildcache.tsbuildinfo'
-      - name: Build services
-        run: npm run build:services
+      - name: Build service
+        run: npm run build:service
