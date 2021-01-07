@@ -2,6 +2,7 @@ import { createTestAccount, createTransport, getTestMessageUrl } from 'nodemaile
 import * as mailGun from 'nodemailer-mailgun-transport';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as moment from 'moment';
 import logger from '../logger';
 import { IEmail } from './types/IEmail';
 import { IDonationConfirmationEmail } from './types/IDonationConfirmationEmail';
@@ -157,7 +158,7 @@ const sendVerificationEmail = async (
 		.replace('%buttonText%', 'Confirm Your Email');
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to,
 		subject: 'Donate-gifts.com Email verification',
 		message: body,
@@ -182,7 +183,7 @@ const sendPasswordResetMail = async (
 		.replace('%buttonText%', 'Reset Password');
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to,
 		subject: 'Donate-gifts.com Password Reset',
 		message: body,
@@ -217,7 +218,7 @@ const sendDonationConfirmationMail = async (
 		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to: email,
 		subject: 'Donate-gifts.com Donation Receipt',
 		message: body,
