@@ -158,7 +158,7 @@ const sendVerificationEmail = async (
 		.replace('%buttonText%', 'Confirm Your Email');
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to,
 		subject: 'Donate-gifts.com Email verification',
 		message: body,
@@ -183,7 +183,7 @@ const sendPasswordResetMail = async (
 		.replace('%buttonText%', 'Reset Password');
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to,
 		subject: 'Donate-gifts.com Password Reset',
 		message: body,
@@ -218,7 +218,7 @@ const sendDonationConfirmationMail = async (
 		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 	const newEmail: IEmail = {
-		from: process.env.DEFAULT_EMAIL,
+		from: process.env.DEFAULT_EMAIL!,
 		to: email,
 		subject: 'Donate-gifts.com Donation Receipt',
 		message: body,

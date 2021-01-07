@@ -1,5 +1,5 @@
 export interface IEmail {
-	from: string | undefined;
+	from: string;
 	to: string;
 	subject: string;
 	message: string;
