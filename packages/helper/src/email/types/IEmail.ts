@@ -3,7 +3,7 @@ export interface IEmail {
 	to: string;
 	subject: string;
 	message: string;
-	attachments?: {
+	attachments: {
 		filename: string;
 		path: string;
 		cid: string;
