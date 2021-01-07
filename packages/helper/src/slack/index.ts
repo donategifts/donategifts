@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ISlackFeedbackMsg } from './types/ISlackFeedbackMsg';
 import { IDonationSlack } from './types/IDonationSlack';
+import logger from '../logger';
 
 async function sendSlackFeedbackMessage(slackEmail: ISlackFeedbackMsg): Promise<boolean> {
 	const { name, email, subject, message } = slackEmail;
@@ -107,7 +108,7 @@ async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Pr
 
 		return true;
 	} catch (error) {
-		log.error(error);
+		logger.error(error);
 		return false;
 	}
 }

@@ -3,5 +3,9 @@ export interface IEmail {
 	to: string;
 	subject: string;
 	message: string;
-	attachments?: unknown;
+	attachments?: {
+		filename: string;
+		path: string;
+		cid: string;
+	}[];
 }
