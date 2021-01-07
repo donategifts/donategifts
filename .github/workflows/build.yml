@@ -1,0 +1,161 @@
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Run build pipeline
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - master
+  pull_request:
+    types:
+      - assigned
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - v2
+
+env:
+  NODE_VERSION: '15'
+
+jobs:
+  prebuild:
+    if: github.event.pull_request.draft == false
+    name: build core packages
+    runs-on: ubuntu-latest
+
+    outputs:
+      packages: ${{ steps.filter.outputs.packages }}
+      packages_files: ${{ steps.filter.outputs.packages_files }}
+      services: ${{ steps.filter.outputs.services }}
+      services_files: ${{ steps.filter.outputs.services_files }}
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: 'json'
+          filters: |
+            packages:
+              - 'packages/**'
+            services:
+              - 'services/**'
+      - name: Restore mtime for git checkout
+        run: sudo apt install git-restore-mtime && sudo curl -o /usr/lib/git-core/git-restore-mtime https://raw.githubusercontent.com/MestreLion/git-tools/v2020.09/git-restore-mtime && git restore-mtime
+      - name: Setup cache for build and dependencies
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            */*/dist
+            */*/buildcache.tsbuildinfo
+            ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-
+      - name: Install Node.js
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Setup node config
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm config set unsafe-perm true
+      - name: Install project dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --no-audit --prefer-offline && npm run postinstall
+        env:
+          HUSKY_SKIP_INSTALL: true
+      - name: Remove buildcache infos
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: hokify/remove-buildcache-action@v1
+        with:
+          changed-files: ${{ steps.filter.outputs.packages_files }}
+          tsBuildInfoFile: 'buildcache.tsbuildinfo'
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm run build
+  build-packages:
+    name: Build packages
+    runs-on: ubuntu-latest
+    needs: prebuild
+    if: ${{ needs.prebuild.outputs.packages == 'true' }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Restore mtime for git checkout
+        run: sudo apt install git-restore-mtime && sudo curl -o /usr/lib/git-core/git-restore-mtime https://raw.githubusercontent.com/MestreLion/git-tools/v2020.09/git-restore-mtime && git restore-mtime
+      - name: Setup cache for build and dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            */*/dist
+            */*/buildcache.tsbuildinfo
+            ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Remove buildcache infos
+        uses: hokify/remove-buildcache-action@v1
+        with:
+          changed-files: ${{ needs.prebuild.outputs.packages_files }}
+          tsBuildInfoFile: 'buildcache.tsbuildinfo'
+      - name: Build packages
+        run: npm run build:packages
+  build-services:
+    name: Build services
+    runs-on: ubuntu-latest
+    needs: prebuild
+    if: ${{ needs.prebuild.outputs.services == 'true' }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Restore mtime for git checkout
+        run: sudo apt install git-restore-mtime && sudo curl -o /usr/lib/git-core/git-restore-mtime https://raw.githubusercontent.com/MestreLion/git-tools/v2020.09/git-restore-mtime && git restore-mtime
+      - name: Setup cache for build and dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            */*/dist
+            */*/buildcache.tsbuildinfo
+            ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-${{ hashFiles('packages/*/src/**/*') }}-
+            ${{ runner.os }}-${{ hashFiles('cache_root_version') }}-node-build-
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Remove buildcache infos
+        uses: hokify/remove-buildcache-action@v1
+        with:
+          changed-files: ${{ needs.prebuild.outputs.services_files }}
+          tsBuildInfoFile: 'buildcache.tsbuildinfo'
+      - name: Build service
+        run: npm run build:service
