@@ -3,7 +3,6 @@ import { Controller, Post, Route, Tags, Response, Body } from '@tsoa/runtime';
 import { IUser, ObjectId } from '@donategifts/common';
 // import * as express from 'express';
 import { IAPIUser } from '../user/types/IAPIUser';
-import { IAPISignupResponse } from './types/IAPISignupResponse';
 
 @Route('/auth')
 @Tags('authentication')
@@ -16,7 +15,7 @@ export class AuthenticationController extends Controller {
 	@Post('/signup')
 	public async signup(
 		@Body() body: { userData: IAPIUser; captchaToken: string },
-	): Promise<IAPISignupResponse> {
+	): Promise<IAPIUser> {
 		return this.authenticationService.signupUser(
 			{
 				...body.userData,
@@ -40,9 +39,7 @@ export class AuthenticationController extends Controller {
 
 	@Response('400', 'Bad request')
 	@Post('/login')
-	public async login(
-		@Body() body: { email: string; password: string },
-	): Promise<IAPISignupResponse> {
+	public async login(@Body() body: { email: string; password: string }): Promise<IAPIUser> {
 		return this.authenticationService.login(body.email, body.password);
 	}
 

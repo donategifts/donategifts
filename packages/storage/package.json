@@ -1,6 +1,6 @@
 {
-	"name": "@donategifts/user",
-	"description": "donate gifts user resources",
+	"name": "@donategifts/storage",
+	"description": "donate gifts storage resources",
 	"version": "1.0.0",
 	"publishConfig": {
 		"access": "restricted"
@@ -17,14 +17,11 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.0",
-		"@donategifts/db-connection": "^1.0.0",
-		"@donategifts/agency": "^1.0.0",
-		"@donategifts/wishcard": "^1.0.0",
 		"@donategifts/helper": "^1.0.0",
-		"moment": "^2.29.1",
-		"uuid": "^8.3.2",
-		"inversify": "^5.0.5"
+    "aws-sdk": "^2.824.0",
+		"inversify": "^5.0.5",
+		"sharp": "^0.27.0",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {}
 }

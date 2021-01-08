@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { logger } from '@donategifts/helper';
 import { injectable } from 'inversify';
+import { DBConnectionError } from './helper/DBConnectionError';
 
 @injectable()
 export class MongooseConnection {
@@ -8,7 +9,7 @@ export class MongooseConnection {
 		const isInTest = process.env.NODE_ENV === 'test' && !process.env.ALLOW_MONGOOSE_TESTING;
 
 		if (isInTest) {
-			throw new Error(
+			throw new DBConnectionError(
 				'MongooseConnection.connect has been called during a test, you should mock this call!',
 			);
 		}
@@ -60,7 +61,7 @@ export class MongooseConnection {
 				useFindAndModify: false,
 			});
 		} catch (error) {
-			throw new Error(`Something went horrible wrong with Mongoose: ${error}`);
+			throw new DBConnectionError(`Something went horrible wrong with Mongoose: ${error}`);
 		}
 	}
 }

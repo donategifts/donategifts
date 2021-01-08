@@ -35,11 +35,7 @@ export class UserRepository {
 	}
 
 	public async getUserByVerificationHash(verificationHash: string): Promise<IUser> {
-		try {
-			return this.dbUser.findOne({ verificationHash }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get DB user: ${error}`);
-		}
+		return this.dbUser.findOne({ verificationHash }).lean().exec();
 	}
 
 	public async createNewUser(params: IUser): Promise<IUser> {
@@ -64,5 +60,30 @@ export class UserRepository {
 		} catch (error) {
 			throw new Error(`Failed to set email verification: ${error}`);
 		}
+	}
+
+	public async setPasswordResetToken(
+		email: string,
+		passwordResetToken: string,
+		passwordResetTokenExpires: Date,
+	): Promise<void> {
+		await this.dbUser
+			.updateOne({ email }, { $set: { passwordResetToken, passwordResetTokenExpires } })
+			.exec();
+	}
+
+	public async updateUserPassword(hashPassword: string, token: string): Promise<void> {
+		await this.dbUser
+			.updateOne(
+				{ passwordResetToken: token },
+				{
+					$set: {
+						password: hashPassword,
+						passwordResetToken: undefined,
+						passwordResetTokenExpires: undefined,
+					},
+				},
+			)
+			.exec();
 	}
 }

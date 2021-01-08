@@ -3,122 +3,82 @@ import {
 	Get,
 	Post,
 	Put,
-	Request,
 	Response,
 	Route,
 	Body,
-	Path,
 	Query,
 	Security,
 	Tags,
 } from '@tsoa/runtime';
 import { UserService } from '@donategifts/user';
+import { StorageService } from '@donategifts/storage';
+import { IUser, ObjectId } from '@donategifts/common';
+import { hashPassword } from '@donategifts/authentication';
+import { IAPIUser, IUserUpdateParams } from './types/IAPIUser';
 
 // TODO: check old routes for params like res, req, and additional query params
 
 @Route('/user')
 @Tags('user')
-export class Users extends Controller {
-	constructor(private userService: typeof UserService = UserService) {
+export class User extends Controller {
+	constructor(
+		private userService: typeof UserService = UserService,
+		private storageService: typeof StorageService = StorageService,
+	) {
 		super();
 	}
-
-	// @Response('400', 'Bad request')
-	// @Get('/profile')
-	// @Security('WEBSITE-BASIC')
-	// public async getUserData(@Request() req: Express.Request): Promise<UserRoles> {
-	// 	if (req.session.user) {
-	// 		return this.userService.getUserProfileData(req.session.user._id);
-	// 	}
-	//
-	// 	throw new Error('No user provided in request object!');
-	// }
 
 	@Response('400', 'Bad request')
 	@Put('/profile')
 	@Security('WEBSITE-BASIC')
-	public async updateProfile(@Request() _req: any, @Body() _body: any): Promise<void> {
-		// TODO: implementation needed
+	public async updateProfile(
+		@Body() body: { userId: string; updateData: IUserUpdateParams },
+	): Promise<IAPIUser> {
+		const { userId, updateData } = body;
+
+		let imageUrl = '';
+
+		if (updateData.profileImage) {
+			imageUrl = await this.storageService.upload(updateData.profileImage);
+		}
+
+		const data = {
+			...updateData,
+			profileImage: imageUrl,
+		};
+
+		return this.userService.updateUserData(ObjectId<IUser>(userId), data);
 	}
 
 	@Response('400', 'Bad request')
-	@Post('/agency')
-	public async createAgency(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
+	@Get('/verify')
+	public async verify(@Query() hash: string): Promise<IAPIUser> {
+		return this.userService.verifyUserEmail(hash);
 	}
 
 	@Response('400', 'Bad request')
-	@Get('/agency/wish-card')
-	@Security('WEBSITE-BASIC')
-	public async getAgencyWishCards(@Request() _req: any): Promise<void> {
-		// TODO: implementation needed
+	@Post('/password/request')
+	public async requestPasswordReset(@Body() body: { email: string }): Promise<void> {
+		await this.userService.requestPasswordReset(body.email);
 	}
 
 	@Response('400', 'Bad request')
-	@Post('/sign-up')
-	public async signUpUser(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Post('/google')
-	public async googleLogin(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Post('/facebook')
-	public async facebookLogin(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Post('/login')
-	public async login(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Get('/logout')
-	@Security('WEBSITE-BASIC')
-	public async logout(@Request() _req: any, @Query() _query: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Get('/verify/{hash}')
-	public async verify(@Path('hash') _hash: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Get('/choose')
-	public async choose(@Query() _query: any): Promise<void> {
-		// TODO: implementation needed
+	@Get('/password/reset')
+	public async verifyValidPasswordResetToken(
+		@Query() token: string,
+	): Promise<{ success: boolean; message?: string }> {
+		return this.userService.verifyValidPasswordResetToken(token);
 	}
 
 	@Response('400', 'Bad request')
 	@Post('/password/reset')
-	public async resetPassword(@Body() _body: any): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Get('/password/reset/{token}')
-	public async getPasswordResetToken(
-		@Path('token') _token: any,
-		@Query() _query: any,
-	): Promise<void> {
-		// TODO: implementation needed
-	}
-
-	@Response('400', 'Bad request')
-	@Post('/password/reset/{token}')
 	public async confirmPasswordReset(
-		@Request() _req: any,
-		@Path('token') _token: any,
-		@Body() _body: any,
+		@Body() body: { password: string; token: string },
 	): Promise<void> {
-		// TODO: implementation needed
+		const { password, token } = body;
+
+		const hash = await hashPassword(password);
+
+		await this.userService.confirmPasswordReset(hash, token);
 	}
 }
