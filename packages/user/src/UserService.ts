@@ -51,7 +51,7 @@ export class UserService {
 		}
 
 		if (!user.emailVerified) {
-			await this.userRepository.setUserEmailVerification(user._id, true);
+			return this.userRepository.setUserEmailVerification(user._id, true);
 		}
 
 		return user;
