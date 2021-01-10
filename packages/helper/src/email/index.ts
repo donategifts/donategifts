@@ -39,7 +39,7 @@ const templateAttachments = [
 ];
 
 const donationTemplate = fs.readFileSync(
-	path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+	path.resolve(__dirname, './resources/donorDonationReceipt.html'),
 	{
 		encoding: 'utf-8',
 	},
@@ -48,30 +48,30 @@ const donationTemplate = fs.readFileSync(
 const donationTemplateAttachments = [
 	{
 		filename: 'new-donate-gifts-logo-2.png',
-		path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+		path: path.resolve(__dirname, './resources/new-donate-gifts-logo-2.png'),
 		cid: 'new-donate-gifts-logo-2.png',
 	},
 	{
 		filename: 'email-gifts-illustration-removebg-preview.png',
 		path: path.resolve(
 			__dirname,
-			'../resources/email/email-gifts-illustration-removebg-preview.png',
+			'./ressources/email/email-gifts-illustration-removebg-preview.png',
 		),
 		cid: 'email-gifts-illustration-removebg-preview.png',
 	},
 	{
 		filename: 'instagram2x.png',
-		path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+		path: path.resolve(__dirname, './ressources/instagram2x.png'),
 		cid: 'instagram2x.png',
 	},
 	{
 		filename: 'mail2x.png',
-		path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+		path: path.resolve(__dirname, './ressources/mail2x.png'),
 		cid: 'mail2x.png',
 	},
 	{
 		filename: 'website2x.png',
-		path: path.resolve(__dirname, '../resources/email/website2x.png'),
+		path: path.resolve(__dirname, './ressources/website2x.png'),
 		cid: 'website2x.png',
 	},
 ];
