@@ -1,7 +1,7 @@
 // IMPORT USER MODEL
 import { inject, injectable } from 'inversify';
 import { IUser, TypeObjectId } from '@donategifts/common';
-import { IDBUser, DBUser } from './DBUser';
+import { DBUser } from './DBUser';
 
 @injectable()
 export class UserRepository {

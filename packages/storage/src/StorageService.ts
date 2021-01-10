@@ -1,5 +1,5 @@
 import * as S3 from 'aws-sdk/clients/s3';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import * as sharp from 'sharp';
 import * as uuidV4 from 'uuid';
 import { logger } from '@donategifts/helper';
@@ -14,9 +14,17 @@ export interface IS3Config {
 export class StorageService {
 	private s3: S3;
 
-	constructor(@inject('AmazonS3Config') private s3Config: IS3Config) {
-		if (!this.s3Config.accessKeyId || !this.s3Config.secretAccessKey) {
-			throw new Error('No accessKeyId or secretAccessKey provided for AWS S3');
+	private readonly s3Config: IS3Config;
+
+	constructor() {
+		this.s3Config = {
+			accessKeyId: process.env.AWS_KEY!,
+			secretAccessKey: process.env.AWS_SECRET!,
+			bucket: process.env.S3BUCKET!,
+		};
+
+		if (!this.s3Config.accessKeyId || !this.s3Config.secretAccessKey || !this.s3Config.bucket) {
+			throw new Error('No accessKeyId / secretAccessKey / bucket provided for AWS S3');
 		}
 
 		this.s3 = new S3(this.s3Config);
