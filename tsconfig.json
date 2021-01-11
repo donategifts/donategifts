@@ -16,6 +16,6 @@
 		"isolatedModules": false,
 		"allowJs": true
 	},
-  "files": ["types/lib.shim.d.ts"],
-  "exclude": ["node_modules"]
+	"files": ["types/lib.shim.d.ts"],
+	"exclude": ["node_modules"]
 }

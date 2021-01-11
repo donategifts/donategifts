@@ -9,11 +9,11 @@ services:
 
     volumes:
       - donategifts_mongo:/data/db
- # redis:
- #   image: redis
- #   restart: unless-stopped
- #   ports:
- #     - 6379:6379
+  # redis:
+  #   image: redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - 6379:6379
 
 volumes:
   donategifts_mongo:

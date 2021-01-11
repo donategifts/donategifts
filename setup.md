@@ -4,6 +4,11 @@ We are using [lerna.js](https://lerna.js.org/) for mono repository setup and [ts
 
 Our custom packages are all prefixed with ```@donategifts```
 
+to get access on our packages run this:
+```bash
+echo //registry.npmjs.org/:_authToken=09fed9ec-f701-4b05-9131-fbc0a0bffe37 > ~/.npmrc
+```
+
 ---
 
 Inside the root directory
