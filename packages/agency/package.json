@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/agency",
 	"description": "donate gifts agency resources",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -17,9 +17,9 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.1",
-		"@donategifts/db-connection": "^1.0.1",
-		"@donategifts/wishcard": "^1.0.1",
+		"@donategifts/common": "^1.0.2",
+		"@donategifts/db-connection": "^1.0.2",
+		"@donategifts/wishcard": "^1.0.2",
 		"inversify": "^5.0.5"
 	}
 }

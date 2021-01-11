@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/helper",
 	"description": "donate gifts helper resources",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -18,7 +18,7 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.1",
+		"@donategifts/common": "^1.0.2",
 		"axios": "^0.21.1",
 		"express": "^4.17.1",
 		"log4js": "^6.3.0",
