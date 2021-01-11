@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/storage",
 	"description": "donate gifts storage resources",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -17,11 +17,10 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/helper": "^1.0.0",
-    "aws-sdk": "^2.824.0",
+		"@donategifts/helper": "^1.0.1",
+		"aws-sdk": "^2.824.0",
 		"inversify": "^5.0.5",
 		"sharp": "^0.27.0",
 		"uuid": "^8.3.2"
-	},
-	"devDependencies": {}
+	}
 }

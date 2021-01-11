@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/common",
 	"description": "donate gifts common resources",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -15,7 +15,5 @@
 		"test": "mocha",
 		"prepublishOnly": "npm run build"
 	},
-	"types": "dist/index.d.ts",
-	"dependencies": {},
-	"devDependencies": {}
+	"types": "dist/index.d.ts"
 }

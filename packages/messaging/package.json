@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/messaging",
 	"description": "donate gifts messaging resources",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -17,9 +17,8 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.0",
-		"@donategifts/db-connection": "^1.0.0",
+		"@donategifts/common": "^1.0.1",
+		"@donategifts/db-connection": "^1.0.1",
 		"inversify": "^5.0.5"
-	},
-	"devDependencies": {}
+	}
 }
