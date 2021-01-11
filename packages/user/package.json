@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/user",
 	"description": "donate gifts user resources",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -17,12 +17,13 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.0",
-		"@donategifts/db-connection": "^1.0.0",
-		"@donategifts/agency": "^1.0.0",
-		"@donategifts/wishcard": "^1.0.0",
-		"@donategifts/helper": "^1.0.0",
-		"inversify": "^5.0.5"
-	},
-	"devDependencies": {}
+		"@donategifts/agency": "^1.0.2",
+		"@donategifts/common": "^1.0.2",
+		"@donategifts/db-connection": "^1.0.2",
+		"@donategifts/helper": "^1.0.2",
+		"@donategifts/wishcard": "^1.0.2",
+		"inversify": "^5.0.5",
+		"moment": "^2.29.1",
+		"uuid": "^8.3.2"
+	}
 }

@@ -1,7 +1,7 @@
 {
 	"name": "@donategifts/donation",
 	"description": "donate gifts donation resources",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"publishConfig": {
 		"access": "restricted"
 	},
@@ -17,11 +17,10 @@
 	},
 	"types": "dist/index.d.ts",
 	"dependencies": {
-		"@donategifts/common": "^1.0.0",
-		"@donategifts/db-connection": "^1.0.0",
+		"@donategifts/common": "^1.0.2",
+		"@donategifts/db-connection": "^1.0.2",
 		"axios": "^0.21.1",
 		"cheerio": "^1.0.0-rc.5",
 		"inversify": "^5.0.5"
-	},
-	"devDependencies": {}
+	}
 }
