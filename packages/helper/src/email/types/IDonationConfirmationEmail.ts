@@ -4,6 +4,6 @@ export interface IDonationConfirmationEmail {
 	lastName: string;
 	childName: string;
 	item: string;
-	price: string;
+	price: number;
 	agency: string;
 }

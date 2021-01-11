@@ -3,5 +3,5 @@ export interface IStripeIntent {
 	userId: string;
 	email: string;
 	agencyName: string;
-	userDonation: number | null;
+	userDonation?: number;
 }

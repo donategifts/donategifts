@@ -38,5 +38,5 @@ export interface IWishCard {
 	approvedByAdmin: boolean;
 	messages: TypeObjectId<IMessage>[];
 	status: WishCardStatus;
-	wishCardTo: TypeObjectId<IAgency>;
+	belongsTo: TypeObjectId<IAgency>;
 }

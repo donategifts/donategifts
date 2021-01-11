@@ -1,11 +1,8 @@
-import { TypeObjectId } from '../generic';
-import { IUser } from '../user';
-
 export interface IDonationHook {
 	service: string;
-	userId: TypeObjectId<IUser>;
+	userId: string;
 	wishCardId: string;
 	amount: number;
-	userDonation: string;
+	userDonation: number | null;
 	agencyName: string;
 }
