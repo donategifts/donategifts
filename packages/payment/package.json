@@ -1,0 +1,35 @@
+{
+  "name": "@donategifts/payment",
+  "version": "1.0.0",
+  "description": "donate gifts payment resources",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "watch": "tsc --watch",
+    "test": "mocha",
+    "prepublishOnly": "npm run build"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@donategifts/common": "^1.0.0",
+    "@donategifts/donation": "^1.0.0",
+    "@donategifts/helper": "^1.0.0",
+    "@donategifts/user": "^1.0.0",
+    "@donategifts/wishcard": "^1.0.0",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.0.2",
+    "inversify": "^5.0.5",
+    "moment": "^2.29.1",
+    "paypal-rest-sdk": "^1.8.1",
+    "stripe": "^8.129.0"
+  },
+  "devDependencies": {
+    "@types/paypal-rest-sdk": "^1.7.5"
+  }
+}
