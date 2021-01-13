@@ -22,7 +22,7 @@
 		"@donategifts/helper": "^1.0.2",
 		"@donategifts/user": "^1.0.2",
 		"bcrypt": "^5.0.0",
-		"google-auth-library": "^6.1.3",
+		"google-auth-library": "^6.1.4",
 		"inversify": "^5.0.5",
 		"superagent": "^6.1.0"
 	}
