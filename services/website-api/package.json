@@ -19,6 +19,7 @@
 		"@donategifts/donation": "^1.0.2",
 		"@donategifts/helper": "^1.0.2",
 		"@donategifts/messaging": "^1.0.2",
+		"@donategifts/payment": "^1.0.0",
 		"@donategifts/storage": "^1.0.2",
 		"@donategifts/user": "^1.0.2",
 		"@donategifts/wishcard": "^1.0.2",
