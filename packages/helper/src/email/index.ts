@@ -3,7 +3,7 @@ import * as mailGun from 'nodemailer-mailgun-transport';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as moment from 'moment';
-import logger from '../logger';
+import { logger } from '../logger';
 import { IEmail } from './types/IEmail';
 import { IDonationConfirmationEmail } from './types/IDonationConfirmationEmail';
 

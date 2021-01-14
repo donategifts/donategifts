@@ -145,7 +145,7 @@ module.exports = {
 	},
 	// order important, keep as is
 	extends: [
-		'airbnb-typescript/base',
+		'airbnb-typescript',
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',

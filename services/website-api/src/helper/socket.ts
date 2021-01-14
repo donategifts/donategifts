@@ -2,7 +2,9 @@
 import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
-import logger from '../logger';
+import { logger } from '@donategifts/helper';
+
+const socket = require('socket.io');
 
 const connectSocket = (app): any => {
 	let server: http.Server | https.Server;
@@ -17,8 +19,7 @@ const connectSocket = (app): any => {
 		server = https.createServer(options, app);
 	}
 
-	// eslint-disable-next-line global-require
-	const io = require('socket.io')(server, {
+	const io = socket(server, {
 		handlePreflightRequest: (_, req, res) => {
 			const headers = {
 				'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -31,7 +32,7 @@ const connectSocket = (app): any => {
 	});
 
 	server.listen(3010, () => {
-		logger.info(`socket listening on: 3010`);
+		logger.info(`app and socket listening on: 3010`);
 	});
 
 	return io;

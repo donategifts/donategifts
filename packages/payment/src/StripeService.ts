@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { WishCardRepository } from '@donategifts/wishcard';
-import { UserRepository } from '@donategifts/user';
+import { UserRepository } from '@donategifts/user-data';
 import { logger } from '@donategifts/helper';
 import * as mongoSanitize from 'express-mongo-sanitize';
 import Stripe from 'stripe';

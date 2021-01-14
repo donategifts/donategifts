@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ISlackFeedbackMsg } from './types/ISlackFeedbackMsg';
 import { IDonationSlack } from './types/IDonationSlack';
-import logger from '../logger';
+import { logger } from '../logger';
 
 async function sendSlackFeedbackMessage(slackEmail: ISlackFeedbackMsg): Promise<boolean> {
 	const { name, email, subject, message } = slackEmail;

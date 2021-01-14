@@ -1,17 +1,17 @@
-import { IUser, IWishCard, ObjectId, TypeObjectId, UserRoles } from '@donategifts/common';
-import { AgencyRepository } from '@donategifts/agency';
-import { WishCardRepository } from '@donategifts/wishcard';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import * as uuidV4 from 'uuid';
 import * as moment from 'moment';
+import { IUser, IWishCard, ObjectId, TypeObjectId, UserRoles } from '@donategifts/common';
+import { AgencyRepository } from '@donategifts/agency-data';
+import { WishCardRepository } from '@donategifts/wishcard';
 import { sendPasswordResetMail } from '@donategifts/helper';
-import { UserRepository } from './database/UserRepository';
+import { UserRepository } from '@donategifts/user-data';
 import { UserError } from './helper/UserError';
 
 @injectable()
 export class UserService {
 	constructor(
-		@inject(UserRepository) private userRepository: UserRepository,
+		private userRepository: typeof UserRepository = UserRepository,
 		private agencyRepository: typeof AgencyRepository = AgencyRepository,
 		private wishCardRepository: typeof WishCardRepository = WishCardRepository,
 	) {}

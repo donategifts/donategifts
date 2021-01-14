@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { TypeObjectId, IUser, IAgency } from '@donategifts/common';
+import { TypeObjectId, IUser, IAgency, IWishCard } from '@donategifts/common';
 import { DBAgency } from './DBAgency';
 
 // TODO: needs typing
@@ -19,9 +19,12 @@ export class AgencyRepository {
 		await this.dbAgency.create(agencyParams);
 	}
 
-	async pushNewWishCardToAgency(id: TypeObjectId<IAgency>, wishCard): Promise<IAgency> {
+	async pushNewWishCardToAgency(
+		id: TypeObjectId<IAgency>,
+		wishCardId: TypeObjectId<IWishCard>,
+	): Promise<IAgency> {
 		return this.dbAgency
-			.updateOne({ _id: id }, { $push: { wishCards: wishCard } }, { new: true })
+			.updateOne({ _id: id }, { $push: { wishCards: wishCardId } }, { new: true })
 			.exec();
 	}
 }

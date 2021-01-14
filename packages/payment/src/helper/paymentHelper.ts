@@ -1,6 +1,6 @@
 import { DonationRepository } from '@donategifts/donation';
 import { WishCardRepository } from '@donategifts/wishcard';
-import { UserRepository } from '@donategifts/user';
+import { UserRepository } from '@donategifts/user-data';
 import {
 	sendDonationNotificationToSlack,
 	sendDonationConfirmationMail,

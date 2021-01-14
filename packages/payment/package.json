@@ -20,7 +20,7 @@
     "@donategifts/common": "^1.0.0",
     "@donategifts/donation": "^1.0.0",
     "@donategifts/helper": "^1.0.0",
-    "@donategifts/user": "^1.0.0",
+    "@donategifts/user-data": "^1.0.0",
     "@donategifts/wishcard": "^1.0.0",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.2",

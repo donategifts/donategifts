@@ -1,17 +1,7 @@
-/*
- * Author: Stacy Sealky Lee
- * FileName: app.js
- * FileDescription:
- * The set up codes are in an order,
- * so some functions won't work if you switch the order of what gets loaded in app.js first.
- *
- */
 import 'reflect-metadata';
 import { config } from 'dotenv';
 import * as cors from 'cors';
 import * as path from 'path';
-
-// EXPRESS SET UP
 import * as express from 'express';
 import * as basicAuth from 'express-basic-auth';
 import * as bodyParser from 'body-parser';
@@ -19,12 +9,10 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as mongoSanitize from 'express-mongo-sanitize';
 import * as connectMongo from 'connect-mongo';
-
-// custom
-import { connectSocket, logger } from '@donategifts/helper';
-import { UserRepository } from '@donategifts/user';
-import { AgencyRepository } from '@donategifts/agency';
+import { logger } from '@donategifts/helper';
 import { MongooseConnection } from '@donategifts/db-connection';
+import { ExpressHelpers } from '@donategifts/webservice-helper';
+import { connectSocket } from './helper/socket';
 
 // load from config if not production, otherwise use from docker
 if (process.env.NODE_ENV !== 'production') {
@@ -67,47 +55,9 @@ const bootServer = async () => {
 		}),
 	);
 
-	// MIDDLEWARE for extracting user and agency from a session
-	app.use(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-		if (req.session) {
-			const { user } = req.session;
-			if (user) {
-				const result = await UserRepository.getUserById(user._id);
-				res.locals.user = result;
-				req.session.user = result;
-				if (user.userRole === 'partner') {
-					const agency = await AgencyRepository.getAgencyByUserId(user._id);
-					if (agency !== null) {
-						res.locals.agency = agency;
-						req.session.agency = agency;
-					}
-				}
-			}
-		}
-		next();
-	});
-
-	// log all requests
-	app.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
-		logger.info({
-			method: req.method,
-			ip: req.ip,
-			url: req.url,
-			session: req.session?.user ? { user: req.session.user } : 'guest',
-		});
-		next();
-	});
-
-	// healthcheck route
-	app.use('/website-api/healthcheck', (_req: express.Request, res: express.Response) => {
-		res
-			.status(200)
-			.send(
-				`${process.env.npm_package_name} (${
-					process.env.npm_package_version
-				}) up and running - ${Date.now()}`,
-			);
-	});
+	app.use(ExpressHelpers.middleWare.extractSessionUser);
+	app.use(ExpressHelpers.middleWare.requestLogger);
+	app.use(ExpressHelpers.middleWare.healthCheck());
 
 	// PARSERS SET UP
 	app.use(bodyParser.json());
@@ -195,6 +145,11 @@ const bootServer = async () => {
 bootServer().catch((err) => {
 	logger.error(err);
 	process.exit(1);
+});
+
+// catch unhandledRejections here and log them
+process.on('unhandledRejection', (error, promise) => {
+	logger.error('Unhandled rejection in', error, error && (error as any).stack, promise);
 });
 
 export { app };

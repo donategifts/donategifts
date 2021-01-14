@@ -1,7 +1,7 @@
-import { inject, injectable } from 'inversify';
-import { AgencyRepository } from './database/AgencyRepository';
+import { injectable } from 'inversify';
+import { AgencyRepository } from '@donategifts/agency-data';
 
 @injectable()
 export class AgencyService {
-	constructor(@inject(AgencyRepository) private agencyRepository: AgencyRepository) {}
+	constructor(private agencyRepository: typeof AgencyRepository = AgencyRepository) {}
 }
