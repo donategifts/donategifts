@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { UserRepository } from '@donategifts/user-data';
 import { AgencyRepository } from '@donategifts/agency-data';
 
-const extractSessionUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const extractSessionUser = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
 	if (req.session) {
 		const { user } = req.session;
 		if (user) {
