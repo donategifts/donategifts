@@ -9,7 +9,7 @@ module.exports = {
 		io: true,
 	},
 	rules: {
-		'prettier/prettier': ['error'],
+		'prettier/prettier': ['error', { endOfLine: 'auto' }],
 		'max-len': 0,
 		// Enforce import order
 		'import/order': 'error',
