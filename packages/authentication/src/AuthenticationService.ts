@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { UserRepository } from '@donategifts/user';
+import { UserRepository } from '@donategifts/user-data';
 import { compare } from 'bcrypt';
 import { IUser, LoginMode, UserRoles } from '@donategifts/common';
 import { createEmailVerificationHash, logger, sendVerificationEmail } from '@donategifts/helper';

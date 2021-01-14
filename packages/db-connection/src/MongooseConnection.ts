@@ -5,7 +5,7 @@ import { DBConnectionError } from './helper/DBConnectionError';
 
 @injectable()
 export class MongooseConnection {
-	async connect(): Promise<void> {
+	public async connect(): Promise<void> {
 		const isInTest = process.env.NODE_ENV === 'test' && !process.env.ALLOW_MONGOOSE_TESTING;
 
 		if (isInTest) {
