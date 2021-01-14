@@ -25,7 +25,6 @@ import { connectSocket, logger } from '@donategifts/helper';
 import { UserRepository } from '@donategifts/user';
 import { AgencyRepository } from '@donategifts/agency';
 import { MongooseConnection } from '@donategifts/db-connection';
-import { RegisterRoutes } from './routes/routes';
 
 // load from config if not production, otherwise use from docker
 if (process.env.NODE_ENV !== 'production') {
@@ -39,6 +38,9 @@ if (process.env.NODE_ENV !== 'production') {
 		path: configPath,
 	});
 }
+
+// eslint-disable-next-line import/first
+import { RegisterRoutes } from './routes/routes';
 
 const app = express();
 
