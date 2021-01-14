@@ -8,7 +8,7 @@ import {
 	IDonationConfirmationEmail,
 	logger,
 } from '@donategifts/helper';
-import { IDonationHook, IUser, TypeObjectId, IWishCard } from '@donategifts/common';
+import { IDonationHook, IUser, ObjectId, IWishCard } from '@donategifts/common';
 
 async function calculateWishItemTotalPrice(itemPrice: number): Promise<number> {
 	// fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
@@ -25,10 +25,8 @@ async function calculateWishItemTotalPrice(itemPrice: number): Promise<number> {
 
 const handleDonation = async (donation: IDonationHook): Promise<boolean> => {
 	const { service, userId, wishCardId, amount, userDonation, agencyName } = donation;
-	const user = await UserRepository.getUserById(userId as TypeObjectId<IUser>);
-	const wishCard = await WishCardRepository.getWishCardByObjectId(
-		wishCardId as TypeObjectId<IWishCard>,
-	);
+	const user = await UserRepository.getUserById(ObjectId<IUser>(userId));
+	const wishCard = await WishCardRepository.getWishCardByObjectId(ObjectId<IWishCard>(wishCardId));
 
 	if (user) {
 		const newEmail: IDonationConfirmationEmail = {
