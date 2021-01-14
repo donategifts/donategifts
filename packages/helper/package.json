@@ -24,8 +24,7 @@
 		"log4js": "^6.3.0",
 		"moment": "^2.29.1",
 		"nodemailer": "^6.4.17",
-		"nodemailer-mailgun-transport": "^2.0.2",
-		"socket.io": "^3.0.4"
+		"nodemailer-mailgun-transport": "^2.0.2"
 	},
 	"devDependencies": {
 		"syncy": "^3.0.0"

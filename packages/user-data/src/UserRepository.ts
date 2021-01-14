@@ -1,4 +1,3 @@
-// IMPORT USER MODEL
 import { inject, injectable } from 'inversify';
 import { IUser, TypeObjectId } from '@donategifts/common';
 import { DBUser } from './DBUser';
