@@ -1,19 +1,20 @@
-version: '3.1'
+version: '3.3'
 
 services:
-  mongo:
-    image: mongo
-    restart: unless-stopped
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'theoneandonly'
+      MYSQL_DATABASE: 'donategifts'
+      MYSQL_USER: 'jack'
+      MYSQL_PASSWORD: 'sparrow'
     ports:
-      - 27017:27017
-
+      - '3306:3306'
+    expose:
+      - '3306'
     volumes:
-      - donategifts_mongo:/data/db
- # redis:
- #   image: redis
- #   restart: unless-stopped
- #   ports:
- #     - 6379:6379
+      - ./scripts:/docker-entrypoint-initdb.d
 
 volumes:
-  donategifts_mongo:
+  donategifts:
