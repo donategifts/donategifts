@@ -18,7 +18,7 @@
 	"types": "dist/index.d.ts",
 	"dependencies": {
 		"@donategifts/helper": "^1.0.2",
-		"aws-sdk": "^2.824.0",
+		"aws-sdk": "^2.826.0",
 		"inversify": "^5.0.5",
 		"sharp": "^0.27.0",
 		"uuid": "^8.3.2"
