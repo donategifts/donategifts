@@ -20,7 +20,7 @@
 		"@donategifts/common": "^1.0.2",
 		"@donategifts/db-connection": "^1.0.2",
 		"@donategifts/helper": "^1.0.2",
-		"@donategifts/user-data": "^1.0.2",
+		"@donategifts/user-data": "^1.0.0",
 		"bcrypt": "^5.0.0",
 		"google-auth-library": "^6.1.4",
 		"inversify": "^5.0.5",
