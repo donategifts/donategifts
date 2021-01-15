@@ -44,10 +44,10 @@ export class StripeService {
 				userId: string | null;
 				agencyName: string | null;
 			} = {
+				userDonation: null,
 				wishCardId: wishCard._id.toString(),
 				userId: user._id.toString(),
 				agencyName,
-				userDonation: null,
 			};
 			if (userDonation) {
 				totalItemPrice += userDonation;
