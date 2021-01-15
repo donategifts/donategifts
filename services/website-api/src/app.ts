@@ -17,10 +17,10 @@ import { RegisterRoutes } from './routes/routes';
 
 // load from config if not production, otherwise use from docker
 if (process.env.NODE_ENV !== 'production') {
-	let configPath = path.join(__dirname, '../config/config.env');
+	let configPath = path.join(__dirname, '../../../config/config.env');
 
 	if (process.env.NODE_ENV === 'test') {
-		configPath = path.join(__dirname, '../config/test.config.env');
+		configPath = path.join(__dirname, '../../../config/test.config.env');
 	}
 
 	config({
@@ -97,7 +97,7 @@ const bootServer = async () => {
 					  <br>
 						<hr>
 					  <small>${process.env.npm_package_name} - ${new Date().toLocaleString()}</small>
-					</body>		
+					</body>
 				</html>
 			`,
 		);
