@@ -15,6 +15,7 @@
 		"lint": "npm run lint:packages && npm run lint:services",
 		"postinstall": "npm run bootstrap",
 		"start": "node server/app.js",
+		"start:docker": "docker-compose --env-file ./config/config.env up",
 		"superclean": "lerna run clean && gulp superclean",
 		"test": "NODE_ENV=test mocha --timeout 10000 --exit",
 		"update": "lernaupdate",
