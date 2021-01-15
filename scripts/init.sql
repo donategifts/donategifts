@@ -78,9 +78,7 @@ CREATE TABLE IF NOT EXISTS wishcard
     deletedAt     datetime                             null,
     FOREIGN KEY (agencyId) REFERENCES agency (id),
     FOREIGN KEY (createdBy) REFERENCES user (id),
-    FOREIGN KEY (childId) REFERENCES child (id),
-    # 1 to 1 relation for child
-    UNIQUE (childId)
+    FOREIGN KEY (childId) REFERENCES child (id)
 );
 
 CREATE TABLE IF NOT EXISTS message
