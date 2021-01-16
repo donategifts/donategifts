@@ -1,9 +1,7 @@
 import * as express from 'express';
 import { PaymentService } from '@donategifts/payment';
-import {
-	/* IUser, */ IDonationHook,
-	IStripeIntent /* , IDonationInfo */,
-} from '@donategifts/common';
+import * as mongoSanitize from 'express-mongo-sanitize';
+import { /* IUser, IDonationInfo, */ IDonationHook, IStripeIntent } from '@donategifts/common';
 import {
 	Controller,
 	Post,
@@ -30,7 +28,10 @@ export class PaymentController extends Controller {
 	public async createIntent(
 		@Body() stripeData: IStripeIntent,
 	): Promise<{ success: boolean; error?: string; clientSecret?: string }> {
-		return this.paymentService.stripeIntent(stripeData);
+		let { wishCardId, userId } = stripeData;
+		wishCardId = mongoSanitize.sanitize(wishCardId);
+		userId = mongoSanitize.sanitize(userId);
+		return this.paymentService.stripeIntent({ ...stripeData, wishCardId, userId });
 	}
 
 	@Response('400', 'Bad request')

@@ -38,14 +38,11 @@ export class PaypalService {
 						agencyName: data[3],
 					};
 
-					const success: boolean = await handleDonation(donation);
-					return {
-						success,
-					};
+					return handleDonation(donation);
 				},
 			);
 		}
-		logger.debug('Webhook Error - Checkout order not approved');
+		logger.error('Webhook Error - Checkout order not approved');
 		return {
 			success: false,
 			error: 'Webhook Error - Paypal Checkout order not approved',
