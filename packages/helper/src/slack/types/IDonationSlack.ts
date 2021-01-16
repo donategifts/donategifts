@@ -2,8 +2,8 @@ import { IWishCard, IUser } from '@donategifts/common';
 
 export interface IDonationSlack {
 	service: string;
-	userDonation: string;
+	userDonation: number | null;
 	donor: IUser;
 	wishCard: IWishCard;
-	amount: string;
+	amount: number;
 }

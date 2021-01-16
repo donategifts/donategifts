@@ -5,3 +5,4 @@ export * from './agency';
 export * from './contact';
 export * from './message';
 export * from './donation';
+export * from './payment';

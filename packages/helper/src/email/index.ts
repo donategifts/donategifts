@@ -53,25 +53,22 @@ const donationTemplateAttachments = [
 	},
 	{
 		filename: 'email-gifts-illustration-removebg-preview.png',
-		path: path.resolve(
-			__dirname,
-			'./ressources/email/email-gifts-illustration-removebg-preview.png',
-		),
+		path: path.resolve(__dirname, './resources/email-gifts-illustration-removebg-preview.png'),
 		cid: 'email-gifts-illustration-removebg-preview.png',
 	},
 	{
 		filename: 'instagram2x.png',
-		path: path.resolve(__dirname, './ressources/instagram2x.png'),
+		path: path.resolve(__dirname, './resources/instagram2x.png'),
 		cid: 'instagram2x.png',
 	},
 	{
 		filename: 'mail2x.png',
-		path: path.resolve(__dirname, './ressources/mail2x.png'),
+		path: path.resolve(__dirname, './resources/mail2x.png'),
 		cid: 'mail2x.png',
 	},
 	{
 		filename: 'website2x.png',
-		path: path.resolve(__dirname, './ressources/website2x.png'),
+		path: path.resolve(__dirname, './resources/website2x.png'),
 		cid: 'website2x.png',
 	},
 ];
@@ -212,7 +209,7 @@ const sendDonationConfirmationMail = async (
 		.replace(RegExp('%childName%', 'g'), childName)
 		.replace('%fullName%', `${firstName} ${lastName}`)
 		.replace('%item%', item)
-		.replace('%price%', price)
+		.replace('%price%', price.toString())
 		.replace('%agency%', agency)
 		// Jan 1st, 2020 <- date formatting
 		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
@@ -233,4 +230,5 @@ export {
 	sendVerificationEmail,
 	sendPasswordResetMail,
 	sendDonationConfirmationMail,
+	IDonationConfirmationEmail,
 };

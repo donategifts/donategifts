@@ -87,7 +87,7 @@ async function sendSlackFeedbackMessage(slackEmail: ISlackFeedbackMsg): Promise<
 }
 
 async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Promise<boolean> {
-	const { service, userDonation, donor, wishCard, amount } = donationInfo;
+	const { service, donor, wishCard, userDonation, amount } = donationInfo;
 	try {
 		await axios({
 			method: 'POST',
@@ -102,7 +102,7 @@ async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Pr
 					wishCard.childFirstName
 				} ${wishCard.childLastName.substring(0, 1)} details: ${
 					process.env.BASE_URL
-				}/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
+				}/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation || 0.0} for us`,
 			}),
 		});
 
@@ -113,4 +113,4 @@ async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Pr
 	}
 }
 
-export { sendSlackFeedbackMessage, sendDonationNotificationToSlack };
+export { sendSlackFeedbackMessage, sendDonationNotificationToSlack, IDonationSlack };

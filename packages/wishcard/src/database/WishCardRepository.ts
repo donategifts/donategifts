@@ -40,7 +40,7 @@ export class WishCardRepository {
 		}
 	}
 
-	async getWishCardByObjectId(cardId) {
+	async getWishCardByObjectId(cardId: TypeObjectId<IWishCard>): Promise<IWishCard> {
 		try {
 			return this.dbWishCard.findOne({ _id: cardId }).lean().exec();
 		} catch (error) {
@@ -75,7 +75,7 @@ export class WishCardRepository {
 		}
 	}
 
-	async updateWishCardStatus(id, status) {
+	async updateWishCardStatus(id: TypeObjectId<IWishCard>, status): Promise<IWishCard> {
 		try {
 			return this.dbWishCard.updateOne({ _id: id }, { $set: { status } }).lean().exec();
 		} catch (error) {
@@ -85,7 +85,7 @@ export class WishCardRepository {
 
 	async lockWishCard(id, userId) {
 		try {
-			const wishCard = await this.getWishCardByObjectId(id);
+			const wishCard = await this.dbWishCard.findById(id);
 			if (wishCard) {
 				wishCard.isLockedBy = userId;
 				wishCard.isLockedUntil = moment()
@@ -101,7 +101,7 @@ export class WishCardRepository {
 
 	async unLockWishCard(id) {
 		try {
-			const wishCard = await this.getWishCardByObjectId(id);
+			const wishCard = await this.dbWishCard.findById(id);
 			if (wishCard) {
 				wishCard.isLockedBy = null;
 				wishCard.isLockedUntil = null;
