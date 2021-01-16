@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { config } from 'dotenv';
+import 'dotenv/config';
 import * as cors from 'cors';
 import * as path from 'path';
 import * as express from 'express';
@@ -16,17 +16,6 @@ import { connectSocket } from './helper/socket';
 import { RegisterRoutes } from './routes/routes';
 
 // load from config if not production, otherwise use from docker
-if (process.env.NODE_ENV !== 'production') {
-	let configPath = path.join(__dirname, '../../../config/config.env');
-
-	if (process.env.NODE_ENV === 'test') {
-		configPath = path.join(__dirname, '../../../config/test.config.env');
-	}
-
-	config({
-		path: configPath,
-	});
-}
 
 const app = express();
 
