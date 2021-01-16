@@ -49,6 +49,7 @@
 		"cross-env": "^7.0.3",
 		"del": "^6.0.0",
 		"eslint": "^7.17.0",
+		"eslint-config-airbnb-typescript": "^12.0.0",
 		"eslint-config-prettier": "^7.1.0",
 		"eslint-import-resolver-alias": "^1.1.2",
 		"eslint-import-resolver-node": "^0.3.4",
@@ -75,8 +76,5 @@
 		"hooks": {
 			"pre-commit": "npm run lint"
 		}
-	},
-	"dependencies": {
-		"eslint-config-airbnb-typescript": "^12.0.0"
 	}
 }

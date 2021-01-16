@@ -31,10 +31,10 @@ export class StripeService {
 		// By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
 		// so we need to multiple our price by 100. Genious explanation
 		const PENNY = 100;
-		let totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
 		if (!wishCard) {
 			return { success: false, error: 'Wishcard not found' };
 		}
+		let totalItemPrice = await calculateWishItemTotalPrice(wishCard.wishItemPrice);
 		const metadata: {
 			userDonation: number | null;
 			wishCardId: string | null;
