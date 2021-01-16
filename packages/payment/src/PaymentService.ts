@@ -1,9 +1,8 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import * as express from 'express';
-/* import * as mongoSanitize from 'express-mongo-sanitize';
-import * as moment from 'moment';
+/* import * as moment from 'moment';
 import { WishCardRepository } from '@donategifts/wishcard'; */
-import { IStripeIntent /* IDonationInfo */, IDonationHook } from '@donategifts/common';
+import { IStripeIntent /* , IDonationInfo, ObjectId */, IDonationHook } from '@donategifts/common';
 import { StripeService } from './StripeService';
 import { PaypalService } from './PaypalService';
 import { handleDonation } from './helper/paymentHelper';
@@ -11,8 +10,8 @@ import { handleDonation } from './helper/paymentHelper';
 @injectable()
 export class PaymentService {
 	constructor(
-		private stripeService = new StripeService(),
-		private paypalService = new PaypalService(),
+		@inject(StripeService) private stripeService: StripeService,
+		@inject(PaypalService) private paypalService: PaypalService,
 	) {}
 
 	public async paypalWebhook(
@@ -38,13 +37,14 @@ export class PaymentService {
 		return handleDonation(donation);
 	}
 
+	// Might not need this route (or maybe repurpose it, depending on how information is handled on frontend
 	/* public async onSuccess(
 		id: string,
 		totalAmount: number,
 		email: string,
 	): Promise<{ success: boolean; donationInformation?: IDonationInfo; error?: string }> {
 		try {
-			const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(id));
+			const wishCard = await WishCardRepository.getWishCardByObjectId(ObjectId(id));
 			const currentDate = moment(Date.now());
 			const donationInformation: IDonationInfo = {
 				email,
