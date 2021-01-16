@@ -4,6 +4,11 @@ We are using [lerna.js](https://lerna.js.org/) for mono repository setup and [ts
 
 Our custom packages are all prefixed with ```@donategifts```
 
+Make sure to use npm 7 otherwise you will encounter errors.
+You can install npm 7 with 
+
+`sudo npm install -g npm@7` 
+
 ---
 
 Inside the root directory
@@ -38,6 +43,10 @@ if you want to use a module that's already installed in another package add the 
 lerna link
 ```
 
+---
+If you need to add an npm package to our packages you have to manually add the package + version to the package.json of our package and run npm install in the root of the project
+
+---
 additionally you can add that package with lerna so that it will symlink it during the adding process
 
 ```bash
