@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS address
+CREATE TABLE IF NOT EXISTS Address
 (
     id        int PRIMARY KEY AUTO_INCREMENT,
     address1  varchar(255) not null,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS address
     deletedAt datetime     null
 );
 
-CREATE TABLE IF NOT EXISTS child
+CREATE TABLE IF NOT EXISTS Child
 (
     id        int PRIMARY KEY AUTO_INCREMENT,
     birthday  date         not null,
@@ -23,44 +23,53 @@ CREATE TABLE IF NOT EXISTS child
     createdAt timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt timestamp ON UPDATE CURRENT_TIMESTAMP,
     deletedAt datetime     null,
-    FOREIGN KEY (addressId) REFERENCES address (id)
+    FOREIGN KEY (addressId) REFERENCES Address (id)
 );
 
-CREATE TABLE IF NOT EXISTS user
+CREATE TABLE IF NOT EXISTS User
 (
     id                        int PRIMARY KEY AUTO_INCREMENT,
     firstName                 varchar(255)                       not null,
     lastName                  varchar(255)                       not null,
-    email                     varchar(255)                       not null,
-    emailVerified             boolean                            not null,
+    profileImage			  varchar(255)						 null,
+    email                     varchar(255)                       unique not null,
+    emailVerified             boolean                            default false not null,
+    emailVerificationHash     varchar(255)                       unique null,
     role                      enum ('donor', 'partner', 'admin') not null,
+    loginMode                    enum ('Facebook', 'Google', 'Default') not null,
     password                  varchar(255)                       not null,
-    passwordResetToken        varchar(255)                       null,
+    passwordResetToken        varchar(255)                       unique null,
     passwordResetTokenExpires datetime                           null,
-    agencyId                  int                                null,
     createdAt                 timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt                 timestamp ON UPDATE CURRENT_TIMESTAMP,
     deletedAt                 datetime                           null
 );
 
-CREATE TABLE IF NOT EXISTS agency
+CREATE TABLE IF NOT EXISTS Agency
 (
     id         int PRIMARY KEY AUTO_INCREMENT,
     name       varchar(255) not null,
     bio        varchar(255) null,
-    isVerified boolean      not null,
+    isVerified boolean      default false not null,
     phone      varchar(255) not null,
     website    varchar(255) null,
-    userId     int          not null,
-    addressId  int          not null,
+    addressId  int          unique not null,
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
-    deletedAt  datetime     null,
-    UNIQUE (userId),
-    UNIQUE (addressId)
+    deletedAt  datetime     null
 );
 
-CREATE TABLE IF NOT EXISTS wishcard
+CREATE TABLE IF NOT EXISTS AgencyMembers
+(
+	agencyId 	int			not null,
+	userId		int			not null,
+	role		enum('admin', 'member') not null,
+	CONSTRAINT id PRIMARY KEY (agencyId, userId),
+	FOREIGN KEY (agencyId) REFERENCES Agency (id),
+	FOREIGN KEY (userId) REFERENCES User (id)
+);
+
+CREATE TABLE IF NOT EXISTS Wishcard
 (
     id            int PRIMARY KEY AUTO_INCREMENT,
     image         varchar(255)                         not null,
@@ -76,12 +85,13 @@ CREATE TABLE IF NOT EXISTS wishcard
     createdAt     timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt     timestamp ON UPDATE CURRENT_TIMESTAMP,
     deletedAt     datetime                             null,
-    FOREIGN KEY (agencyId) REFERENCES agency (id),
-    FOREIGN KEY (createdBy) REFERENCES user (id),
-    FOREIGN KEY (childId) REFERENCES child (id)
+    FOREIGN KEY (agencyId) REFERENCES Agency (id),
+    FOREIGN KEY (createdBy) REFERENCES User (id),
+    FOREIGN KEY (isLockedBy) REFERENCES User (id),
+    FOREIGN KEY (childId) REFERENCES Child (id)
 );
 
-CREATE TABLE IF NOT EXISTS message
+CREATE TABLE IF NOT EXISTS Message
 (
     id         int PRIMARY KEY AUTO_INCREMENT,
     userId     int          not null,
@@ -90,11 +100,11 @@ CREATE TABLE IF NOT EXISTS message
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
     deletedAt  datetime     null,
-    FOREIGN KEY (userId) REFERENCES user (id),
-    FOREIGN KEY (wishcardId) REFERENCES wishcard (id)
+    FOREIGN KEY (userId) REFERENCES User (id),
+    FOREIGN KEY (wishcardId) REFERENCES Wishcard (id)
 );
 
-CREATE TABLE IF NOT EXISTS donation
+CREATE TABLE IF NOT EXISTS Donation
 (
     id         int PRIMARY KEY AUTO_INCREMENT,
     wishcardId int                                        not null,
@@ -104,13 +114,9 @@ CREATE TABLE IF NOT EXISTS donation
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
     updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
     deletedAt  datetime                                   null,
-    FOREIGN KEY (userId) REFERENCES user (id),
-    FOREIGN KEY (wishcardId) REFERENCES wishcard (id)
+    FOREIGN KEY (userId) REFERENCES User (id),
+    FOREIGN KEY (wishcardId) REFERENCES Wishcard (id)
 );
 
-ALTER TABLE user
-    ADD FOREIGN KEY (agencyId) REFERENCES agency (id);
-
-ALTER TABLE agency
-    ADD FOREIGN KEY (userId) REFERENCES user (id),
-    ADD FOREIGN KEY (addressId) REFERENCES address (id);
+ALTER TABLE Agency
+    ADD FOREIGN KEY (addressId) REFERENCES Address (id);

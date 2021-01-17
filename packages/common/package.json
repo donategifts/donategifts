@@ -15,5 +15,8 @@
 		"test": "mocha",
 		"prepublishOnly": "npm run build"
 	},
-	"types": "dist/index.d.ts"
+	"types": "dist/index.d.ts",
+  "dependencies": {
+	"@prisma/client": "^2.14.0"
+  }
 }

@@ -97,8 +97,8 @@ async function sendDonationNotificationToSlack(donationInfo: IDonationSlack): Pr
 			},
 			data: JSON.stringify({
 				text: `${process.env.NODE_ENV} New ${service} Donation by ${
-					donor.fName
-				} ${donor.lName.substring(0, 1)} for ${
+					donor.firstName
+				} ${donor.lastName.substring(0, 1)} for ${
 					wishCard.childFirstName
 				} ${wishCard.childLastName.substring(0, 1)} details: ${
 					process.env.BASE_URL

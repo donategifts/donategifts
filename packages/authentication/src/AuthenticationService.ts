@@ -21,11 +21,10 @@ export class AuthenticationService {
 	public async googleSignIn(idToken: string): Promise<IUser> {
 		if (idToken) {
 			const user = await verifyGoogleToken(idToken);
-			const fName = user.firstName;
-			const lName = user.lastName;
+			const { firstName, lastName } = user;
 			const email = user.mail?.toLowerCase();
 
-			if (!email || !fName) {
+			if (!email || !firstName) {
 				throw new GoogleAuthError('Failed to retrieve email from google!');
 			}
 
@@ -36,12 +35,12 @@ export class AuthenticationService {
 			}
 
 			return this.userRepository.createNewUser({
-				fName,
-				lName,
+				firstName,
+				lastName,
 				email,
 				password: createDefaultPassword(),
-				verificationHash: createEmailVerificationHash(),
-				userRole: UserRoles.Donor,
+				emailVerificationHash: createEmailVerificationHash(),
+				role: UserRoles.donor,
 				loginMode: LoginMode.Google,
 				emailVerified: true,
 			} as IUser);
@@ -52,7 +51,7 @@ export class AuthenticationService {
 
 	public async facebookSignIn(userName: string, email: string): Promise<IUser> {
 		if (userName && email) {
-			const [fName, lName] = userName.split(' ');
+			const [firstName, lastName] = userName.split(' ');
 
 			const dbUser = await this.userRepository.getUserByEmail(email);
 
@@ -61,12 +60,12 @@ export class AuthenticationService {
 			}
 
 			return this.userRepository.createNewUser({
-				fName,
-				lName: lName || 'LastnameUnset',
+				firstName,
+				lastName: lastName || 'LastnameUnset',
 				email: email.toLowerCase(),
 				password: createDefaultPassword(),
-				verificationHash: createEmailVerificationHash(),
-				userRole: UserRoles.Donor,
+				emailVerificationHash: createEmailVerificationHash(),
+				role: UserRoles.donor,
 				loginMode: LoginMode.Facebook,
 				emailVerified: true,
 			} as IUser);
@@ -90,19 +89,16 @@ export class AuthenticationService {
 		}
 
 		const hashedPassword = await hashPassword(userData.password);
-		const verificationHash = createEmailVerificationHash();
+		const emailVerificationHash = createEmailVerificationHash();
 
 		const user = await this.userRepository.createNewUser({
 			...userData,
-			verificationHash,
+			emailVerificationHash,
 			password: hashedPassword,
 			loginMode: LoginMode.Default,
 		});
 
-		// trying to add a second step here
-		// if the userRole is partner then redirect to agency.ejs then profile.ejs
-
-		const emailResponse = await sendVerificationEmail(user.email, verificationHash);
+		const emailResponse = await sendVerificationEmail(user.email, emailVerificationHash);
 		const response = emailResponse ? emailResponse.data : '';
 		if (process.env.NODE_ENV === 'development') {
 			logger.info(response);

@@ -19,6 +19,8 @@
 	"dependencies": {
 		"@donategifts/helper": "^1.0.2",
 		"inversify": "^5.0.5",
-		"mongoose": "^5.11.11"
+		"mongoose": "^5.11.11",
+	  	"@prisma/cli": "^2.14.0",
+	    "@prisma/client": "^2.14.0"
 	}
 }

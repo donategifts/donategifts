@@ -19,6 +19,8 @@
 	"dependencies": {
 		"@donategifts/common": "^1.0.2",
 		"@donategifts/db-connection": "^1.0.2",
-		"inversify": "^5.0.5"
+		"inversify": "^5.0.5",
+	  	"@prisma/client": "^2.14.0"
+
 	}
 }
