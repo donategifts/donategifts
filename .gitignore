@@ -7,7 +7,9 @@ uploads
 node_modules
 # Ignore files related to API keys
 .idea
+.env
 config.env
+sql.env
 # generated logs folder
 server/logs
 .eslintcache

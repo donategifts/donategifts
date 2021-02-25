@@ -25,5 +25,6 @@
 		"google-auth-library": "^6.1.4",
 		"inversify": "^5.0.5",
 		"superagent": "^6.1.0"
+
 	}
 }

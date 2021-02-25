@@ -1,70 +1,71 @@
-import { inject, injectable } from 'inversify';
-import { IUser, TypeObjectId } from '@donategifts/common';
-import { DBUser } from './DBUser';
+import { injectable } from 'inversify';
+import { DBUser, User as IUser, UserUpdateInput, UserCreateInput } from './DBUser';
 
 @injectable()
 export class UserRepository {
-	constructor(@inject(DBUser) private dbUser: typeof DBUser) {}
-
-	public async getUserById(id: TypeObjectId<IUser>): Promise<IUser> {
-		return this.dbUser.findOne({ _id: id }).lean().exec();
+	public async getUserById(id: number): Promise<IUser | null> {
+		return DBUser.findUnique({
+			where: { id },
+		});
 	}
 
-	public async updateUserById(
-		id: TypeObjectId<IUser>,
-		updateParams: Partial<IUser>,
-	): Promise<IUser> {
-		return this.dbUser.findOneAndUpdate({ _id: id }, { $set: updateParams }).exec();
+	public async updateUserById(id: number, updateParams: UserUpdateInput): Promise<IUser> {
+		return DBUser.update({
+			where: { id },
+			data: updateParams,
+		});
 	}
 
-	public async getUserByEmail(email: string): Promise<IUser> {
-		return this.dbUser.findOne({ email }).lean().exec();
+	public async getUserByEmail(email: string): Promise<IUser | null> {
+		return DBUser.findUnique({
+			where: { email },
+		});
 	}
 
-	public async getUserByVerificationHash(verificationHash: string): Promise<IUser> {
-		return this.dbUser.findOne({ verificationHash }).lean().exec();
+	public async getUserByVerificationHash(emailVerificationHash: string): Promise<IUser | null> {
+		return DBUser.findUnique({
+			where: { emailVerificationHash },
+		});
 	}
 
-	public async createNewUser(params: IUser): Promise<IUser> {
-		return this.dbUser.create(params);
+	public async createNewUser(params: UserCreateInput): Promise<IUser> {
+		return DBUser.create({
+			data: params,
+		});
 	}
 
-	public async getUserByPasswordResetToken(tokenId: string): Promise<IUser> {
-		return this.dbUser.findOne({ passwordResetToken: tokenId }).lean().exec();
+	public async getUserByPasswordResetToken(tokenId: string): Promise<IUser | null> {
+		return DBUser.findUnique({
+			where: { passwordResetToken: tokenId },
+		});
 	}
 
-	public async setUserEmailVerification(
-		id: TypeObjectId<IUser>,
-		verified: boolean,
-	): Promise<IUser> {
-		return this.dbUser
-			.findOneAndUpdate({ _id: id }, { $set: { emailVerified: verified } })
-			.lean()
-			.exec();
+	public async setUserEmailVerification(id: number, verified: boolean): Promise<IUser | null> {
+		return DBUser.update({
+			where: { id },
+			data: { emailVerified: verified },
+		});
 	}
 
 	public async setPasswordResetToken(
 		email: string,
 		passwordResetToken: string,
 		passwordResetTokenExpires: Date,
-	): Promise<void> {
-		await this.dbUser
-			.updateOne({ email }, { $set: { passwordResetToken, passwordResetTokenExpires } })
-			.exec();
+	): Promise<IUser | null> {
+		return DBUser.update({
+			where: { email },
+			data: { passwordResetToken, passwordResetTokenExpires },
+		});
 	}
 
-	public async updateUserPassword(hashPassword: string, token: string): Promise<void> {
-		await this.dbUser
-			.updateOne(
-				{ passwordResetToken: token },
-				{
-					$set: {
-						password: hashPassword,
-						passwordResetToken: undefined,
-						passwordResetTokenExpires: undefined,
-					},
-				},
-			)
-			.exec();
+	public async updateUserPassword(hashPassword: string, token: string): Promise<IUser | null> {
+		return DBUser.update({
+			where: { passwordResetToken: token },
+			data: {
+				password: hashPassword,
+				passwordResetToken: undefined,
+				passwordResetTokenExpires: undefined,
+			},
+		});
 	}
 }

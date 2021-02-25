@@ -1,5 +1,5 @@
 import { Container } from 'inversify';
-import { DBUser } from './DBUser';
+import { DBUser } from './DBUserOld';
 import { UserRepository as userRepository } from './UserRepository';
 
 const container = new Container({ autoBindInjectable: true, defaultScope: 'Singleton' });

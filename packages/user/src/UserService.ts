@@ -16,22 +16,22 @@ export class UserService {
 		private wishCardRepository: typeof WishCardRepository = WishCardRepository,
 	) {}
 
-	public async getUser(id: string): Promise<IUser> {
-		return this.userRepository.getUserById(ObjectId<IUser>(id));
+	public async getUser(id: number): Promise<IUser | null> {
+		return this.userRepository.getUserById(id);
 	}
 
 	public async getUserRole(id: string): Promise<UserRoles> {
 		const agency = await this.agencyRepository.getAgencyByUserId(ObjectId<IUser>(id));
 
 		if (agency) {
-			return UserRoles.Agency;
+			return UserRoles.partner;
 		}
 
-		return UserRoles.Donor;
+		return UserRoles.donor;
 	}
 
 	public async getAssignedWishCards(user: IUser): Promise<IWishCard[]> {
-		const agency = await this.agencyRepository.getAgencyByUserId(user._id);
+		const agency = await this.agencyRepository.getAgencyByUserId(user.id);
 
 		if (!agency) {
 			throw new UserError(`Failed to get Agency for user ${user.email}`);
