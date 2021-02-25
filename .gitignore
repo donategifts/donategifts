@@ -9,6 +9,7 @@ node_modules
 .idea
 .env
 config.env
+sql.env
 # generated logs folder
 server/logs
 .eslintcache
