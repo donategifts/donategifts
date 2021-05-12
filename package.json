@@ -58,7 +58,7 @@
     "nodemailer": "^6.4.16",
     "nodemailer-mailgun-transport": "^2.0.1",
     "paypal-rest-sdk": "^1.8.1",
-    "postcss": "^8.1.14",
+    "postcss": "^8.2.10",
     "postcss-cli": "^8.3.0",
     "querystring": "^0.2.0",
     "request-ip": "^2.1.3",
