@@ -1,0 +1,13 @@
+# Ignore Mac system files & workspace
+.DS_store
+
+# Ignore files related to API keys
+.idea
+.env
+
+# generated logs folder
+.eslintcache
+
+# build files
+dist
+node_modules

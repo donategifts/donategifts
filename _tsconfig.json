@@ -2,7 +2,9 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es2019",
-		"lib": ["es2019"],
+		"lib": [
+			"es2019"
+		],
 		"skipLibCheck": true,
 		"moduleResolution": "node",
 		"strict": true,
@@ -16,6 +18,10 @@
 		"isolatedModules": false,
 		"allowJs": true
 	},
-  "files": ["types/lib.shim.d.ts"],
-  "exclude": ["node_modules"]
+	"files": [
+		"types/lib.shim.d.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

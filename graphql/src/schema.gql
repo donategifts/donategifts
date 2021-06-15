@@ -1,0 +1,11 @@
+type Mutation {
+  updateId(id: Int): ID!
+}
+type Query {
+  id: ID!
+}
+enum SortOrder {
+  asc
+  desc
+}
+scalar DateTime
