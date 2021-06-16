@@ -12,7 +12,8 @@
     "prisma:generate": "npx prisma generate",
     "prisma:migrate-dev": "npx prisma migrate dev --name ",
     "upgradeDeps": "npx ncu -u",
-    "_postinstall": "npx husky install && npm run prisma:generate"
+    "husky": "npx husky install",
+    "postinstall": "npm run prisma:generate"
   },
   "author": "DonateGifts Inc.",
   "license": "NPOSL-3.0",
