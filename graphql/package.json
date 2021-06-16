@@ -8,8 +8,11 @@
     "lint": "eslint --cache --fix --ext .ts --ignore-path .eslintignore src/",
     "start": "node dist/server.js",
     "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+    "prisma:introspect": "npx prisma introspect",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate-dev": "npx prisma migrate dev --name ",
     "upgradeDeps": "npx ncu -u",
-    "postinstall": "husky install"
+    "_postinstall": "npx husky install && npm run prisma:generate"
   },
   "author": "DonateGifts Inc.",
   "license": "NPOSL-3.0",
@@ -18,10 +21,10 @@
     "url": "git+https://github.com/donategifts/donategifts.git"
   },
   "dependencies": {
+    "@prisma/client": "^2.25.0",
     "apollo-server": "^2.25.1",
     "dotenv": "^10.0.0",
-    "graphql": "^15.5.0",
-    "prisma": "^2.25.0"
+    "graphql": "^15.5.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
@@ -44,6 +47,7 @@
     "nodemon": "^2.0.7",
     "npm-check-updates": "^11.6.0",
     "prettier": "^2.3.1",
+    "prisma": "^2.25.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2"
   },
