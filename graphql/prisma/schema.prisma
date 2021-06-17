@@ -16,7 +16,7 @@ model address {
   country   String    @db.VarChar(255)
   state     String    @db.VarChar(255)
   createdAt DateTime  @default(now()) @db.Timestamp(0)
-  updatedAt DateTime  @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @db.Timestamp(0)
   deletedAt DateTime? @db.DateTime(0)
   agency    agency?
   child     child[]
@@ -31,7 +31,7 @@ model agency {
   website        String?          @db.VarChar(255)
   addressId      Int              @unique
   createdAt      DateTime         @default(now()) @db.Timestamp(0)
-  updatedAt      DateTime         @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt      DateTime         @default(now()) @db.Timestamp(0)
   deletedAt      DateTime?        @db.DateTime(0)
   address        address          @relation(fields: [addressId], references: [id])
   agency_members agency_members[]
@@ -58,7 +58,7 @@ model child {
   bio       String?     @db.VarChar(255)
   addressId Int
   createdAt DateTime    @default(now()) @db.Timestamp(0)
-  updatedAt DateTime    @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt DateTime    @default(now()) @db.Timestamp(0)
   deletedAt DateTime?   @db.DateTime(0)
   address   address     @relation(fields: [addressId], references: [id])
   wish_card wish_card[]
@@ -73,7 +73,7 @@ model donation {
   amount     Float           @db.Float
   status     donation_status
   createdAt  DateTime        @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime        @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt  DateTime        @default(now()) @db.Timestamp(0)
   deletedAt  DateTime?       @db.DateTime(0)
   user       user            @relation(fields: [userId], references: [id])
   wish_card  wish_card       @relation(fields: [wishcardId], references: [id])
@@ -88,7 +88,7 @@ model message {
   wishcardId Int
   message    String    @db.VarChar(255)
   createdAt  DateTime  @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime  @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt  DateTime  @default(now()) @db.Timestamp(0)
   deletedAt  DateTime? @db.DateTime(0)
   user       user      @relation(fields: [userId], references: [id])
   wish_card  wish_card @relation(fields: [wishcardId], references: [id])
@@ -111,7 +111,7 @@ model user {
   passwordResetToken                   String?          @unique @db.VarChar(255)
   passwordResetTokenExpires            DateTime?        @db.DateTime(0)
   createdAt                            DateTime         @default(now()) @db.Timestamp(0)
-  updatedAt                            DateTime         @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  updatedAt                            DateTime         @default(now()) @db.Timestamp(0)
   deletedAt                            DateTime?        @db.DateTime(0)
   agency_members                       agency_members[]
   donation                             donation[]
@@ -167,9 +167,9 @@ enum user_role {
 }
 
 enum user_loginMode {
-  Facebook
-  Google
-  Default
+  facebook
+  google
+  default
 }
 
 enum wish_card_status {

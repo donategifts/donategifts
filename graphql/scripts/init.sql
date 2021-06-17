@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS user
     emailVerified             boolean   default false                         not null,
     emailVerificationHash     varchar(255) unique                             null,
     role                      enum ('donor', 'partner', 'admin', 'developer') not null,
-    loginMode                 enum ('Facebook', 'Google', 'Default')          not null,
+    loginMode                 enum ('facebook', 'google', 'default')          not null,
     password                  varchar(255)                                    not null,
     passwordResetToken        varchar(255) unique                             null,
     passwordResetTokenExpires datetime                                        null,

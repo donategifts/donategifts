@@ -21,8 +21,11 @@ export const generateSchema = (): GraphQLSchema => {
       },
       allUsers: {
         type: GraphQLList(UserType),
-        resolve: async (_parent, _args, context: IContext) =>
-          userService.getAllUsers({ context }),
+        args: {
+          limit: { type: GraphQLInt },
+        },
+        resolve: async (_parent, { limit = 10 }, context: IContext) =>
+          userService.getAllUsers({ context, limit }),
       },
     },
   });

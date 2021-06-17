@@ -31,9 +31,17 @@ export const userService = {
       });
     }
   },
-  getAllUsers: async ({ context }: { context: IContext }): Promise<user[]> => {
+  getAllUsers: async ({
+    context,
+    limit,
+  }: {
+    context: IContext;
+    limit: number;
+  }): Promise<user[]> => {
     try {
-      return await context.prisma.user.findMany();
+      return await context.prisma.user.findMany({
+        take: limit,
+      });
     } catch (error) {
       throw new CustomError({
         message: `Failed to fetch all users`,
