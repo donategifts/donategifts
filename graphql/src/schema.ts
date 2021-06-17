@@ -1,9 +1,30 @@
-import { GraphQLObjectType, GraphQLSchema } from 'graphql';
+import {
+  GraphQLInt,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLSchema,
+} from 'graphql';
+import { IContext } from './types/Context';
+import { UserType, userService } from './query/user';
 
 export const generateSchema = (): GraphQLSchema => {
   const queryType = new GraphQLObjectType({
     name: 'Query',
-    fields: () => ({}),
+    fields: {
+      user: {
+        type: UserType,
+        args: {
+          id: { type: GraphQLInt },
+        },
+        resolve: async (_parent, { id }, context: IContext) =>
+          userService.getUser({ context, id }),
+      },
+      allUsers: {
+        type: GraphQLList(UserType),
+        resolve: async (_parent, _args, context: IContext) =>
+          userService.getAllUsers({ context }),
+      },
+    },
   });
 
   const mutationType = new GraphQLObjectType({
@@ -18,7 +39,7 @@ export const generateSchema = (): GraphQLSchema => {
 
   return new GraphQLSchema({
     query: queryType,
-    mutation: mutationType,
-    subscription: subscriptionType,
+    // mutation: mutationType,
+    // subscription: subscriptionType,
   });
 };

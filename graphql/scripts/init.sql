@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS address
     country   varchar(255) not null,
     state     varchar(255) not null,
     createdAt timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt datetime     null
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS child
     bio       varchar(255) null,
     addressId int          not null,
     createdAt timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt datetime     null,
     FOREIGN KEY (addressId) REFERENCES address (id)
 );
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS user
     passwordResetToken        varchar(255) unique                             null,
     passwordResetTokenExpires datetime                                        null,
     createdAt                 timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt                 timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt                 timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt                 datetime                                        null
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS agency
     website    varchar(255)            null,
     addressId  int unique              not null,
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt  timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt  datetime                null
 );
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS message
     wishcardId int          not null,
     message    varchar(255) not null,
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt  timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt  datetime DEFAULT null,
     FOREIGN KEY (userId) REFERENCES user (id),
     FOREIGN KEY (wishcardId) REFERENCES wish_card (id)
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS donation
     amount     float                                      not null,
     status     enum ('confirmed', 'ordered', 'delivered') not null,
     createdAt  timestamp DEFAULT CURRENT_TIMESTAMP,
-    updatedAt  timestamp ON UPDATE CURRENT_TIMESTAMP,
+    updatedAt  timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deletedAt  datetime                                   null,
     FOREIGN KEY (userId) REFERENCES user (id),
     FOREIGN KEY (wishcardId) REFERENCES wish_card (id)
