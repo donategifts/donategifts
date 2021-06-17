@@ -10,13 +10,8 @@ export const forwardAuthEndpoint = async (
 
   console.log(`executing auth-check for carrier: ${carrier}`);
 
-  let token: string;
-  switch (carrier) {
-    default:
-      const path = String(req.headers['x-forwarded-uri']);
-      token = String(path?.split('/').pop());
-      break;
-  }
+  const path = String(req.headers['x-forwarded-uri']);
+  const token = String(path?.split('/').pop());
 
   try {
     jwt.verify(token, JWT_SECRET!, { algorithms: [JWT_ALGORITHM] });

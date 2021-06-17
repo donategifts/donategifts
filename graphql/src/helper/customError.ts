@@ -5,12 +5,21 @@ export class CustomError extends Error {
 
   public meta?: Record<string, any>;
 
-  public constructor(
-    message?: string,
-    code?: string,
-    status?: number,
-    meta?: Record<string, any>,
-  ) {
+  public error?: Error;
+
+  public constructor({
+    message,
+    code,
+    status,
+    meta,
+    error,
+  }: {
+    message?: string;
+    code?: string;
+    status?: number;
+    meta?: Record<string, any>;
+    error?: Error;
+  }) {
     super();
     Error.captureStackTrace(this, this.constructor);
     this.message = String(message);
@@ -18,5 +27,8 @@ export class CustomError extends Error {
     this.code = code;
     this.status = status;
     this.meta = meta;
+    if (process.env.NODE_ENV !== 'production') {
+      this.error = error;
+    }
   }
 }

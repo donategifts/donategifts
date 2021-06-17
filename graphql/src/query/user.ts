@@ -24,18 +24,21 @@ export const userService = {
         },
       });
     } catch (error) {
-      console.error(error);
-      throw new CustomError(
-        `Failed to fetch user with id ${id}`,
-        'UserFetchError',
-      );
+      throw new CustomError({
+        message: `Failed to fetch user with id ${id}`,
+        code: 'UserFetchError',
+        error,
+      });
     }
   },
   getAllUsers: async ({ context }: { context: IContext }): Promise<user[]> => {
     try {
       return await context.prisma.user.findMany();
     } catch (error) {
-      throw new CustomError(`Failed to fetch all users`, 'UsersFetchError');
+      throw new CustomError({
+        message: `Failed to fetch all users`,
+        code: 'UsersFetchError',
+      });
     }
   },
 };

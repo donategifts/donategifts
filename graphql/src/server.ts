@@ -19,6 +19,7 @@ const isProductionMode = process.env.NODE_ENV === 'production';
 const server = new ApolloServer({
   schema: generateSchema(),
   introspection: !isProductionMode,
+  playground: false,
   context: ({ req }) => {
     const userId = req.user.id;
     const userRoles = req.user.roles;
@@ -85,14 +86,14 @@ const server = new ApolloServer({
   },
   formatResponse: (response, { context: { userId, startTime } }: any) => {
     // prevent introspection for anonymous users
-    if (
-      !userId &&
-      response.data &&
-      (response.data.__schema || response.data.__type)
-    ) {
-      delete response.data.__schema;
-      delete response.data.__type;
-    }
+    // if (
+    //   !userId &&
+    //   response.data &&
+    //   (response.data.__schema || response.data.__type)
+    // ) {
+    //   delete response.data.__schema;
+    //   delete response.data.__type;
+    // }
 
     const timeDiff = process.hrtime(startTime);
     const runTime = timeDiff[0] * 1e3 + timeDiff[1] * 1e-6;
@@ -114,6 +115,71 @@ export const boot = async (): Promise<void> =>
     app.all('/forward-auth', forwardAuthEndpoint);
 
     app.use(authMiddleware as any);
+
+    app.use('/graphiql', (req, res) => {
+      res.send(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body {
+                  height: 100%;
+                  margin: 0;
+                  width: 100%;
+                  overflow: hidden;
+                }
+
+                #graphiql {
+                  height: 100vh;
+                }
+              </style>
+              <script
+                crossorigin
+                src="https://unpkg.com/react@16/umd/react.development.js"
+              ></script>
+              <script
+                crossorigin
+                src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+              ></script>
+              <link rel="stylesheet" href="https://unpkg.com/graphiql/graphiql.min.css" />
+            </head>
+            <body>
+              <div id="graphiql">Loading...</div>
+              <script
+                src="https://unpkg.com/graphiql/graphiql.min.js"
+                type="application/javascript"
+              ></script>
+              <script>
+                function graphQLFetcher(graphQLParams) {
+                  return fetch(
+                    'http://localhost:4000/graphql',
+                    {
+                      method: 'post',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(graphQLParams),
+                      credentials: 'omit',
+                    },
+                  ).then(function (response) {
+                    return response.json().catch(function () {
+                      return response.text();
+                    });
+                  });
+                }
+                ReactDOM.render(
+                  React.createElement(GraphiQL, {
+                    fetcher: graphQLFetcher,
+                    defaultVariableEditorOpen: true,
+                  }),
+                  document.getElementById('graphiql'),
+                );
+              </script>
+            </body>
+          </html>
+        `);
+    });
 
     // eslint-disable-next-line no-unused-vars
     app.use(

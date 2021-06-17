@@ -21,11 +21,11 @@ export const decodeToken = (
     }) as Record<string, any>;
   } catch (err) {
     if (throwOnExpired && err instanceof jwt.TokenExpiredError) {
-      throw new CustomError(
-        'Token expired',
-        'AuthorizationTokenExpiredError',
-        401,
-      );
+      throw new CustomError({
+        message: 'Token expired',
+        code: 'AuthorizationTokenExpiredError',
+        status: 401,
+      });
     }
 
     if (!quiet) {
@@ -42,19 +42,19 @@ export const extractTokenFromAuthorization = (
   const authHeaderParts = authHeader.split(' ');
 
   if (authHeaderParts.length !== 2) {
-    throw new CustomError(
-      "Authorization header format is: 'Authorization: JWT [token]'",
-      'AuthorizationHeaderError',
-    );
+    throw new CustomError({
+      message: "Authorization header format is: 'Authorization: JWT [token]'",
+      code: 'AuthorizationHeaderError',
+    });
   }
 
   const [scheme, token] = authHeaderParts;
 
   if (scheme.toUpperCase() !== 'JWT') {
-    throw new CustomError(
-      `Unknown authorization scheme used: ${scheme}`,
-      'AuthorizationHeaderError',
-    );
+    throw new CustomError({
+      message: `Unknown authorization scheme used: ${scheme}`,
+      code: 'AuthorizationHeaderError',
+    });
   }
 
   const decoded = decodeToken(token, true);
@@ -64,11 +64,11 @@ export const extractTokenFromAuthorization = (
   }
 
   if (!decoded) {
-    throw new CustomError(
-      `Invalid token used: ${token}`,
-      'AuthorizationTokenError',
-      401,
-    );
+    throw new CustomError({
+      message: `Invalid token used: ${token}`,
+      code: 'AuthorizationTokenError',
+      status: 401,
+    });
   }
 
   return null;
