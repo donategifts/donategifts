@@ -2,21 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import { extractTokenFromAuthorization } from './jwt';
 
 export const authMiddleware = (
-  req: Request & {
-    user: {
-      id?: number;
-      username?: string;
-      firstName?: string;
-      lastName?: string;
-      roles?: string;
-      isDeveloper?: boolean;
-      customerSessionId?: string;
-    };
-  },
+  req: Request,
   _res: Response,
   next: NextFunction,
 ): void => {
   req.user = {};
+
+  console.log('----------------------- authMiddleware', req.user);
 
   if (req.headers && req.headers.authorization) {
     const decoded = extractTokenFromAuthorization(req.headers.authorization);

@@ -84,7 +84,7 @@ const server = new ApolloServer({
 
     return err;
   },
-  formatResponse: (response, { context: { userId, startTime } }: any) => {
+  formatResponse: (response, { context: { userId } }: any) => {
     // prevent introspection for anonymous users
     // if (
     //   !userId &&
@@ -95,12 +95,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    const timeDiff = process.hrtime(startTime);
-    const runTime = timeDiff[0] * 1e3 + timeDiff[1] * 1e-6;
-    console.info(
-      'Time: %s ms',
-      runTime.toFixed(3).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'),
-    );
+    console.log('----------------------- formatResponse', userId);
 
     return response;
   },

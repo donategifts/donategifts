@@ -16,6 +16,9 @@
     "allowJs": true,
     "checkJs": true
   },
+  "ts-node": {
+    "files": true
+  },
   "include": [
     "*/**/*.ts",
     "*/**/*.js",

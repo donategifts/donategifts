@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { ITokenPayLoad } from '../types/JWT';
 import { CustomError } from './customError';
 
 export const {
@@ -12,13 +13,13 @@ export const decodeToken = (
   token: string,
   throwOnExpired = true,
   quiet = false,
-): Record<string, any> => {
-  let decoded: Record<string, any> = {};
+): ITokenPayLoad => {
+  let decoded = {} as ITokenPayLoad;
 
   try {
     decoded = jwt.verify(token, JWT_SECRET!, {
       algorithms: [JWT_ALGORITHM],
-    }) as Record<string, any>;
+    }) as ITokenPayLoad;
   } catch (err) {
     if (throwOnExpired && err instanceof jwt.TokenExpiredError) {
       throw new CustomError({
@@ -38,7 +39,7 @@ export const decodeToken = (
 
 export const extractTokenFromAuthorization = (
   authHeader: string,
-): Record<string, any> | null => {
+): ITokenPayLoad | null => {
   const authHeaderParts = authHeader.split(' ');
 
   if (authHeaderParts.length !== 2) {
@@ -80,7 +81,7 @@ export const wsAuthMiddleware = (params: {
     username?: string;
     firstName?: string;
     lastName?: string;
-    roles?: string;
+    roles?: string | string[];
     isDeveloper?: boolean;
     customerSessionId?: string;
   };
@@ -110,7 +111,7 @@ export const wsAuthMiddleware = (params: {
 };
 
 export const generateCustomToken = (
-  tokenPayload: Record<string, any>,
+  tokenPayload: ITokenPayLoad,
   subject: string,
   tokenExpiresIn = JWT_TOKEN_EXPIRES_IN,
 ): { token: string } => {
