@@ -95,7 +95,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    console.log('----------------------- formatResponse', userId);
+    console.log('formatResponse', userId);
 
     return response;
   },
