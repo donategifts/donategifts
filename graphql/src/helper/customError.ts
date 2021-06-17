@@ -27,6 +27,7 @@ export class CustomError extends Error {
     this.code = code;
     this.status = status;
     this.meta = meta;
+
     if (process.env.NODE_ENV !== 'production') {
       this.error = error;
     }
