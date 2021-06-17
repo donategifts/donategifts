@@ -6,7 +6,7 @@ declare namespace Express {
       username?: string;
       firstName?: string;
       lastName?: string;
-      roles?: string | string[];
+      role?: string;
       isDeveloper?: boolean;
       customerSessionId?: string;
     };

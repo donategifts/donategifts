@@ -13,17 +13,17 @@ export const authMiddleware = (
   if (req.headers && req.headers.authorization) {
     const decoded = extractTokenFromAuthorization(req.headers.authorization);
     if (decoded && !decoded.isRefreshToken) {
-      const { id, username, firstName, lastName, roles, customerSessionId } =
+      const { id, username, firstName, lastName, role, customerSessionId } =
         decoded;
 
-      const isDeveloper = roles ? roles.includes('developer') : false;
+      const isDeveloper = role === 'developer';
 
       req.user = {
         id,
         username,
         firstName,
         lastName,
-        roles: roles || [],
+        role,
         isDeveloper,
         customerSessionId,
       };

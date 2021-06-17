@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { ITokenPayLoad } from '../types/JWT';
+
 import { CustomError } from './customError';
 
 export const {
@@ -76,15 +77,7 @@ export const extractTokenFromAuthorization = (
 };
 
 export const wsAuthMiddleware = (params: {
-  user: {
-    id?: number;
-    username?: string;
-    firstName?: string;
-    lastName?: string;
-    roles?: string | string[];
-    isDeveloper?: boolean;
-    customerSessionId?: string;
-  };
+  user: ITokenPayLoad;
   authorization: string;
 }): void => {
   params.user = {};
@@ -92,17 +85,17 @@ export const wsAuthMiddleware = (params: {
   if (params.authorization) {
     const decoded = extractTokenFromAuthorization(params.authorization);
     if (decoded && !decoded.isRefreshToken) {
-      const { id, username, firstName, lastName, roles, customerSessionId } =
+      const { id, username, firstName, lastName, role, customerSessionId } =
         decoded;
 
-      const isDeveloper = roles ? roles.includes('developer') : false;
+      const isDeveloper = role === 'developer';
 
       params.user = {
         id,
         username,
         firstName,
         lastName,
-        roles: roles || [],
+        role,
         isDeveloper,
         customerSessionId,
       };

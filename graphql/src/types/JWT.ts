@@ -3,7 +3,8 @@ export interface ITokenPayLoad {
   username?: string;
   firstName?: string;
   lastName?: string;
-  roles?: string | string[];
+  role?: string;
   isRefreshToken?: boolean;
+  isDeveloper?: boolean;
   customerSessionId?: string;
 }
