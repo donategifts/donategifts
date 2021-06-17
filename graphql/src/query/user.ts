@@ -98,9 +98,9 @@ const resolveUserFields = () => ({
     type: DateTime,
     description: 'Time window in which the token expires',
   },
-  createdAt: { type: DateTime, description: 'User password' },
-  updatedAt: { type: DateTime, description: 'User password' },
-  deletedAt: { type: DateTime, description: 'User password' },
+  createdAt: { type: DateTime, description: 'Timestamp' },
+  updatedAt: { type: DateTime, description: 'Timestamp' },
+  deletedAt: { type: DateTime, description: 'Timestamp' },
 });
 
 export const UserType = new GraphQLObjectType({
