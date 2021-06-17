@@ -46,6 +46,7 @@ export const userService = {
       throw new CustomError({
         message: `Failed to fetch all users`,
         code: 'UsersFetchError',
+        error,
       });
     }
   },
