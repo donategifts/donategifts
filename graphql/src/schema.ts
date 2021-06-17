@@ -5,7 +5,7 @@ import {
   GraphQLSchema,
 } from 'graphql';
 import { IContext } from './types/Context';
-import { UserType, userService } from './query/user';
+import { UserType, userService } from './query';
 
 export const generateSchema = (): GraphQLSchema => {
   const queryType = new GraphQLObjectType({
