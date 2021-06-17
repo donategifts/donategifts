@@ -8,6 +8,9 @@ import { wsAuthMiddleware } from './helper/jwt';
 import { pubsub } from './helper/pubSub';
 import { authMiddleware } from './helper/authMiddleware';
 import { forwardAuthEndpoint } from './helper/wsMiddleware';
+import { loadEnv } from './loadEnv';
+
+loadEnv();
 
 const prisma = new PrismaClient();
 

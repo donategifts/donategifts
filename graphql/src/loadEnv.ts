@@ -1,4 +1,6 @@
 import * as dotenv from 'dotenv';
 
-dotenv.config();
-dotenv.config({ path: './default.env' });
+export const loadEnv = (): void => {
+  dotenv.config();
+  dotenv.config({ path: './default.env' });
+};
