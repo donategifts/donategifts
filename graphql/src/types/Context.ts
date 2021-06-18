@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 export interface IContext {
-  req: any;
-  userId: number;
+  req: Express.Request;
   userRoles: string[];
   isDeveloper: boolean;
   customerSessionId: string;

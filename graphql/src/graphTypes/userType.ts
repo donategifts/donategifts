@@ -4,7 +4,7 @@ import {
   GraphQLBoolean,
   GraphQLObjectType,
 } from 'graphql';
-import { DateTime } from '../types/GrahpQLDateTime';
+import { DateTime } from './dateTimeType';
 
 const resolveUserFields = () => ({
   id: { type: GraphQLInt, description: 'Id of the user entry' },
