@@ -1,9 +1,6 @@
-export interface ITokenPayLoad {
-  id?: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: string;
+import { user } from '@prisma/client';
+
+export interface ITokenPayLoad extends Partial<user> {
   isRefreshToken?: boolean;
   isDeveloper?: boolean;
   customerSessionId?: string;

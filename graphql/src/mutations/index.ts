@@ -1,0 +1,1 @@
+export { userMutations } from './user';

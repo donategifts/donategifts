@@ -101,6 +101,7 @@ const resolveUserFields = () => ({
   createdAt: { type: DateTime, description: 'Timestamp' },
   updatedAt: { type: DateTime, description: 'Timestamp' },
   deletedAt: { type: DateTime, description: 'Timestamp' },
+  jwt: { type: GraphQLString, description: 'JWT' },
 });
 
 export const UserType = new GraphQLObjectType({

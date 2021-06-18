@@ -1,3 +1,5 @@
+USE donategifts;
+
 INSERT INTO user (firstName, lastName, email, emailVerified, password, role, loginMode) VALUES ('Loraine', 'Keems', 'lkeems0@google.com.br', false, 'ACE2ZhZG', 'partner', 'default');
 INSERT INTO user (firstName, lastName, email, emailVerified, password, role, loginMode) VALUES ('Ode', 'Grichukhanov', 'ogrichukhanov1@360.cn', false, 'ZUdVcsqT', 'donor', 'facebook');
 INSERT INTO user (firstName, lastName, email, emailVerified, password, role, loginMode) VALUES ('Katina', 'Shurlock', 'kshurlock2@goodreads.com', true, 'c3RZcyXs729', 'developer', 'google');

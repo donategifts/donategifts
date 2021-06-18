@@ -1,9 +1,12 @@
 import {
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
+  GraphQLString,
 } from 'graphql';
+import { userMutations } from './mutations/user';
 import { IContext } from './types/Context';
 import { UserType, userService } from './query';
 
@@ -32,7 +35,17 @@ export const generateSchema = (): GraphQLSchema => {
 
   const mutationType = new GraphQLObjectType({
     name: 'Mutation',
-    fields: () => ({}),
+    fields: {
+      login: {
+        type: UserType,
+        args: {
+          email: { type: GraphQLNonNull(GraphQLString) },
+          password: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (_parent, { email, password }, context: IContext) =>
+          userMutations.login({ context, email, password }),
+      },
+    },
   });
 
   const subscriptionType = new GraphQLObjectType({
@@ -42,7 +55,7 @@ export const generateSchema = (): GraphQLSchema => {
 
   return new GraphQLSchema({
     query: queryType,
-    // mutation: mutationType,
+    mutation: mutationType,
     // subscription: subscriptionType,
   });
 };
