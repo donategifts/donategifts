@@ -1,1 +1,1 @@
-export { userService, UserType } from './user';
+export { userService } from './userQuery';

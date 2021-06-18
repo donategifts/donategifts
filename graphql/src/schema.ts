@@ -6,9 +6,10 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
-import { userMutations } from './mutations/user';
+import { userMutations } from './mutations/userMutations';
 import { IContext } from './types/Context';
-import { UserType, userService } from './query';
+import { userService } from './query';
+import { UserType } from './graphTypes/userType';
 
 export const generateSchema = (): GraphQLSchema => {
   const queryType = new GraphQLObjectType({
@@ -44,6 +45,31 @@ export const generateSchema = (): GraphQLSchema => {
         },
         resolve: async (_parent, { email, password }, context: IContext) =>
           userMutations.login({ context, email, password }),
+      },
+      register: {
+        type: UserType,
+        args: {
+          email: { type: GraphQLNonNull(GraphQLString) },
+          password: { type: GraphQLNonNull(GraphQLString) },
+          firstName: { type: GraphQLNonNull(GraphQLString) },
+          lastName: { type: GraphQLNonNull(GraphQLString) },
+          loginMode: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (
+          _parent,
+          { email, password, firstName, lastName, loginMode },
+          context: IContext,
+        ) =>
+          userMutations.register({
+            context,
+            registerData: {
+              email,
+              password,
+              firstName,
+              lastName,
+              loginMode,
+            },
+          }),
       },
     },
   });

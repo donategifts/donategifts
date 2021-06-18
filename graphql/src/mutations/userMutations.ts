@@ -1,8 +1,10 @@
-import { user as User } from '@prisma/client';
-import { compareSync } from 'bcrypt';
+import { user as User, user_role } from '@prisma/client';
+import { compareSync, hashSync } from 'bcrypt';
 import { CustomError } from '../helper/customError';
 import { IContext } from '../types/Context';
 import { generateCustomToken, JWT_TOKEN_EXPIRES_IN } from '../helper/jwt';
+
+const BCRYPT_SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS);
 
 export const userMutations = {
   login: async ({
@@ -59,5 +61,41 @@ export const userMutations = {
       code: 'PasswordMissMatchError',
       status: 401,
     });
+  },
+  register: async ({
+    context,
+    registerData,
+  }: {
+    context: IContext;
+    registerData: Pick<
+      User,
+      'firstName' | 'lastName' | 'email' | 'loginMode' | 'password'
+    >;
+  }): Promise<User> => {
+    const { firstName, lastName, email, loginMode, password } = registerData;
+
+    const hash = hashSync(password, BCRYPT_SALT_ROUNDS);
+
+    try {
+      const user = await context.prisma.user.create({
+        data: {
+          firstName,
+          lastName,
+          email,
+          loginMode,
+          password: hash,
+          role: user_role.donor,
+        },
+      });
+
+      return user;
+    } catch (error) {
+      throw new CustomError({
+        message: 'Failed to create new User',
+        code: 'PrismaUserCreateError',
+        status: 500,
+        error,
+      });
+    }
   },
 };
