@@ -3,6 +3,7 @@ import { compareSync, hashSync } from 'bcrypt';
 import { CustomError } from '../helper/customError';
 import { IContext } from '../types/Context';
 import { generateCustomToken, JWT_TOKEN_EXPIRES_IN } from '../helper/jwt';
+import { handlePrismaError } from '../helper/prismaErrorHandler';
 
 const BCRYPT_SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS);
 
@@ -24,12 +25,8 @@ export const userMutations = {
         },
       });
     } catch (error) {
-      throw new CustomError({
-        message: 'Failed to fetch user password',
-        code: 'PrismaFetchUserPasswordError',
-        status: 500,
-        error,
-      });
+      const err = handlePrismaError(error);
+      throw err;
     }
 
     if (!result) {
@@ -90,12 +87,8 @@ export const userMutations = {
 
       return user;
     } catch (error) {
-      throw new CustomError({
-        message: 'Failed to create new User',
-        code: 'PrismaUserCreateError',
-        status: 500,
-        error,
-      });
+      const err = handlePrismaError(error);
+      throw err;
     }
   },
 };

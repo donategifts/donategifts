@@ -1,5 +1,5 @@
 import { user } from '@prisma/client';
-import { CustomError } from '../helper/customError';
+import { handlePrismaError } from '../helper/prismaErrorHandler';
 import { IContext } from '../types/Context';
 
 export const userService = {
@@ -17,11 +17,8 @@ export const userService = {
         },
       });
     } catch (error) {
-      throw new CustomError({
-        message: `Failed to fetch user with id ${id}`,
-        code: 'UserFetchError',
-        error,
-      });
+      const err = handlePrismaError(error);
+      throw err;
     }
   },
   getAllUsers: async ({
@@ -36,11 +33,8 @@ export const userService = {
         take: limit,
       });
     } catch (error) {
-      throw new CustomError({
-        message: `Failed to fetch all users`,
-        code: 'UsersFetchError',
-        error,
-      });
+      const err = handlePrismaError(error);
+      throw err;
     }
   },
 };
