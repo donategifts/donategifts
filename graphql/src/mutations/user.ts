@@ -30,7 +30,7 @@ export const userMutations = {
       });
     }
 
-    if (!result?.password) {
+    if (!result) {
       throw new CustomError({
         message: 'Failed to authenticate user',
         code: 'NoUserFoundError',
