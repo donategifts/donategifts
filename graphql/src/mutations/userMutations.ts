@@ -43,7 +43,6 @@ export const userMutations = {
       const { token } = generateCustomToken(
         {
           email,
-          password,
           role: result.role,
         },
         'login',

@@ -113,7 +113,7 @@ export const generateCustomToken = (
     expiresIn: tokenExpiresIn!,
   };
 
-  const token: string = jwt.sign(tokenPayload, JWT_SECRET!, jwtBaseOptions);
+  const token = jwt.sign(tokenPayload, JWT_SECRET!, jwtBaseOptions);
 
   return { token };
 };

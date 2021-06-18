@@ -21,13 +21,12 @@ const server = new ApolloServer({
   introspection: !isProductionMode,
   playground: false,
   context: ({ req }) => {
-    const userId = req.user.id;
     const userRoles = req.user.roles;
     const { isDeveloper, customerSessionId } = req.user;
 
     return {
-      req,
-      userId,
+      ...req,
+      user: req.user,
       userRoles,
       isDeveloper,
       customerSessionId,
@@ -45,14 +44,12 @@ const server = new ApolloServer({
 
       const { user } = params as any;
       if (user) {
-        const userId = user.id;
         const userRoles = user.roles;
         const { isDeveloper } = user;
         const { customerSessionId } = user;
         return {
           ...context,
           pubsub,
-          userId,
           userRoles,
           isDeveloper,
           customerSessionId,
@@ -84,7 +81,7 @@ const server = new ApolloServer({
 
     return err;
   },
-  formatResponse: (response, { context: { userId } }: any) => {
+  formatResponse: (response, { context }: any) => {
     // prevent introspection for anonymous users
     // if (
     //   !userId &&
@@ -95,7 +92,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    console.log('formatResponse', userId);
+    console.log('formatResponse', context.user);
 
     return response;
   },

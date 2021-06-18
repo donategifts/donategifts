@@ -8,19 +8,15 @@ export const authMiddleware = (
 ): void => {
   req.user = {};
 
-  console.log('authMiddleware', req.user);
-
   if (req.headers && req.headers.authorization) {
     const decoded = extractTokenFromAuthorization(req.headers.authorization);
     if (decoded && !decoded.isRefreshToken) {
-      const { id, firstName, lastName, role, customerSessionId } = decoded;
+      const { email, role, customerSessionId } = decoded;
 
       const isDeveloper = role === 'developer';
 
       req.user = {
-        id,
-        firstName,
-        lastName,
+        email,
         role,
         isDeveloper,
         customerSessionId,
