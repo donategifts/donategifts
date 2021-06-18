@@ -26,7 +26,6 @@ const server = new ApolloServer({
 
     return {
       ...req,
-      user: req.user,
       userRoles,
       isDeveloper,
       customerSessionId,
@@ -92,7 +91,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    console.log('formatResponse', context.user);
+    console.log('request.user:', context.user);
 
     return response;
   },
