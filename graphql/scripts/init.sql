@@ -1,5 +1,5 @@
 -- comment this line if you need persistent data during development
-DROP DATABASE IF EXISTS donategifts;
+-- DROP DATABASE IF EXISTS donategifts;
 
 CREATE DATABASE IF NOT EXISTS donategifts;
 

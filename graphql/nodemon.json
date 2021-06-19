@@ -1,7 +1,6 @@
 {
   "watch": [
-    "src",
-    "schema.gql"
+    "src"
   ],
   "ext": "ts",
   "exec": "node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts"

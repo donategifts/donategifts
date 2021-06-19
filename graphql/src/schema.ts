@@ -6,10 +6,10 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
-import { userMutations } from './mutations/userMutations';
+import { userMutations } from './mutations';
 import { IContext } from './types/Context';
 import { userService } from './query';
-import { UserType } from './graphTypes/userType';
+import { UserType, ResetTokenType } from './graphTypes';
 
 export const generateSchema = (): GraphQLSchema => {
   const queryType = new GraphQLObjectType({
@@ -69,6 +69,27 @@ export const generateSchema = (): GraphQLSchema => {
               lastName,
               loginMode,
             },
+          }),
+      },
+      requestPasswordResetToken: {
+        type: ResetTokenType,
+        args: {
+          email: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (_parent, { email }, context: IContext) =>
+          userMutations.requestPasswordResetToken({ context, email }),
+      },
+      resetPassword: {
+        type: UserType,
+        args: {
+          resetToken: { type: GraphQLNonNull(GraphQLString) },
+          password: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (_parent, { resetToken, password }, context: IContext) =>
+          userMutations.resetPassword({
+            context,
+            resetToken,
+            password,
           }),
       },
     },

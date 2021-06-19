@@ -17,8 +17,7 @@ export const userService = {
         },
       });
     } catch (error) {
-      const err = handlePrismaError(error);
-      throw err;
+      throw handlePrismaError(error);
     }
   },
   getAllUsers: async ({
@@ -33,8 +32,7 @@ export const userService = {
         take: limit,
       });
     } catch (error) {
-      const err = handlePrismaError(error);
-      throw err;
+      throw handlePrismaError(error);
     }
   },
 };
