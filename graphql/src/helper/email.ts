@@ -193,7 +193,7 @@ export const sendDonationConfirmationMail = async ({
     .replace('%price%', price.toString())
     .replace('%agency%', agency)
     // Jan 1st, 2020 <- date formatting
-    .replace('%date%', format(new Date(), 'MMM Do, YYYY'));
+    .replace('%date%', format(new Date(), 'MMM do, yyyy'));
 
   return sendMail(
     String(process.env.DEFAULT_EMAIL),
