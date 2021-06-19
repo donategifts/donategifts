@@ -167,11 +167,11 @@ export const userMutations = {
             },
             data: {
               password: hash,
-              passwordResetToken: null,
-              passwordResetTokenExpires: null,
             },
           });
         }
+
+        return result;
       }
 
       throw new CustomError({
