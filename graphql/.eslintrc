@@ -50,7 +50,7 @@
     "no-underscore-dangle": 0,
     "object-curly-spacing": 0,
     "prefer-object-spread": "error",
-    "no-plusplus": "warn",
+    "no-plusplus": "off",
     "no-param-reassign": "warn",
     "no-throw-literal": "warn",
     "curly": [
