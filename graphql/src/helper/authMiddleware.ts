@@ -24,5 +24,5 @@ export const authMiddleware = (
     }
   }
 
-  next();
+  return next();
 };

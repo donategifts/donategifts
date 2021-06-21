@@ -2,6 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { ITokenPayLoad } from '../types/JWT';
 
 import { CustomError } from './customError';
+import { logger } from './logger';
 
 export const {
   JWT_SECRET,
@@ -31,7 +32,7 @@ export const decodeToken = (
     }
 
     if (!quiet) {
-      console.error(`${err.message}: ${token}`);
+      logger.error(`${err.message}: ${token}`);
     }
   }
 

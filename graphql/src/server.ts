@@ -2,6 +2,8 @@ import * as cors from 'cors';
 import * as express from 'express';
 import { ApolloServer, ApolloError } from 'apollo-server-express';
 import { PrismaClient } from '@prisma/client';
+import { GraphQLError } from 'graphql';
+import { join } from 'path';
 import { CustomError } from './helper/customError';
 import { generateSchema } from './schema';
 import { wsAuthMiddleware } from './helper/jwt';
@@ -9,6 +11,7 @@ import { pubsub } from './helper/pubSub';
 import { authMiddleware } from './helper/authMiddleware';
 import { forwardAuthEndpoint } from './helper/wsMiddleware';
 import { loadEnv } from './loadEnv';
+import { logger } from './helper/logger';
 
 loadEnv();
 
@@ -20,13 +23,13 @@ const server = new ApolloServer({
   schema: generateSchema(),
   introspection: !isProductionMode,
   playground: false,
-  context: ({ req }) => {
-    const userRoles = req.user.roles;
+  context: ({ req }: { req: express.Request }) => {
+    const userRole = req.user.role;
     const { isDeveloper, customerSessionId } = req.user;
 
     return {
       ...req,
-      userRoles,
+      userRole,
       isDeveloper,
       customerSessionId,
       prisma,
@@ -60,7 +63,7 @@ const server = new ApolloServer({
       };
     },
   },
-  formatError: (err) => {
+  formatError: (err: GraphQLError) => {
     if (err.originalError) {
       const { message, code, meta } = err.originalError as CustomError;
 
@@ -91,7 +94,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    console.log('request.user:', JSON.stringify(context.user, null, 2));
+    logger.info('request.user:', JSON.stringify(context.user, null, 2));
 
     return response;
   },
@@ -105,71 +108,10 @@ export const boot = async (): Promise<void> =>
 
     app.all('/forward-auth', forwardAuthEndpoint);
 
-    app.use(authMiddleware as any);
+    app.use(authMiddleware);
 
-    app.use('/graphiql', (req, res) => {
-      res.send(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <style>
-                body {
-                  height: 100%;
-                  margin: 0;
-                  width: 100%;
-                  overflow: hidden;
-                }
-
-                #graphiql {
-                  height: 100vh;
-                }
-              </style>
-              <script
-                crossorigin
-                src="https://unpkg.com/react@16/umd/react.development.js"
-              ></script>
-              <script
-                crossorigin
-                src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
-              ></script>
-              <link rel="stylesheet" href="https://unpkg.com/graphiql/graphiql.min.css" />
-            </head>
-            <body>
-              <div id="graphiql">Loading...</div>
-              <script
-                src="https://unpkg.com/graphiql/graphiql.min.js"
-                type="application/javascript"
-              ></script>
-              <script>
-                function graphQLFetcher(graphQLParams) {
-                  return fetch(
-                    'http://localhost:4000/graphql',
-                    {
-                      method: 'post',
-                      headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(graphQLParams),
-                      credentials: 'omit',
-                    },
-                  ).then(function (response) {
-                    return response.json().catch(function () {
-                      return response.text();
-                    });
-                  });
-                }
-                ReactDOM.render(
-                  React.createElement(GraphiQL, {
-                    fetcher: graphQLFetcher,
-                    defaultVariableEditorOpen: true,
-                  }),
-                  document.getElementById('graphiql'),
-                );
-              </script>
-            </body>
-          </html>
-        `);
+    app.use('/graphiql', (_req, res) => {
+      res.sendFile(join(__dirname, '../resources/graphiql.html'));
     });
 
     // eslint-disable-next-line no-unused-vars
@@ -186,17 +128,24 @@ export const boot = async (): Promise<void> =>
       },
     );
 
-    const port = parseInt(process.env.PORT!, 10);
+    if (!process.env.PORT) {
+      throw new CustomError({
+        message: "Couldn't load port from env file",
+      });
+    }
+
+    const port = parseInt(process.env.PORT, 10);
 
     server.applyMiddleware({ app });
 
     app.listen(port, () => {
-      console.log(`Listening on port ${port} ... 🚀`);
-      console.log(
+      logger.info(`Listening on port ${port} ... 🚀`);
+      logger.info(
         `Server ready at http://localhost:${port}${server.graphqlPath}`,
       );
-      console.log(
+      logger.info(
         `Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`,
       );
+      logger.info(`GraphiQL ready at http://localhost:${port}/graphiql`);
     });
   });

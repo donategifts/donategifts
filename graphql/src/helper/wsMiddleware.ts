@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { JWT_ALGORITHM, JWT_SECRET } from './jwt';
+import { logger } from './logger';
 
 export const forwardAuthEndpoint = async (
   req: Request,
@@ -8,7 +9,7 @@ export const forwardAuthEndpoint = async (
 ): Promise<any> => {
   const { carrier } = req.query;
 
-  console.log(`executing auth-check for carrier: ${carrier}`);
+  logger.log(`executing auth-check for carrier: ${carrier}`);
 
   const path = String(req.headers['x-forwarded-uri']);
   const token = String(path?.split('/').pop());
