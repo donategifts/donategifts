@@ -1,15 +1,17 @@
-import { user } from '@prisma/client';
+import { GraphQLInt, GraphQLList } from 'graphql';
+import Query from '../generator/query';
+import { UserType } from '../graphTypes';
 import { handlePrismaError } from '../helper/prismaErrorHandler';
 import { IContext } from '../types/Context';
 
-export const userService = {
-  getUser: async ({
-    context,
-    id,
-  }: {
-    context: IContext;
-    id: string;
-  }): Promise<user | null> => {
+export const getUser = new Query({
+  name: 'getUser',
+  type: UserType,
+  args: {
+    id: { type: GraphQLInt },
+  },
+  description: '',
+  resolve: async (_parent, { id }, context: IContext) => {
     try {
       return await context.prisma.user.findFirst({
         where: {
@@ -20,13 +22,16 @@ export const userService = {
       throw handlePrismaError(error);
     }
   },
-  getAllUsers: async ({
-    context,
-    limit,
-  }: {
-    context: IContext;
-    limit: number;
-  }): Promise<user[]> => {
+});
+
+export const getAllUsers = new Query({
+  name: 'allUsers',
+  type: GraphQLList(UserType),
+  args: {
+    limit: { type: GraphQLInt },
+  },
+  description: '',
+  resolve: async (_parent, { limit = 10 }, context: IContext) => {
     try {
       return await context.prisma.user.findMany({
         take: limit,
@@ -35,4 +40,4 @@ export const userService = {
       throw handlePrismaError(error);
     }
   },
-};
+});

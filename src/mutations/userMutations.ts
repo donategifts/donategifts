@@ -2,24 +2,25 @@ import { user as User, user_role } from '@prisma/client';
 import { compareSync, hashSync } from 'bcrypt';
 import { v4 as uuidV4 } from 'uuid';
 import { add } from 'date-fns';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { handlePrismaError } from '../helper/prismaErrorHandler';
 import { IContext } from '../types/Context';
 import { CustomError } from '../helper/customError';
-
 import { generateCustomToken, JWT_TOKEN_EXPIRES_IN } from '../helper/jwt';
+import Mutation from '../generator/mutation';
+import { ResetTokenType, UserType } from '../graphTypes';
 
 const BCRYPT_SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS);
 
-export const userMutations = {
-  login: async ({
-    context,
-    email,
-    password,
-  }: {
-    context: IContext;
-    email: string;
-    password: string;
-  }): Promise<User & { jwt: string }> => {
+export const login = new Mutation({
+  name: 'login',
+  type: UserType,
+  description: '',
+  args: {
+    email: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (_parent, { email, password }, context: IContext) => {
     let result: User | null;
     try {
       result = await context.prisma.user.findFirst({
@@ -60,22 +61,27 @@ export const userMutations = {
       status: 401,
     });
   },
-  register: async ({
-    context,
-    registerData,
-  }: {
-    context: IContext;
-    registerData: Pick<
-      User,
-      'firstName' | 'lastName' | 'email' | 'loginMode' | 'password'
-    >;
-  }): Promise<User> => {
-    const { firstName, lastName, email, loginMode, password } = registerData;
+});
 
+export const register = new Mutation({
+  name: 'register',
+  type: UserType,
+  args: {
+    email: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+    firstName: { type: GraphQLNonNull(GraphQLString) },
+    lastName: { type: GraphQLNonNull(GraphQLString) },
+    loginMode: { type: GraphQLNonNull(GraphQLString) },
+  },
+  description: '',
+  resolve: async (
+    _parent,
+    { email, password, firstName, lastName, loginMode },
+    context: IContext,
+  ) => {
     const hash = hashSync(password, BCRYPT_SALT_ROUNDS);
-
     try {
-      const user = await context.prisma.user.create({
+      return await context.prisma.user.create({
         data: {
           firstName,
           lastName,
@@ -85,19 +91,21 @@ export const userMutations = {
           role: user_role.donor,
         },
       });
-
-      return user;
     } catch (error) {
       throw handlePrismaError(error);
     }
   },
-  requestPasswordResetToken: async ({
-    context,
-    email,
-  }: {
-    context: IContext;
-    email: string;
-  }): Promise<{ resetToken: string }> => {
+});
+
+export const requestPasswordResetToken = new Mutation({
+  name: 'requestPasswordResetToken',
+  type: ResetTokenType,
+  args: {
+    resetToken: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+  },
+  description: '',
+  resolve: async (_parent, { email }, context: IContext) => {
     try {
       const result = await context.prisma.user.findUnique({
         where: {
@@ -140,15 +148,17 @@ export const userMutations = {
       throw handlePrismaError(error);
     }
   },
-  resetPassword: async ({
-    context,
-    resetToken,
-    password,
-  }: {
-    context: IContext;
-    resetToken: string;
-    password: string;
-  }): Promise<User> => {
+});
+
+export const resetPassword = new Mutation({
+  name: 'resetPassword',
+  type: UserType,
+  args: {
+    resetToken: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+  },
+  description: '',
+  resolve: async (_parent, { resetToken, password }, context: IContext) => {
     try {
       const result = await context.prisma.user.findUnique({
         where: {
@@ -183,4 +193,4 @@ export const userMutations = {
       throw handlePrismaError(error);
     }
   },
-};
+});

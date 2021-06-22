@@ -7,14 +7,6 @@ export interface IMutationConfig {
   type: any;
   args: { [p: string]: any };
   description: string;
-  attributes: {
-    [p: string]: { name: string; description: string; type: GraphQLType };
-  };
-  /**
-   * @type T is used for the arguments, R is the type for the response
-   * @param context The context object received from apollo
-   * @param args An object with key-value pairs from the mutation
-   */
   resolve: (
     parent: Record<string, unknown>,
     { ...args },
@@ -33,14 +25,6 @@ export interface IMutation {
   type: any;
   args: { [p: string]: any };
   description: string;
-  attributes: {
-    [p: string]: { name: string; description: string; type: GraphQLType };
-  };
-  /**
-   * @type T is used for the arguments, R is the type for the response
-   * @param context The context object received from apollo
-   * @param args An object with key-value pairs from the mutation
-   */
   resolve: (
     parent: Record<string, unknown>,
     { ...args },
@@ -56,10 +40,6 @@ export default class Mutation {
   private _args: { [p: string]: any };
 
   private _description: string;
-
-  private _attributes: {
-    [p: string]: { name: string; description: string; type: GraphQLType };
-  };
 
   private _resolve: (
     parent: Record<string, unknown>,
@@ -80,7 +60,6 @@ export default class Mutation {
     type,
     args,
     description,
-    attributes,
     resolve,
     preProcessor,
     postProcessor,
@@ -89,17 +68,16 @@ export default class Mutation {
     this._type = type;
     this._args = args;
     this._description = description;
-    this._attributes = attributes;
     this._resolve = resolve;
     this._preProcessor = preProcessor;
     this._postProcessor = postProcessor;
   }
 
-  private handleProcessors = async <T, R>(
+  private handleProcessors = async (
     _parent: Record<string, unknown>,
-    args: T,
+    args: { [x: string]: any },
     context: IContext,
-  ): Promise<R> => {
+  ): Promise<any> => {
     if (this._resolve && typeof this._resolve === 'function') {
       if (this._preProcessor) {
         if (typeof this._preProcessor === 'function') {
@@ -141,9 +119,8 @@ export default class Mutation {
     return {
       name: this._name,
       type: this._type,
-      args: this._args,
       description: this._description,
-      attributes: this._attributes,
+      args: this._args,
       resolve: this.handleProcessors,
     };
   }
