@@ -24,5 +24,9 @@ export const authMiddleware = (
     }
   }
 
+  req.user = {
+    role: 'guest',
+  };
+
   return next();
 };

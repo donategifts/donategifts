@@ -4,8 +4,8 @@ import {
   register,
   requestPasswordResetToken,
   resetPassword,
-} from './mutations/userMutations';
-import { getAllUsers, getUser } from './query/userQuery';
+} from './mutations';
+import { getAllUsers, getUser } from './queries';
 
 export const generateSchema = (): GraphQLSchema => {
   const queryType = new GraphQLObjectType({

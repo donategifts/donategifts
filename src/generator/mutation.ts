@@ -1,12 +1,17 @@
-import { GraphQLType } from 'graphql';
+import { GraphQLObjectType, GraphQLType } from 'graphql';
 import { CustomError } from '../helper/customError';
 import { IContext } from '../types/Context';
 
 export interface IMutationConfig {
   name: string;
-  type: any;
-  args: { [p: string]: any };
   description: string;
+  attributes: {
+    name: string;
+    roles: string[];
+    type: GraphQLType;
+    description: string;
+  }[];
+  args: { [p: string]: any };
   resolve: (
     parent: Record<string, unknown>,
     { ...args },
@@ -22,9 +27,9 @@ export interface IMutationConfig {
 
 export interface IMutation {
   name: string;
-  type: any;
-  args: { [p: string]: any };
   description: string;
+  type: GraphQLObjectType<any, any>;
+  args: { [p: string]: any };
   resolve: (
     parent: Record<string, unknown>,
     { ...args },
@@ -33,23 +38,31 @@ export interface IMutation {
 }
 
 export default class Mutation {
-  private _name: string;
+  private readonly _name: string;
 
-  private _type: GraphQLType;
+  private readonly _description: string;
 
-  private _args: { [p: string]: any };
+  private readonly _attributes: {
+    name: string;
+    roles: string[];
+    type: GraphQLType;
+    description: string;
+  }[];
 
-  private _description: string;
+  private readonly _args: { [p: string]: any };
 
-  private _resolve: (
+  private readonly _resolve: (
     parent: Record<string, unknown>,
     { ...args },
     context: IContext,
   ) => any;
 
-  private _preProcessor?: ({ ...args }, context: IContext) => Promise<void>;
+  private readonly _preProcessor?: (
+    { ...args },
+    context: IContext,
+  ) => Promise<void>;
 
-  private _postProcessor?: (
+  private readonly _postProcessor?: (
     { ...args },
     context: IContext,
     result?: any,
@@ -57,20 +70,22 @@ export default class Mutation {
 
   public constructor({
     name,
-    type,
-    args,
     description,
+    attributes,
+    args,
     resolve,
     preProcessor,
     postProcessor,
   }: IMutationConfig) {
     this._name = name;
-    this._type = type;
-    this._args = args;
     this._description = description;
+    this._attributes = attributes;
+    this._args = args;
     this._resolve = resolve;
     this._preProcessor = preProcessor;
     this._postProcessor = postProcessor;
+
+    console.log(this._attributes);
   }
 
   private handleProcessors = async (
@@ -105,6 +120,20 @@ export default class Mutation {
         }
       }
 
+      const { userRole } = context;
+
+      // check user roles and delete result entries if a role doesn't have access
+
+      // TODO: attributes have empty roles
+      // because the constructor gets called multiple times for some reason...
+      this._attributes.forEach((attribute) => {
+        if (attribute.name in result) {
+          if (!attribute.roles.includes(userRole)) {
+            delete result[attribute.name];
+          }
+        }
+      });
+
       return result;
     }
 
@@ -115,10 +144,28 @@ export default class Mutation {
     });
   };
 
+  private generateType = (): GraphQLObjectType<any, any> => {
+    const type = {};
+
+    for (const attribute of this._attributes) {
+      type[attribute.name] = {
+        name: attribute.name,
+        description: attribute.description,
+        type: attribute.type,
+      };
+    }
+
+    return new GraphQLObjectType({
+      name: this._name,
+      description: this._description,
+      fields: type,
+    });
+  };
+
   public createMutation(): IMutation {
     return {
       name: this._name,
-      type: this._type,
+      type: this.generateType(),
       description: this._description,
       args: this._args,
       resolve: this.handleProcessors,

@@ -94,7 +94,7 @@ const server = new ApolloServer({
     //   delete response.data.__type;
     // }
 
-    logger.info('request.user:', JSON.stringify(context.user, null, 2));
+    logger.info('request.user:', context.user);
 
     return response;
   },

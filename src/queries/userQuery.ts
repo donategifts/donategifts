@@ -5,12 +5,16 @@ import { handlePrismaError } from '../helper/prismaErrorHandler';
 import { IContext } from '../types/Context';
 
 export const getUser = new Query({
-  name: 'getUser',
+  name: 'GetUser',
+
   type: UserType,
+
+  description: '',
+
   args: {
     id: { type: GraphQLInt },
   },
-  description: '',
+
   resolve: async (_parent, { id }, context: IContext) => {
     try {
       return await context.prisma.user.findFirst({
@@ -25,12 +29,16 @@ export const getUser = new Query({
 });
 
 export const getAllUsers = new Query({
-  name: 'allUsers',
+  name: 'GetAllUsers',
+
   type: GraphQLList(UserType),
+
+  description: '',
+
   args: {
     limit: { type: GraphQLInt },
   },
-  description: '',
+
   resolve: async (_parent, { limit = 10 }, context: IContext) => {
     try {
       return await context.prisma.user.findMany({
