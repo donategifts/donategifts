@@ -1,3 +1,4 @@
+import { user_role } from '@prisma/client';
 import { GraphQLObjectType, GraphQLType } from 'graphql';
 import { CustomError } from '../helper/customError';
 import { IContext } from '../types/Context';
@@ -7,7 +8,7 @@ export interface IMutationConfig {
   description: string;
   attributes: {
     name: string;
-    roles: string[];
+    roles: [user_role | 'guest'];
     type: GraphQLType;
     description: string;
   }[];

@@ -16,7 +16,7 @@ export const requestPasswordResetToken = new Mutation({
       name: 'resetToken',
       description: '',
       type: GraphQLString,
-      roles: [],
+      roles: ['admin'],
     },
   ],
 
