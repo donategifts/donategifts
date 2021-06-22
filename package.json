@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "lint": "eslint --cache --fix --ext .ts --ignore-path .eslintignore src/",
     "start": "node dist/index.js",
-    "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+    "test": "echo No tests available",
     "prisma:introspect": "npx prisma introspect",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate-dev": "npx prisma migrate dev --name ",
