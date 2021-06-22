@@ -20,7 +20,7 @@ jobs:
       matrix:
         node: [16]
 
-    mariadb:
+    services:
       image: mariadb:latest
       env:
         MYSQL_USER: mysql
