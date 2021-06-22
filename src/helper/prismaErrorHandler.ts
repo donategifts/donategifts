@@ -25,7 +25,6 @@ export const handlePrismaError = (
         status: 500,
         error,
       });
-      break;
     case 'P2002':
       return new CustomError({
         message: 'Unique constraint failed',

@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 export class CustomError extends Error {
   public code?: string;
 
@@ -29,7 +31,7 @@ export class CustomError extends Error {
     this.meta = meta;
 
     if (process.env.NODE_ENV !== 'production') {
-      this.error = error;
+      logger.error(error);
     }
   }
 }

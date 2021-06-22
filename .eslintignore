@@ -1,0 +1,4 @@
+dist
+prisma
+node_modules
+scripts
