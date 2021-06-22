@@ -49,11 +49,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Eslint
-        run: npm run lint
-
       - name: Install modules
         run: npm install
+
+      - name: Eslint
+        run: npm run lint
 
       - name: Build project
         run: npm run build
