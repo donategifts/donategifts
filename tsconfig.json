@@ -8,6 +8,7 @@
     "outDir": "build",
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "sourceMap": true,
     "strict": true,
     "noImplicitAny": false,
     "emitDecoratorMetadata": true,
