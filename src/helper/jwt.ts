@@ -22,17 +22,18 @@ export const decodeToken = (
     decoded = jwt.verify(token, JWT_SECRET!, {
       algorithms: [JWT_ALGORITHM],
     }) as ITokenPayLoad;
-  } catch (err) {
-    if (throwOnExpired && err instanceof jwt.TokenExpiredError) {
+  } catch (error) {
+    if (throwOnExpired && error instanceof jwt.TokenExpiredError) {
       throw new CustomError({
         message: 'Token expired',
         code: 'AuthorizationTokenExpiredError',
         status: 401,
+        error,
       });
     }
 
     if (!quiet) {
-      logger.error(`${err.message}: ${token}`);
+      logger.error(`${error.message}: ${token}`);
     }
   }
 
@@ -47,7 +48,7 @@ export const extractTokenFromAuthorization = (
   if (authHeaderParts.length !== 2) {
     throw new CustomError({
       message: "Authorization header format is: 'Authorization: JWT [token]'",
-      code: 'AuthorizationHeaderError',
+      code: 'AuthorizationHeaderFormatError',
     });
   }
 
@@ -56,7 +57,7 @@ export const extractTokenFromAuthorization = (
   if (scheme.toUpperCase() !== 'JWT') {
     throw new CustomError({
       message: `Unknown authorization scheme used: ${scheme}`,
-      code: 'AuthorizationHeaderError',
+      code: 'AuthorizationHeaderSchemeError',
     });
   }
 

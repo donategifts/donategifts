@@ -1,39 +1,37 @@
-import { compareSync } from 'bcrypt';
 import {
+  GraphQLList,
   GraphQLInt,
-  GraphQLString,
   GraphQLBoolean,
-  GraphQLNonNull,
+  GraphQLString,
 } from 'graphql';
-import { user as User } from '@prisma/client';
-import Mutation from '../../generator/mutation';
+import Query from '../../generator/query';
 import { DateTime } from '../../graphTypes';
-import { CustomError } from '../../helper/customError';
-import { generateCustomToken, JWT_TOKEN_EXPIRES_IN } from '../../helper/jwt';
 import { handlePrismaError } from '../../helper/prismaErrorHandler';
 import { IContext } from '../../types/Context';
 
-export const login = new Mutation({
-  name: 'Login',
+export const getAllUsers = new Query({
+  name: 'GetAllUsers',
+
+  type: GraphQLList,
 
   description: '',
 
   attributes: [
     {
       name: 'id',
-      roles: ['admin', 'guest'],
+      roles: ['admin'],
       type: GraphQLInt,
       description: 'Id of the user entry',
     },
     {
       name: 'firstName',
-      roles: ['admin', 'guest'],
+      roles: ['admin'],
       type: GraphQLString,
       description: 'The users firstName',
     },
     {
       name: 'lastName',
-      roles: ['admin', 'guest'],
+      roles: ['admin'],
       type: GraphQLString,
       description: 'The users lastName',
     },
@@ -110,60 +108,19 @@ export const login = new Mutation({
       type: DateTime,
       description: 'Timestamp',
     },
-    {
-      name: 'jwt',
-      roles: ['admin', 'guest'],
-      type: GraphQLString,
-      description: 'JWT',
-    },
   ],
 
   args: {
-    email: { type: GraphQLNonNull(GraphQLString) },
-    password: { type: GraphQLNonNull(GraphQLString) },
+    limit: { type: GraphQLInt },
   },
 
-  resolve: async (_parent, { email, password }, context: IContext) => {
-    let result: User | null;
+  resolve: async (_parent, { limit = 10 }, context: IContext) => {
     try {
-      result = await context.prisma.user.findFirst({
-        where: {
-          email,
-        },
+      return await context.prisma.user.findMany({
+        take: limit,
       });
     } catch (error) {
       throw handlePrismaError(error);
     }
-
-    if (!result) {
-      throw new CustomError({
-        message: 'Failed to authenticate user',
-        code: 'NoUserFoundError',
-        status: 401,
-      });
-    }
-
-    const passwordMatch = compareSync(password, result.password);
-
-    if (passwordMatch) {
-      const { token } = generateCustomToken(
-        {
-          email,
-          role: result.role,
-        },
-        'login',
-        JWT_TOKEN_EXPIRES_IN,
-      );
-
-      console.log(result.role);
-
-      return { ...result, jwt: token };
-    }
-
-    throw new CustomError({
-      message: 'Passwords do not match',
-      code: 'PasswordMissMatchError',
-      status: 401,
-    });
   },
 });

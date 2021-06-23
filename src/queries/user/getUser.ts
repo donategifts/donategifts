@@ -1,20 +1,11 @@
-import { compareSync } from 'bcrypt';
-import {
-  GraphQLInt,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLNonNull,
-} from 'graphql';
-import { user as User } from '@prisma/client';
-import Mutation from '../../generator/mutation';
+import { GraphQLBoolean, GraphQLInt, GraphQLString } from 'graphql';
+import Query from '../../generator/query';
 import { DateTime } from '../../graphTypes';
-import { CustomError } from '../../helper/customError';
-import { generateCustomToken, JWT_TOKEN_EXPIRES_IN } from '../../helper/jwt';
 import { handlePrismaError } from '../../helper/prismaErrorHandler';
 import { IContext } from '../../types/Context';
 
-export const login = new Mutation({
-  name: 'Login',
+export const getUser = new Query({
+  name: 'GetUser',
 
   description: '',
 
@@ -110,60 +101,21 @@ export const login = new Mutation({
       type: DateTime,
       description: 'Timestamp',
     },
-    {
-      name: 'jwt',
-      roles: ['admin', 'guest'],
-      type: GraphQLString,
-      description: 'JWT',
-    },
   ],
 
   args: {
-    email: { type: GraphQLNonNull(GraphQLString) },
-    password: { type: GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLInt },
   },
 
-  resolve: async (_parent, { email, password }, context: IContext) => {
-    let result: User | null;
+  resolve: async (_parent, { id }, context: IContext) => {
     try {
-      result = await context.prisma.user.findFirst({
+      return await context.prisma.user.findFirst({
         where: {
-          email,
+          id: parseInt(id, 10),
         },
       });
     } catch (error) {
       throw handlePrismaError(error);
     }
-
-    if (!result) {
-      throw new CustomError({
-        message: 'Failed to authenticate user',
-        code: 'NoUserFoundError',
-        status: 401,
-      });
-    }
-
-    const passwordMatch = compareSync(password, result.password);
-
-    if (passwordMatch) {
-      const { token } = generateCustomToken(
-        {
-          email,
-          role: result.role,
-        },
-        'login',
-        JWT_TOKEN_EXPIRES_IN,
-      );
-
-      console.log(result.role);
-
-      return { ...result, jwt: token };
-    }
-
-    throw new CustomError({
-      message: 'Passwords do not match',
-      code: 'PasswordMissMatchError',
-      status: 401,
-    });
   },
 });
