@@ -21,19 +21,19 @@ export const register = new Mutation({
   attributes: [
     {
       name: 'id',
-      roles: ['admin'],
+      roles: ['admin', 'guest'],
       type: GraphQLInt,
       description: 'Id of the user entry',
     },
     {
       name: 'firstName',
-      roles: ['admin'],
+      roles: ['admin', 'guest'],
       type: GraphQLString,
       description: 'The users firstName',
     },
     {
       name: 'lastName',
-      roles: ['admin'],
+      roles: ['admin', 'guest'],
       type: GraphQLString,
       description: 'The users lastName',
     },

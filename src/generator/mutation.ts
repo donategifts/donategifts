@@ -1,14 +1,13 @@
-import { user_role } from '@prisma/client';
 import { GraphQLObjectType, GraphQLType } from 'graphql';
 import { CustomError } from '../helper/customError';
-import { IContext } from '../types/Context';
+import { IContext, Roles } from '../types/Context';
 
 export interface IMutationConfig {
   name: string;
   description: string;
   attributes: {
     name: string;
-    roles: [user_role | 'guest'];
+    roles: Roles[];
     type: GraphQLType;
     description: string;
   }[];
@@ -45,7 +44,7 @@ export default class Mutation {
 
   private readonly _attributes: {
     name: string;
-    roles: string[];
+    roles: Roles[];
     type: GraphQLType;
     description: string;
   }[];
@@ -80,13 +79,11 @@ export default class Mutation {
   }: IMutationConfig) {
     this._name = name;
     this._description = description;
-    this._attributes = attributes;
+    this._attributes = [...attributes];
     this._args = args;
     this._resolve = resolve;
     this._preProcessor = preProcessor;
     this._postProcessor = postProcessor;
-
-    console.log(this._attributes);
   }
 
   private handleProcessors = async (
@@ -124,9 +121,6 @@ export default class Mutation {
       const { userRole } = context;
 
       // check user roles and delete result entries if a role doesn't have access
-
-      // TODO: attributes have empty roles
-      // because the constructor gets called multiple times for some reason...
       this._attributes.forEach((attribute) => {
         if (attribute.name in result) {
           if (!attribute.roles.includes(userRole)) {

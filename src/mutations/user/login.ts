@@ -21,19 +21,19 @@ export const login = new Mutation({
   attributes: [
     {
       name: 'id',
-      roles: ['guest'],
+      roles: ['admin', 'guest'],
       type: GraphQLInt,
       description: 'Id of the user entry',
     },
     {
       name: 'firstName',
-      roles: ['guest'],
+      roles: ['admin', 'guest'],
       type: GraphQLString,
       description: 'The users firstName',
     },
     {
       name: 'lastName',
-      roles: ['guest'],
+      roles: ['admin', 'guest'],
       type: GraphQLString,
       description: 'The users lastName',
     },
