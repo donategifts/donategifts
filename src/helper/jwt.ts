@@ -83,17 +83,13 @@ export const wsAuthMiddleware = (params: {
   if (params.authorization) {
     const decoded = extractTokenFromAuthorization(params.authorization);
     if (decoded && !decoded.isRefreshToken) {
-      const { id, firstName, lastName, role, customerSessionId } = decoded;
-
-      const isDeveloper = role === 'developer';
+      const { id, firstName, lastName, role } = decoded;
 
       params.user = {
         id,
         firstName,
         lastName,
         role,
-        isDeveloper,
-        customerSessionId,
       };
     }
   }

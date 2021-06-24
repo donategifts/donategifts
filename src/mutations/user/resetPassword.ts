@@ -1,12 +1,6 @@
 import { hashSync } from 'bcrypt';
-import {
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLInt, GraphQLNonNull, GraphQLString } from 'graphql';
 import Mutation from '../../generator/mutation';
-import { DateTime } from '../../graphTypes';
 import { CustomError } from '../../helper/customError';
 import { handlePrismaError } from '../../helper/prismaErrorHandler';
 import { IContext } from '../../types/Context';
@@ -50,19 +44,6 @@ export const resetPassword = new Mutation({
       description: 'Email address of the user',
     },
     {
-      name: 'emailVerified',
-      roles: ['admin'],
-      type: GraphQLBoolean,
-      description:
-        'Boolean value to check if user has a verified email address',
-    },
-    {
-      name: 'emailVerificationHash',
-      roles: ['admin'],
-      type: GraphQLString,
-      description: 'Verification hash of the email',
-    },
-    {
       name: 'role',
       roles: ['admin'],
       type: GraphQLString,
@@ -74,43 +55,6 @@ export const resetPassword = new Mutation({
       type: GraphQLString,
       description: 'The users login mode => Facebook/Google/Email',
     },
-    {
-      name: 'password',
-      roles: ['admin'],
-      type: GraphQLString,
-      description: 'User password',
-    },
-    {
-      name: 'passwordResetToken',
-      roles: ['admin'],
-      type: GraphQLString,
-      description: 'User password reset token',
-    },
-    {
-      name: 'passwordResetTokenExpires',
-      roles: ['admin'],
-      type: DateTime,
-      description: 'Time window in which the token expires',
-    },
-    {
-      name: 'createdAt',
-      roles: ['admin'],
-      type: DateTime,
-      description: 'Timestamp',
-    },
-    {
-      name: 'updatedAt',
-      roles: ['admin'],
-      type: DateTime,
-      description: 'Timestamp',
-    },
-    {
-      name: 'deletedAt',
-      roles: ['admin'],
-      type: DateTime,
-      description: 'Timestamp',
-    },
-    { name: 'jwt', roles: ['admin'], type: GraphQLString, description: 'JWT' },
   ],
 
   args: {

@@ -25,13 +25,10 @@ const server = new ApolloServer({
   playground: false,
   context: ({ req }: { req: express.Request }) => {
     const userRole = req.user.role;
-    const { isDeveloper, customerSessionId } = req.user;
 
     return {
       ...req,
       userRole,
-      isDeveloper,
-      customerSessionId,
       prisma,
     };
   },
@@ -47,14 +44,10 @@ const server = new ApolloServer({
       const { user } = params as any;
       if (user) {
         const userRoles = user.roles;
-        const { isDeveloper } = user;
-        const { customerSessionId } = user;
         return {
           ...context,
           pubsub,
           userRoles,
-          isDeveloper,
-          customerSessionId,
         };
       }
       return {

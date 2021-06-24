@@ -4,8 +4,6 @@ declare namespace Express {
     user: {
       email?: string;
       role?: string;
-      isDeveloper?: boolean;
-      customerSessionId?: string;
     };
   }
 }

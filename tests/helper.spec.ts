@@ -49,8 +49,6 @@ describe('Helper', () => {
       const expectedResponse = {
         email: 'john@doe.com',
         role: 'donor',
-        isDeveloper: false,
-        customerSessionId: undefined,
       };
 
       authMiddleware(mockRequest, mockResponse, nextFunction);
