@@ -5,7 +5,6 @@
     "build": "tsc",
     "clean": "rimraf ./node_modules ./dist",
     "coverage": "jest --runInBand --coverage",
-    "coverage-ci": "npm run coverage && cat ./coverage/lcov.info | codecov",
     "dev": "nodemon",
     "husky": "npx husky install",
     "lint": "eslint --cache --fix --ext .ts --ignore-path .eslintignore src/",
