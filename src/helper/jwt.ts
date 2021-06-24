@@ -4,11 +4,7 @@ import { ITokenPayLoad } from '../types/JWT';
 import { CustomError } from './customError';
 import { logger } from './logger';
 
-export const {
-  JWT_SECRET,
-  JWT_TOKEN_EXPIRES_IN,
-  JWT_REFRESH_TOKEN_EXPIRES_IN,
-} = process.env;
+export const { JWT_SECRET, JWT_TOKEN_EXPIRES_IN } = process.env;
 export const JWT_ALGORITHM = 'HS256';
 
 export const decodeToken = (
@@ -19,7 +15,7 @@ export const decodeToken = (
   let decoded = {} as ITokenPayLoad;
 
   try {
-    decoded = jwt.verify(token, JWT_SECRET!, {
+    decoded = jwt.verify(token, String(JWT_SECRET), {
       algorithms: [JWT_ALGORITHM],
     }) as ITokenPayLoad;
   } catch (error) {
@@ -106,16 +102,16 @@ export const wsAuthMiddleware = (params: {
 export const generateCustomToken = (
   tokenPayload: ITokenPayLoad,
   subject: string,
-  tokenExpiresIn = JWT_TOKEN_EXPIRES_IN,
+  tokenExpiresIn = String(JWT_TOKEN_EXPIRES_IN),
 ): { token: string } => {
   const jwtBaseOptions: jwt.SignOptions = {
     algorithm: JWT_ALGORITHM,
-    issuer: 'batch',
+    issuer: 'donategifts',
     subject,
-    expiresIn: tokenExpiresIn!,
+    expiresIn: tokenExpiresIn,
   };
 
-  const token = jwt.sign(tokenPayload, JWT_SECRET!, jwtBaseOptions);
+  const token = jwt.sign(tokenPayload, String(JWT_SECRET), jwtBaseOptions);
 
   return { token };
 };

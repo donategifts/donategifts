@@ -3,6 +3,6 @@ import { describe, it } from '@jest/globals';
 
 describe('User', () => {
   it('Should console.log', () => {
-    console.log('test');
+    // console.log('test');
   });
 });

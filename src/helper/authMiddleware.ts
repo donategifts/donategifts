@@ -10,6 +10,7 @@ export const authMiddleware = (
 
   if (req.headers && req.headers.authorization) {
     const decoded = extractTokenFromAuthorization(req.headers.authorization);
+
     if (decoded && !decoded.isRefreshToken) {
       const { email, role, customerSessionId } = decoded;
 
@@ -22,11 +23,11 @@ export const authMiddleware = (
         customerSessionId,
       };
     }
+  } else {
+    req.user = {
+      role: 'guest',
+    };
   }
-
-  req.user = {
-    role: 'guest',
-  };
 
   return next();
 };

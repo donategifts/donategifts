@@ -8,7 +8,7 @@ module.exports = {
       diagnostics: false,
     },
   },
-  // transformIgnorePatterns: [ '/node_modules/', '^.+\\.js?$' ],
+  setupFiles: ['<rootDir>/test-setup.ts'],
   testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(js|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };

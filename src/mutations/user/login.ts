@@ -155,8 +155,6 @@ export const login = new Mutation({
         JWT_TOKEN_EXPIRES_IN,
       );
 
-      console.log(result.role);
-
       return { ...result, jwt: token };
     }
 
