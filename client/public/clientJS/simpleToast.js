@@ -3,7 +3,7 @@
 
 // since we only change toast message
 // wrap it so there is less code around
-function showToast(message, success = false, duration= 3000, offset={x:0, y:0}, className= 'custom-toast') {
+function showToast(message, success = false, duration= 3000, offset={x:0, y:0}, className= 'custom-toast', escapeMarkup = true) {
   var color = success ? '#32a852' : '#8e4dff';
 
   //Login toast has duration of -1(displays until closed by user), styling is below for it.
@@ -21,6 +21,7 @@ function showToast(message, success = false, duration= 3000, offset={x:0, y:0}, 
     backgroundColor: `linear-gradient(to right, ${color}, ${color})`,
     stopOnFocus: true,
     className,
-    offset
+    offset,
+    escapeMarkup,
   }).showToast();
 }
