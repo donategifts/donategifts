@@ -38,32 +38,36 @@ Our platform also hosts birthday clubs and annual holiday gift drives for the ch
 
 ## Questions?
 
-Non-member? support@donate-gifts.com
-Member? slack #dev-collab-convo
+> Non-member? support@donate-gifts.com
+> Member? slack #dev-collab-convo
 
 ## Usage
 
-Install Mongo or use Docker to spin up a Docker container
+1. Install packages
+
+> `npm install`
+
+2. Install Mongo or use Docker to spin up a Docker container
 start container with:
-`docker-compose up`
 
-Dev Env runs with example/test config.env
+> `docker-compose up -d`
 
-Production runs with config.env (keys protected)
+3. Run seeder to populate the dev db
 
-Dev server uses a separate db
+> `node server/db/seeder.js`
 
-public dir has all the static components and assets
+4. Run dev
 
-We are saving media files to AWS S3
+> `npm run dev`
 
-add more test files in **tests** dir
+## Notes
 
-## Install Dependencies
+- Dev Env runs with example/test config.env, while production runs with config.env (keys protected). Get in touch with team on Slack for keys.
+- Dev server uses a separate db
+- Public dir has all the static components and assets
+- We are saving media files to AWS S3
+- Add more test files in **tests** dir
 
-```
-npm install
-```
 
 ## Run App
 
