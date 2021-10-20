@@ -17,9 +17,9 @@ function getChristmasString() {
   christmasData.days = daysTillChristmas;
 
   if (daysTillChristmas > 1) {
-    christmasData.text = `DAYS UNTIL CHRISTMAS DONATIONS CLOSE`;
+    christmasData.text = `DAYS UNTIL CHRISTMAS`;
   } else if (daysTillChristmas === 1) {
-    christmasData.text = `DAY UNTIL CHRISTMAS DONATIONS CLOSE`;
+    christmasData.text = `DAY UNTIL CHRISTMAS`;
   } else {
     christmasData.text = `MERRY CHRISTMAS`;
   }
