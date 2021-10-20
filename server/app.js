@@ -132,7 +132,7 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(bodyParser.json({
+app.use(express.json({
   verify (req, res, buf) {
     const url = req.originalUrl;
     if (url.startsWith('/stripe')) {
@@ -207,5 +207,13 @@ app.use((err, req, res, _next) => {
   res.status(500);
   res.render('500');
 });
+
+app.listen(process.env.PORT, () => {
+  log.info(`App listening on port ${process.env.PORT}`)
+})
+
+process.on('uncaughtException', (err) => {
+  log.error(err);
+})
 
 module.exports = app;
