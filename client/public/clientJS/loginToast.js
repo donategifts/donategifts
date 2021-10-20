@@ -6,7 +6,7 @@ $(window).on('load', function() {
     sessionStorage.setItem('LoginToastShow', 1);
   myLoginToast = setTimeout(function() {
     let msg = "<div class='loginToastReminder'>More features will be enabled if you log in. <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/users/signup\">Sign&nbsp;Up</a></span> or <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/users/login\">Login</a></span></div>"
-    showToast(msg, undefined, -1, { x: 0, y: '7em' }, 'loginToastReminder');
+    showToast(msg, undefined, -1, { x: 0, y: '7em' }, 'loginToastReminder', false);
     }, 90 * 1000);
   }
 });
