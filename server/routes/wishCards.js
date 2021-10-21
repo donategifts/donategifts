@@ -105,7 +105,7 @@ router.post(
           ...req.body,
         });
 
-        res.status(200).send({ success: true, url: '/wishcards/' });
+        res.status(200).send({ success: true, url: '/wishcards/me' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
@@ -174,7 +174,7 @@ router.post(
           ...req.body,
         });
 
-        res.status(200).send({ success: true, url: '/wishcards/' });
+        res.status(200).send({ success: true, url: '/wishcards/me' });
         log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
       } catch (error) {
         handleError(res, 400, error);
