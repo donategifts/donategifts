@@ -165,7 +165,7 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
         res.body.should.have.property('success');
         res.body.should.have.property('url');
         res.body.success.should.equal(true);
-        res.body.url.should.equal('/wishcards/');
+        res.body.url.should.equal('/wishcards/me');
 
         WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((wishcard) => {
           wishcardRequest.wishItemName.should.equal(wishcard.wishItemName);
@@ -189,7 +189,23 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
       });
   });
 
-  it('POST wishcards/guided - receives url - /wishcards', (done) => {
+  it('POST /wishcards/ - Should also work with http amazon link', (done) => {
+    agent
+      .post('/wishcards/')
+      .type('form')
+      .field({ ...wishcardRequest, wishItemURL: 'http://www.amazon.com/asdf' })
+      .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('success');
+        res.body.should.have.property('url');
+        res.body.success.should.equal(true);
+        res.body.url.should.equal('/wishcards/me');
+        done();
+      });
+  });
+
+  it('POST wishcards/guided - receives url - /wishcards/me', (done) => {
     agent
       .post('/wishcards/guided/')
       .type('form')
@@ -201,7 +217,7 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
         res.body.should.have.property('success');
         res.body.should.have.property('url');
         res.body.success.should.equal(true);
-        res.body.url.should.equal('/wishcards/');
+        res.body.url.should.equal('/wishcards/me');
 
         WishCard.findOne({ childFirstName: guidedwishcardRequest.childFirstName }).then((wishcard) => {
           itemChoice.Name.should.equal(wishcard.wishItemName);

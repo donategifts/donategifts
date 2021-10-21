@@ -17,7 +17,7 @@ const createWishcardValidationRules = () => {
       .withMessage('Wish item url is required')
       .isString()
       // https://regex101.com/r/yM5lU0/13 if you want to see it in action
-      .matches(/^(https(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
+      .matches(/^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
       .withMessage('Wish item url has to be a valid amazon link!'),
     body('childStory').notEmpty().withMessage("Child's story is required").isString(),
     body('address1')
