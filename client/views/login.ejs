@@ -92,6 +92,8 @@
                 pattern="(?=.*\d)(?=.*[a-z]).{8,}"
                 title="Must contain at least one number and one lowercase letter, and at least 8 or more characters"
               />
+              
+              <img id="showPassword" src="../public/img/pass-hide.png"/>
             </div>
 
             <a href="/users/password/request/" class="text-white">Forgot Password?</a>
@@ -134,5 +136,6 @@
     <%}%>
     <script src="/public/clientJS/login.js"></script>
     <script src="/public/clientJS/socialLogin.js"></script>
+    <script src="/public/clientJS/togglePasswordVisibility.js"></script>
   </body>
 </html>

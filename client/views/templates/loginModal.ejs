@@ -27,6 +27,7 @@
 <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
 <script src="/public/clientJS/loginModal.js"></script>
 <script src="/public/clientJS/socialLogin.js"></script>
+<script src="/public/clientJS/togglePasswordVisibility.js"></script>
 <div
   class="modal fade login"
   id="loginModalCenter"
@@ -64,6 +65,7 @@
 
           <div class="wrap-input mg-btm2" data-validate="Password is required">
             <label class="quick-font" for="password">Password</label>
+            <div id="input-container">
             <input
               required
               class="input-default quick-font"
@@ -74,6 +76,8 @@
               pattern="(?=.*\d)(?=.*[a-z]).{8,}"
               title="Must contain at least one number and one lowercase letter, and at least 8 or more characters"
             />
+            <img id="showPassword" src="../public/img/pass-hide.png"/>
+          </div>
           </div>
 
           <div class="forgot-container quick-font">

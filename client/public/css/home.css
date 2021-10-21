@@ -870,6 +870,17 @@ New color scheme reference is in utils.css
   margin-bottom: 20px;
 }
 
+#input-container {
+  position: relative;
+  display: flex;
+}
+
+#input-container > img {
+  position: absolute;
+  top: 35%;
+  right: 15px;
+}
+
 @media screen and (min-width: 992px) {
   .modal.login .modal-body {
     margin: 0px 40px;
