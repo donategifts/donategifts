@@ -436,7 +436,6 @@ router.post(
   redirectProfile,
   async (req, res) => {
     const { email, password } = req.body;
-
     const user = await UserRepository.getUserByEmail(email.toLowerCase());
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
@@ -481,9 +480,13 @@ router.get('/terms', async (req, res) => {
 router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, res) => {
   try {
     const user = await UserRepository.getUserByVerificationHash(req.params.hash);
-
     if (user) {
       if (user.emailVerified) {
+        if (req.session.user) {
+          return res.status(200).render('profile', {
+          user: res.locals.user
+        });
+        }
         return res.status(200).render('login', {
           user: res.locals.user,
           successNotification: {

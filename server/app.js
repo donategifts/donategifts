@@ -25,7 +25,6 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
-const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
 const { connectSocket } = require('./helper/socket');
 
@@ -37,13 +36,6 @@ const AgencyRepository = require('./db/repository/AgencyRepository');
 const log = require('./helper/logger');
 
 const app = express();
-
-
-// MORGAN REQUEST LOGGER
-if (process.env.NODE_ENV === 'development') {
-  // colorful output for dev environment
-  app.use(morgan('dev'));
-}
 
 app.use(
   responseTime((req, res, time) => {
