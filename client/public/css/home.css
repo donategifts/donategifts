@@ -875,7 +875,7 @@ New color scheme reference is in utils.css
   display: flex;
 }
 
-#input-container > img {
+#input-container > i {
   position: absolute;
   top: 35%;
   right: 15px;
