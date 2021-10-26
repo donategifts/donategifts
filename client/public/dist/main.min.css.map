@@ -1,0 +1,11 @@
+{
+    "version": 3,
+    "mappings": "AEKA,UAAU,CACR,WAAW,CAAE,cAAc,CAC3B,GAAG,CAAE,yCAAyC,CAAC,cAAc,CAE/D,UAAU,CACR,WAAW,CAAE,mBAAmB,CAChC,GAAG,CAAE,8CAA8C,CAAC,cAAc",
+    "sources": [
+        "../scss/main.scss",
+        "../scss/_colors.scss",
+        "../scss/_fonts.scss"
+    ],
+    "names": [],
+    "file": "main.min.css"
+}
