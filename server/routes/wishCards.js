@@ -210,7 +210,7 @@ router.get('/', async (_req, res) => {
 // @desc    Return wishcards that belong to the agency
 // @route   GET '/wishcards/me'
 // @access  Private, verified partner
-// @tested 	No
+// @tested 	Yes
 router.get('/me', renderPermissions, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
@@ -232,6 +232,31 @@ router.get('/me', renderPermissions, async (req, res) => {
   }
 });
 
+// @desc    Render wishcards edit page
+// @route   GET '/edit/:id'
+// @access  Private, verified partner
+// @tested 	No
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    if (res.locals.user.userRole !== 'admin') {
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      if (wishcard.belongsTo !== userAgency.id) {
+        return res.status(404).render('404');
+      }
+    }
+    res.render('wishcardEdit', { wishcard }, (error, html) => {
+      if (error) {
+        log.debug(error);
+        res.status(400).json({ success: false, error });
+      } else {
+        res.status(200).send(html);
+      }
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
