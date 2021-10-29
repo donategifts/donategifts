@@ -484,8 +484,8 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
       if (user.emailVerified) {
         if (req.session.user) {
           return res.status(200).render('profile', {
-          user: res.locals.user
-        });
+            user: res.locals.user
+          });
         }
         return res.status(200).render('login', {
           user: res.locals.user,
