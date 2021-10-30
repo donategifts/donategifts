@@ -183,6 +183,62 @@ router.post(
   },
 );
 
+// @desc    wishcard creation form sends data to db
+// @route   PUT '/wishcards/edit/wishcardId'
+// @access  Private, verified partner or admin
+// @tested 	No
+router.post(
+  '/edit/:id',
+  limiter,
+  renderPermissions,
+  WishCardMiddleWare.uploadIfFileisPresent,
+  createWishcardValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      let { childBirthday, wishItemPrice } = req.body;
+      const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+
+      let filePath = "";
+      if (req.file !== undefined) {
+        if (process.env.NODE_ENV === 'development') {
+          // locally when using multer images are saved inside this folder
+          filePath = `/uploads/${req.file.filename}`;
+        }
+        else {
+          filePath = process.env.USE_AWS === 'true' ? req.file.Location : filePath
+        }
+      }
+      else {
+        filePath = wishcard.wishCardImage
+      }
+
+      childBirthday = childBirthday ? new Date(childBirthday)  : wishcard.childBirthday;
+      wishItemPrice = wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice
+
+      const wishCard = await WishCardRepository.updateWishCard({
+        childBirthday,
+        wishItemPrice,
+        wishCardImage: filePath,
+        address: {
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.address_city,
+          state: req.body.address_state,
+          zip: req.body.address_zip,
+          country: req.body.address_country,
+        },
+        ...req.body,
+      });
+      res.status(200).send({ success: true, url: '/wishcards/me' });
+      log.info('Wishcard Updated', { type: 'wishcard_updated', wishCardId: wishCard._id });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+  },
+);
+
+
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
 // @access  Public

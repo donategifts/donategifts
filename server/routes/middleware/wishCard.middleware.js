@@ -62,6 +62,15 @@ const upload = multer({
   fileFilter,
 });
 
+const uploadIfFileisPresent = async (req, res, next) => {
+  if (req.file !== undefined) {
+    upload.single('wishCardImage')
+  }
+  else {
+    next();
+  }
+}
+
 const IfNull = ({ agency, foundAgency }) => {
   if (!agency || !foundAgency) {
     return true;
@@ -91,6 +100,8 @@ const renderPermissions = async (req, res, next) => {
   const userInfo = { user, agency };
   if (!user) {
     res.status(403).send({ success: false, url: '/users/login' });
+  } else if (user.userRole === 'admin') {
+    next();
   } else if (await IfNullOrNotVerifiedAgency(userInfo)) {
     res.status(403).send({ success: false, url: '/users/profile' });
   } else {
@@ -110,4 +121,4 @@ const checkVerifiedUser = async (req, res, next) => {
   }
 };
 
-module.exports = { upload, renderPermissions, checkVerifiedUser };
+module.exports = { upload, uploadIfFileisPresent, renderPermissions, checkVerifiedUser };
