@@ -39,6 +39,9 @@ const app = express();
 
 app.use(
   responseTime((req, res, time) => {
+    // if (req.originalUrl.includes('socket')) {
+    //   return;
+    // }
 
     if (process.env.NODE_ENV !== 'test') {
 
@@ -152,7 +155,7 @@ app.use(cookieParser());
 app.use(express.static('client'));
 
 // needs to be declared before routes otherwise sockets wont be available in routes
-io = connectSocket(app);
+global.io = connectSocket(app);
 
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
