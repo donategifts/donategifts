@@ -22,7 +22,7 @@
   <div class="container-fluid">
     <div class="create-wish-card">
       <!-- wishCardForm starts here-->
-      <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
+      <form class="container-fluid" id="wishCardForm" action="/wishcards/edit/<%= wishcard._id %>" method="POST" enctype="multipart/form-data">
         <h4 class="crayon-font wish-card-form-title">
           Edit wish card for the<br />
           child or youth under your care
@@ -275,8 +275,10 @@
       </form>
     </div>
   </div>
- <%- include('./templates/footer')-%>
-
+  <%- include('./templates/footer')-%>
+  <script>
+    let agencyAddress = `<%- JSON.stringify(agencyAddress) %>`;
+  </script>
 
 </body>
 

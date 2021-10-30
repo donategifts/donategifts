@@ -289,21 +289,23 @@ router.get('/me', renderPermissions, async (req, res) => {
 });
 
 // @desc    Render wishcards edit page
-// @route   GET '/edit/:id'
+// @route   GET '/wishcards/edit/:id'
 // @access  Private, verified partner
 // @tested 	No
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    const agency = wishcard.belongsTo;
+    const {agencyAddress} = agency;
+    
     if (res.locals.user.userRole !== 'admin') {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
       if (wishcard.belongsTo !== userAgency.id) {
         return res.status(404).render('404');
       }
     }
-    res.render('wishcardEdit', { wishcard }, (error, html) => {
+    res.render('wishcardEdit', { wishcard, agencyAddress }, (error, html) => {
       if (error) {
-        log.debug(error);
         res.status(400).json({ success: false, error });
       } else {
         res.status(200).send(html);

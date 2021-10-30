@@ -19,24 +19,11 @@ window.onload = function () {
   }
 
   function fetchAgencyData() {
-    fetch('/users/agency/address')
-      .then((response) => response.json())
-      .then((data) => {
-        const agency = data.data;
-        if (agency.agencyAddress) {
-          updateAgencyAddressForm(agency);
-        }
-        else {
-          showToast('Agency address not present. Most likely that information is missing, contact the administrator.');
-        }
-      })
-      .catch((error) => {
-        showToast('Could not get agency address.');
-      })
+    updateAgencyAddressForm(JSON.parse(agencyAddress));
   }
 
   // get html nodes and input with agency details from backend
-  function updateAgencyAddressForm(agencyDetails) {
+  function updateAgencyAddressForm(agencyAddress) {
     // get all address input elements
     let address1 = document.getElementById('address1');
     let address2 = document.getElementById('address2');
@@ -45,12 +32,12 @@ window.onload = function () {
     let country = document.getElementById('address_country');
     let state = document.getElementById('address_state');
     // set new values
-    address1.value = agencyDetails.agencyAddress.address1;
-    address2.value = agencyDetails.agencyAddress.address2;
-    zipCode.value = agencyDetails.agencyAddress.zipcode;
-    city.value = agencyDetails.agencyAddress.city;
-    country.value = agencyDetails.agencyAddress.country;
-    state.value = agencyDetails.agencyAddress.state;
+    address1.value = agencyAddress.address1;
+    address2.value = agencyAddress.address2;
+    zipCode.value = agencyAddress.zipcode;
+    city.value = agencyAddress.city;
+    country.value = agencyAddress.country;
+    state.value = agencyAddress.state;
   }
 
   function checkIfAgencyAddressFormIsEmpty() {
