@@ -4,7 +4,8 @@
     "sources": [
         "../scss/main.scss",
         "../scss/_colors.scss",
-        "../scss/_fonts.scss"
+        "../scss/_fonts.scss",
+        "../scss/_utils.scss"
     ],
     "names": [],
     "file": "main.min.css"
