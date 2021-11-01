@@ -192,13 +192,14 @@ router.post(
   limiter,
   renderPermissions,
   WishCardMiddleWare.uploadIfFileisPresent,
-  createWishcardValidationRules(),
-  validate,
+  // createWishcardValidationRules(),
+  // validate,
   async (req, res) => {
     try {
       let { childBirthday, wishItemPrice } = req.body;
       const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 
+      log.debug(req.body);
       let filePath = "";
       if (req.file !== undefined) {
         if (process.env.NODE_ENV === 'development') {

@@ -62,7 +62,7 @@ const wishcardRequest = {
   address_city: 'Fukuoka',
   address_state: 'Fukuoka Prefecture',
   address_country: 'Japan',
-  address_zip: '13055'
+  address_zip: '13055',
 };
 
 const itemChoice = {
@@ -83,7 +83,7 @@ const guidedwishcardRequest = {
   address_city: 'Fukuoka',
   address_state: 'Fukuoka Prefecture',
   address_country: 'Japan',
-  address_zip: '13055'
+  address_zip: '13055',
 };
 
 describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
@@ -173,6 +173,49 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
           done();
         });
       });
+  });
+
+  it('POST wishcard edit - Should edit/update successfully (no image)', (done) => {
+    WishCard.create({ ...wishcardRequest, childFirstName: "42", childLastName: "Is What?" }).then((wishcard) => {
+      agent
+        .post(`/wishcards/edit/${wishcard.id}`)
+        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe"})
+        .end((_err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('success');
+          res.body.should.have.property('url');
+          res.body.success.should.equal(true);
+          res.body.url.should.equal('/wishcards/me');
+
+          WishCard.findOne({ childFirstName: "42" }).then((wishcard) => {
+            wishcard.childLastName.should.equal("Is the Answer to the Universe");
+            done();
+          });
+        });
+    });
+  });
+
+  it('POST wishcard edit - Should edit/update successfully (with image)', (done) => {
+    WishCard.create({ ...wishcardRequest, childFirstName: "I have the", childLastName: "..." }).then((wishcard) => {
+      agent
+        .post(`/wishcards/edit/${wishcard.id}`)
+        .type('form')
+        .field({ childLastName: "POWER!!!"})
+        .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
+        .end((_err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('success');
+          res.body.should.have.property('url');
+          res.body.success.should.equal(true);
+          res.body.url.should.equal('/wishcards/me');
+
+          WishCard.findOne({ childFirstName: "I have the" }).then((wishcard) => {
+            console.log(wishcard);
+            wishcard.childLastName.should.equal("POWER!!!");
+            done();
+          });
+        });
+    });
   });
 
   it('POST wishcards - should not be able to post with incorrect amazon link', (done) => {
