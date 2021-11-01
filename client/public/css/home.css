@@ -16,9 +16,9 @@ New color scheme reference is in utils.css
   left: 0;
   width: 100%;
   height: 100%;
-   /* Fix issue with youtube video anchoring to the top left on chrome */
-   -webkit-backface-visibility: hidden;
-   -webkit-transform: translateZ(0);
+  /* Fix issue with youtube video anchoring to the top left on chrome */
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
 }
 
 #left-align {
@@ -835,6 +835,17 @@ New color scheme reference is in utils.css
   text-align: center;
   font-size: 1.1rem;
   margin-bottom: 20px;
+}
+
+#input-container {
+  position: relative;
+  display: flex;
+}
+
+#input-container > i {
+  position: absolute;
+  top: 35%;
+  right: 15px;
 }
 
 @media screen and (min-width: 992px) {

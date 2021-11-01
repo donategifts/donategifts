@@ -1,6 +1,7 @@
 # DonateGifts Project
 
-> Overview 1.0: This project enables users to donate holiday & birthday gifts to the foster children and homeless youth --simply by clicking one button-- which will automatically add the child's wish item to the user's Amazon cart & deliver to the child's address.
+> Overview 1.0: This web app offers users to send holiday gifts and school supplies to the children in foster care and emergency shelters.
+
 
 > Overview 2.0: We are the Virtual Drop-off Location for nonprofits and charities -- the future of material donations. Through our platform, nonprofits host Virtual Supply Drives on their wish pages and donors can send listed goods to children's nonprofits and animal shelters. 
 The exact wish items are donated, programmatically ordered, delivered to each nonprofit, then the photos of received items are posted on the Community page by our nonprofit partners.
