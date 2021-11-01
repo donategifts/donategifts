@@ -216,22 +216,22 @@ router.post(
       childBirthday = childBirthday ? new Date(childBirthday)  : wishcard.childBirthday;
       wishItemPrice = wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice
 
-      const wishCard = await WishCardRepository.updateWishCard({
+      await WishCardRepository.updateWishCard(wishcard._id, {
         childBirthday,
         wishItemPrice,
         wishCardImage: filePath,
         address: {
-          address1: req.body.address1,
-          address2: req.body.address2,
-          city: req.body.address_city,
-          state: req.body.address_state,
-          zip: req.body.address_zip,
-          country: req.body.address_country,
+          address1: req.body.address1 ? req.body.address1 : wishcard.address.address1,
+          address2: req.body.address2 ? req.body.address2 : wishcard.address.address2,
+          city: req.body.address_city ? req.body.address_city : wishcard.address.address_city,
+          state: req.body.address_state ? req.body.address_state : wishcard.address.address_state,
+          zip: req.body.address_zip ? req.body.address_zip : wishcard.address.address_zip,
+          country: req.body.address_country ? req.body.address_country : wishcard.address.address_country,
         },
         ...req.body,
       });
       res.status(200).send({ success: true, url: '/wishcards/me' });
-      log.info('Wishcard Updated', { type: 'wishcard_updated', wishCardId: wishCard._id });
+      log.info('Wishcard Updated', { type: 'wishcard_updated', wishCardId: wishcard.id });
     } catch (error) {
       handleError(res, 400, error);
     }
@@ -297,6 +297,8 @@ router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
     const agency = wishcard.belongsTo;
     const {agencyAddress} = agency;
+
+    const childBirthday = moment(wishcard.childBirthday).format("YYYY-MM-DD");
     
     if (res.locals.user.userRole !== 'admin') {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
@@ -304,7 +306,7 @@ router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
         return res.status(404).render('404');
       }
     }
-    res.render('wishcardEdit', { wishcard, agencyAddress }, (error, html) => {
+    res.render('wishcardEdit', { wishcard, agencyAddress, childBirthday }, (error, html) => {
       if (error) {
         res.status(400).json({ success: false, error });
       } else {

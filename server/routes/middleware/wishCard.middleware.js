@@ -64,7 +64,7 @@ const upload = multer({
 
 const uploadIfFileisPresent = async (req, res, next) => {
   if (req.file !== undefined) {
-    upload.single('wishCardImage')
+    upload.single('wishCardImage');
   }
   else {
     next();
