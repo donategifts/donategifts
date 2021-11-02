@@ -11,7 +11,10 @@ async function createNewDonation(params) {
 
 async function getDonationsByUser(UserId) {
   try {
-    return Donation.find({ donationFrom: UserId }).populate('donationCard').populate('donationTo').exec();
+    return Donation.find({ donationFrom: UserId })
+      .populate('donationCard')
+      .populate('donationTo')
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get User's Donations: ${error}`);
   }
@@ -19,7 +22,10 @@ async function getDonationsByUser(UserId) {
 
 async function getDonationsByAgency(AgencyId) {
   try {
-    return Donation.find({ donationTo: AgencyId }).populate('donationCard').populate('donationFrom').exec();
+    return Donation.find({ donationTo: AgencyId })
+      .populate('donationCard')
+      .populate('donationFrom')
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get Agency's Donations: ${error}`);
   }
@@ -30,7 +36,8 @@ async function getDonationByWishCardId(wishCardId) {
     return Donation.findOne({ donationCard: wishCardId })
       .populate('donationCard')
       .populate('donationFrom')
-      .populate('donationTo').exec();
+      .populate('donationTo')
+      .exec();
   } catch (error) {
     throw new Error(`Failed to get Agency's Donations: ${error}`);
   }
@@ -40,5 +47,5 @@ module.exports = {
   createNewDonation,
   getDonationsByUser,
   getDonationsByAgency,
-  getDonationByWishCardId
+  getDonationByWishCardId,
 };

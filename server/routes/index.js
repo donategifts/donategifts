@@ -8,7 +8,6 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 
 function getChristmasString() {
-
   const christmas = moment([2021, 11, 25]);
   const today = moment();
   const daysTillChristmas = christmas.diff(today, 'days');
@@ -25,13 +24,10 @@ function getChristmasString() {
   }
 
   return christmasData;
-
 }
 
 router.get('/', async (_req, res) => {
-
   const agencies = await AgencyRepository.getVerifiedAgencies();
-
 
   const undonatedWishcards = await WishCardRepository.getWishCardsByStatus('published');
 
@@ -43,11 +39,8 @@ router.get('/', async (_req, res) => {
     verifiedAgencies: agencies.length,
     undonatedCards: undonatedWishcards.length,
     donatedCards: donatedWishcards.length,
-    christmasData: getChristmasString()
+    christmasData: getChristmasString(),
   });
 });
-
-
-
 
 module.exports = router;

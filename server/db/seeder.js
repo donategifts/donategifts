@@ -54,7 +54,10 @@ if (process.env.NODE_ENV === 'development') {
       const { donorUser, partnerUser, adminUser } = allUsers;
       await User.insertMany([adminUser, partnerUser]);
       const donor = await User.create(donorUser);
-      const partnerUserId = await User.findOne({ email: partnerUser.email }).select('_id').lean().exec();
+      const partnerUserId = await User.findOne({ email: partnerUser.email })
+        .select('_id')
+        .lean()
+        .exec();
       const createdAgency = await Agency.create({
         ...agency,
         accountManager: partnerUserId,
