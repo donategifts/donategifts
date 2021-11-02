@@ -319,29 +319,29 @@ async function sendAgencyVerificationNotification(agency) {
       url: `${process.env.SLACK_INTEGRATION_AGENCY_VERIFICATION}`,
       header: {
         'Content-Type': 'application/json',
-        data: JSON.stringify({
-          text: 'New Agency has registered!',
-          attachments: [
-            {
-              text: `${
-                process.env.NODE_ENV === 'development' ? '[WITH LOVE FROM DEV]' : ''
-              } Verify it? Please check ${agency.agencyWebsite} before you consider it :)`,
-              callback_id: 'agency_verify',
-              color: '#3AA3E3',
-              attachment_type: 'default',
-              actions: [
-                {
-                  name: 'verify',
-                  text: 'Verify',
-                  style: 'success',
-                  type: 'button',
-                  value: `${agency._id}`,
-                },
-              ],
-            },
-          ],
-        }),
       },
+      data: JSON.stringify({
+        text: `New Agency ${agency.agencyName} has registered!${
+          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
+        }`,
+        attachments: [
+          {
+            text: `Verify it? Please check ${agency.agencyWebsite} before you consider it :)`,
+            callback_id: 'agency_verify',
+            color: '#3AA3E3',
+            attachment_type: 'default',
+            actions: [
+              {
+                name: 'verify',
+                text: 'Verify',
+                style: 'success',
+                type: 'button',
+                value: `${agency._id}`,
+              },
+            ],
+          },
+        ],
+      }),
     });
   } catch (error) {
     log.error(error);
