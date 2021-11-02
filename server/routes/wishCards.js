@@ -376,7 +376,7 @@ router.post('/search/:init?', async (req, res) => {
     if (younger && older) childAge = 0;
 
     const results = await WishCardController.getWishCardSearchResult(
-      mongoSanitize.sanitize(wishitem),
+      mongoSanitize.sanitize(wishitem || ""),
       showDonated,
       recentlyAdded,
       childAge,
