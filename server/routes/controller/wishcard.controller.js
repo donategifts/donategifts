@@ -2,7 +2,13 @@ const moment = require('moment');
 const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
-async function getWishCardSearchResult(itemName, showDonated = false, reverseSort = false, childAge, cardIds) {
+async function getWishCardSearchResult(
+  itemName,
+  showDonated = false,
+  reverseSort = false,
+  childAge,
+  cardIds,
+) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     (itemName && itemName.trim()) || '',
     showDonated,
@@ -34,7 +40,9 @@ async function getWishCardSearchResult(itemName, showDonated = false, reverseSor
     return allWishCards;
   }
 
-  return allWishCards.filter((item) => (childAge < 15 ? item.age < childAge : item.age >= childAge));
+  return allWishCards.filter((item) =>
+    childAge < 15 ? item.age < childAge : item.age >= childAge,
+  );
 }
 
 async function getLockedWishCards(req) {
@@ -53,7 +61,9 @@ async function getLockedWishCards(req) {
     return response;
   }
   response.userId = user._id;
-  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(req.session.user._id);
+  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
+    req.session.user._id,
+  );
 
   return response;
 }

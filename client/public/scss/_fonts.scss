@@ -1,0 +1,58 @@
+/* 
+-----------------------------
+v1.0 Typography
+-----------------------------
+*/
+@font-face {
+  font-family: 'DkCoolCrayon';
+  src: url('../fonts/dkcoolcrayon-webfont.woff') format('woff');
+}
+@font-face {
+  font-family: 'DK-Crayon-Crumble';
+  src: url('../fonts/dk-crayon-crumble-webfont.woff') format('woff');
+}
+
+/* 
+-----------------------------
+font variables
+-----------------------------
+*/
+$font-heading: 'DkCoolCrayon', Helvetica, sans-serif;
+$font-body: 'Quicksand', sans-serif;
+
+$serif: Georgia, serif;
+$crumble: 'DK-Crayon-Crumble', sans-serif;
+
+$light: 300;
+$normal: 400;
+$medium: 500;
+$semi-bold: 600;
+$bold: 700;
+
+/* 
+-----------------------------
+font functions
+-----------------------------
+*/
+@mixin font-styling($family: null, $size: null, $color: null, $weight: null, $height: null, $spacing: null) {
+  @if $family {
+    font-family: $family;
+  } @else {
+    font-family: $font-body;
+  }
+  @if $size {
+    font-size: $size;
+  }
+  @if $color {
+    color: $color;
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $height {
+    line-height: $height;
+  }
+  @if $spacing {
+    letter-spacing: $spacing;
+  }
+}

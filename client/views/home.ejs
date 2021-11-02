@@ -51,6 +51,10 @@
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
   <script src="/public/clientJS/login.js"></script>
+  <!-- For hero header typing effect -->
+  <script src="/public/clientJS/heroTyping.js"></script>
+  <!-- TODO: I'm going to move main.min.css load to header and remove old custom css later -->
+  <link rel="stylesheet" href="/public/dist/main.min.css">
 </head>
 
 <body>
@@ -60,32 +64,20 @@
   <%- include('./templates/nav')-%> <%- include('./templates/wishCardDonateModal')-%>
   <!-- header section-->
 
-  <div class="container-fluid text-center text-white d-flex justify-content-center align-items-center " id="home-bg">
-    <div class="row ">
-      <div class="col-12 ">
-        <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
-        <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
-        <h4 class="quick-font pb-1 m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one
+  <div class="hero container-fluid d-flex justify-content-center align-items-center" id="home-bg">
+    <div class="row">
+      <div class="col-12">
+        <h1>Send Gifts to
+          <span class="typing" data-wait="2000"
+            data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters", "Kids in Foster Care"]'></span>
+        </h1>
+        <h4 class="hide">Every child should feel valued, remembered, and loved</h4>
+        <h4 class="m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one
         </h4>
         <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">See Wish Cards</a>
         <a href="/howto" class="button button--green lg-text" id="btn-1">Super Easy Process</a>
       </div>
     </div>
-    <!-- <h1 class="banner-h1 cool-font">Send Gifts<span class=""> To Foster Kids</span></h1>
-        <h4 class="quick-font pb-1 hide">Every child should feel valued, remembered, and loved</h4>
-        <h4 class="quick-font pb-1 m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one</h4>
-        <a href="/wishcards" class="button button--inverted-green lg-text" id="btn-1">See Wish Cards</a>
-        <a href="/howto" class="button button--green lg-text" id="btn-1">Super Easy Process</a> -->
-
-    <!-- Super Easy Process modal is outdated and commented out for now. -->
-    <!-- <button
-          type="button"
-          class="button button--green lg-text"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        >
-          Super Easy Process
-        </button> -->
   </div>
 
   <%- include('./templates/loginModal')-%>

@@ -1,15 +1,23 @@
 {
   "extends": [
     "airbnb-base",
+    "eslint:recommended",
     "prettier"
   ],
   "plugins": [
+    "prettier",
     "mocha"
   ],
   "env": {
     "mocha": true
   },
   "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "camelcase": "off",
     "no-plusplus": "off",
     "consistent-return": "off",
