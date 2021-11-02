@@ -180,10 +180,7 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
-// don't enable this for tests
-if (process.env.NODE_ENV !== 'test') {
-  app.use('/slack', slackRoute);
-}
+app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
 // ERROR PAGE

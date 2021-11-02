@@ -251,7 +251,9 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
       ...req.body,
     });
 
-    await sendAgencyVerificationNotification(agency);
+    if (process.env.NODE_ENV !== 'test') {
+      await sendAgencyVerificationNotification(agency);
+    }
 
     return res.status(200).send({
       success: true,
