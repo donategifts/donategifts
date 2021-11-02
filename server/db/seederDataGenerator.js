@@ -1,4 +1,5 @@
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const faker = require('faker');
 const bcrypt = require('bcrypt');
 const fs = require('fs');

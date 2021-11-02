@@ -17,6 +17,17 @@ async function createNewAgency(agencyParams) {
   }
 }
 
+async function verifyAgency(agencyId) {
+  try {
+    await Agency.updateOne(
+      { id: agencyId },
+      { $set: { isVerified: true } }
+    ).exec();
+  } catch(error) {
+    throw new Error(`Failed to verify Agency: ${error}`);
+  }
+}
+
 async function getVerifiedAgencies() {
   return Agency.find({ isVerified: true }).exec();
 }
@@ -24,5 +35,6 @@ async function getVerifiedAgencies() {
 module.exports = {
   getAgencyByUserId,
   createNewAgency,
-  getVerifiedAgencies
+  getVerifiedAgencies,
+  verifyAgency,
 };

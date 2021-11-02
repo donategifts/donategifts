@@ -663,8 +663,7 @@ router.get('/agency/address', async (req, res) => {
   } catch (err) {
     return handleError(res, 400, err);
   }
-},
-);
+});
 
 router.get("/profile/donations", redirectLogin, async (req, res) => {
   try {

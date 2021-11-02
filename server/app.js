@@ -167,6 +167,7 @@ const contactRoute = require('./routes/contact');
 const teamRoute = require('./routes/team');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
+const slackRoute = require('./routes/slack');
 const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
@@ -179,6 +180,7 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
+app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
 
