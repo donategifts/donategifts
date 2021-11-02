@@ -252,6 +252,20 @@ router.get('/me', renderPermissions, async (req, res) => {
   }
 });
 
+// @desc    Render createWiscard.ejs. Empty form for creating a new wish card
+// @route   GET '/wishcards/new'
+// @access  Agency
+// @tested 	Yes
+router.get('/create', renderPermissions, async (_req, res) => {
+  try {
+    res.status(200).render('createWishcard', {
+      user: res.locals.user
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
+
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
 // @access  User with admin role
