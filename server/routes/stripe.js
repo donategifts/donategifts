@@ -1,7 +1,6 @@
 /* eslint-disable no-case-declarations */
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
-const mongoSanitize = require('express-mongo-sanitize');
 const bodyParser = require('body-parser');
 const moment = require('moment');
 const paypal = require('paypal-rest-sdk');
@@ -70,9 +69,7 @@ const router = express.Router();
 router.post('/createIntent', redirectLogin, async (req, res) => {
   const { wishCardId, email, agencyName, userDonation } = req.body;
   // Create a PaymentIntent with the order amount and currency
-  const wishCard = await WishCardRepository.getWishCardByObjectId(
-    mongoSanitize.sanitize(wishCardId),
-  );
+  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
   // By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
   // so we need to multiple our price by 100. Genious explanation
@@ -164,7 +161,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
 router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) => {
   try {
     const { id, totalAmount } = req.params;
-    const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(id));
+    const wishCard = await WishCardRepository.getWishCardByObjectId(id);
     const currentDate = moment(Date.now());
     const donationInformation = {
       email: res.locals.user.email,

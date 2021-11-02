@@ -1,6 +1,5 @@
 const express = require('express');
 const moment = require('moment');
-const mongoSanitize = require('express-mongo-sanitize');
 
 const router = express.Router();
 const log = require('../helper/logger');
@@ -53,7 +52,7 @@ router.post(
       }
 
       const newPost = {
-        message: mongoSanitize.sanitize(req.body.postText),
+        message: req.body.postText,
         image: profileImage || null,
         belongsTo: agency,
         agency,
