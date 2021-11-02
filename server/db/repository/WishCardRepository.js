@@ -42,7 +42,7 @@ async function getWishCardsByItemName(itemName, status) {
 
 async function getWishCardsFuzzy(itemName, showDonated, reverseSort, cardIds) {
   try {
-    console.log(showDonated)
+    console.log(showDonated);
     const searchMatch = [];
     const statusMatch = [{ status: 'published' }];
     if (showDonated) {
@@ -93,7 +93,6 @@ async function getWishCardsFuzzy(itemName, showDonated, reverseSort, cardIds) {
     }
 
     return WishCard.aggregate(matchPipeline).exec();
-
   } catch (error) {
     throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
   }

@@ -44,7 +44,6 @@ app.use(
     // }
 
     if (process.env.NODE_ENV !== 'test') {
-
       if (
         (!req.originalUrl.includes('.png') &&
           !req.originalUrl.includes('.jpg') &&
@@ -69,7 +68,6 @@ app.use(
         });
       }
     }
-
   }),
 );
 // mongo connection needs to be established before admin-bro setup
@@ -127,14 +125,16 @@ app.use(async (req, res, next) => {
 });
 
 // PARSERS SET UP
-app.use(express.json({
-  verify (req, res, buf) {
-    const url = req.originalUrl;
-    if (url.startsWith('/stripe')) {
-      req.rawBody = buf.toString();
-    }
-  }
-}));
+app.use(
+  express.json({
+    verify(req, res, buf) {
+      const url = req.originalUrl;
+      if (url.startsWith('/stripe')) {
+        req.rawBody = buf.toString();
+      }
+    },
+  }),
+);
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -183,7 +183,6 @@ app.use('/team', teamRoute);
 app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
-
 // ERROR PAGE
 app.get('*', (req, res) => {
   res.status(404).render('404');
@@ -206,11 +205,11 @@ app.use((err, req, res, _next) => {
 });
 
 app.listen(process.env.PORT, () => {
-  log.info(`App listening on port ${process.env.PORT}`)
-})
+  log.info(`App listening on port ${process.env.PORT}`);
+});
 
 process.on('uncaughtException', (err) => {
   log.error(err);
-})
+});
 
 module.exports = app;

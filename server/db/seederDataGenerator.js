@@ -12,7 +12,6 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.en
 const log = require('../helper/logger');
 
 async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 2) {
-
   const donors = [];
   const partners = [];
   const admins = [];
@@ -31,20 +30,19 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
     ${adminAmount} admins`);
 
   for (let i = 0; i < totalAmount; i++) {
-
     let userRole;
 
     if (donorCounter > 0) {
       userRole = 'donor';
       donorCounter--;
-    } else  if(partnerCounter > 0) {
+    } else if (partnerCounter > 0) {
       userRole = 'partner';
       partnerCounter--;
     } else if (adminCounter > 0) {
       userRole = 'admin';
       adminCounter--;
     } else {
-      throw new Error('We should never arrive here, what have you done?')
+      throw new Error('We should never arrive here, what have you done?');
     }
 
     const firstName = faker.name.firstName();
@@ -63,7 +61,7 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
     };
 
     users.push(user);
-    const credentials = {email: user.email, password: `${user.fName}!`};
+    const credentials = { email: user.email, password: `${user.fName}!` };
 
     switch (userRole) {
       case 'donor':
@@ -77,9 +75,7 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
         break;
       default:
         break;
-
     }
-
   }
 
   userCredentials.donors = donors;
@@ -88,16 +84,21 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
 
   await User.insertMany(users);
 
-  fs.writeFile(`${__dirname  }/seederCredentials.json`, JSON.stringify(userCredentials, null, 4), 'utf8', function (err) {
-    if (err) {
-      return log.error(err);
-    }
-    log.info("Users successfully generated, credentials have been saved to seederCredentials.json");
-  });
-
+  fs.writeFile(
+    `${__dirname}/seederCredentials.json`,
+    JSON.stringify(userCredentials, null, 4),
+    'utf8',
+    function (err) {
+      if (err) {
+        return log.error(err);
+      }
+      log.info(
+        'Users successfully generated, credentials have been saved to seederCredentials.json',
+      );
+    },
+  );
 }
-
 
 module.exports = {
-  generateUsers
-}
+  generateUsers,
+};

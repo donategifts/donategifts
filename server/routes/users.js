@@ -105,9 +105,8 @@ router.get('/profile', redirectLogin, async (req, res) => {
       }
       const wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
       const wishCardsLength = wishCards.length;
-      res.status(200).render('profile', { wishCardsLength })
-    }
-    else {
+      res.status(200).render('profile', { wishCardsLength });
+    } else {
       res.status(200).render('profile');
     }
   } catch (err) {
@@ -186,39 +185,39 @@ router.post(
             data: profileImage,
           }),
         );
-        log.info('Profile picture updated', { type: 'user_profile_picture_update', user: req.session.user._id });
+        log.info('Profile picture updated', {
+          type: 'user_profile_picture_update',
+          user: req.session.user._id,
+        });
       } catch (error) {
         handleError(res, 400, error);
       }
     }
-  });
+  },
+);
 
-router.delete(
-  '/profile/picture',
-  limiter,
-  redirectLogin,
-  async (req, res) => {
-    try {
-      // if users had deleted picture replace it with string for the default avatar
-      const defaultImage= '/public/img/default_profile_avatar.svg';
-      await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });
+router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
+  try {
+    // if users had deleted picture replace it with string for the default avatar
+    const defaultImage = '/public/img/default_profile_avatar.svg';
+    await UserRepository.updateUserById(req.session.user._id, { profileImage: defaultImage });
 
-      res.status(200).send(
-        JSON.stringify({
-          success: true,
-          error: null,
-          data: defaultImage,
-        }),
-      );
+    res.status(200).send(
+      JSON.stringify({
+        success: true,
+        error: null,
+        data: defaultImage,
+      }),
+    );
 
-      log.info('Profile picture deleted', { type: 'user_profile_picture_delete', user: req.session.user._id });
-    }
-    catch (error) {
-      handleError(res, 400, error);
-    }
-  });
-
-
+    log.info('Profile picture deleted', {
+      type: 'user_profile_picture_delete',
+      user: req.session.user._id,
+    });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 // @desc    Render agency.ejs
 // @route   GET '/users/agency'
@@ -252,9 +251,8 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
       ...req.body,
     });
 
-  
     await sendAgencyVerificationNotification(agency);
-    
+
     return res.status(200).send({
       success: true,
       user: req.session.user,
@@ -445,7 +443,7 @@ router.post(
       if (await bcrypt.compare(password, user.password)) {
         req.session.user = user;
         res.locals.user = user;
-        return res.status(200).send({ success: true, url: "/users/profile" })
+        return res.status(200).send({ success: true, url: '/users/profile' });
       }
     }
     handleError(res, 403, 'Username and/or password incorrect');
@@ -488,7 +486,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
       if (user.emailVerified) {
         if (req.session.user) {
           return res.status(200).render('profile', {
-            user: res.locals.user
+            user: res.locals.user,
           });
         }
         return res.status(200).render('login', {
@@ -669,7 +667,7 @@ router.get('/agency/address', async (req, res) => {
   }
 });
 
-router.get("/profile/donations", redirectLogin, async (req, res) => {
+router.get('/profile/donations', redirectLogin, async (req, res) => {
   try {
     const { user } = req.session;
     let donations;

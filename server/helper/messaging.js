@@ -348,7 +348,7 @@ async function sendAgencyVerificationNotification(agency) {
   }
 }
 
-async function sendAgencyVerificationNotificationSuccess({agency, user, responseUrl}) {
+async function sendAgencyVerificationNotificationSuccess({ agency, user, responseUrl }) {
   try {
     await axios({
       method: 'POST',
@@ -385,5 +385,5 @@ module.exports = {
   sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
-  sendAgencyVerificationNotificationSuccess
+  sendAgencyVerificationNotificationSuccess,
 };

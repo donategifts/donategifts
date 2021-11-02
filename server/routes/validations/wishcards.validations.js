@@ -23,28 +23,28 @@ const createWishcardValidationRules = () => {
     body('address1')
       .notEmpty()
       .withMessage('Address cannot be empty')
-      .isLength({min: 5 })
+      .isLength({ min: 5 })
       .withMessage('Address must contain at least 5 characters'),
     body('address2').optional(),
     body('address_city')
       .notEmpty()
       .withMessage('City cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('City must contain at least 2 characters'),
     body('address_state')
       .notEmpty()
       .withMessage('State cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('State must contain at least 2 characters'),
     body('address_country')
       .notEmpty()
       .withMessage('Country cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('Country must contain at least 2 characters'),
     body('address_zip')
       .notEmpty()
       .withMessage('Zip cannot be empty')
-      .isLength({min: 5 })
+      .isLength({ min: 5 })
       .withMessage('Zipcode must contain at least 5 characters'),
   ];
 };
@@ -76,28 +76,28 @@ const createGuidedWishcardValidationRules = () => {
     body('address1')
       .notEmpty()
       .withMessage('Address cannot be empty')
-      .isLength({min: 5 })
+      .isLength({ min: 5 })
       .withMessage('Address must contain at least 5 characters'),
     body('address2').optional(),
     body('address_city')
       .notEmpty()
       .withMessage('City cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('City must contain at least 2 characters'),
     body('address_state')
       .notEmpty()
       .withMessage('State cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('State must contain at least 2 characters'),
     body('address_country')
       .notEmpty()
       .withMessage('Country cannot be empty')
-      .isLength({min: 2 })
+      .isLength({ min: 2 })
       .withMessage('Country must contain at least 2 characters'),
     body('address_zip')
       .notEmpty()
       .withMessage('Zip cannot be empty')
-      .isLength({min: 5 })
+      .isLength({ min: 5 })
       .withMessage('Zipcode must contain at least 5 characters'),
   ];
 };

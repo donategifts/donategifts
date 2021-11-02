@@ -12,14 +12,14 @@ const config = {
       type: 'log4js-logstash-tcp',
       host: 'localhost',
       port: 5044,
-    }
+    },
   },
   categories: {
     default: { appenders: ['console'], level: levels.ALL },
     development: { appenders: appenderArray, level: levels.ALL },
     production: { appenders: appenderArray, level: levels.ALL },
   },
-}
+};
 
 configure(config);
 
