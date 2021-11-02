@@ -15,17 +15,13 @@ const log = require('../helper/logger');
 const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
-
-
 paypal.configure({
-  'mode': process.env.NODE_ENV === 'development'?'sandbox':'live', // sandbox or live
-  'client_id': process.env.PAYPAL_CLIENT_ID,
-  'client_secret': process.env.PAYPAL_SECRET
+  mode: process.env.NODE_ENV === 'development' ? 'sandbox' : 'live', // sandbox or live
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_SECRET,
 });
 
-
 const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
-
   const user = await UserRepository.getUserByObjectId(userId);
   const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
@@ -55,18 +51,17 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
     wishCard.status = 'donated';
     wishCard.save();
 
-    log.info('Wishcard donated', { type: 'wishcard_donated',
+    log.info('Wishcard donated', {
+      type: 'wishcard_donated',
       user: user._id,
       wishCardId: wishCard._id,
       amount,
-      agency: agencyName});
+      agency: agencyName,
+    });
 
     await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
   }
-
-
-
-}
+};
 
 const router = express.Router();
 
@@ -75,7 +70,9 @@ const router = express.Router();
 router.post('/createIntent', redirectLogin, async (req, res) => {
   const { wishCardId, email, agencyName, userDonation } = req.body;
   // Create a PaymentIntent with the order amount and currency
-  const wishCard = await WishCardRepository.getWishCardByObjectId(mongoSanitize.sanitize(wishCardId));
+  const wishCard = await WishCardRepository.getWishCardByObjectId(
+    mongoSanitize.sanitize(wishCardId),
+  );
 
   // By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
   // so we need to multiple our price by 100. Genious explanation
@@ -106,48 +103,40 @@ router.post('/createIntent', redirectLogin, async (req, res) => {
 let lastWishcardDonation = '';
 
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
-
   const sig = req.headers['stripe-signature'];
 
   // STRIPE WEBHOOK
-  if(sig) {
-
+  if (sig) {
     const endpointSecret = process.env.STRIPE_SECRET;
     let event;
 
     try {
       event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
-      if (lastWishcardDonation !==  event.data.object.metadata.wishCardId) {
+      if (lastWishcardDonation !== event.data.object.metadata.wishCardId) {
         lastWishcardDonation = event.data.object.metadata.wishCardId;
 
         await handleDonation(
           'Stripe',
           event.data.object.metadata.userId,
           event.data.object.metadata.wishCardId,
-          event.data.object.amount/100,
+          event.data.object.amount / 100,
           event.data.object.metadata.userDonation,
-          event.data.object.metadata.agencyName)
-
+          event.data.object.metadata.agencyName,
+        );
       }
-
-
     } catch (err) {
       res.status(400).send(`Webhook Error: ${err.message}`);
     }
-
   }
 
   // PAYPAL WEBHOOK
   if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
-
     paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
       if (error) {
         log.info(error);
         throw error;
       } else {
-
-
         // needed to shut up lint
         log.info(response);
 
@@ -159,11 +148,9 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
         const amount = req.body.resource.purchase_units[0].amount.value;
 
         await handleDonation('Paypal', userId, wishCardId, amount, userDonation, agencyName);
-
       }
     });
   }
-
 
   /*
 
@@ -194,6 +181,5 @@ router.get('/payment/success/:id&:totalAmount', redirectLogin, async (req, res) 
     handleError(res, 400, error);
   }
 });
-
 
 module.exports = router;

@@ -1,0 +1,54 @@
+/* 
+-----------------------------
+Reusable Hero
+-----------------------------
+*/
+.hero {
+  text-align: center;
+  color: $white;
+  h1 {
+    @include font-styling($font-heading, 3.4em);
+    text-transform: uppercase;
+  }
+  h4 {
+    @include font-styling($font-body);
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* 
+-----------------------------
+Text Typing Effect 
+-----------------------------
+*/
+.typing {
+  // margin-left: 10px;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 60px;
+    border: 2px solid $white;
+    animation: blink 0.5s infinite ease;
+    -webkit-animation: blink 0.5s infinite ease;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -36,7 +36,16 @@ const {
 
 const { redirectLogin } = require('./middleware/login.middleware');
 const { renderPermissions, checkVerifiedUser } = require('./middleware/wishCard.middleware');
-const { babies, preschoolers, kids6_8, kids9_11, teens, youth, allAgesA, allAgesB } = require('../utils/defaultItems');
+const {
+  babies,
+  preschoolers,
+  kids6_8,
+  kids9_11,
+  teens,
+  youth,
+  allAgesA,
+  allAgesB,
+} = require('../utils/defaultItems');
 const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
@@ -106,7 +115,11 @@ router.post(
         });
 
         res.status(200).send({ success: true, url: '/wishcards/me' });
-        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
+        log.info('Wishcard created', {
+          type: 'wishcard_created',
+          agency: userAgency._id,
+          wishCardId: newWishCard._id,
+        });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -175,7 +188,11 @@ router.post(
         });
 
         res.status(200).send({ success: true, url: '/wishcards/me' });
-        log.info('Wishcard created', { type: 'wishcard_created', agency: userAgency._id, wishCardId: newWishCard._id });
+        log.info('Wishcard created', {
+          type: 'wishcard_created',
+          agency: userAgency._id,
+          wishCardId: newWishCard._id,
+        });
       } catch (error) {
         handleError(res, 400, error);
       }
@@ -220,13 +237,17 @@ router.get('/me', renderPermissions, async (req, res) => {
     const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
     const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
-    res.render('agencyWishCards', { draftWishcards, activeWishcards, inactiveWishcards }, (error, html) => {
-      if (error) {
-        res.status(400).json({ success: false, error });
-      } else {
-        res.status(200).send(html);
-      }
-    });
+    res.render(
+      'agencyWishCards',
+      { draftWishcards, activeWishcards, inactiveWishcards },
+      (error, html) => {
+        if (error) {
+          res.status(400).json({ success: false, error });
+        } else {
+          res.status(200).send(html);
+        }
+      },
+    );
   } catch (error) {
     handleError(res, 400, error);
   }
@@ -245,7 +266,6 @@ router.get('/create', renderPermissions, async (_req, res) => {
     handleError(res, 400, error);
   }
 });
-
 
 // @desc    Return wishcards that have draft status
 // @route   GET '/wishcards/admin'
@@ -321,17 +341,16 @@ router.put('/admin/', async (req, res) => {
 });
 
 router.get('/admin/:wishCardId', async (req, res) => {
-
-  if ( !res.locals.user || res.locals.user.userRole !== 'admin') {
+  if (!res.locals.user || res.locals.user.userRole !== 'admin') {
     return res.status(404).render('404');
   }
 
-  const {wishCardId} = req.params;
+  const { wishCardId } = req.params;
 
   const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
   if (!donation) return handleError(res, 400, 'Donation not found');
 
-  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager)
+  const accountManager = await UserRepository.getUserByObjectId(donation.donationTo.accountManager);
   if (!accountManager) return handleError(res, 400, 'AccountManager not found');
 
   res.render('adminDonationDetails', {
@@ -339,11 +358,9 @@ router.get('/admin/:wishCardId', async (req, res) => {
     agency: donation.donationTo,
     donation,
     donor: donation.donationFrom,
-    accountManager
-  })
-
+    accountManager,
+  });
 });
-
 
 // @desc    search the wish cards by substring of wishItemName
 // @route   POST '/wishcards/search'
@@ -351,7 +368,6 @@ router.get('/admin/:wishCardId', async (req, res) => {
 // @tested 	Yes
 router.post('/search/:init?', async (req, res) => {
   try {
-
     const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
 
     let childAge;
@@ -371,7 +387,7 @@ router.post('/search/:init?', async (req, res) => {
       childAge = 15;
     }
 
-    if (younger && older)  childAge = 0;
+    if (younger && older) childAge = 0;
 
     const results = await WishCardController.getWishCardSearchResult(
       mongoSanitize.sanitize(wishitem),
@@ -424,49 +440,55 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
   }
 });
 
-router.get('/donate/:id', redirectLogin, getByIdValidationRules(), redirectLogin, async (req, res) => {
-  try {
-    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+router.get(
+  '/donate/:id',
+  redirectLogin,
+  getByIdValidationRules(),
+  redirectLogin,
+  async (req, res) => {
+    try {
+      const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 
-    // NOTE:
-    // this agency object is returning undefined and breaking frontend
-    const agency = wishcard.belongsTo;
+      // NOTE:
+      // this agency object is returning undefined and breaking frontend
+      const agency = wishcard.belongsTo;
 
-    // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
-    const processingFee = 1.08;
-    // we are using amazon prime so all shipping is free
-    const shipping = 'FREE';
-    // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
-    // doing all the shopping
-    const tax = 1.0712;
+      // fee for processing item. 3% charged by stripe for processing each card trasaction + 5% from us to cover the possible item price change difference
+      const processingFee = 1.08;
+      // we are using amazon prime so all shipping is free
+      const shipping = 'FREE';
+      // Open for discussion. Each state has its own tax so maybe create values for each individual(key-value) or use a defined one for everything since we are
+      // doing all the shopping
+      const tax = 1.0712;
 
-    const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+      const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
 
-    const extendedPaymentInfo = {
-      processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
-      shipping,
-      tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
-      totalItemCost,
-      agency,
-    };
+      const extendedPaymentInfo = {
+        processingFee: (wishcard.wishItemPrice * processingFee - wishcard.wishItemPrice).toFixed(2),
+        shipping,
+        tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
+        totalItemCost,
+        agency,
+      };
 
-    // console.log(agency);
+      // console.log(agency);
 
-    // I test printed the agency and wishcard object
-    // and if we are still using agency array, the matching obj is the 1st one
-    // but who knows ¯\_(ツ)_/¯
+      // I test printed the agency and wishcard object
+      // and if we are still using agency array, the matching obj is the 1st one
+      // but who knows ¯\_(ツ)_/¯
 
-    res.status(200).render('donate', {
-      user: res.locals.user,
-      wishcard: wishcard || [],
-      extendedPaymentInfo,
+      res.status(200).render('donate', {
+        user: res.locals.user,
+        wishcard: wishcard || [],
+        extendedPaymentInfo,
 
-      agency,
-    });
-  } catch (error) {
-    handleError(res, 400, error);
-  }
-});
+        agency,
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+  },
+);
 
 // @desc    display 3 wishcards randomly in the sample wishcard section of index.html
 // @route   GET '/wishcards/get/random'
@@ -477,13 +499,10 @@ router.get('/get/random', async (req, res) => {
     // let wishcards = await WishCardRepository.getAllWishCards();
     let wishcards = [];
     wishcards = await WishCardRepository.getWishCardsByStatus('published');
-    console.log(wishcards.length)
     if (!wishcards || wishcards.length < 6) {
-
       const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
-      wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length))
+      wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length));
     } else {
-
       wishcards.sort(() => Math.random() - 0.5);
       const requiredLength = 3 * Math.ceil(wishcards.length / 3);
       const rem = requiredLength - wishcards.length;
@@ -492,8 +511,6 @@ router.get('/get/random', async (req, res) => {
           wishcards.push(wishcards[j]);
         }
       }
-
-
     }
     res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
       if (error) {
@@ -511,42 +528,54 @@ router.get('/get/random', async (req, res) => {
 // @route   PUT '/wishcards/update/:id'
 // @access  Private, only for verified partners
 // @tested 	Not yet
-router.put('/update/:id', renderPermissions, updateWishCardValidationRules(), validate, async (req, res) => {
-  // what are we doing here?
-  try {
-    const result = await WishCardRepository.getWishCardByObjectId(req.params.id);
-    // WHERE ARE WE EDITING THIS ON THE FRONT END?
-    //     - in /users/profile
-    //     - all wishcards created by this user should display
-    //     - then add a pencil icon for edit function
-    result.save();
-  } catch (error) {
-    handleError(res, 400, error);
-  }
-});
+router.put(
+  '/update/:id',
+  renderPermissions,
+  updateWishCardValidationRules(),
+  validate,
+  async (req, res) => {
+    // what are we doing here?
+    try {
+      const result = await WishCardRepository.getWishCardByObjectId(req.params.id);
+      // WHERE ARE WE EDITING THIS ON THE FRONT END?
+      //     - in /users/profile
+      //     - all wishcards created by this user should display
+      //     - then add a pencil icon for edit function
+      result.save();
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+  },
+);
 
 // @desc    User can post a message to the wishcard
 // @route   POST '/wishcards/message'
 // @access  Private, all email verified donor users.
 // @tested  Yes
-router.post('/message', checkVerifiedUser, postMessageValidationRules(), validate, async (req, res) => {
-  try {
-    const { messageFrom, messageTo, message } = req.body;
-    const newMessage = await MessageRepository.createNewMessage({
-      messageFrom,
-      messageTo,
-      message,
-    });
+router.post(
+  '/message',
+  checkVerifiedUser,
+  postMessageValidationRules(),
+  validate,
+  async (req, res) => {
+    try {
+      const { messageFrom, messageTo, message } = req.body;
+      const newMessage = await MessageRepository.createNewMessage({
+        messageFrom,
+        messageTo,
+        message,
+      });
 
-    res.status(200).send({
-      success: true,
-      error: null,
-      data: newMessage,
-    });
-  } catch (error) {
-    handleError(res, 400, error);
-  }
-});
+      res.status(200).send({
+        success: true,
+        error: null,
+        data: newMessage,
+      });
+    } catch (error) {
+      handleError(res, 400, error);
+    }
+  },
+);
 /*
 // @desc   lock a wishcard
 // @route  POST '/wishcards/lock'
@@ -769,44 +798,50 @@ queue.on('completed', (job) => {
 // @route  GET '/wishcards/defaults/:id' (id represents age group category (ex: 1 for Babies))
 // @access Private (only for verified partners)
 // @tested No
-router.get('/defaults/:id', renderPermissions, getDefaultCardsValidationRules(), validate, async (req, res) => {
-  const ageCategory = Number(req.params.id);
-  let itemChoices;
+router.get(
+  '/defaults/:id',
+  renderPermissions,
+  getDefaultCardsValidationRules(),
+  validate,
+  async (req, res) => {
+    const ageCategory = Number(req.params.id);
+    let itemChoices;
 
-  switch (ageCategory) {
-    case 1:
-      itemChoices = babies;
-      break;
-    case 2:
-      itemChoices = preschoolers;
-      break;
-    case 3:
-      itemChoices = kids6_8;
-      break;
-    case 4:
-      itemChoices = kids9_11;
-      break;
-    case 5:
-      itemChoices = teens;
-      break;
-    case 6:
-      itemChoices = youth;
-      break;
-    case 7:
-      itemChoices = allAgesA;
-      break;
-    default:
-      itemChoices = allAgesB;
-      break;
-  }
-
-  res.render('itemChoices', { itemChoices }, (error, html) => {
-    if (error) {
-      handleError(res, 400, error);
-    } else {
-      res.status(200).send({ success: true, html });
+    switch (ageCategory) {
+      case 1:
+        itemChoices = babies;
+        break;
+      case 2:
+        itemChoices = preschoolers;
+        break;
+      case 3:
+        itemChoices = kids6_8;
+        break;
+      case 4:
+        itemChoices = kids9_11;
+        break;
+      case 5:
+        itemChoices = teens;
+        break;
+      case 6:
+        itemChoices = youth;
+        break;
+      case 7:
+        itemChoices = allAgesA;
+        break;
+      default:
+        itemChoices = allAgesB;
+        break;
     }
-  });
-});
+
+    res.render('itemChoices', { itemChoices }, (error, html) => {
+      if (error) {
+        handleError(res, 400, error);
+      } else {
+        res.status(200).send({ success: true, html });
+      }
+    });
+  },
+);
 
 module.exports = router;
