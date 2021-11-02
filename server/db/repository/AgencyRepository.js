@@ -21,7 +21,7 @@ async function createNewAgency(agencyParams) {
 
 async function verifyAgency(agencyId) {
   try {
-    await Agency.updateOne(
+    return await Agency.updateOne(
       { id: agencyId },
       { $set: { isVerified: true } }
     ).exec();

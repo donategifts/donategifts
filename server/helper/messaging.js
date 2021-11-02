@@ -348,6 +348,34 @@ async function sendAgencyVerificationNotification(agency) {
   }
 }
 
+async function sendAgencyVerificationNotificationSuccess({agency, user, responseUrl}) {
+  try {
+    await axios({
+      method: 'POST',
+      url: responseUrl,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        response_type: 'ephemeral',
+        replace_original: true,
+        text: `New Agency ${agency.agencyName} has registered!${
+          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
+        }`,
+        attachments: [
+          {
+            text: `@${user} has verified it!`,
+            color: '#3AA3E3',
+            attachment_type: 'default',
+          },
+        ],
+      }),
+    });
+  } catch (error) {
+    log.error(error);
+  }
+}
+
 module.exports = {
   sendMail,
   sendSlackFeedbackMessage,
@@ -357,4 +385,5 @@ module.exports = {
   sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
+  sendAgencyVerificationNotificationSuccess
 };
