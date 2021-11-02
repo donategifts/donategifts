@@ -321,12 +321,12 @@ async function sendAgencyVerificationNotification(agency) {
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({
-        text: `New Agency ${agency.agencyName} has registered!${
+        text: `${agency.user.email} has registered ${agency.agency.agencyName}!${
           process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
         }`,
         attachments: [
           {
-            text: `Verify it? Please check ${agency.agencyWebsite} before you consider it :)`,
+            text: `Please check ${agency.agency.agencyWebsite} before you verify it :)`,
             callback_id: 'agency_verify',
             color: '#3AA3E3',
             attachment_type: 'default',

@@ -1,4 +1,5 @@
 const Agency = require('../models/Agency');
+const { getUserByObjectId } = require('./UserRepository');
 
 async function getAgencyByUserId(userId) {
   try {
@@ -13,7 +14,10 @@ async function createNewAgency(agencyParams) {
     const newAgency = new Agency(agencyParams);
     await newAgency.save();
 
-    return newAgency;
+    return {
+      agency: newAgency,
+      user: await getUserByObjectId(agencyParams.accountManager),
+    };
   } catch (error) {
     throw new Error(`Failed to create Agency: ${error}`);
   }
