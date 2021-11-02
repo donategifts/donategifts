@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Profile Page | Donate Gifts</title>
+
+  <%- include('./templates/header')-%>
+
+  <link rel="stylesheet" href="/public/css/profile.css" />
+  <link rel="stylesheet" href="/public/css/about.css" />
+
+  <!-- CDN jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <%- include('./templates/nav')-%> <%- include('./templates/editAboutMeModal')-%>
+  <!-- header section-->
+ 
+  <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
+
+  <!-- Wish Card Form Section-->
+  <div class="container-fluid">
+    <div class="create-wish-card">
+      <!-- wishCardForm starts here-->
+      <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
+        <h4 class="crayon-font wish-card-form-title">
+          Create a wish card for the<br />
+          child or youth under your care
+        </h4>
+        <!-- <div class="row mb-5">
+          <h6 class="col form-notification">
+            For this method, you need to watch
+            <a href="https://youtu.be/P4P6jEqTXs4" target="_blank" class="highlight text-success">this video</a>
+            and create an Amazon list first. <br />
+
+            We are developing new features to make the card creation much easier in the future.<br />
+            Support us by continuing to use this process until then. Thank you.
+          </h6>
+        </div> -->
+
+        <div class="row">
+          <div class="col-lg-6 quick-font wrap-input1" data-validate="Name is required">
+            <label for="childFirstName">Child's First Name</label>
+            <input id="childFirstName" class="input1" type="text" name="childFirstName"
+              placeholder="Nick name is also ok" />
+          </div>
+
+          <div class="col-lg-6 ml-auto quick-font wrap-input1">
+            <label for="childLastName">Child's Last Name</label>
+            <input id="childLastName" class="input1" type="text" name="childLastName"
+              placeholder="Initial is also ok" />
+          </div>
+
+          <div class="col-lg-6 quick-font wrap-input1">
+            <label for="childBirthday">Child's Birthday</label>
+            <input id="childBirthday" class="input1" type="date" name="childBirthday" placeholder="Child's Birthday" />
+          </div>
+
+          <div class="col-lg-6 ml-auto quick-font wrap-input1">
+            <label for="childInterest">Child's Interest</label>
+            <input id="childInterest" class="input1" type="text" name="childInterest"
+              placeholder="Write something that the child likes to do" />
+          </div>
+
+          <!-- <div class="col-lg-6 quick-font py-4 highlighted">
+            Please understand that we limit the price to be under $30 (USD)
+          </div> -->
+
+          <div class="col-lg-6 quick-font wrap-input1">
+            <label for="wishItemName">Wish Item Name</label>
+            <input id="wishItemName" class="input1" type="text" name="wishItemName"
+              placeholder="(e.g. Lego Set, Elephant Toy, etc. )" />
+          </div>
+
+          <div class="col-lg-6 ml-auto quick-font wrap-input1">
+            <label for="wishItemPrice">We limit the price to be under $30 (USD)</label>
+            <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper2">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>click for help
+            </a>
+            <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
+              placeholder="Wish Item Price (numeric only, round it up)" min="1" max="30" />
+          </div>
+          <!-- <a href="https://youtu.be/P4P6jEqTXs4" target="_blank" class="text-success">(Watch this video for
+            help)</a> -->
+          <div class="px-3 quick-font wrap-input1">
+            <label for="wishItemURL">Wish Item Amazon URL
+            </label>
+            <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>click for help
+            </a>
+            <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
+              placeholder="(copied product page hyperlink from the amazon search)" />
+          </div>
+
+          <div class="col-lg-6 ml-auto quick-font wrap-input1">
+
+            <label for="deliveryDate">Set last date for the wish item delivery (skip if no deadline)</label>
+            <input id="deliveryDate" class="input1" type="date" name="deliveryDate" />
+          </div>
+
+          <div class="col-lg-6 ml-auto quick-font wrap-input1">
+            <label for="occasion">What's the occasion?</label>
+            <input id="occasion" class="input1" type="text" name="occasion"
+              placeholder="(e.g. holiday, birthday, graduation)" />
+          </div>
+
+          <div class="col-lg-6 quick-font wrap-input1" data-validate="Message is required">
+            <label for="childStory">Share their story</label>
+            <textarea id="childStory" class="input1" name="childStory"
+              placeholder="(e.g. why they want this gift, what their favorite subject is, or some info about the child. This helps donors to connect with the child.)"></textarea>
+          </div>
+
+          <!-- Custom File Uploader  -->
+          <main class="col-lg-6 ml-auto">
+            <div class="box">
+              <div class="content">
+                <p>
+                  Child's photo is required; if confidentiality is an issue, try using a photo of their
+                  hands making a heart, masked face, wearing sunglasses, cropping, etc.
+                  <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper3">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>why is this required
+                  </a>
+                </p>
+                <div class="uploader-left">
+                  <img id="preview" src="/public/img/img-placeholder.png" alt="image-placeholder" />
+                </div>
+                <div class="uploader-right">
+                  <!-- <input type="text" class="img-path" placeholder="Select wish card image"> -->
+                  <span class="file-wrapper">
+                    <input type="file" name="wishCardImage" id="filetag"
+                      class="uploader upload-btn btn-large btn-alpha" />
+                    <!-- <span class="upload-btn btn-large btn-alpha">Upload Image</span> -->
+                  </span>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <h6 class="grn-font quick-font pb-2">Shipping address (where to deliver this item?)</h6>
+
+        <label class="quick-font"><input type="checkbox" id="agencyAddressCheckBox" /> Use agency address as shipping
+          address</label>
+        <div class="row">
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address1">Address Line 1</label>
+            <input id="address1" class="input1" type="text" name="address1" placeholder="(e.g. 1004 Donate St.)" />
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address2">Address Line 2</label>
+            <input id="address2" class="input1" type="text" name="address2" placeholder="(e.g. Suite 200)" />
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_city">City</label>
+            <input id="address_city" class="input1" type="text" name="address_city" placeholder="(e.g. Chicago )" />
+
+          </div>
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_state">State</label>
+            <input id="address_state" class="input1" type="text" name="address_state" placeholder="(e.g. Illinois )" />
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_zip">Zipcode</label>
+
+            <input id="address_zip" class="input1" type="text" name="address_zip" placeholder="(e.g. 60640 )" />
+          </div>
+          <div class="col-lg-4 quick-font wrap-input1">
+            <label for="address_country">Country</label>
+            <input id="address_country" class="input1" type="text" name="address_country" placeholder="(e.g. USA )" />
+
+          </div>
+        </div>
+
+        <p class="force-text-center quick-font p-2 mt-2">Each wish will be submitted as a draft & will be published by us
+
+        <div id="submit-btn" class="quick-font">
+          <input value="Submit" type="submit" class="button button-submit d-inline-flex" />
+        </div>
+      </form>
+    </div>
+  </div>
+  <% } %>
+  <%- include('./templates/footer')-%>
+  <!-- js scripts -->
+  <script src="/public/clientJS/createWishcard.js"></script>
+</body>
+
+</html>
