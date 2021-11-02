@@ -15,10 +15,7 @@
 </head>
 
 <body>
-  <%- include('./templates/nav')-%> <%- include('./templates/editAboutMeModal')-%>
-  <!-- header section-->
- 
-  <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
+
 
   <!-- Wish Card Form Section-->
   <div class="container-fluid">
@@ -184,7 +181,6 @@
       </form>
     </div>
   </div>
-  <% } %>
   <%- include('./templates/footer')-%>
   <!-- js scripts -->
   <script src="/public/clientJS/createWishcard.js"></script>

@@ -236,7 +236,7 @@ router.get('/me', renderPermissions, async (req, res) => {
 // @route   GET '/wishcards/new'
 // @access  Agency
 // @tested 	Yes
-router.get('/new', renderPermissions, async (_req, res) => {
+router.get('/create', renderPermissions, async (_req, res) => {
   try {
     res.status(200).render('createWishcard', {
       user: res.locals.user
