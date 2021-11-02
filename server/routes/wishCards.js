@@ -20,7 +20,6 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
 const log = require('../helper/logger');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 // const scrapeList = require('../../scripts/amazon-scraper');
@@ -309,8 +308,8 @@ router.put('/admin/', async (req, res) => {
     if (res.locals.user.userRole !== USER_ROLE) {
       return res.status(404).render('404');
     }
-    const wishCardId = mongoSanitize.sanitize(req.body.wishCardId);
-    const wishItemURL = mongoSanitize.sanitize(req.body.wishItemURL);
+    const { wishCardId } = req.body;
+    const { wishItemURL } = req.body;
     const wishCardModifiedFields = {
       wishItemURL,
       status: 'published',
@@ -373,14 +372,15 @@ router.post('/search/:init?', async (req, res) => {
       childAge = 15;
     }
 
-    if (younger && older) childAge = 0;
+    if (younger && older) {
+      childAge = 0;
+    }
 
     const results = await WishCardController.getWishCardSearchResult(
-      mongoSanitize.sanitize(wishitem),
+      wishitem,
       showDonated,
       recentlyAdded,
       childAge,
-
       cardIds || [],
     );
 
