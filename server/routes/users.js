@@ -33,6 +33,7 @@ const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
 const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
 const { redirectLogin, redirectProfile } = require('./middleware/login.middleware');
+const { sendAgencyVerificationNotification } = require('../helper/messaging');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
@@ -240,17 +241,20 @@ router.get('/agency', redirectLogin, async (req, res) => {
 router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
   const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
-  await AgencyRepository.createNewAgency({
-    agencyName,
-    agencyWebsite,
-    agencyPhone,
-    agencyBio,
-    agencyAddress,
-    accountManager: req.session.user._id,
-    ...req.body,
-  });
-
   try {
+    const agency = await AgencyRepository.createNewAgency({
+      agencyName,
+      agencyWebsite,
+      agencyPhone,
+      agencyBio,
+      agencyAddress,
+      accountManager: req.session.user._id,
+      ...req.body,
+    });
+
+  
+    await sendAgencyVerificationNotification(agency);
+    
     return res.status(200).send({
       success: true,
       user: req.session.user,
