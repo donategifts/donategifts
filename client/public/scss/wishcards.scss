@@ -10,6 +10,10 @@
     text-align: center;
     padding: 1rem 0rem 3rem 0rem;
   }
+  &-container {
+    max-width: 1300px;
+    // Just so it doesn't expand all the way in large screens
+  }
 }
 
 .wishcard {
@@ -46,7 +50,7 @@
 
 .card-body {
   padding: 1.1rem !important;
-  margin-top: -0.5rem !important;
+  margin-top: -1.25rem !important;
   .card-details {
     p {
       @include font-styling($font-body);
