@@ -15,7 +15,6 @@
     gtag('config', 'UA-180152810-1');
   </script>
   <title>Holiday Gift Donation | Donate Gifts to Foster Kids -Virtual Toy Drive</title>
-  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
 
   <!-- Site SEO -->
   <meta name="description"
@@ -54,7 +53,7 @@
   <!-- For hero header typing effect -->
   <script src="/public/clientJS/heroTyping.js"></script>
   <!-- TODO: I'm going to move main.min.css load to header and remove old custom css later -->
-  <link rel="stylesheet" href="/public/dist/main.min.css">
+  <link rel="stylesheet" href="/public/dist/wishcards.min.css">
 </head>
 
 <body>
@@ -69,7 +68,7 @@
       <div class="col-12">
         <h1>Send Gifts to
           <span class="typing" data-wait="2000"
-            data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters", "Kids in Foster Care"]'></span>
+            data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]'></span>
         </h1>
         <h4 class="hide">Every child should feel valued, remembered, and loved</h4>
         <h4 class="m-mobile">Donate holiday & birthday gifts to the kids who may not otherwise get one
@@ -125,7 +124,7 @@
 
 
   <div class="partners-container mb-5">
-    <h1 class="crayon-font home-wish-title mt-3">Our Partner Agencies</h1>
+    <h1 class="mt-3">Our Partner Agencies</h1>
     <div class="container-fluid">
       <div class="small3">
         <ul class="small-ul px-0" data-small3="">
@@ -193,9 +192,9 @@
 
 
   <!-- thank you section-->
-  <div class="custom-wrapper py-5">
+  <div class="thanks custom-wrapper py-5">
     <div class="container" id="about">
-      <h4 id="grn-font" class="crayon-font display-4 mb-3 text-center">We Need Your Help</h4>
+      <h1 class="mb-3">We Need Your Help</h1>
       <div class="row">
         <div class="col-md-6 order-1 p-5">
           <img src="/public/img/kids-cover.jpg" alt="donation drop off near me" class="img-fluid grn-box" />
@@ -224,7 +223,6 @@
     countdown = [];
     socket = io('<%= process.env.SOCKET_URL %>');
   </script>
-  <!-- CDN Bootstrap.js, Popper.js, and jQuery -->
   <script src="/public/clientJS/wishCardRandom.js"></script>
   <script src="/public/clientJS/wishCardModal.js"></script>
   <!-- this is for the preloader -->
