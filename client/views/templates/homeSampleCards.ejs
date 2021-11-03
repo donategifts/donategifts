@@ -1,10 +1,9 @@
 <!-- Wish Card deck -->
 <div class="wishcards">
-  <h1 class="crayon-font home-wish-title">Become Our Secret Santa</h1>
+  <h1>Become Our Secret Santa</h1>
   <div class="wishcards-container mx-auto">
     <% if (!locals.wishcards || wishcards.length === 0) { %>
-    <h1 class="cool-font">No wish cards to display</h1>
-    <p class="quick-font bold-text">Wow, all wish cards are already donated!</p>
+    <h1>Loading...</h1>
     <% } else { %>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -27,63 +26,51 @@
                   <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__icon--fixed msg-icon">
                     <i class="far fa-envelope"></i>
                   </a>
-                  <div class="card-text-container">
+                  <div class="card-details">
                     <!--Title-->
                     <h3 class="card-title text-center crayon-font">My name is <%= wishcards[j].childFirstName %></h3>
-
                     <!--Text-->
-                    <div class="quick-font">
-                      <p class="card-text">
-                        <span class="font-weight-bold">Wish : </span>
-                        <%= wishcards[j].wishItemName.length > 25 ? wishcards[j].wishItemName.substring(0, 25) + "..." :
-                        wishcards[j].wishItemName %>
-                      </p>
-                      <p class="card-text">
-                        <span class="font-weight-bold">Item Price :</span> $<%= wishcards[j].wishItemPrice %>
-                      </p>
-                      <p class="card-text">
-                        <span class="font-weight-bold">Interest : </span>
-                        <%= wishcards[j].childInterest.length > 25 ? wishcards[j].childInterest.substring(0, 25) + "..."
-                        : wishcards[j].childInterest %>
-                      </p>
-                    </div>
-                    <div class="quick-font mt-4 row justify-content-center align-items-center">
-                      <div class="col-sm-6 text-center">
+                    <p>
+                      <span class="font-weight-bold">Wish : </span>
+                      <%= wishcards[j].wishItemName.length > 24 ? wishcards[j].wishItemName.substring(0, 23) + "..." :
+                      wishcards[j].wishItemName %>
+                    </p>
+                    <p class="wish-price">
+                      <span class="font-weight-bold">Item Price :</span> $<%= wishcards[j].wishItemPrice %>
+                    </p>
+                    <p>
+                      <span class="font-weight-bold">Interest : </span>
+                      <%= wishcards[j].childInterest.length > 24 ? wishcards[j].childInterest.substring(0, 21) + "..."
+                      : wishcards[j].childInterest %>
+                    </p>
+
+                    <div class="card-action row">
+                      <div class="col-sm-6 mb-2">
                         <% if (locals.user) { %>
-                          <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                        <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">View More</a>
                         <% } else { %>
-                          <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-                          data-target="#loginModalCenter"> Read More </button>
+                        <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
+                          data-target="#loginModalCenter"> View More </button>
                         <% } %>
                       </div>
-                      <div class="col-sm-6 text-center">
+                      <div class="col-sm-6 mb-2">
                         <% if (wishcards[j].status === 'donated') { %>
-                        <button
-                                type="button"
-                                class="wishcard__button--blue bdr-2"
-                                disabled
-                        >
+                        <button type="button" class="wishcard__button--disabled bdr-2" disabled>
                           Donated
                         </button>
 
                         <% } else { %>
 
-                          <% if (locals.user) { %>
-                            <a href="wishcards/donate/<%= wishcards[j]._id %>"><button
-                            type="button"
-                            class="wishcard__button--blue bdr-2"
-                          >
+                        <% if (locals.user) { %>
+                        <a href="wishcards/donate/<%= wishcards[j]._id %>"><button type="button"
+                            class="wishcard__button--blue bdr-2">
                             Donate Gift
                           </button></a>
                         <% } else { %>
-                          <button
-                            type="button"
-                            data-toggle="modal"
-                            class="wishcard__button--blue bdr-2"
-                            data-target="#loginModalCenter"
-                          >
-                            Donate Gift
-                          </button>
+                        <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+                          data-target="#loginModalCenter">
+                          Donate Gift
+                        </button>
                         <% } %>
                         <% } %>
                       </div>
@@ -102,9 +89,8 @@
         <span class="sr-only">Previous</span>
       </a>
       <a class="carousel-control-right" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"
-          ><i class="fa fa-arrow-circle-right fa-2x"></i
-        ></span>
+        <span class="carousel-control-next-icon" aria-hidden="true"><i
+            class="fa fa-arrow-circle-right fa-2x"></i></span>
         <span class="sr-only">Next</span>
       </a>
     </div>
@@ -130,60 +116,56 @@
                     <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__icon--fixed msg-icon">
                       <i class="far fa-envelope"></i>
                     </a>
-                    <div class="card-text-container">
+                    <div class="card-details">
                       <!--Title-->
                       <h3 class="card-title text-center crayon-font">My name is <%= wishcards[j].childFirstName %></h3>
-
                       <!--Text-->
-                      <div class="quick-font">
-                        <p class="card-text">
-                          <span class="font-weight-bold">Wish : </span>
-                          <%= wishcards[j].wishItemName.length > 25 ? wishcards[j].wishItemName.substring(0, 25) + "..."
-                          : wishcards[j].wishItemName %>
-                        </p>
-                        <p class="card-text">
-                          <span class="font-weight-bold">Item Price :</span> $<%= wishcards[j].wishItemPrice %>
-                        </p>
-                        <p class="card-text">
-                          <span class="font-weight-bold">Interest : </span>
-                          <%= wishcards[j].childInterest.length > 25 ? wishcards[j].childInterest.substring(0, 25) +
-                          "..." : wishcards[j].childInterest %>
-                        </p>
-                      </div>
-                      <div class="quick-font mt-4 row justify-content-center align-items-center">
-                        <div class="col-sm-6 my-2 text-center">
+                      <p>
+                        <span class="font-weight-bold">Wish : </span>
+                        <%= wishcards[j].wishItemName.length > 24 ? wishcards[j].wishItemName.substring(0, 23) + "..." :
+                        wishcards[j].wishItemName  %>
+                      </p>
+                      <p class="wish-price">
+                        <span class="font-weight-bold">Item Price :</span> $<%= wishcards[j].wishItemPrice %>
+                      </p>
+                      <p>
+                        <span class="font-weight-bold">Interest : </span>
+                        <%= wishcards[j].childInterest.length > 24 ? wishcards[j].childInterest.substring(0, 21) + "..."
+                        : wishcards[j].childInterest %>
+                      </p>
+                      <div class="card-action row">
+                        <div class="col-sm-6 mb-2">
                           <% if (locals.user) { %>
-                            <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">Read more</a>
+                          <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">View More</a>
                           <% } else { %>
-                            <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-                            data-target="#loginModalCenter"> Read More </button>
+                          <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
+                            data-target="#loginModalCenter"> View More </button>
                           <% } %>
                         </div>
-                        <div class="col-sm-6 my-2 text-center">
+                        <div class="col-sm-6 mb-2">
 
                           <% if (wishcards[j].status === 'donated') { %>
-                            <button
-                                    type="button"
-                                    class="wishcard__button--blue bdr-2"
-                                    disabled
-                            >
-                              Donated
-                            </button>
+                          <button type="button" class="wishcard__button--disabled bdr-2" disabled>
+                            Donated
+                          </button>
 
                           <% } else { %>
-                            <% if (locals.user) { %>
-                            <a href="wishcards/donate/<%= wishcards[j]._id %>"><button type="button" class="wishcard__button--blue bdr-2">
-                                Donate Gift
-                              </button></a>
-                            <% } else { %>
-                            <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2" data-target="#loginModalCenter">
+                          <% if (locals.user) { %>
+                          <a href="wishcards/donate/<%= wishcards[j]._id %>"><button type="button"
+                              class="wishcard__button--blue bdr-2">
                               Donate Gift
-                            </button>
-                            <% } %>
-                            <% } %>
+                            </button></a>
+                          <% } else { %>
+                          <button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
+                            data-target="#loginModalCenter">
+                            Donate Gift
+                          </button>
+                          <% } %>
+                          <% } %>
                         </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -195,15 +177,13 @@
       </div>
       <div class="col-12 d-flex justify-content-center align-items-start" id="mobile__carousel-controls">
         <a class="carousel-control-left mx-4" href="#mobileCarousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"
-            ><i class="fa fa-arrow-circle-left fa-2x"></i
-          ></span>
+          <span class="carousel-control-prev-icon" aria-hidden="true"><i
+              class="fa fa-arrow-circle-left fa-2x"></i></span>
           <span class="sr-only">Previous</span>
         </a>
         <a class="carousel-control-right mx-4" href="#mobileCarousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"
-            ><i class="fa fa-arrow-circle-right fa-2x"></i
-          ></span>
+          <span class="carousel-control-next-icon" aria-hidden="true"><i
+              class="fa fa-arrow-circle-right fa-2x"></i></span>
           <span class="sr-only">Next</span>
         </a>
       </div>
