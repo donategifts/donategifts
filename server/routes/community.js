@@ -1,6 +1,5 @@
 const express = require('express');
 const moment = require('moment');
-const mongoSanitize = require('express-mongo-sanitize');
 
 const router = express.Router();
 const log = require('../helper/logger');
@@ -13,7 +12,7 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 
 router.get('/', redirectLogin, async (req, res) => {
   try {
-    const { user } = req.session; 
+    const { user } = req.session;
     const posts = await PostRepository.getAllPosts();
     res.status(200).render('community', { user, posts, moment });
   } catch (error) {
@@ -23,7 +22,7 @@ router.get('/', redirectLogin, async (req, res) => {
 });
 
 router.post(
-  '/',  
+  '/',
   WishCardMiddleWare.upload.single('postImage'),
   redirectLogin,
   donationPostValidation(),
@@ -43,8 +42,7 @@ router.post(
       }
       const agency = await AgencyRepository.getAgencyByUserId(user._id);
       let profileImage;
-      if (req.file !== undefined)
-      {
+      if (req.file !== undefined) {
         let filePath;
         if (process.env.NODE_ENV === 'development') {
           // locally when using multer images are saved inside this folder
@@ -54,10 +52,10 @@ router.post(
       }
 
       const newPost = {
-        message: mongoSanitize.sanitize(req.body.postText),
+        message: req.body.postText,
         image: profileImage || null,
-        belongsTo: agency, 
-        agency
+        belongsTo: agency,
+        agency,
       };
 
       await PostRepository.createNewPost(newPost);
@@ -78,6 +76,7 @@ router.post(
         }),
       );
     }
-  });
+  },
+);
 
 module.exports = router;

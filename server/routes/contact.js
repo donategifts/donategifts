@@ -29,7 +29,12 @@ router.post('/email', async (req, res) => {
       message: req.body.message,
     });
 
-    const mailResponse = await sendMail(contact.email, 'stacy.sealky.lee@gmail.com', contact.subject, contact.message);
+    const mailResponse = await sendMail(
+      contact.email,
+      'stacy.sealky.lee@gmail.com',
+      contact.subject,
+      contact.message,
+    );
 
     if (mailResponse.error) {
       log.error(req, mailResponse.error);

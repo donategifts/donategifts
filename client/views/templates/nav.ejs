@@ -15,6 +15,7 @@
           <li><a href="/users/login">Log In</a></li>
           <% } else { %> <% if (locals.user.userRole == 'partner') { %>
           <li><a href="/wishcards/me">My Wishes</a></li>
+          <li><a href="/wishcards/create">Create a Wish Card</a></li>
           <% } %> <% if (locals.user.userRole == 'admin') { %>
           <li><a href="/wishcards/admin/">Admin Panel</a></li>
           <% } %>

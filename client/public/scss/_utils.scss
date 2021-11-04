@@ -1,0 +1,91 @@
+/* 
+-----------------------------
+Reusable Utils - Button
+-----------------------------
+*/
+%btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 
+-----------------------------
+Reusable Hero
+-----------------------------
+*/
+.hero {
+  text-align: center;
+  color: $white;
+  h1 {
+    @include font-styling($font-heading, 3.4em);
+    text-transform: uppercase;
+  }
+  h4 {
+    @include font-styling($font-body);
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* 
+-----------------------------
+Text Typing Effect 
+-----------------------------
+*/
+.typing {
+  // margin-left: 10px;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 60px;
+    border: 2px solid $white;
+    animation: blink 0.5s infinite ease;
+    -webkit-animation: blink 0.5s infinite ease;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 
+-----------------------------
+move this later
+-----------------------------
+*/
+
+.partners-container {
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $navy, $medium);
+    text-align: center;
+    padding: 1rem 0rem 3rem 0rem;
+  }
+}
+
+.thanks {
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $green, $medium);
+    text-align: center;
+  }
+}

@@ -9,9 +9,12 @@ const log = require('./logger');
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
   encoding: 'utf-8',
 });
-const donationTemplate = fs.readFileSync(path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'), {
-  encoding: 'utf-8',
-});
+const donationTemplate = fs.readFileSync(
+  path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+  {
+    encoding: 'utf-8',
+  },
+);
 
 const donationTemplateAttachments = [
   {
@@ -21,7 +24,10 @@ const donationTemplateAttachments = [
   },
   {
     filename: 'email-gifts-illustration-removebg-preview.png',
-    path: path.resolve(__dirname, '../resources/email/email-gifts-illustration-removebg-preview.png'),
+    path: path.resolve(
+      __dirname,
+      '../resources/email/email-gifts-illustration-removebg-preview.png',
+    ),
     cid: 'email-gifts-illustration-removebg-preview.png',
   },
   {
@@ -129,7 +135,15 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
   }
 };
 
-const sendDonationConfirmationMail = async ({ email, firstName, lastName, childName, item, price, agency }) => {
+const sendDonationConfirmationMail = async ({
+  email,
+  firstName,
+  lastName,
+  childName,
+  item,
+  price,
+  agency,
+}) => {
   const body = donationTemplate
     .replace('%firstName%', firstName)
     .replace(RegExp('%childName%', 'g'), childName)
@@ -154,10 +168,19 @@ const sendVerificationEmail = async (to, hash) => {
     .replace('%linkplaceholder%', `${process.env.BASE_URL}/users/verify/${hash}`)
     .replace('%headerPlaceHolder%', 'Verify Your Email Account')
     .replace('%titlePlaceHolder%', 'Thank you for creating an account!')
-    .replace('%bodyPlaceHolder%', 'Please confirm your email address to continue using our services.')
+    .replace(
+      '%bodyPlaceHolder%',
+      'Please confirm your email address to continue using our services.',
+    )
     .replace('%buttonText%', 'Confirm Your Email');
 
-  return sendMail(process.env.DEFAULT_EMAIL, to, 'Donate-gifts.com Email verification', body, templateAttachments);
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    to,
+    'Donate-gifts.com Email verification',
+    body,
+    templateAttachments,
+  );
 };
 
 const sendPasswordResetMail = async (to, hash) => {
@@ -168,7 +191,13 @@ const sendPasswordResetMail = async (to, hash) => {
     .replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
     .replace('%buttonText%', 'Reset Password');
 
-  return sendMail(process.env.DEFAULT_EMAIL, to, 'Donate-gifts.com Password Reset', body, templateAttachments);
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    to,
+    'Donate-gifts.com Password Reset',
+    body,
+    templateAttachments,
+  );
 };
 
 const createEmailVerificationHash = () => {
@@ -257,7 +286,6 @@ async function sendSlackFeedbackMessage(name, email, subject, message) {
 }
 
 async function sendDonationNotificationToSlack(service, userDonation, donor, wishCard, amount) {
-
   try {
     await axios({
       method: 'POST',
@@ -267,17 +295,84 @@ async function sendDonationNotificationToSlack(service, userDonation, donor, wis
       },
 
       data: JSON.stringify({
-        text: `${process.env.NODE_ENV} New ${service} Donation by ${donor.fName} ${donor.lName.substring(0, 1)} for ${
+        text: `${process.env.NODE_ENV} New ${service} Donation by ${
+          donor.fName
+        } ${donor.lName.substring(0, 1)} for ${
           wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} details: ${process.env.BASE_URL}/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
+        } ${wishCard.childLastName.substring(0, 1)} details: ${
+          process.env.BASE_URL
+        }/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
       }),
-
     });
 
     return true;
   } catch (error) {
     log.error(error);
     return false;
+  }
+}
+
+async function sendAgencyVerificationNotification(agency) {
+  try {
+    await axios({
+      method: 'POST',
+      url: `${process.env.SLACK_INTEGRATION_AGENCY_VERIFICATION}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        text: `${agency.user.email} has registered ${agency.agency.agencyName}!${
+          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
+        }`,
+        attachments: [
+          {
+            text: `Please check ${agency.agency.agencyWebsite} before you verify it :)`,
+            callback_id: 'agency_verify',
+            color: '#3AA3E3',
+            attachment_type: 'default',
+            actions: [
+              {
+                name: 'verify',
+                text: 'Verify',
+                style: 'success',
+                type: 'button',
+                value: `${agency._id}`,
+              },
+            ],
+          },
+        ],
+      }),
+    });
+  } catch (error) {
+    log.error(error);
+  }
+}
+
+async function sendAgencyVerificationNotificationSuccess({ agency, user, responseUrl }) {
+  try {
+    await axios({
+      method: 'POST',
+      url: responseUrl,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        response_type: 'ephemeral',
+        replace_original: true,
+        text: `New Agency ${agency.agency.agencyName} has registered!${
+          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
+        }`,
+        attachments: [
+          {
+            text: `@${user} has verified it!`,
+            color: '#3AA3E3',
+            attachment_type: 'default',
+          },
+        ],
+      }),
+    });
+  } catch (error) {
+    log.error(error);
   }
 }
 
@@ -289,4 +384,6 @@ module.exports = {
   sendPasswordResetMail,
   sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
+  sendAgencyVerificationNotification,
+  sendAgencyVerificationNotificationSuccess,
 };

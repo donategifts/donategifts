@@ -65,11 +65,10 @@ const upload = multer({
 const uploadIfFileisPresent = async (req, res, next) => {
   if (req.file !== undefined) {
     upload.single('wishCardImage');
-  }
-  else {
+  } else {
     next();
   }
-}
+};
 
 const IfNull = ({ agency, foundAgency }) => {
   if (!agency || !foundAgency) {

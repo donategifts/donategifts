@@ -1,18 +1,15 @@
-
 const path = require('path');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../../config/config.env') });
-require("../connection").connect();
+require('../connection').connect();
 
 const log = require('../../helper/logger');
 
-const UserRepository = require("../repository/UserRepository");
-const WishCardRepository = require("../repository/WishCardRepository");
-const AgencyRepository = require("../repository/AgencyRepository");
-
+const UserRepository = require('../repository/UserRepository');
+const WishCardRepository = require('../repository/WishCardRepository');
+const AgencyRepository = require('../repository/AgencyRepository');
 
 async function addBelongsTo() {
-
   const wishcards = await WishCardRepository.getAllWishCards();
 
   wishcards.forEach(async (wishcard) => {
@@ -31,18 +28,17 @@ async function addBelongsTo() {
           // eslint-disable-next-line no-param-reassign
           wishcard.belongsTo = agency._id;
           wishcard.save();
-          log.info(`BelongsTo stored for wishcard: ${wishcard._id}`)
+          log.info(`BelongsTo stored for wishcard: ${wishcard._id}`);
         } else {
-          log.error(`Wishcard: ${wishcard._id} has no valid AgencyUser in createdBy field!`)
+          log.error(`Wishcard: ${wishcard._id} has no valid AgencyUser in createdBy field!`);
         }
       } else {
-        log.error(`Wishcard: ${wishcard._id} has no valid User in createdBy field!`)
+        log.error(`Wishcard: ${wishcard._id} has no valid User in createdBy field!`);
       }
     } else {
-      log.error(`Wishcard: ${wishcard._id} has no createdBy field!`)
+      log.error(`Wishcard: ${wishcard._id} has no createdBy field!`);
     }
-  })
-
+  });
 }
 
 addBelongsTo().catch(log.error);
