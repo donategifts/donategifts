@@ -45,15 +45,15 @@ function onlyUnique(value, index, self) {
 
 function getReadMoreBtn(user, wishCardId) {
   if (user) {
-    return  `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2"> Read more </a>`
+    return  `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
   }
   return `<button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-  data-target="#loginModalCenter"> Read More </button>`
+  data-target="#loginModalCenter">View More</button>`
 }
 
 function getDonatedBtn(user, wishCardId, wishCardStatus) {
   if (wishCardStatus === 'donated') {
-    return `<button type="button" class="wishcard__button--blue bdr-2" disabled aria-disabled=true> Donated </button>`;
+    return `<button type="button" class="wishcard__button--disabled bdr-2" disabled aria-disabled=true> Donated </button>`;
   } else if (user) {
     return `<a href="wishcards/donate/${wishCardId}"><button type="button" class="wishcard__button--blue bdr-2"> Donate Gift </button></a>`;
   } else {
@@ -85,34 +85,34 @@ function appendWishCards(response, end = false, remove = false) {
             <a href="/wishcards/${wishCard._id}" class="wishcard__icon--fixed msg-icon">
               <i class="far fa-envelope" aria-hidden="true"></i>
             </a>
-            <div class="card-text-container">
+            <div class="card-details">
               <h3 class="card-title text-center crayon-font">My name is ${wishCard.childFirstName}</h3>
               <div class="quick-font">
-                <p class="card-text">
+                <p>
                   <span class="font-weight-bold">Wish : </span>
                   ${
-                    wishCard.wishItemName.length > 25
-                      ? wishCard.wishItemName.substring(0, 25) + '...'
+                    wishCard.wishItemName.length > 24
+                      ? wishCard.wishItemName.substring(0, 23) + '...'
                       : wishCard.wishItemName
                   }
                 </p>
-                <p class="card-text">
+                <p class="wish-price">
                   <span class="font-weight-bold">Item Price :</span> $${wishCard.wishItemPrice}
                 </p>
-                <p class="card-text">
+                <p>
                   <span class="font-weight-bold">Interest : </span>
                   ${
-                    wishCard.childInterest.length > 25
-                      ? wishCard.childInterest.substring(0, 25) + '...'
+                    wishCard.childInterest.length > 24
+                      ? wishCard.childInterest.substring(0, 21) + '...'
                       : wishCard.childInterest
                   }
                 </p>
               </div>
-              <div class="quick-font mt-4 row justify-content-center align-items-center">
-                <div class="col-sm-6 text-center">
+              <div class="card-action row">
+                <div class="col-sm-6 mb-2">
                 ${getReadMoreBtn(user, wishCard._id)}
                 </div>
-                <div class="col-sm-6 text-center">
+                <div class="col-sm-6 mb-2">
                 ${getDonatedBtn(user, wishCard._id, wishCard.status)}
                 </div>
               </div>
