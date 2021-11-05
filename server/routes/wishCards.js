@@ -259,7 +259,7 @@ router.get('/me', renderPermissions, async (req, res) => {
 router.get('/create', renderPermissions, async (_req, res) => {
   try {
     res.status(200).render('createWishcard', {
-      user: res.locals.user
+      user: res.locals.user,
     });
   } catch (error) {
     handleError(res, 400, error);

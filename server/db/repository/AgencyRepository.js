@@ -11,11 +11,10 @@ async function getAgencyByUserId(userId) {
 
 async function createNewAgency(agencyParams) {
   try {
-    const newAgency = new Agency(agencyParams);
-    await newAgency.save();
+    const agency = await Agency.create(agencyParams);
 
     return {
-      agency: newAgency,
+      agency,
       user: await getUserByObjectId(agencyParams.accountManager),
     };
   } catch (error) {
