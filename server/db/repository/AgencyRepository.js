@@ -24,7 +24,7 @@ async function createNewAgency(agencyParams) {
 
 async function verifyAgency(agencyId) {
   try {
-    return Agency.findOneAndUpdate({ id: agencyId }, { $set: { isVerified: true } }, { new: true })
+    return Agency.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
       .lean()
       .exec();
   } catch (error) {
