@@ -359,7 +359,7 @@ async function sendAgencyVerificationNotificationSuccess({ agency, user, respons
       data: JSON.stringify({
         response_type: 'ephemeral',
         replace_original: true,
-        text: `New Agency ${agency.agency.agencyName} has registered!${
+        text: `New Agency ${agency.agencyName} has registered!${
           process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
         }`,
         attachments: [

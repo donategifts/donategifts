@@ -1,5 +1,21 @@
 /* 
 -----------------------------
+Reusable Utils - Button
+-----------------------------
+*/
+%btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 
+-----------------------------
 Reusable Hero
 -----------------------------
 */
@@ -50,5 +66,26 @@ Text Typing Effect
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* 
+-----------------------------
+move this later
+-----------------------------
+*/
+
+.partners-container {
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $navy, $medium);
+    text-align: center;
+    padding: 1rem 0rem 3rem 0rem;
+  }
+}
+
+.thanks {
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $green, $medium);
+    text-align: center;
   }
 }
