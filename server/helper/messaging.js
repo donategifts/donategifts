@@ -336,7 +336,7 @@ async function sendAgencyVerificationNotification(agency) {
                 text: 'Verify',
                 style: 'success',
                 type: 'button',
-                value: `${agency._id}`,
+                value: `${agency.agency._id}`,
               },
             ],
           },
