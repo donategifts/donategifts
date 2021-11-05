@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Profile Page | Donate Gifts</title>
+  <title>Create a wish card | Donate Gifts</title>
 
   <%- include('./templates/header')-%>
 
@@ -10,86 +10,87 @@
   <link rel="stylesheet" href="/public/css/about.css" />
 
   <!-- CDN jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
 </head>
 
 <body>
-
-
+  <%- include('./templates/nav')-%> 
+  <%- include('./templates/formHelperModal')-%>
+  <%- include('./templates/formHelperModal2')-%>
+  <%- include('./templates/formHelperModal3')-%>
   <!-- Wish Card Form Section-->
-  <div class="container-fluid">
-    <div class="create-wish-card">
+  <div class="create-wish">
+    <div class="container">
       <!-- wishCardForm starts here-->
-      <form class="container-fluid" id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
-        <h4 class="crayon-font wish-card-form-title">
-          Create a wish card for the<br />
-          child or youth under your care
+      <form id="wishCardForm" action="/wishcards" method="POST" enctype="multipart/form-data">
+        <h4>
+          Create a wish card
         </h4>
-        <!-- <div class="row mb-5">
-          <h6 class="col form-notification">
-            For this method, you need to watch
-            <a href="https://youtu.be/P4P6jEqTXs4" target="_blank" class="highlight text-success">this video</a>
-            and create an Amazon list first. <br />
 
-            We are developing new features to make the card creation much easier in the future.<br />
-            Support us by continuing to use this process until then. Thank you.
-          </h6>
-        </div> -->
-
-        <div class="row">
-          <div class="col-lg-6 quick-font wrap-input1" data-validate="Name is required">
-            <label for="childFirstName">Child's First Name</label>
-            <input id="childFirstName" class="input1" type="text" name="childFirstName"
-              placeholder="Nick name is also ok" />
+        <div class="mt-2 card shadow">
+          <div class="card-body">
+           <div class="row mx-auto my-1">
+            <div class="mb-2 col-lg-6 col-sm-12" data-validate="Name is required">
+              <label for="childFirstName">Child's First Name</label>
+              <input id="childFirstName" class="input-block" type="text" name="childFirstName"
+                placeholder="(Also allowed: nickname, alias)" />
+            </div>
+            <div class="mb-2 col-lg-6 col-sm-12">
+              <label for="childLastName">Child's Last Name</label>
+              <input id="childLastName" class="input-block" type="text" name="childLastName"
+                placeholder="(Also allowed: last initial)" />
+            </div>  
+           </div>
+           <div class="row mx-auto pt-3 my-1">
+            <div class="mb-2 col-lg-6 col-sm-12">
+              <label for="childBirthday">Child's Birthday</label>
+              <input id="childBirthday" class="input-block" type="date" name="childBirthday" placeholder="Child's Birthday" />
+            </div>
+            <div class="mb-2 col-lg-6 col-sm-12">
+              <label for="childInterest">Child's Interest</label>
+              <input id="childInterest" class="input-block" type="text" name="childInterest"
+                placeholder="" />
+            </div>
+           </div>
           </div>
+        </div>
 
-          <div class="col-lg-6 ml-auto quick-font wrap-input1">
-            <label for="childLastName">Child's Last Name</label>
-            <input id="childLastName" class="input1" type="text" name="childLastName"
-              placeholder="Initial is also ok" />
-          </div>
-
-          <div class="col-lg-6 quick-font wrap-input1">
-            <label for="childBirthday">Child's Birthday</label>
-            <input id="childBirthday" class="input1" type="date" name="childBirthday" placeholder="Child's Birthday" />
-          </div>
-
-          <div class="col-lg-6 ml-auto quick-font wrap-input1">
-            <label for="childInterest">Child's Interest</label>
-            <input id="childInterest" class="input1" type="text" name="childInterest"
-              placeholder="Write something that the child likes to do" />
-          </div>
-
-          <!-- <div class="col-lg-6 quick-font py-4 highlighted">
-            Please understand that we limit the price to be under $30 (USD)
-          </div> -->
-
-          <div class="col-lg-6 quick-font wrap-input1">
-            <label for="wishItemName">Wish Item Name</label>
-            <input id="wishItemName" class="input1" type="text" name="wishItemName"
-              placeholder="(e.g. Lego Set, Elephant Toy, etc. )" />
-          </div>
-
-          <div class="col-lg-6 ml-auto quick-font wrap-input1">
-            <label for="wishItemPrice">We limit the price to be under $30 (USD)</label>
-            <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper2">
+        <div class="mt-5 card shadow">
+          <div class="card-body">
+            <div class="row mx-auto my-1">
+              <div class="mb-2 col-lg-6 col-sm-12" data-validate="Name is required">
+                <label for="wishItemName">Wish Item Name</label>
+                <input id="wishItemName" class="input-block" type="text" name="wishItemName"
+              placeholder="" />
+              </div>
+              <div class="mb-2 col-lg-6 col-sm-12">
+                <label for="wishItemPrice">Wish Item Price (numeric only, round it up)</label>
+            <a data-toggle="modal" data-target="#formQuestionHelper2">
               <i class="fa fa-question-circle" aria-hidden="true"></i>click for help
             </a>
-            <input id="wishItemPrice" class="input1" type="number" name="wishItemPrice"
-              placeholder="Wish Item Price (numeric only, round it up)" min="1" max="30" />
+            <input id="wishItemPrice" class="input-block" type="number" name="wishItemPrice"
+              placeholder="Price must be under $35" min="1" max="35" />
+              </div>  
+             </div>
+
+             <div class="row mx-auto my-1 pt-3">
+              <div class="col-12">
+                <label for="wishItemURL">Wish Item Amazon URL
+                </label>
+                <a data-toggle="modal" data-target="#formQuestionHelper">
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>click for help
+                </a>
+                <input id="wishItemURL" class="input-block" type="text" name="wishItemURL"
+                  placeholder="(Item page link https://www.amazon.....)" />
+              </div>
+             </div>
           </div>
-          <!-- <a href="https://youtu.be/P4P6jEqTXs4" target="_blank" class="text-success">(Watch this video for
-            help)</a> -->
-          <div class="px-3 quick-font wrap-input1">
-            <label for="wishItemURL">Wish Item Amazon URL
-            </label>
-            <a class="help-modal" data-toggle="modal" data-target="#formQuestionHelper">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>click for help
-            </a>
-            <input id="wishItemURL" class="input1" type="text" name="wishItemURL"
-              placeholder="(copied product page hyperlink from the amazon search)" />
-          </div>
+        </div>
+
+
+        <div class="row mt-5">
+          
 
           <div class="col-lg-6 ml-auto quick-font wrap-input1">
 
