@@ -9,7 +9,7 @@ router.post('/verify-agency', async (req, res) => {
   const payload = JSON.parse(req.body.payload);
 
   try {
-    const agency = await AgencyRepository.verifyAgency(payload.actions.value);
+    const agency = await AgencyRepository.verifyAgency(payload.actions[0].value);
 
     await sendAgencyVerificationNotificationSuccess({
       agency,
