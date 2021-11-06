@@ -71,7 +71,7 @@ Text Typing Effect
 
 /* 
 -----------------------------
-move this later
+move this later -- from home.ejs
 -----------------------------
 */
 
@@ -87,5 +87,69 @@ move this later
   h1 {
     @include font-styling($font-heading, 2.5rem, $green, $medium);
     text-align: center;
+  }
+}
+
+// TODO: this stuff is for createWishcard.ejs and will be moved later
+.create-wish {
+  padding: 2.5rem 0rem;
+  background-color: lighten($cream, 9);
+  .card-body {
+    padding: 2.5rem;
+    @include font-styling($font-body);
+  }
+  h4 {
+    @include font-styling($font-heading, 2.5rem, $orange);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .input-block {
+    display: block;
+    width: 100%;
+    background: $white;
+    line-height: 1.75;
+    color: $black;
+    padding: 0.5rem 1.25rem;
+    border: 0.1rem solid $orange;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+  }
+  label {
+    font-weight: $semi-bold;
+    color: $black;
+  }
+  a {
+    cursor: pointer;
+    color: $orange !important;
+    &:hover {
+      text-decoration: underline !important;
+    }
+  }
+  .uploader {
+    background-color: lighten($orange, 14);
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.4em 0.7em;
+    outline: none;
+    width: auto;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    &:hover {
+      background-color: $orange;
+    }
+  }
+  .form-submit {
+    background-color: $orange;
+    color: $white;
+    padding: 0.6em 5em;
+    &:hover {
+      background-color: lighten($navy, 5);
+    }
   }
 }
