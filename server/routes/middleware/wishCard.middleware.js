@@ -62,14 +62,6 @@ const upload = multer({
   fileFilter,
 });
 
-const uploadIfFileisPresent = async (req, res, next) => {
-  if (req.file !== undefined) {
-    upload.single('wishCardImage');
-  } else {
-    next();
-  }
-};
-
 const IfNull = ({ agency, foundAgency }) => {
   if (!agency || !foundAgency) {
     return true;
@@ -120,4 +112,4 @@ const checkVerifiedUser = async (req, res, next) => {
   }
 };
 
-module.exports = { upload, uploadIfFileisPresent, renderPermissions, checkVerifiedUser };
+module.exports = { upload, renderPermissions, checkVerifiedUser };

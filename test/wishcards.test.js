@@ -175,7 +175,7 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
       });
   });
 
-  it('POST wishcard edit - Should edit/update successfully (no image)', (done) => {
+  it('POST wishcard edit - Should edit/update successfully', (done) => {
     WishCard.create({ ...wishcardRequest, childFirstName: "42", childLastName: "Is What?" }).then((wishcard) => {
       agent
         .post(`/wishcards/edit/${wishcard.id}`)
@@ -189,29 +189,6 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
 
           WishCard.findOne({ childFirstName: "42" }).then((wishcard) => {
             wishcard.childLastName.should.equal("Is the Answer to the Universe");
-            done();
-          });
-        });
-    });
-  });
-
-  it('POST wishcard edit - Should edit/update successfully (with image)', (done) => {
-    WishCard.create({ ...wishcardRequest, childFirstName: "I have the", childLastName: "..." }).then((wishcard) => {
-      agent
-        .post(`/wishcards/edit/${wishcard.id}`)
-        .type('form')
-        .field({ childLastName: "POWER!!!"})
-        .attach('wishCardImage', fs.readFileSync('client/public/img/card-sample-1.jpg'), 'card-sample1.jpg')
-        .end((_err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property('success');
-          res.body.should.have.property('url');
-          res.body.success.should.equal(true);
-          res.body.url.should.equal('/wishcards/me');
-
-          WishCard.findOne({ childFirstName: "I have the" }).then((wishcard) => {
-            console.log(wishcard);
-            wishcard.childLastName.should.equal("POWER!!!");
             done();
           });
         });
@@ -1166,6 +1143,22 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
         res.body.url.should.equal('/users/profile');
         done();
       });
+  });
+
+  it('POST wishcard edit - Object with profile url', (done) => {
+    WishCard.create({ ...wishcardRequest, childFirstName: "42", childLastName: "Is What?" }).then((wishcard) => {
+      agent
+        .post(`/wishcards/edit/${wishcard.id}`)
+        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe"})
+        .end((_err, res) => {
+          res.should.have.status(403);
+          res.body.should.have.property('success');
+          res.body.should.have.property('url');
+          res.body.success.should.equal(false);
+          res.body.url.should.equal('/users/profile');
+          done();
+        });
+    });
   });
 
   it('POST wishcards/message - Object with profile url', (done) => {

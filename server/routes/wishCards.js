@@ -207,26 +207,12 @@ router.post(
   '/edit/:id',
   limiter,
   renderPermissions,
-  WishCardMiddleWare.uploadIfFileisPresent,
-  // createWishcardValidationRules(),
-  // validate,
+  createWishcardValidationRules(),
+  validate,
   async (req, res) => {
     try {
       let { childBirthday, wishItemPrice } = req.body;
       const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-
-      log.debug(req.body);
-      let filePath = '';
-      if (req.file !== undefined) {
-        if (process.env.NODE_ENV === 'development') {
-          // locally when using multer images are saved inside this folder
-          filePath = `/uploads/${req.file.filename}`;
-        } else {
-          filePath = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
-        }
-      } else {
-        filePath = wishcard.wishCardImage;
-      }
 
       childBirthday = childBirthday ? new Date(childBirthday) : wishcard.childBirthday;
       wishItemPrice = wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice;
@@ -234,7 +220,6 @@ router.post(
       await WishCardRepository.updateWishCard(wishcard._id, {
         childBirthday,
         wishItemPrice,
-        wishCardImage: filePath,
         address: {
           address1: req.body.address1 ? req.body.address1 : wishcard.address.address1,
           address2: req.body.address2 ? req.body.address2 : wishcard.address.address2,
@@ -247,7 +232,13 @@ router.post(
         },
         ...req.body,
       });
-      res.status(200).send({ success: true, url: '/wishcards/me' });
+
+      let url = '/wishcards/me';
+      if (res.locals.user.userRole === 'admin') {
+        url = '/wishcards/';
+      }
+
+      res.status(200).send({ success: true, url });
       log.info('Wishcard Updated', { type: 'wishcard_updated', wishCardId: wishcard.id });
     } catch (error) {
       handleError(res, 400, error);
