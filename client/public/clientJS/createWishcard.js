@@ -20,6 +20,7 @@ $( document ).ready(function() {
     e.preventDefault();
     var form = $(this);
     var formdata = new FormData(form[0]);
+    isProcessingSubmission(true);
     $.ajax({
       type: 'POST',
       enctype: 'multipart/form-data',
@@ -32,13 +33,16 @@ $( document ).ready(function() {
       statusCode: {
         200: function (response) {
           $('#wishCardForm')[0].reset();
+          isProcessingSubmission(false)
           showToast('WishCard Created!');
           setTimeout(() => location.assign(response.url), 2000);
         },
         400: function (response) {
+          isProcessingSubmission(false)
           showToast(response.responseJSON.error.msg);
         },
         403: function (responseObject) {
+          isProcessingSubmission(false)
           showToast('Access Forbidden: Your account lacks sufficient permissions');
           let { url } = responseObject.responseJSON;
           setTimeout(() => location.assign(url), 1200);
@@ -46,6 +50,17 @@ $( document ).ready(function() {
       },
     });
   });
+
+  let isProcessingSubmission = function (isLoading) {
+    if (isLoading) {
+      // Disable submit button and show a spinner
+      document.getElementById("submitInput").disabled = true;
+      document.querySelector("#loadingSpinner").classList.add("display");
+    } else {
+      document.getElementById("submitInput").disabled = false;
+      document.querySelector("#loadingSpinner").classList.remove("display");
+    }
+  };
 });
 
 // Agency address checkbox
