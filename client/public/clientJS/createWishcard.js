@@ -33,7 +33,6 @@ $( document ).ready(function() {
       statusCode: {
         200: function (response) {
           $('#wishCardForm')[0].reset();
-          isProcessingSubmission(false)
           showToast('WishCard Created!');
           setTimeout(() => location.assign(response.url), 2000);
         },
