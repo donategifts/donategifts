@@ -38,19 +38,15 @@
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
         Wish card creation feature is disabled for your account. It will be enabled after agency
         verification. For a faster verification,
-        <a href="mailto:donate.gifts.stacy@gmail.com" class="text-dark">click to email us</a>
+        <a href="/contact" class="text-dark">contact us.</a>
       </p>
       <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
-      <%- include('./templates/formHelperModal')-%>
-      <%- include('./templates/formHelperModal2')-%>
-      <%- include('./templates/formHelperModal3')-%>
-
       <div class="partner-only my-5">
         <h4 class="create-title pb-5">Create Wish Cards</h4>
         <div class="row justify-content-center py-3 my-3">
           <div class="col-md-4 col-xs-12 mb-4 text-md-center">
             <p class="mb-4"><i class="fa fa-pencil"></i>Child has a specific wish item</p>
-            <a href="/wishcards/new" class="button button--inverted-green d-inline-flex"> Create Wish Card </a>
+            <a href="/wishcards/create" class="button button--inverted-green d-inline-flex"> Create Wish Card </a>
           </div>
           <div class="col-md-4 col-xs-12 mb-4 text-md-center">
             <p class="mb-4">
@@ -62,8 +58,7 @@
             <p class="mb-4">
               <i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
             </p>
-            <a href="mailto:donate.gifts.stacy@gmail.com" class="button button--inverted-green d-inline-flex">Email
-              Us</a>
+            <a href="/contact" class="button button--inverted-green d-inline-flex">Contact Us</a>
           </div>
         </div>
       </div>

@@ -43,8 +43,18 @@
   }
   &__button--disabled {
     @extend %btn;
-    background-color: $gray;
+    background-color: lighten($gray, 25%);
     color: $white;
+  }
+  &__button--filter {
+    @extend %btn;
+    background-color: $white;
+    color: $yellow;
+    border: 0.5px solid $yellow;
+    &:hover {
+      background-color: $yellow;
+      color: $white;
+    }
   }
 }
 
@@ -80,5 +90,22 @@
   border: none;
   &:hover {
     text-decoration: none;
+    background-color: darken($yellow, 25%);
   }
+}
+
+.search-border {
+  background-color: lighten($cream, 8);
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  button {
+    border-radius: 0 20px 20px 0;
+    -webkit-border-radius: 0 20px 20px 0;
+    -moz-border-radius: 0 20px 20px 0;
+    -ms-border-radius: 0 20px 20px 0;
+    -o-border-radius: 0 20px 20px 0;
+}
 }
