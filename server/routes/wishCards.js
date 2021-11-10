@@ -199,10 +199,10 @@ router.post(
   },
 );
 
-// @desc    wishcard creation form sends data to db
+// @desc    Edit Wishcard
 // @route   PUT '/wishcards/edit/wishcardId'
 // @access  Private, verified partner or admin
-// @tested 	No
+// @tested 	Yes
 router.post(
   '/edit/:id',
   limiter,
@@ -245,6 +245,35 @@ router.post(
     }
   },
 );
+
+// @desc    Delete wishcard
+// @route   Delete '/wishcards/delete/wishcardId'
+// @access  Private, verified partner or admin
+// @tested 	Yes
+router.delete('/delete/:id', limiter, renderPermissions, async (req, res) => {
+  try {
+    const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+    const agency = wishcard.belongsTo;
+    if (res.locals.user.userRole !== 'admin') {
+      const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
+      if (String(agency._id) !== String(userAgency._id)) {
+        return res.status(404).render('403');
+      }
+    }
+
+    await WishCardRepository.deleteWishCard(wishcard._id);
+
+    let url = '/wishcards/me';
+    if (res.locals.user.userRole === 'admin') {
+      url = '/wishcards/';
+    }
+
+    res.status(200).send({ success: true, url });
+    log.info('Wishcard Deleted', { type: 'wishcard_deleted', wishCardId: wishcard.id });
+  } catch (error) {
+    handleError(res, 400, error);
+  }
+});
 
 // @desc    Render wishCards.html which will show all wishcards
 // @route   GET '/wishcards'
@@ -313,7 +342,7 @@ router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
 
     if (res.locals.user.userRole !== 'admin') {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
-      if (wishcard.belongsTo !== userAgency.id) {
+      if (String(wishcard.belongsTo._id) !== String(userAgency._id)) {
         return res.status(404).render('404');
       }
     }

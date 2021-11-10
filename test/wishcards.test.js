@@ -195,6 +195,32 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
     });
   });
 
+  it('DELETE wishcard - Should delete wishcard successfully', (done) => {
+    User.findOne({ email: partnerUser.email }).then((user) => {
+      Agency.findOne({ accountManager: user._id }).then((agency) => {
+        WishCard.create({
+          ...wishcardRequest,
+          childFirstName: '43',
+          childLastName: 'Is What?',
+          belongsTo: agency._id,
+        }).then((wishcard) => {
+          agent.delete(`/wishcards/delete/${wishcard.id}`).end((_err, res) => {
+            res.should.have.status(200);
+            res.body.should.have.property('success');
+            res.body.should.have.property('url');
+            res.body.success.should.equal(true);
+            res.body.url.should.equal('/wishcards/me');
+
+            WishCard.findOne({ childFirstName: '43' }).then((wishcard) => {
+              should.not.exist(wishcard);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
   it('POST wishcards - should not be able to post with incorrect amazon link', (done) => {
     agent
       .post('/wishcards/')

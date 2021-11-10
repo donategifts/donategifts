@@ -130,6 +130,14 @@ async function updateWishCard(id, wishCardFields) {
   }
 }
 
+async function deleteWishCard(id) {
+  try {
+    return WishCard.deleteOne({ _id: id }).exec();
+  } catch (error) {
+    throw new Error(`Failed to delete Wishcard message: ${error}`);
+  }
+}
+
 async function lockWishCard(id, userId) {
   try {
     const wishCard = await getWishCardByObjectId(id);
@@ -171,6 +179,7 @@ module.exports = {
   getLockedWishcardsByUserId,
   getWishCardsByStatus,
   updateWishCard,
+  deleteWishCard,
   lockWishCard,
   unLockWishCard,
   getWishCardsFuzzy,
