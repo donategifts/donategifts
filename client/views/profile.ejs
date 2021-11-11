@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="/public/css/profile.css" />
   <link rel="stylesheet" href="/public/css/about.css" />
+  <link rel="stylesheet" href="temp.css">
 
   <!-- CDN jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -18,10 +19,8 @@
 <body>
   <%- include('./templates/nav')-%> <%- include('./templates/editAboutMeModal')-%>
   <!-- header section-->
-  <div class="bg" id="profile-bg">
-    <div class="profile-title">
-      <h1 class="crayon-font">Welcome <%= user.fName %></h1>
-    </div>
+  <div class="profile-top">
+    <h1>Welcome <%= user.fName %></h1>
   </div>
 
   <!-- profile content section-->
@@ -37,34 +36,39 @@
       <p class="mt-5 quick-font notify">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
         Wish card creation feature is disabled for your account. It will be enabled after agency
-        verification. For a faster verification,
+        verification. This usually takes 1-2 business days. For a faster verification,
         <a href="/contact" class="text-dark">contact us.</a>
       </p>
       <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
-      <div class="partner-only my-5">
-        <h4 class="create-title pb-5">Create Wish Cards</h4>
-        <div class="row justify-content-center py-3 my-3">
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4"><i class="fa fa-pencil"></i>Child has a specific wish item</p>
-            <a href="/wishcards/create" class="button button--inverted-green d-inline-flex"> Create Wish Card </a>
+        <!-- wish card create buttons section-->
+      <div class="my-5 profile-panel shadow">
+        <h4 class="my-3">Let's create a new wish card</h4>
+        <div class="row justify-content-center py-4 mt-3">
+          <div class="col-md-4 col-xs-12 mb-2 text-md-center">
+            <p class="mb-2">
+              <!-- <i class="fas fa-smile"></i> -->
+              Child has a specific wish item</p>
+            <a href="/wishcards/create" class="link--green bdr-2 d-inline-flex"> Create a wish card </a>
           </div>
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4">
-              <i class="fa fa-bolt" aria-hidden="true"></i>Not sure which wish item to ask for?
+          <div class="col-md-4 col-xs-12 mb-2 text-md-center">
+            <p class="mb-2">
+              <!-- <i class="fas fa-list" aria-hidden="true"></i> -->
+              Not sure which wish item to ask for?
             </p>
-            <a href="/users/choose" class="link--green bdr-2 d-inline-flex">Our Suggested List </a>
+            <a href="/users/choose" class="button button--inverted-green d-inline-flex">Select from our list</a>
           </div>
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
+          <div class="col-md-4 col-xs-12 mb-2 text-md-center">
+            <p class="mb-2">
+              <!-- <i class="fa fa-question-circle" aria-hidden="true"></i> -->
+              Got any question?
             </p>
-            <a href="/contact" class="button button--inverted-green d-inline-flex">Contact Us</a>
+            <a href="/contact" class="button button--inverted-green d-inline-flex">Contact for help</a>
           </div>
         </div>
       </div>
       <%}%> <% if (user.userRole == 'partner') { %>
-      <div class="org-wrapper my-5">
-        <h4 class="pb-5 font-weight-bold">Organization Details</h4>
+      <div class="profile-panel my-5 shadow">
+        <h4 class="pb-5">Organization Details</h4>
         <div class="row justify-content-around">
           <p class="col-md-4 col-xs-12">Name: <strong><%= agency.agencyName %></strong></p>
           <p class="col-md-4 col-xs-12">Description: <%= agency.agencyBio %></p>
@@ -110,17 +114,37 @@
       </div>
       <%}%>
 
-        <div class="user-info my-5">
-          <h4 class="pb-5 font-weight-bold">Account Details</h4>
-          <div class="row justify-content-around">
-            <p class="col-md-4 col-xs-12">First Name: <%= user.fName %></p>
-            <p class="col-md-4 col-xs-12">Last Name: <%= user.lName %></p>
-          </div>
-          <div class="row justify-content-around">
-            <p class="col-md-4 col-xs-12">Email: <%= user.email %></p>
-            <p class="col-md-4 col-xs-12">User Role: <%= user.userRole %></p>
+        <div class="profile-panel my-5 shadow">
+          <div class="card-body">
+            <h4 class="pb-5">Account Details</h4>
+            <!-- TODO: -----------------------------------CHANGE THE ACTION ROUTE--------------------------------->
+            <form id="accountDetails" action="/users/make-this-route-later" method="POST" enctype="multipart/form-data">
+              <div class="row justify-content-center mx-2 my-1">
+                <div class="mb-2 col-lg-6 col-sm-12">
+                  <label for="fName">First Name</label>
+                  <input id="fName" class="input-profile" type="text" name="fName"
+                    placeholder="(Also allowed: nickname, alias)" />
+                </div>
+
+                <div class="mb-2 col-lg-6 col-sm-12">
+                  <label for="lName">Last Name</label>
+                  <input id="lName" class="input-profile" type="text" name="lName"
+                    placeholder="(Also allowed: last initial)" />
+                </div>
+              </div>
+              
+              <!-- <div class="row justify-content-around">
+                <p class="col-md-4 col-xs-12">First Name: <%= user.fName %></p>
+                <p class="col-md-4 col-xs-12">Last Name: <%= user.lName %></p>
+              </div>
+              <div class="row justify-content-around">
+                <p class="col-md-4 col-xs-12">Email: <%= user.email %></p>
+                <p class="col-md-4 col-xs-12">User Role: <span><%= user.userRole %></span></p>
+              </div> -->
+            </form>
           </div>
         </div>
+
       </div>
   </header>
 
@@ -128,7 +152,7 @@
       function is not working -->
   <!-- <div class="d-flex justify-content-center">    
       <div class="col-md-6 mb-3">
-        <div class="card card-block custom-card">
+        <div class="card card-block">
           <div class="profile-picture-card">
             <h5>Profile picture</h5> -->
   <!-- <% if(!user.profileImage){ %>
@@ -150,7 +174,7 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <!-- about-me section -->
-        <div class="card card-block custom-card">
+        <div class="profile-panel card-block shadow">
           <h5 class="card-title">
             <i class="fa fa-user" aria-hidden="true"></i>About Me<img data-toggle="modal" data-target="#aboutMeModal"
               id="update-about-me" class="about-me-edit" src="/public/img/edit-profile.svg" alt="Edit profile" />
@@ -163,23 +187,23 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card card-block custom-card">
+        <div class="profile-panel card-block shadow">
           <h5 class="card-title"><i class="fa fa-gift" aria-hidden="true"></i>My Donations</h5>
           <!-- <p class="card-text p-4">You have made 0 donations.</p> -->
-          <a href="/users/profile/donations" class="p-4 grn-font bold-text">See My Donation History</a>
+          <a href="/users/profile/donations" class="link--green bdr-2 d-inline-flex">See My Donation History</a>
         </div>
       </div>
     </div>
     <div class="row my-3">
       <div class="col-md-6 mb-3">
-        <div class="card card-block custom-card">
+        <div class="profile-panel card-block shadow">
           <h5 class="card-title"><i class="fa fa-bell" aria-hidden="true"></i>Notifications</h5>
           <p class="card-text p-4">You have 0 messages.</p>
         </div>
       </div>
 
       <div class="col-md-6">
-        <div class="card card-block custom-card">
+        <div class="profile-panel card-block shadow">
           <h5 class="card-title"><i class="fa fa-users" aria-hidden="true"></i>Friends</h5>
           <p class="card-text p-4">You have invited 0 friends.</p>
         </div>
