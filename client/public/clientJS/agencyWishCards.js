@@ -1,5 +1,5 @@
-window.onload = function () {
-  let deleteBtns = document.getElementsByClassName('wishCardDeleteBtn');
+$(document).ready(function () {
+  let deleteBtns = $('wishCardDeleteBtn');
 
   for (let i = 0; i < deleteBtns.length; i++) {
     deleteBtns[i].addEventListener('click', function (e) {
@@ -26,4 +26,4 @@ window.onload = function () {
     });
     });
   }
-}
+})

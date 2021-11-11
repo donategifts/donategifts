@@ -525,6 +525,91 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
       });
   });
 
+  it('GET wishcard Edit page successfully', (done) => {
+    WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
+      agent.get(`/wishcards/edit/${foundWishcard._id}`).end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.contain(wishcardRequest.childFirstName);
+        res.text.should.contain(wishcardRequest.childInterest);
+        res.text.should.contain(wishcardRequest.childStory);
+        done();
+      });
+    });
+  });
+
+  it('GET Edit Wishcard Page - Redirect to Profile for unauthorized partner', (done) => {
+    // Create wishcard from different user
+    // Logout
+    // Login as different user and try to edit the wishcard
+    User.findOne({ email: partnerUser.email }).then((user) => {
+      Agency.findOne({ accountManager: user._id }).then((agency) => {
+        WishCard.create({
+          ...wishcardRequest,
+          childFirstName: '43',
+          childLastName: 'Is What?',
+          belongsTo: agency._id,
+        }).then((wishcard) => {
+          agent
+            .get('/users/logout')
+            .redirects(1)
+            .end((_logoutErr, res) => {
+              res.text.should.contain('Sign Up to Donate Gifts');
+              res.should.have.status(200);
+              res.body.should.be.an('object');
+            });
+          agent
+            .post('/users/signup')
+            .send({ ...partnerUser, email: 'johndoe4@gmail.com' })
+            .end((_signupErr, res) => {
+              res.should.have.status(200);
+              res.body.success.should.equal(true);
+              res.body.should.have.property('user');
+              res.body.user.should.have.property('fName');
+              res.body.user.should.have.property('lName');
+              res.body.user.should.have.property('email');
+              res.body.user.should.have.property('emailVerified');
+              res.body.user.should.have.property('verificationHash');
+              res.body.user.should.have.property('password');
+              res.body.user.should.have.property('userRole');
+              res.body.user.should.have.property('_id');
+              res.body.user.emailVerified.should.equal(false);
+              res.body.should.have.property('url');
+
+              agent.get('/users/agency').end((_agencyErr, agencyRes) => {
+                agencyRes.should.have.status(200);
+                agencyRes.text.should.contain('Register as a Foster Care Partner');
+
+                User.findOne({ email: 'johndoe4@gmail.com' }).then((user) => {
+                  User.findByIdAndUpdate({ _id: user._id }, { $set: { emailVerified: true } }).then(
+                    () => {
+                      agent
+                        .post('/users/agency')
+                        .send({ ...agencyRequest, isVerified: true })
+                        .end((_postAgencyErr, postAgencyRes) => {
+                          postAgencyRes.should.have.status(200);
+                          postAgencyRes.body.should.have.property('url');
+
+                          agent.get(`/wishcards/edit/${wishcard.id}`).end((_err, res) => {
+                            res.should.have.status(403);
+                            res.body.should.have.property('success');
+                            res.body.should.have.property('url');
+                            res.body.success.should.equal(false);
+                            res.body.url.should.equal('/users/profile');
+                            done();
+                          });
+                        });
+                    },
+                  );
+                });
+              });
+            });
+        });
+      });
+    });
+  });
+
+
+
   after((done) => {
     agent.get('/users/logout').end((err, res) => {
       res.text.should.contain('Sign Up to Donate Gifts');
@@ -715,15 +800,15 @@ describe('Wishcard Routes - Authenticated & Unverified Partner User', () => {
     });
   });
 
-  it('GET my wishcards page - Object with profile url', (done) => {
-    agent.get('/wishcards/me').end((err, res) => {
-      res.should.have.status(403);
-      res.body.should.have.property('success');
-      res.body.should.have.property('url');
-      res.body.success.should.equal(false);
-      res.body.url.should.equal('/users/profile');
-      done();
-    });
+  it('GET my wishcards page - Redirects to 403 Page', (done) => {
+    agent.get('/wishcards/me')
+    .redirects(1)
+      .end((err, res) => {
+        res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
+        res.should.have.status(403);
+        res.body.should.be.an('object');
+        done();
+      });
   });
   // it('POST /wishcards/search - Works as intended', (done) => {});
   // it('PUT /wishcards/update/:id/', (done) => {});
@@ -854,15 +939,16 @@ describe('Wishcard Routes - Unauthenticated User', () => {
     });
   });
 
-  it('GET my wishcards page - Object with login url', (done) => {
-    agent.get('/wishcards/me').end((err, res) => {
-      res.should.have.status(403);
-      res.body.should.have.property('success');
-      res.body.should.have.property('url');
-      res.body.success.should.equal(false);
-      res.body.url.should.equal('/users/login');
-      done();
-    });
+  it('GET my wishcards page - Redirects to 403 Page', (done) => {
+    agent
+      .get('/wishcards/me')
+      .redirects(1)
+      .end((err, res) => {
+        res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
+        res.should.have.status(403);
+        res.body.should.be.an('object');
+        done();
+      });
   });
   // it('POST /wishcards/search - Works as intended', (done) => {});
   // it('PUT /wishcards/update/:id/ - Redirects to Login', (done) => {});
@@ -1052,15 +1138,15 @@ describe('Wishcard Routes - Email Verified Donor User', () => {
     });
   });
 
-  it('GET my wishcards page - Object with profile url', (done) => {
-    agent.get('/wishcards/me').end((err, res) => {
-      res.should.have.status(403);
-      res.body.should.have.property('success');
-      res.body.should.have.property('url');
-      res.body.success.should.equal(false);
-      res.body.url.should.equal('/users/profile');
-      done();
-    });
+  it('GET my wishcards page - Redirects to 403 page', (done) => {
+    agent.get('/wishcards/me')
+    .redirects(1)
+      .end((err, res) => {
+        res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
+        res.should.have.status(403);
+        res.body.should.be.an('object');
+        done();
+      });
   });
 
   after((done) => {
@@ -1244,15 +1330,15 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
     });
   });
 
-  it('GET my wishcards page - Object with profile url', (done) => {
-    agent.get('/wishcards/me').end((err, res) => {
-      res.should.have.status(403);
-      res.body.should.have.property('success');
-      res.body.should.have.property('url');
-      res.body.success.should.equal(false);
-      res.body.url.should.equal('/users/profile');
-      done();
-    });
+  it('GET my wishcards page - Redirects to 403 Page', (done) => {
+    agent.get('/wishcards/me')
+    .redirects(1)
+      .end((err, res) => {
+        res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
+        res.should.have.status(403);
+        res.body.should.be.an('object');
+        done();
+      });
   });
 
   after((done) => {

@@ -100,6 +100,20 @@ const renderPermissions = async (req, res, next) => {
   }
 };
 
+const renderPermissionsRedirect = async (req, res, next) => {
+  const { user, agency } = req.session;
+  const userInfo = { user, agency };
+  if (!user) {
+    res.status(403).render('403');
+  } else if (user.userRole === 'admin') {
+    next();
+  } else if (await IfNullOrNotVerifiedAgency(userInfo)) {
+    res.status(403).render('403');
+  } else {
+    next();
+  }
+};
+
 const checkVerifiedUser = async (req, res, next) => {
   const { user } = req.session;
   if (!user) {
@@ -112,4 +126,4 @@ const checkVerifiedUser = async (req, res, next) => {
   }
 };
 
-module.exports = { upload, renderPermissions, checkVerifiedUser };
+module.exports = { upload, renderPermissions, renderPermissionsRedirect, checkVerifiedUser };

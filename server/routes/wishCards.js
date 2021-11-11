@@ -34,7 +34,11 @@ const {
 } = require('./validations/wishcards.validations');
 
 const { redirectLogin } = require('./middleware/login.middleware');
-const { renderPermissions, checkVerifiedUser } = require('./middleware/wishCard.middleware');
+const {
+  renderPermissions,
+  checkVerifiedUser,
+  renderPermissionsRedirect,
+} = require('./middleware/wishCard.middleware');
 const {
   babies,
   preschoolers,
@@ -211,15 +215,12 @@ router.post(
   validate,
   async (req, res) => {
     try {
-      let { childBirthday, wishItemPrice } = req.body;
+      const { childBirthday, wishItemPrice } = req.body;
       const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 
-      childBirthday = childBirthday ? new Date(childBirthday) : wishcard.childBirthday;
-      wishItemPrice = wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice;
-
       await WishCardRepository.updateWishCard(wishcard._id, {
-        childBirthday,
-        wishItemPrice,
+        childBirthday: childBirthday ? new Date(childBirthday) : wishcard.childBirthday,
+        wishItemPrice: wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice,
         address: {
           address1: req.body.address1 ? req.body.address1 : wishcard.address.address1,
           address2: req.body.address2 ? req.body.address2 : wishcard.address.address2,
@@ -254,19 +255,18 @@ router.delete('/delete/:id', limiter, renderPermissions, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
     const agency = wishcard.belongsTo;
+
+    let url = '/wishcards/';
+
     if (res.locals.user.userRole !== 'admin') {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
       if (String(agency._id) !== String(userAgency._id)) {
-        return res.status(404).render('403');
+        return res.status(403).render('403');
       }
+      url += 'me';
     }
 
     await WishCardRepository.deleteWishCard(wishcard._id);
-
-    let url = '/wishcards/me';
-    if (res.locals.user.userRole === 'admin') {
-      url = '/wishcards/';
-    }
 
     res.status(200).send({ success: true, url });
     log.info('Wishcard Deleted', { type: 'wishcard_deleted', wishCardId: wishcard.id });
@@ -303,7 +303,7 @@ router.get('/', async (_req, res) => {
 // @route   GET '/wishcards/me'
 // @access  Private, verified partner
 // @tested 	Yes
-router.get('/me', renderPermissions, async (req, res) => {
+router.get('/me', renderPermissionsRedirect, async (req, res) => {
   try {
     const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
     const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
@@ -317,7 +317,7 @@ router.get('/me', renderPermissions, async (req, res) => {
       { draftWishcards, activeWishcards, inactiveWishcards },
       (error, html) => {
         if (error) {
-          res.status(400).json({ success: false, error });
+          handleError(res, 400, error);
         } else {
           res.status(200).send(html);
         }
@@ -332,7 +332,7 @@ router.get('/me', renderPermissions, async (req, res) => {
 // @route   GET '/wishcards/edit/:id'
 // @access  Private, verified partner
 // @tested 	No
-router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
+router.get('/edit/:id', limiter, renderPermissionsRedirect, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
     const agency = wishcard.belongsTo;
@@ -343,12 +343,12 @@ router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
     if (res.locals.user.userRole !== 'admin') {
       const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
       if (String(wishcard.belongsTo._id) !== String(userAgency._id)) {
-        return res.status(404).render('404');
+        return res.status(403).send({ success: false, url: '/users/profile' });
       }
     }
     res.render('wishcardEdit', { wishcard, agencyAddress, childBirthday }, (error, html) => {
       if (error) {
-        res.status(400).json({ success: false, error });
+        handleError(res, 400, error);
       } else {
         res.status(200).send(html);
       }
@@ -362,7 +362,7 @@ router.get('/edit/:id', limiter, renderPermissions, async (req, res) => {
 // @route   GET '/wishcards/new'
 // @access  Agency
 // @tested 	Yes
-router.get('/create', renderPermissions, async (_req, res) => {
+router.get('/create', renderPermissionsRedirect, async (_req, res) => {
   try {
     res.status(200).render('createWishcard', {
       user: res.locals.user,
@@ -380,7 +380,7 @@ router.get('/admin/', async (req, res) => {
   try {
     // only admin users can get access
     if (res.locals.user.userRole !== 'admin') {
-      return res.status(404).render('404');
+      return res.status(403).render('403');
     }
     // only retrieve wishcards that have a draft status
     const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
@@ -426,7 +426,7 @@ router.put('/admin/', async (req, res) => {
     const USER_ROLE = 'admin';
     // only admin users can get access
     if (res.locals.user.userRole !== USER_ROLE) {
-      return res.status(404).render('404');
+      return res.status(403).render('403');
     }
     const { wishCardId } = req.body;
     const { wishItemURL } = req.body;
@@ -447,7 +447,7 @@ router.put('/admin/', async (req, res) => {
 
 router.get('/admin/:wishCardId', async (req, res) => {
   if (!res.locals.user || res.locals.user.userRole !== 'admin') {
-    return res.status(404).render('404');
+    return res.status(403).render('403');
   }
 
   const { wishCardId } = req.params;
