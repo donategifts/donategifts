@@ -21,46 +21,49 @@
     <div class="profile-welcome">
       <h1>Welcome <%= user.fName %></h1>
     </div>
-  </div>
-
-  <!-- profile content section-->
-  <header class="profile-header quick-font">
-    <div class="container justify-content-center">
-      <% if (!user.emailVerified) { %>
-      <p class="mt-3 quick-font notify">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"> </i>
-        Some features are disabled until email is verified.
-        Please verify your email.
-      </p>
-      <% } %> <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
-      <p class="mt-5 quick-font notify">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        Wish card creation feature is disabled for your account. It will be enabled after agency
-        verification. For a faster verification,
-        <a href="/contact" class="text-dark">contact us.</a>
-      </p>
-      <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
-      <div class="partner-only my-5">
-        <h4 class="create-title pb-5">Create Wish Cards</h4>
-        <div class="row justify-content-center py-3 my-3">
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4"><i class="fa fa-pencil"></i>Child has a specific wish item</p>
-            <a href="/wishcards/create" class="button button--inverted-green d-inline-flex"> Create Wish Card </a>
-          </div>
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4">
-              <i class="fa fa-bolt" aria-hidden="true"></i>Not sure which wish item to ask for?
-            </p>
-            <a href="/users/choose" class="link--green bdr-2 d-inline-flex">Our Suggested List </a>
-          </div>
-          <div class="col-md-4 col-xs-12 mb-4 text-md-center">
-            <p class="mb-4">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>I have a question about this
-            </p>
-            <a href="/contact" class="button button--inverted-green d-inline-flex">Contact Us</a>
+    <!-- profile content section-->
+    <header class="profile-header">
+      <div class="container justify-content-center">
+        <% if (!user.emailVerified) { %>
+        <p class="mt-4">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"> </i>
+          Some features are disabled until email is verified.
+          Please verify your email.
+        </p>
+        <% } %> <% if (user.userRole == 'partner' && locals.agency && (!agency.isVerified)) { %>
+        <p class="mt-4">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          Wish card creation feature is disabled for your account. It will be enabled after agency
+          verification. This usually takes 1-2 business days. For a faster verification,
+          <a href="/contact">contact us.</a>
+        </p>
+        <% } %> <% if (user.userRole == 'partner' && locals.agency && agency.isVerified) { %>
+        <!-- wish card CREATE buttons section-->
+        <div class="my-5 profile-panel shadow">
+          <h4 class="my-3">Let's Create Wish Cards</h4>
+          <div class="row justify-content-center pt-4 mt-3 align-content-center">
+            <div class="col-md-4 col-xs-12 mb-5 text-center">
+              <p class="mb-4">
+                <!-- <i class="fas fa-list" aria-hidden="true"></i> -->
+                Not sure which wish item to ask for?
+              </p>
+              <a href="/users/choose" class="profile-button-inverted">Select from our list</a>
+            </div>
+            <div class="col-md-4 col-xs-12 mb-5 text-center">
+              <p class="mb-4">
+                <!-- <i class="fas fa-smile"></i> -->
+                Child has a specific wish item</p>
+              <a href="/wishcards/create" class="profile-button"> Create a wish card </a>
+            </div>
+            <div class="col-md-4 col-xs-12 mb-5 text-center">
+              <p class="mb-4">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                Got any question?
+              </p>
+              <a href="/contact" class="profile-button-inverted">Contact for help</a>
+            </div>
           </div>
         </div>
-
         <!-- wish card MANAGE buttons section-->
         <div class="my-5 profile-panel shadow">
           <h4 class="my-3">Let's Manage Wish Cards</h4>
@@ -86,7 +89,6 @@
             </div>
           </div>
         </div>
-
         <!-- Agency details section, partner users only-->
         <%}%> <% if (user.userRole == 'partner') { %>
         <div class="profile-panel my-5 shadow">
@@ -143,7 +145,6 @@
                     placeholder="<%= agency.agencyWebsite %>" />
                 </div>
               </div>
-
               <% if (agency.agencyAddress.address1 != null) { %>
               <div class="pt-2 row justify-content-center my-1">
                 <div class="mb-2 col-lg-6 col-sm-12">
@@ -193,9 +194,6 @@
       </div>
   </div>
   <%}%>
-
-
-
 <div class="profile-panel my-4 shadow">
 <div class="card-body">
 <h4 class="pb-5">Account Details</h4>
@@ -227,10 +225,8 @@ enctype="multipart/form-data">
   </form>
   </div>
   </div>
-
   </div>
   </header>
-
   <!-- profile photo section commented out 
       function is not working -->
   <!-- <div class="d-flex justify-content-center">    
@@ -252,7 +248,6 @@ enctype="multipart/form-data">
         </div>
       </div>
     </div> -->
-
   <div class="container pb-5">
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -282,7 +277,6 @@ enctype="multipart/form-data">
         </div>
       </div>
     </div>
-
     <div class="row mt-3">
       <div class="col-md-6 mb-3">
         <div class="profile-panel card-block shadow pb-2">
@@ -305,7 +299,6 @@ enctype="multipart/form-data">
       </div>
     </div>
   </div>
-
   </div>
 </body>
 
