@@ -1,3 +1,32 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.y-scroll {
+  overflow-y: scroll;
+  max-height: 100px;
+}
+
+.fa-user,
+.fa-bell,
+.fa-cogs,
+.fa-gift {
+  font-size: 2.4em;
+}
+
+.fa, .fas {
+  margin: 0.3em 0.5em;
+}
+
+input,
+textarea {
+  text-decoration: none;
+  outline: none;
+  border: none;
+}
+
 /* 
 -----------------------------
 Reusable Utils - Button
@@ -12,6 +41,11 @@ Reusable Utils - Button
   width: 100%;
   border: 0.5px solid transparent;
   transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
 }
 
 /* 
@@ -71,53 +105,9 @@ Text Typing Effect
 
 /* 
 -----------------------------
-move this later -- from profile.ejs/css
------------------------------
-*/
-.profile-top {
-  background: url('../img/profile-bg.png') bottom center no-repeat;
-  background-size: cover;
-  min-height: 40vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  h1 {
-    @include font-styling($font-heading, 3rem, $orange);
-    text-transform: capitalize;
-    text-align: center;
-  }
-}
-
-.profile-panel {
-  background-color: lighten($cream, 5);
-  padding: 2em;
-  border-radius: 0.5rem;
-  font-size: 1em;
-  -webkit-border-radius: 0.5rem;
-  -moz-border-radius: 0.5rem;
-  -ms-border-radius: 0.5rem;
-  -o-border-radius: 0.5rem;
-  h4 {
-    @include font-styling($font-body, 1.6rem, lighten($black, 15), $semi-bold);
-    text-align: center;
-  }
-  span {
-    @include font-styling($font-body, 1.1rem, $orange, $semi-bold);
-    margin-left: 1rem;
-  }
-}
-
-.profile-card {
-
-}
-
-
-/* 
------------------------------
 move this later -- from home.ejs
 -----------------------------
 */
-
 .partners-container {
   h1 {
     @include font-styling($font-heading, 2.5rem, $navy, $medium);
@@ -196,73 +186,3 @@ move this later -- from home.ejs
     }
   }
 }
-
-/** --------------------------------
- -- Sidebar
--------------------------------- */
-// .sidebar {
-//   background-color: $navy;
-//   width: 250px;
-//   transition: all .3s ease-in-out;
-// 	transform: translateX(0);
-//   z-index: 999;
-//   .close-aside {
-//     position:absolute;
-//     top: 7px;
-// 	right: 7px;
-// 	cursor: pointer;
-//   color: $white;
-//   }
-//   &-header {
-//     border-bottom: 1px solid $navy;
-//     h5 a {
-//       color: $gray;
-//     }
-//     p {
-//       color: $cream;
-//     }
-//   }
-// }
-
-// .sidebar .search .form-control ~ i {
-// 	color: #2b2f3a;
-// 	right: 40px;
-// 	top: 22px;
-// }
-
-// .sidebar > ul > li {
-// 	padding: .7rem 1.75rem;
-// }
-
-// .sidebar ul > li > a {
-// 	color: var(--dk-gray-400);
-// 	text-decoration: none;
-// }
-
-// /* Start numbers */
-// .sidebar ul > li > a > .num {
-// 	line-height: 0;
-// 	border-radius: 3px;
-// 	font-size: 14px;
-// 	padding: 0px 5px
-// }
-
-// .sidebar ul > li > i {
-// 	font-size: 18px;
-// 	margin-right: .7rem;
-// 	color: var(--dk-gray-500);
-// }
-
-// .sidebar ul > li.has-dropdown > a:after {
-// 	content: '\eb3a';
-// 	font-family: unicons-line;
-// 	font-size: 1rem;
-// 	line-height: 1.8;
-// 	float: right;
-// 	color: var(--dk-gray-500);
-// 	transition: all .3s ease-in-out;
-// }
-
-// .sidebar ul .opened > a:after {
-// 	transform: rotate(-90deg);
-// }

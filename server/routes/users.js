@@ -105,7 +105,12 @@ router.get('/profile', redirectLogin, async (req, res) => {
       }
       const wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
       const wishCardsLength = wishCards.length;
-      res.status(200).render('profile', { wishCardsLength });
+      const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+      const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+      const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
+      res
+        .status(200)
+        .render('profile', { wishCardsLength, draftWishcards, activeWishcards, inactiveWishcards });
     } else {
       res.status(200).render('profile');
     }
