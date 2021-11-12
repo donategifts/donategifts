@@ -42,6 +42,7 @@
 .toast-close {
   opacity: 0.8;
   color: white;
+  mix-blend-mode: color-dodge;
 }
 
 #loginToastReminder__link__anchor {
