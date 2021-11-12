@@ -39,6 +39,12 @@
   transform: translateY(4px);
 }
 
+.toast-close {
+  opacity: 0.8;
+  color: white;
+  mix-blend-mode: color-dodge;
+}
+
 #loginToastReminder__link__anchor {
   display: block;
   padding: 1em 1.5em;

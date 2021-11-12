@@ -9,6 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
     integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
     crossorigin="anonymous"></script>
+  <script src="/public/clientJS/agencyWishCards.js"></script>
 </head>
 
 <body>
@@ -40,7 +41,7 @@
                 <!--Title-->
                 <h3 class="card-title text-center crayon-font">My name is <%= draftWishcards[i].childFirstName %></h3>
                 <!--Text-->
-                <div class="quick-font">
+                <div class="quick-font mb-3">
                   <p class="card-text"><span class="font-weight-bold">Status : </span> <%= draftWishcards[i].status %>
                   </p>
                   <p class="card-text"><span class="font-weight-bold">Age : </span> <%= draftWishcards[i].age %></p>
@@ -56,6 +57,15 @@
                     <%= draftWishcards[i].childInterest.length > 30 ? draftWishcards[i].childInterest.substring(0, 30) + "..." :
                       draftWishcards[i].childInterest %>
                   </p>
+                </div>
+                <div class="card-action row">
+                  <div class="col-sm-6 mb-2">
+                    <a href="/wishcards/edit/<%= draftWishcards[i]._id %>" class="wishcard__link--white bdr-2">Edit Wishcard</a>
+                  </div>
+                  <div class="col-sm-6 mb-2">
+                    <button type="button" value="<%= draftWishcards[i]._id %>"
+                      class="wishCardDeleteBtn wishcard__button--blue bdr-2">Delete Wishcard</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -106,7 +116,16 @@
                   </p>
                 </div>
               </div>
-            </div>
+              <div class="card-action row">
+                <div class="col-sm-6 mb-2">
+                  <a href="/wishcards/edit/<%= activeWishcards[i]._id %>" class="wishcard__link--white bdr-2">Edit Wishcard</a>
+                </div>
+                <div class="col-sm-6 mb-2">
+                  <button type="button" value="<%= activeWishcards[i]._id %>" class="wishCardDeleteBtn wishcard__button--blue bdr-2">
+                    Delete Wishcard </button>
+                </div>
+              </div>
+              </div>
           </div>
         </div>
         <% } %>
@@ -156,6 +175,10 @@
                   </p>
                 </div>
               </div>
+              <div class="card-action row">
+                  <button type="button" value="<%= inactiveWishcards[i]._id %>"
+                      class="wishCardDeleteBtn wishcard__button--blue bdr-2">Delete Wishcard</button>
+                </div>
             </div>
           </div>
         </div>

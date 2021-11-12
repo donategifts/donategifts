@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="/public/css/profile.css" />
   <link rel="stylesheet" href="/public/css/about.css" />
+  <link rel="stylesheet" href="/public/css/loadingSpinner.css" />
 
   <!-- CDN jQuery -->
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
@@ -164,7 +165,8 @@
           <p class="p-2 mt-2">Wish card will be published once reviewed and approved by DonateGifts</p>
         </div>  
         <div id="submit-btn" class="quick-font">
-          <input value="Submit" type="submit" class="button form-submit" />
+          <div id="loadingSpinner"></div>
+          <button id="submitInput" class="button form-submit"><span class="button__text">Submit</span></button>
         </div> 
       </form>
     </div>
