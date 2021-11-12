@@ -33,7 +33,7 @@ $( document ).ready(function() {
       statusCode: {
         200: function (response) {
           $('#wishCardForm')[0].reset();
-          showToast('WishCard Created!');
+          showToast('WishCard Created!', true);
           setTimeout(() => location.assign(response.url), 2000);
         },
         400: function (response) {
