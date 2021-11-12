@@ -8,7 +8,7 @@ from profile.ejs/css
 -----------------------------
 */
 .profile {
-  background-color: lighten($cream, 7);
+  background-color: lighten($cream, 7) !important;
   @include font-styling($font-body, 1rem);
   .profile-welcome {
     background: url('../img/profile-bg.png') bottom center no-repeat;
@@ -151,4 +151,4 @@ from profile.ejs/css
   padding: auto;
   width: inherit; 
   height: inherit;
-}
+} 
