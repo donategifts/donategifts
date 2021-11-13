@@ -15,6 +15,12 @@ const donationTemplate = fs.readFileSync(
     encoding: 'utf-8',
   },
 );
+const agencyVerfiedTemplate = fs.readFileSync(
+  path.resolve(__dirname, '../resources/email/agencyVerified.html'),
+  {
+    encoding: 'utf-8',
+  },
+);
 
 const donationTemplateAttachments = [
   {
@@ -36,6 +42,11 @@ const donationTemplateAttachments = [
     cid: 'instagram2x.png',
   },
   {
+    filename: 'telegram2x.png',
+    path: path.resolve(__dirname, '../resources/email/telegram2x.png'),
+    cid: 'telegram2x.png',
+  },
+  {
     filename: 'mail2x.png',
     path: path.resolve(__dirname, '../resources/email/mail2x.png'),
     cid: 'mail2x.png',
@@ -51,6 +62,11 @@ const templateAttachments = [
     filename: 'instagram2x.png',
     path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
     cid: 'instagram2x.png', // same cid value as in the html img src
+  },
+  {
+    filename: 'telegram2x.png',
+    path: path.resolve(__dirname, '../resources/email/telegram2x.png'),
+    cid: 'telegram2x.png',
   },
   {
     filename: 'website2x.png',
@@ -209,6 +225,16 @@ const createEmailVerificationHash = () => {
   }
 
   return result;
+};
+
+const sendAgencyVerifiedMail = async (to) => {
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    to,
+    'Donate-gifts.com Agency Account Verified',
+    agencyVerfiedTemplate,
+    templateAttachments,
+  );
 };
 
 async function sendSlackFeedbackMessage(name, email, subject, message) {
@@ -379,6 +405,7 @@ async function sendAgencyVerificationNotificationSuccess({ agency, user, respons
 module.exports = {
   sendMail,
   sendSlackFeedbackMessage,
+  sendAgencyVerifiedMail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
