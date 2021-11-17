@@ -1,7 +1,11 @@
 const express = require('express');
 const log = require('../helper/logger');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const { sendAgencyVerificationNotificationSuccess } = require('../helper/messaging');
+const UserRepository = require('../db/repository/UserRepository');
+const {
+  sendAgencyVerificationNotificationSuccess,
+  sendAgencyVerifiedMail,
+} = require('../helper/messaging');
 
 const router = express.Router();
 
@@ -11,7 +15,11 @@ router.post('/verify-agency', async (req, res) => {
   try {
     const agency = await AgencyRepository.verifyAgency(payload.actions[0].value);
 
-    await sendAgencyVerificationNotificationSuccess({
+    const accountManager = await UserRepository.getUserByObjectId(agency.accountManager);
+
+    await sendAgencyVerifiedMail(accountManager.email);
+
+    return await sendAgencyVerificationNotificationSuccess({
       agency,
       user: payload.user.name,
       responseUrl: payload.response_url,
