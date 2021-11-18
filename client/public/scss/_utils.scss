@@ -4,6 +4,10 @@ body {
   box-sizing: border-box;
 }
 
+a {
+  font-family: $font-body;
+}
+
 .y-scroll {
   overflow-y: scroll;
   max-height: 100px;
@@ -48,6 +52,51 @@ Reusable Utils - Button
   -o-transition: all 0.2s ease-in-out;
 }
 
+%btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
+  margin: 10px;
+  line-height: 1.2em;
+  transition: all 0.2s ease-in-out;
+  border: 0.15rem solid transparent;
+  display: inline-flex;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  outline: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+}
+
+%hover-navy {
+  background-color: $navy;
+  color: $white !important;
+  border: 0.15rem solid $white;
+  text-decoration: none;
+}
+
+.btn-orange-navy-lg {
+  @extend %btn-lg;
+  background-color: $orange;
+  color: $white !important;
+  &:hover {
+    @extend %hover-navy;
+  }
+} 
+
+.btn-white-navy-lg {
+  @extend %btn-lg;
+  background-color: $white;
+  color: $navy !important;
+  &:hover {
+    @extend %hover-navy;
+  }
+} 
+
 /* 
 -----------------------------
 Reusable Hero
@@ -61,7 +110,7 @@ Reusable Hero
     text-transform: uppercase;
   }
   h4 {
-    @include font-styling($font-body);
+    @include font-styling($font-body, 1.3rem);
     padding-bottom: 0.5rem;
   }
 }
