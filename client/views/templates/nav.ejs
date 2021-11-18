@@ -1,11 +1,11 @@
 <!-- navigation bar using bootstrap-->
-<div class="navbar navbar-expand-lg navbar-light">
+<div class="navbar navbar-expand-md">
   <div class="container">
-    <div class="row justify-content-between ml-2">
-      <a class="site-branding" href="/" rel="home"><img class="d-block" id="logo-img"
-          src="/public/img/new-donate-gifts-logo-2.png" alt="logo" /></a>
-      <nav class="site-navigation d-flex justify-content-end align-items-center">
-        <ul class="quick-font d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+    <div class="row justify-content-between align-bottom ml-2">
+      <a class="site-branding py-1" href="/" rel="home"><img class="d-block" src="/public/img/new-donate-gifts-logo-2.png"
+          alt="logo" /></a>
+      <nav class="site-navigation d-flex justify-content-end">
+        <ul class="d-flex flex-column flex-lg-row justify-content-lg-end">
           <li><a href="/wishcards">Wish Cards</a></li>
           <li><a href="/mission">Mission</a></li>
           <li><a href="/howto">How To</a></li>
@@ -20,8 +20,6 @@
           <li><a href="/wishcards/admin/">Admin Panel</a></li>
           <% } %>
           <li><a href="/users/profile">Profile</a></li>
-          <!-- TODO: going to place logout feature within profile page -->
-          <!-- <li><a href="/users/logout">Log Out</a></li> -->
           <% } %>
         </ul>
       </nav>
@@ -29,26 +27,24 @@
       <button class="navbar-toggler d-lg-none mr-4" type="button" data-toggle="collapse"
         data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false"
         aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <i class="fas fa-bars"></i>
       </button>
     </div>
 
     <div class="row mr-1">
       <div class="collapse d-lg-none w-100 ml-2" id="navbarToggleExternalContent">
-        <ul class="quick-font navbar-nav mr-2 mt-2 mt-lg-0 ml-2">
-          <li class="nav-item"><a href="/wishcards" class="nav-link">Wish Cards</a></li>
-          <li class="nav-item"><a href="/mission" class="nav-link">Mission</a></li>
-          <li class="nav-item">
+        <ul class="navbar-nav mr-3 my-1 mt-lg-0">
+          <li><a href="/wishcards" class="nav-link">Wish Cards</a></li>
+          <li><a href="/mission" class="nav-link">Mission</a></li>
+          <li>
             <a href="/howto" class="nav-link">How To</a>
           </li>
-          <li class="nav-item"><a href="/community" class="nav-link">Community</a></li>
+          <li><a href="/community" class="nav-link">Community</a></li>
           <% if (!locals.user) { %>
-          <li class="nav-item"><a href="/users/signup" class="nav-link">Sign Up</a></li>
-          <li class="nav-item"><a href="/users/login" class="nav-link">Log In</a></li>
+          <li><a href="/users/signup" class="nav-link">Sign Up</a></li>
+          <li><a href="/users/login" class="nav-link">Log In</a></li>
           <% } else { %>
-          <li class="nav-item"><a href="/users/profile" class="nav-link">Profile</a></li>
-          <!-- <li class="nav-item"><a href="/users/profile/donations" class="nav-link">Donation History</a></li> -->
-          <!-- <li class="nav-item"><a href="/users/logout" class="nav-link">Log Out</a></li> -->
+          <li><a href="/users/profile" class="nav-link">Profile</a></li>
           <% } %>
         </ul>
       </div>
