@@ -29,7 +29,6 @@
 
 
 <!-- google login -->
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
 <script src="/public/clientJS/loginModal.js"></script>
 <script src="/public/clientJS/socialLogin.js"></script>
@@ -87,7 +86,11 @@
         </div>
 
         <div class="alt-side col-6 col-md-4">
-          .col-6 .col-md-4
+          <div class="d-flex justify-content-center flex-column mx-auto">
+            <h4 class="my-3">No Account?</h4>
+            <p class="">Join our great movement</p>
+            <a href="/">Sign Up</a>
+          </div>
         </div>
       </div>
 

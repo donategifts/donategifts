@@ -5,6 +5,16 @@ Login Modal
   h3 {
     @include font-styling($font-heading, 1.75rem, $orange);
   }
+  h4 {
+    @include font-styling($font-heading, 1.5rem, $white);
+  }
+  .modal-content {
+    border-radius: 1.5rem;
+    -webkit-border-radius: 1.5rem;
+    -moz-border-radius: 1.5rem;
+    -ms-border-radius: 1.5rem;
+    -o-border-radius: 1.5rem;
+  }
   .oauth-side {
     background-color: $white;
     font-family: $font-body;
@@ -12,16 +22,16 @@ Login Modal
     padding: 2rem;
     align-items: center;
     justify-content: center;
-    border-radius: 30px 0 0 30px;
-    -webkit-border-radius: 30px 0 0 30px;
-    -moz-border-radius: 30px 0 0 30px;
-    -ms-border-radius: 30px 0 0 30px;
-    -o-border-radius: 30px 0 0 30px;
+    border-radius: 1.5rem 0 0 1.5rem;
+    -webkit-border-radius: 1.5rem 0 0 1.5rem;
+    -moz-border-radius: 1.5rem 0 0 1.5rem;
+    -ms-border-radius: 1.5rem 0 0 1.5rem;
+    -o-border-radius: 1.5rem 0 0 1.5rem;
     .email-login {
       background-color: $white;
+      color: $navy !important;
       box-shadow: 0 2px 4px 0 grey;
       padding: 0.6rem 3.6rem 0.6rem 1.1rem;
-      color: $navy !important;
       align-items: center;
       border-radius: 2px;
       -webkit-border-radius: 2px;
@@ -41,9 +51,25 @@ Login Modal
   }
   .alt-side {
     background-color: $orange;
+    padding: 5rem 2rem 1rem 2rem;
+    color: $white;
+    font-family: $font-body;
+    border-radius: 0 1.5rem 1.5rem 0;
+    -webkit-border-radius: 0 1.5rem 1.5rem 0;
+    -moz-border-radius: 0 1.5rem 1.5rem 0;
+    -ms-border-radius: 0 1.5rem 1.5rem 0;
+    -o-border-radius: 0 1.5rem 1.5rem 0;
+    a {
+      @extend %btn;
+      background-color: $white;
+      color: $navy !important;
+      box-shadow: 0 2px 4px 0 grey;
+      text-align: center;
+    }
   }
 }
 
+//this overrides google sign in button
 .abcRioButton {
   padding: 0 0.5rem;
   color: $navy !important;
