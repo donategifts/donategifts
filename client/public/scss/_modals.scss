@@ -1,0 +1,146 @@
+/*--------------------------------------------------------------
+Login Modal
+--------------------------------------------------------------*/
+.new-login {
+  h3 {
+    @include font-styling($font-heading, 1.75rem, $orange);
+  }
+  .oauth-side {
+    background-color: $white;
+    font-family: $font-body;
+    text-align: center;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px 0 0 30px;
+    -webkit-border-radius: 30px 0 0 30px;
+    -moz-border-radius: 30px 0 0 30px;
+    -ms-border-radius: 30px 0 0 30px;
+    -o-border-radius: 30px 0 0 30px;
+    .email-login {
+      background-color: $white;
+      box-shadow: 0 2px 4px 0 grey;
+      padding: 0.6rem 3.6rem 0.6rem 1.1rem;
+      color: $navy !important;
+      align-items: center;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      &:hover {
+        color: $orange !important;
+        text-decoration: none;
+      }
+      i {
+        color: $orange;
+        font-size: 1.25rem;
+        margin-right: 2rem;
+      }
+    }
+  }
+  .alt-side {
+    background-color: $orange;
+  }
+}
+
+.abcRioButton {
+  padding: 0 0.5rem;
+  color: $navy !important;
+  border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -moz-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  box-shadow: 0 2px 4px 0 grey !important;
+  span {
+    font-family: $font-body !important;
+    font-size: 1rem;
+  }
+  &:hover {
+    color: $orange !important;
+  }
+}
+
+.modal.login .modal-header,
+.modal.login .modal-footer {
+  border: none;
+}
+
+.modal.login h4 {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.modal.login .wrap-input {
+  margin-bottom: 10px;
+}
+
+.modal.login label {
+  margin-bottom: 0;
+}
+
+.modal.login input {
+  width: 100%;
+  border: 2px solid rgba(0, 161, 154, 1);
+  font-size: 1.5rem;
+  line-height: 3rem;
+}
+
+.modal.login .forgot-container {
+  text-align: right;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.modal.login a {
+  color: rgba(0, 161, 154, 1) !important;
+}
+
+.modal.login .form-btn {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  background: rgba(0, 161, 154, 1);
+  font-size: 1.5rem;
+  line-height: 3rem;
+  color: white;
+}
+
+.modal.login .text-container {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.modal.login .signup-container {
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+#input-container {
+  position: relative;
+  display: flex;
+}
+
+#input-container > i {
+  position: absolute;
+  top: 35%;
+  right: 15px;
+}
+
+@media screen and (min-width: 992px) {
+  .modal.login .modal-body {
+    margin: 0px 40px;
+  }
+
+  .modal.login #google-fb-login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}

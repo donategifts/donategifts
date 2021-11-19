@@ -11,7 +11,7 @@
   };
   (function (d, s, id) {
     var js,
-            fjs = d.getElementsByTagName(s)[0];
+      fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {
       return;
     }
@@ -22,111 +22,125 @@
   })(document, 'script', 'facebook-jssdk');
 </script>
 
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=1986956124780876&autoLogAppEvents=1"
+  nonce="7fAkxJIC"></script>
+
+
 <!-- google login -->
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
 <script src="/public/clientJS/loginModal.js"></script>
 <script src="/public/clientJS/socialLogin.js"></script>
 <script src="/public/clientJS/togglePasswordVisibility.js"></script>
-<div
-  class="modal fade login"
-  id="loginModalCenter"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="loginModalLongTitle"
-  aria-hidden="true"
->
-<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="crayon-font font-lg center">Log In</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
 
-    <div class="modal-body rale-font">
-      <div class="container-fluid">
+<div class="new-login modal fade login" id="loginModalCenter" tabindex="-1" role="dialog"
+  aria-labelledby="loginModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
-        <form class="signup" action="/users/login" method="post">
-          <div class="wrap-input mg-btm" data-validate="Email is required">
-            <label class="quick-font" for="email">Email</label>
-            <input
-              required
-              class="input-default quick-font"
-              type="email"
-              name="email"
-              id="email"
-              placeholder=""
-              title="example: username@xyz.com"
-            />
-          </div>
+    <div class="modal-content">
+      <div class="row no-gutters">
+        <div class="oauth-side col-12 col-sm-6 col-md-8">
+          <div class="d-flex justify-content-center flex-column mx-auto">
+            <h3 class="my-3">Welcome Back</h3>
+            
+            <div class="fb-login-button my-2" data-width="260" data-size="large" data-button-type="continue_with"
+            data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
 
-          <div class="wrap-input mg-btm2" data-validate="Password is required">
-            <label class="quick-font" for="password">Password</label>
-            <div id="input-container">
-            <input
-              required
-              class="input-default quick-font"
-              type="password"
-              name="password"
-              id="password"
-              placeholder=""
-              pattern="(?=.*\d)(?=.*[a-z]).{8,}"
-              title="Must contain at least one number and one lowercase letter, and at least 8 or more characters"
-            />
-            <i id="showPassword" class="fas fa-eye"></i>
-          </div>
-          </div>
+            <div class="mx-auto my-2">
+              <div id="my-signin2"></div>
+            </div>
+            <script>
+              function onSuccess(googleUser) {
+                console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+              }
 
-          <div class="forgot-container quick-font">
-            <a href="/users/password/request/">Forgot Password?</a>
-          </div>
+              function onFailure(error) {
+                console.log(error);
+              }
 
-          <!-- submit button section -->
-          <div class="container-form-btn">
-            <button class="form-btn quick-font" type="submit">Log In</button>
-          </div>
-        </form>
+              function renderButton() {
+                gapi.signin2.render('my-signin2', {
+                  'scope': 'profile email',
+                  'width': 260,
+                  'height': 40,
+                  'longtitle': true,
+                  'theme': 'light',
+                  'onsuccess': onSuccess,
+                  'onfailure': onFailure
+                });
+              }
+            </script>
+            <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
-        <div class="text-container quick-font">
-          <p class="quick-font">or login with</p>
-        </div>
+              <div class="mx-auto mt-3 mb-2">
+                  <a href="/" class="email-login">
+                    <i class="far fa-envelope-open"></i>
+                    <span>Sign in with Email</span>
+                  </a>
+              </div>
 
-        <div id="google-fb-login">
-          <div class="d-flex justify-content-center">
-            <div
-              class="g-signin2 mt-3"
-              data-width="228"
-              data-longtitle="true"
-              data-onsuccess="googleLogin"
-            ></div>
-          </div>
-
-          <div class="d-flex justify-content-center">
-            <div
-              class="fb-login-button mt-3"
-              data-size="large"
-              data-button-type="login_with"
-              data-layout="default"
-              data-auto-logout-link="false"
-              data-use-continue-as="false"
-              data-scope="public_profile,email"
-              data-onlogin="facebookLogin"
-            ></div>
+            <p class="mt-5">Agency partners must sign in with work email</p>
           </div>
         </div>
 
+        <div class="alt-side col-6 col-md-4">
+          .col-6 .col-md-4
+        </div>
       </div>
-    </div>
 
-    <div class="modal-footer">
-      <div class="signup-container quick-font">
-        <a href="/users/signup">New here? Sign Up</a>
+
+      <!-- 
+        <div class="modal-header">
+        <h4 class="crayon-font font-lg center">Log In</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div>
 
+      <div class="modal-body rale-font">
+        <div class="container-fluid">
+          <form class="signup" action="/users/login" method="post">
+            <div class="wrap-input mg-btm" data-validate="Email is required">
+              <label class="quick-font" for="email">Email</label>
+              <input required class="input-default quick-font" type="email" name="email" id="email" placeholder=""
+                title="example: username@xyz.com" />
+            </div>
+            <div class="wrap-input mg-btm2" data-validate="Password is required">
+              <label class="quick-font" for="password">Password</label>
+              <div id="input-container">
+                <input required class="input-default quick-font" type="password" name="password" id="password"
+                  placeholder="" pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+                  title="Must contain at least one number and one lowercase letter, and at least 8 or more characters" />
+                <i id="showPassword" class="fas fa-eye"></i>
+              </div>
+            </div>
+            <div class="forgot-container quick-font">
+              <a href="/users/password/request/">Forgot Password?</a>
+            </div>
+            
+            <div class="container-form-btn">
+              <button class="form-btn quick-font" type="submit">Log In</button>
+            </div>
+          </form>
+
+          <div class="text-container quick-font">
+            <p class="quick-font">or login with</p>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="signup-container quick-font">
+          <a href="/users/signup">New here? Sign Up</a>
+        </div>
+      </div> 
+    -->
+
+    </div>
   </div>
-</div>
 </div>
