@@ -23,7 +23,7 @@
   <meta name="keywords" content="children, gift, wish, foster, donate" />
   <%- include('./templates/header')-%>
   <!-- facebook login -->
-  <script>
+  <!-- <script>
     window.fbAsyncInit = function () {
       FB.init({
         appId: '<%- process.env.FB_APP_ID %>',
@@ -44,11 +44,11 @@
       js.src = 'https://connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
-  </script>
+  </script> -->
 
   <!-- google login -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" />
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="<%- process.env.G_CLIENT_ID %>" /> -->
   <script src="/public/clientJS/login.js"></script>
   <!-- For hero header typing effect -->
   <script src="/public/clientJS/heroTyping.js"></script>
@@ -57,10 +57,10 @@
 </head>
 
 <body>
-  <div id="fb-root"></div>
+  <!-- <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
-    nonce="XBZR4Yw2"></script>
-    <%- include('./templates/nav')-%>
+    nonce="XBZR4Yw2"></script> -->
+  <%- include('./templates/nav')-%>
    <%- include('./templates/wishCardDonateModal')-%>
   <!-- header section-->
 

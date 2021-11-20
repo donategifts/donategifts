@@ -31,7 +31,7 @@ Login Modal
       background-color: $white;
       color: $navy !important;
       box-shadow: 0 2px 4px 0 grey;
-      padding: 0.6rem 3.6rem 0.6rem 1.1rem;
+      padding: 0.6rem 3.5rem 0.6rem 1rem;
       align-items: center;
       border-radius: 2px;
       -webkit-border-radius: 2px;
@@ -39,19 +39,19 @@ Login Modal
       -ms-border-radius: 2px;
       -o-border-radius: 2px;
       &:hover {
-        color: $orange !important;
+        background-color: lighten($yellow,10) !important;
         text-decoration: none;
       }
       i {
         color: $orange;
         font-size: 1.25rem;
-        margin-right: 2rem;
+        margin-right: 2rem;       
       }
     }
   }
   .alt-side {
-    background-color: $orange;
-    padding: 5rem 2rem 1rem 2rem;
+    background: linear-gradient($orange, $yellow);
+    padding: 6rem 2rem 1rem 2rem;
     color: $white;
     font-family: $font-body;
     border-radius: 0 1.5rem 1.5rem 0;
@@ -65,6 +65,17 @@ Login Modal
       color: $navy !important;
       box-shadow: 0 2px 4px 0 grey;
       text-align: center;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      cursor: pointer;
+      &:hover {
+        color: $orange !important;
+        font-weight: $semi-bold;
+        text-decoration: none;
+      }
     }
   }
 }
@@ -79,12 +90,20 @@ Login Modal
   -ms-border-radius: 2px !important;
   -o-border-radius: 2px !important;
   box-shadow: 0 2px 4px 0 grey !important;
-  span {
-    font-family: $font-body !important;
-    font-size: 1rem;
-  }
   &:hover {
-    color: $orange !important;
+    background-color: lighten($yellow,10) !important;
+  }
+}
+//this changes google oauth default button text
+.abcRioButtonContents span:first-child {
+  font-family: $font-body !important;
+  font-size: 1rem;
+  visibility: hidden;
+  &:before {
+    content: 'Sign up with Google';
+    visibility: visible;
+    color: $navy !important;
+    padding-left: 1rem;
   }
 }
 
@@ -93,12 +112,12 @@ Login Modal
   border: none;
 }
 
-.modal.login h4 {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 0;
-  width: 100%;
-}
+// .modal.login h4 {
+//   text-align: center;
+//   margin-top: 20px;
+//   margin-bottom: 0;
+//   width: 100%;
+// }
 
 .modal.login .wrap-input {
   margin-bottom: 10px;
@@ -119,10 +138,6 @@ Login Modal
   text-align: right;
   width: 100%;
   margin-bottom: 20px;
-}
-
-.modal.login a {
-  color: rgba(0, 161, 154, 1) !important;
 }
 
 .modal.login .form-btn {

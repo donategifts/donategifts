@@ -34,20 +34,22 @@
 <script src="/public/clientJS/socialLogin.js"></script>
 <script src="/public/clientJS/togglePasswordVisibility.js"></script>
 
+<%- include('./formHelperModal3')-%>
 
+<!-----------New login modal begins here---------->
 <div class="new-login modal fade login" id="loginModalCenter" tabindex="-1" role="dialog"
-  aria-labelledby="loginModalLongTitle" aria-hidden="true">
+  aria-labelledby="loginModalCenter" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
     <div class="modal-content">
       <div class="row no-gutters">
         <div class="oauth-side col-12 col-sm-6 col-md-8">
           <div class="d-flex justify-content-center flex-column mx-auto">
-            <h3 class="my-3">Welcome Back</h3>
-            
+            <h3 class="my-3">Join DonateGifts</h3>
+            <!-----------Facebook signin button---------->
             <div class="fb-login-button my-2" data-width="260" data-size="large" data-button-type="continue_with"
-            data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
-
+              data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
+            <!-----------Google signin button---------->
             <div class="mx-auto my-2">
               <div id="my-signin2"></div>
             </div>
@@ -74,22 +76,30 @@
             </script>
             <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
-              <div class="mx-auto mt-3 mb-2">
-                  <a href="/" class="email-login">
-                    <i class="far fa-envelope-open"></i>
-                    <span>Sign in with Email</span>
-                  </a>
-              </div>
+            <!-----------Modal change flow---------->
+            <script>
+              const handleEmailSignUp = () => {
+                $('#loginModalCenter').modal('hide');
+                $('#formQuestionHelper3').modal('show');
+              }
+            </script>
+            <!-----------Email signin button---------->
+            <div class="mx-auto mt-3 mb-2">
+              <a onclick="handleEmailSignUp()" class="email-login">
+                <i class="far fa-envelope-open"></i>
+                <span>Sign up with Email</span>
+              </a>
+            </div>
 
-            <p class="mt-5">Agency partners must sign in with work email</p>
+            <p class="mt-5">Agency partners must sign up with work email</p>
           </div>
         </div>
-
         <div class="alt-side col-6 col-md-4">
-          <div class="d-flex justify-content-center flex-column mx-auto">
-            <h4 class="my-3">No Account?</h4>
-            <p class="">Join our great movement</p>
-            <a href="/">Sign Up</a>
+          <div class="d-flex justify-content-center flex-column mx-auto text-center">
+            <h4 class="my-3">Already have an account?</h4>
+            <p class="">Great, we missed you!</p>
+            <!-- testing temporary -->
+            <a>Log In</a>
           </div>
         </div>
       </div>
