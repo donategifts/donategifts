@@ -34,7 +34,7 @@
 <script src="/public/clientJS/socialLogin.js"></script>
 <script src="/public/clientJS/togglePasswordVisibility.js"></script>
 
-<%- include('./formHelperModal3')-%>
+<%- include('./signUpUserRoleModal')-%>
 
 <!-----------New login modal begins here---------->
 <div class="new-login modal fade login" id="loginModalCenter" tabindex="-1" role="dialog"
@@ -80,7 +80,7 @@
             <script>
               const handleEmailSignUp = () => {
                 $('#loginModalCenter').modal('hide');
-                $('#formQuestionHelper3').modal('show');
+                $('#signUpUserRoleModal').modal('show');
               }
             </script>
             <!-----------Email signin button---------->
