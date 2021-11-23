@@ -6,7 +6,7 @@
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-let configPath = './config/config.env';
+let configPath = './config/example-config.env';
 if (process.env.NODE_ENV === 'test') {
   configPath = './config/test.config.env';
 }
