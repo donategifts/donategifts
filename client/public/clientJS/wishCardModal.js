@@ -208,17 +208,17 @@ function addCountdownToModal(lockedUntil, wishCardId, elementId) {
     } else {
       element.html(
         '<div class="donate-modal"><h1 class="crayon-font donate-modal-title">You reserved this wish card for</h1>' +
-          '<div class="cool-font countdown">' +
-          minutes +
-          ' : ' +
-          seconds +
-          '</div>' +
-          '<div><i class="modal-i fa fa-amazon" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
-          '<i class="modal-i fa fa-shopping-cart" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
-          '<i class="modal-i fa fa-check-square-o" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
-          '<i class="modal-i fa fa-envelope-open-o" aria-hidden="true"></i></div>' +
-          '<p class="quick-font donate-subtitle">This wish item is added to your Amazon cart in the new tab that will open.</p>' +
-          '<p class="quick-font donate-subtitle">Return to this screen & confirm your donation once checkout is finished.</p></div>',
+        '<div class="cool-font countdown">' +
+        minutes +
+        ' : ' +
+        seconds +
+        '</div>' +
+        '<div><i class="modal-i fa fa-amazon" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
+        '<i class="modal-i fa fa-shopping-cart" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
+        '<i class="modal-i fa fa-check-square-o" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>' +
+        '<i class="modal-i fa fa-envelope-open-o" aria-hidden="true"></i></div>' +
+        '<p class="quick-font donate-subtitle">This wish item is added to your Amazon cart in the new tab that will open.</p>' +
+        '<p class="quick-font donate-subtitle">Return to this screen & confirm your donation once checkout is finished.</p></div>',
       );
     }
   }, 1000);
