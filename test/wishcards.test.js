@@ -179,7 +179,7 @@ describe('Wishcard Routes - Authenticated & Verified Partner User', () => {
     WishCard.create({ ...wishcardRequest, childFirstName: "42", childLastName: "Is What?" }).then((wishcard) => {
       agent
         .post(`/wishcards/edit/${wishcard.id}`)
-        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe"})
+        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe" })
         .end((_err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('success');
@@ -802,7 +802,7 @@ describe('Wishcard Routes - Authenticated & Unverified Partner User', () => {
 
   it('GET my wishcards page - Redirects to 403 Page', (done) => {
     agent.get('/wishcards/me')
-    .redirects(1)
+      .redirects(1)
       .end((err, res) => {
         res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
         res.should.have.status(403);
@@ -908,19 +908,19 @@ describe('Wishcard Routes - Unauthenticated User', () => {
   //   });
   // });
 
-  it('GET wishcard by Id - Redirects to login', (done) => {
-    WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
-      agent
-        .get(`/wishcards/${foundWishcard._id}`)
-        .redirects(1)
-        .end((err, res) => {
-          res.text.should.contain('Sign Up to Donate Gifts');
-          res.should.have.status(200);
-          res.body.should.be.an('object');
-          done();
-        });
-    });
-  });
+  // it('GET wishcard by Id - Redirects to login', (done) => {
+  //   WishCard.findOne({ childFirstName: wishcardRequest.childFirstName }).then((foundWishcard) => {
+  //     agent
+  //       .get(`/wishcards/${foundWishcard._id}`)
+  //       .redirects(1)
+  //       .end((err, res) => {
+  //         res.text.should.contain('Sign Up to Donate Gifts');
+  //         res.should.have.status(200);
+  //         res.body.should.be.an('object');
+  //         done();
+  //       });
+  //   });
+  // });
 
   it('GET wishcard guided default choices -  Object with login url', (done) => {
     agent.get('/wishcards/defaults/1').end((err, res) => {
@@ -1140,7 +1140,7 @@ describe('Wishcard Routes - Email Verified Donor User', () => {
 
   it('GET my wishcards page - Redirects to 403 page', (done) => {
     agent.get('/wishcards/me')
-    .redirects(1)
+      .redirects(1)
       .end((err, res) => {
         res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
         res.should.have.status(403);
@@ -1261,7 +1261,7 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
     WishCard.create({ ...wishcardRequest, childFirstName: "42", childLastName: "Is What?" }).then((wishcard) => {
       agent
         .post(`/wishcards/edit/${wishcard.id}`)
-        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe"})
+        .send({ ...wishcardRequest, childFirstName: "42", childLastName: "Is the Answer to the Universe" })
         .end((_err, res) => {
           res.should.have.status(403);
           res.body.should.have.property('success');
@@ -1332,7 +1332,7 @@ describe('Wishcard Routes - Email Unverified Donor User', () => {
 
   it('GET my wishcards page - Redirects to 403 Page', (done) => {
     agent.get('/wishcards/me')
-    .redirects(1)
+      .redirects(1)
       .end((err, res) => {
         res.text.should.contain("Sorry, looks like you don't have permission to access this page.");
         res.should.have.status(403);
