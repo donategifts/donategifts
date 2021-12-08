@@ -60,7 +60,9 @@
     <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
       <h3 class="pb-4">Agency Info</h3>
       <p><i class="fas fa-building"></i><%= agency.agencyName %></p>
+      <% if (agency.agencyAddress) { %>
       <p><i class="fas fa-map-marker-alt"></i><%= agency.agencyAddress.city? agency.agencyAddress.city : null%>, <%= agency.agencyAddress.state? agency.agencyAddress.state : null %>, <%= agency.agencyAddress.zipcode? agency.agencyAddress.zipcode : null %></p>
+      <% if (agency.agencyPhone) { %>
       <p><i class="fas fa-phone-alt"></i><%= agency.agencyPhone %></p>
       <% if (agency.agencyWebsite) { %>
         <p><a href="<%= agency.agencyWebsite %>"><i class="fas fa-link"></i><%= agency.agencyWebsite %></a></p>
