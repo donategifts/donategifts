@@ -4,11 +4,6 @@
 <head>
   <title>Donate Gifts Community</title>
   <%- include('./templates/header')-%>
-  <!-- jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-    integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
-  </script>
   <link rel="stylesheet" href="/public/css/community.css" />
 </head>
 
@@ -20,7 +15,7 @@
   
       <div class="row mb-4">
         <div class="col-12">
-          <% if (user.userRole == 'partner') { %>
+          <% if (user && user.userRole == 'partner') { %>
           <div class="card border-white mt-5 mb-3 card-border">
             <div class="card-title quick-font border-bottom p-3">
               <h5 class="pl-3">
@@ -57,7 +52,6 @@
               </form>
             </div>
           </div>
-
         </div>
         <% } %>
       </div>
@@ -77,7 +71,7 @@
           </div>
           <div class="card-body">
             <div class="videoWrapper">
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/IUPDXnvnJCQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/IUPDXnvnJCQ?autoplay=1" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
           </div>
         </div>
