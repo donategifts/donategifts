@@ -102,6 +102,11 @@ Reusable Utils - Button
 } 
 
 .btn-orange-navy-lg-long {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  opacity: 1;
   border: 0.15rem solid transparent;
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
@@ -122,6 +127,11 @@ Reusable Utils - Button
 }
 
 .btn-disabled-long {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  opacity: 1;
   border: 0.15rem solid transparent;
   border-radius: 1rem;
   -webkit-border-radius: 1rem;
