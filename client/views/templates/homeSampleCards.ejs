@@ -46,12 +46,7 @@
 
                     <div class="card-action row">
                       <div class="col-sm-6 mb-2">
-                        <% if (locals.user) { %>
                         <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">View More</a>
-                        <% } else { %>
-                        <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-                          data-target="#loginModalCenter"> View More </button>
-                        <% } %>
                       </div>
                       <div class="col-sm-6 mb-2">
                         <% if (wishcards[j].status === 'donated') { %>
@@ -135,12 +130,7 @@
                       </p>
                       <div class="card-action row">
                         <div class="col-sm-6 mb-2">
-                          <% if (locals.user) { %>
                           <a href="/wishcards/<%= wishcards[j]._id %>" class="wishcard__link--white bdr-2">View More</a>
-                          <% } else { %>
-                          <button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-                            data-target="#loginModalCenter"> View More </button>
-                          <% } %>
                         </div>
                         <div class="col-sm-6 mb-2">
 

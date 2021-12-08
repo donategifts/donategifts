@@ -517,12 +517,11 @@ router.post('/search/:init?', async (req, res) => {
 // @route   GET '/wishcards/:id'
 // @access  Private, all users (path led by "see more" button). See more btn is however is public.
 // @tested 	Yes
-router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req, res) => {
+router.get('/:id', getByIdValidationRules(), validate, async (req, res) => {
   try {
     const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
     // this agency object is returning undefined and breaking frontend
-    // const agency = wishcard.belongsTo;
-
+    const agency = wishcard.belongsTo;
     let birthday;
     if (wishcard.childBirthday) {
       birthday = moment(new Date(wishcard.childBirthday));
@@ -533,13 +532,18 @@ router.get('/:id', redirectLogin, getByIdValidationRules(), validate, async (req
     }
 
     const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
-    const defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
+    let defaultMessages;
+    if (res.locals.user) {
+      defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
+    }
+
     // create a page and have a dynamic link for see more
     res.status(200).render('wishCardFullPage', {
       user: res.locals.user,
       wishcard: wishcard || [],
+      agency: agency || [],
       messages,
-      defaultMessages,
+      defaultMessages: defaultMessages || [],
     });
   } catch (error) {
     handleError(res, 400, error);
