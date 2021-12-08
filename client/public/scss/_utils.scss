@@ -31,6 +31,10 @@ textarea {
   border: none;
 }
 
+.tinted {
+  background-color: transparentize($white, 0.5);
+}
+
 /* 
 -----------------------------
 Reusable Utils - Button
@@ -96,6 +100,43 @@ Reusable Utils - Button
     @extend %hover-navy;
   }
 } 
+
+.btn-orange-navy-lg-long {
+  border: 0.15rem solid transparent;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  width: 40vw;
+  padding: 1rem 0;
+  font-size: 1.3rem;
+  margin: 10px;
+  line-height: 1.2em;
+  background-color: $orange;
+  color: $white !important;
+  text-align: center !important;
+  &:hover {
+    @extend %hover-navy;
+  }
+}
+
+.btn-disabled-long {
+  border: 0.15rem solid transparent;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  width: 40vw;
+  padding: 1rem 0;
+  font-size: 1.3rem;
+  margin: 10px;
+  line-height: 1.2em;
+  background-color: lighten($gray, 25%);
+  color: $white !important;
+  text-align: center !important;
+}
 
 /* 
 -----------------------------

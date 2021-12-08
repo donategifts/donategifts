@@ -6,7 +6,8 @@
   <title>See Each Wish Card | Donate Gifts</title>
   <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
   <%- include('./templates/header')-%>
-  <link rel="stylesheet" href="/public/css/wishCardFull.css" />
+  <link rel="stylesheet" href="/public/dist/wishcards.min.css">
+  <!-- <link rel="stylesheet" href="/public/css/wishCardFull.css" /> -->
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -17,78 +18,103 @@
 <body>
   <%- include('./templates/nav')-%>
 
-  <div class="container">
-    <div class="page-wrapper">
-      <div class="section-title mt-5">
-        <h1 class="card-title text-center crayon-font grn-font"><%= wishcard.childFirstName %>'s Wishcard</h1>
-        <img id="img-kid" src="<%= wishcard.wishCardImage %>" alt="Card image" />
+  <div class="wishpage pb-5">
 
-        <div class="w-100 text-center">
-          <% if (wishcard.status === 'donated') { %>
-            <button type="button"  id="donate-btn" class="wishcard-btn btn-grn-bg quick-font" disabled aria-disabled=true> Donated </button>
-          <% } else if (user){ %>
-            <a type="button" id="donate-btn" class="wishcard-btn btn-grn-bg quick-font"
-              href="donate/<%= wishcard._id %>">
-              Donate Gift
-            </a>
-          <% } else { %>
-            <button 
-              type="button"
-              id="donate-btn"
-              data-toggle="modal"
-              class="wishcard-btn btn-grn-bg quick-font"
-              data-target="#loginModalCenter"
-            >
-              Donate Gift
-            </button>
+    <div class="row pt-5 pb-2">
+      <h1><%= wishcard.childFirstName %>'s Wish Page</h1>
+    </div>
+
+    <div class="text-center">
+      <% if (wishcard.status === 'donated') { %>
+      <button type="button" id="donate-btn" class="btn-disabled-long" disabled aria-disabled="true">
+        Donated </button>
+      <% } else if (user){ %>
+      <a type="button" id="donate-btn" class="btn-orange-navy-lg-long" href="donate/<%= wishcard._id %>">
+        Donate Gift
+      </a>
+      <% } else { %>
+      <button type="button" id="donate-btn" data-toggle="modal" class="btn-orange-navy-lg-long"
+        data-target="#loginModalCenter">
+        Donate Gift
+      </button>
+      <% } %>
+    </div>
+
+    <div class="row">
+      <img class="mt-3 shadow" src="<%= wishcard.wishCardImage %>" alt="<%= wishcard.wishItemName %>" loading="lazy" />
+    </div>
+
+    <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
+      <h3 class="pb-4">My Wish Item</h3>
+      <p><span class="font-weight-bold">Wish Item :</span> <%= wishcard.wishItemName %></p>
+      <p><span class="font-weight-bold">Item Price :</span> $<%= wishcard.wishItemPrice %></p>
+    </div>
+
+    <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
+      <h3 class="pb-4">About <%= wishcard.childFirstName %></h3>
+      <p id="age"><span class="font-weight-bold">My Age :</span> <%= wishcard.age %></p>
+      <p><span class="font-weight-bold">My Interest :</span> <%= wishcard.childInterest %></p>
+      <p><span class="font-weight-bold">My Story :</span> <%= wishcard.childStory %></p>
+    </div>
+
+    <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
+      <h3 class="pb-4">Agency Info</h3>
+      <p><i class="fas fa-building"></i><%= agency.agencyName %></p>
+      <% if (agency.agencyAddress) { %>
+      <p><i class="fas fa-map-marker-alt"></i><%= agency.agencyAddress.city? agency.agencyAddress.city : null%>, <%= agency.agencyAddress.state? agency.agencyAddress.state : null %>, <%= agency.agencyAddress.zipcode? agency.agencyAddress.zipcode : null %></p>
+      <% } %>
+      <% if (agency.agencyPhone) { %>
+      <p><i class="fas fa-phone-alt"></i><%= agency.agencyPhone %></p>
+      <% } %>
+      <% if (agency.agencyWebsite) { %>
+        <p><a href="<%= agency.agencyWebsite %>"><i class="fas fa-link"></i><%= agency.agencyWebsite %></a></p>
+      <% } %>
+      <% if (agency.agencyBio) { %>
+        <p><i class="fas fa-address-card"></i><%= agency.agencyBio %></p>
+      <% } %>
+    </div>
+
+
+      <% if (user) { %>
+        <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
+          <h3 class="pb-4">Send <%= wishcard.childFirstName %> a message</h3>
+          <p class="card-text">Select a message to send</p>
+          <form class="message text-center" action="/wishcards/message" method="post">
+            <select class="custom-select">
+              <option selected>Messages</option>
+              <% for (let i = 0; i < defaultMessages.length; i++) { %>
+              <option value="<%= i %>"><%= defaultMessages[i] %></option>
+              <% } %>
+            </select>
+            <input type="submit" id="submit" class="mt-4 btn-orange-navy-lg" value="Send Message" />
+          </form>
+        </div>
+
+      <% } %>
+    
+
+    <div class="wrapper tinted shadow p-5 mt-5 rounded mx-auto">
+      <h3 class="pb-4">Message Board</h3>
+      <% if (messages.length === 0) { %>
+        <p>
+          No one signed <%= wishcard.childFirstName %>'s card yet. 
+          Log in and send a message.
+        </p>
+        <% } else { %>
+        <div>
+          <% for (let i = 0; i < messages.length; i++) { %>
+            <div class="msg-each">
+              <p class="mx-3"><i class="far fa-comment-dots"></i> "<%= messages[i].message %>"</p>
+              <p class="mx-5"><span class="font-weight-bold">Sent by: </span><%= messages[i].messageFrom.fName %></p>
+            </div>
           <% } %>
         </div>
-      </div>
-
-      <div class="d-md-flex w-100 justify-content-center">
-        <div class="section-info mt-5 quick-font">
-          <h4 class="pb-4 grn-font">Wish Card Details</h4>
-          <p class="card-text pb-1" id="age"><span class="font-weight-bold">Age :</span> <%= wishcard.age %></p>
-          <p class="card-text pb-1"><span class="font-weight-bold">Interest :</span> <%= wishcard.childInterest %></p>
-          <p class="card-text pb-1"><span class="font-weight-bold">Wish Item :</span> <%= wishcard.wishItemName %></p>
-          <p class="card-text pb-1"><span class="font-weight-bold">Item Price :</span> $<%= wishcard.wishItemPrice %></p>
-        </div>
-
-        <% if (user) { %> 
-          <div class="write-msg mt-5 quick-font">
-            <h4 class="pb-4 grn-font">Sign <%= wishcard.childFirstName %>'s Card</h4>
-            <p class="card-text">Select a message to send</p>
-            <form class="message text-center" action="/wishcards/message" method="post">
-              <select class="custom-select">
-                <option selected>Messages</option>
-                <% for (let i = 0; i < defaultMessages.length; i++) { %>
-                  <option value="<%= i %>"><%= defaultMessages[i] %></option>
-                <% } %>
-              </select>
-              <input type="submit" id="submit" class="mt-4" value="Send Message" />
-            </form>
-          </div>
-        <% } %> 
-      </div>
-
-      <div class="show-msg">
-        <% if (messages.length === 0) { %>
-          <h6 class="quick-font">
-            No one signed <%= wishcard.childFirstName %>'s card yet. Be the first person to send a message.
-          </h6>
-        <% } else { %>
-          <div>
-            <% for (let i = 0; i < messages.length; i++) { %>
-              <p><%= messages[i].message %></p>
-              <p>Sent by: <%= messages[i].messageFrom.fName %></p>
-            <% } %>
-          </div>
         <% } %>
-      </div>
     </div>
+
   </div>
 
-  <%- include('./templates/loginModal.ejs') %> 
+  <%- include('./templates/loginModal.ejs') %>
   <%- include('./templates/footer')-%>
   <script>
     let messageFrom = `<%- JSON.stringify(user) %>`;
