@@ -210,7 +210,7 @@ const sendDonationOrderedEmail = async ({
     body,
     donationTemplateAttachments,
   );
-}
+};
 
 const sendVerificationEmail = async (to, hash) => {
   const body = template

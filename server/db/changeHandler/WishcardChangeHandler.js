@@ -1,9 +1,9 @@
+const moment = require('moment');
 const WishCard = require('../models/WishCard');
 const { getWishCardByObjectId } = require('../repository/WishCardRepository');
 const { sendDonationOrderedEmail } = require('../../helper/messaging');
 const { getUserByObjectId } = require('../repository/UserRepository');
 const { getDonationByWishCardId } = require('../repository/DonationRepository');
-const moment = require('moment');
 
 const wishCardChangeListener = WishCard.watch();
 
@@ -19,11 +19,8 @@ wishCardChangeListener.on('change', async (change) => {
     const agency = wishCard.belongsTo;
     const accountManager = await getUserByObjectId(agency.accountManager);
     const donation = await getDonationByWishCardId(wishCard._id);
-    console.log(wishCard);
-    console.log(agency);
-    console.log(accountManager);
-    console.log(donation);
-    sendDonationOrderedEmail({
+
+    await sendDonationOrderedEmail({
       agencyEmail: accountManager.email,
       agencyName: agency.agencyName,
       childName: wishCard.childFirstName,
