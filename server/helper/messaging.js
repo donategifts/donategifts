@@ -15,6 +15,13 @@ const donationTemplate = fs.readFileSync(
     encoding: 'utf-8',
   },
 );
+
+const donationOrderedTemplate = fs.readFileSync(
+  path.resolve(__dirname, '../resources/email/partnerDonationAlert.html'),
+  {
+    encoding: 'utf-8',
+  },
+);
 const agencyVerfiedTemplate = fs.readFileSync(
   path.resolve(__dirname, '../resources/email/agencyVerified.html'),
   {
@@ -38,7 +45,7 @@ const donationTemplateAttachments = [
   },
   {
     filename: 'instagram2x.png',
-    path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+    path: path.resolve(__dirname, '/../resources/email/instagram2x.png'),
     cid: 'instagram2x.png',
   },
   {
@@ -174,6 +181,32 @@ const sendDonationConfirmationMail = async ({
     process.env.DEFAULT_EMAIL,
     email,
     'Donate-gifts.com Donation Receipt',
+    body,
+    donationTemplateAttachments,
+  );
+};
+
+const sendDonationOrderedEmail = async ({
+  agencyEmail,
+  agencyName,
+  childName,
+  itemName,
+  itemPrice,
+  donationDate,
+  address,
+}) => {
+  const body = donationOrderedTemplate
+    .replace('%agencyName%', agencyName)
+    .replace(RegExp('%childName%', 'g'), childName)
+    .replace('%itemName%', itemName)
+    .replace('%itemPrice%', itemPrice)
+    .replace('%donationDate%', donationDate)
+    .replace('%address%', address);
+
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    agencyEmail,
+    'Donate-gifts.com Donation Item Ordered',
     body,
     donationTemplateAttachments,
   );
@@ -406,6 +439,7 @@ module.exports = {
   sendMail,
   sendSlackFeedbackMessage,
   sendAgencyVerifiedMail,
+  sendDonationOrderedEmail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,

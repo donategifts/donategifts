@@ -14,6 +14,9 @@ function connect() {
     if (err) {
       log.error('Unable to connect to DB. Error:', err);
     } else {
+      if (process.env.NODE_ENV !== 'test') {
+        require('./changeHandler/WishcardChangeHandler');
+      }
       log.info(
         `Connected to Mongodb ${database.name ? database.name : database.connections[0].name}`,
         {
