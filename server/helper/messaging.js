@@ -45,7 +45,7 @@ const donationTemplateAttachments = [
   },
   {
     filename: 'instagram2x.png',
-    path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+    path: path.resolve(__dirname, '/../resources/email/instagram2x.png'),
     cid: 'instagram2x.png',
   },
   {
