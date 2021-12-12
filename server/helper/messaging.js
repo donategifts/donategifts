@@ -45,7 +45,7 @@ const donationTemplateAttachments = [
   },
   {
     filename: 'instagram2x.png',
-    path: path.resolve(__dirname, '/../resources/email/instagram2x.png'),
+    path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
     cid: 'instagram2x.png',
   },
   {
@@ -146,7 +146,7 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
       if (!data) {
         return { success: false };
       }
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development' && process.env.LOCAL_DEVELOPMENT === 'TRUE') {
         log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
