@@ -15,6 +15,13 @@ const donationTemplate = fs.readFileSync(
     encoding: 'utf-8',
   },
 );
+
+const donationOrderedTemplate = fs.readFileSync(
+  path.resolve(__dirname, '../resources/email/partnerDonationAlert.html'),
+  {
+    encoding: 'utf-8',
+  },
+);
 const agencyVerfiedTemplate = fs.readFileSync(
   path.resolve(__dirname, '../resources/email/agencyVerified.html'),
   {
@@ -91,7 +98,10 @@ const templateAttachments = [
 ];
 
 const getTransport = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  if (
+    (process.env.NODE_ENV === 'development' && process.env.LOCAL_DEVELOPMENT === 'TRUE') ||
+    process.env.NODE_ENV === 'test'
+  ) {
     const account = await nodemailer.createTestAccount();
 
     if (account) {
@@ -139,7 +149,7 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
       if (!data) {
         return { success: false };
       }
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development' && process.env.LOCAL_DEVELOPMENT === 'TRUE') {
         log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
@@ -174,6 +184,32 @@ const sendDonationConfirmationMail = async ({
     process.env.DEFAULT_EMAIL,
     email,
     'Donate-gifts.com Donation Receipt',
+    body,
+    donationTemplateAttachments,
+  );
+};
+
+const sendDonationOrderedEmail = async ({
+  agencyEmail,
+  agencyName,
+  childName,
+  itemName,
+  itemPrice,
+  donationDate,
+  address,
+}) => {
+  const body = donationOrderedTemplate
+    .replace('%agencyName%', agencyName)
+    .replace(RegExp('%childName%', 'g'), childName)
+    .replace('%itemName%', itemName)
+    .replace('%itemPrice%', itemPrice)
+    .replace('%donationDate%', donationDate)
+    .replace('%address%', address);
+
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    agencyEmail,
+    'Donate-gifts.com Donation Item Ordered',
     body,
     donationTemplateAttachments,
   );
@@ -406,6 +442,7 @@ module.exports = {
   sendMail,
   sendSlackFeedbackMessage,
   sendAgencyVerifiedMail,
+  sendDonationOrderedEmail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
