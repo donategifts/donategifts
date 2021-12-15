@@ -873,6 +873,23 @@ New color scheme reference is in utils.css
   border: none;
 }
 
+.createPost_button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #333a64;
+  color: #fff;
+  outline: none;
+  padding: 12px 15px;
+  width: 100%;
+  border: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.createPost_button:hover {
+  background: #ff826b;
+}
+
 .wishcard__button--yellow {
   -webkit-appearance: none;
   -moz-appearance: none;
