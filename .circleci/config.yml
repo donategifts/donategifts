@@ -72,7 +72,8 @@ workflows:
                 - master
       - aws-ecr/build-and-push-image:
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
+          tag: "latest,${CIRCLE_SHA1}"
+          create-repo: true
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
