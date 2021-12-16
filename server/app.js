@@ -26,7 +26,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const mongoSanitize = require('express-mongo-sanitize');
-const { connectSocket } = require('./helper/socket');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
@@ -39,10 +38,6 @@ const app = express();
 
 app.use(
   responseTime((req, res, time) => {
-    // if (req.originalUrl.includes('socket')) {
-    //   return;
-    // }
-
     if (process.env.NODE_ENV !== 'test') {
       if (
         (!req.originalUrl.includes('.png') &&
@@ -155,8 +150,6 @@ app.use(cookieParser());
 app.use(express.static('client'));
 
 // needs to be declared before routes otherwise sockets wont be available in routes
-global.io = connectSocket(app);
-
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');

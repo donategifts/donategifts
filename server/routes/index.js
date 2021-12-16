@@ -26,6 +26,10 @@ function getChristmasString() {
   return christmasData;
 }
 
+router.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 router.get('/', async (_req, res) => {
   const agencies = await AgencyRepository.getVerifiedAgencies();
 
