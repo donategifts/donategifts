@@ -47,18 +47,21 @@ workflows:
                 - master
   deploy-dev:
     jobs:
-      - test:
+      - aws-ecr/build-and-push-image:
           filters:
             branches:
-              ignore:
+              only:
                 - master
-      - aws-ecr/build-and-push-image:
           requires:
             - test
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "latest,${CIRCLE_SHA1}"
           create-repo: true
       - aws-ecs/deploy-service-update:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - aws-ecr/build-and-push-image
           family: "${AWS_RESOURCE_NAME_PREFIX}-backend"
