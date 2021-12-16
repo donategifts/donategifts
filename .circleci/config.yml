@@ -52,8 +52,6 @@ workflows:
             branches:
               only:
                 - master
-          requires:
-            - test
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "latest,${CIRCLE_SHA1}"
           create-repo: true
