@@ -26,6 +26,10 @@ function getChristmasString() {
   return christmasData;
 }
 
+router.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 router.get('/', async (_req, res) => {
   const agencies = await AgencyRepository.getVerifiedAgencies();
 
@@ -41,10 +45,6 @@ router.get('/', async (_req, res) => {
     donatedCards: donatedWishcards.length,
     christmasData: getChristmasString(),
   });
-});
-
-router.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
 });
 
 module.exports = router;
