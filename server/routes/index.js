@@ -43,4 +43,8 @@ router.get('/', async (_req, res) => {
   });
 });
 
+router.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 module.exports = router;

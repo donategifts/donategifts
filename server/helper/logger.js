@@ -2,7 +2,6 @@ const { configure, getLogger, levels } = require('log4js');
 
 const appenderArray = ['console'];
 
-
 const config = {
   appenders: {
     console: { type: 'console', layout: { type: 'colored' } },
