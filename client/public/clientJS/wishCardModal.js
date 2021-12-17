@@ -104,6 +104,53 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
             });
           });
 
+          socket.on('donated', (event) => {
+            if (event.id === wishCardId && event.donatedBy === button[0].dataset.valueUser) {
+              modalHeader.show();
+
+              spinner.hide();
+              waitDiv.hide();
+              donateBtnWrapper.hide();
+              clearInterval(locked[wishCardId]);
+              const lockedCountdown = modalBody.find(`#lockedCountdown-${wishCardId}`);
+              if (lockedCountdown) {
+                lockedCountdown.hide();
+              }
+              statusDiv.html('Donation Confirmed');
+              statusDiv.show();
+
+              $.ajax({
+                type: 'POST',
+                url: '/wishcards/unlock/' + wishCardId,
+                data: {},
+                error: (response, textStatus, errorThrown) => {
+                  showToast(response.responseJSON.error.msg);
+                },
+              });
+            }
+          });
+
+          socket.on('not_donated', (event) => {
+            if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
+              spinner.hide();
+              waitDiv.hide();
+              donateDoneButton.html('Failed to verify donation - Try Again');
+              statusDiv.html(
+                'We are unable to confirm your donation, feel free to try again. If not, you are welcome to <a href="/contact" target="_blank">contact us</a>',
+              );
+              statusDiv.show();
+
+              //TODO we should do an exit survey eventually -stacy-
+            }
+          });
+
+          //is fired when user is not pressing anything
+          socket.on('countdown_ran_out', (event) => {
+            if (event.id === wishCardId && event.userId === button[0].dataset.valueUser) {
+              showLoadingView();
+            }
+          });
+
           function showLoadingView() {
             // Hide modal header to prevent closing the modal
             modalHeader.hide();

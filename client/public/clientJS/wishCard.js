@@ -15,9 +15,33 @@ function preventChildImageContextMenu(e) {
   }
 }
 
+socket.on('block', (event) => {
+  addCountdown(event.lockedUntil, event.id, '#donate-btn-' + event.id);
+});
+
+socket.on('unblock', (event) => {
+  const button = $('#donate-btn-' + event.id);
+
+  clearInterval(x[event.id]);
+  x[event.id] = null;
+  button.text('Donate Gift');
+  button.prop('disabled', false);
+});
+
+socket.on('donated', (event) => {
+  const donateButton = $(document).find('#donate-btn-' + event.id);
+
+  clearInterval(x[event.id]);
+  x[event.id] = null;
+  donateButton.text('Donated!');
+  donateButton.prop('disabled', true);
+});
 // event listener that fires whenever a right click has occured
 window.addEventListener('contextmenu', preventChildImageContextMenu);
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
 
 function getReadMoreBtn(user, wishCardId) {
   return `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
