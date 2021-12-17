@@ -60,8 +60,8 @@
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0"
     nonce="XBZR4Yw2"></script>
-    <%- include('./templates/nav')-%>
-   <%- include('./templates/wishCardDonateModal')-%>
+  <%- include('./templates/nav')-%>
+  <%- include('./templates/wishCardDonateModal')-%>
   <!-- header section-->
 
   <div class="hero container-fluid d-flex justify-content-center align-items-center" id="home-bg">
@@ -87,26 +87,36 @@
     <div class="status-info row-auto">
       <div class="col-md">
         <div class="circle text-center">
-          <p id="status_christmas" class="status">
+          <p class="status">
+            <img class="wreath3" src="../public/img/wreath-3.svg" alt="illustration of wreath decoration"
+              loading="lazy">
+            <% if(undonatedCards === 1 || undonatedCards === 0) { %>
+            <span class="status-numbers"> <%= undonatedCards%> </span>
+            <span class="status-text">child
+              awaiting <br /> your donation</span>
+            <% } else { %>
+            <span class="status-numbers"> <%= undonatedCards%> </span>
+            <span class="status-text">children
+              awaiting <br /> your donation</span>
+            <% } %>
+          </p>
+          <!------------
+            below is only for christmas
+            ------------>
+          <!-- <p id="status_christmas" class="status">            
             <img class="wreath" src="../public/img/wreath-1.svg" alt="wreathpic" loading="lazy">
             <span id="tilChristmas" class="status-numbers"> <%= christmasData.days %> </span>
             <span class="status-text"><%= christmasData.text %></span>
-          </p>
+          </p> -->
         </div>
       </div>
       <div class="col-md">
         <div class="circle text-center">
           <p class="status">
             <img class="wreath2" src="../public/img/wreath-2.svg" alt="wreathpic" loading="lazy">
-            <% if(undonatedCards === 0) { %>
             <span class="status-numbers"> <%= donatedCards%> </span>
             <span class="status-text">children
               received <br /> their gifts!</span>
-            <% } else { %>
-            <span class="status-numbers"> <%= undonatedCards%> </span>
-            <span class="status-text">children
-              awaiting <br /> your donation</span>
-            <% } %>
           </p>
         </div>
       </div>
@@ -131,46 +141,48 @@
         <ul class="small-ul px-0" data-small3="">
           <li>
             <a href="https://centraltexastableofgrace.org/" target="_blank">
-              <img src="/public/img/central-texas-table-of-grace-logo.jpg" alt="Central Texas Table of Grace logo" loading="lazy"/>
+              <img src="/public/img/central-texas-table-of-grace-logo.jpg" alt="Central Texas Table of Grace logo"
+                loading="lazy" />
             </a>
           </li>
           <li>
             <a href="https://onehopeunited.org/" target="_blank">
-              <img src="/public/img/onehopeunited.png" alt="One Hope United logo" loading="lazy"/>
+              <img src="/public/img/onehopeunited.png" alt="One Hope United logo" loading="lazy" />
             </a>
           </li>
           <li>
             <a href="https://www.newalternativesnyc.org/" target="_blank">
-              <img src="/public/img/new-alternatives-logo.png" alt="New Alternatives logo" loading="lazy"/></a>
+              <img src="/public/img/new-alternatives-logo.png" alt="New Alternatives logo" loading="lazy" /></a>
           </li>
-          <li><img src="/public/img/childrens-aid-logo.svg" alt="Childrens Aid NYC Agency logo" loading="lazy"/></li>
+          <li><img src="/public/img/childrens-aid-logo.svg" alt="Childrens Aid NYC Agency logo" loading="lazy" /></li>
           <li>
             <a href="http://www.lacasanorte.org/" target="_blank">
-              <img src="/public/img/la-casa-norte-logo.png" alt="La casa norte logo" loading="lazy"/></a>
+              <img src="/public/img/la-casa-norte-logo.png" alt="La casa norte logo" loading="lazy" /></a>
           </li>
           <li>
             <a href="https://www.yos.org/" target="_blank">
-              <img src="/public/img/yos-logo-2.jpeg" alt="Youth Outreach Services logo" loading="lazy"/></a>
+              <img src="/public/img/yos-logo-2.jpeg" alt="Youth Outreach Services logo" loading="lazy" /></a>
           </li>
           <li>
-            <img src="/public/img/partner-coalition-nyc.jpg" alt="Partner Coalition of NewYork City logo" loading="lazy" />
+            <img src="/public/img/partner-coalition-nyc.jpg" alt="Partner Coalition of NewYork City logo"
+              loading="lazy" />
           </li>
           <li>
             <a href="https://www.fosteringhopefoundation.org" target="_blank">
-              <img src="/public/img/fostering-hope-logo.jpg" alt="Fostering Hope logo" loading="lazy"/></a>
+              <img src="/public/img/fostering-hope-logo.jpg" alt="Fostering Hope logo" loading="lazy" /></a>
           </li>
           <li>
-            <img src="/public/img/you-gotta-believe-logo.jpg" alt="You gotta believe logo" loading="lazy"/>
+            <img src="/public/img/you-gotta-believe-logo.jpg" alt="You gotta believe logo" loading="lazy" />
           </li>
-          <li><img src="/public/img/penny-lane-logo.png" alt="Penny Lane Agency logo" loading="lazy"/></li>
-          <li><img src="/public/img/epworth-tran-logo.png" alt="Epworth Village logo" loading="lazy"/></li>
+          <li><img src="/public/img/penny-lane-logo.png" alt="Penny Lane Agency logo" loading="lazy" /></li>
+          <li><img src="/public/img/epworth-tran-logo.png" alt="Epworth Village logo" loading="lazy" /></li>
           <li>
             <a href="https://www.echoesofhope.org/" target="_blank">
               <img src="/public/img/echoes-of-hope-logo.png" alt="Echoes of Hope logo" loading="lazy" /></a>
           </li>
           <li>
             <a href="https://www.blueskiesforchildren.org/" target="_blank">
-              <img src="/public/img/blue-sky-agency-logo.png" alt="Blue Skies for Children logo" loading="lazy"/></a>
+              <img src="/public/img/blue-sky-agency-logo.png" alt="Blue Skies for Children logo" loading="lazy" /></a>
           </li>
           <li>
             <a href="https://casala.org/" target="_blank">
@@ -182,7 +194,7 @@
           </li>
           <li>
             <a href="https://www.nyap.org/" target="_blank">
-              <img src="/public/img/nyap-logo.png" alt="National Youth Advocate Program logo" loading="lazy"/></a>
+              <img src="/public/img/nyap-logo.png" alt="National Youth Advocate Program logo" loading="lazy" /></a>
           </li>
         </ul>
         <span class="small-span"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
@@ -198,7 +210,8 @@
       <h1 class="mb-3">We Need Your Help</h1>
       <div class="row">
         <div class="col-md-6 order-1 p-5">
-          <img src="/public/img/kids-cover.jpg" alt="donation drop off near me" class="img-fluid grn-box" loading="lazy"/>
+          <img src="/public/img/kids-cover.jpg" alt="donation drop off near me" class="img-fluid grn-box"
+            loading="lazy" />
         </div>
         <div class="col-md-6 text-center py-5 px-3">
           <p class="text-left subtext quick-font">
