@@ -41,7 +41,7 @@ workflows:
               only:
                 - master
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}-dev"
+          tag: "latest,${CIRCLE_SHA1}-dev, dev"
           create-repo: true
       - aws-ecs/deploy-service-update:
           filters:
@@ -64,7 +64,7 @@ workflows:
               only:
                 - production
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}-live"
+          tag: "latest,${CIRCLE_SHA1}-live, live"
           create-repo: true
       - aws-ecs/deploy-service-update:
           filters:
