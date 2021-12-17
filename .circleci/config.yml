@@ -41,7 +41,7 @@ workflows:
               only:
                 - master
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}-dev"
+          tag: "latest,${CIRCLE_SHA1}-dev,dev"
           create-repo: true
       - aws-ecs/deploy-service-update:
           filters:
@@ -54,7 +54,7 @@ workflows:
           service-name: "donate-gifts-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
-
+          
   deploy-prod:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -63,7 +63,7 @@ workflows:
               only:
                 - production
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}-live"
+          tag: "latest,${CIRCLE_SHA1}-live,live"
           create-repo: true
       - aws-ecs/deploy-service-update:
           filters:
@@ -75,4 +75,5 @@ workflows:
           family: "${AWS_RESOURCE_NAME_PREFIX}-backend-LIVE"
           service-name: "donate-gifts-LIVE-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-LIVE-cluster"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-live"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-live,tag=${CIRCLE_SHA1}-live"
+
