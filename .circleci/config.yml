@@ -54,8 +54,7 @@ workflows:
           service-name: "donate-gifts-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
-
-
+          
   deploy-prod:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -77,3 +76,4 @@ workflows:
           service-name: "donate-gifts-LIVE-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-LIVE-cluster"
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-live,tag=${CIRCLE_SHA1}-live"
+
