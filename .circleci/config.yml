@@ -55,8 +55,7 @@ workflows:
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
           force-new-deployment: true
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
-
-
+          
   deploy-prod:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -79,3 +78,4 @@ workflows:
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-LIVE-cluster"
           force-new-deployment: true
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-live,tag=${CIRCLE_SHA1}-live"
+
