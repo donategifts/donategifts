@@ -25,17 +25,6 @@ jobs:
       - run:
           name: Check lint
           command: npm run lint
-
-  deploy-prod:
-    machine:
-      enabled: true
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - 'ab:ac:ca:64:39:93:c6:64:81:d8:50:cc:6b:a1:06:64'
-      - run:
-          name: deploying to prodserver
-          command: ssh -p 6617 -o StrictHostKeyChecking=no donategifts@donate-gifts.com "cd donategifts && rm -rf node-modules && rm -rf .adminbro && git fetch origin && git clean -qdf && git reset --hard origin/production &&  pwd &&  cd config &&  echo \"$MONGODBLIVE\" > config.env &&  echo NODE_ENV=production >> config.env &&  echo SESS_NAME=sid >> config.env &&  echo $SESS_SECRETLIVE >> config.env &&  echo SESS_LIFE=31556952000 >> config.env &&  echo $MAILGUN_APIKEYLIVE >> config.env &&  echo $MAILGUN_DOMAINLIVE >> config.env &&  echo USE_AWS=true >> config.env &&  echo $AWS_KEY >> config.env &&  echo $AWS_SECRET >> config.env &&  echo S3BUCKET=donategifts >> config.env &&  echo DEFAULT_EMAIL=no-reply@donate-gifts.com >> config.env &&  echo BASE_URL=https://donate-gifts.com >> config.env &&  echo $GOOGLE_CAPTCHALIVE >> config.env &&  echo LOCAL_DEVELOPMENT= >> config.env &&  echo SOCKET_URL=wss://donate-gifts.com >> config.env &&  echo $G_CLIENT_ID >> config.env &&  echo $FB_APP_ID >> config.env &&  echo $SLACK_INTEGRATION >> config.env &&  echo $SCRAPINGBEE_APIKEY >> config.env &&   echo $STRIPE_API >> config.env && echo $STRIPE_KEY >> config.env && echo $STRIPE_SECRET >> config.env && echo $SLACK_INTEGRATION_DONATION >> config.env && echo WISHCARD_LOCK_IN_MINUTES=10 >> config.env && echo $PAYPAL_CLIENT_ID >> config.env && echo $PAYPAL_SECRET >> config.env && echo $PAYPAL_WEBHOOK_ID >> config.env && echo $SLACK_INTEGRATION_AGENCY_VERIFICATION >> config.env && cd .. && NODE_ENV=production npm install --production && pm2 stop all || true && pm2 start server/app.js "
 workflows:
   test:
     jobs:
@@ -52,7 +41,7 @@ workflows:
               only:
                 - master
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}"
+          tag: "latest,${CIRCLE_SHA1}-dev"
           create-repo: true
       - aws-ecs/deploy-service-update:
           filters:
@@ -64,20 +53,27 @@ workflows:
           family: "${AWS_RESOURCE_NAME_PREFIX}-backend"
           service-name: "donate-gifts-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
 
 
   deploy-prod:
     jobs:
-      - test:
+      - aws-ecr/build-and-push-image:
           filters:
             branches:
               only:
                 - production
-      - deploy-prod:
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "latest,${CIRCLE_SHA1}-live"
+          create-repo: true
+      - aws-ecs/deploy-service-update:
+          filters:
+            branches:
+              only:
+                - production
           requires:
-            - test
-          filters:
-            branches:
-              only:
-                - production
+            - aws-ecr/build-and-push-image
+          family: "${AWS_RESOURCE_NAME_PREFIX}-backend-LIVE"
+          service-name: "donate-gifts-LIVE-service"
+          cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-LIVE-cluster"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-live"
