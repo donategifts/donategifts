@@ -26,10 +26,12 @@
               <form id="communityPost" action="">
                 <div class="row">
                   <div class="col-12 d-flex justify-content-start align-items-center">
-                    <img src="<%= agency.agencyProfileImage %>" alt="logo"
+                    <% if (agency && agency.agencyProfileImage) { %>
+                    <img src="<%= agency.agencyProfileImage %>" alt="your agency logo"
                       class="img-fluid rounded float-left agency-profile-logo d-inline mr-4">
+                      <% } %>
                     <textarea id="postText" name="post-text" placeholder="Write a thank you message here"
-                      class="form-control border border-white" rows="5"></textarea>
+                      class="form-control border border-white quick-font" rows="5"></textarea>
                   </div>
                 </div>
                 <div class="row mt-4">
@@ -37,13 +39,13 @@
                     <div id="imagePreview"></div>
                     <div class="row">
                       <div class="col-sm-6 text-center">
-                        <label for="postImage" class="wishcard__button--yellow mr-md-3 rounded-pill d-inline-block">
+                        <label for="postImage" class="wishcard__button--yellow mr-md-3 rounded-pill d-inline-block quick-font">
                           Upload Photo
                         </label>
                         <input id="postImage" type="file" hidden />
                       </div>
                       <div class="col-sm-6 text-center">
-                        <button type="submit" class="wishcard__button--blue rounded-pill d-inline-block">Create
+                        <button type="submit" class="createPost_button mr-md-3 rounded-pill d-inline-block quick-font">Submit
                           Post</button>
                       </div>
                     </div>
@@ -59,9 +61,10 @@
 
     <div class="container pb-5">
       <div class="card-columns">
-
-        <!-- Hardcoded YouTube Video -->        
-        <div class="card my-3 py-4 px-1 border-white card-border quick-font">
+        <!-------- 
+          Hardcoded YouTube Video - not used for now
+        ---------->        
+        <!-- <div class="card my-3 py-4 px-1 border-white card-border quick-font">
           <div class="row px-3">
             <div class="col-12">
               <img src="/public/img/fostering-hope-logo.jpg" alt="partner agency logo"
@@ -74,9 +77,11 @@
               <iframe width="560" height="315" src="https://www.youtube.com/embed/IUPDXnvnJCQ?autoplay=1" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <% if (posts) { %> <% for (let i = 0; i < posts.length; i++) { %>
+        <% if (posts) { %> 
+          <% posts = posts.reverse() %>
+          <% for (let i = 0; i < posts.length; i++) { %>
         <div class="card my-3 py-4 px-1 border-white card-border quick-font">
           <div class="row px-3">
             <div class="col-12">
@@ -86,9 +91,8 @@
               <h6 class="bold-text"><%= posts[i].belongsTo.agencyName %></h6>
             </div>
           </div>
-
           <div class="card-body">
-            <span class="text-muted post-date">Posted on <%= moment(posts[i].createdAt).format('MMM-DD-YYYY') %></span>
+            <span class="text-muted post-date">Posted on <%= moment(posts[i].createdAt).format('MMM DD, YYYY') %></span>
             <p class="mt-2"><%= posts[i].message %></p>
             <% if (posts[i].image) { %>
             <img src="<%= posts[i].image %>" alt="agency posted image proof of gift delivery"
@@ -96,7 +100,6 @@
             <% } %>
           </div>
         </div>
-
         <% } %> <% } %>
       </div>
     </div>
