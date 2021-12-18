@@ -49,7 +49,7 @@ async function updateDonationStatus(donationId, status) {
       .lean()
       .exec();
   } catch (error) {
-    throw new Error(`Failed to get Agency's Donations: ${error}`);
+    throw new Error(`Failed to update donation status: ${error}`);
   }
 }
 
