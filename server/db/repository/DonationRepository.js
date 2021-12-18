@@ -43,9 +43,20 @@ async function getDonationByWishCardId(wishCardId) {
   }
 }
 
+async function updateDonationStatus(donationId, status) {
+  try {
+    return Donation.findOneAndUpdate({ _id: donationId }, { $set: { status } }, { new: true })
+      .lean()
+      .exec();
+  } catch (error) {
+    throw new Error(`Failed to get Agency's Donations: ${error}`);
+  }
+}
+
 module.exports = {
   createNewDonation,
   getDonationsByUser,
   getDonationsByAgency,
   getDonationByWishCardId,
+  updateDonationStatus,
 };
