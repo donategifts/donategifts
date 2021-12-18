@@ -1,6 +1,5 @@
 const moment = require('moment');
 const nodemailer = require('nodemailer');
-const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
@@ -118,14 +117,14 @@ const getTransport = async () => {
 
     // LIVE data
   } else {
-    const auth = {
+    return nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
       auth: {
-        api_key: process.env.MAILGUN_API_KEY,
-        domain: process.env.MAILGUN_DOMAIN,
+        user: process.env.DEFAULT_EMAIL,
+        pass: process.env.DEFAULT_EMAIL_PASSWORD,
       },
-    };
-
-    return nodemailer.createTransport(mailGun(auth));
+    });
   }
 };
 

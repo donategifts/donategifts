@@ -38,7 +38,7 @@ const app = express();
 
 app.use(
   responseTime((req, res, time) => {
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
       if (
         (!req.originalUrl.includes('.png') &&
           !req.originalUrl.includes('.jpg') &&
