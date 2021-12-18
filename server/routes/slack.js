@@ -34,4 +34,9 @@ router.post('/verify-agency', async (req, res) => {
   }
 });
 
+// eslint-disable-next-line no-unused-vars
+router.post('/', (req, res) => {
+  log.info(req.body);
+});
+
 module.exports = router;
