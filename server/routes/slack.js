@@ -9,9 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post('/verify-agency', async (req, res) => {
-  const payload = JSON.parse(req.body.payload);
-
+async function verifyAgency(payload, res) {
   try {
     const agency = await AgencyRepository.verifyAgency(payload.actions[0].value);
 
@@ -31,6 +29,17 @@ router.post('/verify-agency', async (req, res) => {
       replace_original: false,
       text: "Sorry, that didn't work. Please try again.",
     });
+  }
+}
+
+// eslint-disable-next-line no-unused-vars
+router.post('/', async (req, res) => {
+  const payload = JSON.parse(req.body.payload);
+
+  if (payload && payload.callack_id) {
+    if (payload.callack_id === 'agency_verify') {
+      await verifyAgency(payload, res);
+    }
   }
 });
 
