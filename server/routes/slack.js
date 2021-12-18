@@ -36,8 +36,8 @@ async function verifyAgency(payload, res) {
 router.post('/', async (req, res) => {
   const payload = JSON.parse(req.body.payload);
 
-  if (payload && payload.callack_id) {
-    if (payload.callack_id === 'agency_verify') {
+  if (payload && payload.callback_id) {
+    if (payload.callback_id === 'agency_verify') {
       await verifyAgency(payload, res);
     }
   }
