@@ -262,15 +262,14 @@ const createEmailVerificationHash = () => {
   return result;
 };
 
-const sendAgencyVerifiedMail = async (to) => {
-  return sendMail(
+const sendAgencyVerifiedMail = async (to) =>
+  sendMail(
     process.env.DEFAULT_EMAIL,
     to,
     'Donate-gifts.com Agency Account Verified',
     agencyVerfiedTemplate,
     templateAttachments,
   );
-};
 
 async function sendSlackFeedbackMessage(name, email, subject, message) {
   const slackMessage = {

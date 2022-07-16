@@ -51,6 +51,7 @@ async function handleWishcardPublished() {
   // TODO
   return undefined;
 }
+
 wishCardChangeListener.on('change', async (change) => {
   if (wishcardIsOrdered(change)) {
     await handleDonationOrdered(change);

@@ -23,7 +23,7 @@ const requestIp = require('request-ip');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const ejs = require('ejs');
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -85,9 +85,11 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 // SESSION SET UP
 app.use(
   session({
-    store: new MongoStore({
-      url: process.env.MONGO_URI,
-      clear_interval: 3600000,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      autoRemove: 'interval',
+      // interval is now in minutes
+      autoRemoveInterval: 60,
     }),
     name: process.env.SESS_NAME,
     resave: false,

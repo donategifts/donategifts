@@ -6,16 +6,13 @@ orbs:
 jobs:
   test:
     docker:
-      - image: 'circleci/node:14'
+      - image: 'circleci/node:16'
       - image: 'mongo:latest'
     steps:
       - checkout
       - run:
           name: Copy default config
           command: cp config/example-config.env config/config.env
-      - run:
-          name: Install NPM 7
-          command: sudo npm install -g npm@7
       - run:
           name: Install packages
           command: npm install

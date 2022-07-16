@@ -17,9 +17,9 @@ async function getWishCardSearchResult(
   );
 
   // remove duplicates
-  const allWishCards = fuzzySearchResult.filter((elem, index, self) => {
-    return index === self.indexOf(elem);
-  });
+  const allWishCards = fuzzySearchResult.filter(
+    (elem, index, self) => index === self.indexOf(elem),
+  );
 
   for (let i = 0; i < allWishCards.length; i++) {
     let childBirthday;
