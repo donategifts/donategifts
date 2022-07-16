@@ -486,10 +486,10 @@ router.post('/search/:init?', async (req, res) => {
 
     const results = await WishCardController.getWishCardSearchResult(
       wishitem,
-      showDonated,
-      recentlyAdded,
       childAge,
       cardIds || [],
+      showDonated,
+      recentlyAdded,
     );
 
     res.send({

@@ -171,7 +171,7 @@ const sendDonationConfirmationMail = async ({
 }) => {
   const body = donationTemplate
     .replace('%firstName%', firstName)
-    .replace(RegExp('%childName%', 'g'), childName)
+    .replace(/%childName%/g, childName)
     .replace('%fullName%', `${firstName} ${lastName}`)
     .replace('%item%', item)
     .replace('%price%', price)
@@ -199,7 +199,7 @@ const sendDonationOrderedEmail = async ({
 }) => {
   const body = donationOrderedTemplate
     .replace('%agencyName%', agencyName)
-    .replace(RegExp('%childName%', 'g'), childName)
+    .replace(/%childName%/g, childName)
     .replace('%itemName%', itemName)
     .replace('%itemPrice%', itemPrice)
     .replace('%donationDate%', donationDate)

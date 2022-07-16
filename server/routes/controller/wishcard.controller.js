@@ -4,10 +4,10 @@ const UserRepository = require('../../db/repository/UserRepository');
 
 async function getWishCardSearchResult(
   itemName,
-  showDonated = false,
-  reverseSort = false,
   childAge,
   cardIds,
+  showDonated = false,
+  reverseSort = false,
 ) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     (itemName && itemName.trim()) || '',
