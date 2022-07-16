@@ -30,28 +30,29 @@ workflows:
             branches:
               ignore:
                 - master
-  deploy-dev:
-    jobs:
-      - aws-ecr/build-and-push-image:
-          filters:
-            branches:
-              only:
-                - master
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "latest,${CIRCLE_SHA1}-dev,dev"
-          create-repo: true
-      - aws-ecs/deploy-service-update:
-          filters:
-            branches:
-              only:
-                - master
-          requires:
-            - aws-ecr/build-and-push-image
-          family: "${AWS_RESOURCE_NAME_PREFIX}-backend"
-          service-name: "donate-gifts-service"
-          cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
-          force-new-deployment: true
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
+  # enable again when needed
+  # deploy-dev:
+  #   jobs:
+  #     - aws-ecr/build-and-push-image:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #         repo: "${AWS_RESOURCE_NAME_PREFIX}"
+  #         tag: "latest,${CIRCLE_SHA1}-dev,dev"
+  #         create-repo: true
+  #     - aws-ecs/deploy-service-update:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #         requires:
+  #           - aws-ecr/build-and-push-image
+  #         family: "${AWS_RESOURCE_NAME_PREFIX}-backend"
+  #         service-name: "donate-gifts-service"
+  #         cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+  #         force-new-deployment: true
+  #         container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-backend,tag=${CIRCLE_SHA1}-dev"
 
 
   deploy-prod:
