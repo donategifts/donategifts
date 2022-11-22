@@ -8,6 +8,7 @@ const {
   updateDonationStatus,
 } = require('../repository/DonationRepository');
 
+// @TODO: need to create a mongodb replica set in order to make this work again
 const wishCardChangeListener = WishCard.watch();
 
 function hasWishcardStatusChangedTo(change, status) {
