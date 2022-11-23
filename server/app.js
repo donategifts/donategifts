@@ -153,35 +153,39 @@ app.use(express.static('client'));
 
 // needs to be declared before routes otherwise sockets wont be available in routes
 // IMPORT ROUTE FILES
-const usersRoute = require('./routes/users');
-const wishCardsRoute = require('./routes/wishCards');
-const missionRoute = require('./routes/mission');
-const howtoRoute = require('./routes/howTo');
-const faqRoute = require('./routes/faq');
-const contactRoute = require('./routes/contact');
-const teamRoute = require('./routes/team');
-const stripeRoute = require('./routes/stripe');
-const communityRoute = require('./routes/community');
-const slackRoute = require('./routes/slack');
-const indexRoute = require('./routes/index');
+// const usersRoute = require('./routes/users');
+// const wishCardsRoute = require('./routes/wishCards');
+// const missionRoute = require('./routes/mission');
+// const howtoRoute = require('./routes/howTo');
+// const faqRoute = require('./routes/faq');
+// const contactRoute = require('./routes/contact');
+// const teamRoute = require('./routes/team');
+// const stripeRoute = require('./routes/stripe');
+// const communityRoute = require('./routes/community');
+// const slackRoute = require('./routes/slack');
+// const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
-app.use('/users', usersRoute);
-app.use('/wishcards', wishCardsRoute);
-app.use('/mission', missionRoute);
-app.use('/howto', howtoRoute);
-app.use('/contact', contactRoute);
-app.use('/faq', faqRoute);
-app.use('/stripe', stripeRoute);
-app.use('/community', communityRoute);
-app.use('/team', teamRoute);
-app.use('/slack', slackRoute);
-app.use('/', indexRoute);
+// app.use('/users', usersRoute);
+// app.use('/wishcards', wishCardsRoute);
+// app.use('/mission', missionRoute);
+// app.use('/howto', howtoRoute);
+// app.use('/contact', contactRoute);
+// app.use('/faq', faqRoute);
+// app.use('/stripe', stripeRoute);
+// app.use('/community', communityRoute);
+// app.use('/team', teamRoute);
+// app.use('/slack', slackRoute);
+// app.use('/', indexRoute);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
+});
 
 // ERROR PAGE
-app.get('*', (req, res) => {
-  res.status(404).render('404');
-});
+// app.get('*', (req, res) => {
+//   res.status(404).render('404');
+// });
 
 // error handler
 // eslint-disable-next-line no-unused-vars
