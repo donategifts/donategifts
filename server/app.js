@@ -17,8 +17,8 @@ dotenv.config({
 // EXPRESS SET UP
 const express = require('express');
 const bodyParser = require('body-parser');
-const responseTime = require('response-time');
-const requestIp = require('request-ip');
+// const responseTime = require('response-time');
+// const requestIp = require('request-ip');
 
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -28,45 +28,45 @@ const ejs = require('ejs');
 const mongoSanitize = require('express-mongo-sanitize');
 
 // custom db connection
-const MongooseConnection = require('./db/connection');
+// const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
-const log = require('./helper/logger');
+// const log = require('./helper/logger');
 
 const app = express();
 
-app.use(
-  responseTime((req, res, time) => {
-    if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
-      if (
-        (!req.originalUrl.includes('.png') &&
-          !req.originalUrl.includes('.jpg') &&
-          !req.originalUrl.includes('.js') &&
-          !req.originalUrl.includes('.svg') &&
-          !req.originalUrl.includes('.jpeg') &&
-          !req.originalUrl.includes('.woff') &&
-          !req.originalUrl.includes('.css') &&
-          !req.originalUrl.includes('.ico')) ||
-        res.statusCode > 304
-      ) {
-        const clientIp = requestIp.getClientIp(req);
+// app.use(
+//   responseTime((req, res, time) => {
+//     if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
+//       if (
+//         (!req.originalUrl.includes('.png') &&
+//           !req.originalUrl.includes('.jpg') &&
+//           !req.originalUrl.includes('.js') &&
+//           !req.originalUrl.includes('.svg') &&
+//           !req.originalUrl.includes('.jpeg') &&
+//           !req.originalUrl.includes('.woff') &&
+//           !req.originalUrl.includes('.css') &&
+//           !req.originalUrl.includes('.ico')) ||
+//         res.statusCode > 304
+//       ) {
+//         const clientIp = requestIp.getClientIp(req);
 
-        log.info('New request', {
-          type: 'request',
-          user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
-          method: req.method,
-          statusCode: res.statusCode,
-          route: req.originalUrl,
-          responseTime: Math.ceil(time),
-          ip: clientIp,
-        });
-      }
-    }
-  }),
-);
+//         log.info('New request', {
+//           type: 'request',
+//           user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
+//           method: req.method,
+//           statusCode: res.statusCode,
+//           route: req.originalUrl,
+//           responseTime: Math.ceil(time),
+//           ip: clientIp,
+//         });
+//       }
+//     }
+//   }),
+// );
 // mongo connection needs to be established before admin-bro setup
-MongooseConnection.connect();
+// MongooseConnection.connect();
 
 // middleware need to be setup after admin-bro setup
 app.use(cors());
@@ -196,7 +196,7 @@ app.use((err, req, res, _next) => {
 
   // TODO: send error message to slack/sentry?
 
-  log.error(err);
+  // log.error(err);
 
   // render the error page
   res.status(500);
@@ -204,11 +204,11 @@ app.use((err, req, res, _next) => {
 });
 
 app.listen(process.env.PORT, () => {
-  log.info(`App listening on port ${process.env.PORT}`);
+  console.info(`App listening on port ${process.env.PORT}`);
 });
 
 process.on('uncaughtException', (err) => {
-  log.error(err);
+  console.error(err);
 });
 
 module.exports = app;
