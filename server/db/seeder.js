@@ -10,47 +10,47 @@ const Donation = require('./models/Donation');
 const { getMessageChoices } = require('../utils/defaultMessages');
 const logger = require('../helper/logger');
 
-try {
-  if (process.env.NODE_ENV === 'development') {
-    MongooseConnection.connect();
+(async () => {
+  try {
+    if (process.env.NODE_ENV === 'development') {
+      MongooseConnection.connect();
 
-    const createWishCard = async (partnerId, createdAgency, card) => {
-      await WishCard.create({
-        ...card,
-        childFirstName: `${card.childFirstName}-${card.status}-${card.createdAt.toDateString()}`,
-        createdBy: partnerId,
-        belongsTo: createdAgency._id,
-      });
-    };
+      const createWishCard = async (partnerId, createdAgency, card) => {
+        await WishCard.create({
+          ...card,
+          childFirstName: `${card.childFirstName}-${card.status}-${card.createdAt.toDateString()}`,
+          createdBy: partnerId,
+          belongsTo: createdAgency._id,
+        });
+      };
 
-    const createDonation = async (donorId, agencyId, card) => {
-      const statusChoices = ['confirmed', 'ordered', 'delivered'];
-      // eslint-disable-next-line no-bitwise
-      const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
-      await Donation.create({
-        donationFrom: donorId,
-        donationTo: agencyId,
-        donationCard: card._id,
-        donationPrice: card.wishItemPrice,
+      const createDonation = async (donorId, agencyId, card) => {
+        const statusChoices = ['confirmed', 'ordered', 'delivered'];
+        // eslint-disable-next-line no-bitwise
+        const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
+        await Donation.create({
+          donationFrom: donorId,
+          donationTo: agencyId,
+          donationCard: card._id,
+          donationPrice: card.wishItemPrice,
 
-        status: newStatus,
-      });
-    };
+          status: newStatus,
+        });
+      };
 
-    const createMessage = async (donor, card) => {
-      const allMessages = getMessageChoices(donor.fName, card.childFirstName);
-      // eslint-disable-next-line no-bitwise
-      const message = allMessages[(allMessages.length * Math.random()) | 0];
-      await Message.create({
-        messageFrom: donor._id,
-        messageTo: card._id,
-        // eslint-disable-next-line no-undef
-        message,
-      });
-    };
+      const createMessage = async (donor, card) => {
+        const allMessages = getMessageChoices(donor.fName, card.childFirstName);
+        // eslint-disable-next-line no-bitwise
+        const message = allMessages[(allMessages.length * Math.random()) | 0];
+        await Message.create({
+          messageFrom: donor._id,
+          messageTo: card._id,
+          // eslint-disable-next-line no-undef
+          message,
+        });
+      };
 
-    const createRecords = async () => {
-      try {
+      const createRecords = async () => {
         const { donorUser, partnerUser, adminUser } = allUsers;
         await User.insertMany([adminUser, partnerUser]);
         const donor = await User.create(donorUser);
@@ -80,22 +80,13 @@ try {
             await createMessage(donor, card);
           }),
         );
-      } catch (error) {
-        process.exit(1);
-      }
-    };
+      };
 
-    const insertData = async () => {
-      try {
+      const insertData = async () => {
         await createRecords();
-        process.exit();
-      } catch (error) {
-        process.exit(1);
-      }
-    };
+      };
 
-    const deleteDataAndImport = async () => {
-      try {
+      const deleteDataAndImport = async () => {
         await Agency.deleteMany();
         await User.deleteMany();
         await WishCard.deleteMany();
@@ -103,37 +94,31 @@ try {
         await Donation.deleteMany();
 
         await createRecords();
-        process.exit();
-      } catch (error) {
-        process.exit(1);
-      }
-    };
+      };
 
-    const destroyData = async () => {
-      try {
+      const destroyData = async () => {
         await Agency.deleteMany();
         await User.deleteMany();
         await WishCard.deleteMany();
         await Message.deleteMany();
         await Donation.deleteMany();
+      };
 
-        process.exit();
-      } catch (error) {
-        process.exit(1);
+      if (process.argv[2] === '-d') {
+        logger.info('calling destroyData, purging db');
+        await destroyData();
+      } else if (process.argv[2] === '-i') {
+        logger.info('calling insertData, inserting new entries');
+        await insertData();
+      } else {
+        logger.info('calling deleteDataAndImport, purging db and inserting new entries');
+        await deleteDataAndImport();
       }
-    };
-    if (process.argv[2] === '-d') {
-      destroyData();
-    } else if (process.argv[2] === '-i') {
-      insertData();
-    } else {
-      deleteDataAndImport();
     }
-  } else {
-    process.exit(1);
+  } catch (error) {
+    logger.error(error);
+    MongooseConnection.disconnect();
+  } finally {
+    MongooseConnection.disconnect();
   }
-} catch (error) {
-  logger.error(error);
-} finally {
-  MongooseConnection.disconnect();
-}
+})();
