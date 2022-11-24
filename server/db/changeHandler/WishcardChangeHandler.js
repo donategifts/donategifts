@@ -8,9 +8,6 @@ const {
   updateDonationStatus,
 } = require('../repository/DonationRepository');
 
-// @TODO: need to create a mongodb replica set in order to make this work again
-const wishCardChangeListener = WishCard.watch();
-
 function hasWishcardStatusChangedTo(change, status) {
   return (
     change &&
@@ -53,10 +50,14 @@ async function handleWishcardPublished() {
   return undefined;
 }
 
-wishCardChangeListener.on('change', async (change) => {
-  if (wishcardIsOrdered(change)) {
-    await handleDonationOrdered(change);
-  } else if (wishcardIsPublished(change)) {
-    await handleWishcardPublished();
-  }
-});
+if (process.env.NODE_ENV === 'production') {
+  const wishCardChangeListener = WishCard.watch();
+
+  wishCardChangeListener.on('change', async (change) => {
+    if (wishcardIsOrdered(change)) {
+      await handleDonationOrdered(change);
+    } else if (wishcardIsPublished(change)) {
+      await handleWishcardPublished();
+    }
+  });
+}

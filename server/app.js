@@ -177,20 +177,23 @@ app.use('/team', teamRoute);
 app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
+// static maintenance page
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
+// });
+
 // ERROR PAGE
 app.get('*', (req, res) => {
   res.status(404).render('404');
 });
 
 // error handler
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // TODO: send error message to slack/sentry?
-
   log.error(err);
 
   // render the error page
