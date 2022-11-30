@@ -4,10 +4,10 @@ const UserRepository = require('../../db/repository/UserRepository');
 
 async function getWishCardSearchResult(
   itemName,
-  showDonated = false,
-  reverseSort = false,
   childAge,
   cardIds,
+  showDonated = false,
+  reverseSort = false,
 ) {
   const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
     (itemName && itemName.trim()) || '',
@@ -17,9 +17,9 @@ async function getWishCardSearchResult(
   );
 
   // remove duplicates
-  const allWishCards = fuzzySearchResult.filter((elem, index, self) => {
-    return index === self.indexOf(elem);
-  });
+  const allWishCards = fuzzySearchResult.filter(
+    (elem, index, self) => index === self.indexOf(elem),
+  );
 
   for (let i = 0; i < allWishCards.length; i++) {
     let childBirthday;

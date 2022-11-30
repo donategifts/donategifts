@@ -5,11 +5,9 @@ function connect() {
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
   };
 
   mongoose.Promise = Promise;
-  mongoose.set('useCreateIndex', true);
   mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
     if (err) {
       log.error('Unable to connect to DB. Error:', err);
@@ -27,4 +25,14 @@ function connect() {
   });
 }
 
-module.exports = { connect };
+async function disconnect() {
+  try {
+    await mongoose.disconnect();
+  } catch (error) {
+    log.error('failed to disconnect mongoose: ', error);
+  } finally {
+    process.exit(1);
+  }
+}
+
+module.exports = { connect, disconnect };

@@ -1,6 +1,5 @@
 const moment = require('moment');
 const nodemailer = require('nodemailer');
-const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
@@ -118,14 +117,14 @@ const getTransport = async () => {
 
     // LIVE data
   } else {
-    const auth = {
+    return nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
       auth: {
-        api_key: process.env.MAILGUN_API_KEY,
-        domain: process.env.MAILGUN_DOMAIN,
+        user: process.env.DEFAULT_EMAIL,
+        pass: process.env.DEFAULT_EMAIL_PASSWORD,
       },
-    };
-
-    return nodemailer.createTransport(mailGun(auth));
+    });
   }
 };
 
@@ -172,7 +171,7 @@ const sendDonationConfirmationMail = async ({
 }) => {
   const body = donationTemplate
     .replace('%firstName%', firstName)
-    .replace(RegExp('%childName%', 'g'), childName)
+    .replace(/%childName%/g, childName)
     .replace('%fullName%', `${firstName} ${lastName}`)
     .replace('%item%', item)
     .replace('%price%', price)
@@ -200,7 +199,7 @@ const sendDonationOrderedEmail = async ({
 }) => {
   const body = donationOrderedTemplate
     .replace('%agencyName%', agencyName)
-    .replace(RegExp('%childName%', 'g'), childName)
+    .replace(/%childName%/g, childName)
     .replace('%itemName%', itemName)
     .replace('%itemPrice%', itemPrice)
     .replace('%donationDate%', donationDate)
@@ -263,15 +262,14 @@ const createEmailVerificationHash = () => {
   return result;
 };
 
-const sendAgencyVerifiedMail = async (to) => {
-  return sendMail(
+const sendAgencyVerifiedMail = async (to) =>
+  sendMail(
     process.env.DEFAULT_EMAIL,
     to,
     'Donate-gifts.com Agency Account Verified',
     agencyVerfiedTemplate,
     templateAttachments,
   );
-};
 
 async function sendSlackFeedbackMessage(name, email, subject, message) {
   const slackMessage = {

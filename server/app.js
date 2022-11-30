@@ -23,7 +23,7 @@ const requestIp = require('request-ip');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const ejs = require('ejs');
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -38,7 +38,7 @@ const app = express();
 
 app.use(
   responseTime((req, res, time) => {
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
       if (
         (!req.originalUrl.includes('.png') &&
           !req.originalUrl.includes('.jpg') &&
@@ -85,9 +85,11 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 // SESSION SET UP
 app.use(
   session({
-    store: new MongoStore({
-      url: process.env.MONGO_URI,
-      clear_interval: 3600000,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      autoRemove: 'interval',
+      // interval is now in minutes
+      autoRemoveInterval: 60,
     }),
     name: process.env.SESS_NAME,
     resave: false,
@@ -176,20 +178,23 @@ app.use('/team', teamRoute);
 app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
+// static maintenance page
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
+// });
+
 // ERROR PAGE
 app.get('*', (req, res) => {
   res.status(404).render('404');
 });
 
 // error handler
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // TODO: send error message to slack/sentry?
-
   log.error(err);
 
   // render the error page

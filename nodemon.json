@@ -4,5 +4,5 @@
     "client"
   ],
   "ext": "js,ejs",
-  "exec": "node --inspect=0.0.0.0:9229 server/app.js"
+  "exec": "node --trace-warnings --inspect=0.0.0.0:9229 server/app.js"
 }

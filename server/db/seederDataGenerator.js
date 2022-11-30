@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 
 const User = require('./models/User');
-require('./connection');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
@@ -88,7 +87,7 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
     `${__dirname}/seederCredentials.json`,
     JSON.stringify(userCredentials, null, 4),
     'utf8',
-    function (err) {
+    (err) => {
       if (err) {
         return log.error(err);
       }

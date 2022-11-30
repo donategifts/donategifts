@@ -2,3 +2,4 @@ node_modules
 .eslintcache
 public
 **/*.ejs
+mongo-setup
