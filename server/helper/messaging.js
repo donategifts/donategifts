@@ -97,17 +97,13 @@ const templateAttachments = [
 ];
 
 const getTransport = async () => {
-  if (
-    (process.env.NODE_ENV === 'development' && process.env.LOCAL_DEVELOPMENT === 'TRUE') ||
-    process.env.NODE_ENV === 'test'
-  ) {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const account = await nodemailer.createTestAccount();
 
     if (account) {
       return nodemailer.createTransport({
         host: account.smtp.host,
         port: account.smtp.port,
-        secure: account.smtp.secure,
         auth: {
           user: account.user,
           pass: account.pass,
@@ -127,7 +123,6 @@ const getTransport = async () => {
     });
   }
 };
-
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject, message, attachments = undefined) => {
@@ -148,10 +143,12 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
       if (!data) {
         return { success: false };
       }
-      if (process.env.NODE_ENV === 'development' && process.env.LOCAL_DEVELOPMENT === 'TRUE') {
+
+      if (process.env.NODE_ENV === 'development') {
         log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
+
       return { success: true, data: '' };
     }
     return { success: false };
