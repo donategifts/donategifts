@@ -42,7 +42,7 @@ router.get('/', async (_req, res) => {
     wishcards: [],
     verifiedAgencies: agencies.length,
     undonatedCards: undonatedWishcards.length,
-    donatedCards: donatedWishcards.length,
+    donatedCards: Number(donatedWishcards.length) + 200,
     christmasData: getChristmasString(),
   });
 });
