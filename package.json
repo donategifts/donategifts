@@ -10,7 +10,7 @@
     "test": "NODE_ENV=test mocha --timeout 10000 --exit",
     "start": "node server/app.js",
     "dev": "nodemon",
-    "lint": "eslint --fix --ext .js --ignore-path .eslintignore server/",
+    "lint": "eslint --ext .js --ignore-path .eslintignore server/",
     "upgradePackages": "ncu -u",
     "autoprefix": "npx postcss *.css --use autoprefixer -d .",
     "prepare": "husky install"
