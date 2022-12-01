@@ -109,7 +109,7 @@ describe('Users', () => {
 
             agent.get(`/users/verify/${user.verificationHash}`).end((_, verifyRes) => {
               verifyRes.should.have.status(200);
-              verifyRes.text.should.contain('Verification successful');
+              verifyRes.text.should.contain('Profile Page | Donate Gifts');
 
               User.findOne({ email: signupRequest.email }).then((userResult) => {
                 userResult.emailVerified.should.equal(true);
@@ -182,7 +182,7 @@ describe('Users', () => {
             user.emailVerified.should.equal(false);
             agent.get(`/users/verify/${user.verificationHash}`).end((_err, verifyRes) => {
               verifyRes.should.have.status(200);
-              verifyRes.text.should.contain('Verification successful');
+              verifyRes.text.should.contain('Profile Page | Donate Gifts');
 
               User.findOne({ email: signupRequest.email }).then((userResult) => {
                 userResult.emailVerified.should.equal(true);
