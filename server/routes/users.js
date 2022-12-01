@@ -489,6 +489,7 @@ router.get('/terms', async (req, res) => {
 router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, res) => {
   try {
     const user = await UserRepository.getUserByVerificationHash(req.params.hash);
+
     if (user) {
       if (user.emailVerified) {
         if (req.session.user) {
@@ -507,7 +508,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 
       await UserRepository.setUserEmailVerification(user._id, true);
 
-      return res.status(200).render('login', {
+      return res.status(200).render('profile', {
         user: res.locals.user,
         successNotification: {
           msg: 'Email Verification successful',
@@ -515,8 +516,10 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
         errorNotification: null,
       });
     }
+
     return handleError(res, 400, 'Email Verification failed!');
   } catch (error) {
+    log.error(error);
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,

@@ -65,10 +65,9 @@ app.use(
     }
   }),
 );
-// mongo connection needs to be established before admin-bro setup
+
 MongooseConnection.connect();
 
-// middleware need to be setup after admin-bro setup
 app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
