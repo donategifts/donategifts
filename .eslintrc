@@ -26,6 +26,7 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
+    "no-restricted-syntax": "off",
     "camelcase": "off",
     "no-plusplus": "off",
     "consistent-return": "off",
@@ -37,7 +38,8 @@
         "SwitchCase": 1
       }
     ],
-    "global-require": "off"
+    "global-require": "off",
+    "import/no-dynamic-require": "off"
   },
   "globals": {
     "io": true

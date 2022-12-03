@@ -36,9 +36,14 @@ async function getVerifiedAgencies() {
   return Agency.find({ isVerified: true }).exec();
 }
 
+async function getUnverifiedAgencies() {
+  return Agency.find({ isVerified: false }).exec();
+}
+
 module.exports = {
   getAgencyByUserId,
   createNewAgency,
   getVerifiedAgencies,
   verifyAgency,
+  getUnverifiedAgencies,
 };

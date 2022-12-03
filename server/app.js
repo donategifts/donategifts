@@ -3,16 +3,11 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  */
 
-const dotenv = require('dotenv');
-const cors = require('cors');
-
-let configPath = './config/config.env';
-if (process.env.NODE_ENV === 'test') {
-  configPath = './config/test.config.env';
-}
-dotenv.config({
-  path: configPath,
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? './config/test.config.env' : './config/config.env',
 });
+
+const cors = require('cors');
 
 // EXPRESS SET UP
 const express = require('express');
@@ -33,6 +28,8 @@ const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
 const log = require('./helper/logger');
+
+const Discord = require('./discord/bot');
 
 const app = express();
 
@@ -67,6 +64,9 @@ app.use(
 );
 
 MongooseConnection.connect();
+
+Discord.Bot.refreshCommands();
+Discord.Bot.initClient();
 
 app.use(cors());
 
