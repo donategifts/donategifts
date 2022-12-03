@@ -29,7 +29,7 @@ const AgencyRepository = require('./db/repository/AgencyRepository');
 
 const log = require('./helper/logger');
 
-const Discord = require('./discord/bot');
+const DGBot = require('./discord/bot');
 
 const app = express();
 
@@ -65,8 +65,10 @@ app.use(
 
 MongooseConnection.connect();
 
-Discord.Bot.refreshCommands();
-Discord.Bot.initClient();
+const bot = new DGBot();
+
+bot.refreshCommands();
+bot.initClient();
 
 app.use(cors());
 
