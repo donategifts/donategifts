@@ -13,6 +13,10 @@ module.exports = class DGBot {
     this.commandFiles = fs.readdirSync(this.commandsPath).filter((file) => file.endsWith('.js'));
   }
 
+  isValidInteractionRequest(interaction) {
+    return interaction.isChatInputCommand(); // || interaction.isButton();
+  }
+
   async initClient() {
     const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -33,7 +37,9 @@ module.exports = class DGBot {
     });
 
     client.on(Events.InteractionCreate, async (interaction) => {
-      if (!interaction.isChatInputCommand()) return;
+      if (!this.isValidInteractionRequest(interaction)) {
+        return;
+      }
 
       const command = interaction.client.commands.get(interaction.commandName);
 

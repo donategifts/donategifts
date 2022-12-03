@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const { Colors } = require('discord.js');
 const log = require('./logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
@@ -268,10 +269,10 @@ const sendAgencyVerifiedMail = async (to) =>
     templateAttachments,
   );
 
-async function sendAgencyVerificationNotification({ name, website }) {
+async function sendAgencyVerificationNotification({ id, name, website, bio }) {
   try {
     let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
-    content += 'A new agency has registered!';
+    content += 'A new agency has registered! <@766721399497687042>';
 
     await axios({
       method: 'POST',
@@ -280,26 +281,58 @@ async function sendAgencyVerificationNotification({ name, website }) {
         'Content-Type': 'application/json',
       },
       data: {
-        username: 'DG-Webhook',
-        avatar_url: 'https://pbs.twimg.com/media/DQP0_O4VwAAutk0.jpg',
         content,
         embeds: [
           {
             author: {
               name,
               url: website,
-              // icon_url: agency.agencyProfileImage,
             },
             description: `
-              Please check their website before verifying it!
+              ${bio}
 
               [${website}](${website})
+            
+              Please check their website before verifying it!
             `,
-            color: 15258703,
+            color: Colors.Yellow,
             footer: {
-              text: 'Want to verify it? /agenciestoverify',
-              icon_url: 'https://i.imgur.com/fKL31aD.jpg',
+              text: `Want to verify it? /verifyagency ${id}`,
             },
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    log.error(error);
+  }
+}
+
+async function sendFeedbackMessage({ name, email, subject, message }) {
+  try {
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new message from our contact form! <@766721399497687042>';
+
+    return await axios({
+      method: 'POST',
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        content,
+        embeds: [
+          {
+            author: {
+              name,
+            },
+            description: `
+              ${email}
+              ${subject}
+
+              ${message}
+            `,
+            color: Colors.Aqua,
           },
         ],
       },
@@ -318,4 +351,5 @@ module.exports = {
   sendPasswordResetMail,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
+  sendFeedbackMessage,
 };

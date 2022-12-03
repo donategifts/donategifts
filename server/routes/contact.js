@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const log = require('../helper/logger');
 const ContactRepository = require('../db/repository/ContactRepository');
-const { sendMail } = require('../helper/messaging');
+const { sendMail, sendFeedbackMessage } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 
 router.get('/', (req, res) => {
@@ -42,18 +42,17 @@ router.post('/email', async (req, res) => {
   }
 });
 
-// @TODO: replace with discord
-// router.post('/customer-service', async (req, res) => {
-//   const { name, email, subject, message } = req.body;
-//   const done = await sendSlackFeedbackMessage(name, email, subject, message);
+router.post('/customer-service', async (req, res) => {
+  const { name, email, subject, message } = req.body;
+  const done = await sendFeedbackMessage({ name, email, subject, message });
 
-//   if (done) {
-//     return res.status(200).send({
-//       success: true,
-//     });
-//   }
+  if (done) {
+    return res.status(200).send({
+      success: true,
+    });
+  }
 
-//   return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
-// });
+  return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
+});
 
 module.exports = router;
