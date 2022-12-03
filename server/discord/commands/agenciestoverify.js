@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const AgencyRepository = require('../../db/repository/AgencyRepository');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -6,6 +7,10 @@ module.exports = {
     .setDescription('Replies with all unverified agencies!'),
 
   async execute(interaction) {
-    await interaction.reply('this should be the result');
+    await interaction.deferReply();
+
+    const result = await AgencyRepository.getUnverifiedAgencies();
+
+    await interaction.editReply(result.toString());
   },
 };
