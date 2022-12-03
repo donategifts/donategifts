@@ -268,107 +268,6 @@ const sendAgencyVerifiedMail = async (to) =>
     templateAttachments,
   );
 
-async function sendSlackFeedbackMessage(name, email, subject, message) {
-  const slackMessage = {
-    blocks: [],
-  };
-
-  if (process.env.NODE_ENV !== 'production') {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '------------- Message from testing / local environment -------------',
-      },
-    });
-  }
-
-  if (name) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `User: ${name}`,
-      },
-    });
-  }
-
-  if (email) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Email: ${email}`,
-      },
-    });
-  }
-
-  if (subject) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Subject: ${subject}`,
-      },
-    });
-  }
-
-  if (message) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: message,
-      },
-    });
-  }
-
-  if (slackMessage.blocks.length > 0) {
-    try {
-      await axios({
-        method: 'POST',
-        url: `${process.env.SLACK_INTEGRATION}`,
-        header: {
-          'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(slackMessage),
-      });
-
-      return true;
-    } catch (error) {
-      log.error(error);
-      return false;
-    }
-  }
-}
-
-async function sendDonationNotificationToSlack(service, userDonation, donor, wishCard, amount) {
-  try {
-    await axios({
-      method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_DONATION}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-
-      data: JSON.stringify({
-        text: `${process.env.NODE_ENV} New ${service} Donation by ${
-          donor.fName
-        } ${donor.lName.substring(0, 1)} for ${
-          wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} details: ${
-          process.env.BASE_URL
-        }/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
-      }),
-    });
-
-    return true;
-  } catch (error) {
-    log.error(error);
-    return false;
-  }
-}
-
 async function sendAgencyVerificationNotification({ name, website }) {
   try {
     let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
@@ -410,44 +309,13 @@ async function sendAgencyVerificationNotification({ name, website }) {
   }
 }
 
-async function sendAgencyVerificationNotificationSuccess({ agency, user, responseUrl }) {
-  try {
-    await axios({
-      method: 'POST',
-      url: responseUrl,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        response_type: 'ephemeral',
-        replace_original: true,
-        text: `New Agency ${agency.agencyName} is verified!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
-          {
-            text: `@${user} has verified it!`,
-            color: '#3AA3E3',
-            attachment_type: 'default',
-          },
-        ],
-      }),
-    });
-  } catch (error) {
-    log.error(error);
-  }
-}
-
 module.exports = {
   sendMail,
-  sendSlackFeedbackMessage,
   sendAgencyVerifiedMail,
   sendDonationOrderedEmail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-  sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
-  sendAgencyVerificationNotificationSuccess,
 };

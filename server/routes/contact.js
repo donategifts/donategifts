@@ -2,10 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const log = require('../helper/logger');
-// IMPORT WISHCARD MODEL
 const ContactRepository = require('../db/repository/ContactRepository');
-// LOAD EMAIL SENDING FUNCTION
-const { sendMail, sendSlackFeedbackMessage } = require('../helper/messaging');
+const { sendMail } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 
 router.get('/', (req, res) => {
@@ -16,10 +14,6 @@ router.get('/', (req, res) => {
   }
 });
 
-// @desc    saves user data and sends an email to us
-// @route   POST '/contact/email'
-// @access  Public
-// @tested 	Not yet
 router.post('/email', async (req, res) => {
   try {
     const contact = await ContactRepository.createNewContact({
@@ -48,17 +42,18 @@ router.post('/email', async (req, res) => {
   }
 });
 
-router.post('/customer-service', async (req, res) => {
-  const { name, email, subject, message } = req.body;
-  const done = await sendSlackFeedbackMessage(name, email, subject, message);
+// @TODO: replace with discord
+// router.post('/customer-service', async (req, res) => {
+//   const { name, email, subject, message } = req.body;
+//   const done = await sendSlackFeedbackMessage(name, email, subject, message);
 
-  if (done) {
-    return res.status(200).send({
-      success: true,
-    });
-  }
+//   if (done) {
+//     return res.status(200).send({
+//       success: true,
+//     });
+//   }
 
-  return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
-});
+//   return handleError(res, 400, 'Failed to send feedback! Please try again in a few minutes!');
+// });
 
 module.exports = router;
