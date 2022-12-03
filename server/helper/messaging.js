@@ -369,36 +369,41 @@ async function sendDonationNotificationToSlack(service, userDonation, donor, wis
   }
 }
 
-async function sendAgencyVerificationNotification(agency) {
+async function sendAgencyVerificationNotification({ name, website }) {
   try {
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new agency has registered!';
+
     await axios({
       method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_AGENCY_VERIFICATION}`,
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
       header: {
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify({
-        text: `${agency.user.email} has registered ${agency.agency.agencyName}!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
+      data: {
+        username: 'DG-Webhook',
+        avatar_url: 'https://pbs.twimg.com/media/DQP0_O4VwAAutk0.jpg',
+        content,
+        embeds: [
           {
-            text: `Please check ${agency.agency.agencyWebsite} before you verify it :)`,
-            callback_id: 'agency_verify',
-            color: '#3AA3E3',
-            attachment_type: 'default',
-            actions: [
-              {
-                name: 'verify',
-                text: 'Verify',
-                style: 'success',
-                type: 'button',
-                value: `${agency.agency._id}`,
-              },
-            ],
+            author: {
+              name,
+              url: website,
+              // icon_url: agency.agencyProfileImage,
+            },
+            description: `
+              Please check their website before verifying it!
+
+              [${website}](${website})
+            `,
+            color: 15258703,
+            footer: {
+              text: 'Want to verify it? /agenciestoverify',
+              icon_url: 'https://i.imgur.com/fKL31aD.jpg',
+            },
           },
         ],
-      }),
+      },
     });
   } catch (error) {
     log.error(error);
