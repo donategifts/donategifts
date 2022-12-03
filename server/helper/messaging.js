@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const { Colors } = require('discord.js');
 const log = require('./logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
@@ -268,165 +269,73 @@ const sendAgencyVerifiedMail = async (to) =>
     templateAttachments,
   );
 
-async function sendSlackFeedbackMessage(name, email, subject, message) {
-  const slackMessage = {
-    blocks: [],
-  };
-
-  if (process.env.NODE_ENV !== 'production') {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '------------- Message from testing / local environment -------------',
-      },
-    });
-  }
-
-  if (name) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `User: ${name}`,
-      },
-    });
-  }
-
-  if (email) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Email: ${email}`,
-      },
-    });
-  }
-
-  if (subject) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Subject: ${subject}`,
-      },
-    });
-  }
-
-  if (message) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: message,
-      },
-    });
-  }
-
-  if (slackMessage.blocks.length > 0) {
-    try {
-      await axios({
-        method: 'POST',
-        url: `${process.env.SLACK_INTEGRATION}`,
-        header: {
-          'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(slackMessage),
-      });
-
-      return true;
-    } catch (error) {
-      log.error(error);
-      return false;
-    }
-  }
-}
-
-async function sendDonationNotificationToSlack(service, userDonation, donor, wishCard, amount) {
+async function sendAgencyVerificationNotification({ id, name, website, bio }) {
   try {
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new agency has registered! <@766721399497687042>';
+
     await axios({
       method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_DONATION}`,
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
       header: {
         'Content-Type': 'application/json',
       },
-
-      data: JSON.stringify({
-        text: `${process.env.NODE_ENV} New ${service} Donation by ${
-          donor.fName
-        } ${donor.lName.substring(0, 1)} for ${
-          wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} details: ${
-          process.env.BASE_URL
-        }/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
-      }),
-    });
-
-    return true;
-  } catch (error) {
-    log.error(error);
-    return false;
-  }
-}
-
-async function sendAgencyVerificationNotification(agency) {
-  try {
-    await axios({
-      method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_AGENCY_VERIFICATION}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        text: `${agency.user.email} has registered ${agency.agency.agencyName}!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
+      data: {
+        content,
+        embeds: [
           {
-            text: `Please check ${agency.agency.agencyWebsite} before you verify it :)`,
-            callback_id: 'agency_verify',
-            color: '#3AA3E3',
-            attachment_type: 'default',
-            actions: [
-              {
-                name: 'verify',
-                text: 'Verify',
-                style: 'success',
-                type: 'button',
-                value: `${agency.agency._id}`,
-              },
-            ],
+            author: {
+              name,
+              url: website,
+            },
+            description: `
+              ${bio}
+
+              [${website}](${website})
+            
+              Please check their website before verifying it!
+            `,
+            color: Colors.Yellow,
+            footer: {
+              text: `Want to verify it? /verifyagency ${id}`,
+            },
           },
         ],
-      }),
+      },
     });
   } catch (error) {
     log.error(error);
   }
 }
 
-async function sendAgencyVerificationNotificationSuccess({ agency, user, responseUrl }) {
+async function sendFeedbackMessage({ name, email, subject, message }) {
   try {
-    await axios({
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new message from our contact form! <@766721399497687042>';
+
+    return await axios({
       method: 'POST',
-      url: responseUrl,
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
       header: {
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify({
-        response_type: 'ephemeral',
-        replace_original: true,
-        text: `New Agency ${agency.agencyName} is verified!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
+      data: {
+        content,
+        embeds: [
           {
-            text: `@${user} has verified it!`,
-            color: '#3AA3E3',
-            attachment_type: 'default',
+            author: {
+              name,
+            },
+            description: `
+              ${email}
+              ${subject}
+
+              ${message}
+            `,
+            color: Colors.Aqua,
           },
         ],
-      }),
+      },
     });
   } catch (error) {
     log.error(error);
@@ -435,14 +344,12 @@ async function sendAgencyVerificationNotificationSuccess({ agency, user, respons
 
 module.exports = {
   sendMail,
-  sendSlackFeedbackMessage,
   sendAgencyVerifiedMail,
   sendDonationOrderedEmail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-  sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
-  sendAgencyVerificationNotificationSuccess,
+  sendFeedbackMessage,
 };

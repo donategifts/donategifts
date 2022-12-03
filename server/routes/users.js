@@ -246,7 +246,7 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
   const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
   try {
-    const agency = await AgencyRepository.createNewAgency({
+    const result = await AgencyRepository.createNewAgency({
       agencyName,
       agencyWebsite,
       agencyPhone,
@@ -257,7 +257,12 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
     });
 
     if (process.env.NODE_ENV !== 'test') {
-      await sendAgencyVerificationNotification(agency);
+      await sendAgencyVerificationNotification({
+        id: result.agency._id,
+        name: result.agency.agencyName,
+        website: result.agency.agencyWebsite,
+        bio: result.agency.agencyBio,
+      });
     }
 
     return res.status(200).send({

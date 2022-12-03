@@ -3,16 +3,11 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  */
 
-const dotenv = require('dotenv');
-const cors = require('cors');
-
-let configPath = './config/config.env';
-if (process.env.NODE_ENV === 'test') {
-  configPath = './config/test.config.env';
-}
-dotenv.config({
-  path: configPath,
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? './config/test.config.env' : './config/config.env',
 });
+
+const cors = require('cors');
 
 // EXPRESS SET UP
 const express = require('express');
@@ -33,6 +28,8 @@ const UserRepository = require('./db/repository/UserRepository');
 const AgencyRepository = require('./db/repository/AgencyRepository');
 
 const log = require('./helper/logger');
+
+const DGBot = require('./discord/bot');
 
 const app = express();
 
@@ -67,6 +64,11 @@ app.use(
 );
 
 MongooseConnection.connect();
+
+const bot = new DGBot();
+
+bot.refreshCommands();
+bot.initClient();
 
 app.use(cors());
 
@@ -161,7 +163,6 @@ const contactRoute = require('./routes/contact');
 const teamRoute = require('./routes/team');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
-const slackRoute = require('./routes/slack');
 const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
@@ -174,7 +175,6 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
-app.use('/slack', slackRoute);
 app.use('/', indexRoute);
 
 // static maintenance page
