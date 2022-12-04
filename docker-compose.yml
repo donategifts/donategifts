@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.8"
 
 services:
   mongo:
@@ -9,11 +9,6 @@ services:
 
     volumes:
       - donategifts_mongo:/data/db
- # redis:
- #   image: redis
- #   restart: unless-stopped
- #   ports:
- #     - 6379:6379
 
 volumes:
   donategifts_mongo:

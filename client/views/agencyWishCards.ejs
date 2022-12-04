@@ -3,12 +3,9 @@
 
 <head>
   <title>See Wish Cards | Donate Gifts</title>
-  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
   <%- include('./templates/header')-%>
   <link rel="stylesheet" href="/public/css/search.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
-    integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
-    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/dist/wishcards.min.css">
   <script src="/public/clientJS/agencyWishCards.js"></script>
 </head>
 
@@ -17,8 +14,12 @@
 
   <!-- Wish Card deck -->
   <div class="wishcards">
-    <!-- Dynamic Card Display now fixed and responsive-->
+    <!-- Create More button -->
+    <div class="margin-auto d-flex justify-content-center">
+      <a href="/wishcards/create" class="create-more">Create More Wish Cards</a>
+    </div>
     <div class="container">
+      <!-- Draft Cards Section -->
       <h3 class="cool-font">Draft Wishcards</h3>
       <% if (draftWishcards.length === 0) { %>
       <h6 class="cool-font">No draft wishcards</h6>
@@ -44,7 +45,6 @@
                 <div class="quick-font mb-3">
                   <p class="card-text"><span class="font-weight-bold">Status : </span> <%= draftWishcards[i].status %>
                   </p>
-                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= draftWishcards[i].age %></p>
                   <p class="card-text">
                     <span class="font-weight-bold">Wish : </span> <%= draftWishcards[i].wishItemName.length > 25 ?
                       draftWishcards[i].wishItemName.substring(0, 25) + "..." : draftWishcards[i].wishItemName %>
@@ -58,7 +58,7 @@
                       draftWishcards[i].childInterest %>
                   </p>
                 </div>
-                <div class="card-action row">
+                <!-- <div class="card-action row">
                   <div class="col-sm-6 mb-2">
                     <a href="/wishcards/edit/<%= draftWishcards[i]._id %>" class="wishcard__link--white bdr-2">Edit Wishcard</a>
                   </div>
@@ -66,7 +66,7 @@
                     <button type="button" value="<%= draftWishcards[i]._id %>"
                       class="wishCardDeleteBtn wishcard__button--blue bdr-2">Delete Wishcard</button>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -101,7 +101,6 @@
                 <div class="quick-font">
                   <p class="card-text"><span class="font-weight-bold">Status : </span> <%= activeWishcards[i].status %>
                   </p>
-                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= activeWishcards[i].age %></p>
                   <p class="card-text">
                     <span class="font-weight-bold">Wish : </span> <%= activeWishcards[i].wishItemName.length > 25 ?
                       activeWishcards[i].wishItemName.substring(0, 25) + "..." : activeWishcards[i].wishItemName %>
@@ -116,7 +115,7 @@
                   </p>
                 </div>
               </div>
-              <div class="card-action row">
+              <!-- <div class="card-action row">
                 <div class="col-sm-6 mb-2">
                   <a href="/wishcards/edit/<%= activeWishcards[i]._id %>" class="wishcard__link--white bdr-2">Edit Wishcard</a>
                 </div>
@@ -124,7 +123,7 @@
                   <button type="button" value="<%= activeWishcards[i]._id %>" class="wishCardDeleteBtn wishcard__button--blue bdr-2">
                     Delete Wishcard </button>
                 </div>
-              </div>
+              </div> -->
               </div>
           </div>
         </div>
@@ -160,7 +159,6 @@
                   <p class="card-text"><span class="font-weight-bold">Status : </span>
                     <%= inactiveWishcards[i].status %>
                   </p>
-                  <p class="card-text"><span class="font-weight-bold">Age : </span> <%= inactiveWishcards[i].age %></p>
                   <p class="card-text">
                     <span class="font-weight-bold">Wish : </span> <%= inactiveWishcards[i].wishItemName.length > 25 ?
                       inactiveWishcards[i].wishItemName.substring(0, 25) + "..." : inactiveWishcards[i].wishItemName %>
@@ -175,10 +173,6 @@
                   </p>
                 </div>
               </div>
-              <div class="card-action row">
-                  <button type="button" value="<%= inactiveWishcards[i]._id %>"
-                      class="wishCardDeleteBtn wishcard__button--blue bdr-2">Delete Wishcard</button>
-                </div>
             </div>
           </div>
         </div>

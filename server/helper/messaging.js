@@ -1,9 +1,9 @@
 const moment = require('moment');
 const nodemailer = require('nodemailer');
-const mailGun = require('nodemailer-mailgun-transport');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const { Colors } = require('discord.js');
 const log = require('./logger');
 
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
@@ -11,6 +11,13 @@ const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/ema
 });
 const donationTemplate = fs.readFileSync(
   path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+  {
+    encoding: 'utf-8',
+  },
+);
+
+const donationOrderedTemplate = fs.readFileSync(
+  path.resolve(__dirname, '../resources/email/partnerDonationAlert.html'),
   {
     encoding: 'utf-8',
   },
@@ -98,7 +105,6 @@ const getTransport = async () => {
       return nodemailer.createTransport({
         host: account.smtp.host,
         port: account.smtp.port,
-        secure: account.smtp.secure,
         auth: {
           user: account.user,
           pass: account.pass,
@@ -108,17 +114,16 @@ const getTransport = async () => {
 
     // LIVE data
   } else {
-    const auth = {
+    return nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
       auth: {
-        api_key: process.env.MAILGUN_API_KEY,
-        domain: process.env.MAILGUN_DOMAIN,
+        user: process.env.DEFAULT_EMAIL,
+        pass: process.env.DEFAULT_EMAIL_PASSWORD,
       },
-    };
-
-    return nodemailer.createTransport(mailGun(auth));
+    });
   }
 };
-
 // cb is callback, cb(err, null) means if err, get err, else null
 // IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
 const sendMail = async (from, to, subject, message, attachments = undefined) => {
@@ -139,10 +144,12 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
       if (!data) {
         return { success: false };
       }
+
       if (process.env.NODE_ENV === 'development') {
         log.info('Preview URL: %s', nodemailer.getTestMessageUrl(data));
         return { success: true, data: nodemailer.getTestMessageUrl(data) };
       }
+
       return { success: true, data: '' };
     }
     return { success: false };
@@ -162,7 +169,7 @@ const sendDonationConfirmationMail = async ({
 }) => {
   const body = donationTemplate
     .replace('%firstName%', firstName)
-    .replace(RegExp('%childName%', 'g'), childName)
+    .replace(/%childName%/g, childName)
     .replace('%fullName%', `${firstName} ${lastName}`)
     .replace('%item%', item)
     .replace('%price%', price)
@@ -174,6 +181,32 @@ const sendDonationConfirmationMail = async ({
     process.env.DEFAULT_EMAIL,
     email,
     'Donate-gifts.com Donation Receipt',
+    body,
+    donationTemplateAttachments,
+  );
+};
+
+const sendDonationOrderedEmail = async ({
+  agencyEmail,
+  agencyName,
+  childName,
+  itemName,
+  itemPrice,
+  donationDate,
+  address,
+}) => {
+  const body = donationOrderedTemplate
+    .replace('%agencyName%', agencyName)
+    .replace(/%childName%/g, childName)
+    .replace('%itemName%', itemName)
+    .replace('%itemPrice%', itemPrice)
+    .replace('%donationDate%', donationDate)
+    .replace('%address%', address);
+
+  return sendMail(
+    process.env.DEFAULT_EMAIL,
+    agencyEmail,
+    'Donate-gifts.com Donation Item Ordered',
     body,
     donationTemplateAttachments,
   );
@@ -227,175 +260,82 @@ const createEmailVerificationHash = () => {
   return result;
 };
 
-const sendAgencyVerifiedMail = async (to) => {
-  return sendMail(
+const sendAgencyVerifiedMail = async (to) =>
+  sendMail(
     process.env.DEFAULT_EMAIL,
     to,
     'Donate-gifts.com Agency Account Verified',
     agencyVerfiedTemplate,
     templateAttachments,
   );
-};
 
-async function sendSlackFeedbackMessage(name, email, subject, message) {
-  const slackMessage = {
-    blocks: [],
-  };
-
-  if (process.env.NODE_ENV !== 'production') {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '------------- Message from testing / local environment -------------',
-      },
-    });
-  }
-
-  if (name) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `User: ${name}`,
-      },
-    });
-  }
-
-  if (email) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Email: ${email}`,
-      },
-    });
-  }
-
-  if (subject) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `Subject: ${subject}`,
-      },
-    });
-  }
-
-  if (message) {
-    slackMessage.blocks.push({
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: message,
-      },
-    });
-  }
-
-  if (slackMessage.blocks.length > 0) {
-    try {
-      await axios({
-        method: 'POST',
-        url: `${process.env.SLACK_INTEGRATION}`,
-        header: {
-          'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(slackMessage),
-      });
-
-      return true;
-    } catch (error) {
-      log.error(error);
-      return false;
-    }
-  }
-}
-
-async function sendDonationNotificationToSlack(service, userDonation, donor, wishCard, amount) {
+async function sendAgencyVerificationNotification({ id, name, website, bio }) {
   try {
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new agency has registered! <@766721399497687042>';
+
     await axios({
       method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_DONATION}`,
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
       header: {
         'Content-Type': 'application/json',
       },
-
-      data: JSON.stringify({
-        text: `${process.env.NODE_ENV} New ${service} Donation by ${
-          donor.fName
-        } ${donor.lName.substring(0, 1)} for ${
-          wishCard.childFirstName
-        } ${wishCard.childLastName.substring(0, 1)} details: ${
-          process.env.BASE_URL
-        }/wishcards/admin/${wishCard._id}, amount: ${amount} with ${userDonation} for us`,
-      }),
-    });
-
-    return true;
-  } catch (error) {
-    log.error(error);
-    return false;
-  }
-}
-
-async function sendAgencyVerificationNotification(agency) {
-  try {
-    await axios({
-      method: 'POST',
-      url: `${process.env.SLACK_INTEGRATION_AGENCY_VERIFICATION}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        text: `${agency.user.email} has registered ${agency.agency.agencyName}!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
+      data: {
+        content,
+        embeds: [
           {
-            text: `Please check ${agency.agency.agencyWebsite} before you verify it :)`,
-            callback_id: 'agency_verify',
-            color: '#3AA3E3',
-            attachment_type: 'default',
-            actions: [
-              {
-                name: 'verify',
-                text: 'Verify',
-                style: 'success',
-                type: 'button',
-                value: `${agency.agency._id}`,
-              },
-            ],
+            author: {
+              name,
+              url: website,
+            },
+            description: `
+              ${bio}
+
+              [${website}](${website})
+            
+              Please check their website before verifying it!
+            `,
+            color: Colors.Yellow,
+            footer: {
+              text: `Want to verify it? /verifyagency ${id}`,
+            },
           },
         ],
-      }),
+      },
     });
   } catch (error) {
     log.error(error);
   }
 }
 
-async function sendAgencyVerificationNotificationSuccess({ agency, user, responseUrl }) {
+async function sendFeedbackMessage({ name, email, subject, message }) {
   try {
-    await axios({
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'A new message from our contact form! <@766721399497687042>';
+
+    return await axios({
       method: 'POST',
-      url: responseUrl,
+      url: `${process.env.DISCORD_WEBHOOK_URL}`,
       header: {
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify({
-        response_type: 'ephemeral',
-        replace_original: true,
-        text: `New Agency ${agency.agencyName} is verified!${
-          process.env.NODE_ENV === 'development' ? ' [WITH LOVE FROM DEV]' : ''
-        }`,
-        attachments: [
+      data: {
+        content,
+        embeds: [
           {
-            text: `@${user} has verified it!`,
-            color: '#3AA3E3',
-            attachment_type: 'default',
+            author: {
+              name,
+            },
+            description: `
+              ${email}
+              ${subject}
+
+              ${message}
+            `,
+            color: Colors.Aqua,
           },
         ],
-      }),
+      },
     });
   } catch (error) {
     log.error(error);
@@ -404,13 +344,12 @@ async function sendAgencyVerificationNotificationSuccess({ agency, user, respons
 
 module.exports = {
   sendMail,
-  sendSlackFeedbackMessage,
   sendAgencyVerifiedMail,
+  sendDonationOrderedEmail,
   createEmailVerificationHash,
   sendVerificationEmail,
   sendPasswordResetMail,
-  sendDonationNotificationToSlack,
   sendDonationConfirmationMail,
   sendAgencyVerificationNotification,
-  sendAgencyVerificationNotificationSuccess,
+  sendFeedbackMessage,
 };

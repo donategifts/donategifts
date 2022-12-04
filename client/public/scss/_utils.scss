@@ -20,7 +20,8 @@ a {
   font-size: 2.4em;
 }
 
-.fa, .fas {
+.fa,
+.fas {
   margin: 0.3em 0.5em;
 }
 
@@ -29,6 +30,10 @@ textarea {
   text-decoration: none;
   outline: none;
   border: none;
+}
+
+.tinted {
+  background-color: transparentize($white, 0.5);
 }
 
 /* 
@@ -86,7 +91,7 @@ Reusable Utils - Button
   &:hover {
     @extend %hover-navy;
   }
-} 
+}
 
 .btn-white-navy-lg {
   @extend %btn-lg;
@@ -95,7 +100,57 @@ Reusable Utils - Button
   &:hover {
     @extend %hover-navy;
   }
-} 
+}
+
+%btn-long {
+  padding: 1rem 3rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  opacity: 1;
+  border: 0.15rem solid transparent;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+  width: 40vw !important;
+  height: 8vh !important;
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
+  margin: 10px;
+  line-height: 1.2em;
+  text-align: center !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-orange-navy-lg-long {
+  @extend %btn-long;
+  background-color: $orange;
+  color: $white !important;
+  &:hover {
+    @extend %hover-navy;
+  }
+}
+
+.btn-disabled-long {
+  @extend %btn-long;
+  background-color: lighten($gray, 25%);
+  color: $white !important;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .btn-disabled-long {
+    width: 80vw !important;
+  }
+  .btn-orange-navy-lg-long {
+    width: 80vw !important;
+  }
+}
+
 
 /* 
 -----------------------------
@@ -123,9 +178,8 @@ Reusable Hero
   font-size: 1rem;
   color: $white;
   text-align: center;
-  background: lighten($black,5);
+  background: lighten($black, 5);
 }
-
 
 /* 
 -----------------------------

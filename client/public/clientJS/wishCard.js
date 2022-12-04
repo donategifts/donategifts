@@ -15,40 +15,12 @@ function preventChildImageContextMenu(e) {
   }
 }
 
-socket.on('block', (event) => {
-  addCountdown(event.lockedUntil, event.id, '#donate-btn-' + event.id);
-});
-
-socket.on('unblock', (event) => {
-  const button = $('#donate-btn-' + event.id);
-
-  clearInterval(x[event.id]);
-  x[event.id] = null;
-  button.text('Donate Gift');
-  button.prop('disabled', false);
-});
-
-socket.on('donated', (event) => {
-  const donateButton = $(document).find('#donate-btn-' + event.id);
-
-  clearInterval(x[event.id]);
-  x[event.id] = null;
-  donateButton.text('Donated!');
-  donateButton.prop('disabled', true);
-});
 // event listener that fires whenever a right click has occured
 window.addEventListener('contextmenu', preventChildImageContextMenu);
 
-function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
-}
 
 function getReadMoreBtn(user, wishCardId) {
-  if (user) {
-    return  `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
-  }
-  return `<button type="button" data-toggle="modal" class="wishcard__link--white bdr-2"
-  data-target="#loginModalCenter">View More</button>`
+  return `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
 }
 
 function getDonatedBtn(user, wishCardId, wishCardStatus) {
@@ -90,22 +62,20 @@ function appendWishCards(response, end = false, remove = false) {
               <div class="quick-font">
                 <p>
                   <span class="font-weight-bold">Wish : </span>
-                  ${
-                    wishCard.wishItemName.length > 24
-                      ? wishCard.wishItemName.substring(0, 23) + '...'
-                      : wishCard.wishItemName
-                  }
+                  ${wishCard.wishItemName.length > 24
+          ? wishCard.wishItemName.substring(0, 23) + '...'
+          : wishCard.wishItemName
+        }
                 </p>
                 <p class="wish-price">
                   <span class="font-weight-bold">Item Price :</span> $${wishCard.wishItemPrice}
                 </p>
                 <p>
                   <span class="font-weight-bold">Interest : </span>
-                  ${
-                    wishCard.childInterest.length > 24
-                      ? wishCard.childInterest.substring(0, 21) + '...'
-                      : wishCard.childInterest
-                  }
+                  ${wishCard.childInterest.length > 24
+          ? wishCard.childInterest.substring(0, 21) + '...'
+          : wishCard.childInterest
+        }
                 </p>
               </div>
               <div class="card-action row">

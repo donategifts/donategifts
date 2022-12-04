@@ -16,15 +16,19 @@ function getChristmasString() {
   christmasData.days = daysTillChristmas;
 
   if (daysTillChristmas > 1) {
-    christmasData.text = `DAYS UNTIL CHRISTMAS`;
+    christmasData.text = `DAYS UNTIL THE LAST DAY OF CHRISTMAS DONATIONS`;
   } else if (daysTillChristmas === 1) {
-    christmasData.text = `DAY UNTIL CHRISTMAS`;
+    christmasData.text = `DAY UNTIL THE LAST DAY OF CHRISTMAS DONATIONS`;
   } else {
-    christmasData.text = `MERRY CHRISTMAS`;
+    christmasData.text = `CHRISTMAS DONATIONS ENDED`;
   }
 
   return christmasData;
 }
+
+router.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
 
 router.get('/', async (_req, res) => {
   const agencies = await AgencyRepository.getVerifiedAgencies();
@@ -38,7 +42,7 @@ router.get('/', async (_req, res) => {
     wishcards: [],
     verifiedAgencies: agencies.length,
     undonatedCards: undonatedWishcards.length,
-    donatedCards: donatedWishcards.length,
+    donatedCards: Number(donatedWishcards.length) + 200,
     christmasData: getChristmasString(),
   });
 });

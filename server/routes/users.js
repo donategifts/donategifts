@@ -246,7 +246,7 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
   const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
   try {
-    const agency = await AgencyRepository.createNewAgency({
+    const result = await AgencyRepository.createNewAgency({
       agencyName,
       agencyWebsite,
       agencyPhone,
@@ -257,7 +257,12 @@ router.post('/agency', limiter, createAgencyValidationRules(), validate, async (
     });
 
     if (process.env.NODE_ENV !== 'test') {
-      await sendAgencyVerificationNotification(agency);
+      await sendAgencyVerificationNotification({
+        id: result.agency._id,
+        name: result.agency.agencyName,
+        website: result.agency.agencyWebsite,
+        bio: result.agency.agencyBio,
+      });
     }
 
     return res.status(200).send({
@@ -488,7 +493,8 @@ router.get('/terms', async (req, res) => {
 // @tested 	Not yet
 router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, res) => {
   try {
-    const user = await UserRepository.getUserByVerificationHash(req.params.hash);
+    let user = await UserRepository.getUserByVerificationHash(req.params.hash);
+
     if (user) {
       if (user.emailVerified) {
         if (req.session.user) {
@@ -505,18 +511,20 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
         });
       }
 
-      await UserRepository.setUserEmailVerification(user._id, true);
+      user = await UserRepository.setUserEmailVerification(user._id, true);
 
-      return res.status(200).render('login', {
-        user: res.locals.user,
+      return res.status(200).render('profile', {
+        user,
         successNotification: {
           msg: 'Email Verification successful',
         },
         errorNotification: null,
       });
     }
+
     return handleError(res, 400, 'Email Verification failed!');
   } catch (error) {
+    log.error(error);
     return res.status(400).render('login', {
       user: res.locals.user,
       successNotification: null,

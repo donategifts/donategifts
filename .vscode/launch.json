@@ -12,7 +12,6 @@
       "type": "node",
       "restart": true,
       "internalConsoleOptions": "neverOpen",
-      "protocol": "inspector"
     },
   ]
 }

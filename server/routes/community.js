@@ -10,7 +10,7 @@ const { donationPostValidation, validate } = require('./validations/donationPost
 const PostRepository = require('../db/repository/PostRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
-router.get('/', redirectLogin, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { user } = req.session;
     const posts = await PostRepository.getAllPosts();

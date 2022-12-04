@@ -3,16 +3,11 @@
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
  */
 
-const dotenv = require('dotenv');
-const cors = require('cors');
-
-let configPath = './config/config.env';
-if (process.env.NODE_ENV === 'test') {
-  configPath = './config/test.config.env';
-}
-dotenv.config({
-  path: configPath,
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? './config/test.config.env' : './config/config.env',
 });
+
+const cors = require('cors');
 
 // EXPRESS SET UP
 const express = require('express');
@@ -23,10 +18,9 @@ const requestIp = require('request-ip');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const ejs = require('ejs');
 const mongoSanitize = require('express-mongo-sanitize');
-const { connectSocket } = require('./helper/socket');
 
 // custom db connection
 const MongooseConnection = require('./db/connection');
@@ -35,15 +29,13 @@ const AgencyRepository = require('./db/repository/AgencyRepository');
 
 const log = require('./helper/logger');
 
+const DGBot = require('./discord/bot');
+
 const app = express();
 
 app.use(
   responseTime((req, res, time) => {
-    // if (req.originalUrl.includes('socket')) {
-    //   return;
-    // }
-
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
       if (
         (!req.originalUrl.includes('.png') &&
           !req.originalUrl.includes('.jpg') &&
@@ -70,10 +62,14 @@ app.use(
     }
   }),
 );
-// mongo connection needs to be established before admin-bro setup
+
 MongooseConnection.connect();
 
-// middleware need to be setup after admin-bro setup
+const bot = new DGBot();
+
+bot.refreshCommands();
+bot.initClient();
+
 app.use(cors());
 
 // SET VIEW ENGINE AND RENDER HTML WITH EJS
@@ -90,9 +86,11 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 // SESSION SET UP
 app.use(
   session({
-    store: new MongoStore({
-      url: process.env.MONGO_URI,
-      clear_interval: 3600000,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      autoRemove: 'interval',
+      // interval is now in minutes
+      autoRemoveInterval: 60,
     }),
     name: process.env.SESS_NAME,
     resave: false,
@@ -155,8 +153,6 @@ app.use(cookieParser());
 app.use(express.static('client'));
 
 // needs to be declared before routes otherwise sockets wont be available in routes
-global.io = connectSocket(app);
-
 // IMPORT ROUTE FILES
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
@@ -167,7 +163,6 @@ const contactRoute = require('./routes/contact');
 const teamRoute = require('./routes/team');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
-const slackRoute = require('./routes/slack');
 const indexRoute = require('./routes/index');
 
 // MOUNT ROUTERS
@@ -180,8 +175,12 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
-app.use('/slack', slackRoute);
 app.use('/', indexRoute);
+
+// static maintenance page
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
+// });
 
 // ERROR PAGE
 app.get('*', (req, res) => {
@@ -189,14 +188,12 @@ app.get('*', (req, res) => {
 });
 
 // error handler
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // TODO: send error message to slack/sentry?
-
   log.error(err);
 
   // render the error page

@@ -11,7 +11,6 @@ const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
 const { sendDonationConfirmationMail } = require('../helper/messaging');
 const log = require('../helper/logger');
-const { sendDonationNotificationToSlack } = require('../helper/messaging');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
 paypal.configure({
@@ -58,7 +57,7 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
       agency: agencyName,
     });
 
-    await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
+    // await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
   }
 };
 
