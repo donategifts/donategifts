@@ -14,6 +14,18 @@
     max-width: 1300px;
     // Just so it doesn't expand all the way in large screens
   }
+  .create-more {
+    @extend %btn-lg;
+    text-decoration: none !important;
+    background-color: $orange;
+    color: $white !important;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    font-size: 1.25rem;
+  }
 }
 
 .wishcard {
@@ -115,7 +127,7 @@
   margin: 0 auto;
   padding: 0 auto;
   box-sizing: border-box;
-  background-color: lighten($cream, 7);
+  background-color: lighten($cream, 8);
   @include font-styling($font-body);
   h1 {
     @include font-styling($font-heading, 2.5rem, $navy);
@@ -155,13 +167,20 @@
       -moz-border-radius: 1rem;
       -ms-border-radius: 1rem;
       -o-border-radius: 1rem;
-      //box-shadow: rgba(255, 130, 107, 0.4) 5px 5px, rgba(255, 130, 107, 0.3) 10px 10px,      //   rgba(255, 130, 107, 0.2) 15px 15px, rgba(255, 130, 107, 0.1) 20px 20px,      //   rgba(255, 130, 107, 0.05) 25px 25px;
     }
   }
   .msg-each {
     background-color: lighten($cream, 7);
     margin: 0.5rem;
     padding: 0.5rem;
+  }
+  .donate-btn {
+    @extend %btn-lg;
+    text-decoration: none !important;
+    background-color: $orange;
+    color: $white !important;
+    min-width: 40vw;
+    display: inline-block !important;
   }
 }
 

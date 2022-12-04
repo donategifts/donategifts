@@ -4,14 +4,9 @@
 
 <head>
   <title>See Each Wish Card | Donate Gifts</title>
-  <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
   <%- include('./templates/header')-%>
   <link rel="stylesheet" href="/public/dist/wishcards.min.css">
-  <!-- <link rel="stylesheet" href="/public/css/wishCardFull.css" /> -->
-  <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-  <!-- js scripts -->
   <script src="/public/clientJS/wishCardFullPage.js"></script>
 </head>
 
@@ -19,7 +14,6 @@
   <%- include('./templates/nav')-%>
 
   <div class="wishpage pb-5">
-
     <div class="row pt-5 pb-2 mx-auto">
       <h1><%= wishcard.childFirstName %>'s Wish Page</h1>
     </div>
@@ -29,7 +23,7 @@
       <button type="button" id="donate-btn" class="btn-disabled-long" disabled aria-disabled="true">
         Donated </button>
       <% } else if (user){ %>
-      <a type="button" id="donate-btn" class="btn-orange-navy-lg-long" href="donate/<%= wishcard._id %>">
+      <a type="button" id="donate-btn" class="donate-btn" href="donate/<%= wishcard._id %>">
         Donate Gift
       </a>
       <% } else { %>
@@ -67,7 +61,7 @@
       <p><i class="fas fa-phone-alt"></i><%= agency.agencyPhone %></p>
       <% } %>
       <% if (agency.agencyWebsite) { %>
-        <p><a href="<%= agency.agencyWebsite %>"><i class="fas fa-link"></i><%= agency.agencyWebsite %></a></p>
+        <p><a href="<%= agency.agencyWebsite %>" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i><%= agency.agencyWebsite %></a></p>
       <% } %>
       <% if (agency.agencyBio) { %>
         <p><i class="fas fa-address-card"></i><%= agency.agencyBio %></p>
