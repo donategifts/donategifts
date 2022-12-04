@@ -15,7 +15,7 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto"
+        "endOfLine": "lf"
       }
     ],
     "no-unused-vars": [
@@ -31,13 +31,6 @@
     "no-plusplus": "off",
     "consistent-return": "off",
     "no-underscore-dangle": "off",
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "global-require": "off",
     "import/no-dynamic-require": "off",
     "class-methods-use-this": "off"

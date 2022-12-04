@@ -1,0 +1,15 @@
+extends ../master
+
+block title
+    title Error | 401 NOT AUTHORIZED
+
+block content
+    .err-banner
+        .d-flex.mb-2.flex-column.container.align-items-center
+            .m-1
+                img.img-fluid.pt-5( src='/public/img/404-illustration.png' alt='404-illustration.png' )
+            .mt-5
+                p.quick-font.font-md Sorry, looks like you do not have privileges to access this site.
+            div
+                p.quick-font.font-md Should we check out some wish cards instead?
+            a.px-5.quick-font.wishcard-btn.grn-btn.text-decoration-none( href='/wishcards' ) Browse Wish Cards

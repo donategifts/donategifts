@@ -7,8 +7,8 @@ window.onload = function () {
 
 function unlockCardButtonClick(e) {
     const cardId = e.target.dataset.valueId;
-    const oldItemUrl = $("#oldWishItemUrl"+cardId);
-    const newItemUrl = $("#newWishItemUrl"+cardId);
+    const oldItemUrl = $("#oldWishItemUrl" + cardId);
+    const newItemUrl = $("#newWishItemUrl" + cardId);
     // take new url if anything is isnide input box
     let wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
     // get reference to element so we can call it inside callback
@@ -17,17 +17,17 @@ function unlockCardButtonClick(e) {
         type: 'PUT',
         url: '/wishcards/admin',
         data: {
-          wishCardId: cardId,
-          wishItemURL: wishItemUrl,
+            wishCardId: cardId,
+            wishItemURL: wishItemUrl,
         },
         success: function (response, textStatus, xhr) {
-          showToast("Card status updated");
-          removeWishCardFromDOM(elementRef);
+            showToast("Card status updated");
+            removeWishCardFromDOM(elementRef);
         },
         error: function (response, textStatus, errorThrown) {
             showToast(response.responseJSON.error.msg);
         },
-      });
+    });
 }
 
 // remove wishcard from dom if card was published
@@ -41,6 +41,6 @@ function removeWishCardFromDOM(node) {
     else {
         while (node.firstChild) {
             node.removeChild(node.lastChild);
-          }
+        }
     }
 }

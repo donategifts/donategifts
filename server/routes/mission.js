@@ -15,11 +15,11 @@ const log = require('../helper/logger');
 // @access  Public
 // @tested 	Not yet
 router.get('/', (req, res) => {
-  try {
-    res.status(200).render('mission', { user: res.locals.user });
-  } catch (error) {
-    log.error(req, error);
-  }
+	try {
+		res.status(200).render('mission', { user: res.locals.user });
+	} catch (error) {
+		log.error(req, error);
+	}
 });
 
 module.exports = router;

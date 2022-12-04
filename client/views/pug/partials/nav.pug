@@ -1,0 +1,62 @@
+nav.navbar.navbar-expand-md.mb-0.p-1
+    .container.mt-0
+        a.navbar-brand.ml-3.m-lg-0.p-0( href='/' rel='home' )
+            img.d-block( src='/public/img/new-donate-gifts-logo-2.png' alt='logo' )
+        .collapse.navbar-collapse.justify-content-end
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link( href='/wishcards' ) Wish Cards
+                li.nav-item
+                    a.nav-link( href='/mission' ) Mission
+                li.nav-item
+                    a.nav-link( href='/howto' ) How To
+                li.nav-item
+                    a.nav-link( href='/community' ) Community
+
+                if !locals.user
+                    li.nav-item
+                        a.nav-link( href='/users/signup' ) Sign Up
+                    li.nav-item
+                        a.nav-link( href='/users/login' ) Log In
+                else
+                    if locals.user.userRole == 'partner'
+                        //- li.nav-item
+                        //-     a.nav-link( href='/wishcards/me' ) My Wishes
+                        //- li.nav-item
+                        //-     a.nav-link( href='/wishcards/create' ) Create a Wish Card
+                    if locals.user.userRole == 'admin'
+                        li.nav-item
+                            a.nav-link( href='/wishcards/admin/' ) Admin Panel
+                    li.nav-item
+                        a.nav-link( href='/users/profile' ) Profile
+
+        .justify-content-end.d-lg-none
+            button.navbar-toggler( type='button'
+                data-toggle='collapse'
+                data-target='#navbarToggleExternalContent'
+                aria-controls='navbarToggleExternalContent'
+                aria-expanded='false'
+                aria-label='Toggle navigation'
+            )
+                i.fas.fa-bars
+
+.row.justify-content-center.d-lg-none
+    .text-center
+        #navbarToggleExternalContent.collapse
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link( href='/wishcards' ) Wish Cards
+                li.nav-item
+                    a.nav-link( href='/mission' ) Mission
+                li.nav-item
+                    a.nav-link( href='/howto' ) How To
+                li.nav-item
+                    a.nav-link( href='/community' ) Community
+                if !locals.user
+                    li.nav-item
+                        a.nav-link( href='/users/signup' ) Sign Up
+                    li.nav-item
+                        a.nav-link( href='/users/login' ) Log In
+                else
+                    li.nav-item
+                        a.nav-link( href='/users/profile' ) Profile

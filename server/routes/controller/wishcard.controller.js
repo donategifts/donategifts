@@ -3,72 +3,72 @@ const WishCardRepository = require('../../db/repository/WishCardRepository');
 const UserRepository = require('../../db/repository/UserRepository');
 
 async function getWishCardSearchResult(
-  itemName,
-  childAge,
-  cardIds,
-  showDonated = false,
-  reverseSort = false,
+	itemName,
+	childAge,
+	cardIds,
+	showDonated = false,
+	reverseSort = false,
 ) {
-  const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
-    (itemName && itemName.trim()) || '',
-    showDonated,
-    reverseSort,
-    cardIds,
-  );
+	const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
+		(itemName && itemName.trim()) || '',
+		showDonated,
+		reverseSort,
+		cardIds,
+	);
 
-  // remove duplicates
-  const allWishCards = fuzzySearchResult.filter(
-    (elem, index, self) => index === self.indexOf(elem),
-  );
+	// remove duplicates
+	const allWishCards = fuzzySearchResult.filter(
+		(elem, index, self) => index === self.indexOf(elem),
+	);
 
-  for (let i = 0; i < allWishCards.length; i++) {
-    let childBirthday;
+	for (let i = 0; i < allWishCards.length; i++) {
+		let childBirthday;
 
-    if (allWishCards[i].childBirthday) {
-      childBirthday = allWishCards[i].childBirthday;
-    } else {
-      childBirthday = new Date();
-    }
+		if (allWishCards[i].childBirthday) {
+			childBirthday = allWishCards[i].childBirthday;
+		} else {
+			childBirthday = new Date();
+		}
 
-    const birthday = moment(childBirthday);
-    const today = moment(new Date());
+		const birthday = moment(childBirthday);
+		const today = moment(new Date());
 
-    allWishCards[i].age = today.diff(birthday, 'year');
-  }
+		allWishCards[i].age = today.diff(birthday, 'year');
+	}
 
-  if (!childAge || childAge === 0) {
-    return allWishCards;
-  }
+	if (!childAge || childAge === 0) {
+		return allWishCards;
+	}
 
-  return allWishCards.filter((item) =>
-    childAge < 15 ? item.age < childAge : item.age >= childAge,
-  );
+	return allWishCards.filter((item) =>
+		childAge < 15 ? item.age < childAge : item.age >= childAge,
+	);
 }
 
 async function getLockedWishCards(req) {
-  const response = {
-    wishCardId: req.params.id,
-  };
+	const response = {
+		wishCardId: req.params.id,
+	};
 
-  if (!req.session.user) {
-    response.error = 'User not found';
-    return response;
-  }
+	if (!req.session.user) {
+		response.error = 'User not found';
+		return response;
+	}
 
-  const user = await UserRepository.getUserByObjectId(req.session.user._id);
-  if (!user) {
-    response.error = 'User not found';
-    return response;
-  }
-  response.userId = user._id;
-  response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
-    req.session.user._id,
-  );
+	const user = await UserRepository.getUserByObjectId(req.session.user._id);
+	if (!user) {
+		response.error = 'User not found';
+		return response;
+	}
+	response.userId = user._id;
+	response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
+		req.session.user._id,
+	);
 
-  return response;
+	return response;
 }
 
 module.exports = {
-  getLockedWishCards,
-  getWishCardSearchResult,
+	getLockedWishCards,
+	getWishCardSearchResult,
 };

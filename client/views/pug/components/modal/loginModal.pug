@@ -1,0 +1,33 @@
+#loginModalCenter.modal.fade.login( tabindex='-1' role='dialog' aria-labelledby='loginModalLongTitle' aria-hidden='true' )
+    .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+        .modal-content
+            .modal-header
+                h4.crayon-font.font-lg.center Log In
+                button.close( type='button' data-dismiss='modal' aria-label='Close' )
+                    span( aria-hidden='true' ) x
+            .modal-body.rale-font
+                .container-fluid
+                    form.signup( action='/users/login' method='post' )
+                        .wrap-input.mg-btm( data-validate='Email is required' )
+                            label.quick-font( for='email' ) Email
+                            input#email.input-default.quick-font( required='' type='email' name='email' placeholder='' title='example: username@xyz.com' )
+                        .wrap-input.mg-btm2( data-validate='Password is required' )
+                            label.quick-font( for='password' ) Password
+                            #input-container
+                                input#password.input-default.quick-font( required='' type='password' name='password' placeholder='' pattern='( ?=.*\d )( ?=.*[a-z] ).{8,}' title='Must contain at least one number and one lowercase letter, and at least 8 or more characters' )
+                                i#showPassword.fas.fa-eye
+                        .forgot-container.quick-font
+                            a( href='/users/password/request/' ) Forgot Password?
+                        // submit button section
+                        .container-form-btn
+                            button.form-btn.quick-font( type='submit' ) Log In
+                    .text-container.quick-font
+                        p.quick-font or login with
+                    #google-fb-login
+                        .d-flex.justify-content-center
+                            .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
+                        .d-flex.justify-content-center
+                            .fb-login-button.mt-3( data-size='large' data-button-type='login_with' data-layout='default' data-auto-logout-link='false' data-use-continue-as='false' data-scope='public_profile,email' data-onlogin='facebookLogin' )
+            .modal-footer
+                .signup-container.quick-font
+                    a( href='/users/signup' ) New here? Sign Up
