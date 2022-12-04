@@ -52,7 +52,11 @@ async function getUserByPasswordResetToken(tokenId) {
 
 async function setUserEmailVerification(userId, verified) {
   try {
-    await User.updateOne({ _id: userId }, { $set: { emailVerified: verified } });
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { emailVerified: verified } },
+      { new: true },
+    ).exec();
   } catch (error) {
     throw new Error(`Failed to set email verification: ${error}`);
   }
