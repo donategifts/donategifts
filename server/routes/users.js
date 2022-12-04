@@ -108,9 +108,12 @@ router.get('/profile', redirectLogin, async (req, res) => {
       const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
       const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
       const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
-      res
-        .status(200)
-        .render('profile', { wishCardsLength, draftWishcards, activeWishcards, inactiveWishcards });
+      res.status(200).render('profile', {
+        wishCardsLength,
+        draftWishcards,
+        activeWishcards,
+        inactiveWishcards,
+      });
     } else {
       res.status(200).render('profile');
     }
@@ -496,10 +499,32 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
     let user = await UserRepository.getUserByVerificationHash(req.params.hash);
 
     if (user) {
+      let agency = {};
+      let wishCards = [];
+      let wishCardsLength = 0;
+      let draftWishcards = [];
+      let activeWishcards = [];
+      let inactiveWishcards = [];
+
+      if (user.userRole === 'partner') {
+        agency = await AgencyRepository.getAgencyByUserId(user._id);
+        wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
+        wishCardsLength = wishCards.length;
+        draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+        activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+        inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
+      }
+
       if (user.emailVerified) {
         if (req.session.user) {
           return res.status(200).render('profile', {
             user: res.locals.user,
+            agency,
+            wishCards,
+            wishCardsLength,
+            draftWishcards,
+            activeWishcards,
+            inactiveWishcards,
           });
         }
         return res.status(200).render('login', {
@@ -515,6 +540,12 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 
       return res.status(200).render('profile', {
         user,
+        agency,
+        wishCards,
+        wishCardsLength,
+        draftWishcards,
+        activeWishcards,
+        inactiveWishcards,
         successNotification: {
           msg: 'Email Verification successful',
         },
