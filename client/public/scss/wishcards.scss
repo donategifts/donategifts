@@ -14,6 +14,18 @@
     max-width: 1300px;
     // Just so it doesn't expand all the way in large screens
   }
+  .create-more {
+    @extend %btn-lg;
+    text-decoration: none !important;
+    background-color: $orange;
+    color: $white !important;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    font-size: 1.25rem;
+  }
 }
 
 .wishcard {
