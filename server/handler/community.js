@@ -4,10 +4,14 @@ const { PostRepository } = require('../db/repository/PostRepository');
 const { AgencyRepository } = require('../db/repository/AgencyRepository');
 
 module.exports = class CommunityHandler extends BaseHandler {
+	#postRepository;
+
+	#agencyRepository;
+
 	constructor() {
 		super();
-		this.postRepository = new PostRepository();
-		this.agencyRepository = new AgencyRepository();
+		this.#postRepository = new PostRepository();
+		this.#agencyRepository = new AgencyRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
@@ -16,7 +20,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 	async handleGetIndex(req, res, _next) {
 		try {
 			const { user } = req.session;
-			const posts = await this.postRepository.getAllPosts();
+			const posts = await this.#postRepository.getAllPosts();
 			res.status(200).render('community', { user, posts, moment });
 		} catch (error) {
 			return this.handleError(res, 400, error);
@@ -36,7 +40,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 				});
 			}
 
-			const agency = await this.agencyRepository.getAgencyByUserId(user._id);
+			const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
 
 			let profileImage;
 
@@ -56,7 +60,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 				agency,
 			};
 
-			await this.postRepository.createNewPost(newPost);
+			await this.#postRepository.createNewPost(newPost);
 
 			res.status(200).send({
 				success: true,

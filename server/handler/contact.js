@@ -3,9 +3,11 @@ const { ContactRepository } = require('../db/repository/ContactRepository');
 const { sendMail, sendFeedbackMessage } = require('../helper/messaging');
 
 module.exports = class ContactHandler extends BaseHandler {
+	#contactRepository;
+
 	constructor() {
 		super();
-		this.contactRepository = new ContactRepository();
+		this.#contactRepository = new ContactRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostEmail = this.handlePostEmail.bind(this);
@@ -22,7 +24,7 @@ module.exports = class ContactHandler extends BaseHandler {
 
 	async handlePostEmail(req, res, _next) {
 		try {
-			const contact = await this.contactRepository.createNewContact({
+			const contact = await this.#contactRepository.createNewContact({
 				name: req.body.name,
 				email: req.body.email,
 				subject: `${req.body.subject} | send from ${req.body.name}`,
