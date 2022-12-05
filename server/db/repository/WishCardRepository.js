@@ -3,13 +3,15 @@ const { Types } = require('mongoose');
 const WishCard = require('../models/WishCard');
 
 class WishCardRepository {
+	#wishCardModel;
+
 	constructor() {
-		this.wishCardModel = WishCard;
+		this.#wishCardModel = WishCard;
 	}
 
 	async createNewWishCard(wishCardParams) {
 		try {
-			return await this.wishCardModel.create(wishCardParams);
+			return await this.#wishCardModel.create(wishCardParams);
 		} catch (error) {
 			throw new Error(`Failed to create new WishCard: ${error}`);
 		}
@@ -17,7 +19,7 @@ class WishCardRepository {
 
 	async getAllWishCards() {
 		try {
-			return await this.wishCardModel.find().lean().exec();
+			return await this.#wishCardModel.find().lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcards: ${error}`);
 		}
@@ -31,7 +33,7 @@ class WishCardRepository {
 				searchArray.push({ status: 'donated' });
 			}
 
-			return await this.wishCardModel.find({ $or: searchArray }).limit(25).lean().exec();
+			return await this.#wishCardModel.find({ $or: searchArray }).limit(25).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcards: ${error}`);
 		}
@@ -39,7 +41,7 @@ class WishCardRepository {
 
 	async getWishCardsByItemName(itemName, status) {
 		try {
-			return await this.wishCardModel
+			return await this.#wishCardModel
 				.find({
 					wishItemName: { $regex: itemName, $options: 'i' },
 					status,
@@ -102,7 +104,7 @@ class WishCardRepository {
 				});
 			}
 
-			return await this.wishCardModel.aggregate(matchPipeline).exec();
+			return await this.#wishCardModel.aggregate(matchPipeline).exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcards fuzzy: ${error}`);
 		}
@@ -110,7 +112,7 @@ class WishCardRepository {
 
 	async getWishCardById(cardId) {
 		try {
-			return await this.wishCardModel.findOne({ _id: cardId }).populate('belongsTo').exec();
+			return await this.#wishCardModel.findOne({ _id: cardId }).populate('belongsTo').exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -118,7 +120,7 @@ class WishCardRepository {
 
 	async getWishCardsByStatus(status) {
 		try {
-			return await this.wishCardModel.find({ status }).populate('belongsTo').lean().exec();
+			return await this.#wishCardModel.find({ status }).populate('belongsTo').lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -126,7 +128,7 @@ class WishCardRepository {
 
 	async getLockedWishcardsByUserId(userId) {
 		try {
-			return await this.wishCardModel.findOne({ isLockedBy: userId }).lean().exec();
+			return await this.#wishCardModel.findOne({ isLockedBy: userId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Wishcard: ${error}`);
 		}
@@ -134,7 +136,7 @@ class WishCardRepository {
 
 	async updateWishCard(id, wishCardFields) {
 		try {
-			return await this.wishCardModel
+			return await this.#wishCardModel
 				.updateOne({ _id: id }, { $set: { ...wishCardFields } })
 				.lean()
 				.exec();
@@ -145,7 +147,7 @@ class WishCardRepository {
 
 	async deleteWishCard(id) {
 		try {
-			return await this.wishCardModel.deleteOne({ _id: id }).lean().exec();
+			return await this.#wishCardModel.deleteOne({ _id: id }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to delete Wishcard message: ${error}`);
 		}
@@ -177,7 +179,7 @@ class WishCardRepository {
 
 	async getWishCardByAgencyId(agencyId) {
 		try {
-			return await this.wishCardModel.find({ belongsTo: agencyId }).lean().exec();
+			return await this.#wishCardModel.find({ belongsTo: agencyId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency's Wishcards: ${error}`);
 		}

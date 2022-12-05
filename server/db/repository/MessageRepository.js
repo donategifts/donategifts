@@ -1,13 +1,15 @@
 const Message = require('../models/Message');
 
 class MessageRepository {
+	#messageModel;
+
 	constructor() {
-		this.messageModel = Message;
+		this.#messageModel = Message;
 	}
 
 	async getMessageByObjectId(messageId) {
 		try {
-			return await this.messageModel.findOne({ _id: messageId }).lean().exec();
+			return await this.#messageModel.findOne({ _id: messageId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Message: ${error}`);
 		}
@@ -15,7 +17,7 @@ class MessageRepository {
 
 	async createNewMessage(messageParams) {
 		try {
-			return await this.messageModel.create(messageParams);
+			return await this.#messageModel.create(messageParams);
 		} catch (error) {
 			throw new Error(`Failed to create new Message: ${error}`);
 		}
@@ -23,7 +25,7 @@ class MessageRepository {
 
 	async getMessagesByWishCardId(wishcardId) {
 		try {
-			return this.messageModel
+			return this.#messageModel
 				.find({ messageTo: wishcardId })
 				.populate('messageFrom')
 				.lean()

@@ -1,13 +1,15 @@
 const Post = require('../models/Post');
 
 class PostRepository {
+	#postModel;
+
 	constructor() {
-		this.postModel = Post;
+		this.#postModel = Post;
 	}
 
 	async getAllPosts() {
 		try {
-			return this.postModel.find().populate('belongsTo');
+			return this.#postModel.find().populate('belongsTo');
 		} catch (error) {
 			throw new Error(`Failed to get all Posts: ${error}`);
 		}
@@ -15,7 +17,7 @@ class PostRepository {
 
 	async createNewPost(postParams) {
 		try {
-			await this.postModel.create(postParams);
+			await this.#postModel.create(postParams);
 		} catch (error) {
 			throw new Error(`Failed to create Post: ${error}`);
 		}

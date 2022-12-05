@@ -1,14 +1,15 @@
-// IMPORT USER MODEL
 const User = require('../models/User');
 
 class UserRepository {
+	#userModel;
+
 	constructor() {
-		this.userModel = User;
+		this.#userModel = User;
 	}
 
 	async getUserByObjectId(id) {
 		try {
-			return await this.userModel.findOne({ _id: id }).lean().exec();
+			return await this.#userModel.findOne({ _id: id }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -16,7 +17,7 @@ class UserRepository {
 
 	async updateUserById(id, updateParams) {
 		try {
-			await this.userModel.updateOne({ _id: id }, { $set: updateParams }).exec();
+			await this.#userModel.updateOne({ _id: id }, { $set: updateParams }).exec();
 		} catch (error) {
 			throw new Error(`Failed to update user: ${error}`);
 		}
@@ -24,7 +25,7 @@ class UserRepository {
 
 	async getUserByEmail(email) {
 		try {
-			return await this.userModel.findOne({ email }).lean().exec();
+			return await this.#userModel.findOne({ email }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -32,7 +33,7 @@ class UserRepository {
 
 	async getUserByVerificationHash(verificationHash) {
 		try {
-			return await this.userModel.findOne({ verificationHash }).lean().exec();
+			return await this.#userModel.findOne({ verificationHash }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -40,7 +41,7 @@ class UserRepository {
 
 	async createNewUser(params) {
 		try {
-			return await this.userModel.create(params);
+			return await this.#userModel.create(params);
 		} catch (error) {
 			throw new Error(`Failed to create new User: ${error}`);
 		}
@@ -48,7 +49,7 @@ class UserRepository {
 
 	async getUserByPasswordResetToken(tokenId) {
 		try {
-			return await this.userModel.findOne({ passwordResetToken: tokenId }).lean().exec();
+			return await this.#userModel.findOne({ passwordResetToken: tokenId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get User: ${error}`);
 		}
@@ -56,7 +57,7 @@ class UserRepository {
 
 	async setUserEmailVerification(userId, verified) {
 		try {
-			await this.userModel
+			await this.#userModel
 				.updateOne({ _id: userId }, { $set: { emailVerified: verified } })
 				.exec();
 		} catch (error) {

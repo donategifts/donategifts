@@ -1,14 +1,19 @@
 const Agency = require('../models/Agency');
-const { getUserByObjectId } = require('./UserRepository');
+const { getUserByObjectId, UserRepository } = require('./UserRepository');
 
 class AgencyRepository {
+	#agencyModel;
+
+	#userRepository;
+
 	constructor() {
-		this.agencyModel = Agency;
+		this.#agencyModel = Agency;
+		this.#userRepository = new UserRepository();
 	}
 
 	async getAgencyByUserId(userId) {
 		try {
-			return this.agencyModel.findOne({ accountManager: userId }).exec();
+			return this.#agencyModel.findOne({ accountManager: userId }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency: ${error}`);
 		}
@@ -16,11 +21,11 @@ class AgencyRepository {
 
 	async createNewAgency(agencyParams) {
 		try {
-			const agency = await this.agencyModel.create(agencyParams);
+			const agency = await this.#agencyModel.create(agencyParams);
 
 			return {
 				agency,
-				user: await getUserByObjectId(agencyParams.accountManager),
+				user: await this.#userRepository.getUserByObjectId(agencyParams.accountManager),
 			};
 		} catch (error) {
 			throw new Error(`Failed to create Agency: ${error}`);
@@ -29,7 +34,7 @@ class AgencyRepository {
 
 	async verifyAgency(agencyId) {
 		try {
-			return this.agencyModel
+			return this.#agencyModel
 				.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
 				.lean()
 				.exec();
@@ -39,11 +44,11 @@ class AgencyRepository {
 	}
 
 	async getVerifiedAgencies() {
-		return this.agencyModel.find({ isVerified: true }).exec();
+		return this.#agencyModel.find({ isVerified: true }).exec();
 	}
 
 	async getUnverifiedAgencies() {
-		return this.agencyModel.find({ isVerified: false }).exec();
+		return this.#agencyModel.find({ isVerified: false }).exec();
 	}
 }
 
