@@ -1,14 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-const log = require('../helper/logger');
+const HowToHandler = require('../handler/howto');
 
-router.get('/', (req, res) => {
-	try {
-		res.status(200).render('pages/howto', { user: res.locals.user });
-	} catch (error) {
-		log.error(req, error);
-	}
-});
+const howToHandler = new HowToHandler();
+
+router.get('/', howToHandler.handleGetIndex);
 
 module.exports = router;
