@@ -328,8 +328,9 @@ router.get('/admin/', async (req, res) => {
 	try {
 		// only admin users can get access
 		if (res.locals.user.userRole !== 'admin') {
-			return res.status(403).render('403');
+			return res.status(404).render('404');
 		}
+
 		// only retrieve wishcards that have a draft status
 		const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
 		// we need to append each wishcard with some agency details
@@ -367,18 +368,21 @@ router.get('/admin/', async (req, res) => {
 
 router.put('/admin/', async (req, res) => {
 	try {
-		const USER_ROLE = 'admin';
 		// only admin users can get access
-		if (res.locals.user.userRole !== USER_ROLE) {
+		if (res.locals.user.userRole !== 'admin') {
 			return res.status(403).render('403');
 		}
-		const { wishCardId } = req.body;
-		const { wishItemURL } = req.body;
+
+		const { wishCardId, wishItemURL } = req.body;
+
 		const wishCardModifiedFields = {
 			wishItemURL,
 			status: 'published',
 		};
+
 		await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
+
+		// @TODO: add agency notification email sending here after status was updated
 		return res.status(200).send({
 			success: true,
 			error: null,

@@ -152,32 +152,24 @@
   }
 }
 
-#about-bg {
-  background: linear-gradient(180deg, rgba(255, 151, 99, 0.8), rgba(188, 227, 97, 0.3), rgba(255, 209, 90, 0.05)),
-    url('../img/kid-yellow-bg.jpg') center center;
-  min-height: 40vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* background-attachment: fixed; */
-}
 
+/* NOTE: not used in mission page anymore - check impact & remove */
 .bg {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
+/* NOTE: not used in mission page anymore - check impact & remove */
 .text {
   text-align: center;
   color: #fff;
 }
-
+/* NOTE: not used in mission page anymore - check impact & remove */
 .text h4 {
   font-size: 1.5em;
   line-height: 1.2em;
-  /* text-shadow: 0px 3px 5px rgba(84, 119, 46, 0.99); */
 }
-
+/* NOTE: not used in mission page anymore - check impact & remove */
 .text button {
   margin-top: 1.4em;
 }

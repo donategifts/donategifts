@@ -494,13 +494,35 @@ router.get('/terms', async (req, res) => {
 // @tested 	Not yet
 router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, res) => {
 	try {
-		const user = await UserRepository.getUserByVerificationHash(req.params.hash);
+		let user = await UserRepository.getUserByVerificationHash(req.params.hash);
 
 		if (user) {
+			let agency = {};
+			let wishCards = [];
+			let wishCardsLength = 0;
+			let draftWishcards = [];
+			let activeWishcards = [];
+			let inactiveWishcards = [];
+
+			if (user.userRole === 'partner') {
+				agency = await AgencyRepository.getAgencyByUserId(user._id);
+				wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
+				wishCardsLength = wishCards.length;
+				draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+				activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+				inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
+			}
+
 			if (user.emailVerified) {
 				if (req.session.user) {
 					return res.status(200).render('profile', {
 						user: res.locals.user,
+						agency,
+						wishCards,
+						wishCardsLength,
+						draftWishcards,
+						activeWishcards,
+						inactiveWishcards,
 					});
 				}
 				return res.status(200).render('login', {
@@ -508,16 +530,24 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 					successNotification: {
 						msg: 'Your email is already verified.',
 					},
+					errorNotification: null,
 				});
 			}
 
-			await UserRepository.setUserEmailVerification(user._id, true);
+			user = await UserRepository.setUserEmailVerification(user._id, true);
 
 			return res.status(200).render('profile', {
-				user: res.locals.user,
+				user,
+				agency,
+				wishCards,
+				wishCardsLength,
+				draftWishcards,
+				activeWishcards,
+				inactiveWishcards,
 				successNotification: {
 					msg: 'Email Verification successful',
 				},
+				errorNotification: null,
 			});
 		}
 
@@ -526,6 +556,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 		log.error(error);
 		return res.status(400).render('login', {
 			user: res.locals.user,
+			successNotification: null,
 			errorNotification: { msg: 'Email Verification failed' },
 		});
 	}

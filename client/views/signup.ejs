@@ -1,28 +1,20 @@
-<!--
-* Author: Stacy Sealky Lee
-* FileName: signup.ejs
-* Description: signup page
-* TODO: in the future, make individual donor, enterprise donor, foster care partner
--->
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <script>
     window.dataLayer = window.dataLayer || [];
-
     function gtag() {
       dataLayer.push(arguments);
     }
     gtag('js', new Date());
-
     gtag('config', 'UA-180152810-1');
   </script>
-  <title>Sign Up to Donate Gifts</title>
 
+  <title>Sign Up | Donate Gifts</title>
   <%- include('./templates/header')-%>
-
+  <link rel="stylesheet" href="/public/dist/signup.min.css">
+  <!-- TODO: test impact and remove below  -->
   <link rel="stylesheet" href="/public/css/signup.css" />
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -37,10 +29,8 @@
   <%- include('./templates/nav')-%>
 
   <div class="signup-bg d-flex container-fluid justify-content-center py-5">
-
     <!-- sign up form | post to '/users/signup' -->
     <div class="wrap-box">
-
       <form class="signup" action="/users/signup" method="post">
         <!-- form title -->
         <div class="sign-row lg title-text crayon-font mg-sm">

@@ -96,12 +96,6 @@ a.userLogBtn {
 }
 
 .title-text {
-  /* fallback for old browsers */
-  /* background: #FF5F6D; */
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  /* background: linear-gradient(to left, rgb(255, 195, 113), rgb(255, 95, 109));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
   color: #fff;
   text-align: center;
   line-height: 1em;
@@ -123,7 +117,6 @@ a.userLogBtn {
   background-repeat: no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
-  /* height: 100px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -228,6 +221,14 @@ input:-ms-input-placeholder {
   color: rgba(255, 255, 255, 1);
 }
 
+input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
+input::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
 input::placeholder {
   color: rgba(255, 255, 255, 1);
 }
@@ -242,6 +243,16 @@ textarea::-moz-placeholder {
 }
 
 textarea:-ms-input-placeholder {
+  color: rgb(255, 95, 109);
+  padding: 10px;
+}
+
+textarea::-webkit-input-placeholder {
+  color: rgb(255, 95, 109);
+  padding: 10px;
+}
+
+textarea::-ms-input-placeholder {
   color: rgb(255, 95, 109);
   padding: 10px;
 }
