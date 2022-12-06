@@ -66,10 +66,12 @@ app.use(
 
 MongooseConnection.connect();
 
-const bot = new DGBot();
+if (process.env.DISCORD_CLIENT_ID) {
+	const bot = new DGBot();
 
-bot.refreshCommands();
-bot.initClient();
+	bot.refreshCommands();
+	bot.initClient();
+}
 
 app.use(cors());
 
