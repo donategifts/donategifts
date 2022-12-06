@@ -5,17 +5,17 @@ const log = require('../helper/logger');
 
 module.exports = class DGBot {
 	constructor() {
-		this.getCommands();
+		this.#getCommands();
 	}
 
-	getCommands() {
+	#getCommands() {
 		this.commandsPath = path.join(__dirname, 'commands');
 		this.commandFiles = fs
 			.readdirSync(this.commandsPath)
 			.filter((file) => file.endsWith('.js'));
 	}
 
-	isValidInteractionRequest(interaction) {
+	#isValidInteractionRequest(interaction) {
 		return interaction.isChatInputCommand(); // || interaction.isButton();
 	}
 
@@ -41,7 +41,7 @@ module.exports = class DGBot {
 		});
 
 		client.on(Events.InteractionCreate, async (interaction) => {
-			if (!this.isValidInteractionRequest(interaction)) {
+			if (!this.#isValidInteractionRequest(interaction)) {
 				return;
 			}
 
