@@ -256,14 +256,14 @@ append scripts
         });
 
     script.
-        $(document).ready(function () {
+        $(document).ready( () => {
             $.ajax({
                 type: 'GET',
                 url: '/wishcards/get/random',
-                success: function (html) {
+                success: (html) => {
                     $('.wishcards').replaceWith(html);
                 },
-                error: function (_) {
+                error: (_) => {
                     //- logged server side
                 },
             });

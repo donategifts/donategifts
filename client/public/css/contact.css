@@ -4,12 +4,6 @@
   background: linear-gradient(45deg, rgba(255, 95, 109, 0.9), rgba(255, 195, 113, 1));
   border-radius: 15px;
   overflow: hidden;
-  padding: 40px;
-}
-
-#contact {
-  margin: 3rem 0;
-  padding: 0 2rem;
 }
 
 .contact__label {

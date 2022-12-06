@@ -1,7 +1,10 @@
 {
   "eslint.enable": true,
-  "eslint.format.enable": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
   "editor.tabSize": 4,
   "puglint.enable": true,
   "puglint.config": {

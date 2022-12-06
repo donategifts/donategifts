@@ -21,7 +21,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 		try {
 			const { user } = req.session;
 			const posts = await this.#postRepository.getAllPosts();
-			res.status(200).render('community', { user, posts, moment });
+			res.status(200).render('pages/community', { user, posts, moment });
 		} catch (error) {
 			return this.handleError(res, 400, error);
 		}

@@ -16,7 +16,7 @@ module.exports = class ContactHandler extends BaseHandler {
 
 	handleGetIndex(_req, res, _next) {
 		try {
-			res.status(200).render('contact', { user: res.locals.user });
+			res.status(200).render('pages/contact', { user: res.locals.user });
 		} catch (error) {
 			this.handleError(res, 400, error);
 		}

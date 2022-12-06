@@ -1,0 +1,61 @@
+extends ../master
+
+block title
+    title asdf
+
+block content
+    section#contact.mb-5
+        .container
+            .text-center
+                h2.cool-font.mb-3.red-font.text-center Get in Touch
+                p.quick-font
+                    | Please fill out form and we will be in touch as soon as possible.
+                    | Perhaps your question has been answered, see our
+                    |
+                    a.contact__link--red( href='/faq' ) FAQs.
+            .d-flex.justify-content-center.align-items-center
+                .contact-form-wrapper.p-4
+                    form#emailForm
+                        .form-row
+                            .form-group.col-md-6
+                                label.contact__label( for='name' ) Name
+                                input#name.contact__input( name='name' type='text' placeholder='Name' required )
+                            .form-group.col-md-6
+                                label.contact__label( for='email' ) Email
+                                input#email.contact__input( name='email' type='email' placeholder='Email' required )
+                        .form-group
+                            label.contact__label( for='subject' ) Subject
+                            input#subject.contact__input( name='subject' type='text' placeholder='Subject' required )
+                        .form-group
+                            label.contact__label( for='message' ) Message
+                            textarea#message.contact__textarea( name='message' type='text' placeholder='Message' required )
+                        .form-group.text-center
+                            button.contact__button( type='submit' ) Contact Us
+
+append scripts
+    script.
+        $(document).ready(() => {
+            $('form').submit((e) => {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/contact/customer-service',
+                    data: $(this)
+                        .serializeArray()
+                        .reduce((obj, item) => {
+                            obj[item.name] = item.value;
+                            return obj;
+                        }, {}),
+                    success: () => {
+                        showToast('Message sent, thank you for your feedback!', true);
+                        $('#emailForm').each(() => {
+                            this.reset();
+                        });
+                    },
+                    error: (response) => {
+                        showToast(response.responseJSON.error.msg);
+                    }
+                });
+            });
+        });

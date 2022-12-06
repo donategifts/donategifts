@@ -32,7 +32,7 @@ a.userLogBtn {
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 15px;
   border-color: transparent;
-  padding: 10px 10px 4px 10px;
+  padding: 10px;
   margin-bottom: 10px;
   display: inline-block;
 }

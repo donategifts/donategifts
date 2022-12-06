@@ -13,11 +13,12 @@ block content
                     span OR
                     a.userLogBtn( href='/users/signup' ) Sign Up
                 .wrap-input.mg-btm( data-validate='Email is required' )
-                    input#email.input-default.quick-font( required type='email' name='email' placeholder='Email : ' title='example: username@xyz.com' )
+                    input#email.input-default.quick-font( required type='email' name='email' placeholder='Email' title='example: username@xyz.com' )
                 .wrap-input.mg-btm2( data-validate='Password is required' )
                     input#password.input-default.quick-font( required
                         type='password'
                         name='password'
+                        placeholder='Password'
                     )
                     i#showPassword.fas.fa-eye.text-white
                 a.text-white( href='/users/password/request/' ) Forgot Password?
@@ -38,9 +39,6 @@ block content
                     )
 
 append scripts
-    -
-        console.log(successNotification)
-
     if successNotification
         script.
             showToast('#{successNotification.msg}');
@@ -50,14 +48,14 @@ append scripts
             showToast('#{errorNotification.msg}');
 
     script.
-        $(document).ready(function () {
-            $('.signup').submit(function (e) {
+        $(document).ready(() => {
+            $('.signup').submit((e) => {
                 e.preventDefault();
                 $('#submit-btn').prop('disabled', true);
 
                 const formData = $(this)
                     .serializeArray()
-                    .reduce(function (obj, item) {
+                    .reduce((obj, item) => {
                         obj[item.name] = item.value;
                         return obj;
                     }, {});
@@ -66,18 +64,18 @@ append scripts
                     type: 'POST',
                     url: '/users/login',
                     data: formData,
-                    success: function (response, textStatus, jqXHR) {
+                    success: (response, textStatus, jqXHR) => {
                         $('#submit-btn').prop('disabled', false);
                         location.reload();
                     },
-                    error: function (response, textStatus, errorThrown) {
+                    error: (response, textStatus, errorThrown) => {
                         showToast(response.responseJSON.error.msg);
                         $('#submit-btn').prop('disabled', false);
                     },
                 });
             });
 
-            $('#showPassword').click(function () {
+            $('#showPassword').click(() => {
                 const imageHideClass = 'fas fa-eye';
                 const imageVisibleClass = 'fas fa-eye-slash';
                 const $passwordInput = $('#password');
@@ -102,7 +100,7 @@ append scripts
 
             function facebookLogin(fbUser) {
                 if (fbUser.authResponse && fbUser.status === 'connected') {
-                    FB.api('/me', 'GET', { fields: ['name', 'email'] }, function (response) {
+                    FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
                         if (response.id) {
                             $.ajax({
                                 type: 'POST',
@@ -135,10 +133,10 @@ append scripts
                     data: {
                         id_token,
                     },
-                    success: function (route) {
+                    success: (route) => {
                         location.reload();
                     },
-                    error: function (response) {
+                    error: (response) => {
                         showToast(response.responseJSON.error.msg);
                     },
                 });
