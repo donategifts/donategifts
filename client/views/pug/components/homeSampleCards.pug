@@ -1,56 +1,59 @@
+mixin carouselInnerPart(increment)
+    .carousel-inner
+        - var i = 0;
+        while i < wishcards.length
+            - var activeClass = i == 0 ? 'active' : ''
+            .carousel-item( class=activeClass )
+                .row.justify-content-center
+                    - var j = i;
+                    while j < (i + increment)
+                        .col-lg-4.col-xs-12.mb-5.px-4
+                            #card-fix.card.h-100
+                                .view.overlay
+                                    img#img-fix.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
+                                    a( href='#' )
+                                        .mask.rgba-white-slight
+                                .card-body
+                                    a.wishcard__icon--fixed.msg-icon( href='/wishcards/' + wishcards[j]._id )
+                                        i.far.fa-envelope
+                                    .card-details
+                                        -
+                                            var title = 'My name is ' + wishcards[j].childFirstName;
+                                            var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
+                                                ? wishcards[j].wishItemName.substring(0, 23) + "..."
+                                                : wishcards[j].wishItemName);
+                                            var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
+                                            var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
+                                                ? wishcards[j].childInterest.substring(0, 23) + "..."
+                                                : wishcards[j].childInterest);
+
+                                        h3.card-title.text-center.crayon-font= title
+                                        p
+                                            span.font-weight-bold= wish
+                                        p.wish-price
+                                            span.font-weight-bold= itemPrice
+                                        p
+                                            span.font-weight-bold= interest
+                                        .card-action.row
+                                            .col-sm-6.mb-2
+                                                a.wishcard__link--white.bdr-2( href='/wishcards/' + wishcards[j]._id ) View More
+                                            .col-sm-6.mb-2
+                                                if wishcards[j].status === 'donated'
+                                                    button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
+                                                else
+                                                    if locals.user
+                                                        a( href='wishcards/donate/' + wishcards[j]._id )
+                                                            button.wishcard__button--blue.bdr-2( type='button' ) Donate Gift
+                                                    else
+                                                        button.wishcard__button--blue.bdr-2( type='button' data-toggle='modal' data-target='#loginModalCenter' ) Donate Gift
+                        - j++;
+            - i += increment;
+
 .wishcards
     h1 Become Our Secret Santa
     .wishcards-container.mx-auto
         #carouselExampleIndicators.carousel.slide( data-ride='carousel' )
-            .carousel-inner
-                - var i = 0;
-                while i < wishcards.length
-                    - var activeClass = i == 0 ? 'active' : ''
-                    .carousel-item( class=activeClass )
-                        .row.justify-content-center
-                            - var j = i;
-                            while j < (i + 3)
-                                .col-lg-4.col-xs-12.mb-5.px-4
-                                    #card-fix.card.h-100
-                                        .view.overlay
-                                            img#img-fix.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
-                                            a( href='#' )
-                                                .mask.rgba-white-slight
-                                        .card-body
-                                            a.wishcard__icon--fixed.msg-icon( href='/wishcards/' + wishcards[j]._id )
-                                                i.far.fa-envelope
-                                            .card-details
-                                                -
-                                                    var title = 'My name is ' + wishcards[j].childFirstName;
-                                                    var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
-                                                        ? wishcards[j].wishItemName.substring(0, 23) + "..."
-                                                        : wishcards[j].wishItemName);
-                                                    var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
-                                                    var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
-                                                        ? wishcards[j].childInterest.substring(0, 23) + "..."
-                                                        : wishcards[j].childInterest);
-
-                                                h3.card-title.text-center.crayon-font= title
-                                                p
-                                                    span.font-weight-bold= wish
-                                                p.wish-price
-                                                    span.font-weight-bold= itemPrice
-                                                p
-                                                    span.font-weight-bold= interest
-                                                .card-action.row
-                                                    .col-sm-6.mb-2
-                                                        a.wishcard__link--white.bdr-2( href='/wishcards/' + wishcards[j]._id ) View More
-                                                    .col-sm-6.mb-2
-                                                        if wishcards[j].status === 'donated'
-                                                            button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
-                                                        else
-                                                            if locals.user
-                                                                a( href='wishcards/donate/' + wishcards[j]._id )
-                                                                    button.wishcard__button--blue.bdr-2( type='button' ) Donate Gift
-                                                            else
-                                                                button.wishcard__button--blue.bdr-2( type='button' data-toggle='modal' data-target='#loginModalCenter' ) Donate Gift
-                                - j++;
-                    - i += 3;
+            +carouselInnerPart(3)
 
             a.carousel-control-left( href='#carouselExampleIndicators' role='button' data-slide='prev' )
                 span.carousel-control-prev-icon( aria-hidden='true' )
@@ -60,65 +63,7 @@
                 span.carousel-control-next-icon( aria-hidden='true' )
                     i.fa.fa-arrow-circle-right.fa-2x
                 span.sr-only Next
-            //- .mobile__carousel-wrapper
-            //-     #mobileCarousel.carousel.slide(data-ride='carousel')
-            //-         .carousel-inner
-            //-             | <% for (let i = 0; i < wishcards.length; i = i+1) {%>
-            //-             .carousel-item.i.0(class="<%= === ? 'active' : '' %>")
-            //-                 .row.justify-content-center
-            //-                     | <% for (let j = i; j < i+1 && j < wishcards.length; j++) { %>
-            //-                     .col-lg-4.col-xs-12.mb-4.px-4
-            //-                         // Card
-            //-                         #card-fix.card.mb-3
-            //-                             // Card image
-            //-                             .view.overlay
-            //-                                 img#img-fix.card-img-top(src='<%= wishcards[j].wishCardImage %>' alt='Card image')
-            //-                                 a(href='#')
-            //-                                     .mask.rgba-white-slight
-            //-                             // Card content
-            //-                             .card-body
-            //-                                 a.wishcard__icon--fixed.msg-icon(href='/wishcards/<%= wishcards[j]._id %>')
-            //-                                     i.far.fa-envelope
-            //-                                 .card-details
-            //-                                     // Title
-            //-                                     h3.card-title.text-center.crayon-font My name is <%= wishcards[j].childFirstName %>
-            //-                                     // Text
-            //-                                     p
-            //-                                         span.font-weight-bold Wish :
-            //-                                         |                         <%= wishcards[j].wishItemName.length > 24 ? wishcards[j].wishItemName.substring(0, 23) + "..." :
-            //-                                         |                         wishcards[j].wishItemName  %>
-            //-                                     p.wish-price
-            //-                                         span.font-weight-bold Item Price :
-            //-                                         |  $<%= wishcards[j].wishItemPrice %>
-            //-                                     p
-            //-                                         span.font-weight-bold Interest :
-            //-                                         |                         <%= wishcards[j].childInterest.length > 24 ? wishcards[j].childInterest.substring(0, 21) + "..."
-            //-                                         |                         : wishcards[j].childInterest %>
-            //-                                     .card-action.row
-            //-                                         .col-sm-6.mb-2
-            //-                                             a.wishcard__link--white.bdr-2(href='/wishcards/<%= wishcards[j]._id %>') View More
-            //-                                         .col-sm-6.mb-2
-            //-                                             | <% if (wishcards[j].status === 'donated') { %>
-            //-                                             button.wishcard__button--disabled.bdr-2(type='button' disabled='')
-            //-                                                 | Donated
-            //-                                             |                           <% } else { %>
-            //-                                             |                           <% if (locals.user) { %>
-            //-                                             a(href='wishcards/donate/<%= wishcards[j]._id %>')
-            //-                                                 button.wishcard__button--blue.bdr-2(type='button')
-            //-                                                     | Donate Gift
-            //-                                             |                           <% } else { %>
-            //-                                             button.wishcard__button--blue.bdr-2(type='button' data-toggle='modal' data-target='#loginModalCenter')
-            //-                                                 | Donate Gift
-            //-                                             |                           <% } %>
-            //-                                             |                           <% } %>
-            //-                     |               <% } %>
-            //-             |           <% } %>
-            //-     #mobile__carousel-controls.col-12.d-flex.justify-content-center.align-items-start
-            //-         a.carousel-control-left.mx-4(href='#mobileCarousel' role='button' data-slide='prev')
-            //-             span.carousel-control-prev-icon(aria-hidden='true')
-            //-                 i.fa.fa-arrow-circle-left.fa-2x
-            //-             span.sr-only Previous
-            //-         a.carousel-control-right.mx-4(href='#mobileCarousel' role='button' data-slide='next')
-            //-             span.carousel-control-next-icon(aria-hidden='true')
-            //-                 i.fa.fa-arrow-circle-right.fa-2x
-            //-             span.sr-only Next
+
+    .mobile__carousel-wrapper
+        #mobileCarousel.carousel.slide( data-ride='carousel' )
+            +carouselInnerPart(1)
