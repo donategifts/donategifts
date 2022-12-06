@@ -78,10 +78,8 @@ router.get('/signup', redirectProfile, (req, res) => {
 // @tested 	yes
 router.get('/login', redirectProfile, (req, res) => {
 	try {
-		res.status(200).render('login', {
+		res.status(200).render('pages/login', {
 			user: res.locals.user,
-			successNotification: null,
-			errorNotification: null,
 		});
 	} catch (error) {
 		handleError(res, 400, error);
@@ -510,7 +508,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 					successNotification: {
 						msg: 'Your email is already verified.',
 					},
-					errorNotification: null,
 				});
 			}
 
@@ -521,7 +518,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 				successNotification: {
 					msg: 'Email Verification successful',
 				},
-				errorNotification: null,
 			});
 		}
 
@@ -530,7 +526,6 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 		log.error(error);
 		return res.status(400).render('login', {
 			user: res.locals.user,
-			successNotification: null,
 			errorNotification: { msg: 'Email Verification failed' },
 		});
 	}

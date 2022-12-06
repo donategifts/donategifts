@@ -27,8 +27,8 @@
 
 /* ---------------modal design end*/
 
-.userLogBtn {
-  color: rgb(255, 95, 109);
+a.userLogBtn {
+  color: rgb(255, 95, 109) !important;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 15px;
   border-color: transparent;

@@ -3,6 +3,6 @@
     "server",
     "client"
   ],
-  "ext": "js,ejs",
+  "ext": "js,ejs,pug",
   "exec": "node --inspect=0.0.0.0:9229 server/app.js"
 }
