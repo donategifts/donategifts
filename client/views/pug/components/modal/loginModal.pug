@@ -1,4 +1,8 @@
-#loginModalCenter.modal.fade.login( tabindex='-1' role='dialog' aria-labelledby='loginModalLongTitle' aria-hidden='true' )
+#loginModalCenter.modal.fade.login( tabindex='-1'
+        role='dialog'
+        aria-labelledby='loginModalLongTitle'
+        aria-hidden='true'
+    )
     .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
         .modal-content
             .modal-header
@@ -7,7 +11,7 @@
                     span( aria-hidden='true' ) x
             .modal-body.rale-font
                 .container-fluid
-                    form.signup( action='/users/login' method='post' )
+                    form.signup( action='/login' method='post' )
                         .wrap-input.mg-btm( data-validate='Email is required' )
                             label.quick-font( for='email' ) Email
                             input#email.input-default.quick-font( required='' type='email' name='email' placeholder='' title='example: username@xyz.com' )
@@ -30,4 +34,4 @@
                             .fb-login-button.mt-3( data-size='large' data-button-type='login_with' data-layout='default' data-auto-logout-link='false' data-use-continue-as='false' data-scope='public_profile,email' data-onlogin='facebookLogin' )
             .modal-footer
                 .signup-container.quick-font
-                    a( href='/users/signup' ) New here? Sign Up
+                    a( href='/signup' ) New here? Sign Up

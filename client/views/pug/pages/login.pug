@@ -7,11 +7,11 @@ block content
     #fb-root
     .signup-bg.d-flex.container-fluid.justify-content-center.py-5
         .wrap-box
-            form.signup( action='/users/login' method='post' )
+            form.signup( action='/login' method='post' )
                 .sign-row.lg.title-text.crayon-font.mg-sm
-                    a.userLogBtn( href='/users/login' ) Log In
+                    a.userLogBtn( href='/login' ) Log In
                     span OR
-                    a.userLogBtn( href='/users/signup' ) Sign Up
+                    a.userLogBtn( href='/signup' ) Sign Up
                 .wrap-input.mg-btm( data-validate='Email is required' )
                     input#email.input-default.quick-font( required type='email' name='email' placeholder='Email' title='example: username@xyz.com' )
                 .wrap-input.mg-btm2( data-validate='Password is required' )
@@ -20,7 +20,7 @@ block content
                         name='password'
                         placeholder='Password'
                     )
-                    i#showPassword.fas.fa-eye.text-white
+                    i#showPassword.fas.fa-eye.text-white.pointer
                 a.text-white( href='/users/password/request/' ) Forgot Password?
                 .container-form-btn
                     button.form-btn.quick-font( type='submit' ) Log In
@@ -39,6 +39,9 @@ block content
                     )
 
 append scripts
+    include ../mixins/formvalidation
+    +passwordToggle
+
     if successNotification
         script.
             showToast('#{successNotification.msg}');
@@ -73,29 +76,6 @@ append scripts
                         $('#submit-btn').prop('disabled', false);
                     },
                 });
-            });
-
-            $('#showPassword').click(() => {
-                const imageHideClass = 'fas fa-eye';
-                const imageVisibleClass = 'fas fa-eye-slash';
-                const $passwordInput = $('#password');
-                const passworInputType = $passwordInput.attr('type');
-
-                switch (passworInputType) {
-                    case 'password':
-                        $passwordInput.attr('type', 'text');
-                        $(this).removeClass(imageHideClass);
-                        $(this).addClass(imageVisibleClass);
-                        break;
-
-                    case 'text':
-                        $passwordInput.attr('type', 'password');
-                        $(this).removeClass(imageVisibleClass);
-                        $(this).addClass(imageHideClass);
-                        break;
-                    default:
-                        break;
-                }
             });
 
             function facebookLogin(fbUser) {

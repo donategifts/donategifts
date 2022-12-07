@@ -58,34 +58,6 @@ router.get('/', (req, res) => {
 	}
 });
 
-// @desc    Render signup.html
-// @route   GET '/users/signup'
-// @access  Public
-// @tested 	Yes
-router.get('/signup', redirectProfile, (req, res) => {
-	try {
-		res.status(200).render('signup', {
-			user: res.locals.user,
-		});
-	} catch (err) {
-		return handleError(res, 400, err);
-	}
-});
-
-// @desc
-// @route   GET '/users/login'
-// @access  Private
-// @tested 	yes
-router.get('/login', redirectProfile, (req, res) => {
-	try {
-		res.status(200).render('pages/login', {
-			user: res.locals.user,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
-});
-
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/profile'
 // @access  Private, only users

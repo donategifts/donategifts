@@ -15,6 +15,7 @@ module.exports = class HomeHandler extends BaseHandler {
 
 		this.handleGetHealth = this.handleGetHealth.bind(this);
 		this.handleGetIndex = this.handleGetIndex.bind(this);
+		this.handleGetLogin = this.handleGetLogin.bind(this);
 	}
 
 	#getChristmasString() {
@@ -47,6 +48,7 @@ module.exports = class HomeHandler extends BaseHandler {
 
 		const donatedWishcards = await this.#wishCardRepository.getWishCardsByStatus('donated');
 
+		// remove this after pug rewrite, just used to test new pages on index page
 		const page = 'pages/home';
 
 		res.render(page, {
@@ -56,6 +58,18 @@ module.exports = class HomeHandler extends BaseHandler {
 			undonatedCards: undonatedWishcards.length,
 			donatedCards: Number(donatedWishcards.length) + 200,
 			christmasData: this.#getChristmasString(),
+		});
+	}
+
+	handleGetLogin(_req, res, _next) {
+		res.status(200).render('pages/login', {
+			user: res.locals.user,
+		});
+	}
+
+	handleGetSignup(_req, res, _next) {
+		res.status(200).render('pages/signup', {
+			user: res.locals.user,
 		});
 	}
 };

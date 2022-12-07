@@ -15,9 +15,9 @@ nav.navbar.navbar-expand-md.mb-0.p-1
 
                 if !locals.user
                     li.nav-item
-                        a.nav-link( href='/users/signup' ) Sign Up
+                        a.nav-link( href='/signup' ) Sign Up
                     li.nav-item
-                        a.nav-link( href='/users/login' ) Log In
+                        a.nav-link( href='/login' ) Log In
                 else
                     if locals.user.userRole == 'partner'
                         //- li.nav-item

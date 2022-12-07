@@ -22,7 +22,7 @@ const contactRoute = require('./routes/contact');
 const teamRoute = require('./routes/team');
 const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
-const indexRoute = require('./routes/index');
+const homeRoute = require('./routes/home');
 
 const MongooseConnection = require('./db/connection');
 const UserRepository = require('./db/repository/UserRepository');
@@ -174,7 +174,7 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
-app.use('/', indexRoute);
+app.use('/', homeRoute);
 
 if (process.env.MAINTENANCE_ENABLED === 'true') {
 	app.get('*', (_req, res) => {

@@ -1,18 +1,18 @@
-
+/* 
 [type='radio'] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
-}
+} */
 
-[type='radio'] + img {
+/* [type='radio'] + img {
   cursor: pointer;
 }
 
 [type='radio']:checked + img {
   box-shadow: 4px 4px 18px 4px rgba(139, 198, 77, 0.6);
-}
+} */
 
 .choicesContainer {
   margin-top: 1.5em;
