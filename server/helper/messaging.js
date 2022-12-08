@@ -345,7 +345,7 @@ async function sendFeedbackMessage({ name, email, subject, message }) {
 async function sendDiscordDonationNotification({
   user,
   service,
-  wishCard: { item, child },
+  wishCard: { item, url, child },
   donation: { amount, userDonation },
 }) {
   try {
@@ -369,6 +369,7 @@ async function sendDiscordDonationNotification({
               ${user} donated to ${child} via ${service}
 
               ${item}
+              ${url}
 
               $${amount} was covered.
               ${userDonation ? `We received something too: ${userDonation}` : ''}

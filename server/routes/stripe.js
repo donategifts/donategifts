@@ -57,6 +57,7 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
       service,
       wishCard: {
         item: wishCard.wishItemName,
+        url: wishCard.wishItemURL,
         child: wishCard.childFirstName,
       },
       donation: {
