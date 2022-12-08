@@ -372,7 +372,7 @@ async function sendDiscordDonationNotification({
               ${url}
 
               $${amount} was covered.
-              ${userDonation ? `We received something too: ${userDonation}` : ''}
+              ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
             `,
             color: Colors.Blurple,
           },
