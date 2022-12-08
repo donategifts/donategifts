@@ -425,7 +425,7 @@ router.put('/admin/', async (req, res) => {
     };
 
     await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
-    
+
     // @TODO: add agency notification email sending here after status was updated
     return res.status(200).send({
       success: true,

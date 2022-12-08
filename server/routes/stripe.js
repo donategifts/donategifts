@@ -9,7 +9,10 @@ const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
-const { sendDonationConfirmationMail } = require('../helper/messaging');
+const {
+  sendDonationConfirmationMail,
+  sendDiscordDonationNotification,
+} = require('../helper/messaging');
 const log = require('../helper/logger');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
 
@@ -49,15 +52,18 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
     wishCard.status = 'donated';
     wishCard.save();
 
-    log.info('Wishcard donated', {
-      type: 'wishcard_donated',
-      user: user._id,
-      wishCardId: wishCard._id,
-      amount,
-      agency: agencyName,
+    await sendDiscordDonationNotification({
+      user: user.fName,
+      service,
+      wishCard: {
+        item: wishCard.wishItemName,
+        child: wishCard.childFirstName,
+      },
+      donation: {
+        amount,
+        userDonation,
+      },
     });
-
-    // await sendDonationNotificationToSlack(service, userDonation, user, wishCard, amount);
   }
 };
 
