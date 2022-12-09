@@ -274,21 +274,21 @@ async function sendAgencyVerificationNotification({ id, name, website, bio }) {
 		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
 		content += 'A new agency has registered! <@766721399497687042>';
 
-		await axios({
-			method: 'POST',
-			url: `${process.env.DISCORD_WEBHOOK_URL}`,
-			header: {
-				'Content-Type': 'application/json',
-			},
-			data: {
-				content,
-				embeds: [
-					{
-						author: {
-							name,
-							url: website,
-						},
-						description: `
+    await axios({
+      method: 'POST',
+      url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        content,
+        embeds: [
+          {
+            author: {
+              name,
+              url: website,
+            },
+            description: `
               ${bio}
 
               [${website}](${website})
@@ -313,20 +313,20 @@ async function sendFeedbackMessage({ name, email, subject, message }) {
 		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
 		content += 'A new message from our contact form! <@766721399497687042>';
 
-		return await axios({
-			method: 'POST',
-			url: `${process.env.DISCORD_WEBHOOK_URL}`,
-			header: {
-				'Content-Type': 'application/json',
-			},
-			data: {
-				content,
-				embeds: [
-					{
-						author: {
-							name,
-						},
-						description: `
+    return await axios({
+      method: 'POST',
+      url: `${process.env.DISCORD_CONTACT_WEBHOOK_URL}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        content,
+        embeds: [
+          {
+            author: {
+              name,
+            },
+            description: `
               ${email}
               ${subject}
 
@@ -342,14 +342,57 @@ async function sendFeedbackMessage({ name, email, subject, message }) {
 	}
 }
 
+async function sendDiscordDonationNotification({
+  user,
+  service,
+  wishCard: { item, url, child },
+  donation: { amount, userDonation },
+}) {
+  try {
+    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+    content += 'One of our wish cards received a donation! <@766721399497687042>';
+
+    return await axios({
+      method: 'POST',
+      url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        content,
+        embeds: [
+          {
+            author: {
+              user,
+            },
+            description: `
+              ${user} donated to ${child} via ${service}
+
+              ${item}
+              ${url}
+
+              $${amount} was covered.
+              ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
+            `,
+            color: Colors.Blurple,
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    log.error(error);
+  }
+}
+
 module.exports = {
-	sendMail,
-	sendAgencyVerifiedMail,
-	sendDonationOrderedEmail,
-	createEmailVerificationHash,
-	sendVerificationEmail,
-	sendPasswordResetMail,
-	sendDonationConfirmationMail,
-	sendAgencyVerificationNotification,
-	sendFeedbackMessage,
+  sendMail,
+  sendAgencyVerifiedMail,
+  sendDonationOrderedEmail,
+  createEmailVerificationHash,
+  sendVerificationEmail,
+  sendPasswordResetMail,
+  sendDonationConfirmationMail,
+  sendAgencyVerificationNotification,
+  sendFeedbackMessage,
+  sendDiscordDonationNotification,
 };
