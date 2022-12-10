@@ -1,4 +1,4 @@
-<!-- facebook login -->
+=<!-- facebook login -->
 <script>
   window.fbAsyncInit = function () {
     FB.init({
@@ -34,12 +34,11 @@
 <script src="/public/clientJS/socialLogin.js"></script>
 <script src="/public/clientJS/togglePasswordVisibility.js"></script>
 
-<%- include('./signUpFirstModal')-%>
-<%- include('./logInWithEmail')-%>
+<%- include('./signUpUserRoleModal')-%>
 
 <!-----------New login modal begins here---------->
-<div class="new-login modal fade login" id="logInModal" tabindex="-1" role="dialog"
-  aria-labelledby="logInModal">
+<div class="new-login modal fade login" id="signUpModal" tabindex="-1" role="dialog"
+  aria-labelledby="signUpModal">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
     <div class="modal-content">
@@ -79,24 +78,24 @@
 
             <!-----------Modal change flow---------->
             <script>
-              function logInWithEmail() {
-                $('#logInModal').modal('hide');
-                $('#logInWithEmail').modal('show');
+              function handleEmailSignIn() {
+                $('#signInModal').modal('hide');
+                $('#signUpUserRoleModal').modal('show');
               }
-              function handleSignUp(){
-                $('#logInModal').modal('hide');
-                $('#signUpFirstModal').modal('show');
+              function handleSignup(){
+                $('#signInModal').modal('hide');
+                // $('#').modal('show');
               }
             </script>
             <!-----------Email signin button---------->
             <div class="mx-auto mt-3 mb-2">
-              <button onclick="logInWithEmail()" id="signup-btn" class="email-login">
+              <button onclick="handleEmailSignIn()" id="signup-btn" class="email-login">
                 <i class="far fa-envelope-open"></i>
-                <span>Log in with Email</span>
+                <span>Sign in with Email</span>
               </button>
             </div>
 
-            <p class="mt-5">Agency partners must log in with work email</p>
+            <p class="mt-5">Agency partners must sign in with work email</p>
           </div>
         </div>
         <div class="alt-side col-6 col-md-4">
@@ -104,13 +103,60 @@
             <h4 class="my-3">No account?</h4>
             <p class="">Join our great movement</p>
             <!-- TODO: add trigger here-->
-            <button onclick="handleSignUp()" class="email-login">
-              Sign up
-            </button>
+            <a>Sign up</a>
           </div>
         </div>
       </div>
 
+
+      <!-- 
+        <div class="modal-header">
+        <h4 class="crayon-font font-lg center">Log In</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body rale-font">
+        <div class="container-fluid">
+          <form class="signup" action="/users/login" method="post">
+            <div class="wrap-input mg-btm" data-validate="Email is required">
+              <label class="quick-font" for="email">Email</label>
+              <input required class="input-default quick-font" type="email" name="email" id="email" placeholder=""
+                title="example: username@xyz.com" />
+            </div>
+            <div class="wrap-input mg-btm2" data-validate="Password is required">
+              <label class="quick-font" for="password">Password</label>
+              <div id="input-container">
+                <input required class="input-default quick-font" type="password" name="password" id="password"
+                  placeholder="" pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+                  title="Must contain at least one number and one lowercase letter, and at least 8 or more characters" />
+                <i id="showPassword" class="fas fa-eye"></i>
+              </div>
+            </div>
+            <div class="forgot-container quick-font">
+              <a href="/users/password/request/">Forgot Password?</a>
+            </div>
+            
+            <div class="container-form-btn">
+              <button class="form-btn quick-font" type="submit">Log In</button>
+            </div>
+          </form>
+
+          <div class="text-container quick-font">
+            <p class="quick-font">or login with</p>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="signup-container quick-font">
+          <a href="/users/signup">New here? Sign Up</a>
+        </div>
+      </div> 
+    -->
 
     </div>
   </div>

@@ -13,32 +13,17 @@
 
       gtag('config', 'UA-180152810-1');
     </script>
-    <title>Donate Gifts</title>
-    <!-- ** NOTE: CDN Bootstrap.js, Popper.js, and jQuery are moved to the bottom so the page loads faster-->
+    <title>How Does It Work | Donate Gifts</title>
     <%- include('./templates/header')-%>
     <link rel="stylesheet" href="/public/css/howTo.css" />
+    <link rel="stylesheet" href="/public/dist/howto.min.css" />
   </head>
 
   <body>
     <%- include('./templates/nav')-%>
-    <main id="howTo">
-      <div id="header-bg" class="mb-3">
-        <div class="container py-5">
-          <div class="row">
-            <div class="col-12 text-center">
-              <h1 class="blue-font cool-font my-3">
-                How Does It Work For 
-              </h1>
-              <h1 class="cool-font">
-                <a id="user-log-btn" href="#donor">Donors</a> & <a id="user-log-btn" href="#partner">Partners</a>
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-      <section id="donor">
+    <div class="howto">
+      <!-- Donor How To Section -->
+      <section id="donor" class="pt-4 pb-5">
         <div class="container" >
           <h2 class="cool-font blue-font py-5 text-center mt-3">How do I send gifts as a donor?</h2>
           <div class="row">
@@ -110,10 +95,10 @@
             </div>
           </div>
         </div>
-
       </section>
 
-      <section id="partner" class="mt-5 pt-3">
+      <!-- Partner How To Section -->
+      <section id="partner" class="mt-5">
         <div class="container" >
             <h2 class="cool-font blue-font py-5 text-center">How do I create wishes as a partner?</h2>
             <div class="row">
@@ -169,10 +154,8 @@
               </div>
           </div>
       </section>
-
-      <%- include('./templates/footer')-%>
     </div>
-
+    <%- include('./templates/footer')-%>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
@@ -180,6 +163,5 @@
       integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
       crossorigin="anonymous"
     ></script>
-
   </body>
 </html>

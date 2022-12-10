@@ -1,0 +1,67 @@
+<script src="/public/clientJS/loginModal.js"></script>
+<script src="/public/clientJS/togglePasswordVisibility.js"></script>
+
+<%- include('./signUpFirstModal')-%>
+
+<!-----------New login modal begins here---------->
+<div class="new-login modal fade login" id="logInWithEmail" tabindex="-1" role="dialog"
+    aria-labelledby="logInWithEmail">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="row no-gutters">
+                <div class="oauth-side col-12 col-sm-6 col-md-8">
+                    <div class="d-flex justify-content-center flex-column mx-auto">
+                        <h3 class="my-3">Log in with email</h3>
+                        
+                        <!-----------Modal change flow---------->
+                        <script>
+                            function handleEmailSignIn() {
+                                $('#logInModal').modal('hide');
+                                $('#signUpUserRoleModal').modal('show');
+                            }
+
+                            function handleSignup() {
+                                $('#logInModal').modal('hide');
+                                $('#').modal('show');
+                            }
+                        </script>
+                        <form class="signup" action="/users/login" method="post">
+                            <div class="wrap-input mg-btm" data-validate="Email is required">
+                                <label class="quick-font" for="email">Email</label>
+                                <input required class="input-default quick-font" type="email" name="email" id="email"
+                                    placeholder="" title="example: username@xyz.com" />
+                            </div>
+                            <div class="wrap-input mg-btm2" data-validate="Password is required">
+                                <label class="quick-font" for="password">Password</label>
+                                <div id="input-container">
+                                    <input required class="input-default quick-font" type="password" name="password"
+                                        id="password" placeholder="" pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+                                        title="Must contain at least one number and one lowercase letter, and at least 8 or more characters" />
+                                    <i id="showPassword" class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                            <div class="forgot-container quick-font">
+                                <a href="/users/password/request/">Forgot Password?</a>
+                            </div>
+    
+                            <div class="container-form-btn">
+                                <button class="form-btn quick-font" type="submit">Log In</button>
+                            </div>
+                        </form>
+
+                        <p class="mt-5">Agency partners must log in with work email</p>
+                    </div>
+                </div>
+                <div class="alt-side col-6 col-md-4">
+                    <div class="d-flex justify-content-center flex-column mx-auto text-center">
+                        <h4 class="my-3">No account?</h4>
+                        <p class="">Join our great movement</p>
+                        <!-- TODO: add trigger here-->
+                        <a>Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

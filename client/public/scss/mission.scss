@@ -1,6 +1,7 @@
 @import './colors';
 @import './fonts';
 @import './utils';
+@import './layout'; 
 
 /* 
 -----------------------------
@@ -10,15 +11,14 @@ mission.ejs
 .mission {
   background-color: lighten($cream, 8);
   .header {
-    min-height: 30vh;
-    color: $navy-dark;
+    @extend %header;
     h1 {
       padding-top: 1em;
       font-family: $font-heading;
       border-bottom: 11px dotted $yellow;
       padding-bottom: 0.15em;
     }
-    h4 {
+    p {
       font-family: $font-body;
       font-size: 1.15em;
       line-height: 1.15em;

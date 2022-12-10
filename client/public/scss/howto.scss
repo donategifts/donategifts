@@ -1,0 +1,15 @@
+@import './colors';
+@import './fonts';
+@import './utils';
+@import './layout';
+
+/* 
+-----------------------------
+howTo.ejs
+-----------------------------
+*/
+.howto {
+  #donor {
+    background: lighten($cream, 8);
+  }
+}
