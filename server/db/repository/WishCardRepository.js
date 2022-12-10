@@ -42,7 +42,6 @@ async function getWishCardsByItemName(itemName, status) {
 
 async function getWishCardsFuzzy(itemName, showDonated, reverseSort, cardIds) {
   try {
-    console.log(showDonated);
     const searchMatch = [];
     const statusMatch = [{ status: 'published' }];
     if (showDonated) {
