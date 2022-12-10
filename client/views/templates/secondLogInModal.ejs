@@ -1,6 +1,12 @@
-<script src="/public/clientJS/loginModal.js"></script>
-<script src="/public/clientJS/togglePasswordVisibility.js"></script>
 
+ <!-----------Modal change flow---------->
+ <script>
+    function openSignUp(){
+      $('#secondLogInModal').modal('hide');
+      $('#firstSignUpModal').modal('show');
+    }
+  </script>
+  
 <!-----------New login modal begins here---------->
 <div class="new-login modal fade login" id="secondLogInModal" tabindex="-1" role="dialog"
     aria-labelledby="secondLogInModal">
@@ -43,8 +49,10 @@
                     <div class="d-flex justify-content-center flex-column mx-auto text-center">
                         <h4 class="my-3">No account?</h4>
                         <p class="">Join our great movement</p>
-                        <!-- TODO: add trigger here-->
-                        <a>Sign up</a>
+                        <!-- TODO: button style needs to change -->
+                        <button onclick="openSignUp()" class="email-login">
+                            Sign up
+                        </button>
                     </div>
                 </div>
             </div>

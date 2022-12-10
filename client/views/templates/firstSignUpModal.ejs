@@ -29,12 +29,14 @@
   <script src="/public/clientJS/loginModal.js"></script>
   <script src="/public/clientJS/socialLogin.js"></script>
   <script src="/public/clientJS/togglePasswordVisibility.js"></script>
-  
-  
+
+  <%- include('./secondSignUpModal')-%>
+
   <!-----------Modal change flow---------->
   <script>
     function handleEmailSignUp() {
       $('#firstSignUpModal').modal('hide');
+      $('#secondSignUpModal').modal('show');
     }
     function handleLogIn(){
       $('#firstSignUpModal').modal('hide');
