@@ -28,7 +28,7 @@
       </a>
       <% } else { %>
       <button type="button" id="donate-btn" data-toggle="modal" class="btn-orange-navy-lg-long"
-        data-target="#loginModalCenter">
+        data-target="#firstLogInModal">
         Donate Gift
       </button>
       <% } %>
@@ -110,7 +110,7 @@
 
   </div>
 
-  <%- include('./templates/loginModal.ejs') %>
+  <%- include('./templates/firstLogInModal') %>
   <%- include('./templates/footer')-%>
   <script>
     let messageFrom = `<%- JSON.stringify(user) %>`;

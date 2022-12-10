@@ -30,7 +30,7 @@ function getDonatedBtn(user, wishCardId, wishCardStatus) {
     return `<a href="wishcards/donate/${wishCardId}"><button type="button" class="wishcard__button--blue bdr-2"> Donate Gift </button></a>`;
   } else {
     return `<button type="button" data-toggle="modal" class="wishcard__button--blue bdr-2"
-    data-target="#loginModalCenter"> Donate Gift </button>`;
+    data-target="#firstLogInModal"> Donate Gift </button>`;
   }
 }
 

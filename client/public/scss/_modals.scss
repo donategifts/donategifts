@@ -1,0 +1,197 @@
+/*--------------------------------------------------------------
+Login Modal
+--------------------------------------------------------------*/
+.sign-up-role-modal,
+.sign-up-donor-modal,
+.sign-up-partner-modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  h3 {
+    @include font-styling($font-heading, 1.75rem, $orange);
+    text-align: center;
+  }
+  i {
+    font-size: 1.25rem;
+  }
+  .role-select {
+    border: 0.15rem solid lighten($black, 75%);
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+    cursor: pointer;
+    &:hover,
+    &:active {
+      background-color: lighten($yellow, 15);
+      border: 0.15rem solid lighten($yellow, 15);
+    }
+    img {
+      height: 35%;
+    }
+    p {
+      padding: 0;
+      margin: 0;
+    }
+    h5 {
+      margin-bottom: 0;
+    }
+  }
+  .modal-header,
+  .modal-footer {
+    border: none !important;
+  }
+  button {
+    font-family: $font-body;
+  }
+  .signup-field {
+    border: 0.15rem solid lighten($black, 75%);
+    box-shadow: inset 0.8px 0.8px 5px lighten($black, 75%);
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $navy !important;
+    label {
+      margin-left: 5px;
+      font-weight: $semi-bold;
+    }
+    input {
+      margin-left: 5px;
+      margin-top: -17px;
+      padding: 0;
+      font-size: 1rem;
+    }
+  }
+}
+
+.new-login {
+  background-color: rgba(0, 0, 0, 0.5);
+  h3 {
+    @include font-styling($font-heading, 1.75rem, $orange);
+  }
+  h4 {
+    @include font-styling($font-heading, 1.5rem, $white);
+  }
+  .modal-content {
+    border-radius: 1.5rem;
+    -webkit-border-radius: 1.5rem;
+    -moz-border-radius: 1.5rem;
+    -ms-border-radius: 1.5rem;
+    -o-border-radius: 1.5rem;
+  }
+  .oauth-side {
+    background-color: $white;
+    font-family: $font-body;
+    text-align: center;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem 0 0 1.5rem;
+    -webkit-border-radius: 1.5rem 0 0 1.5rem;
+    -moz-border-radius: 1.5rem 0 0 1.5rem;
+    -ms-border-radius: 1.5rem 0 0 1.5rem;
+    -o-border-radius: 1.5rem 0 0 1.5rem;
+    p {
+      color: $navy;
+    }
+    .email-login {
+      background-color: $white;
+      cursor: pointer;
+      color: $navy !important;
+      box-shadow: 0 2px 4px 0 grey;
+      padding: 0.6rem 3.5rem 0.6rem 1rem;
+      align-items: center;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      &:hover,
+      &:active {
+        background-color: lighten($yellow, 15) !important;
+        text-decoration: none;
+      }
+      i {
+        color: $orange;
+        font-size: 1.25rem;
+        margin-right: 2rem;
+      }
+    }
+  }
+  .alt-side {
+    background: linear-gradient($orange, $yellow);
+    padding: 6rem 2rem 1rem 2rem;
+    color: $white;
+    font-family: $font-body;
+    border-radius: 0 1.5rem 1.5rem 0;
+    -webkit-border-radius: 0 1.5rem 1.5rem 0;
+    -moz-border-radius: 0 1.5rem 1.5rem 0;
+    -ms-border-radius: 0 1.5rem 1.5rem 0;
+    -o-border-radius: 0 1.5rem 1.5rem 0;
+    a {
+      @extend %btn;
+      background-color: $white;
+      color: $navy !important;
+      box-shadow: 0 2px 4px 0 grey;
+      text-align: center;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      cursor: pointer;
+      &:hover,
+      &:active {
+        color: $orange !important;
+        font-weight: $semi-bold;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+//this overrides google sign in button
+.abcRioButton {
+  padding: 0 0.5rem;
+  color: $navy !important;
+  border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -moz-border-radius: 2px !important;
+  -ms-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  box-shadow: 0 2px 4px 0 grey !important;
+  &:hover,
+  &:active {
+    background-color: lighten($yellow, 15) !important;
+  }
+}
+//this changes google oauth default button text
+.abcRioButtonContents span:first-child {
+  font-family: $font-body !important;
+  font-size: 1rem;
+  visibility: hidden;
+  &:before {
+    content: 'Log in with Google';
+    visibility: visible;
+    color: $navy !important;
+    padding-left: 1rem;
+  }
+}
+
+//old styling code -- remove after testing
+@media screen and (min-width: 992px) {
+  .modal.login .modal-body {
+    margin: 0px 40px;
+  }
+
+  .modal.login #google-fb-login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
