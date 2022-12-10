@@ -175,6 +175,7 @@ const sendDonationConfirmationMail = async ({
     .replace('%price%', price)
     .replace('%agency%', agency)
     // Jan 1st, 2020 <- date formatting
+    .replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
     .replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
   return sendMail(
@@ -201,7 +202,8 @@ const sendDonationOrderedEmail = async ({
     .replace('%itemName%', itemName)
     .replace('%itemPrice%', itemPrice)
     .replace('%donationDate%', donationDate)
-    .replace('%address%', address);
+    .replace('%address%', address)
+    .replace('%currentYearPlaceholder%', new Date().getUTCFullYear());
 
   return sendMail(
     process.env.DEFAULT_EMAIL,
@@ -221,6 +223,7 @@ const sendVerificationEmail = async (to, hash) => {
       '%bodyPlaceHolder%',
       'Please confirm your email address to continue using our services.',
     )
+    .replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
     .replace('%buttonText%', 'Confirm Your Email');
 
   return sendMail(
@@ -238,6 +241,7 @@ const sendPasswordResetMail = async (to, hash) => {
     .replace('%titlePlaceHolder%', 'Your password reset request')
     .replace('%headerPlaceHolder%', '')
     .replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
+    .replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
     .replace('%buttonText%', 'Reset Password');
 
   return sendMail(
