@@ -1,0 +1,59 @@
+<!-- <%- include('./signUpDonorModal')-%> -->
+<!-- js scripts -->
+<!-- <script src="/public/clientJS/signUpWithModal.js"></script> -->
+<!-- <script>
+    let UserRole = "";
+    $('#partner').click(function () {
+        UserRole = "partner";
+    });
+    $('#donor').click(function () {
+        UserRole = "donor";
+    });
+</script> -->
+<!-- Modal -->
+<div class="sign-up-role-modal modal fade" id="secondSignUpModal" tabindex="-1" role="dialog"
+    aria-labelledby="secondSignUpModal" aria-hidden="true">
+    <div class="text-fix modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-start pb-0">
+                <div class="row mx-auto p-2">
+                    <div class="col-8">
+                        <h3 class="text-right pt-3">I'm signing up as</h3>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="far fa-times-circle"></i>
+                        </button></div>
+                </div>
+            </div>
+            <div class="modal-body quick-font p-4 mt-0">
+                <form class="signup" action="/users/signup" method="post">
+                    <div class="container p-2">
+                        <div class="row no-gutters justify-content-between px-2">
+                            <div tabindex="0" role="button" id="donor" name="userRole" value="donor"
+                                class="mx-4 role-select col d-flex justify-content-center align-items-center flex-column shadow">
+                                <img src="../../public/img/gift-sender-illustration.svg"
+                                    alt="gift-sender-illustration-for-donor-user-signup" class="mb-3">
+                                <h5>Gift Sender</h5>
+                                <p>(Individual or corporate donor)</p>
+                            </div>
+                            <div tabindex="0" role="button" id="partner" name="userRole" value="partner"
+                                class="mx-4 role-select col d-flex justify-content-center align-items-center flex-column shadow">
+                                <img src="../../public/img/partner-user-illustration.svg"
+                                    alt="agency-partner-user-signup-illustration" class="mb-3">
+                                <h5>Agency Partner</h5>
+                                <p>(Nonprofit organization)</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer mx-auto pb-3 pt-0">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button id="submit-btn" type="button" class="btn-orange-navy-lg px-5" data-dismiss="modal"
+                    data-toggle="modal" data-target="#">Next</button>
+            </div>
+        </div>
+    </div>
+</div>

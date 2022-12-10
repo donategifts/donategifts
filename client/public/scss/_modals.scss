@@ -69,6 +69,66 @@ Login Modal
   }
 }
 
+#firstSignUpModal {
+  //this overrides google sign in button
+  .abcRioButton {
+    padding: 0 0.5rem;
+    color: $navy !important;
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    -ms-border-radius: 2px !important;
+    -o-border-radius: 2px !important;
+    box-shadow: 0 2px 4px 0 grey !important;
+    &:hover,
+    &:active {
+      background-color: lighten($yellow, 15) !important;
+    }
+  }
+  //this changes google oauth default button text
+  .abcRioButtonContents span:first-child {
+    font-family: $font-body !important;
+    font-size: 1rem;
+    visibility: hidden;
+    &:before {
+      content: 'Sign up with Google';
+      visibility: visible;
+      color: $navy !important;
+      padding-left: 1rem;
+    }
+  }
+}
+
+#firstLogInModal {
+  //this overrides google sign in button
+  .abcRioButton {
+    padding: 0 0.5rem;
+    color: $navy !important;
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    -ms-border-radius: 2px !important;
+    -o-border-radius: 2px !important;
+    box-shadow: 0 2px 4px 0 grey !important;
+    &:hover,
+    &:active {
+      background-color: lighten($yellow, 15) !important;
+    }
+  }
+  //this changes google oauth default button text
+  .abcRioButtonContents span:first-child {
+    font-family: $font-body !important;
+    font-size: 1rem;
+    visibility: hidden;
+    &:before {
+      content: 'Log in with Google';
+      visibility: visible;
+      color: $navy !important;
+      padding-left: 1rem;
+    }
+  }
+}
+
 .new-login {
   background-color: rgba(0, 0, 0, 0.5);
   h3 {
@@ -152,34 +212,6 @@ Login Modal
         text-decoration: none;
       }
     }
-  }
-}
-
-//this overrides google sign in button
-.abcRioButton {
-  padding: 0 0.5rem;
-  color: $navy !important;
-  border-radius: 2px !important;
-  -webkit-border-radius: 2px !important;
-  -moz-border-radius: 2px !important;
-  -ms-border-radius: 2px !important;
-  -o-border-radius: 2px !important;
-  box-shadow: 0 2px 4px 0 grey !important;
-  &:hover,
-  &:active {
-    background-color: lighten($yellow, 15) !important;
-  }
-}
-//this changes google oauth default button text
-.abcRioButtonContents span:first-child {
-  font-family: $font-body !important;
-  font-size: 1rem;
-  visibility: hidden;
-  &:before {
-    content: 'Log in with Google';
-    visibility: visible;
-    color: $navy !important;
-    padding-left: 1rem;
   }
 }
 

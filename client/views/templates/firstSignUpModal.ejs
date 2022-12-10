@@ -30,7 +30,6 @@
   <script src="/public/clientJS/socialLogin.js"></script>
   <script src="/public/clientJS/togglePasswordVisibility.js"></script>
   
-  <%- include('./firstLogInModal') -%>
   
   <!-----------Modal change flow---------->
   <script>
@@ -39,7 +38,6 @@
     }
     function handleLogIn(){
       $('#firstSignUpModal').modal('hide');
-      $('#firstLogInModal').modal('show');
     }
   </script>
   
@@ -56,7 +54,7 @@
   
               <div class="d-flex justify-content-center align-content-center flex-column">
                 <!-----------Facebook signin button---------->
-                <div class="fb-login-button" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-scope="public_profile,email" data-onlogin="facebookLogin"></div>
+                <div class="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="rounded" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-scope="public_profile,email" data-onlogin="facebookLogin"></div>
                 <!-----------Google signin button---------->
                 <div class="mx-auto mt-3 mb-2">
                   <div class="g-signin2" data-width="228" data-longtitle="true" data-onsuccess="googleLogin"></div>
