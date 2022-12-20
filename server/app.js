@@ -13,16 +13,17 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 
+const communityRoute = require('./routes/community');
+const contactRoute = require('./routes/contact');
+const faqRoute = require('./routes/faq');
+const homeRoute = require('./routes/home');
+const howtoRoute = require('./routes/howto');
+const missionRoute = require('./routes/mission');
+const stripeRoute = require('./routes/stripe');
+const teamRoute = require('./routes/team');
+const termsRoute = require('./routes/terms');
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
-const missionRoute = require('./routes/mission');
-const howtoRoute = require('./routes/howto');
-const faqRoute = require('./routes/faq');
-const contactRoute = require('./routes/contact');
-const teamRoute = require('./routes/team');
-const stripeRoute = require('./routes/stripe');
-const communityRoute = require('./routes/community');
-const homeRoute = require('./routes/home');
 
 const { MongooseConnection } = require('./db/connection');
 const { UserRepository } = require('./db/repository/UserRepository');
@@ -194,6 +195,7 @@ app.use('/faq', faqRoute);
 app.use('/stripe', stripeRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
+app.use('/terms', termsRoute);
 app.use('/', homeRoute);
 
 if (process.env.MAINTENANCE_ENABLED === 'true') {
