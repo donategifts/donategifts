@@ -175,6 +175,7 @@ const sendDonationConfirmationMail = async ({
 		.replace('%price%', price)
 		.replace('%agency%', agency)
 		// Jan 1st, 2020 <- date formatting
+		.replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
 		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 	return sendMail(
@@ -201,7 +202,8 @@ const sendDonationOrderedEmail = async ({
 		.replace('%itemName%', itemName)
 		.replace('%itemPrice%', itemPrice)
 		.replace('%donationDate%', donationDate)
-		.replace('%address%', address);
+		.replace('%address%', address)
+		.replace('%currentYearPlaceholder%', new Date().getUTCFullYear());
 
 	return sendMail(
 		process.env.DEFAULT_EMAIL,
@@ -221,6 +223,7 @@ const sendVerificationEmail = async (to, hash) => {
 			'%bodyPlaceHolder%',
 			'Please confirm your email address to continue using our services.',
 		)
+		.replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
 		.replace('%buttonText%', 'Confirm Your Email');
 
 	return sendMail(
@@ -238,6 +241,7 @@ const sendPasswordResetMail = async (to, hash) => {
 		.replace('%titlePlaceHolder%', 'Your password reset request')
 		.replace('%headerPlaceHolder%', '')
 		.replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
+		.replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
 		.replace('%buttonText%', 'Reset Password');
 
 	return sendMail(
@@ -274,27 +278,27 @@ async function sendAgencyVerificationNotification({ id, name, website, bio }) {
 		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
 		content += 'A new agency has registered! <@766721399497687042>';
 
-    await axios({
-      method: 'POST',
-      url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        content,
-        embeds: [
-          {
-            author: {
-              name,
-              url: website,
-            },
-            description: `
-              ${bio}
+		await axios({
+			method: 'POST',
+			url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+			header: {
+				'Content-Type': 'application/json',
+			},
+			data: {
+				content,
+				embeds: [
+					{
+						author: {
+							name,
+							url: website,
+						},
+						description: `
+                            ${bio}
 
-              [${website}](${website})
-            
-              Please check their website before verifying it!
-            `,
+                            [${website}](${website})
+                            
+                            Please check their website before verifying it!
+                        `,
 						color: Colors.Yellow,
 						footer: {
 							text: `Want to verify it? /verifyagency ${id}`,
@@ -313,25 +317,25 @@ async function sendFeedbackMessage({ name, email, subject, message }) {
 		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
 		content += 'A new message from our contact form! <@766721399497687042>';
 
-    return await axios({
-      method: 'POST',
-      url: `${process.env.DISCORD_CONTACT_WEBHOOK_URL}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        content,
-        embeds: [
-          {
-            author: {
-              name,
-            },
-            description: `
-              ${email}
-              ${subject}
+		return await axios({
+			method: 'POST',
+			url: `${process.env.DISCORD_CONTACT_WEBHOOK_URL}`,
+			header: {
+				'Content-Type': 'application/json',
+			},
+			data: {
+				content,
+				embeds: [
+					{
+						author: {
+							name,
+						},
+						description: `
+                            ${email}
+                            ${subject}
 
-              ${message}
-            `,
+                            ${message}
+                        `,
 						color: Colors.Aqua,
 					},
 				],
@@ -343,56 +347,56 @@ async function sendFeedbackMessage({ name, email, subject, message }) {
 }
 
 async function sendDiscordDonationNotification({
-  user,
-  service,
-  wishCard: { item, url, child },
-  donation: { amount, userDonation },
+	user,
+	service,
+	wishCard: { item, url, child },
+	donation: { amount, userDonation },
 }) {
-  try {
-    let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
-    content += 'One of our wish cards received a donation! <@766721399497687042>';
+	try {
+		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+		content += 'One of our wish cards received a donation! <@766721399497687042>';
 
-    return await axios({
-      method: 'POST',
-      url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
-      header: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        content,
-        embeds: [
-          {
-            author: {
-              user,
-            },
-            description: `
-              ${user} donated to ${child} via ${service}
+		return await axios({
+			method: 'POST',
+			url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+			header: {
+				'Content-Type': 'application/json',
+			},
+			data: {
+				content,
+				embeds: [
+					{
+						author: {
+							user,
+						},
+						description: `
+                            ${user} donated to ${child} via ${service}
 
-              ${item}
-              ${url}
+                            ${item}
+                            ${url}
 
-              $${amount} was covered.
-              ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
-            `,
-            color: Colors.Blurple,
-          },
-        ],
-      },
-    });
-  } catch (error) {
-    log.error(error);
-  }
+                            $${amount} was covered.
+                            ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
+                        `,
+						color: Colors.Blurple,
+					},
+				],
+			},
+		});
+	} catch (error) {
+		log.error(error);
+	}
 }
 
 module.exports = {
-  sendMail,
-  sendAgencyVerifiedMail,
-  sendDonationOrderedEmail,
-  createEmailVerificationHash,
-  sendVerificationEmail,
-  sendPasswordResetMail,
-  sendDonationConfirmationMail,
-  sendAgencyVerificationNotification,
-  sendFeedbackMessage,
-  sendDiscordDonationNotification,
+	sendMail,
+	sendAgencyVerifiedMail,
+	sendDonationOrderedEmail,
+	createEmailVerificationHash,
+	sendVerificationEmail,
+	sendPasswordResetMail,
+	sendDonationConfirmationMail,
+	sendAgencyVerificationNotification,
+	sendFeedbackMessage,
+	sendDiscordDonationNotification,
 };

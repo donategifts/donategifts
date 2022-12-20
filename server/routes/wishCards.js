@@ -367,30 +367,30 @@ router.get('/admin/', async (req, res) => {
 });
 
 router.put('/admin/', async (req, res) => {
-  try {
-    // only admin users can get access
-    if (res.locals.user.userRole !== 'admin') {
-      return res.status(403).render('403');
-    }
+	try {
+		// only admin users can get access
+		if (res.locals.user.userRole !== 'admin') {
+			return res.status(403).render('403');
+		}
 
-    const { wishCardId, wishItemURL } = req.body;
+		const { wishCardId, wishItemURL } = req.body;
 
-    const wishCardModifiedFields = {
-      wishItemURL,
-      status: 'published',
-    };
+		const wishCardModifiedFields = {
+			wishItemURL,
+			status: 'published',
+		};
 
-    await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
+		await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
 
-    // @TODO: add agency notification email sending here after status was updated
-    return res.status(200).send({
-      success: true,
-      error: null,
-      data: null,
-    });
-  } catch (error) {
-    handleError(res, 400, error);
-  }
+		// @TODO: add agency notification email sending here after status was updated
+		return res.status(200).send({
+			success: true,
+			error: null,
+			data: null,
+		});
+	} catch (error) {
+		handleError(res, 400, error);
+	}
 });
 
 router.get('/admin/:wishCardId', async (req, res) => {

@@ -10,8 +10,8 @@ const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
 const {
-  sendDonationConfirmationMail,
-  sendDiscordDonationNotification,
+	sendDonationConfirmationMail,
+	sendDiscordDonationNotification,
 } = require('../helper/messaging');
 const log = require('../helper/logger');
 const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
@@ -23,49 +23,49 @@ paypal.configure({
 });
 
 const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
-  const user = await UserRepository.getUserByObjectId(userId);
-  const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+	const user = await UserRepository.getUserByObjectId(userId);
+	const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
 
-  if (user) {
-    const emailResponse = await sendDonationConfirmationMail({
-      email: user.email,
-      firstName: user.fName,
-      lastName: user.lName,
-      childName: wishCard.childFirstName,
-      item: wishCard.wishItemName,
-      price: wishCard.wishItemPrice,
-      agency: agencyName,
-    });
+	if (user) {
+		const emailResponse = await sendDonationConfirmationMail({
+			email: user.email,
+			firstName: user.fName,
+			lastName: user.lName,
+			childName: wishCard.childFirstName,
+			item: wishCard.wishItemName,
+			price: wishCard.wishItemPrice,
+			agency: agencyName,
+		});
 
-    const response = emailResponse ? emailResponse.data : '';
-    if (process.env.NODE_ENV === 'development') {
-      log.info(response);
-    }
+		const response = emailResponse ? emailResponse.data : '';
+		if (process.env.NODE_ENV === 'development') {
+			log.info(response);
+		}
 
-    await DonationRepository.createNewDonation({
-      donationFrom: user._id,
-      donationTo: wishCard.belongsTo,
-      donationCard: wishCard._id,
-      donationPrice: amount,
-    });
+		await DonationRepository.createNewDonation({
+			donationFrom: user._id,
+			donationTo: wishCard.belongsTo,
+			donationCard: wishCard._id,
+			donationPrice: amount,
+		});
 
-    wishCard.status = 'donated';
-    wishCard.save();
+		wishCard.status = 'donated';
+		wishCard.save();
 
-    await sendDiscordDonationNotification({
-      user: user.fName,
-      service,
-      wishCard: {
-        item: wishCard.wishItemName,
-        url: wishCard.wishItemURL,
-        child: wishCard.childFirstName,
-      },
-      donation: {
-        amount,
-        userDonation,
-      },
-    });
-  }
+		await sendDiscordDonationNotification({
+			user: user.fName,
+			service,
+			wishCard: {
+				item: wishCard.wishItemName,
+				url: wishCard.wishItemURL,
+				child: wishCard.childFirstName,
+			},
+			donation: {
+				amount,
+				userDonation,
+			},
+		});
+	}
 };
 
 const router = express.Router();
