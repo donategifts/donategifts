@@ -24,15 +24,18 @@ const stripeRoute = require('./routes/stripe');
 const communityRoute = require('./routes/community');
 const homeRoute = require('./routes/home');
 
-const MongooseConnection = require('./db/connection');
-const UserRepository = require('./db/repository/UserRepository');
-const AgencyRepository = require('./db/repository/AgencyRepository');
+const { MongooseConnection } = require('./db/connection');
+const { UserRepository } = require('./db/repository/UserRepository');
+const { AgencyRepository } = require('./db/repository/AgencyRepository');
 
 const log = require('./helper/logger');
-
 const DGBot = require('./discord/bot');
 
 const app = express();
+
+const mongooseConnection = new MongooseConnection();
+const userRepository = new UserRepository();
+const agencyRepository = new AgencyRepository();
 
 // hot reloading in dev environment
 if (process.env.NODE_ENV === 'development') {
@@ -81,7 +84,7 @@ app.use(
 	}),
 );
 
-MongooseConnection.connect();
+mongooseConnection.connect();
 
 if (process.env.DISCORD_CLIENT_ID) {
 	const bot = new DGBot();
@@ -126,11 +129,11 @@ app.use(
 app.use(async (req, res, next) => {
 	const { user } = req.session;
 	if (user) {
-		const result = await UserRepository.getUserByObjectId(user._id);
+		const result = await userRepository.getUserByObjectId(user._id);
 		res.locals.user = result;
 		req.session.user = result;
 		if (user.userRole === 'partner') {
-			const agency = await AgencyRepository.getAgencyByUserId(user._id);
+			const agency = await agencyRepository.getAgencyByUserId(user._id);
 			if (agency !== null) {
 				res.locals.agency = agency;
 				req.session.agency = agency;

@@ -1,6 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
-const MongooseConnection = require('./connection');
+const { MongooseConnection } = require('./connection');
 const { allUsers, wishcards, agency } = require('./seederData');
 const User = require('./models/User');
 const WishCard = require('./models/WishCard');
@@ -11,9 +11,10 @@ const { getMessageChoices } = require('../utils/defaultMessages');
 const logger = require('../helper/logger');
 
 (async () => {
+	const mongooseConnection = new MongooseConnection();
 	try {
 		if (process.env.NODE_ENV === 'development') {
-			MongooseConnection.connect();
+			mongooseConnection.connect();
 
 			const createWishCard = async (partnerId, createdAgency, card) => {
 				await WishCard.create({
@@ -119,8 +120,8 @@ const logger = require('../helper/logger');
 		}
 	} catch (error) {
 		logger.error(error);
-		MongooseConnection.disconnect();
+		mongooseConnection.disconnect();
 	} finally {
-		MongooseConnection.disconnect();
+		mongooseConnection.disconnect();
 	}
 })();
