@@ -95,6 +95,14 @@ async function getUnverifiedAgencies() {
 	return Agency.find({ isVerified: false }).exec();
 }
 
+async function getAgencyByName(name) {
+	try {
+		return await Agency.findOne({ agencyName: name }).populate('accountManager').lean().exec();
+	} catch (error) {
+		throw new Error('Failed to get agency by name: ', error);
+	}
+}
+
 module.exports = {
 	AgencyRepository,
 	getAgencyByUserId,
@@ -102,4 +110,5 @@ module.exports = {
 	getVerifiedAgencies,
 	verifyAgency,
 	getUnverifiedAgencies,
+	getAgencyByName,
 };

@@ -9,8 +9,16 @@ const log = require('./logger');
 const template = fs.readFileSync(path.resolve(__dirname, '../resources/email/emailTemplate.html'), {
 	encoding: 'utf-8',
 });
+
 const donationTemplate = fs.readFileSync(
 	path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+	{
+		encoding: 'utf-8',
+	},
+);
+
+const agencyDonationAlert = fs.readFileSync(
+	path.resolve(__dirname, '../resources/email/agencyDonationAlert.html'),
 	{
 		encoding: 'utf-8',
 	},
@@ -312,6 +320,34 @@ async function sendAgencyVerificationNotification({ id, name, website, bio }) {
 	}
 }
 
+const sendAgencyDonationAlert = async ({
+	email,
+	firstName,
+	lastName,
+	childName,
+	item,
+	price,
+	agency,
+}) => {
+	const body = agencyDonationAlert
+		.replace(/%childName%/g, childName)
+		.replace('%fullName%', `${firstName} ${lastName}`)
+		.replace('%item%', item)
+		.replace('%price%', price)
+		.replace('%agency%', agency)
+		// Jan 1st, 2020 <- date formatting
+		.replace('%currentYearPlaceholder%', new Date().getUTCFullYear())
+		.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
+
+	return sendMail(
+		process.env.DEFAULT_EMAIL,
+		email,
+		'Donate-gifts.com Donation Receipt',
+		body,
+		donationTemplateAttachments,
+	);
+};
+
 async function sendFeedbackMessage({ name, email, subject, message }) {
 	try {
 		let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
@@ -399,4 +435,5 @@ module.exports = {
 	sendAgencyVerificationNotification,
 	sendFeedbackMessage,
 	sendDiscordDonationNotification,
+	sendAgencyDonationAlert,
 };
