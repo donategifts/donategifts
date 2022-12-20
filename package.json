@@ -66,6 +66,7 @@
   "devDependencies": {
     "chai": "4.3.7",
     "chai-http": "4.3.0",
+    "connect-livereload": "^0.6.1",
     "cross-env": "7.0.3",
     "eslint": "8.28.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -75,6 +76,7 @@
     "eslint-plugin-prettier": "4.2.1",
     "faker": "5.5.3",
     "husky": "8.0.2",
+    "livereload": "^0.9.3",
     "mocha": "10.1.0",
     "nodemon": "2.0.20",
     "npm-check-updates": "16.4.1",

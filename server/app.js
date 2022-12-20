@@ -34,6 +34,23 @@ const DGBot = require('./discord/bot');
 
 const app = express();
 
+// hot reloading in dev environment
+if (process.env.NODE_ENV === 'development') {
+	// eslint-disable-next-line import/no-extraneous-dependencies
+	const livereload = require('livereload');
+	// eslint-disable-next-line import/no-extraneous-dependencies
+	const connectLiveReload = require('connect-livereload');
+	const liveReloadServer = livereload.createServer();
+
+	liveReloadServer.server.once('connection', () => {
+		setTimeout(() => {
+			liveReloadServer.refresh('/');
+		}, 100);
+	});
+
+	app.use(connectLiveReload());
+}
+
 app.use(
 	responseTime((req, res, time) => {
 		if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
