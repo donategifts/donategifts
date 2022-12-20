@@ -5,11 +5,13 @@ const log = require('../helper/logger');
 class MongooseConnection extends BaseHandler {
 	#mongoose;
 
+	#options;
+
 	constructor(options = {}) {
 		super();
-		this.mongoose = mongoose;
+		this.#mongoose = mongoose;
 
-		this.options = {
+		this.#options = {
 			...options,
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
@@ -17,8 +19,8 @@ class MongooseConnection extends BaseHandler {
 	}
 
 	connect() {
-		this.mongoose.Promise = Promise;
-		this.mongoose.connect(process.env.MONGO_URI, this.options, (err, database) => {
+		this.#mongoose.Promise = Promise;
+		this.#mongoose.connect(process.env.MONGO_URI, this.#options, (err, database) => {
 			if (err) {
 				this.log.error('Unable to connect to DB. Error:', err);
 			} else {
@@ -39,7 +41,7 @@ class MongooseConnection extends BaseHandler {
 
 	async disconnect() {
 		try {
-			await mongoose.disconnect();
+			await this.#mongoose.disconnect();
 		} catch (error) {
 			this.log.error('failed to disconnect mongoose: ', error);
 		} finally {
