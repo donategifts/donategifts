@@ -9,7 +9,9 @@ const { redirectLogin } = require('./middleware/login.middleware');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
+const AgencyRepository = require('../db/repository/AgencyRepository');
 const {
+  sendAgencyDonationAlert,
   sendDonationConfirmationMail,
   sendDiscordDonationNotification,
 } = require('../helper/messaging');
@@ -25,6 +27,7 @@ paypal.configure({
 const handleDonation = async (service, userId, wishCardId, amount, userDonation, agencyName) => {
   const user = await UserRepository.getUserByObjectId(userId);
   const wishCard = await WishCardRepository.getWishCardByObjectId(wishCardId);
+  const agency = await AgencyRepository.getAgencyByName(agencyName);
 
   if (user) {
     const emailResponse = await sendDonationConfirmationMail({
@@ -37,8 +40,8 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
       agency: agencyName,
     });
 
-    const response = emailResponse ? emailResponse.data : '';
     if (process.env.NODE_ENV === 'development') {
+      const response = emailResponse ? emailResponse.data : '';
       log.info(response);
     }
 
@@ -51,6 +54,14 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
 
     wishCard.status = 'donated';
     wishCard.save();
+
+    await sendAgencyDonationAlert({
+      email: agency.accountManager.email,
+      item: wishCard.wishItemName,
+      price: wishCard.wishItemPrice,
+      childName: wishCard.childFirstName,
+      agency: agencyName,
+    });
 
     await sendDiscordDonationNotification({
       user: user.fName,
@@ -69,6 +80,17 @@ const handleDonation = async (service, userId, wishCardId, amount, userDonation,
 };
 
 const router = express.Router();
+
+router.get('/index', async (_req, _res) =>
+  handleDonation(
+    'srtipe',
+    '638ef614ba023742bd506f61',
+    '638ef614ba023742bd506f6e',
+    10,
+    0,
+    'SaveDaKids',
+  ),
+);
 
 // const endpointSecret = process.env.STRIPE_SECRET;
 
