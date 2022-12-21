@@ -177,6 +177,11 @@ app.use('/community', communityRoute);
 app.use('/team', teamRoute);
 app.use('/', indexRoute);
 
+app.use('/robots.txt', (req, res, _next) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, '../client/public/robots.txt'));
+});
+
 // static maintenance page
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
