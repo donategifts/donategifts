@@ -33,7 +33,7 @@ const handleError = (res, code, errorMsg) => {
     error,
   });
 
-  res.status(statusCode).render(statusCode === 400 ? '404' : statusCode.toString(), {
+  res.status(statusCode).send({
     statusCode,
     error,
   });
