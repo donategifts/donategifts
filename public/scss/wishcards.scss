@@ -1,0 +1,197 @@
+@import './colors';
+@import './fonts';
+@import './utils';
+
+.wishcards {
+  position: relative;
+  padding: 3em 0;
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $navy, $medium);
+    text-align: center;
+    padding: 1rem 0rem 3rem 0rem;
+  }
+  &-container {
+    max-width: 1300px;
+    // Just so it doesn't expand all the way in large screens
+  }
+  .create-more {
+    @extend %btn-lg;
+    text-decoration: none !important;
+    background-color: $orange;
+    color: $white !important;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    font-size: 1.25rem;
+  }
+}
+
+.wishcard {
+  &__icon--fixed {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    padding: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    transition: all 0.25s ease-in-out;
+    text-decoration: none;
+  }
+  &__button--blue {
+    @extend %btn;
+    background-color: $navy;
+    color: $white;
+    &:hover {
+      background-color: $white;
+      color: $navy;
+      border: 0.5px solid $navy;
+    }
+  }
+  &__button--disabled {
+    @extend %btn;
+    background-color: lighten($gray, 25%);
+    color: $white;
+  }
+  &__button--filter {
+    @extend %btn;
+    background-color: $white;
+    color: $yellow;
+    border: 0.5px solid $yellow;
+    &:hover {
+      background-color: $yellow;
+      color: $white;
+    }
+  }
+}
+
+.card-body {
+  padding: 1.1rem !important;
+  .card-details {
+    p {
+      @include font-styling($font-body);
+      margin-bottom: 0rem;
+    }
+    .wish-price {
+      -webkit-text-decoration-line: underline;
+      text-decoration-line: underline;
+      -moz-text-decoration-line: underline;
+      -webkit-text-decoration-color: $red;
+      text-decoration-color: $red;
+      -moz-text-decoration-color: $red;
+    }
+  }
+  .card-action {
+    @include font-styling($font-body);
+    margin-top: 1rem;
+    margin-bottom: -1rem;
+    text-align: center;
+  }
+}
+
+//move this later
+.msg-icon {
+  background-color: $yellow;
+  padding: 0.6em 0.8em;
+  border: none;
+  &:hover {
+    text-decoration: none;
+    background-color: darken($yellow, 25%);
+  }
+}
+
+.search-border {
+  background-color: lighten($cream, 8);
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  button {
+    border-radius: 0 20px 20px 0;
+    -webkit-border-radius: 0 20px 20px 0;
+    -moz-border-radius: 0 20px 20px 0;
+    -ms-border-radius: 0 20px 20px 0;
+    -o-border-radius: 0 20px 20px 0;
+  }
+}
+
+// ------------- wishcard/:id page ------------
+.wishpage {
+  margin: 0 auto;
+  padding: 0 auto;
+  box-sizing: border-box;
+  background-color: lighten($cream, 8);
+  @include font-styling($font-body);
+  h1 {
+    @include font-styling($font-heading, 2.5rem, $navy);
+    text-align: center;
+  }
+  h3 {
+    @include font-styling($font-body, 1.5rem, $orange, $semi-bold);
+    text-align: center;
+    text-transform: uppercase;
+  }
+  p {
+    text-align: left;
+    word-wrap: break-word;
+  }
+  i {
+    color: $orange;
+    font-size: 1.5rem;
+  }
+  .wrapper {
+    width: 40vw;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+    -ms-border-radius: 2rem;
+    -o-border-radius: 2rem;
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      background: $white;
+      width: 40vw;
+      padding: 1rem;
+      border-radius: 1rem;
+      -webkit-border-radius: 1rem;
+      -moz-border-radius: 1rem;
+      -ms-border-radius: 1rem;
+      -o-border-radius: 1rem;
+    }
+  }
+  .msg-each {
+    background-color: lighten($cream, 7);
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  .donate-btn {
+    @extend %btn-lg;
+    text-decoration: none !important;
+    background-color: $orange;
+    color: $white !important;
+    min-width: 40vw;
+    display: inline-block !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .wishpage {
+    .wrapper {
+      width: 80vw !important;
+    }
+    .row {
+      img {
+        width: 80vw !important;
+      }
+    }
+  }
+}

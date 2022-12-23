@@ -1,0 +1,83 @@
+.section-title {
+  text-align: center;
+}
+
+.section-info {
+  border-radius: 20px;
+  background-color: rgba(255, 246, 237, 1);
+  padding: 2em;
+  color: #262626;
+}
+
+.write-msg {
+  grid-area: write;
+  /* background: linear-gradient(290deg, rgba(255,255,255,1), rgba(255, 209, 90, 1)); */
+  border-radius: 20px;
+  background-color: rgba(255, 246, 237, 1);
+  padding: 2em;
+  margin-left: 2em;
+  color: #262626;
+}
+
+.show-msg {
+  grid-area: msg;
+  background-color: rgba(255, 246, 237, 1);
+  color: rgba(0, 161, 154, 1);
+  border-radius: 10px;
+  padding: 2em;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+/* Responsive for tablet/mobile */
+@media screen and (max-width: 992px) {
+  .section-info {
+    margin-right: 0;
+  }
+
+  .write-msg {
+    margin-left: 0;
+  }
+
+  #img-kid {
+    width: 40vw;
+  }
+}
+
+#img-kid {
+  border-radius: 20px;
+  height: auto;
+}
+
+#img-kid-donate {
+  border-radius: 20px;
+  width: 200px;
+  height: auto;
+}
+
+#donate-btn {
+  max-width: 420px;
+  border-radius: 10px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: white !important;
+  text-decoration: none;
+}
+
+#message {
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 209, 90, 0.6);
+  padding: 1em;
+}
+
+#submit {
+  background-color: rgba(0, 161, 154, 1);
+  color: #fff;
+  padding: 1em;
+  max-width: 360px;
+  max-height: 55px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+}

@@ -96,7 +96,7 @@ if (process.env.DISCORD_CLIENT_ID) {
 
 app.use(cors());
 
-app.set('views', path.join(__dirname, '../client/views/pug'));
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
 // app.set('views', path.join(__dirname, '../client/views'));
@@ -200,7 +200,7 @@ app.use('/', homeRoute);
 
 app.use('/robots.txt', (req, res, _next) => {
 	res.type('text/plain');
-	res.sendFile(path.join(__dirname, '../client/public/robots.txt'));
+	res.sendFile(path.join(__dirname, '../public/robots.txt'));
 });
 
 if (process.env.MAINTENANCE_ENABLED === 'true') {
