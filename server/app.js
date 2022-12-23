@@ -19,7 +19,7 @@ const faqRoute = require('./routes/faq');
 const homeRoute = require('./routes/home');
 const howtoRoute = require('./routes/howto');
 const missionRoute = require('./routes/mission');
-const stripeRoute = require('./routes/stripe');
+const paymentRoute = require('./routes/payment');
 const teamRoute = require('./routes/team');
 const termsRoute = require('./routes/terms');
 const usersRoute = require('./routes/users');
@@ -160,7 +160,7 @@ app.use(
 	express.json({
 		verify(req, _res, buf) {
 			const url = req.originalUrl;
-			if (url.startsWith('/stripe')) {
+			if (url.startsWith('/payment')) {
 				req.rawBody = buf.toString();
 			}
 		},
@@ -192,7 +192,7 @@ app.use('/mission', missionRoute);
 app.use('/howto', howtoRoute);
 app.use('/contact', contactRoute);
 app.use('/faq', faqRoute);
-app.use('/stripe', stripeRoute);
+app.use('/payment', paymentRoute);
 app.use('/community', communityRoute);
 app.use('/team', teamRoute);
 app.use('/terms', termsRoute);

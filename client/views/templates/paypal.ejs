@@ -49,7 +49,7 @@
     let redirectAfterSuccessfullPayment = function () {
       let wishCardId = document.getElementById('cardId');
       let totalAmount = document.getElementById('total-cost');
-      window.location.replace(`/stripe/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
+      window.location.replace(`/payment/success/${wishCardId.innerText}&${totalAmount.innerText}`);
     }
 
 
