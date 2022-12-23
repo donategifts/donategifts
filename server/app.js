@@ -198,6 +198,11 @@ app.use('/team', teamRoute);
 app.use('/terms', termsRoute);
 app.use('/', homeRoute);
 
+app.use('/robots.txt', (req, res, _next) => {
+	res.type('text/plain');
+	res.sendFile(path.join(__dirname, '../client/public/robots.txt'));
+});
+
 if (process.env.MAINTENANCE_ENABLED === 'true') {
 	app.get('*', (_req, res) => {
 		res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
