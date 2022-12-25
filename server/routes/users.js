@@ -203,7 +203,7 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 // @tested 	No
 router.get('/agency', redirectLogin, async (req, res) => {
 	try {
-		res.render('agency', {
+		res.render('pages/agency', {
 			user: res.locals.user,
 		});
 	} catch (err) {
@@ -297,9 +297,9 @@ router.post('/signup', limiter, signupValidationRules(), validate, async (req, r
 		let url;
 		req.session.user = newUser;
 		if (newUser.userRole === 'partner') {
-			url = '/users/agency';
+			url = '/agency';
 		} else {
-			url = '/users/profile';
+			url = '/profile';
 		}
 
 		return res.status(200).send({

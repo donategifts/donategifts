@@ -1,0 +1,107 @@
+extends ../master
+
+block title
+    title Register as a Foster Care Partner
+
+append head
+    script( src='https://unpkg.com/imask@6.0.5/dist/imask.js' )
+
+block content
+    .signup-bg.py-5
+        .container.pt-3.pb-4
+            .row
+                .col-12.d-flex.justify-content-center.align-items-center
+                    .agency-form-wrapper
+                        .sign-row.lg.title-text.crayon-font.mg-sm Last Step: Register Your Agency
+                        form.signup-agency( action='/users/agency' method='post' )
+                            .form-row
+                                .form-group.col-12
+                                    label.agency__label( for='agencyname' ) Agency Name
+                                    input#agencyName.agency__input( name='agencyName' type='text' placeholder='Agency Name:' )
+                            .form-row
+                                .form-group.col-12
+                                    label.agency__label( for='agencyWebsite' ) Agency Website
+                                    input#agencyWebsite.agency__input( name='agencyWebsite' type='text' placeholder='Agency Website( if any ):' )
+                            .form-row
+                                .form-group.col-12
+                                    label.agency__label( for='agencyAddress1' ) Agency Address
+                                    input#agencyAddress1.agency__input( name='agencyAddress1' type='text' placeholder='Agency Address Line 1:' )
+                            .form-row
+                                .form-group.col-12
+                                    label.agency__label( for='agencyAddress2' ) Agency Address
+                                    input#agencyAddress2.agency__input( name='agencyAddress2' type='text' placeholder='Address Line 2:' )
+                            .form-row
+                                .form-group.col-md-6
+                                    label.agency__label( for='city' ) City
+                                    input#city.agency__input( name='city' type='text' placeholder='City:' )
+                                .form-group.col-md-4
+                                    label.agency__label( for='state' ) State
+                                    input#state.agency__input( name='state' type='text' placeholder='State:' )
+                                .form-group.col-md-2
+                                    label.agency__label( for='zipcode' ) Zip Code
+                                    input#zipcode.agency__input( name='zipcode' type='text' placeholder='Zipcode:' )
+                            .form-row
+                                .form-group.col-md-6
+                                    label.agency__label( for='country' ) Country
+                                    input#country.agency__input( name='country' type='text' placeholder='Country:' )
+                                .form-group.col-md-6
+                                    label.agency__label( for='agencyPhone' ) Phone
+                                    input#agencyPhone.agency__input( name='agencyPhone' type='text' placeholder='Phone Number: 123-456-7890' )
+                            .form-row
+                                .form-group.col-12
+                                    label.agency__label( for='agencyBio' ) Description
+                                    textarea#agencyBio.agency__textarea( name='agencyBio' type='text' placeholder='Agency Description:' )
+                                .form-group.col-12.text-center
+                                    button.agency__button( type='submit' ) Submit
+
+append scripts
+    script.
+        $(document).ready(function () {
+            $('.signup-agency').submit(function (e) {
+                e.preventDefault();
+                $('#submit-btn').prop('disabled', true);
+
+                const agencyName = $('#agencyName').val();
+                const agencyWebsite = $('#agencyWebsite').val();
+                const agencyPhone = $('#agencyPhone').val();
+                const agencyBio = $('#agencyBio').val();
+                const address1 = $('#agencyAddress1').val();
+                const address2 = $('#agencyAddress2').val();
+                const city = $('#city').val();
+                const state = $('#state').val();
+                const country = $('#country').val();
+                const zipcode = $('#zipcode').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/agency',
+                    data: {
+                        agencyName,
+                        agencyWebsite,
+                        agencyPhone,
+                        agencyBio,
+                        agencyAddress: {
+                            address1,
+                            address2,
+                            city,
+                            state,
+                            country,
+                            zipcode
+                        }
+                    },
+                    success: function (response) {
+                        $('#submit-btn').prop('disabled', false);
+                        location.assign(response.url);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.error.msg);
+                        $('#submit-btn').prop('disabled', false);
+                    },
+                });
+            });
+
+            let phoneMask = IMask(
+                document.getElementById('agencyPhone'), {
+                mask: '000-000-0000'
+            });
+        });
