@@ -44,11 +44,50 @@ block content
                                                 |= wishItemPrice
                                             p
                                                 span Item Url:
-                                                a( id='oldWishItemUrl'+card._id href=card.wishItemURL ) Link
+                                                a( id='oldWishItemUrl' + card._id href=card.wishItemURL ) Link
 
-                                            input.input1( id='newWishItemUrl'+card._id type='text' name='newWishItemUrl' placeholder='Url for wish item...' )
+                                            input.input1( id='newWishItemUrl' + card._id type='text' name='newWishItemUrl' placeholder='Url for wish item...' )
                                             button.col.wishcard-btn.btn-navy-bg( type='button' id='donate-btn-'+card._id data-value-id=card._id ) Publish WishCard
 
 append scripts
-    include ../mixins/admin/utils.pug
-    +adminWishCardsJS
+    script.
+        $(document).ready(() => {
+            const unlockCardButtonClick = (e) => {
+                const wishCardId = e.target.dataset.valueId;
+                const oldItemUrl = $("#oldWishItemUrl" + wishCardId);
+                const newItemUrl = $("#newWishItemUrl" + wishCardId);
+                const wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
+                const elementRef = e.target;
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/wishcards/admin',
+                    data: {
+                        wishCardId,
+                        wishItemURL,
+                    },
+                    success: function (_) {
+                        showToast("Card status updated");
+                        removeWishCardFromDOM(elementRef);
+                    },
+                    error: function (response) {
+                        showToast(response.error.msg);
+                    },
+                });
+            }
+
+            const removeWishCardFromDOM = (node) => {
+                const divName = "row justify-content-center";
+                if (node.parentNode.className !== divName) {
+                    removeWishCardFromDOM(node.parentNode);
+                } else {
+                    while (node.firstChild) {
+                        node.removeChild(node.lastChild);
+                    }
+                }
+            }
+
+            $(".col.wishcard-btn.btn-navy-bg").each(() => {
+                $(this).click(unlockCardButtonClick);
+            })
+        });
