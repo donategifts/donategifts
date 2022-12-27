@@ -1,19 +1,19 @@
 const express = require('express');
 
 const router = express.Router();
-const WishCardMiddleWare = require('./middleware/wishCard.middleware');
-const { redirectLogin } = require('./middleware/login.middleware');
+const MiddleWare = require('./middleware');
 const { donationPostValidation, validate } = require('./validations/donationPost.validations');
 const Community = require('../handler/community');
 
 const communityHandler = new Community();
+const middleware = new MiddleWare();
 
 router.get('/', communityHandler.handleGetIndex);
 
 router.post(
 	'/',
-	WishCardMiddleWare.upload.single('postImage'),
-	redirectLogin,
+	middleware.upload.single('postImage'),
+	MiddleWare.redirectLogin,
 	donationPostValidation(),
 	validate,
 	communityHandler.handlePostIndex,

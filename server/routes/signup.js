@@ -2,7 +2,6 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 
 const SignupHandler = require('../handler/signup');
-const { redirectLogin } = require('./middleware');
 const MiddleWare = require('./middleware');
 const {
 	signupValidationRules,
@@ -23,7 +22,7 @@ router.get('/', MiddleWare.redirectProfile, signupHandler.handleGetSignup);
 
 router.post('/', limiter, signupValidationRules(), validate, signupHandler.handlePostSignup);
 
-router.get('/agency', redirectLogin, signupHandler.handleGetAgency);
+router.get('/agency', MiddleWare.redirectLogin, signupHandler.handleGetAgency);
 
 router.post(
 	'/agency',

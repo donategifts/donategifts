@@ -9,7 +9,6 @@ const {
 	googlesignupValidationRules,
 	fbsignupValidationRules,
 } = require('./validations/users.validations');
-const { redirectProfile } = require('./middleware/login.middleware');
 
 const router = express.Router();
 
@@ -27,7 +26,7 @@ router.post(
 	limiter,
 	loginValidationRules(),
 	validate,
-	redirectProfile,
+	MiddleWare.redirectProfile,
 	loginHandler.handlePostIndex,
 );
 

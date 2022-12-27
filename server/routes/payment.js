@@ -2,13 +2,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const { redirectLogin } = require('./middleware/login.middleware');
+const MiddleWare = require('./middleware');
 const PaymentProviderHandler = require('../handler/paymentProvider');
 
 const router = express.Router();
 const paymentProviderHandler = new PaymentProviderHandler();
 
-router.post('/createIntent', redirectLogin, paymentProviderHandler.handlePostCreateIntent);
+router.post(
+	'/createIntent',
+	MiddleWare.redirectLogin,
+	paymentProviderHandler.handlePostCreateIntent,
+);
 
 router.post(
 	'/webhook',
@@ -20,7 +24,7 @@ router.post(
 // redirect to a thank you page
 router.get(
 	'/success/:id&:totalAmount',
-	redirectLogin,
+	MiddleWare.redirectLogin,
 	paymentProviderHandler.handleGetPaymentSuccess,
 );
 

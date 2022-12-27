@@ -32,7 +32,7 @@ module.exports = class MiddleWare {
 				Bucket: process.env.S3BUCKET,
 				ACL: 'public-read',
 				cacheControl: 'max-age=31536000',
-				key(req, file, cb) {
+				key(_req, _file, cb) {
 					cb(null, `${UUIDv4()}.jpeg`);
 				},
 				resize: {
