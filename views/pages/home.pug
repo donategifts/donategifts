@@ -141,6 +141,10 @@ block content
 
 append scripts
     script.
+        //- do not remove, needed for socket wish card locking
+        countdown = [];
+
+    script.
         (() => {
             class TypeWriter {
                 constructor(txtElement, words, wait = 2000) {
