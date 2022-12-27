@@ -74,7 +74,7 @@ append scripts
                 });
             });
 
-            function facebookLogin(fbUser) {
+            const facebookLogin = (fbUser) => {
                 if (fbUser.authResponse && fbUser.status === 'connected') {
                     FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
                         if (response.id) {
@@ -85,11 +85,11 @@ append scripts
                                     userName: response.name,
                                     email: response.email,
                                 },
-                                success: (route) => {
+                                success: (_) => {
                                     location.reload();
                                 },
                                 error: (response) => {
-                                    let txtToJson = JSON.parse(response.responseText);
+                                    const txtToJson = JSON.parse(response.responseText);
                                     showToast(txtToJson.error.msg);
                                 },
                             });
@@ -98,7 +98,7 @@ append scripts
                 }
             }
 
-            function googleLogin(googleUser) {
+            const googleLogin = (googleUser) => {
                 var id_token = googleUser.getAuthResponse().id_token;
                 googleUser.disconnect();
 
