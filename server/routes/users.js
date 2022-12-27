@@ -11,29 +11,21 @@ const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const router = express.Router();
 
 const {
-	signupValidationRules,
 	googlesignupValidationRules,
 	fbsignupValidationRules,
 	verifyHashValidationRules,
 	passwordRequestValidationRules,
 	updateProfileValidationRules,
-	createAgencyValidationRules,
 	loginValidationRules,
 	getPasswordResetValidationRules,
 	postPasswordResetValidationRules,
 	validate,
 } = require('./validations/users.validations');
-const { validateReCaptchaToken } = require('./validations/googleReCaptcha');
-const {
-	createEmailVerificationHash,
-	sendVerificationEmail,
-	sendPasswordResetMail,
-} = require('../helper/messaging');
+const { createEmailVerificationHash, sendPasswordResetMail } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
 const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
 const { redirectLogin, redirectProfile } = require('./middleware/login.middleware');
-const { sendAgencyVerificationNotification } = require('../helper/messaging');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
@@ -71,7 +63,7 @@ router.get('/profile', redirectLogin, async (req, res) => {
 
 			// If user hadn't filled out agency info, redirect them to form
 			if (!agency) {
-				return res.status(200).render('agency');
+				return res.status(200).render('pages/agency');
 			}
 			const wishCards = await WishCardRepository.getWishCardByAgencyId(agency._id);
 			const wishCardsLength = wishCards.length;
@@ -194,121 +186,6 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 		});
 	} catch (error) {
 		handleError(res, 400, error);
-	}
-});
-
-// @desc    Render agency.ejs
-// @route   GET '/users/agency'
-// @access  Private, only userRole == partners
-// @tested 	No
-router.get('/agency', redirectLogin, async (req, res) => {
-	try {
-		res.render('pages/agency', {
-			user: res.locals.user,
-		});
-	} catch (err) {
-		return handleError(res, 400, err);
-	}
-});
-
-// @desc    agency info is sent to db
-// @route   POST '/users/agency'
-// @access  private, partners only
-// @tested 	No
-router.post('/agency', limiter, createAgencyValidationRules(), validate, async (req, res) => {
-	const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
-
-	try {
-		const result = await AgencyRepository.createNewAgency({
-			agencyName,
-			agencyWebsite,
-			agencyPhone,
-			agencyBio,
-			agencyAddress,
-			accountManager: req.session.user._id,
-			...req.body,
-		});
-
-		if (process.env.NODE_ENV !== 'test') {
-			await sendAgencyVerificationNotification({
-				id: result.agency._id,
-				name: result.agency.agencyName,
-				website: result.agency.agencyWebsite,
-				bio: result.agency.agencyBio,
-			});
-		}
-
-		return res.status(200).send({
-			success: true,
-			user: req.session.user,
-			url: '/users/profile',
-		});
-	} catch (err) {
-		return handleError(res, 400, err);
-	}
-});
-
-const sendEmail = async (email, verificationHash) => {
-	const emailResponse = await sendVerificationEmail(email, verificationHash);
-	const response = emailResponse ? emailResponse.data : '';
-	if (process.env.NODE_ENV === 'development') log.info(response);
-};
-
-// @desc    Create a newUser, hash password, issue session
-// @route   POST '/users/signup'
-// @access  Public
-// @tested 	Yes
-// TODO: display this message in signup.html client side as a notification alert.
-router.post('/signup', limiter, signupValidationRules(), validate, async (req, res) => {
-	const { fName, lName, email, password, userRole, captchaToken } = req.body;
-
-	// validate captcha code. False if its invalid
-	const isCaptchaValid = await validateReCaptchaToken(captchaToken);
-	if (isCaptchaValid === false) {
-		return handleError(res, 400, {
-			msg: 'Provided captcha token is not valid',
-			param: 'captchaToken',
-			location: 'body',
-		});
-	}
-
-	const candidate = await UserRepository.getUserByEmail(email.toLowerCase());
-	if (candidate) {
-		return handleError(res, 409, 'This email is already taken. Try another');
-	}
-	const hashedPassword = await hashPassword(password);
-	const verificationHash = createEmailVerificationHash();
-
-	const newUser = await UserRepository.createNewUser({
-		fName,
-		lName,
-		email: email.toLowerCase(),
-		verificationHash,
-		password: hashedPassword,
-		userRole,
-		loginMode: 'Default',
-	});
-
-	try {
-		// trying to add a second step here
-		// if the userRole is partner then redirect to agency.ejs then profile.ejs
-
-		sendEmail(email, verificationHash);
-		let url;
-		req.session.user = newUser;
-		if (newUser.userRole === 'partner') {
-			url = '/agency';
-		} else {
-			url = '/profile';
-		}
-
-		return res.status(200).send({
-			success: true,
-			user: newUser,
-			url,
-		});
-	} catch (err) {
-		return handleError(res, 206, err);
 	}
 });
 

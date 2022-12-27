@@ -66,10 +66,4 @@ module.exports = class HomeHandler extends BaseHandler {
 			user: res.locals.user,
 		});
 	}
-
-	handleGetSignup(_req, res, _next) {
-		res.status(200).render('pages/signup', {
-			user: res.locals.user,
-		});
-	}
 };
