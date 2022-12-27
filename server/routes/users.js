@@ -1,7 +1,6 @@
 // NPM DEPENDENCIES
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
-const bcrypt = require('bcrypt');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 
@@ -11,21 +10,18 @@ const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const router = express.Router();
 
 const {
-	googlesignupValidationRules,
-	fbsignupValidationRules,
 	verifyHashValidationRules,
 	passwordRequestValidationRules,
 	updateProfileValidationRules,
-	loginValidationRules,
 	getPasswordResetValidationRules,
 	postPasswordResetValidationRules,
 	validate,
 } = require('./validations/users.validations');
-const { createEmailVerificationHash, sendPasswordResetMail } = require('../helper/messaging');
+const { sendPasswordResetMail } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
-const { verifyGoogleToken, hashPassword, createDefaultPassword } = require('../helper/user.helper');
-const { redirectLogin, redirectProfile } = require('./middleware/login.middleware');
+const { hashPassword } = require('../helper/user.helper');
+const { redirectLogin } = require('./middleware/login.middleware');
 
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
@@ -188,129 +184,6 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 		handleError(res, 400, error);
 	}
 });
-
-// @desc    handle google signup/login
-// @route   POST '/google-signin'
-// @access  Public
-// @tested 	Not yet
-router.post(
-	'/google-signin',
-	limiter,
-	googlesignupValidationRules(),
-	validate,
-	async (req, res) => {
-		const { id_token } = req.body;
-
-		if (id_token) {
-			try {
-				const user = await verifyGoogleToken(id_token);
-				const fName = user.firstName;
-				const lName = user.lastName;
-				const email = user.mail.toLowerCase();
-
-				const dbUser = await UserRepository.getUserByEmail(email);
-
-				if (dbUser) {
-					req.session.user = dbUser;
-					res.locals.user = dbUser;
-					return res.status(200).send({
-						url: '/users/profile',
-					});
-				}
-
-				const newUser = await UserRepository.createNewUser({
-					fName,
-					lName,
-					email,
-					password: createDefaultPassword(),
-					verificationHash: createEmailVerificationHash(),
-					userRole: 'donor',
-					loginMode: 'Google',
-					emailVerified: true,
-				});
-
-				req.session.user = newUser;
-				res.locals.user = newUser;
-				return res.status(200).send({
-					url: '/users/profile',
-				});
-			} catch (error) {
-				return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-			}
-		}
-
-		return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-	},
-);
-
-// @desc    handle facebook signup/login
-// @route   POST '/fb-signin'
-// @access  Public
-// @tested 	Not yet
-router.post('/fb-signin', limiter, fbsignupValidationRules(), validate, async (req, res) => {
-	const { userName, email } = req.body;
-
-	if (userName && email) {
-		const [fName, lName] = userName.split(' ');
-
-		const dbUser = await UserRepository.getUserByEmail(email.toLowerCase());
-
-		if (dbUser) {
-			req.session.user = dbUser;
-			res.locals.user = dbUser;
-			return res.status(200).send({
-				url: '/users/profile',
-			});
-		}
-
-		try {
-			const newUser = await UserRepository.createNewUser({
-				fName,
-				lName: lName || 'LastnameUnset',
-				email: email.toLowerCase(),
-				password: createDefaultPassword(),
-				verificationHash: createEmailVerificationHash(),
-				userRole: 'donor',
-				loginMode: 'Facebook',
-				emailVerified: true,
-			});
-
-			req.session.user = newUser;
-			res.locals.user = newUser;
-			return res.status(200).send({
-				url: '/users/profile',
-			});
-		} catch (error) {
-			return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-		}
-	}
-
-	return handleError(res, 400, 'Error during login!\nTry again in a few minutes!');
-});
-
-// @desc    Render login.html
-// @route   POST '/users/login'
-// @access  Public
-// @tested 	Not yet
-router.post(
-	'/login',
-	limiter,
-	loginValidationRules(),
-	validate,
-	redirectProfile,
-	async (req, res) => {
-		const { email, password } = req.body;
-		const user = await UserRepository.getUserByEmail(email.toLowerCase());
-		if (user) {
-			if (await bcrypt.compare(password, user.password)) {
-				req.session.user = user;
-				res.locals.user = user;
-				return res.status(200).send({ success: true, url: '/users/profile' });
-			}
-		}
-		handleError(res, 403, 'Username and/or password incorrect');
-	},
-);
 
 // @desc    Render login.html
 // @route   GET '/users/logout'

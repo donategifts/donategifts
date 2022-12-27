@@ -8,22 +8,11 @@ const bodyParser = require('body-parser');
 const responseTime = require('response-time');
 const requestIp = require('request-ip');
 const path = require('path');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
-
-const communityRoute = require('./routes/community');
-const contactRoute = require('./routes/contact');
-const faqRoute = require('./routes/faq');
-const homeRoute = require('./routes/home');
-const howtoRoute = require('./routes/howto');
-const missionRoute = require('./routes/mission');
-const paymentRoute = require('./routes/payment');
-const teamRoute = require('./routes/team');
-const termsRoute = require('./routes/terms');
-const usersRoute = require('./routes/users');
-const wishCardsRoute = require('./routes/wishCards');
 
 const { MongooseConnection } = require('./db/connection');
 const { UserRepository } = require('./db/repository/UserRepository');
@@ -186,17 +175,19 @@ app.use(cookieParser());
 // static files like css, js, images, fonts etc.
 app.use(express.static('client'));
 
-app.use('/users', usersRoute);
-app.use('/wishcards', wishCardsRoute);
-app.use('/mission', missionRoute);
-app.use('/howto', howtoRoute);
-app.use('/contact', contactRoute);
-app.use('/faq', faqRoute);
-app.use('/payment', paymentRoute);
-app.use('/community', communityRoute);
-app.use('/team', teamRoute);
-app.use('/terms', termsRoute);
-app.use('/', homeRoute);
+const routes = fs.readdirSync(path.join(__dirname, './routes'));
+
+// dynamically mount all routes present in /routes folder
+for (const route of routes) {
+	if (fs.lstatSync(path.join(__dirname, `./routes/${route}`)).isFile()) {
+		const file = route.split('.')[0];
+		if (file === 'home') {
+			app.use('/', require(`./routes/${file}`));
+		} else {
+			app.use(`/${file}`, require(`./routes/${file}`));
+		}
+	}
+}
 
 app.use('/robots.txt', (req, res, _next) => {
 	res.type('text/plain');

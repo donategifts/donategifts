@@ -15,7 +15,6 @@ module.exports = class HomeHandler extends BaseHandler {
 
 		this.handleGetHealth = this.handleGetHealth.bind(this);
 		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handleGetLogin = this.handleGetLogin.bind(this);
 	}
 
 	#getChristmasString() {
@@ -58,12 +57,6 @@ module.exports = class HomeHandler extends BaseHandler {
 			undonatedCards: undonatedWishcards.length,
 			donatedCards: Number(donatedWishcards.length) + 200,
 			christmasData: this.#getChristmasString(),
-		});
-	}
-
-	handleGetLogin(_req, res, _next) {
-		res.status(200).render('pages/login', {
-			user: res.locals.user,
 		});
 	}
 };

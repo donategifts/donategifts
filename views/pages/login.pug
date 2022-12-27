@@ -7,7 +7,7 @@ block content
     #fb-root
     .signup-bg.d-flex.container-fluid.justify-content-center.py-5
         .wrap-box
-            form.signup( action='/login' method='post' )
+            form.signup( method='post' )
                 .sign-row.lg.title-text.crayon-font.mg-sm
                     a.userLogBtn( href='/login' ) Log In
                     span OR
@@ -56,22 +56,18 @@ append scripts
                 e.preventDefault();
                 $('#submit-btn').prop('disabled', true);
 
-                const formData = $(this)
-                    .serializeArray()
-                    .reduce((obj, item) => {
-                        obj[item.name] = item.value;
-                        return obj;
-                    }, {});
-
                 $.ajax({
                     type: 'POST',
-                    url: '/users/login',
-                    data: formData,
-                    success: (response, textStatus, jqXHR) => {
+                    url: '/login',
+                    data: {
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                    },
+                    success: (response) => {
                         $('#submit-btn').prop('disabled', false);
                         location.reload();
                     },
-                    error: (response, textStatus, errorThrown) => {
+                    error: (response) => {
                         showToast(response.responseJSON.error.msg);
                         $('#submit-btn').prop('disabled', false);
                     },
@@ -84,15 +80,15 @@ append scripts
                         if (response.id) {
                             $.ajax({
                                 type: 'POST',
-                                url: '/users/fb-signin',
+                                url: '/fb-signin',
                                 data: {
                                     userName: response.name,
                                     email: response.email,
                                 },
-                                success: function (route) {
+                                success: (route) => {
                                     location.reload();
                                 },
-                                error: function (response) {
+                                error: (response) => {
                                     let txtToJson = JSON.parse(response.responseText);
                                     showToast(txtToJson.error.msg);
                                 },
@@ -104,16 +100,15 @@ append scripts
 
             function googleLogin(googleUser) {
                 var id_token = googleUser.getAuthResponse().id_token;
-                // disconnect to avoid constant re-login after logout
                 googleUser.disconnect();
 
                 $.ajax({
                     type: 'POST',
-                    url: '/users/google-signin',
+                    url: '/google-signin',
                     data: {
                         id_token,
                     },
-                    success: (route) => {
+                    success: (_) => {
                         location.reload();
                     },
                     error: (response) => {
