@@ -1,18 +1,14 @@
-const { configure, getLogger, levels } = require('log4js');
+const pino = require('pino');
 
-const appenderArray = ['console'];
-
-const config = {
-	appenders: {
-		console: { type: 'console', layout: { type: 'colored' } },
+const log = pino({
+	transport: {
+		target: 'pino-pretty',
+		options: {
+			colorize: true,
+		},
 	},
-	categories: {
-		default: { appenders: ['console'], level: levels.ALL },
-		development: { appenders: appenderArray, level: levels.ALL },
-		production: { appenders: appenderArray, level: levels.ALL },
-	},
-};
+});
 
-configure(config);
+log.level = process.env.LOG_LEVEL || 'info';
 
-module.exports = getLogger(process.env.NODE_ENV);
+module.exports = log;

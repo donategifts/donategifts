@@ -60,15 +60,20 @@ app.use(
 			) {
 				const clientIp = requestIp.getClientIp(req);
 
-				log.info('New request', {
-					type: 'request',
-					user: res.locals.user ? String(res.locals.user._id).substring(0, 10) : 'guest',
-					method: req.method,
-					statusCode: res.statusCode,
-					route: req.originalUrl,
-					responseTime: Math.ceil(time),
-					ip: clientIp,
-				});
+				log.info(
+					{
+						type: 'request',
+						user: res.locals.user
+							? String(res.locals.user._id).substring(0, 10)
+							: 'guest',
+						method: req.method,
+						statusCode: res.statusCode,
+						route: req.originalUrl,
+						responseTime: Math.ceil(time),
+						ip: clientIp,
+					},
+					'New request',
+				);
 			}
 		}
 	}),
@@ -91,8 +96,8 @@ app.set('view engine', 'pug');
 // app.set('views', path.join(__dirname, '../client/views'));
 // app.set('view engine', 'ejs');
 
-app.use(express.static('./public'));
-app.use('/wishcards/uploads', express.static('/uploads'));
+// static files like css, js, images, fonts etc.
+app.use(express.static('client'));
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.use(
@@ -172,8 +177,6 @@ app.use(
 );
 
 app.use(cookieParser());
-// static files like css, js, images, fonts etc.
-app.use(express.static('client'));
 
 const routes = fs.readdirSync(path.join(__dirname, './routes'));
 

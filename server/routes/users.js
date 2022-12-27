@@ -151,10 +151,13 @@ router.post(
 						data: profileImage,
 					}),
 				);
-				log.info('Profile picture updated', {
-					type: 'user_profile_picture_update',
-					user: req.session.user._id,
-				});
+				log.info(
+					{
+						type: 'user_profile_picture_update',
+						user: req.session.user._id,
+					},
+					'Profile picture updated',
+				);
 			} catch (error) {
 				handleError(res, 400, error);
 			}
@@ -176,10 +179,13 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 			}),
 		);
 
-		log.info('Profile picture deleted', {
-			type: 'user_profile_picture_delete',
-			user: req.session.user._id,
-		});
+		log.info(
+			{
+				type: 'user_profile_picture_delete',
+				user: req.session.user._id,
+			},
+			'Profile picture deleted',
+		);
 	} catch (error) {
 		handleError(res, 400, error);
 	}

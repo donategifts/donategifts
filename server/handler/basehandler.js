@@ -22,10 +22,13 @@ module.exports = class BaseHandler {
 
 		statusCode = code || statusCode;
 
-		this.log.error(name, {
-			statusCode,
-			error,
-		});
+		this.log.error(
+			{
+				statusCode,
+				error,
+			},
+			name,
+		);
 
 		if (renderErrorPage) {
 			res.status(statusCode).render(code === 400 ? '404' : code.toString(), {

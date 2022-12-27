@@ -22,7 +22,7 @@ class MongooseConnection extends BaseHandler {
 		this.#mongoose.Promise = Promise;
 		this.#mongoose.connect(process.env.MONGO_URI, this.#options, (err, database) => {
 			if (err) {
-				this.log.error('Unable to connect to DB. Error:', err);
+				this.log.error(err, 'Unable to connect to DB.');
 			} else {
 				if (process.env.NODE_ENV !== 'test') {
 					require('./changeHandler/WishcardChangeHandler');
@@ -43,7 +43,7 @@ class MongooseConnection extends BaseHandler {
 		try {
 			await this.#mongoose.disconnect();
 		} catch (error) {
-			this.log.error('failed to disconnect mongoose: ', error);
+			this.log.error(error, 'failed to disconnect mongoose');
 		} finally {
 			process.exit(1);
 		}
@@ -59,7 +59,7 @@ function connect() {
 	mongoose.Promise = Promise;
 	mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
 		if (err) {
-			log.error('Unable to connect to DB. Error:', err);
+			log.error(err, 'Unable to connect to DB.');
 		} else {
 			if (process.env.NODE_ENV !== 'test') {
 				require('./changeHandler/WishcardChangeHandler');
@@ -68,9 +68,6 @@ function connect() {
 				`Connected to Mongodb ${
 					database.name ? database.name : database.connections[0].name
 				}`,
-				{
-					type: 'mongo_startup',
-				},
 			);
 		}
 	});
@@ -80,7 +77,7 @@ async function disconnect() {
 	try {
 		await mongoose.disconnect();
 	} catch (error) {
-		log.error('failed to disconnect mongoose: ', error);
+		log.error(error, 'failed to disconnect mongoose');
 	} finally {
 		process.exit(1);
 	}
