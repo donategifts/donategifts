@@ -12,6 +12,7 @@
     "dev": "nodemon",
     "debug": "node --inspect=0.0.0.0:9229 server/app.js",
     "lint": "eslint --ext .js --ignore-path .eslintignore server/",
+    "lint-pug": "npx pug-lint views",
     "upgradePackages": "ncu -u",
     "autoprefix": "npx postcss *.css --use autoprefixer -d .",
     "prepare": "husky install"
