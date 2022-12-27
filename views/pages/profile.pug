@@ -1,0 +1,252 @@
+extends ../master
+
+block title
+    title Profile Page | Donate Gifts
+
+block content
+    .profile
+        .profile-welcome
+            h1 Welcome
+            |= user.fName
+        .profile-header
+            .container.justify-content-center
+                if !user.emailVerified
+                    p.mt-4
+                        i.fa.fa-exclamation-triangle( aria-hidden='true' )
+                        span Some features are disabled until email is verified. Please verify your email.
+                if user.userRole == 'partner' && locals.agency
+                    if !agency.isVerified
+                        p.mt-4
+                            i.fa.fa-exclamation-triangle( aria-hidden='true' )
+                            span Wish card creation feature is disabled for your account.
+                            span It will be enabled after agency verification. This usually takes 1-2 business days. For a faster verification,
+                                a( href='/contact' ) contact us.
+                    else
+                        .my-5.profile-panel.shadow
+                            h4.my-3 Let's Create Wish Cards
+                            .row.justify-content-center.pt-4.mt-3.align-content-center
+                                .col-md-4.col-xs-12.mb-5.text-center
+                                    p.mb-4
+                                    span Child has a specific wish item
+                                    a.profile-button( href='/wishcards/create' )  Create a wish card
+                                .col-md-4.col-xs-12.mb-5.text-center
+                                    p.mb-4
+                                    span Not sure which wish item to ask for?
+                                    a.profile-button-inverted( href='/users/choose' ) Select from our list
+                        .my-5.profile-panel.shadow
+                            h4.my-3 Let's Manage Wish Cards
+                            .row.justify-content-center.pt-4.mt-3.align-content-center
+                                .col-md-4.col-xs-12.mb-5.text-center
+                                    p.mb-4
+                                        span Review your existing wish cards
+                                        a.profile-button-navy( href='/wishcards/me' ) Manage wish cards
+                                .col-md-4.col-xs-12.mb-5.text-center
+                                    p.mb-4
+                                        span Got any question?
+                                        a.profile-button-navy-inverted( href='/contact' ) Contact for help
+
+            if user.userRole == 'partner'
+                .profile-panel.my-5.shadow
+                    .card-body
+                        h4 Organization Details
+                        p.text-muted.text-center.pb-4 (edit feature coming soon)
+                        form#accountDetails( action='/users/make-this-route-later' method='POST' enctype='multipart/form-data' )
+                            .row.justify-content-center.my-1
+                                .mb-2.col-lg-6.col-sm-12
+                                    label( for='agencyName' ) Agency Name:
+                                    input#agencyName.mx-2.input-profile( type='text' name='agencyName' placeholder=agency.agencyName )
+                                .mb-2.col-lg-6.col-sm-12
+                                    p
+                                        span Agency Verified:
+                                        span= agency.isVerified
+                            .row.justify-content-center.my-1
+                                .mb-2.col-lg-6.col-sm-12
+                                    p
+                                        span Wish Cards Submitted:
+                                        span= wishCardsLength
+                                .mb-2.col-lg-6.col-sm-12
+                                    p
+                                        span Partner Since:
+                                        span= agency.joined.toLocaleString().split(',')[0]
+                            .row.justify-content-center.my-1
+                                .mb-2.col-lg-6.col-sm-12
+                                    label( for='agencyPhone' ) Contact Number:
+                                    input#agencyPhone.mx-2.input-profile( type='text' name='agencyPhone' placeholder=agency.agencyPhone )
+                                .mb-2.col-lg-6.col-sm-12
+                                    label( for='agencyWebsite' ) Website:
+                                    input#agencyWebsite.mx-2.input-profile( type='text' name='agencyWebsite' placeholder=agency.agencyWebsite )
+
+                            if agency.agencyAddress.address1 != null
+                                .pt-2.row.justify-content-center.my-1
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='address1' ) Address Line 1:
+                                        input#address1.mx-2.input-profile( type='text' name='address1' placeholder=agency.agencyAddress.address1 )
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='address2' ) Address Line 2:
+                                        input#address2.mx-2.input-profile( type='text' name='address2' placeholder=agency.agencyAddress.address2 )
+                                .pt-2.row.justify-content-center.my-1
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='city' ) City:
+                                        input#city.mx-2.input-profile( type='text' name='city' placeholder=agency.agencyAddress.city )
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='state' ) State:
+                                        input#state.mx-2.input-profile( type='text' name='state' placeholder=agency.agencyAddress.state )
+                                .pt-2.row.justify-content-center.my-1
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='country' ) Country:
+                                        input#country.mx-2.input-profile( type='text' name='country' placeholder=agency.agencyAddress.country )
+                                    .mb-2.col-lg-6.col-sm-12
+                                        label( for='zipcode' ) ZipCode:
+                                        input#zipcode.mx-2.input-profile( type='text' name='zipcode' placeholder=agency.agencyAddress.zipcode )
+
+                        .row.justify-content-center.pt-2.my-1
+                            .col-12
+                                label( or='agencyBio' ) Agency Description:
+                                textarea#agencyBio( name='agencyBio' placeholder=agency.agencyBio rows='3' )
+
+            .profile-panel.my-4.shadow
+                .card-body
+                    h4.pb-5 Account Details
+                    form#accountDetails( action='/users/make-this-route-later' method='POST' enctype='multipart/form-data' )
+                        .row.justify-content-center.my-1
+                            .mb-4.col-lg-6.col-sm-12
+                                label( for='fName' ) First Name:
+                                input#fName.mx-2.input-profile( type='text' name='fName' placeholder=user.fName )
+                            .mb-4.col-lg-6.col-sm-12
+                                label( for='lName' ) Last Name:
+                                input#lName.mx-2.input-profile( type='text' name='lName' placeholder=user.lName )
+                        .row.justify-content-center.my-1
+                            .mb-4.col-lg-6.col-sm-12
+                                label( for='email' ) Your Email:
+                                input#fName.mx-2.input-profile( type='text' name='fName' placeholder=user.email )
+                            .col-lg-6.col-sm-12
+                                p
+                                    span Your Role:
+                                    span= user.userRole
+        .container.pb-5
+            .row
+                .col-md-6.mb-3
+                    .profile-panel.card-block.shadow
+                        h5.card-title
+                            i.fa.fa-user( aria-hidden='true' )
+                            span About Me
+                            img#update-about-me.about-me-edit( data-toggle='modal'
+                                data-target='#aboutMeModal'
+                                src='/public/img/edit-profile.svg'
+                                alt='Edit profile'
+                            )
+                        if user.aboutMe
+                            .y-scroll
+                                p#about-me.card-text.p-4= user.aboutMe
+                        else
+                            p#about-me.card-text.p-4 You have no description saved.
+                .col-md-6
+                    .profile-panel.card-block.shadow
+                        h5.card-title.pb-2
+                            i.fa.fa-gift( aria-hidden='true' )
+                            span My Donations
+                        .row.justify-content-center.py-2.my-3
+                            .col-auto
+                                a.profile-button-navy( href='/users/profile/donations' ) See My Donation History
+            .row.mt-3
+                .col-md-6.mb-3
+                    .profile-panel.card-block.shadow.pb-2
+                        h5.card-title
+                            i.fas.fa-cogs( aria-hidden='true' )
+                            span Settings
+                        .row.justify-content-center.py-2.mt-3
+                            .col-auto.mb-4
+                                a.profile-button-navy( href='/users/password/request/' ) Reset Password
+                            .col-auto.mb-4
+                                a.profile-button-navy-inverted( href='/users/logout' ) Log Out
+                .col-md-6
+                    .profile-panel.card-block.shadow.pb-3
+                        h5.card-title
+                            i.fa.fa-users( aria-hidden='true' )
+                            span Friends
+                        p.card-text.p-4 You have invited 0 friends.
+
+    #aboutMeModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+        .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+            .modal-content
+                .modal-header
+                    h5#exampleModalLongTitle.modal-title.rale-font.grn-font.bold-text Edit about me
+                    button.close( type='button' data-dismiss='modal' aria-label='Close' )
+                    span( aria-hidden='true' ) x
+                .modal-body.rale-font
+                    .container-fluid
+                        if user.aboutMe
+                            textarea#about-me-text.textarea-about-me= user.aboutMe
+                        else
+                            textarea#about-me-text.textarea-about-me
+                .modal-footer
+                    button#save-about-me-button.btn.btn-secondary( type='button' data-dismiss='modal' ) Save
+
+append scripts
+    script.
+        $(document).ready(() => {
+            $('#save-about-me-button').click(() => {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/users/profile',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: { aboutMe: $('#about-me-text').val() },
+                    success: (response) => {
+                        if (response.error) {
+                            return showToast('Could not update about me info.');
+                        }
+                        $('#about-me').text(response.data);
+                    },
+                    error: (_) => {
+                        showToast('Could not update about me info.');
+                    }
+                });
+            });
+
+            $('#agencyAddressCheckBox').click(() => {
+                if ($(this).is(':checked')) {
+                    const confirmation = confirm('Do you want to overwrite the address with agency address?');
+                    if (confirmation === true) {
+                        fetchAgencyData();
+                    }
+                }
+            });
+
+            const replaceImage = (imagePath) => {
+                $('#profilePicture').attr('src', imagePath);
+            };
+
+            $('#buttonUploadImage').change(() => {
+                const formData = new FormData();
+                formData.append('profileImage', $(this).prop('files')[0]);
+
+                if (buttonUploadImage.files[0]) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/users/profile/picture',
+                        body: formData,
+                        success: (response) => {
+                            replaceImage(response.data);
+                        },
+                        error: (_) => {
+                            showToast("Could not update profile picture");
+                        }
+                    });
+                }
+            });
+
+            $('#buttonRemoveImage').click(() => {
+                $.ajax('/users/profile/picture', {
+                    type: 'DELETE',
+                    url: '/users/profile/picture',
+                    success: (response) => {
+                        replaceImage(response.data);
+                    },
+                    error: (_) => {
+                        showToast("Could not remove profile picture");
+                    }
+                });
+            });
+        });
