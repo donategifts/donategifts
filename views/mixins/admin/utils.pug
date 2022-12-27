@@ -1,0 +1,42 @@
+mixin adminWishCardsJS()
+    script.
+        $(document).ready(() => {
+            const unlockCardButtonClick = (e) => {
+                const wishCardId = e.target.dataset.valueId;
+                const oldItemUrl = $("#oldWishItemUrl" + wishCardId);
+                const newItemUrl = $("#newWishItemUrl" + wishCardId);
+                const wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
+                const elementRef = e.target;
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/wishcards/admin',
+                    data: {
+                        wishCardId,
+                        wishItemURL,
+                    },
+                    success: function (_) {
+                        showToast("Card status updated");
+                        removeWishCardFromDOM(elementRef);
+                    },
+                    error: function (response) {
+                        showToast(response.error.msg);
+                    },
+                });
+            }
+
+            const removeWishCardFromDOM = (node) => {
+                const divName = "row justify-content-center";
+                if (node.parentNode.className !== divName) {
+                    removeWishCardFromDOM(node.parentNode);
+                } else {
+                    while (node.firstChild) {
+                        node.removeChild(node.lastChild);
+                    }
+                }
+            }
+
+            $(".col.wishcard-btn.btn-navy-bg").each(() => {
+                $(this).click(unlockCardButtonClick);
+            })
+        });
