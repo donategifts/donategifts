@@ -1,0 +1,120 @@
+extends ../master
+
+block title
+    title See Wish Card Details | Donate Gifts
+
+block content
+    #profile-bg.bg
+        .profile-title
+            h1#cray-font Details for Donation from
+            |= donation.donationDate
+    .admin-donation
+        .container
+            .admin-wishcard-details
+                - var childName = wishCard.childFirstName + ' ' + wishCard.childLastName
+
+                h3 Wishcard Details
+
+                div
+                    span Childname:
+                    |= childName
+                div
+                    span Birthday:
+                |= wishCard.childBirthday
+                div
+                    span Wishitemname:
+                    |= wishCard.wishItemName
+                div
+                    span Wishitemprice:
+                    |= wishCard.wishItemPrice
+                div
+                    span Wishitemurl:
+                    a( href=wishCard.wishItemURL )= wishCard.wishItemURL
+                div
+                    span Deliverydate:
+                    |= wishCard.deliveryDate
+                div
+                    span Status:
+                    |= wishCard.status
+                div
+                    span Address:
+                    |= JSON.stringify(wishCard.address, null, 2)
+
+            .admin-agency-details
+                - var accountManagerName = accountManager.fName + ' ' + accountManager.lName
+
+                h3 Agency Details
+
+                div
+                    span Name:
+                    |= agency.agencyName
+                div
+                    span Website:
+                    |= agency.agencyWebsite
+                div
+                    span Phone:
+                    |= agency.agencyPhone
+                div
+                    span Account Manager:
+                    div
+                        span= accountManagerName
+                    div
+                        span= accountManager.email
+                    div
+                        span Address:
+                        |= agency.agencyAddress
+
+            .admin-donor-details
+                - var donorName = donor.fName + ' ' + donor.lName
+
+                h3 Donor Detail
+
+                div
+                    span Donor:
+                    div
+                        span= donorName
+                    div
+                        span= donor.email
+
+append scripts
+    script.
+        $(document).ready(() => {
+            const unlockCardButtonClick = (e) => {
+                const wishCardId = e.target.dataset.valueId;
+                const oldItemUrl = $("#oldWishItemUrl" + wishCardId);
+                const newItemUrl = $("#newWishItemUrl" + wishCardId);
+                const wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
+                const elementRef = e.target;
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/wishcards/admin',
+                    data: {
+                        wishCardId,
+                        wishItemURL,
+                    },
+                    success: function (_) {
+                        showToast("Card status updated");
+                        removeWishCardFromDOM(elementRef);
+                    },
+                    error: function (response) {
+                        showToast(response.error.msg);
+                    },
+                });
+            }
+
+            const removeWishCardFromDOM = (node) => {
+                const divName = "row justify-content-center";
+                if (node.parentNode.className !== divName) {
+                    removeWishCardFromDOM(node.parentNode);
+                } else {
+                    while (node.firstChild) {
+                        node.removeChild(node.lastChild);
+                    }
+                }
+            }
+
+            $(".col.wishcard-btn.btn-navy-bg").each(() => {
+                $(this).click(unlockCardButtonClick);
+            })
+        });
