@@ -19,7 +19,6 @@ link( rel='stylesheet', type='text/css', href='/public/dist/wishcards.min.css' )
 
 script( src='https://kit.fontawesome.com/7a735561bb.js', crossorigin='anonymous' )
 
-//- tag manager
 script( async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1" )
 script.
     window.dataLayer = window.dataLayer || [];
@@ -29,30 +28,27 @@ script.
     gtag('js', new Date());
     gtag('config', 'UA-180152810-1');
 
-//- google login
 if locals.env.google != ''
     script( src="https://apis.google.com/js/platform.js" async defer )
     meta( name="google-signin-client_id" content= locals.env.google )
 
-//- facebook login
 if locals.env.facebook != ''
     script( async defer src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0' nonce='XBZR4Yw2' crossorigin='anonymous' )
     script.
         window.fbAsyncInit = function () {
             FB.init({
-            appId: '#{locals.env.facebook}',
-            cookie: true,
-            xfbml: true,
-            version: 'v8.0',
+                appId: '#{locals.env.facebook}',
+                cookie: true,
+                xfbml: true, s
+                version: 'v8.0',
             });
             FB.AppEvents.logPageView();
         };
 
         (function (d, s, id) {
-            var js,
-            fjs = d.getElementsByTagName(s)[0];
+            var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
-            return;
+                return;
             }
             js = d.createElement(s);
             js.id = id;
