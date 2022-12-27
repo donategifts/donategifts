@@ -11,7 +11,7 @@ module.exports = class HowToHandler extends BaseHandler {
 		try {
 			res.status(200).render('pages/howto', { user: res.locals.user });
 		} catch (error) {
-			this.handleError(req, 400, error);
+			this.handleError({ req, code: 400, error });
 		}
 	}
 };

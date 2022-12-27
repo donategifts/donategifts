@@ -23,7 +23,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 			const posts = await this.#postRepository.getAllPosts();
 			res.status(200).render('pages/community', { user, posts, moment });
 		} catch (error) {
-			return this.handleError(res, 400, error);
+			return this.handleError({ res, code: 400, error });
 		}
 	}
 
@@ -68,7 +68,7 @@ module.exports = class CommunityHandler extends BaseHandler {
 				data: newPost,
 			});
 		} catch (error) {
-			return this.handleError(res, 400, error);
+			return this.handleError({ res, code: 400, error });
 		}
 	}
 };

@@ -5,32 +5,38 @@ module.exports = class BaseHandler {
 		this.log = log;
 	}
 
-	handleError(res, code, errorMsg) {
+	handleError({ res, code, error, renderErrorPage = false }) {
 		let statusCode = 400;
 		let name = 'Error handler';
-		let error;
 
-		if (typeof errorMsg === 'object') {
-			if (errorMsg.name) {
-				name = errorMsg.name;
+		if (typeof error === 'object') {
+			if (error.name) {
+				name = error.name;
 			}
 
-			statusCode = errorMsg.statusCode;
-			error = errorMsg;
-		} else if (typeof errorMsg === 'string') {
-			error = { msg: errorMsg };
+			statusCode = error.statusCode;
+		} else if (typeof error === 'string') {
+			// eslint-disable-next-line no-param-reassign
+			error = { msg: error };
 		}
 
 		statusCode = code || statusCode;
 
-		this.log.error(`${name}:`, {
+		this.log.error(name, {
 			statusCode,
 			error,
 		});
 
-		res.status(statusCode).send({
-			statusCode,
-			error,
-		});
+		if (renderErrorPage) {
+			res.status(statusCode).render(code === 400 ? '404' : code.toString(), {
+				statusCode,
+				error,
+			});
+		} else {
+			res.status(statusCode).send({
+				statusCode,
+				error,
+			});
+		}
 	}
 };

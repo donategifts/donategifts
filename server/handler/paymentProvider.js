@@ -128,7 +128,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 				clientSecret: paymentIntent.client_secret,
 			});
 		} else {
-			this.handleError(res, 400, 'Wishcard not found');
+			this.handleError({ res, code: 400, error: 'Wishcard not found' });
 		}
 	}
 
@@ -210,7 +210,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 				donationInformation,
 			});
 		} catch (error) {
-			this.handleError(res, 400, error);
+			this.handleError({ res, code: 400, error });
 		}
 	}
 };

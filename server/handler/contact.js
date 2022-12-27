@@ -18,7 +18,7 @@ module.exports = class ContactHandler extends BaseHandler {
 		try {
 			res.status(200).render('pages/contact', { user: res.locals.user });
 		} catch (error) {
-			this.handleError(res, 400, error);
+			this.handleError({ res, code: 400, error });
 		}
 	}
 
@@ -46,7 +46,7 @@ module.exports = class ContactHandler extends BaseHandler {
 
 			return res.status(201).redirect('/');
 		} catch (error) {
-			this.handleError(res, 400, 'Failed to send Email!');
+			this.handleError({ res, code: 400, error: 'Failed to send Email!' });
 		}
 	}
 
@@ -60,10 +60,10 @@ module.exports = class ContactHandler extends BaseHandler {
 			});
 		}
 
-		return this.handleError(
+		return this.handleError({
 			res,
-			400,
-			'Failed to send feedback! Please try again in a few minutes!',
-		);
+			code: 400,
+			error: 'Failed to send feedback! Please try again in a few minutes!',
+		});
 	}
 };
