@@ -5,11 +5,9 @@ const express = require('express');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 
-// handle picture upload
-const WishCardMiddleWare = require('./middleware/wishCard.middleware');
-
 const router = express.Router();
 
+const MiddleWare = require('../middleware');
 const {
 	verifyHashValidationRules,
 	passwordRequestValidationRules,
@@ -17,12 +15,11 @@ const {
 	getPasswordResetValidationRules,
 	postPasswordResetValidationRules,
 	validate,
-} = require('./validations/users.validations');
+} = require('../helper/validations');
 const { sendPasswordResetMail } = require('../helper/messaging');
 const { handleError } = require('../helper/error');
 const log = require('../helper/logger');
-const { hashPassword } = require('../helper/user.helper');
-const { redirectLogin } = require('./middleware/login.middleware');
+const { hashPassword } = require('../helper/utils');
 
 const userRepository = require('../db/repository/UserRepository');
 const agencyRepository = require('../db/repository/AgencyRepository');
@@ -33,6 +30,8 @@ const UserRepository = new userRepository();
 const AgencyRepository = new agencyRepository();
 const DonationRepository = new donationRepository();
 const WishCardRepository = new wishCardRepository();
+
+const middleWare = new MiddleWare();
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -57,7 +56,7 @@ router.get('/', (req, res) => {
 // @access  Private, only users
 // @tested 	Yes
 // TODO: add conditions to check userRole and limit 'createWishCard' access to 'partners' only
-router.get('/profile', redirectLogin, async (req, res) => {
+router.get('/profile', MiddleWare.redirectLogin, async (req, res) => {
 	try {
 		const { user } = req.session;
 		if (user.userRole === 'partner') {
@@ -94,7 +93,7 @@ router.put(
 	'/profile',
 	updateProfileValidationRules(),
 	validate,
-	redirectLogin,
+	MiddleWare.redirectLogin,
 	async (req, res) => {
 		try {
 			const { aboutMe } = req.body;
@@ -130,9 +129,9 @@ router.put(
 router.post(
 	'/profile/picture',
 	limiter,
-	WishCardMiddleWare.upload.single('profileImage'),
+	middleWare.upload.single('profileImage'),
 	validate,
-	redirectLogin,
+	MiddleWare.redirectLogin,
 	async (req, res) => {
 		if (req.file === undefined) {
 			handleError(
@@ -171,7 +170,7 @@ router.post(
 	},
 );
 
-router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
+router.delete('/profile/picture', limiter, MiddleWare.redirectLogin, async (req, res) => {
 	try {
 		// if users had deleted picture replace it with string for the default avatar
 		const defaultImage = '/public/img/default_profile_avatar.svg';
@@ -199,7 +198,7 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 // @route   GET '/users/logout'
 // @access  Public
 // @tested 	Not yet
-router.get('/logout', redirectLogin, (req, res) => {
+router.get('/logout', MiddleWare.redirectLogin, (req, res) => {
 	req.session.destroy(() => {
 		res.clearCookie(process.env.SESS_NAME);
 		res.redirect('/users/login');
@@ -298,7 +297,7 @@ router.get('/verify/:hash', verifyHashValidationRules(), validate, async (req, r
 // @route   GET '/users/choose'
 // @access  Private
 // @tested
-router.get('/choose', redirectLogin, async (req, res) => {
+router.get('/choose', MiddleWare.redirectLogin, async (req, res) => {
 	try {
 		const { user } = res.locals;
 		let params = { user };
@@ -443,7 +442,7 @@ router.get('/agency/address', async (req, res) => {
 	}
 });
 
-router.get('/profile/donations', redirectLogin, async (req, res) => {
+router.get('/profile/donations', MiddleWare.redirectLogin, async (req, res) => {
 	try {
 		const { user } = req.session;
 		let donations;

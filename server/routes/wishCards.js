@@ -1,11 +1,13 @@
 /* eslint-disable new-cap */
 const express = require('express');
-
-const router = express.Router();
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
+
+const router = express.Router();
+
+const MiddleWare = require('../middleware');
 const log = require('../helper/logger');
-const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
+const { calculateWishItemTotalPrice } = require('../helper/utils');
 const {
 	createWishcardValidationRules,
 	createGuidedWishcardValidationRules,
@@ -14,14 +16,8 @@ const {
 	postMessageValidationRules,
 	getDefaultCardsValidationRules,
 	validate,
-} = require('./validations/wishcards.validations');
+} = require('../helper/validations');
 
-const { redirectLogin } = require('./middleware/login.middleware');
-const {
-	renderPermissions,
-	checkVerifiedUser,
-	renderPermissionsRedirect,
-} = require('./middleware/wishCard.middleware');
 const {
 	babies,
 	preschoolers,
@@ -31,10 +27,9 @@ const {
 	youth,
 	allAgesA,
 	allAgesB,
-} = require('../utils/defaultItems');
+} = require('../helper/defaultItems');
 const { handleError } = require('../helper/error');
-const WishCardMiddleWare = require('./middleware/wishCard.middleware');
-const { getMessageChoices } = require('../utils/defaultMessages');
+const { getMessageChoices } = require('../helper/defaultMessages');
 
 const userRepository = require('../db/repository/UserRepository');
 const messageRepository = require('../db/repository/MessageRepository');
@@ -48,6 +43,8 @@ const AgencyRepository = new agencyRepository();
 const WishCardRepository = new wishCardRepository();
 const DonationsRepository = new donationsRepository();
 
+const middleWare = new MiddleWare();
+
 const WishCardController = require('./controller/wishcard.controller');
 
 // allow only 100 requests per 15 minutes
@@ -59,8 +56,8 @@ const limiter = rateLimit({
 router.post(
 	'/',
 	limiter,
-	renderPermissions,
-	WishCardMiddleWare.upload.single('wishCardImage'),
+	middleWare.renderPermissions,
+	middleWare.upload.single('wishCardImage'),
 	createWishcardValidationRules(),
 	validate,
 	async (req, res) => {
@@ -116,8 +113,8 @@ router.post(
 router.post(
 	'/guided/',
 	limiter,
-	renderPermissions,
-	WishCardMiddleWare.upload.single('wishCardImage'),
+	middleWare.renderPermissions,
+	middleWare.upload.single('wishCardImage'),
 	createGuidedWishcardValidationRules(),
 	validate,
 	async (req, res) => {
@@ -186,7 +183,7 @@ router.post(
 router.post(
 	'/edit/:id',
 	limiter,
-	renderPermissions,
+	middleWare.renderPermissions,
 	createWishcardValidationRules(),
 	validate,
 	async (req, res) => {
@@ -231,7 +228,7 @@ router.post(
 	},
 );
 
-router.delete('/delete/:id', limiter, renderPermissions, async (req, res) => {
+router.delete('/delete/:id', limiter, middleWare.renderPermissions, async (req, res) => {
 	try {
 		const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 		const agency = wishcard.belongsTo;
@@ -275,7 +272,7 @@ router.get('/', async (_req, res) => {
 	}
 });
 
-router.get('/me', renderPermissionsRedirect, async (req, res) => {
+router.get('/me', middleWare.renderPermissionsRedirect, async (req, res) => {
 	try {
 		const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
 		const wishCards = await WishCardRepository.getWishCardByAgencyId(userAgency._id);
@@ -300,7 +297,7 @@ router.get('/me', renderPermissionsRedirect, async (req, res) => {
 	}
 });
 
-router.get('/edit/:id', limiter, renderPermissionsRedirect, async (req, res) => {
+router.get('/edit/:id', limiter, middleWare.renderPermissionsRedirect, async (req, res) => {
 	try {
 		const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
 		const agency = wishcard.belongsTo;
@@ -326,7 +323,7 @@ router.get('/edit/:id', limiter, renderPermissionsRedirect, async (req, res) => 
 	}
 });
 
-router.get('/create', renderPermissionsRedirect, async (_req, res) => {
+router.get('/create', middleWare.renderPermissionsRedirect, async (_req, res) => {
 	try {
 		res.status(200).render('createWishcard', {
 			user: res.locals.user,
@@ -506,9 +503,9 @@ router.get('/:id', getByIdValidationRules(), validate, async (req, res) => {
 
 router.get(
 	'/donate/:id',
-	redirectLogin,
+	middleWare.redirectLogin,
 	getByIdValidationRules(),
-	redirectLogin,
+	middleWare.redirectLogin,
 	async (req, res) => {
 		try {
 			const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
@@ -585,7 +582,7 @@ router.get('/get/random', async (req, res) => {
 
 router.put(
 	'/update/:id',
-	renderPermissions,
+	middleWare.renderPermissions,
 	updateWishCardValidationRules(),
 	validate,
 	async (req, res) => {
@@ -605,7 +602,7 @@ router.put(
 
 router.post(
 	'/message',
-	checkVerifiedUser,
+	middleWare.checkVerifiedUser,
 	postMessageValidationRules(),
 	validate,
 	async (req, res) => {
@@ -630,7 +627,7 @@ router.post(
 
 router.get(
 	'/defaults/:id',
-	renderPermissions,
+	middleWare.renderPermissions,
 	getDefaultCardsValidationRules(),
 	validate,
 	async (req, res) => {

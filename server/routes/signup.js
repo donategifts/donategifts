@@ -2,12 +2,12 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 
 const SignupHandler = require('../handler/signup');
-const MiddleWare = require('./middleware');
+const MiddleWare = require('../middleware');
 const {
 	signupValidationRules,
 	validate,
 	createAgencyValidationRules,
-} = require('./validations/users.validations');
+} = require('../helper/validations');
 
 const router = express.Router();
 

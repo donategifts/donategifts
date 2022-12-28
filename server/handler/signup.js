@@ -1,8 +1,8 @@
 const BaseHandler = require('./basehandler');
-const { validateReCaptchaToken } = require('../routes/validations/googleReCaptcha');
+const { validateReCaptchaToken } = require('../helper/utils');
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const { hashPassword } = require('../helper/user.helper');
+const { hashPassword } = require('../helper/utils');
 const {
 	createEmailVerificationHash,
 	sendVerificationEmail,

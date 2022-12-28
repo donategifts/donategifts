@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 const multerS3 = require('multer-sharp-s3');
 const { v4: UUIDv4 } = require('uuid');
 const path = require('path');
-const { AgencyRepository } = require('../../db/repository/AgencyRepository');
+const { AgencyRepository } = require('../db/repository/AgencyRepository');
 
 module.exports = class MiddleWare {
 	#s3;

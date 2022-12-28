@@ -12,7 +12,7 @@ const {
 	sendDonationConfirmationMail,
 	sendDiscordDonationNotification,
 } = require('../helper/messaging');
-const { calculateWishItemTotalPrice } = require('../helper/wishCard.helper');
+const { calculateWishItemTotalPrice } = require('../helper/utils');
 
 module.exports = class PaymentProviderHandler extends BaseHandler {
 	#lastWishcardDonation;

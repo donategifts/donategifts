@@ -61,7 +61,6 @@
     "response-time": "2.3.2",
     "sharp": "0.31.3",
     "stripe": "9.13.0",
-    "superagent": "8.0.6",
     "uuid": "9.0.0",
     "xss": "1.0.14"
   },

@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const MiddleWare = require('./middleware');
-const { donationPostValidation, validate } = require('./validations/donationPost.validations');
+const MiddleWare = require('../middleware');
+const { donationPostValidation, validate } = require('../helper/validations');
 const Community = require('../handler/community');
 
 const communityHandler = new Community();
