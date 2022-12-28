@@ -263,7 +263,7 @@ router.get('/', async (_req, res) => {
 			wishcards[i].age = today.diff(birthday, 'years');
 		}
 
-		res.status(200).render('wishCards', {
+		res.status(200).render('pages/wishCards', {
 			user: res.locals.user,
 			wishcards,
 		});

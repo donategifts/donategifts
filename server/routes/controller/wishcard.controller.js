@@ -9,7 +9,7 @@ async function getWishCardSearchResult(
 	showDonated = false,
 	reverseSort = false,
 ) {
-	const fuzzySearchResult = await WishCardRepository.getWishCardsFuzzy(
+	const fuzzySearchResult = await new WishCardRepository().getWishCardsFuzzy(
 		(itemName && itemName.trim()) || '',
 		showDonated,
 		reverseSort,
@@ -55,13 +55,13 @@ async function getLockedWishCards(req) {
 		return response;
 	}
 
-	const user = await UserRepository.getUserByObjectId(req.session.user._id);
+	const user = await new UserRepository().getUserByObjectId(req.session.user._id);
 	if (!user) {
 		response.error = 'User not found';
 		return response;
 	}
 	response.userId = user._id;
-	response.alreadyLockedWishCard = await WishCardRepository.getLockedWishcardsByUserId(
+	response.alreadyLockedWishCard = await new WishCardRepository().getLockedWishcardsByUserId(
 		req.session.user._id,
 	);
 
