@@ -1,7 +1,7 @@
 nav.navbar.navbar-expand-md.mb-0.p-1
     .container.mt-0
         a.navbar-brand.ml-3.m-lg-0.p-0( href='/' rel='home' )
-            img.d-block( src='/public/img/new-donate-gifts-logo-2.png' alt='logo' )
+            img.d-block( src='/img/new-donate-gifts-logo-2.png' alt='logo' )
         .collapse.navbar-collapse.justify-content-end
             ul.navbar-nav
                 li.nav-item
@@ -13,18 +13,18 @@ nav.navbar.navbar-expand-md.mb-0.p-1
                 li.nav-item
                     a.nav-link( href='/community' ) Community
 
-                if !locals.user
+                if !user
                     li.nav-item
                         a.nav-link( href='/signup' ) Sign Up
                     li.nav-item
                         a.nav-link( href='/login' ) Log In
                 else
-                    if locals.user.userRole == 'partner'
+                    if user.userRole == 'partner'
                         //- li.nav-item
                         //-     a.nav-link( href='/wishcards/me' ) My Wishes
                         //- li.nav-item
                         //-     a.nav-link( href='/wishcards/create' ) Create a Wish Card
-                    if locals.user.userRole == 'admin'
+                    if user.userRole == 'admin'
                         li.nav-item
                             a.nav-link( href='/wishcards/admin/' ) Admin Panel
                     li.nav-item
@@ -52,7 +52,7 @@ nav.navbar.navbar-expand-md.mb-0.p-1
                     a.nav-link( href='/howto' ) How To
                 li.nav-item
                     a.nav-link( href='/community' ) Community
-                if !locals.user
+                if !user
                     li.nav-item
                         a.nav-link( href='/users/signup' ) Sign Up
                     li.nav-item

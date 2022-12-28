@@ -94,14 +94,12 @@ router.post(
 				});
 
 				res.status(200).send({ success: true, url: '/wishcards/me' });
-				log.info(
-					{
-						type: 'wishcard_created',
-						agency: userAgency._id,
-						wishCardId: newWishCard._id,
-					},
-					'Wishcard created',
-				);
+				log.info({
+					msg: 'Wishcard created',
+					type: 'wishcard_created',
+					agency: userAgency._id,
+					wishCardId: newWishCard._id,
+				});
 			} catch (error) {
 				handleError(res, 400, error);
 			}
@@ -166,14 +164,12 @@ router.post(
 				});
 
 				res.status(200).send({ success: true, url: '/wishcards/me' });
-				log.info(
-					{
-						type: 'wishcard_created',
-						agency: userAgency._id,
-						wishCardId: newWishCard._id,
-					},
-					'Wishcard created',
-				);
+				log.info({
+					mgs: 'Wishcard created',
+					type: 'wishcard_created',
+					agency: userAgency._id,
+					wishCardId: newWishCard._id,
+				});
 			} catch (error) {
 				handleError(res, 400, error);
 			}
@@ -218,7 +214,11 @@ router.post(
 			}
 
 			res.status(200).send({ success: true, url });
-			log.info({ type: 'wishcard_updated', wishCardId: wishcard.id }, 'Wishcard Updated');
+			log.info({
+				mgs: 'Wishcard Updated',
+				type: 'wishcard_updated',
+				wishCardId: wishcard.id,
+			});
 		} catch (error) {
 			handleError(res, 400, error);
 		}
@@ -243,7 +243,7 @@ router.delete('/delete/:id', limiter, renderPermissions, async (req, res) => {
 		await WishCardRepository.deleteWishCard(wishcard._id);
 
 		res.status(200).send({ success: true, url });
-		log.info({ type: 'wishcard_deleted', wishCardId: wishcard.id }, 'Wishcard Deleted');
+		log.info({ mgs: 'Wishcard Deleted', type: 'wishcard_deleted', wishCardId: wishcard.id });
 	} catch (error) {
 		handleError(res, 400, error);
 	}

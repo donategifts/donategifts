@@ -8,10 +8,6 @@ module.exports = class HowToHandler extends BaseHandler {
 	}
 
 	handleGetIndex(req, res) {
-		try {
-			res.status(200).render('pages/howto', { user: res.locals.user });
-		} catch (error) {
-			this.handleError({ req, code: 400, error });
-		}
+		this.renderView(res, 'howto');
 	}
 };

@@ -154,7 +154,6 @@ const sendMail = async (from, to, subject, message, attachments = undefined) => 
 			}
 
 			if (process.env.NODE_ENV === 'development') {
-				log.info(`Preview URL: ${nodemailer.getTestMessageUrl(data)}`);
 				return { success: true, data: nodemailer.getTestMessageUrl(data) };
 			}
 

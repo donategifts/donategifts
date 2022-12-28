@@ -8,10 +8,6 @@ module.exports = class FaqHandler extends BaseHandler {
 	}
 
 	handleGetIndex(_req, res, _next) {
-		try {
-			res.status(200).render('pages/faq', { user: res.locals.user });
-		} catch (error) {
-			return this.handleError({ res, code: 400, error });
-		}
+		this.renderView(res, 'pages/faq');
 	}
 };

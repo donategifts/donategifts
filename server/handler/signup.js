@@ -20,13 +20,13 @@ module.exports = class SignupHandler extends BaseHandler {
 		this.#userRepository = new UserRepository();
 		this.#agencyRepository = new AgencyRepository();
 
-		this.handleGetSignup = this.handleGetSignup.bind(this);
+		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostSignup = this.handlePostSignup.bind(this);
 		this.handleGetAgency = this.handleGetAgency.bind(this);
 		this.handlePostAgency = this.handlePostAgency.bind(this);
 	}
 
-	handleGetSignup(_req, res, _next) {
+	handleGetIndex(_req, res, _next) {
 		let userRole = null;
 
 		if (res.locals?.user) {
@@ -34,13 +34,9 @@ module.exports = class SignupHandler extends BaseHandler {
 		}
 
 		if (userRole === 'partner') {
-			res.status(200).render('pages/agency', {
-				user: res.locals.user,
-			});
+			this.renderView(res, 'agency');
 		} else {
-			res.status(200).render('pages/signup', {
-				user: res.locals.user,
-			});
+			this.renderView(res, 'signup');
 		}
 	}
 
@@ -112,14 +108,8 @@ module.exports = class SignupHandler extends BaseHandler {
 		}
 	}
 
-	async handleGetAgency(req, res) {
-		try {
-			res.render('pages/agency', {
-				user: res.locals.user,
-			});
-		} catch (error) {
-			return this.handleError({ res, code: 400, error });
-		}
+	async handleGetAgency(_req, res) {
+		this.renderView(res, 'agency');
 	}
 
 	async handlePostAgency(req, res, _next) {

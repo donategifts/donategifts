@@ -179,13 +179,11 @@ router.delete('/profile/picture', limiter, redirectLogin, async (req, res) => {
 			}),
 		);
 
-		log.info(
-			{
-				type: 'user_profile_picture_delete',
-				user: req.session.user._id,
-			},
-			'Profile picture deleted',
-		);
+		log.info({
+			msg: 'Profile picture deleted',
+			type: 'user_profile_picture_delete',
+			user: req.session.user._id,
+		});
 	} catch (error) {
 		handleError(res, 400, error);
 	}

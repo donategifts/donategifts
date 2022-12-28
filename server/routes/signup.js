@@ -18,7 +18,7 @@ const limiter = rateLimit({
 	max: 100,
 });
 
-router.get('/', MiddleWare.redirectProfile, signupHandler.handleGetSignup);
+router.get('/', MiddleWare.redirectProfile, signupHandler.handleGetIndex);
 
 router.post('/', limiter, signupValidationRules(), validate, signupHandler.handlePostSignup);
 

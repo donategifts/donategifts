@@ -31,9 +31,6 @@ class MongooseConnection extends BaseHandler {
 					`Connected to Mongodb ${
 						database.name ? database.name : database.connections[0].name
 					}`,
-					{
-						type: 'mongo_startup',
-					},
 				);
 			}
 		});

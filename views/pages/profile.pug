@@ -14,7 +14,7 @@ block content
                     p.mt-4
                         i.fa.fa-exclamation-triangle( aria-hidden='true' )
                         span Some features are disabled until email is verified. Please verify your email.
-                if user.userRole == 'partner' && locals.agency
+                if user.userRole == 'partner' && agency
                     if !agency.isVerified
                         p.mt-4
                             i.fa.fa-exclamation-triangle( aria-hidden='true' )
@@ -101,7 +101,7 @@ block content
 
                         .row.justify-content-center.pt-2.my-1
                             .col-12
-                                label( or='agencyBio' ) Agency Description:
+                                label( for='agencyBio' ) Agency Description:
                                 textarea#agencyBio( name='agencyBio' placeholder=agency.agencyBio rows='3' )
 
             .profile-panel.my-4.shadow
@@ -132,7 +132,7 @@ block content
                             span About Me
                             img#update-about-me.about-me-edit( data-toggle='modal'
                                 data-target='#aboutMeModal'
-                                src='/public/img/edit-profile.svg'
+                                src='/img/edit-profile.svg'
                                 alt='Edit profile'
                             )
                         if user.aboutMe

@@ -205,8 +205,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 				childName: wishCard.childFirstName,
 			};
 
-			res.status(200).render('successPayment', {
-				user: res.locals.user,
+			this.renderView(res, 'successPayment', {
 				donationInformation,
 			});
 		} catch (error) {

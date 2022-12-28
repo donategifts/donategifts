@@ -15,11 +15,7 @@ module.exports = class ContactHandler extends BaseHandler {
 	}
 
 	handleGetIndex(_req, res, _next) {
-		try {
-			res.status(200).render('pages/contact', { user: res.locals.user });
-		} catch (error) {
-			this.handleError({ res, code: 400, error });
-		}
+		this.renderView(res, 'contact');
 	}
 
 	async handlePostEmail(req, res, _next) {
@@ -39,7 +35,7 @@ module.exports = class ContactHandler extends BaseHandler {
 			);
 
 			if (mailResponse.error) {
-				this.log.error(req, mailResponse.error);
+				this.log.error({ ...req, ...mailResponse.error });
 			} else {
 				this.log.info(req, 'email successfully sent');
 			}

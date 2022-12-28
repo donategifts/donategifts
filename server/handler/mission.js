@@ -7,11 +7,7 @@ module.exports = class Mission extends BaseHandler {
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 	}
 
-	handleGetIndex(req, res, _next) {
-		try {
-			res.status(200).render('pages/mission', { user: res.locals.user });
-		} catch (error) {
-			this.log.error(req, error);
-		}
+	handleGetIndex(_req, res, _next) {
+		this.renderView(res, 'mission');
 	}
 };

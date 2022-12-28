@@ -24,9 +24,7 @@
     "no-unused-vars": [
       "error",
       {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_"
       }
     ],
     "no-restricted-syntax": "off",
@@ -37,8 +35,5 @@
     "global-require": "off",
     "import/no-dynamic-require": "off",
     "class-methods-use-this": "off"
-  },
-  "globals": {
-    "io": true
   }
 }

@@ -15,17 +15,12 @@ const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const { MongooseConnection } = require('./db/connection');
-const { UserRepository } = require('./db/repository/UserRepository');
-const { AgencyRepository } = require('./db/repository/AgencyRepository');
-
 const log = require('./helper/logger');
 const DGBot = require('./discord/bot');
 
 const app = express();
 
 const mongooseConnection = new MongooseConnection();
-const userRepository = new UserRepository();
-const agencyRepository = new AgencyRepository();
 
 // hot reloading in dev environment
 if (process.env.NODE_ENV === 'development') {
@@ -45,36 +40,30 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(
-	responseTime((req, res, time) => {
-		if (process.env.NODE_ENV !== 'test' && req.originalUrl !== '/health') {
-			if (
-				(!req.originalUrl.includes('.png') &&
-					!req.originalUrl.includes('.jpg') &&
-					!req.originalUrl.includes('.js') &&
-					!req.originalUrl.includes('.svg') &&
-					!req.originalUrl.includes('.jpeg') &&
-					!req.originalUrl.includes('.woff') &&
-					!req.originalUrl.includes('.css') &&
-					!req.originalUrl.includes('.ico')) ||
-				res.statusCode > 304
-			) {
-				const clientIp = requestIp.getClientIp(req);
+	responseTime((req, res, _time) => {
+		const ignoredRequests = [
+			'png',
+			'jpg',
+			'js',
+			'svg',
+			'jpeg',
+			'woff',
+			'css',
+			'ico',
+			'map',
+			'gif',
+		];
 
-				log.info(
-					{
-						type: 'request',
-						user: res.locals.user
-							? String(res.locals.user._id).substring(0, 10)
-							: 'guest',
-						method: req.method,
-						statusCode: res.statusCode,
-						route: req.originalUrl,
-						responseTime: Math.ceil(time),
-						ip: clientIp,
-					},
-					'New request',
-				);
-			}
+		const parts = req.originalUrl.split('.');
+
+		if (req.originalUrl !== '/health' && !ignoredRequests.includes(parts[parts.length - 1])) {
+			const clientIp = requestIp.getClientIp(req);
+
+			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
+				res.locals.user ? `USER ${String(res.locals.user._id)}` : 'GUEST'
+			}) path: ${req.originalUrl}`;
+
+			log.info(logString);
 		}
 	}),
 );
@@ -93,11 +82,7 @@ app.use(cors());
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
-// app.set('views', path.join(__dirname, '../client/views'));
-// app.set('view engine', 'ejs');
-
-// static files like css, js, images, fonts etc.
-app.use(express.static('client'));
+app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.use(
@@ -113,33 +98,20 @@ app.use(
 		saveUninitialized: false,
 		secret: process.env.SESS_SECRET,
 		cookie: {
-			maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour
+			maxAge: Number(process.env.SESS_LIFE),
 			sameSite: true,
 			secure: false,
 		},
 	}),
 );
 
-// MIDDLEWARE for extracting user and agency from a session
-app.use(async (req, res, next) => {
-	const { user } = req.session;
-	if (user) {
-		const result = await userRepository.getUserByObjectId(user._id);
-		res.locals.user = result;
-		req.session.user = result;
-		if (user.userRole === 'partner') {
-			const agency = await agencyRepository.getAgencyByUserId(user._id);
-			if (agency !== null) {
-				res.locals.agency = agency;
-				req.session.agency = agency;
-			}
-		}
-	}
-	next();
-});
-
-// attach our env variables to the template vars
 app.use((req, res, next) => {
+	if (req.session?.user) {
+		// assign user to locals if there's one present in the session
+		res.locals.user = req.session.user;
+	}
+
+	// apply some of our environment variables to the locals so that they can be used in the templates
 	res.locals.env = {
 		stripe: process.env.STRIPE_API,
 		paypal: process.env.PAYPAL_CLIENT,
@@ -192,20 +164,19 @@ for (const route of routes) {
 	}
 }
 
-app.use('/robots.txt', (req, res, _next) => {
+app.use('/robots.txt', (_req, res, _next) => {
 	res.type('text/plain');
 	res.sendFile(path.join(__dirname, '../public/robots.txt'));
 });
 
 if (process.env.MAINTENANCE_ENABLED === 'true') {
 	app.get('*', (_req, res) => {
-		res.sendFile(path.join(__dirname, '../client/views/maintenance.html'));
+		res.status(200).render('maintenance');
 	});
 }
 
 // ERROR PAGE
-app.get('*', (req, res) => {
-	// res.status(404).render('404');
+app.get('*', (_req, res) => {
 	res.status(404).render('error/404');
 });
 
@@ -217,10 +188,7 @@ app.use((err, req, res, _next) => {
 
 	log.error(err);
 
-	// render the error page
-	res.status(500);
-	// res.render('500');
-	res.render('error/500');
+	res.status(500).render('error/500');
 });
 
 app.listen(process.env.PORT, () => {

@@ -23,10 +23,12 @@ async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 
 
 	const totalAmount = donorAmount + partnerAmount + adminAmount;
 
-	log.info(`Creating ${totalAmount} users: 
-    ${donorAmount} donors
-    ${partnerAmount} partners
-    ${adminAmount} admins`);
+	log.info(`
+		Creating ${totalAmount} users: 
+		${donorAmount} donors
+		${partnerAmount} partners
+		${adminAmount} admins
+	`);
 
 	for (let i = 0; i < totalAmount; i++) {
 		let userRole;

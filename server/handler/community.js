@@ -19,9 +19,8 @@ module.exports = class CommunityHandler extends BaseHandler {
 
 	async handleGetIndex(req, res, _next) {
 		try {
-			const { user } = req.session;
 			const posts = await this.#postRepository.getAllPosts();
-			res.status(200).render('pages/community', { user, posts, moment });
+			this.renderView(res, 'pages/community', { posts, moment });
 		} catch (error) {
 			return this.handleError({ res, code: 400, error });
 		}

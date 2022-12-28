@@ -41,7 +41,7 @@ mixin carouselInnerPart(increment)
                                                 if wishcards[j].status === 'donated'
                                                     button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
                                                 else
-                                                    if locals.user
+                                                    if user
                                                         a( href='wishcards/donate/' + wishcards[j]._id )
                                                             button.wishcard__button--blue.bdr-2( type='button' ) Donate Gift
                                                     else

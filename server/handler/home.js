@@ -47,11 +47,7 @@ module.exports = class HomeHandler extends BaseHandler {
 
 		const donatedWishcards = await this.#wishCardRepository.getWishCardsByStatus('donated');
 
-		// remove this after pug rewrite, just used to test new pages on index page
-		const page = 'pages/home';
-
-		res.render(page, {
-			user: res.locals.user,
+		this.renderView(res, 'home', {
 			wishcards: [],
 			verifiedAgencies: agencies.length,
 			undonatedCards: undonatedWishcards.length,

@@ -18,9 +18,7 @@ module.exports = class LoginHandler extends BaseHandler {
 	}
 
 	handleGetIndex(_req, res, _next) {
-		res.status(200).render('pages/login', {
-			user: res.locals.user,
-		});
+		this.renderView(res, 'login');
 	}
 
 	async handlePostIndex(req, res, _next) {
