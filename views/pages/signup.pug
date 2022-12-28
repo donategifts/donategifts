@@ -70,7 +70,7 @@ block content
                     button#submit-btn.form-btn.quick-font( type='submit' ) Sign Up
     include ../components/modal/signupModal.pug
 
-append scripts
+block scripts
     include ../mixins/formvalidation
     +passwordToggle
 

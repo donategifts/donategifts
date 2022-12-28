@@ -48,7 +48,7 @@ block content
                         if post.image
                             img.img-fluid.rounded-lg( src=post.image alt='agency posted image proof of gift delivery' )
 
-append scripts
+block scripts
     script.
         $(document).ready(() => {
             $('#communityPost').on('submit', (event) => {
