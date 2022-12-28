@@ -39,18 +39,6 @@ const limiter = rateLimit({
 	max: 100,
 });
 
-// @desc    Render (home)
-// @route   GET '/users'
-// @access  Public
-// @tested 	Yes
-router.get('/', (req, res) => {
-	try {
-		res.status(200).redirect('/');
-	} catch (err) {
-		return handleError(res, 400, err);
-	}
-});
-
 // @desc    Render profile.html, grabs userId and render ejs data in static template
 // @route   GET '/users/profile'
 // @access  Private, only users
@@ -203,20 +191,6 @@ router.get('/logout', MiddleWare.redirectLogin, (req, res) => {
 		res.clearCookie(process.env.SESS_NAME);
 		res.redirect('/users/login');
 	});
-});
-
-// @desc    Render terms.ejs
-// @route   GET '/users/terms'
-// @access  public
-// @tested 	No
-router.get('/terms', async (req, res) => {
-	try {
-		res.render('terms', {
-			user: res.locals.user,
-		});
-	} catch (err) {
-		handleError(res, 400, err);
-	}
 });
 
 // @desc    Render login.html

@@ -503,9 +503,9 @@ router.get('/:id', getByIdValidationRules(), validate, async (req, res) => {
 
 router.get(
 	'/donate/:id',
-	middleWare.redirectLogin,
+	MiddleWare.redirectLogin,
 	getByIdValidationRules(),
-	middleWare.redirectLogin,
+	MiddleWare.redirectLogin,
 	async (req, res) => {
 		try {
 			const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
