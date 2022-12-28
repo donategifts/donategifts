@@ -12,7 +12,7 @@ $(document).ready(function () {
             403: function (responseObject) {
                 showToast('Access Forbidden: Your account lacks sufficient permissions');
                 let { url } = responseObject.responseJSON;
-                setTimeout(() => location.assign(url), 1200);
+                setTimeout(() => location.assign(url), 2000);
             },
         },
     });

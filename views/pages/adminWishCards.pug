@@ -66,11 +66,11 @@ block scripts
                         wishCardId,
                         wishItemURL,
                     },
-                    success: function (_) {
+                    success: (_) => {
                         showToast("Card status updated");
                         removeWishCardFromDOM(elementRef);
                     },
-                    error: function (response) {
+                    error: (response) => {
                         showToast(response.error.msg);
                     },
                 });
@@ -87,7 +87,7 @@ block scripts
                 }
             }
 
-            $(".col.wishcard-btn.btn-navy-bg").each(() => {
+            $(".col.wishcard-btn.btn-navy-bg").each(function () {
                 $(this).click(unlockCardButtonClick);
             })
         });

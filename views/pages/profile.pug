@@ -207,7 +207,7 @@ block scripts
                 });
             });
 
-            $('#agencyAddressCheckBox').click(() => {
+            $('#agencyAddressCheckBox').click(function () {
                 if ($(this).is(':checked')) {
                     const confirmation = confirm('Do you want to overwrite the address with agency address?');
                     if (confirmation === true) {

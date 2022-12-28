@@ -114,7 +114,7 @@ module.exports = class MiddleWare {
 
 	async renderPermissions(_req, res, next) {
 		const { user } = res.locals;
-		const agency = this.#agencyRepository.getAgencyByUserId(user._id);
+		const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
 			res.status(403).send({ success: false, url: '/login' });
@@ -129,7 +129,7 @@ module.exports = class MiddleWare {
 
 	async renderPermissionsRedirect(_req, res, next) {
 		const { user } = res.locals;
-		const agency = this.#agencyRepository.getAgencyByUserId(user._id);
+		const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
 			res.status(403).render('error/403');

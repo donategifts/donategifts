@@ -35,7 +35,7 @@ block content
 block scripts
     script.
         $(document).ready(() => {
-            $('form').submit((e) => {
+            $('form').submit(function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -49,8 +49,8 @@ block scripts
                         }, {}),
                     success: () => {
                         showToast('Message sent, thank you for your feedback!', true);
-                        $('#emailForm').each(() => {
-                            this.reset();
+                        $('#emailForm').each(function () {
+                            $(this).reset();
                         });
                     },
                     error: (response) => {

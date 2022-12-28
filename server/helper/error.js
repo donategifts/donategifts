@@ -28,11 +28,15 @@ const handleError = (res, code, errorMsg) => {
 
 	statusCode = code || statusCode;
 
-	log.error({
-		msg: name,
-		statusCode,
-		error,
-	});
+	if (errorMsg instanceof Error) {
+		log.error(errorMsg);
+	} else {
+		log.error({
+			msg: name,
+			statusCode,
+			error,
+		});
+	}
 
 	res.status(statusCode).send({
 		statusCode,

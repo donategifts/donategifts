@@ -1,0 +1,6 @@
+.row.justify-content-center.choicesContainer
+    if itemChoices
+        each choice, index in itemChoices
+            input( type='radio' name='itemChoice' id='image-' + index required value=JSON.stringify(choice) )
+            label( for='image-' + index )
+                img.card.itemChoice( src=choice.Image alt='Card image cap' )
