@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 
 const BaseHandler = require('./basehandler');
-const { UserRepository } = require('../db/repository/UserRepository');
+const UserRepository = require('../db/repository/UserRepository');
 
 module.exports = class LoginHandler extends BaseHandler {
 	#userRepository;

@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 // NPM DEPENDENCIES
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
@@ -23,10 +24,15 @@ const log = require('../helper/logger');
 const { hashPassword } = require('../helper/user.helper');
 const { redirectLogin } = require('./middleware/login.middleware');
 
-const UserRepository = require('../db/repository/UserRepository');
-const AgencyRepository = require('../db/repository/AgencyRepository');
-const DonationRepository = require('../db/repository/DonationRepository');
-const WishCardRepository = require('../db/repository/WishCardRepository');
+const userRepository = require('../db/repository/UserRepository');
+const agencyRepository = require('../db/repository/AgencyRepository');
+const donationRepository = require('../db/repository/DonationRepository');
+const wishCardRepository = require('../db/repository/WishCardRepository');
+
+const UserRepository = new userRepository();
+const AgencyRepository = new agencyRepository();
+const DonationRepository = new donationRepository();
+const WishCardRepository = new wishCardRepository();
 
 // allow only 100 requests per 15 minutes
 const limiter = rateLimit({

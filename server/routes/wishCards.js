@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 const express = require('express');
 
 const router = express.Router();
@@ -35,12 +36,17 @@ const { handleError } = require('../helper/error');
 const WishCardMiddleWare = require('./middleware/wishCard.middleware');
 const { getMessageChoices } = require('../utils/defaultMessages');
 
-// IMPORT REPOSITORIES
-const UserRepository = require('../db/repository/UserRepository');
-const MessageRepository = require('../db/repository/MessageRepository');
-const WishCardRepository = require('../db/repository/WishCardRepository');
-const AgencyRepository = require('../db/repository/AgencyRepository');
-const DonationsRepository = require('../db/repository/DonationRepository');
+const userRepository = require('../db/repository/UserRepository');
+const messageRepository = require('../db/repository/MessageRepository');
+const agencyRepository = require('../db/repository/AgencyRepository');
+const wishCardRepository = require('../db/repository/WishCardRepository');
+const donationsRepository = require('../db/repository/DonationRepository');
+
+const UserRepository = new userRepository();
+const MessageRepository = new messageRepository();
+const AgencyRepository = new agencyRepository();
+const WishCardRepository = new wishCardRepository();
+const DonationsRepository = new donationsRepository();
 
 const WishCardController = require('./controller/wishcard.controller');
 

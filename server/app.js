@@ -14,7 +14,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 
-const { MongooseConnection } = require('./db/connection');
+const MongooseConnection = require('./db/connection');
 const log = require('./helper/logger');
 const DGBot = require('./discord/bot');
 

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const BaseHandler = require('../handler/basehandler');
-const log = require('../helper/logger');
 
-class MongooseConnection extends BaseHandler {
+module.exports = class MongooseConnection extends BaseHandler {
 	#mongoose;
 
 	#options;
@@ -24,9 +23,11 @@ class MongooseConnection extends BaseHandler {
 			if (err) {
 				this.log.error(err, 'Unable to connect to DB.');
 			} else {
-				if (process.env.NODE_ENV !== 'test') {
-					require('./changeHandler/WishcardChangeHandler');
+				if (process.env.NODE_ENV === 'production') {
+					const WishCardRepository = require('./repository/WishCardRepository');
+					new WishCardRepository().watch();
 				}
+
 				this.log.info(
 					`Connected to Mongodb ${
 						database.name ? database.name : database.connections[0].name
@@ -45,39 +46,4 @@ class MongooseConnection extends BaseHandler {
 			process.exit(1);
 		}
 	}
-}
-
-function connect() {
-	const options = {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	};
-
-	mongoose.Promise = Promise;
-	mongoose.connect(process.env.MONGO_URI, options, (err, database) => {
-		if (err) {
-			log.error(err, 'Unable to connect to DB.');
-		} else {
-			if (process.env.NODE_ENV !== 'test') {
-				require('./changeHandler/WishcardChangeHandler');
-			}
-			log.info(
-				`Connected to Mongodb ${
-					database.name ? database.name : database.connections[0].name
-				}`,
-			);
-		}
-	});
-}
-
-async function disconnect() {
-	try {
-		await mongoose.disconnect();
-	} catch (error) {
-		log.error(error, 'failed to disconnect mongoose');
-	} finally {
-		process.exit(1);
-	}
-}
-
-module.exports = { MongooseConnection, connect, disconnect };
+};

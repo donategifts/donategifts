@@ -1,6 +1,6 @@
 const Contact = require('../models/Contact');
 
-class ContactRepository {
+module.exports = class ContactRepository {
 	#contactModel;
 
 	constructor() {
@@ -14,18 +14,4 @@ class ContactRepository {
 			throw new Error(`Failed to create new Contact: ${error}`);
 		}
 	}
-}
-
-async function createNewContact(contactParams) {
-	try {
-		const contact = new Contact(contactParams);
-		return contact.save();
-	} catch (error) {
-		throw new Error(`Failed to create new Contact: ${error}`);
-	}
-}
-
-module.exports = {
-	ContactRepository,
-	createNewContact,
 };

@@ -1,5 +1,5 @@
 const BaseHandler = require('./basehandler');
-const { ContactRepository } = require('../db/repository/ContactRepository');
+const ContactRepository = require('../db/repository/ContactRepository');
 const { sendMail, sendFeedbackMessage } = require('../helper/messaging');
 
 module.exports = class ContactHandler extends BaseHandler {

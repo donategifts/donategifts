@@ -3,10 +3,10 @@ const moment = require('moment');
 const paypal = require('paypal-rest-sdk');
 
 const BaseHandler = require('./basehandler');
-const { WishCardRepository } = require('../db/repository/WishCardRepository');
-const { UserRepository } = require('../db/repository/UserRepository');
-const { DonationRepository } = require('../db/repository/DonationRepository');
-const { AgencyRepository } = require('../db/repository/AgencyRepository');
+const WishCardRepository = require('../db/repository/WishCardRepository');
+const UserRepository = require('../db/repository/UserRepository');
+const DonationRepository = require('../db/repository/DonationRepository');
+const AgencyRepository = require('../db/repository/AgencyRepository');
 const {
 	sendAgencyDonationAlert,
 	sendDonationConfirmationMail,

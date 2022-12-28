@@ -28,7 +28,8 @@ const handleError = (res, code, errorMsg) => {
 
 	statusCode = code || statusCode;
 
-	log.error(`${name}:`, {
+	log.error({
+		msg: name,
 		statusCode,
 		error,
 	});
