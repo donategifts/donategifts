@@ -1,14 +1,14 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
-const { MongooseConnection } = require('./connection');
+const MongooseConnection = require('../server/db/connection');
 const { allUsers, wishcards, agency } = require('./seederData');
-const User = require('./models/User');
-const WishCard = require('./models/WishCard');
-const Agency = require('./models/Agency');
-const Message = require('./models/Message');
-const Donation = require('./models/Donation');
-const { getMessageChoices } = require('../utils/defaultMessages');
-const logger = require('../helper/logger');
+const User = require('../server/db/models/User');
+const WishCard = require('../server/db/models/WishCard');
+const Agency = require('../server/db/models/Agency');
+const Message = require('../server/db/models/Message');
+const Donation = require('../server/db/models/Donation');
+const { getMessageChoices } = require('../server/utils/defaultMessages');
+const log = require('../server/helper/logger');
 
 (async () => {
 	const mongooseConnection = new MongooseConnection();
@@ -108,20 +108,20 @@ const logger = require('../helper/logger');
 			};
 
 			if (process.argv[2] === '-d') {
-				logger.info('calling destroyData, purging db');
+				log.info('calling destroyData, purging db');
 				await destroyData();
 			} else if (process.argv[2] === '-i') {
-				logger.info('calling insertData, inserting new entries');
+				log.info('calling insertData, inserting new entries');
 				await insertData();
 			} else {
-				logger.info('calling deleteDataAndImport, purging db and inserting new entries');
+				log.info('calling deleteDataAndImport, purging db and inserting new entries');
 				await deleteDataAndImport();
 			}
 		}
 	} catch (error) {
-		logger.error(error);
-		mongooseConnection.disconnect();
+		log.error(error);
+		await mongooseConnection.disconnect();
 	} finally {
-		mongooseConnection.disconnect();
+		await mongooseConnection.disconnect();
 	}
 })();

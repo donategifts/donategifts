@@ -4,11 +4,11 @@ const faker = require('faker');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
-const User = require('./models/User');
+const User = require('../server/db/models/User');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
 
-const log = require('../helper/logger');
+const log = require('../server/helper/logger');
 
 async function generateUsers(donorAmount = 10, partnerAmount = 4, adminAmount = 2) {
 	const donors = [];
