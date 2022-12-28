@@ -36,7 +36,7 @@ mixin carouselInnerPart(increment)
                                             span.font-weight-bold= interest
                                         .card-action.row
                                             .col-sm-6.mb-2
-                                                a.wishcard__link--white.bdr-2( href='/wishcards/' + wishcards[j]._id ) View More
+                                                a.wishcard__link--white.bdr-2( href='/wishcards/single/' + wishcards[j]._id ) View More
                                             .col-sm-6.mb-2
                                                 if wishcards[j].status === 'donated'
                                                     button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
