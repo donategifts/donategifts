@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
-Disallow: /users/profile
+Disallow: /profile
 Disallow: /wishcards

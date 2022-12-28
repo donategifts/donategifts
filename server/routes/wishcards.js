@@ -7,7 +7,7 @@ const router = express.Router();
 
 const MiddleWare = require('../middleware');
 const log = require('../helper/logger');
-const { calculateWishItemTotalPrice } = require('../helper/utils');
+const Utils = require('../helper/utils');
 const {
 	createWishcardValidationRules,
 	createGuidedWishcardValidationRules,
@@ -308,7 +308,7 @@ router.get('/edit/:id', limiter, middleWare.renderPermissionsRedirect, async (re
 		if (res.locals.user.userRole !== 'admin') {
 			const userAgency = await AgencyRepository.getAgencyByUserId(res.locals.user._id);
 			if (String(wishcard.belongsTo._id) !== String(userAgency._id)) {
-				return res.status(403).send({ success: false, url: '/users/profile' });
+				return res.status(403).send({ success: false, url: '/profile' });
 			}
 		}
 		res.render('wishcardEdit', { wishcard, agencyAddress, childBirthday }, (error, html) => {
@@ -522,7 +522,7 @@ router.get(
 			// doing all the shopping
 			const tax = 1.0712;
 
-			const totalItemCost = await calculateWishItemTotalPrice(wishcard.wishItemPrice);
+			const totalItemCost = await Utils.calculateWishItemTotalPrice(wishcard.wishItemPrice);
 
 			const extendedPaymentInfo = {
 				processingFee: (
@@ -670,5 +670,22 @@ router.get(
 		});
 	},
 );
+
+router.get('/choose', MiddleWare.redirectLogin, async (req, res) => {
+	try {
+		const { user } = res.locals;
+		let params = { user };
+		if (user.userRole === 'partner') {
+			const agency = await AgencyRepository.getAgencyByUserId(user._id);
+			if (!agency) {
+				return handleError(res, 404, 'Agency Not Found');
+			}
+			params = { ...params, agency };
+		}
+		res.render('chooseItem', params);
+	} catch (err) {
+		return handleError(res, 400, err);
+	}
+});
 
 module.exports = router;

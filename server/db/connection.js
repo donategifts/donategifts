@@ -19,6 +19,7 @@ module.exports = class MongooseConnection extends BaseHandler {
 
 	connect() {
 		this.#mongoose.Promise = Promise;
+		this.#mongoose.set('strictQuery', false);
 		this.#mongoose.connect(process.env.MONGO_URI, this.#options, (err, database) => {
 			if (err) {
 				this.log.error(err, 'Unable to connect to DB.');

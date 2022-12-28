@@ -1,8 +1,7 @@
 const BaseHandler = require('./basehandler');
-const { validateReCaptchaToken } = require('../helper/utils');
+const Utils = require('../helper/utils');
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const { hashPassword } = require('../helper/utils');
 const {
 	createEmailVerificationHash,
 	sendVerificationEmail,
@@ -52,7 +51,7 @@ module.exports = class SignupHandler extends BaseHandler {
 		const { fName, lName, email, password, userRole, captchaToken } = req.body;
 
 		// validate captcha code. False if its invalid
-		const isCaptchaValid = await validateReCaptchaToken(captchaToken);
+		const isCaptchaValid = await Utils.validateReCaptchaToken(captchaToken);
 		if (isCaptchaValid === false) {
 			return this.handleError({
 				res,
@@ -75,7 +74,7 @@ module.exports = class SignupHandler extends BaseHandler {
 			});
 		}
 
-		const hashedPassword = await hashPassword(password);
+		const hashedPassword = await Utils.hashPassword(password);
 		const verificationHash = createEmailVerificationHash();
 
 		const newUser = await this.#userRepository.createNewUser({

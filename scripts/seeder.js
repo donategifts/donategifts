@@ -7,7 +7,7 @@ const WishCard = require('../server/db/models/WishCard');
 const Agency = require('../server/db/models/Agency');
 const Message = require('../server/db/models/Message');
 const Donation = require('../server/db/models/Donation');
-const { getMessageChoices } = require('../server/utils/defaultMessages');
+const { getMessageChoices } = require('../server/helper/defaultMessages');
 const log = require('../server/helper/logger');
 
 (async () => {

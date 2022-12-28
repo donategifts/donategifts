@@ -25,7 +25,7 @@ module.exports = class UserRepository {
 
 	async getUserByEmail(email) {
 		try {
-			return await this.#userModel.findOne({ email }).lean().exec();
+			return await this.#userModel.findOne({ email }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get DB user: ${error}`);
 		}
@@ -49,7 +49,7 @@ module.exports = class UserRepository {
 
 	async getUserByPasswordResetToken(tokenId) {
 		try {
-			return await this.#userModel.findOne({ passwordResetToken: tokenId }).lean().exec();
+			return await this.#userModel.findOne({ passwordResetToken: tokenId }).exec();
 		} catch (error) {
 			throw new Error(`Failed to get User: ${error}`);
 		}
@@ -57,7 +57,7 @@ module.exports = class UserRepository {
 
 	async setUserEmailVerification(userId, verified) {
 		try {
-			await this.#userModel
+			return await this.#userModel
 				.updateOne({ _id: userId }, { $set: { emailVerified: verified } })
 				.exec();
 		} catch (error) {

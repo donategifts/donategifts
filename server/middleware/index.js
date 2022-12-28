@@ -3,18 +3,22 @@ const AWS = require('aws-sdk');
 const multerS3 = require('multer-sharp-s3');
 const { v4: UUIDv4 } = require('uuid');
 const path = require('path');
-const { AgencyRepository } = require('../db/repository/AgencyRepository');
+const AgencyRepository = require('../db/repository/AgencyRepository');
 
 module.exports = class MiddleWare {
 	#s3;
 
 	#storage;
 
+	#agencyRepository;
+
 	constructor() {
 		this.#s3 = new AWS.S3({
 			accessKeyId: process.env.AWS_KEY,
 			secretAccessKey: process.env.AWS_SECRET,
 		});
+
+		this.#agencyRepository = new AgencyRepository();
 
 		if (process.env.USE_AWS !== 'true') {
 			this.#storage = multer.diskStorage({
@@ -49,25 +53,29 @@ module.exports = class MiddleWare {
 			},
 			fileFilter: this.#fileFilter,
 		});
+
+		this.checkVerifiedUser = this.checkVerifiedUser.bind(this);
+		this.renderPermissions = this.renderPermissions.bind(this);
+		this.renderPermissionsRedirect = this.renderPermissionsRedirect.bind(this);
 	}
 
-	static redirectLogin(req, res, next) {
-		if (!req.session.user) {
-			res.redirect('/users/login');
+	static redirectLogin(_req, res, next) {
+		if (!res.locals.user) {
+			res.redirect('/login');
 		} else {
 			next();
 		}
 	}
 
-	static redirectProfile(req, res, next) {
-		if (req.session.user) {
-			res.redirect('/users/profile');
+	static redirectProfile(_req, res, next) {
+		if (res.locals.user) {
+			res.redirect('/profile');
 		} else {
 			next();
 		}
 	}
 
-	#fileFilter(req, file, cb) {
+	#fileFilter(_req, file, cb) {
 		if (
 			file.mimetype === 'image/jpeg' ||
 			file.mimetype === 'image/jpg' ||
@@ -80,7 +88,7 @@ module.exports = class MiddleWare {
 		}
 	}
 
-	#IfNull({ agency, foundAgency }) {
+	#isNull({ agency, foundAgency }) {
 		if (!agency || !foundAgency) {
 			return true;
 		}
@@ -94,51 +102,53 @@ module.exports = class MiddleWare {
 		return false;
 	}
 
-	async #IfNullOrNotVerifiedAgency(userInfo) {
+	async #isNullOrNotVerifiedAgency(userInfo) {
 		const { user, agency } = userInfo;
-		const foundAgency = await AgencyRepository.getAgencyByUserId(user._id);
+		const foundAgency = await this.#agencyRepository.getAgencyByUserId(user._id);
 		const info = { foundAgency, ...userInfo };
-		if (this.#IfNull(info) || !foundAgency._id.equals(agency._id) || this.#NotVerified(info)) {
+		if (this.#isNull(info) || !foundAgency._id.equals(agency._id) || this.#NotVerified(info)) {
 			return true;
 		}
 		return false;
 	}
 
-	async renderPermissions(req, res, next) {
-		const { user, agency } = req.session;
+	async renderPermissions(_req, res, next) {
+		const { user } = res.locals;
+		const agency = this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
-			res.status(403).send({ success: false, url: '/users/login' });
+			res.status(403).send({ success: false, url: '/login' });
 		} else if (user.userRole === 'admin') {
 			next();
-		} else if (await this.#IfNullOrNotVerifiedAgency(userInfo)) {
-			res.status(403).send({ success: false, url: '/users/profile' });
+		} else if (await this.#isNullOrNotVerifiedAgency(userInfo)) {
+			res.status(403).send({ success: false, url: '/profile' });
 		} else {
 			next();
 		}
 	}
 
-	async renderPermissionsRedirect(req, res, next) {
-		const { user, agency } = req.session;
+	async renderPermissionsRedirect(_req, res, next) {
+		const { user } = res.locals;
+		const agency = this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
-			res.status(403).render('403');
+			res.status(403).render('error/403');
 		} else if (user.userRole === 'admin') {
 			next();
-		} else if (await this.#IfNullOrNotVerifiedAgency(userInfo)) {
-			res.status(403).render('403');
+		} else if (await this.#isNullOrNotVerifiedAgency(userInfo)) {
+			res.status(403).render('error/403');
 		} else {
 			next();
 		}
 	}
 
-	async checkVerifiedUser(req, res, next) {
-		const { user } = req.session;
+	async checkVerifiedUser(_req, res, next) {
+		const { user } = res.locals;
 		if (!user) {
-			res.status(403).send({ success: false, url: '/users/login' });
+			res.status(403).send({ success: false, url: '/login' });
 		}
 		if (!user.emailVerified) {
-			res.status(403).send({ success: false, url: '/users/profile' });
+			res.status(403).send({ success: false, url: '/profile' });
 		} else {
 			next();
 		}

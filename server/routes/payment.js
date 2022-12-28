@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const MiddleWare = require('../middleware');
-const PaymentProviderHandler = require('../handler/paymentProvider');
+const PaymentProviderHandler = require('../handler/paymentprovider');
 
 const router = express.Router();
 const paymentProviderHandler = new PaymentProviderHandler();

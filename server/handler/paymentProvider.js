@@ -12,7 +12,7 @@ const {
 	sendDonationConfirmationMail,
 	sendDiscordDonationNotification,
 } = require('../helper/messaging');
-const { calculateWishItemTotalPrice } = require('../helper/utils');
+const Utils = require('../helper/utils');
 
 module.exports = class PaymentProviderHandler extends BaseHandler {
 	#lastWishcardDonation;
@@ -109,8 +109,14 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 		// By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
 		// so we need to multiple our price by 100. Genious explanation
 		const PENNY = 100;
-		let totalItemPrice = parseFloat(await calculateWishItemTotalPrice(wishCard.wishItemPrice));
-		if (userDonation) totalItemPrice += parseFloat(userDonation);
+		let totalItemPrice = parseFloat(
+			await Utils.calculateWishItemTotalPrice(wishCard.wishItemPrice),
+		);
+
+		if (userDonation) {
+			totalItemPrice += parseFloat(userDonation);
+		}
+
 		if (wishCard) {
 			const paymentIntent = await stripe.paymentIntents.create({
 				amount: Math.floor(totalItemPrice * PENNY),
