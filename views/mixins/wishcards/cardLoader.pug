@@ -14,7 +14,7 @@ mixin cardLoaderJS()
             window.addEventListener('contextmenu', preventChildImageContextMenu);
 
             function getReadMoreBtn(user, wishCardId) {
-                return `<a href="/wishcards/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
+                return `<a href="/wishcards/single/${wishCardId}" class="wishcard__link--white bdr-2">View more</a>`
             }
 
             function getDonatedBtn(user, wishCardId, wishCardStatus) {

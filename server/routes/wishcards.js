@@ -29,7 +29,7 @@ const {
 	allAgesB,
 } = require('../helper/defaultItems');
 const { handleError } = require('../helper/error');
-// const { getMessageChoices } = require('../helper/defaultMessages');
+const { getMessageChoices } = require('../helper/defaultMessages');
 
 const userRepository = require('../db/repository/UserRepository');
 const messageRepository = require('../db/repository/MessageRepository');
@@ -468,38 +468,38 @@ router.post('/search/:init?', async (req, res) => {
 	}
 });
 
-// router.get('/:id', getByIdValidationRules(), validate, async (req, res) => {
-// 	try {
-// 		const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
-// 		// this agency object is returning undefined and breaking frontend
-// 		const agency = wishcard.belongsTo;
-// 		let birthday;
-// 		if (wishcard.childBirthday) {
-// 			birthday = moment(new Date(wishcard.childBirthday));
-// 			const today = moment(new Date());
-// 			wishcard.age = today.diff(birthday, 'years');
-// 		} else {
-// 			wishcard.age = 'Not Provided';
-// 		}
+router.get('/single/:id', getByIdValidationRules(), validate, async (req, res) => {
+	try {
+		const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+		// this agency object is returning undefined and breaking frontend
+		const agency = wishcard.belongsTo;
+		let birthday;
+		if (wishcard.childBirthday) {
+			birthday = moment(new Date(wishcard.childBirthday));
+			const today = moment(new Date());
+			wishcard.age = today.diff(birthday, 'years');
+		} else {
+			wishcard.age = 'Not Provided';
+		}
 
-// 		const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
-// 		let defaultMessages;
-// 		if (res.locals.user) {
-// 			defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
-// 		}
+		const messages = await MessageRepository.getMessagesByWishCardId(wishcard._id);
+		let defaultMessages;
+		if (res.locals.user) {
+			defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
+		}
 
-// 		// create a page and have a dynamic link for see more
-// 		res.status(200).render('wishCardFullPage', {
-// 			user: res.locals.user,
-// 			wishcard: wishcard || [],
-// 			agency: agency || [],
-// 			messages,
-// 			defaultMessages: defaultMessages || [],
-// 		});
-// 	} catch (error) {
-// 		handleError(res, 400, error);
-// 	}
-// });
+		// create a page and have a dynamic link for see more
+		res.status(200).render('pages/wishCardFullPage', {
+			user: res.locals.user,
+			wishcard: wishcard || [],
+			agency: agency || [],
+			messages,
+			defaultMessages: defaultMessages || [],
+		});
+	} catch (error) {
+		handleError(res, 400, error);
+	}
+});
 
 router.get(
 	'/donate/:id',
