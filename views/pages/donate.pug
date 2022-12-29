@@ -1,0 +1,157 @@
+extends ../master
+
+block title
+    title See Each Wish Card | Donate Gifts
+
+block content
+    .container.checkout
+        .page-wrapper
+            .page-title.mt-4
+                h2.text-center.cool-font.grn-font Wish Donation Secure Checkout
+                p.quick-font.font-md-2
+                    span.cap.bold-text= wishcard.childFirstName + '\'s gift will be delivered to our partner agency,'
+                    br
+                    a.help-modal.org-font.cap.bold-text.pointer( data-toggle='modal' data-target='#checkoutHelper' )
+                        = agency.agencyName
+                        i.fa.fa-info-circle( aria-hidden='true' )
+                    | , after confirmed payment.
+            .receipt-info.mt-5.quick-font
+                p From this donation, you will receive:
+                p
+                    i.fa.fa-heart( aria-hidden='true' )
+                    |  100% tax-deductible receipt &amp; shipping details
+                    br
+                    i.fa.fa-heart( aria-hidden='true' )
+                    |  Notification with a delivery proof
+                    br
+                    i.fa.fa-heart( aria-hidden='true' )
+                    |  Message &amp; photo from
+                    span.cap.bold-text= wishcard.childFirstName
+                    |  if partner agency permits
+                img.img-height.img-fluid.rounded-lg( src= wishcard.wishCardImage alt='wish card kid photo' )
+                p.mt-1
+                    = 'Wish item: ' + wishcard.wishItemName
+                .receipt
+                    p#cardId.card-text( hidden )= wishcard._id
+                    p#userId.card-text( hidden )= user._id
+                    p#agencyName.card-text( hidden )= agency.agencyName
+                    .pt-2.d-flex.justify-content-between
+                        p Subtotal
+                        p= '$' + wishcard.wishItemPrice + '.00'
+                    .d-flex.justify-content-between.bold-text.force-no-mg
+                        p Shipping
+                        p= extendedPaymentInfo.shipping
+                    .d-flex.justify-content-between.force-no-mg
+                        p
+                            | Processing fee
+                            a.help-modal.grn-font( data-toggle='modal' data-target='#checkoutHelper2' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                        p= '$' + extendedPaymentInfo.processingFee
+                    .d-flex.justify-content-between.force-no-mg
+                        p
+                            span Item sales tax
+                            a.help-modal.grn-font( data-toggle='modal' data-target='#checkoutHelper3' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                        p= '$' + extendedPaymentInfo.tax
+                    #user-donation-div.d-flex.justify-content-between.force-no-mg
+                        p Cash donation
+                        p#user-donation $0
+                    .d-flex.justify-content-between.grn-font.bold-text.force-no-mg
+                        p Total
+                        p#total-cost= '$' + extendedPaymentInfo.totalItemCost
+            .stripe-section.mt-5.quick-font
+                .support-donations.pb-1
+                    p.support-text.bold-text
+                        span.cap= user.fName + 'would you like to support our cause?'
+                    p
+                        | Add cash donation to sponsor our project, so we can help more kids
+                        a.help-modal.grn-font.pointer( data-toggle='modal' data-target='#checkoutHelper4' )
+                            i.fa.fa-question-circle( aria-hidden='true' )
+                            | More Info
+                    button.additional-donation.btn.btn-outline-primary.green( type='button' value=5 ) $5
+                    button.additional-donation.btn.btn-outline-primary.green( type='button' value=10 ) $10
+                    button.additional-donation.btn.btn-outline-primary.green( type='button' value=10 ) $50
+                    button.additional-donation.btn.btn-outline-primary.green( type='button' value=10 ) $100
+                    //- button#enableCustomAmount.btn.btn-outline-primary.green( type='button' onclick='showCustomAmountInput()' ) Enter Amount
+                    //- input#customAmountValue.CheckoutInput.Input.Input--empty.grn( type='number' step='0.01' min='0' style='visibility: hidden;' onkeyup='addCashDonationFromCustomAmountInput(<%= extendedPaymentInfo.totalItemCost %>, this)' )
+                p.line-middle
+                    span Use credit or debit card
+                form#payment-form( action='payment/create-payment-intent' method='post' )
+                    .form-row.mt-2
+                        p Name on card
+                        input#billingName.CheckoutInput.Input.Input--empty.grn( autocomplete='ccname'
+                            autocorrect='off'
+                            spellcheck='false'
+                            name='billingName'
+                            type='text'
+                            aria-invalid='false'
+                            value=''
+                        )
+                        p.pt-3 Card information
+                        #card-element.form-control
+                        #card-errors.error-text.bold-text( role='alert' )
+                        button#submit.mt-3
+                            #spinner.spinner.hidden
+                            span#button-text Pay
+                    p.result-message.hidden
+                        | Payment succeeded
+                    #card-errors( role='alert' )
+                p.line-middle.pt-4
+                    span Or donate with PayPal
+                #smart-button-container
+                    #paypal-button-container( style='text-align: center; margin-top: 0.25em;' )
+            .security-guarantee
+                p.quick-font Secure Checkout Guaranteed
+                img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
+            p#total-cost-hidden( hidden )= extendedPaymentInfo.totalItemCost
+
+    include ../components/modal/checkoutHelperModals.pug
+
+block scripts
+    script( src=`https://www.paypal.com/sdk/js?client-id=${locals.env.stripe}&disable-funding=credit,card` )
+    script.
+        let totalAmount = 0;
+        let wishCardId;
+        let userDonation;
+        let userId;
+        let agencyName;
+
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                    return actions.order.create({
+                        application_context: {
+                            shipping_preference: 'NO_SHIPPING'
+                        },
+                        purchase_units: [{
+                            reference_id: `${userId}%${wishCardId}%${userDonation}%${agencyName}`,
+                            amount: {
+                                value: parseFloat(totalAmount),
+                            },
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        const wishCardId = $('#cardId').text();
+                        const totalAmount = $('#total-cost').text();
+                        window.location.replace(`/payment/success/${wishCardId}&${totalAmount}`);
+                    });
+                },
+                onClick: function () {
+                    totalAmount = $('#total-cost').text().replace('$', '');
+                    wishCardId = $('#cardId').text();
+                    userId = $('#userId').text();
+                    userDonation =  $('#user-donation').text().replace('$', '');
+                    agencyName = $('#agencyName').text();
+                }
+        }).render('#paypal-button-container');
+
+        $('.additional-donation').click(function () {
+            const totalAmount = #{extendedPaymentInfo.totalItemCost} + $(this).val();
+            $('#total-cost').text('$' + Math.floor(totalAmount * 100) / 100);
+            $('#user-donation').text('$' + Math.floor(amount * 100) / 100);
+        });
+
+    script( src='https://js.stripe.com/v3/' )
+    script.
+        let stripe = Stripe(#{locals.env.stripe});
