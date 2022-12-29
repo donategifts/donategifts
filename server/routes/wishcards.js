@@ -31,17 +31,13 @@ const {
 const { handleError } = require('../helper/error');
 const { getMessageChoices } = require('../helper/defaultMessages');
 
-const userRepository = require('../db/repository/UserRepository');
 const messageRepository = require('../db/repository/MessageRepository');
 const agencyRepository = require('../db/repository/AgencyRepository');
 const wishCardRepository = require('../db/repository/WishCardRepository');
-const donationsRepository = require('../db/repository/DonationRepository');
 
-const UserRepository = new userRepository();
 const MessageRepository = new messageRepository();
 const AgencyRepository = new agencyRepository();
 const WishCardRepository = new wishCardRepository();
-const DonationsRepository = new donationsRepository();
 
 const middleWare = new MiddleWare();
 
@@ -331,99 +327,6 @@ router.get('/create', middleWare.renderPermissionsRedirect, async (_req, res) =>
 	} catch (error) {
 		handleError(res, 400, error);
 	}
-});
-
-router.get('/admin/', async (req, res) => {
-	try {
-		// only admin users can get access
-		if (res.locals.user.userRole !== 'admin') {
-			return res.status(404).render('404');
-		}
-
-		// only retrieve wishcards that have a draft status
-		const wishcards = await WishCardRepository.getWishCardsByStatus('draft');
-		// we need to append each wishcard with some agency details
-		const wishCardsWithAgencyDetails = [];
-
-		// There seems to be no way of direct accessing all required information at on so to populate
-		// wishcard with agency info we grab wishcards with users and then have to loop through
-		// agencies with the user to get agency details. I added a reference for wishcards on agency model
-		// but older entries are missing that information
-		for (let i = 0; i < wishcards.length; i++) {
-			const wishCard = wishcards[i];
-			// eslint-disable-next-line no-await-in-loop
-			const agencyDetails = wishCard.belongsTo;
-			// take only necessary fields from agency that will be displayed on wishcard
-			const agencySimple = {
-				agencyName: agencyDetails.agencyName,
-				agencyPhone: agencyDetails.agencyPhone,
-			};
-			// merge some agency details with wishcard
-			const mergedObj = { ...wishCard.toObject(), ...agencySimple };
-			wishCardsWithAgencyDetails.push(mergedObj);
-		}
-
-		res.render('adminWishCards', { wishCardsWithAgencyDetails }, (error, html) => {
-			if (error) {
-				handleError(res, 400, error);
-			} else {
-				res.status(200).send(html);
-			}
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
-});
-
-router.put('/admin/', async (req, res) => {
-	try {
-		// only admin users can get access
-		if (res.locals.user.userRole !== 'admin') {
-			return res.status(403).render('403');
-		}
-
-		const { wishCardId, wishItemURL } = req.body;
-
-		const wishCardModifiedFields = {
-			wishItemURL,
-			status: 'published',
-		};
-
-		await WishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
-
-		// @TODO: add agency notification email sending here after status was updated
-		return res.status(200).send({
-			success: true,
-			error: null,
-			data: null,
-		});
-	} catch (error) {
-		handleError(res, 400, error);
-	}
-});
-
-router.get('/admin/:wishCardId', async (req, res) => {
-	if (!res.locals.user || res.locals.user.userRole !== 'admin') {
-		return res.status(403).render('403');
-	}
-
-	const { wishCardId } = req.params;
-
-	const donation = await DonationsRepository.getDonationByWishCardId(wishCardId);
-	if (!donation) return handleError(res, 400, 'Donation not found');
-
-	const accountManager = await UserRepository.getUserByObjectId(
-		donation.donationTo.accountManager,
-	);
-	if (!accountManager) return handleError(res, 400, 'AccountManager not found');
-
-	res.render('adminDonationDetails', {
-		wishCard: donation.donationCard,
-		agency: donation.donationTo,
-		donation,
-		donor: donation.donationFrom,
-		accountManager,
-	});
 });
 
 router.post('/search/:init?', async (req, res) => {
