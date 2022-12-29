@@ -1,0 +1,220 @@
+extends ../master
+
+block title
+    title Create a wish card | Donate Gifts
+
+block content
+    .create-wish
+        .container
+            form#wishCardForm( method='POST' )
+                h4 Create a wish card
+                .mt-2.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-2.col-lg-6.col-sm-12( data-validate='Name is required' )
+                                label( for='childFirstName' ) Child's First Name
+                                input#childFirstName.input-block( type='text' name='childFirstName' placeholder='(Also allowed: nickname, alias)' )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childLastName' ) Child's Last Name
+                                input#childLastName.input-block( type='text' name='childLastName' placeholder='(Also allowed: last initial)' )
+                        .row.mx-auto.pt-3.my-1
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childBirthday' ) Child's Birthday
+                                input#childBirthday.input-block( type='date' name='childBirthday' placeholder="Child's Birthday" )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childInterest' ) Child's Interest
+                                input#childInterest.input-block( type='text' name='childInterest' placeholder='' )
+                .mt-5.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-2.col-lg-6.col-sm-12( data-validate='Name is required' )
+                            label( for='wishItemName' ) Wish Item Name
+                            input#wishItemName.input-block( type='text' name='wishItemName' placeholder='' )
+                            .mb-2.col-lg-6.col-sm-12
+                            label( for='wishItemPrice' ) Wish Item Price (numeric only, round it up)
+                            a( data-toggle='modal' data-target='#formQuestionHelper2' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                                | click for help
+                            input#wishItemPrice.input-block( type='number' name='wishItemPrice' placeholder='Price must be under $35' min='1' max='35' )
+                        .row.mx-auto.my-1.pt-3
+                            .col-12
+                            label( for='wishItemURL' )
+                                | Wish Item Amazon URL
+                            a( data-toggle='modal' data-target='#formQuestionHelper' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                                | click for help
+                            input#wishItemURL.input-block( type='text' name='wishItemURL' placeholder='(Item page link https://www.amazon.....)' )
+                .mt-5.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-1.col-lg-6.col-sm-12( data-validate='Message is required' )
+                            label( for='childStory' ) Share their story
+                            textarea#childStory.input-block( name='childStory'
+                                placeholder="(e.g. what's their story? why do they want this item? what's their favorite subject?)"
+                                rows='6'
+                            )
+                            .mb-1.col-lg-6.col-sm-12
+                                label( for='preview' ) Upload their photo
+                                p
+                                    | Required to use an image that is representative of the child. (Also allowed: masked faces, cropped or
+                                    | blurred features, art or something they made, their wish item)
+                                    a.help-modal( data-toggle='modal' data-target='#formQuestionHelper3' )
+                                    i.fa.fa-question-circle( aria-hidden='true' )
+                                    | click for help
+                                .uploader-left
+                                    img#preview( src='/img/img-placeholder.png' alt='image-placeholder' )
+                                .uploader-right
+                                    input#filetag.uploader( type='file' name='wishCardImage' )
+                .mt-5.card.shadow
+                    .card-body
+                    .row.mx-auto.my-1
+                        label.mx-3
+                        input#agencyAddressCheckBox.mx-1( type='checkbox' )
+                        | Ship this wish item to my agency address
+                    .row.mx-auto.my-1.pt-4
+                        .col-lg-4
+                            label( for='address1' ) Address Line 1
+                            input#address1.input-block( type='text' name='address1' placeholder='' )
+                        .col-lg-4
+                            label( for='address2' ) Address Line 2
+                            input#address2.input-block( type='text' name='address2' placeholder='(e.g. unit or suite number)' )
+                        .col-lg-4
+                            label( for='address_city' ) City
+                            input#address_city.input-block( type='text' name='address_city' placeholder='' )
+                    .row.mx-auto.my-1.pt-3
+                        .col-lg-4
+                            label( for='address_state' ) State
+                            input#address_state.input-block( type='text' name='address_state' placeholder='' )
+                        .col-lg-4
+                            label( for='address_zip' ) Zipcode
+                            input#address_zip.input-block( type='text' name='address_zip' placeholder='' )
+                        .col-lg-4
+                            label( for='address_country' ) Country
+                            input#address_country.input-block( type='text' name='address_country' placeholder='(e.g. USA)' )
+                .text-center.mt-5.pt-1
+                    p.p-2.mt-2 Wish card will be published once reviewed and approved by DonateGifts
+                #submit-btn.quick-font
+                    #loadingSpinner
+                    button#submitInput.button.form-submit
+                        span.button__text Submit
+
+    include ../components/modal/formHelperModals.pug
+
+block scripts
+    script.
+        $(document).ready(function () {
+            function changeImage(input) {
+                let reader;
+                if (input.files && input.files[0]) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.setAttribute('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            const fileTag = document.getElementById('filetag');
+            const preview = document.getElementById('preview');
+
+            if (fileTag) {
+                fileTag.addEventListener('change', function () {
+                    changeImage(this);
+                });
+            }
+
+            $('#wishCardForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const form = $(this);
+                const formdata = new FormData(form[0]);
+
+                isProcessingSubmission(true);
+
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    url: '/wishcards',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    statusCode: {
+                        200: function (response) {
+                            $('#wishCardForm')[0].reset();
+                            showToast('WishCard Created!', true);
+                            setTimeout(() => location.assign(response.url), 2000);
+                        },
+                        400: function (response) {
+                            isProcessingSubmission(false)
+                            showToast(response.responseJSON.error.msg);
+                        },
+                        403: function (responseObject) {
+                            isProcessingSubmission(false)
+                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            let { url } = responseObject.responseJSON;
+                            setTimeout(() => location.assign(url), 1200);
+                        },
+                    },
+                });
+            });
+
+            const isProcessingSubmission = function (isLoading) {
+                if (isLoading) {
+                    document.getElementById("submitInput").disabled = true;
+                    document.querySelector("#loadingSpinner").classList.add("display");
+                } else {
+                    document.getElementById("submitInput").disabled = false;
+                    document.querySelector("#loadingSpinner").classList.remove("display");
+                }
+            };
+        });
+
+    script.
+        $(document).ready(function () {
+            const fetchAgencyData = function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/agency/address',
+                    success: (response) => {
+                        const agency = response.agency;
+
+                        if (agency.agencyAddress) {
+                            $('#address1').val(agency.agencyAddress.address1);
+                            $('#address2').val(agency.agencyAddress.address2);
+                            $('#address_zip').val(agency.agencyAddress.zipcode);
+                            $('#address_city').val(agency.agencyAddress.city);
+                            $('#address_country').val(agency.agencyAddress.country);
+                            $('#address_state').val(agency.agencyAddress.state);
+                        } else {
+                            showToast('Agency address not present. Most likely that information is missing, contact the administrator.');
+                        }
+                    },
+                    error: (response) => {
+                        showToast('Could not get agency address.');
+                    }
+                });
+            }
+
+            $('#agencyAddressCheckBox').click(function () {
+                if ($(this).is(':checked')) {
+                    if (
+                        (
+                            $('#address1').val().length ||
+                            $('#address2').val().length ||
+                            $('#address_zip').val().length ||
+                            $('#address_city').val().length ||
+                            $('#address_country').val().length ||
+                            $('#address_state').val().length ||
+                        ) === 0
+                    ) {
+                        fetchAgencyData();
+                    } else {
+                        const confirmation = confirm('Do you want to overwrite the address with agency address?');
+                        if (confirmation === true) {
+                            fetchAgencyData();
+                        }
+                    }
+                }
+            });
+        });
