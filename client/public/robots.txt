@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /profile
-Disallow: /wishcards

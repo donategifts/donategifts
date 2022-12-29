@@ -1,0 +1,49 @@
+mixin agencyFetchingJS()
+    script.
+        $(document).ready(function () {
+            const fetchAgencyData = function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/agency/address',
+                    success: (response) => {
+                        const agency = response.agency;
+
+                        if (agency.agencyAddress) {
+                            $('#address1').val(agency.agencyAddress.address1);
+                            $('#address2').val(agency.agencyAddress.address2);
+                            $('#address_zip').val(agency.agencyAddress.zipcode);
+                            $('#address_city').val(agency.agencyAddress.city);
+                            $('#address_country').val(agency.agencyAddress.country);
+                            $('#address_state').val(agency.agencyAddress.state);
+                        } else {
+                            showToast('Agency address not present. Most likely that information is missing, contact the administrator.');
+                        }
+                    },
+                    error: (response) => {
+                        showToast('Could not get agency address.');
+                    }
+                });
+            }
+
+            $('#agencyAddressCheckBox').click(function () {
+                if ($(this).is(':checked')) {
+                    if (
+                        (
+                            $('#address1').val().length ||
+                            $('#address2').val().length ||
+                            $('#address_zip').val().length ||
+                            $('#address_city').val().length ||
+                            $('#address_country').val().length ||
+                            $('#address_state').val().length ||
+                        ) === 0
+                    ) {
+                        fetchAgencyData();
+                    } else {
+                        const confirmation = confirm('Do you want to overwrite the address with agency address?');
+                        if (confirmation === true) {
+                            fetchAgencyData();
+                        }
+                    }
+                }
+            });
+        });
