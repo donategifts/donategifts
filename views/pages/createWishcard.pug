@@ -103,22 +103,15 @@ block content
 block scripts
     script.
         $(document).ready(function () {
-            function changeImage(input) {
-                let reader;
-                if (input.files && input.files[0]) {
-                    reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.setAttribute('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-            const fileTag = document.getElementById('filetag');
-            const preview = document.getElementById('preview');
-
-            if (fileTag) {
-                fileTag.addEventListener('change', function () {
-                    changeImage(this);
+            if ($('#filetag')) {
+                $('#filetag').change(function () {
+                    if ($(this).files && $(this).files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#preview').attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL($(this).files[0]);
+                    }
                 });
             }
 
@@ -128,7 +121,8 @@ block scripts
                 const form = $(this);
                 const formdata = new FormData(form[0]);
 
-                isProcessingSubmission(true);
+                $('#submitInput"').attr('disabled', true);
+                $('#loadingSpinner').addClass('display');
 
                 $.ajax({
                     type: 'POST',
@@ -142,32 +136,26 @@ block scripts
                     statusCode: {
                         200: function (response) {
                             $('#wishCardForm')[0].reset();
+
                             showToast('WishCard Created!', true);
                             setTimeout(() => location.assign(response.url), 2000);
                         },
                         400: function (response) {
-                            isProcessingSubmission(false)
+                            $('#submitInput')attr('disabled', false);
+                            $('#loadingSpinner').removeClass('display');
+
                             showToast(response.responseJSON.error.msg);
                         },
                         403: function (responseObject) {
-                            isProcessingSubmission(false)
+                            $('#submitInput')attr('disabled', false);
+                            $('#loadingSpinner').removeClass('display');
+
                             showToast('Access Forbidden: Your account lacks sufficient permissions');
-                            let { url } = responseObject.responseJSON;
-                            setTimeout(() => location.assign(url), 1200);
+                            setTimeout(() => location.assign(responseObject.responseJSON.url), 1200);
                         },
                     },
                 });
             });
-
-            const isProcessingSubmission = function (isLoading) {
-                if (isLoading) {
-                    document.getElementById("submitInput").disabled = true;
-                    document.querySelector("#loadingSpinner").classList.add("display");
-                } else {
-                    document.getElementById("submitInput").disabled = false;
-                    document.querySelector("#loadingSpinner").classList.remove("display");
-                }
-            };
         });
 
     script.
