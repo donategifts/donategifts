@@ -142,7 +142,7 @@ module.exports = class MiddleWare {
 		}
 	}
 
-	async checkVerifiedUser(_req, res, next) {
+	static checkVerifiedUser(_req, res, next) {
 		const { user } = res.locals;
 		if (!user) {
 			res.status(403).send({ success: false, url: '/login' });
@@ -152,5 +152,19 @@ module.exports = class MiddleWare {
 		} else {
 			next();
 		}
+	}
+
+	static checkAdminPermission(_req, res, next) {
+		const { user } = res.locals;
+
+		if (!user) {
+			return res.status(403).send({ success: false, url: '/login' });
+		}
+
+		if (user.userRole !== 'admin') {
+			return res.status(404).render('error/404', { user: res.locals.user });
+		}
+
+		next();
 	}
 };

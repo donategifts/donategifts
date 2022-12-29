@@ -602,7 +602,7 @@ router.put(
 
 router.post(
 	'/message',
-	middleWare.checkVerifiedUser,
+	MiddleWare.checkVerifiedUser,
 	postMessageValidationRules(),
 	validate,
 	async (req, res) => {
