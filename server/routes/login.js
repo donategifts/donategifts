@@ -1,5 +1,4 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 
 const LoginHandler = require('../handler/login');
 const MiddleWare = require('../middleware');
@@ -14,16 +13,11 @@ const router = express.Router();
 
 const loginHandler = new LoginHandler();
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100,
-});
-
 router.get('/', MiddleWare.redirectProfile, loginHandler.handleGetIndex);
 
 router.post(
 	'/',
-	limiter,
+	loginHandler.limiter,
 	loginValidationRules(),
 	validate,
 	MiddleWare.redirectProfile,
@@ -32,7 +26,7 @@ router.post(
 
 router.post(
 	'/google-signin',
-	limiter,
+	loginHandler.limiter,
 	googlesignupValidationRules(),
 	validate,
 	loginHandler.handlePostGoogleLogin,
@@ -44,7 +38,7 @@ router.post(
 // @tested 	Not yet
 router.post(
 	'/fb-signin',
-	limiter,
+	loginHandler.limiter,
 	fbsignupValidationRules(),
 	validate,
 	loginHandler.handlePostFacebookLogin,

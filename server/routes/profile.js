@@ -1,5 +1,4 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
@@ -22,11 +21,6 @@ const Utils = require('../helper/utils');
 
 const middleWare = new MiddleWare();
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	max: 100,
-});
-
 router.get('/', MiddleWare.redirectLogin, profileHandler.handleGetIndex);
 
 router.put(
@@ -39,20 +33,25 @@ router.put(
 
 router.post(
 	'/picture',
-	limiter,
+	profileHandler.limiter,
 	middleWare.upload.single('profileImage'),
 	validate,
 	MiddleWare.redirectLogin,
 	profileHandler.handlePostImage,
 );
 
-router.delete('/picture', limiter, MiddleWare.redirectLogin, profileHandler.handleDeleteImage);
+router.delete(
+	'/picture',
+	profileHandler.limiter,
+	MiddleWare.redirectLogin,
+	profileHandler.handleDeleteImage,
+);
 
 router.get('/password/reset', passwordHandler.handleGetReset);
 
 router.post(
 	'/password/reset',
-	limiter,
+	profileHandler.limiter,
 	passwordRequestValidationRules(),
 	validate,
 	passwordHandler.handlePostReset,
@@ -67,7 +66,7 @@ router.get(
 
 router.post(
 	'/password/reset/:token',
-	limiter,
+	profileHandler.limiter,
 	postPasswordResetValidationRules(),
 	validate,
 	passwordHandler.handlePostResetToken,

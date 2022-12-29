@@ -1,5 +1,4 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 
 const SignupHandler = require('../handler/signup');
 const MiddleWare = require('../middleware');
@@ -13,20 +12,21 @@ const router = express.Router();
 
 const signupHandler = new SignupHandler();
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100,
-});
-
 router.get('/', MiddleWare.redirectProfile, signupHandler.handleGetIndex);
 
-router.post('/', limiter, signupValidationRules(), validate, signupHandler.handlePostSignup);
+router.post(
+	'/',
+	signupHandler.limiter,
+	signupValidationRules(),
+	validate,
+	signupHandler.handlePostSignup,
+);
 
 router.get('/agency', MiddleWare.redirectLogin, signupHandler.handleGetAgency);
 
 router.post(
 	'/agency',
-	limiter,
+	signupHandler.limiter,
 	createAgencyValidationRules(),
 	validate,
 	signupHandler.handlePostAgency,

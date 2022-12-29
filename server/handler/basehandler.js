@@ -1,8 +1,14 @@
+const { rateLimit } = require('express-rate-limit');
 const log = require('../helper/logger');
 
 module.exports = class BaseHandler {
-	constructor() {
+	constructor(limitTime = 15) {
 		this.log = log;
+
+		this.limiter = rateLimit({
+			windowMs: limitTime * 60 * 1000,
+			max: 100,
+		});
 	}
 
 	renderView(res, template, templateVars, status = 200) {
