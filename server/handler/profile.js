@@ -128,7 +128,7 @@ module.exports = class ProfileHandler extends BaseHandler {
 	async handleDeleteImage(_req, res, _next) {
 		try {
 			// if users had deleted picture replace it with string for the default avatar
-			const defaultImage = '/public/img/default_profile_avatar.svg';
+			const defaultImage = '/svg/default_profile_avatar.svg';
 			await this.#userRepository.updateUserById(res.locals.user._id, {
 				profileImage: defaultImage,
 			});
