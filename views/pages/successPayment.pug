@@ -1,0 +1,41 @@
+extends ../master
+
+block title
+    title Thank you
+
+block content
+    .container
+        section#donation.row.justify-content-md-center.flex-column
+            section#donationConfirmation.justify-content-md-center
+                .more-wishcards-container
+                    img#success-payment-logo.center-block( src='/img/payments_success_checkmark.svg' )
+                h4#grn-font.crayon-font.display-4.mb-3.text-center Thank you for your donation !
+                p.display-5.mb-6.text-center.donation-successful-message Your payment was successful and we are processing your order now.
+                .more-wishcards-container
+                    a( href='/wishcards' )
+                        button.button.button--green.center.quick-font.center-block( type='button' ) See More Wish Cards
+            section#donationInfo.justify-content-md-center.quick-font
+                .donation-info-labels
+                    p.display-5.mb-6.mt-2.text-center Confirmation will be sent to
+                    p.display-5.mb-6.text-center Donation order date
+                    p.display-5.mb-6.text-center Donated wish item
+                    p.display-5.mb-6.text-center Donated total amount
+                .donation-info-label-value
+                    p.display-5.mb-6.mt-2.text-center= donationInformation.email
+                    p.display-5.mb-6.text-center= donationInformation.orderDate
+                    p.display-5.mb-6.text-center= donationInformation.itemName
+                    p.display-5.mb-6.text-center= donationInformation.totalAmount
+            section#donationConfirmation.justify-content-md-center.quick-font
+                .list-item-title-container
+                    p From this donation, you will recieve:
+                p.you-will-get
+                    i.fa.fa-heart( aria-hidden='true' )
+                    | 100% tax-deductible receipt &amp; shipping details
+                    br
+                    i.fa.fa-heart( aria-hidden='true' )
+                    | Notification with a delivery proof
+                    br
+                    i.fa.fa-heart( aria-hidden='true' )
+                    | Message &amp; photo from
+                    span.cap.bold-text= donationInformation.childName
+                    span if partner agency permits
