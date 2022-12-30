@@ -33,13 +33,8 @@ module.exports = class BaseHandler {
 
 	handleError({ res, code, error, renderErrorPage = false }) {
 		let statusCode = 400;
-		let name = 'Error handler';
 
 		if (typeof error === 'object') {
-			if (error.name) {
-				name = error.name;
-			}
-
 			statusCode = error.statusCode;
 		} else if (typeof error === 'string') {
 			// eslint-disable-next-line no-param-reassign
@@ -48,11 +43,7 @@ module.exports = class BaseHandler {
 
 		statusCode = code || statusCode;
 
-		this.log.error({
-			name,
-			statusCode,
-			...error,
-		});
+		this.log.error(error);
 
 		if (renderErrorPage) {
 			res.status(statusCode).render(code === 400 ? '404' : code.toString(), {

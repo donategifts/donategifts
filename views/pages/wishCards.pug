@@ -47,61 +47,59 @@ block content
                                             d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z'
                                         )
 
-                .col.mt-3
-                    .row
-                        #filter-panel.quick-font.collapse.filter-card.ml-auto
-                            .d-lg-flex.justify-content-between.px-3
-                                .form-group
-                                    .form-check
-                                        input#child-age-check-younger.form-check-input( name='younger'
-                                            value='14'
-                                            checked
-                                            type='checkbox'
-                                            style='margin-right: 10px'
-                                        )
-                                        label.form-check-label( for='child-age-radio-younger' ) Age Under 15
-                                .form-group
-                                    .form-check
-                                        input#child-age-check-older.form-check-input( name='older'
-                                            value='15'
-                                            checked
-                                            type='checkbox'
-                                            style='margin-right: 10px'
-                                        )
-                                        label.form-check-label( for='child-age-check-older' ) Age 15 And Older
-                                .form-group
-                                    .checkbox
-                                        input#donated( type='checkbox'
-                                            style='margin-right: 10px'
-                                            value='true'
-                                            checked
-                                            name='showDonatedCheck'
-                                        )
-                                        label( for='donated' ) Include Donated Wishes
-                                .form-group
-                                    .checkbox
-                                        input#recentlyAdded( type='checkbox'
-                                            style='margin-right: 10px'
-                                            value='true'
-                                            name='recentlyAdded'
-                                        )
-                                        label( for='recentlyAdded' ) lRecently Added
+                #filter-panel.quick-font.collapse.filter-card.ml-auto
+                    .d-lg-flex.justify-content-between.px-3
+                        .form-group
+                            .form-check
+                                input#child-age-check-younger.form-check-input( name='younger'
+                                    value='14'
+                                    checked
+                                    type='checkbox'
+                                    style='margin-right: 10px'
+                                )
+                                label.form-check-label( for='child-age-radio-younger' ) Age Under 15
+                        .form-group
+                            .form-check
+                                input#child-age-check-older.form-check-input( name='older'
+                                    value='15'
+                                    checked
+                                    type='checkbox'
+                                    style='margin-right: 10px'
+                                )
+                                label.form-check-label( for='child-age-check-older' ) Age 15 And Older
+                        .form-group
+                            .checkbox
+                                input#donated( type='checkbox'
+                                    style='margin-right: 10px'
+                                    value='true'
+                                    checked
+                                    name='showDonatedCheck'
+                                )
+                                label( for='donated' ) Include Donated Wishes
+                        .form-group
+                            .checkbox
+                                input#recentlyAdded( type='checkbox'
+                                    style='margin-right: 10px'
+                                    value='true'
+                                    name='recentlyAdded'
+                                )
+                                label( for='recentlyAdded' ) lRecently Added
 
-                            .d-flex.justify-content-end.mt-3
-                                button.wishcard__button--blue.button-apply.col-lg-3( type='submit' )
-                                    span.apply-button-text Apply
-                                    svg.bi.bi-check2-circle( width='1em'
-                                        height='1em'
-                                        viewbox='0 0 16 16'
-                                        fill='currentColor'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                    )
-                                        path( fill-rule='evenodd'
-                                            d='M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z'
-                                        )
-                                        path( fill-rule='evenodd'
-                                            d='M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z'
-                                        )
+                    .d-flex.justify-content-end.mt-3
+                        button.wishcard__button--blue.button-apply.col-lg-3( type='submit' )
+                            span.apply-button-text Apply
+                            svg.bi.bi-check2-circle( width='1em'
+                                height='1em'
+                                viewbox='0 0 16 16'
+                                fill='currentColor'
+                                xmlns='http://www.w3.org/2000/svg'
+                            )
+                                path( fill-rule='evenodd'
+                                    d='M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z'
+                                )
+                                path( fill-rule='evenodd'
+                                    d='M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z'
+                                )
         .container.pt-5
             p.quick-font.loading Loading...
             #wishcard-container.row.justify-content-center
@@ -126,7 +124,7 @@ block scripts
         countdown = [];
 
         $(document).ready(function () {
-            const wishcards = !{wishcards};
+            const wishcards = !{JSON.stringify(wishcards)};
 
             for (let i = 0; i < wishcards.length; i++) {
                 if (wishcards[i].status === 'donated') {

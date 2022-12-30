@@ -132,7 +132,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 				wishcards[i].age = today.diff(birthday, 'years');
 			}
 
-			this.renderView('wishCards', {
+			this.renderView(res, 'wishCards', {
 				wishcards,
 			});
 		} catch (error) {
@@ -431,7 +431,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 				defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
 			}
 
-			this.renderView('wishCardFullPage', {
+			this.renderView(res, 'wishCardFullPage', {
 				wishcard: wishcard || [],
 				agency: agency || [],
 				messages,
@@ -464,7 +464,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 				agency,
 			};
 
-			this.renderView('donate', {
+			this.renderView(res, 'donate', {
 				wishcard: wishcard || [],
 				extendedPaymentInfo,
 				agency,

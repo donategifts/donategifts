@@ -16,7 +16,7 @@
   display: inline-block;
   margin: 2rem 0;
   padding: 8px 50px 8px 50px;
-  background: url(../img/select.png) no-repeat 95% center;
+  background: url('/img/select.png') no-repeat 95% center;
   background-color: #333a64;
   color: #fff;
   border-radius: 10px;

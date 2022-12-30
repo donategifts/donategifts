@@ -21,7 +21,7 @@ router.get('/', wishCardHandler.handleGetIndex);
 
 router.post(
 	'/',
-	wishCardHandler.wishCardHandler.limiter,
+	wishCardHandler.limiter,
 	middleWare.renderPermissions,
 	middleWare.upload.single('wishCardImage'),
 	createWishcardValidationRules(),

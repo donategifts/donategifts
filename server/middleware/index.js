@@ -54,7 +54,6 @@ module.exports = class MiddleWare {
 			fileFilter: this.#fileFilter,
 		});
 
-		this.checkVerifiedUser = this.checkVerifiedUser.bind(this);
 		this.renderPermissions = this.renderPermissions.bind(this);
 		this.renderPermissionsRedirect = this.renderPermissionsRedirect.bind(this);
 	}

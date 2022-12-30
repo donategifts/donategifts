@@ -111,7 +111,7 @@ a.userLogBtn {
 /* ---------------background container */
 .signup-bg {
   background: linear-gradient(rgba(255, 95, 109, 0), rgba(255, 195, 113, 0)),
-    url('../img/gift-white-bg.jpeg') center center;
+    url('/img/gift-white-bg.jpeg') center center;
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
@@ -124,7 +124,7 @@ a.userLogBtn {
 
 @media screen and (max-width: 992px) {
   .signup-bg {
-    background: linear-gradient(rgba(255, 232, 233, 0), rgba(255, 195, 113, 0.3)), url('../img/gift-white-bg.jpeg');
+    background: linear-gradient(rgba(255, 232, 233, 0), rgba(255, 195, 113, 0.3)), url('/img/gift-white-bg.jpeg');
   }
 
   .wrap-radio .row {
@@ -159,8 +159,8 @@ a.userLogBtn {
 
 @font-face {
   font-family: 'DK-Crayon-Crumble';
-  src: url('../fonts/DK-Crayon-Crumble.ttf');
-  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'), url('../fonts/DK-Crayon-Crumble.ttf') format('truetype');
+  src: url('/fonts/DK-Crayon-Crumble.ttf');
+  src: local('DK Crayon Crumble'), local('DK-Crayon-Crumble'), url('/fonts/DK-Crayon-Crumble.ttf') format('truetype');
 }
 
 .crayon-font {
