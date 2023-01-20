@@ -33,3 +33,25 @@ script.
             escapeMarkup,
         }).showToast();
     }
+
+script.
+    $(document).ready(function () {
+        $('#login-modal-form').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                method: 'POST',
+                url: '/login',
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
+                success: (response) => {
+                    setTimeout(() => location.assign(response.url), 2000);
+                },
+                error: (response) => {
+                    showToast(response.responseJSON.error.msg);
+                },
+            });
+        })
+    });

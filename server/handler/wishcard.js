@@ -333,7 +333,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 				url += 'me';
 			}
 
-			await WishCardRepository.deleteWishCard(wishcard._id);
+			await this.#wishCardRepository.deleteWishCard(wishcard._id);
 
 			this.log.info({
 				mgs: 'Wishcard Deleted',
@@ -444,7 +444,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 
 	async handleGetDonate(req, res, _next) {
 		try {
-			const wishcard = await WishCardRepository.getWishCardByObjectId(req.params.id);
+			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
 
 			const agency = wishcard.belongsTo;
 			const processingFee = 1.08;
@@ -474,7 +474,7 @@ module.exports = class WishCardHandler extends BaseHandler {
 		}
 	}
 
-	async handleGetRandom(req, res, _next) {
+	async handleGetRandom(_req, res, _next) {
 		try {
 			let wishcards = await this.#wishCardRepository.getWishCardsByStatus('published');
 
