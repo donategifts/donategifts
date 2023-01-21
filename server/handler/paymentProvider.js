@@ -1,4 +1,4 @@
-const stripe = require('stripe')(process.env.STRIPE_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
 const moment = require('moment');
 const paypal = require('paypal-rest-sdk');
 
@@ -106,18 +106,18 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 		// Create a PaymentIntent with the order amount and currency
 		const wishCard = await this.#wishCardRepository.getWishCardByObjectId(wishCardId);
 
-		// By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
-		// so we need to multiple our price by 100. Genious explanation
-		const PENNY = 100;
-		let totalItemPrice = parseFloat(
-			await Utils.calculateWishItemTotalPrice(wishCard.wishItemPrice),
-		);
-
-		if (userDonation) {
-			totalItemPrice += parseFloat(userDonation);
-		}
-
 		if (wishCard) {
+			// By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
+			// so we need to multiple our price by 100. Genious explanation
+			const PENNY = 100;
+			let totalItemPrice = parseFloat(
+				await Utils.calculateWishItemTotalPrice(wishCard.wishItemPrice),
+			);
+
+			if (userDonation) {
+				totalItemPrice += parseFloat(userDonation);
+			}
+
 			const paymentIntent = await stripe.paymentIntents.create({
 				amount: Math.floor(totalItemPrice * PENNY),
 				currency: 'usd',

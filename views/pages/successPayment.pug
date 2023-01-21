@@ -36,6 +36,7 @@ block content
                     | Notification with a delivery proof
                     br
                     i.fa.fa-heart( aria-hidden='true' )
-                    | Message &amp; photo from
-                    span.cap.bold-text= donationInformation.childName
-                    span if partner agency permits
+
+                    - var text = `Message &amp; photo from <span class="cap bold-text">${donationInformation.childName}</span> if partner agency permits`;
+
+                    span!= text

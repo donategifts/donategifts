@@ -105,19 +105,19 @@ app.use(
 	}),
 );
 
+// apply some of our environment variables to the app locals so that they can be used in the templates
+app.locals.env = {
+	stripe: process.env.STRIPE_KEY,
+	paypal: process.env.PAYPAL_CLIENT_ID,
+	facebook: process.env.FB_APP_ID,
+	google: process.env.G_CLIENT_ID,
+};
+
 app.use((req, res, next) => {
 	if (req.session?.user) {
 		// assign user to locals if there's one present in the session
 		res.locals.user = req.session.user;
 	}
-
-	// apply some of our environment variables to the locals so that they can be used in the templates
-	res.locals.env = {
-		stripe: process.env.STRIPE_API,
-		paypal: process.env.PAYPAL_CLIENT,
-		facebook: process.env.FB_APP_ID,
-		google: process.env.G_CLIENT_ID,
-	};
 
 	next();
 });
