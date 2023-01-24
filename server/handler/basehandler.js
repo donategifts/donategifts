@@ -11,7 +11,7 @@ module.exports = class BaseHandler {
 		});
 	}
 
-	renderView(res, template, templateVars, status = 200) {
+	renderView(res, template, templateVars = {}, status = 200) {
 		const parts = template.split('/');
 		let templateString = template;
 		if (parts[0] !== 'pages') {
