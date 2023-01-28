@@ -1,0 +1,787 @@
+@import "includes";
+
+// @TODO: revisit this here,
+// loads of stylings in there which we don't need
+@import "legacy/agency";
+@import "legacy/chooseItem";
+@import "legacy/community";
+@import "legacy/contact";
+@import "legacy/faq";
+@import "legacy/home";
+@import "legacy/howTo";
+@import "legacy/loadingSpinner";
+@import "legacy/profile";
+@import "legacy/search";
+@import "legacy/signup";
+@import "legacy/stripe";
+@import "legacy/successPayment";
+@import "legacy/toast";
+@import "legacy/utils";
+@import "legacy/wishCardFull";
+
+body {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+a {
+	font-family: $font-body;
+}
+
+.y-scroll {
+	overflow-y: scroll;
+	max-height: 100px;
+}
+
+.fa-user,
+.fa-bell,
+.fa-cogs,
+.fa-gift {
+	font-size: 2.4em;
+}
+
+.fa,
+.fas {
+	margin: 0.3em 0.5em;
+}
+
+input,
+textarea {
+	text-decoration: none;
+	outline: none;
+	border: none;
+}
+
+.tinted {
+	background-color: transparentize($white, 0.5);
+}
+
+/* 
+-----------------------------
+Reusable Utils - Button
+-----------------------------
+*/
+%btn {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	padding: 12px 15px;
+	width: 100%;
+	border: 0.5px solid transparent;
+	transition: all 0.2s ease-in-out;
+	text-decoration: none;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+%btn-lg {
+	padding: 1rem 2rem;
+	font-size: 1.3rem;
+	margin: 10px;
+	line-height: 1.2em;
+	transition: all 0.2s ease-in-out;
+	border: 0.15rem solid transparent;
+	display: inline-flex;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	-moz-border-radius: 1rem;
+	-ms-border-radius: 1rem;
+	-o-border-radius: 1rem;
+	outline: none;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+%hover-navy {
+	background-color: $navy;
+	color: $white !important;
+	border: 0.15rem solid $white;
+	text-decoration: none;
+}
+
+.btn-orange-navy-lg {
+	@extend %btn-lg;
+	background-color: $custom-orange;
+	color: $white !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+.btn-white-navy-lg {
+	@extend %btn-lg;
+	background-color: $white;
+	color: $navy !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+%btn-long {
+	padding: 1rem 3rem;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	opacity: 1;
+	border: 0.15rem solid transparent;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	-moz-border-radius: 1rem;
+	-ms-border-radius: 1rem;
+	-o-border-radius: 1rem;
+	width: 40vw !important;
+	height: 8vh !important;
+	padding: 1rem 2rem;
+	font-size: 1.3rem;
+	margin: 10px;
+	line-height: 1.2em;
+	text-align: center !important;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-orange-navy-lg-long {
+	@extend %btn-long;
+	background-color: $custom-orange;
+	color: $white !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+.btn-disabled-long {
+	@extend %btn-long;
+	background-color: lighten($gray, 25%);
+	color: $white !important;
+}
+
+@media only screen and (max-width: 768px) {
+	.btn-disabled-long {
+		width: 80vw !important;
+	}
+	.btn-orange-navy-lg-long {
+		width: 80vw !important;
+	}
+}
+
+/* 
+-----------------------------
+Reusable Hero
+-----------------------------
+*/
+.hero {
+	text-align: center;
+	color: $white;
+	h1 {
+		@include font-styling($font-heading, 3.4em);
+		text-transform: uppercase;
+	}
+	h4 {
+		@include font-styling($font-body, 1.3rem);
+		padding-bottom: 0.5rem;
+	}
+}
+
+/*--------------------------------------------------------------
+    Footer
+--------------------------------------------------------------*/
+.footer-bar {
+	padding: 10px 0;
+	font-size: 1rem;
+	color: $white;
+	text-align: center;
+	background: lighten($black, 5);
+}
+
+/* 
+-----------------------------
+Text Typing Effect 
+-----------------------------
+*/
+.typing {
+	// margin-left: 10px;
+	position: relative;
+	&:after {
+		content: '';
+		position: absolute;
+		width: 1px;
+		height: 60px;
+		border: 2px solid $white;
+		animation: blink 0.5s infinite ease;
+		-webkit-animation: blink 0.5s infinite ease;
+	}
+}
+
+@-webkit-keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* 
+-----------------------------
+move this later -- from home.ejs
+-----------------------------
+*/
+.partners-container {
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $navy, $medium);
+		text-align: center;
+		padding: 1rem 0rem 3rem 0rem;
+	}
+}
+
+.thanks {
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $custom-green, $medium);
+		text-align: center;
+	}
+}
+
+// TODO: this stuff is for createWishcard.ejs and will be moved later
+.create-wish {
+	padding: 2.5rem 0rem;
+	background-color: lighten($cream, 9);
+	.card-body {
+		padding: 2.5rem;
+		@include font-styling($font-body);
+	}
+	h4 {
+		@include font-styling($font-heading, 2.5rem, $custom-orange);
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+	.input-block {
+		display: block;
+		width: 100%;
+		background: $white;
+		line-height: 1.75;
+		color: $black;
+		padding: 0.5rem 1.25rem;
+		border: 0.1rem solid $custom-orange;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+	}
+	label {
+		font-weight: $semi-bold;
+		color: $black;
+	}
+	a {
+		cursor: pointer;
+		color: $custom-orange !important;
+		&:hover {
+			text-decoration: underline !important;
+		}
+	}
+	.uploader {
+		background-color: lighten($custom-orange, 14);
+		text-align: center;
+		vertical-align: middle;
+		padding: 0.4em 0.7em;
+		outline: none;
+		width: auto;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		&:hover {
+			background-color: $custom-orange;
+		}
+	}
+	.form-submit {
+		background-color: $custom-orange;
+		color: $white;
+		padding: 0.6em 5em;
+		&:hover {
+			background-color: lighten($navy, 5);
+		}
+	}
+}
+
+.navbar {
+	background-color: transparent;
+	color: $navy;
+	padding-bottom: 0;
+	margin-bottom: -5px;
+	font-family: $font-body;
+	img {
+		height: 4.5rem;
+		width: auto;
+		margin-bottom: 0.5rem;
+	}
+	i {
+		color: $navy;
+		font-size: 1.75rem;
+	}
+	a:hover {
+		color: $custom-orange !important;
+	}
+	.navbar-nav li {
+		text-align: right;
+	}
+}
+
+.site-navigation ul {
+	position: fixed;
+	top: 0;
+	left: -320px;
+	z-index: 3;
+	width: 320px;
+	max-width: calc(100% - 120px);
+	padding: 0;
+	margin: 0;
+	background: $white;
+	list-style: none;
+	overflow-x: scroll;
+	text-align: center;
+	li {
+		margin: 0 0.75rem;
+		a {
+			display: block;
+			padding: 10px 0;
+			font-size: 1.1rem;
+			text-decoration: none;
+		}
+	}
+}
+/*
+  pc screen
+  --------------------------------*/
+@media screen and (min-width: 992px) {
+	.site-navigation ul {
+		position: relative;
+		top: auto;
+		left: auto;
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		padding: 1.4rem 0;
+		overflow: auto;
+		background: transparent;
+		li a {
+			padding: 0;
+		}
+	}
+}
+
+.mission {
+	background-color: lighten($cream, 8);
+	.header {
+		min-height: 30vh;
+		color: $navy-dark;
+		h1 {
+			padding-top: 1em;
+			font-family: $font-heading;
+			border-bottom: 11px dotted $custom-yellow;
+			padding-bottom: 0.15em;
+		}
+		h4 {
+			font-family: $font-body;
+			font-size: 1.15em;
+			line-height: 1.15em;
+			margin: 0.5em 2em;
+			text-align: center;
+		}
+	}
+}
+
+/* 
+-----------------------------
+from profile.ejs/css
+-----------------------------
+*/
+.profile {
+	background-color: lighten($cream, 7) !important;
+	@include font-styling($font-body, 1rem);
+	.profile-welcome {
+		background: url('../img/profile-bg.png') bottom center no-repeat;
+		background-size: cover;
+		min-height: 40vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		h1 {
+			@include font-styling($font-heading, 3rem, $custom-orange);
+			text-transform: capitalize;
+			text-align: center;
+		}
+	}
+	&-button {
+		@extend %btn;
+		background-color: $custom-orange;
+		color: $white !important;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		font-size: 1.25rem;
+		&:hover {
+			background-color: $navy;
+			color: $white;
+			border: 0.5px solid $navy;
+			text-decoration: none;
+		}
+	}
+	&-button-inverted {
+		@extend %btn;
+		background-color: $white;
+		border: 0.12rem solid $custom-orange;
+		color: $custom-orange !important;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		font-size: 1.25rem;
+		&:hover {
+			background-color: $custom-orange;
+			color: $white !important;
+			text-decoration: none;
+		}
+	}
+	&-button-navy {
+		@extend %btn;
+		background-color: $navy;
+		color: $white !important;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		font-size: 1.25rem;
+		&:hover {
+			background-color: $custom-orange;
+			color: $white;
+			text-decoration: none;
+		}
+	}
+	&-button-navy-inverted {
+		@extend %btn;
+		background-color: $white;
+		color: $navy !important;
+		border: 0.12rem solid $navy;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		font-size: 1.25rem;
+		&:hover {
+			background-color: $navy;
+			color: $white !important;
+			text-decoration: none;
+		}
+	}
+	i {
+		color: $custom-orange;
+	}
+}
+
+.profile-panel {
+	background-color: $white;
+	padding: 1.75em;
+	border-radius: 0.5rem;
+	-webkit-border-radius: 0.5rem;
+	-moz-border-radius: 0.5rem;
+	-ms-border-radius: 0.5rem;
+	-o-border-radius: 0.5rem;
+	h4 {
+		@include font-styling($font-body, 1.6rem, lighten($black, 15), $semi-bold);
+		text-align: center;
+	}
+	span {
+		@include font-styling($font-body, 1.1rem, $custom-orange, $semi-bold);
+		margin-left: 1rem;
+	}
+	input {
+		border-bottom: 0.12rem solid $custom-orange;
+		color: $custom-orange;
+		width: 50%;
+	}
+	textarea {
+		border-bottom: 0.12rem solid $custom-orange;
+		color: $custom-orange;
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 755px) {
+	.profile-panel input {
+		width: 100%;
+	}
+}
+
+.profile-header {
+	padding: 1em 0;
+}
+
+/* ---- About me edit pencil ---- */
+.about-me-edit {
+	position: relative;
+	float: right;
+	margin-top: 1em;
+	margin-right: 0.5em;
+	width: 1.5em;
+	height: 1.5em;
+	cursor: pointer;
+}
+
+.textarea-about-me {
+	position: relative;
+	display: flex;
+	margin: auto;
+	padding: auto;
+	width: inherit;
+	height: inherit;
+}
+
+.team {
+	padding: 1.5rem;
+	&-card {
+		border-radius: 0.3rem;
+		-webkit-border-radius: 0.3rem;
+		-moz-border-radius: 0.3rem;
+		-ms-border-radius: 0.3rem;
+		-o-border-radius: 0.3rem;
+		background-color: lighten($cream, 1);
+		padding: 1rem;
+		margin: 1rem;
+		min-height: 390px;
+		text-align: center;
+	}
+	h1 {
+		@include font-styling($font-heading, 2.75rem, $custom-red, $semi-bold);
+		text-align: center;
+		margin: 1rem;
+		padding: 1rem;
+	}
+	h4 {
+		@include font-styling($font-body, 1.5rem, $custom-green, $semi-bold);
+	}
+	h5 {
+		@include font-styling($font-body, 1.25rem, $black);
+		text-align: center;
+		margin-top: -1rem;
+	}
+	p {
+		@include font-styling($font-body, 0.95rem, $black);
+	}
+}
+
+.wishcards {
+	position: relative;
+	padding: 3em 0;
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $navy, $medium);
+		text-align: center;
+		padding: 1rem 0rem 3rem 0rem;
+	}
+	&-container {
+		max-width: 1300px;
+		// Just so it doesn't expand all the way in large screens
+	}
+	.create-more {
+		@extend %btn-lg;
+		text-decoration: none !important;
+		background-color: $custom-orange;
+		color: $white !important;
+		border-radius: 0.5rem;
+		-webkit-border-radius: 0.5rem;
+		-moz-border-radius: 0.5rem;
+		-ms-border-radius: 0.5rem;
+		-o-border-radius: 0.5rem;
+		font-size: 1.25rem;
+	}
+}
+
+.wishcard {
+	&__icon--fixed {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		top: -10px;
+		right: -10px;
+		border-radius: 50%;
+		padding: 0;
+		width: 3.5rem;
+		height: 3.5rem;
+		transition: all 0.25s ease-in-out;
+		text-decoration: none;
+	}
+	&__button--blue {
+		@extend %btn;
+		background-color: $navy;
+		color: $white;
+		&:hover {
+			background-color: $white;
+			color: $navy;
+			border: 0.5px solid $navy;
+		}
+	}
+	&__button--disabled {
+		@extend %btn;
+		background-color: lighten($gray, 25%);
+		color: $white;
+	}
+	&__button--filter {
+		@extend %btn;
+		background-color: $white;
+		color: $custom-yellow;
+		border: 0.5px solid $custom-yellow;
+		&:hover {
+			background-color: $custom-yellow;
+			color: $white;
+		}
+	}
+}
+
+.card-body {
+	padding: 1.1rem !important;
+	.card-details {
+		p {
+			@include font-styling($font-body);
+			margin-bottom: 0rem;
+		}
+		.wish-price {
+			-webkit-text-decoration-line: underline;
+			text-decoration-line: underline;
+			-moz-text-decoration-line: underline;
+			-webkit-text-decoration-color: $custom-red;
+			text-decoration-color: $custom-red;
+			-moz-text-decoration-color: $custom-red;
+		}
+	}
+	.card-action {
+		@include font-styling($font-body);
+		margin-top: 1rem;
+		margin-bottom: -1rem;
+		text-align: center;
+	}
+}
+
+//move this later
+.msg-icon {
+	background-color: $custom-yellow;
+	padding: 0.6em 0.8em;
+	border: none;
+	&:hover {
+		text-decoration: none;
+		background-color: darken($custom-yellow, 25%);
+	}
+}
+
+.search-border {
+	background-color: lighten($cream, 8);
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	-ms-border-radius: 20px;
+	-o-border-radius: 20px;
+	button {
+		border-radius: 0 20px 20px 0;
+		-webkit-border-radius: 0 20px 20px 0;
+		-moz-border-radius: 0 20px 20px 0;
+		-ms-border-radius: 0 20px 20px 0;
+		-o-border-radius: 0 20px 20px 0;
+	}
+}
+
+// ------------- wishcard/:id page ------------
+.wishpage {
+	margin: 0 auto;
+	padding: 0 auto;
+	box-sizing: border-box;
+	background-color: lighten($cream, 8);
+	@include font-styling($font-body);
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $navy);
+		text-align: center;
+	}
+	h3 {
+		@include font-styling($font-body, 1.5rem, $custom-orange, $semi-bold);
+		text-align: center;
+		text-transform: uppercase;
+	}
+	p {
+		text-align: left;
+		word-wrap: break-word;
+	}
+	i {
+		color: $custom-orange;
+		font-size: 1.5rem;
+	}
+	.wrapper {
+		width: 40vw;
+		border-radius: 2rem;
+		-webkit-border-radius: 2rem;
+		-moz-border-radius: 2rem;
+		-ms-border-radius: 2rem;
+		-o-border-radius: 2rem;
+	}
+	.row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		img {
+			background: $white;
+			width: 40vw;
+			padding: 1rem;
+			border-radius: 1rem;
+			-webkit-border-radius: 1rem;
+			-moz-border-radius: 1rem;
+			-ms-border-radius: 1rem;
+			-o-border-radius: 1rem;
+		}
+	}
+	.msg-each {
+		background-color: lighten($cream, 7);
+		margin: 0.5rem;
+		padding: 0.5rem;
+	}
+	.donate-btn {
+		@extend %btn-lg;
+		text-decoration: none !important;
+		background-color: $custom-orange;
+		color: $white !important;
+		min-width: 40vw;
+		display: inline-block !important;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.wishpage {
+		.wrapper {
+			width: 80vw !important;
+		}
+		.row {
+			img {
+				width: 80vw !important;
+			}
+		}
+	}
+}

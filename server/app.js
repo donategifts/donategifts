@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 	liveReloadServer.server.once('connection', () => {
 		setTimeout(() => {
 			liveReloadServer.refresh('/');
-		}, 100);
+		}, 5000);
 	});
 
 	app.use(connectLiveReload());

@@ -4,7 +4,7 @@ require('dotenv').config({
 	path: path.join(__dirname, './config/config.env'),
 });
 
-const { src, dest, series } = require('gulp');
+const { src, dest, series, watch, task } = require('gulp');
 const plumber = require('gulp-plumber');
 const prefix = require('gulp-autoprefixer');
 const sass = require('gulp-dart-sass');
@@ -18,7 +18,7 @@ const logger = require('./server/helper/logger');
 const isDev = process.env.NODE_ENV === 'development';
 
 const onError = (runner, done) => (error) => {
-	logger.error(`error - ${runner}`, error);
+	logger.error(error, `error - ${runner}`);
 	done();
 };
 
@@ -34,7 +34,7 @@ const scss = (done) =>
 		.pipe(concat('app.min.css'))
 		.pipe(
 			sass({
-				includePaths: ['./design/scss/**/*.scss', 'node_modules/bootstrap/scss/'],
+				includePaths: ['./design/scss/**/*.scss', 'node_modules/bootstrap/scss/**/*.scss'],
 				outputStyle: 'compressed',
 			}),
 		)
@@ -44,7 +44,7 @@ const scss = (done) =>
 			}),
 		)
 		.pipe(gulpif(isDev, sourcemaps.write()))
-		.pipe(dest(path.join(__dirname, './public/assets/css')))
+		.pipe(dest(path.join(__dirname, './public/css')))
 		.on('end', onSuccess('sass', done));
 
 const js = (done) =>
@@ -55,7 +55,9 @@ const js = (done) =>
 		.pipe(gulpif(!isDev, stripDebug()))
 		.pipe(gulpif(!isDev, uglify()))
 		.pipe(gulpif(isDev, sourcemaps.write()))
-		.pipe(dest(path.join(__dirname, './public/assets/js')))
+		.pipe(dest(path.join(__dirname, './public/js')))
 		.on('end', onSuccess('js', done));
+
+task('watch', () => watch(['./design/scss/**/*.scss', './js/**/*.js'], series(scss, js)));
 
 exports.default = series(scss, js);

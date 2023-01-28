@@ -1,0 +1,107 @@
+$gray: #313131 !default;
+$black: #262626 !default;
+
+$navy: #333a64 !default;
+$navy-dark: #414254 !default;
+$cream: #f8e4c9 !default;
+
+$custom-green: #00a19a !default;
+$custom-blue: #333a64 !default;
+$custom-red: #ff5c6f !default;
+$custom-orange: #ff826b !default;
+$custom-yellow: #ffbb59 !default;
+
+// scss-docs-start theme-color-variables
+$primary: 		$custom-blue !default;
+$success: 		$custom-green !default;
+$warning: 		$custom-yellow !default;
+$danger: 	$custom-red !default;
+$secondary:     $gray-600 !default;
+$info:          $cyan !default;
+$light:         $gray-100 !default;
+$dark:          $gray-900 !default;
+// scss-docs-end theme-color-variables
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+	"primary":    $primary,
+	"secondary":  $secondary,
+	"success":    $success,
+	"info":       $info,
+	"warning":    $warning,
+	"danger":     $danger,
+	"light":      $light,
+	"dark":       $dark
+) !default;
+// scss-docs-end theme-colors-map
+
+$custom-theme-colors: map-merge(
+	$theme-colors,
+	(
+		'navy': $navy,
+		'cream': $cream,
+		'navy-dark': $navy-dark,
+	)
+);
+
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value');
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, '$key', 'text');
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, '$key', 'bg');
+
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio: 4.5 !default;
+
+@font-face {
+	font-family: 'DkCoolCrayon';
+	src: url('../fonts/dkcoolcrayon-webfont.woff') format('woff');
+}
+@font-face {
+	font-family: 'DK-Crayon-Crumble';
+	src: url('../fonts/dk-crayon-crumble-webfont.woff') format('woff');
+}
+
+$font-heading: 'DkCoolCrayon', Helvetica, sans-serif;
+$font-body: 'Quicksand', sans-serif;
+
+$serif: Georgia, serif;
+$crumble: 'DK-Crayon-Crumble', sans-serif;
+
+$light: 300;
+$normal: 400;
+$medium: 500;
+$semi-bold: 600;
+$bold: 700;
+
+@mixin font-styling(
+	$family: null,
+	$size: null,
+	$color: null,
+	$weight: null,
+	$height: null,
+	$spacing: null
+) {
+	@if $family {
+		font-family: $family;
+	} @else {
+		font-family: $font-body;
+	}
+	@if $size {
+		font-size: $size;
+	}
+	@if $color {
+		color: $color;
+	}
+	@if $weight {
+		font-weight: $weight;
+	}
+	@if $height {
+		line-height: $height;
+	}
+	@if $spacing {
+		letter-spacing: $spacing;
+	}
+}

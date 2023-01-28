@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon",
+    "gulp-watch": "gulp watch",
     "lint": "eslint --ext .js --ignore-path .eslintignore server/",
     "lint-pug": "npx pug-lint views",
     "build": "gulp",
@@ -30,7 +31,7 @@
     "axios": "1.2.1",
     "bcrypt": "5.1.0",
     "body-parser": "1.20.1",
-    "bootstrap": "5.2.3",
+    "bootstrap": "5.1.0",
     "connect-mongo": "4.6.0",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
