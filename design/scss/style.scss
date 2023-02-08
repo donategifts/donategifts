@@ -1,24 +1,5 @@
 @import "includes";
 
-// @TODO: revisit this here,
-// loads of stylings in there which we don't need
-@import "legacy/agency";
-@import "legacy/chooseItem";
-@import "legacy/community";
-@import "legacy/contact";
-@import "legacy/faq";
-@import "legacy/home";
-@import "legacy/howTo";
-@import "legacy/loadingSpinner";
-@import "legacy/profile";
-@import "legacy/search";
-@import "legacy/signup";
-@import "legacy/stripe";
-@import "legacy/successPayment";
-@import "legacy/toast";
-@import "legacy/utils";
-@import "legacy/wishCardFull";
-
 body {
 	padding: 0;
 	margin: 0;
@@ -198,6 +179,15 @@ Reusable Hero
 	color: $white;
 	text-align: center;
 	background: lighten($black, 5);
+}
+
+.footer-item {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+		color: $custom-orange !important;
+	}
 }
 
 /* 

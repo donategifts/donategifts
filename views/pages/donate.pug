@@ -11,7 +11,7 @@ block content
                 p.quick-font.font-md-2.text-center
                     span.cap.bold-text= wishcard.childFirstName + '\'s gift will be delivered to our partner agency,'
                     br
-                    a.help-modal.org-font.cap.bold-text.pointer( data-toggle='modal' data-target='#checkoutHelper' )
+                    a.help-modal.org-font.cap.bold-text.pointer( data-bs-toggle='modal' data-bs-target='#checkoutHelper' )
                         = agency.agencyName
                         i.fa.fa-info-circle( aria-hidden='true' )
                     |
@@ -48,13 +48,13 @@ block content
                     .d-flex.justify-content-between.force-no-mg
                         p
                             span Processing fee
-                            a.help-modal.grn-font( data-toggle='modal' data-target='#checkoutHelper2' )
+                            a.help-modal.grn-font( data-bs-toggle='modal' data-bs-target='#checkoutHelper2' )
                                 i.fa.fa-question-circle( aria-hidden='true' )
                         p= '$' + extendedPaymentInfo.processingFee
                     .d-flex.justify-content-between.force-no-mg
                         p
                             span Item sales tax
-                            a.help-modal.grn-font( data-toggle='modal' data-target='#checkoutHelper3' )
+                            a.help-modal.grn-font( data-bs-toggle='modal' data-bs-target='#checkoutHelper3' )
                                 i.fa.fa-question-circle( aria-hidden='true' )
                         p= '$' + extendedPaymentInfo.tax
                     #user-donation-div.d-flex.justify-content-between.force-no-mg
@@ -70,7 +70,7 @@ block content
                         span.cap= user.fName + 'would you like to support our cause?'
                     p
                         span Add cash donation to sponsor our project, so we can help more kids
-                        a.help-modal.grn-font.pointer( data-toggle='modal' data-target='#checkoutHelper4' )
+                        a.help-modal.grn-font.pointer( data-bs-toggle='modal' data-bs-target='#checkoutHelper4' )
                             i.fa.fa-question-circle( aria-hidden='true' )
                             span More Info
                     .text-center

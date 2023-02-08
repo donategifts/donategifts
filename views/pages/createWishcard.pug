@@ -32,7 +32,7 @@ block content
                             input#wishItemName.input-block( type='text' name='wishItemName' placeholder='' )
                             .mb-2.col-lg-6.col-sm-12
                             label( for='wishItemPrice' ) Wish Item Price (numeric only, round it up)
-                            a( data-toggle='modal' data-target='#formQuestionHelper2' )
+                            a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper2' )
                                 i.fa.fa-question-circle( aria-hidden='true' )
                                 | click for help
                             input#wishItemPrice.input-block( type='number' name='wishItemPrice' placeholder='Price must be under $35' min='1' max='35' )
@@ -40,7 +40,7 @@ block content
                             .col-12
                             label( for='wishItemURL' )
                                 | Wish Item Amazon URL
-                            a( data-toggle='modal' data-target='#formQuestionHelper' )
+                            a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper' )
                                 i.fa.fa-question-circle( aria-hidden='true' )
                                 | click for help
                             input#wishItemURL.input-block( type='text' name='wishItemURL' placeholder='(Item page link https://www.amazon.....)' )
@@ -58,7 +58,7 @@ block content
                                 p
                                     | Required to use an image that is representative of the child. (Also allowed: masked faces, cropped or
                                     | blurred features, art or something they made, their wish item)
-                                    a.help-modal( data-toggle='modal' data-target='#formQuestionHelper3' )
+                                    a.help-modal( data-bs-toggle='modal' data-bs-target='#formQuestionHelper3' )
                                     i.fa.fa-question-circle( aria-hidden='true' )
                                     | click for help
                                 .uploader-left

@@ -4,6 +4,7 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "variables";
 @import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/maps";
 @import "node_modules/bootstrap/scss/utilities";
 
 // scss-docs-start import-stack
@@ -46,3 +47,22 @@
 // Utilities
 @import "node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
+
+// @TODO: revisit this here,
+// loads of stylings in there which we don't need
+@import "legacy/agency";
+@import "legacy/chooseItem";
+@import "legacy/community";
+@import "legacy/contact";
+@import "legacy/faq";
+@import "legacy/home";
+@import "legacy/howTo";
+@import "legacy/loadingSpinner";
+@import "legacy/profile";
+@import "legacy/search";
+@import "legacy/signup";
+@import "legacy/stripe";
+@import "legacy/successPayment";
+@import "legacy/toast";
+@import "legacy/utils";
+@import "legacy/wishCardFull";
