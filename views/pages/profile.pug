@@ -173,8 +173,7 @@ block content
             .modal-content
                 .modal-header
                     h5#exampleModalLongTitle.modal-title.rale-font.grn-font.bold-text Edit about me
-                    button.close( type='button' data-dismiss='modal' aria-label='Close' )
-                    span( aria-hidden='true' ) x
+                    button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
                 .modal-body.rale-font
                     .container-fluid
                         if user.aboutMe
@@ -182,7 +181,7 @@ block content
                         else
                             textarea#about-me-text.textarea-about-me
                 .modal-footer
-                    button#save-about-me-button.btn.btn-secondary( type='button' data-dismiss='modal' ) Save
+                    button#save-about-me-button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Save
 
 block scripts
     script.
@@ -191,14 +190,12 @@ block scripts
                 $.ajax({
                     type: 'PUT',
                     url: '/profile',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: { aboutMe: $('#about-me-text').val() },
+                    data: { aboutMe: $('#about-me-text').val() },
                     success: (response) => {
                         if (response.error) {
                             return showToast('Could not update about me info.');
                         }
+                        showToast('Updated your info!', true);
                         $('#about-me').text(response.data);
                     },
                     error: (_) => {
@@ -228,7 +225,7 @@ block scripts
                     $.ajax({
                         type: 'POST',
                         url: '/profile/picture',
-                        body: formData,
+                        data: formData,
                         success: (response) => {
                             replaceImage(response.data);
                         },

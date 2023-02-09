@@ -1,17 +1,17 @@
 mixin loginToastJS()
     script.
-        let myLoginToast;
         $(window).on('load', function () {
+            let myLoginToast;
             const LoginToastShow = sessionStorage.getItem('LoginToastShow');
             if (LoginToastShow == null) {
                 sessionStorage.setItem('LoginToastShow', 1);
                 myLoginToast = setTimeout(function () {
                     let msg = "<div class='loginToastReminder'>More features will be enabled if you log in. <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/signup\">Sign&nbsp;Up</a></span> or <span class='loginToastReminder__link'><a id='loginToastReminder__link__anchor' href=\"/login\">Login</a></span></div>"
-                    showToast(msg, undefined, -1, { x: 0, y: '7em' }, 'loginToastReminder', false);
+                    showToast(msg, false, -1, { x: 0, y: '5em' }, 'p-3 d-flex', false);
                 }, 90 * 1000);
             }
-        });
 
-        $('div.col-sm-6.my-2.text-center > button.wishcard__button--blue.bdr-2').click(function () {
-            clearTimeout(myLoginToast);
+            $('div.col-sm-6.my-2.text-center > button.wishcard__button--blue.bdr-2').click(function () {
+                clearTimeout(myLoginToast);
+            });
         });

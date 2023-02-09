@@ -9,9 +9,9 @@ block content
         .wrap-box
             form.signup( method='post' )
                 .sign-row.lg.title-text.crayon-font.mg-sm
-                    a.userLogBtn( href='/login' ) Log In
+                    a.userLogBtn.text-decoration-none( href='/login' ) Log In
                     span OR
-                    a.userLogBtn( href='/signup' ) Sign Up
+                    a.userLogBtn.text-decoration-none( href='/signup' ) Sign Up
                 .wrap-input.mg-btm( data-validate='Email is required' )
                     input#email.input-default.quick-font( required type='email' name='email' placeholder='Email' title='example: username@xyz.com' )
                 .wrap-input.mg-btm2( data-validate='Password is required' )
