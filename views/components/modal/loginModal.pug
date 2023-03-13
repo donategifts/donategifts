@@ -1,0 +1,33 @@
+#loginModalCenter.modal.fade.login( tabindex='-1'
+        role='dialog'
+        aria-labelledby='loginModalLongTitle'
+        aria-hidden='true'
+    )
+    .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+        .modal-content
+            .modal-header
+                h4.crayon-font.font-lg.center Log In
+                button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+            .modal-body
+                .container
+                    form#login-modal-form.signup( method='post' )
+                        .d-flex.justify-content-center
+                            .col-md-8
+                                label.quick-font( for='email' ) Email
+                                input#email.input-default.text-dark.quick-font( required type='email' name='email' data-validate='Email is required' )
+                                label.quick-font( for='password' ) Password
+                                input#password.input-default.text-dark.quick-font( required type='password' name='password' )
+                        .forgot-container.quick-font.text-center
+                            a( href='/profile/password/reset/' ) Forgot Password?
+                        .container-form-btn
+                            button.btn-orange-navy-lg.quick-font( type='submit' ) Log In
+                    .text-container.quick-font
+                        p.quick-font or login with
+                    #google-fb-login
+                        .d-flex.justify-content-center
+                            .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
+                        .d-flex.justify-content-center
+                            .fb-login-button.mt-3( data-size='large' data-button-type='login_with' data-layout='default' data-auto-logout-link='false' data-use-continue-as='false' data-scope='public_profile,email' data-onlogin='facebookLogin' )
+            .modal-footer
+                .signup-container.quick-font
+                    a( href='/signup' ) New here? Sign Up

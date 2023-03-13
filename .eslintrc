@@ -1,4 +1,7 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 13
+  },
   "extends": [
     "airbnb-base",
     "eslint:recommended",
@@ -15,15 +18,13 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto"
+        "endOfLine": "lf"
       }
     ],
     "no-unused-vars": [
       "error",
       {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_"
       }
     ],
     "no-restricted-syntax": "off",
@@ -31,18 +32,8 @@
     "no-plusplus": "off",
     "consistent-return": "off",
     "no-underscore-dangle": "off",
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "global-require": "off",
     "import/no-dynamic-require": "off",
     "class-methods-use-this": "off"
-  },
-  "globals": {
-    "io": true
   }
 }

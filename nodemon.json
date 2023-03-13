@@ -1,8 +1,9 @@
 {
   "watch": [
     "server",
-    "client"
+    "views",
+    "design"
   ],
-  "ext": "js,ejs",
+  "ext": "js,pug,scss",
   "exec": "node --inspect=0.0.0.0:9229 server/app.js"
 }

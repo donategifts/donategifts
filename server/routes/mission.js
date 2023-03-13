@@ -1,25 +1,11 @@
-/*
-    serving all 'about' related routes
-    '/about' is already mounted, so no need to start with it for each route.
-*/
-
-// NPM DEPENDENCIES
 const express = require('express');
+
+const MissionHandler = require('../handler/mission');
 
 const router = express.Router();
 
-const log = require('../helper/logger');
+const missionHandler = new MissionHandler();
 
-// @desc    Render about.html
-// @route   GET '/about'
-// @access  Public
-// @tested 	Not yet
-router.get('/', (req, res) => {
-  try {
-    res.status(200).render('mission', { user: res.locals.user });
-  } catch (error) {
-    log.error(req, error);
-  }
-});
+router.get('/', missionHandler.handleGetIndex);
 
 module.exports = router;

@@ -1,0 +1,119 @@
+extends ../master
+
+block title
+    title Sign Up to Donate Gifts
+
+block content
+    #fb-root
+    .signup-bg.d-flex.container-fluid.justify-content-center.py-5
+        .wrap-box
+            form.signup( method='post' )
+                .sign-row.lg.title-text.crayon-font.mg-sm
+                    a.userLogBtn.text-decoration-none( href='/login' ) Log In
+                    span OR
+                    a.userLogBtn.text-decoration-none( href='/signup' ) Sign Up
+                .wrap-input.mg-btm( data-validate='Email is required' )
+                    input#email.input-default.quick-font( required type='email' name='email' placeholder='Email' title='example: username@xyz.com' )
+                .wrap-input.mg-btm2( data-validate='Password is required' )
+                    input#password.input-default.quick-font( required
+                        type='password'
+                        name='password'
+                        placeholder='Password'
+                    )
+                    i#showPassword.fas.fa-eye.text-white.pointer
+                a.text-white( href='/profile/password/reset/' ) Forgot Password?
+                .container-form-btn
+                    button.form-btn.quick-font( type='submit' ) Log In
+
+            #google-fb-login
+                .d-flex.justify-content-center
+                    .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
+                .d-flex.justify-content-center
+                    .fb-login-button.mt-3( data-size='large'
+                        data-button-type='login_with'
+                        data-layout='default'
+                        data-auto-logout-link='false'
+                        data-use-continue-as='false'
+                        data-scope='public_profile,email'
+                        data-onlogin='facebookLogin'
+                    )
+
+block scripts
+    include ../mixins/formvalidation
+    +passwordToggleJS
+
+    if successNotification
+        script.
+            showToast('#{successNotification.msg}');
+
+    if errorNotification
+        script.
+            showToast('#{errorNotification.msg}');
+
+    script.
+        $(document).ready(() => {
+            $('.signup').submit((e) => {
+                e.preventDefault();
+                $('#submit-btn').prop('disabled', true);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: {
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                    },
+                    success: (response) => {
+                        $('#submit-btn').prop('disabled', false);
+                        location.reload();
+                    },
+                    error: (response) => {
+                        showToast(response.responseJSON.error.msg);
+                        $('#submit-btn').prop('disabled', false);
+                    },
+                });
+            });
+
+            const facebookLogin = (fbUser) => {
+                if (fbUser.authResponse && fbUser.status === 'connected') {
+                    FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
+                        if (response.id) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/fb-signin',
+                                data: {
+                                    userName: response.name,
+                                    email: response.email,
+                                },
+                                success: (_) => {
+                                    location.reload();
+                                },
+                                error: (response) => {
+                                    const txtToJson = JSON.parse(response.responseText);
+                                    showToast(txtToJson.error.msg);
+                                },
+                            });
+                        }
+                    });
+                }
+            }
+
+            const googleLogin = (googleUser) => {
+                var id_token = googleUser.getAuthResponse().id_token;
+                googleUser.disconnect();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/google-signin',
+                    data: {
+                        id_token,
+                    },
+                    success: (_) => {
+                        location.reload();
+                    },
+                    error: (response) => {
+                        showToast(response.responseJSON.error.msg);
+                    },
+                });
+            }
+        });

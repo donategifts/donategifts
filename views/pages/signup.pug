@@ -1,0 +1,132 @@
+extends ../master
+
+block title
+    title Sign Up | Donate Gifts
+
+append head
+    script( src='https://www.google.com/recaptcha/api.js' async defer )
+
+block content
+    .signup-bg.d-flex.container-fluid.justify-content-center.py-5
+        .wrap-box
+            form.signup( action='/signup' method='post' )
+                .sign-row.lg.title-text.crayon-font.mg-sm
+                    a.userLogBtn( href='/signup' ) Sign Up
+                    span OR
+                    a.userLogBtn( href='/login' )  Log In
+                .wrap-input.mg-btm( data-validate='First name is required' )
+                    input#fName.input-default.quick-font( required
+                        type='text'
+                        name='fName'
+                        placeholder='First name'
+                        title='First name must contain alphabets only'
+                    )
+                .wrap-input.mg-btm( data-validate='Last name is required' )
+                    input#lName.input-default.quick-font( required
+                        type='text'
+                        name='lName'
+                        placeholder='Last name'
+                        title='Last name must contain alphabets only'
+                    )
+                .wrap-input.mg-btm( data-validate='Email is required' )
+                    input#email.input-default.quick-font( required
+                        type='email'
+                        name='email'
+                        placeholder='Email'
+                        title='example: username@xyz.com'
+                    )
+                .wrap-input.mg-btm2( data-validate='Password is required' )
+                    input#password.input-default.quick-font( required
+                        type='password'
+                        name='password'
+                        placeholder='Password'
+                    )
+                    i#showPassword.fas.fa-eye.text-white.pointer
+                small#password-error.hidden.text-danger Passwords do not match
+                .wrap-input.mg-btm2( data-validate='Password is required' )
+                    input#password-repeat.input-default.quick-font( required
+                        type='password'
+                        name='password-repeat'
+                        placeholder='Confirm Password'
+                    )
+                fieldset.wrap-radio.quick-font
+                    legend.md2 Signing up as:
+                    .form-check.d-flex.align-items-center.ms-2
+                        input#donor.form-check-input( type='radio' name='userRole' value='donor' )
+                        label.form-check-label( for='donor' ) Gift Sender
+                    .form-check.d-flex.align-items-center.ms-2
+                        input#partner.form-check-input( type='radio'
+                            name='userRole'
+                            value='partner'
+                            data-bs-toggle='modal'
+                            data-bs-target='#signupModalCenter'
+                        )
+                        label.form-check-label( for='partner' ) Foster Care Partner
+                .g-recaptcha( data-sitekey='6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe'
+                    data-callback='confirmCaptchaSubmit'
+                    data-size='invisible'
+                )
+                .container-form-btn
+                    button#submit-btn.form-btn.quick-font( type='submit' ) Sign Up
+    include ../components/modal/signupModal.pug
+
+block scripts
+    include ../mixins/formvalidation
+    +passwordToggleJS
+
+    script.
+        $(document).ready(() => {
+            $('.signup').submit((e) => {
+                e.preventDefault();
+                $('#submit-btn').prop('disabled', true);
+                grecaptcha.execute();
+                return;
+            });
+
+            $('#password-repeat').focusout((e) => {
+                const password = $('#password').val();
+                const passwordRepeat = $(e.currentTarget).val();
+
+                if (passwordRepeat !== '') {
+                    if (password !== passwordRepeat) {
+                        $('#password-error').show();
+                    } else {
+                        $('#password-error').hide();
+                    }
+                }
+            });
+
+            const confirmCaptchaSubmit = (response) => {
+                const captchaToken = response;
+                const fName = $('#fName').val();
+                const lName = $('#lName').val();
+                const email = $('#email').val();
+                const password = $('#password').val();
+                const passwordConfirm = $('#password-repeat').val();
+                const userRole = $("input[type='radio']:checked").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/signup',
+                    data: {
+                        fName,
+                        lName,
+                        email,
+                        password,
+                        passwordConfirm,
+                        userRole,
+                        captchaToken,
+                    },
+                    success: function (response, textStatus, xhr) {
+                        $('#submit-btn').prop('disabled', false);
+                        location.assign(response.url);
+                    },
+                    error: function (response, textStatus, errorThrown) {
+                        $('#submit-btn').prop('disabled', false);
+                        showToast(response.responseJSON.error.msg);
+                        grecaptcha.reset();
+                    },
+                });
+            };
+
+            window.confirmCaptchaSubmit = confirmCaptchaSubmit;
+        });

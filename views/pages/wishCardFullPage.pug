@@ -1,0 +1,141 @@
+extends ../master
+
+block title
+    title See Each Wish Card | Donate Gifts
+
+block content
+    .wishpage.pb-5
+        .row.pt-5.pb-2.mx-auto
+            - var header = wishcard.childFirstName + '\'s Wish Page';
+
+            h1= header
+
+        .text-center
+            if wishcard.status === 'donated'
+                button#donate-btn.btn-disabled-long( type='button' disabled='' aria-disabled='true' ) Donated
+            else if user
+                a#donate-btn.donate-btn( type='button' href='/donate/' + wishcard._id ) Donate Gift
+            else
+                button#donate-btn.btn-orange-navy-lg-long( type='button'
+                    data-bs-toggle='modal'
+                    data-bs-target='#loginModalCenter'
+                ) Donate Gift
+
+        .row
+            img.mt-3.shadow( src= wishcard.wishCardImage alt= wishcard.wishItemName loading='lazy' )
+
+        .wrapper.tinted.shadow.p-5.mt-5.rounded.mx-auto
+            -
+                var name = 'Wish Item: ' + wishcard.wishItemName;
+                var price = 'Price: $' + wishcard.wishItemPrice;
+            h3.pb-4 My Wish Item
+            p
+                span.font-weight-bold= name
+            p
+                span.font-weight-bold= price
+
+        .wrapper.tinted.shadow.p-5.mt-5.rounded.mx-auto
+            -
+                var title = 'About ' + wishcard.childFirstName;
+                var age = 'My Age: ' + wishcard.age;
+                var interest = 'My interest: ' + wishcard.childInterest;
+                var story = 'My Story: ' + wishcard.childStory;
+
+            h3.pb-4= title
+            p#age
+                span.font-weight-bold= age
+            p
+                span.font-weight-bold= interest
+            p
+                span.font-weight-bold= story
+
+        .wrapper.tinted.shadow.p-5.mt-5.rounded.mx-auto
+            h3.pb-4 Agency Info
+            p
+                i.fas.fa-building
+                = agency.agencyName
+            if agency.agencyAddress
+                p
+                    i.fas.fa-map-marker-alt
+                    = agency.agencyAddress.city? agency.agencyAddress.city : null
+                    = agency.agencyAddress.state? agency.agencyAddress.state : null
+                    = agency.agencyAddress.zipcode? agency.agencyAddress.zipcode : null
+            if agency.agencyPhone
+            p
+                i.fas.fa-phone-alt
+                = agency.agencyPhone
+            if agency.agencyWebsite
+                p
+                    a( href= agency.agencyWebsite target='_blank' rel='noopener noreferrer' )
+                        i.fas.fa-link
+                        = agency.agencyWebsite
+            if agency.agencyBio
+                p
+                    i.fas.fa-address-card
+                    = agency.agencyBio
+
+        if user
+            .wrapper.tinted.shadow.p-5.mt-5.rounded.mx-auto
+                h3.pb-4 Send
+                |
+                = wishcard.childFirstName
+                | a message
+                p.card-text Select a message to send
+                form.message.text-center( action='/wishcards/message' method='post' )
+                    select.custom-select
+                        option( selected ) Messages
+                        each message, index in defaultMessages
+                            option( value=index )= message
+                    input#submit.mt-4.btn-orange-navy-lg( type='submit' value='Send Message' )
+
+        .wrapper.tinted.shadow.p-5.mt-5.rounded.mx-auto
+            h3.pb-4 Message Board
+            if messages.length === 0
+                - var text = 'No one signed ' + wishcard.childFirstName + '\'s card yet. Log in and send a message.';
+
+                p= text
+
+            else
+                div
+                    each message in messages
+                        .msg-each
+                            p.row.justify-content-center
+                                i.far.fa-comment-dots
+                                span.mx-4.text-center= message.message
+
+                            if message.messageFrom && message.messageFrom.fName
+                                p.row.justify-content-center
+                                    span.font-weight-bold Sent by:
+                                        = message.messageFrom.fName
+
+    include ../components/modal/loginModal.pug
+
+block scripts
+    script.
+        $(document).ready(function () {
+            $('.message').submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/wishcards/message',
+                    data: {
+                        messageFrom: #{messageFrom},
+                        messageTo: #{messageTo},
+                        message: $('.custom-select option:selected').text(),
+                    },
+                    statusCode: {
+                        400: function (response) {
+                            showToast(response.responseJSON.error.msg);
+                        },
+                        200: function (response) {
+                            window.location.reload();
+                        },
+                        403: function (response) {
+                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            setTimeout(() => location.assign(response.responseJSON.url), 1200);
+                        },
+                    },
+                });
+            });
+        });

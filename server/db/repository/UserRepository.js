@@ -1,73 +1,67 @@
-// IMPORT USER MODEL
 const User = require('../models/User');
 
-async function getUserByObjectId(id) {
-  try {
-    return User.findOne({ _id: id }).exec();
-  } catch (error) {
-    throw new Error(`Failed to get DB user: ${error}`);
-  }
-}
+module.exports = class UserRepository {
+	#userModel;
 
-async function updateUserById(id, updateParams) {
-  try {
-    await User.updateOne({ _id: id }, { $set: updateParams }).exec();
-  } catch (error) {
-    throw new Error(`Failed to update user: ${error}`);
-  }
-}
+	constructor() {
+		this.#userModel = User;
+	}
 
-async function getUserByEmail(email) {
-  try {
-    return User.findOne({ email }).exec();
-  } catch (error) {
-    throw new Error(`Failed to get DB user: ${error}`);
-  }
-}
+	async getUserByObjectId(id) {
+		try {
+			return await this.#userModel.findOne({ _id: id }).lean().exec();
+		} catch (error) {
+			throw new Error(`Failed to get DB user: ${error}`);
+		}
+	}
 
-async function getUserByVerificationHash(verificationHash) {
-  try {
-    return User.findOne({ verificationHash }).exec();
-  } catch (error) {
-    throw new Error(`Failed to get DB user: ${error}`);
-  }
-}
+	async updateUserById(id, updateParams) {
+		try {
+			await this.#userModel.updateOne({ _id: id }, { $set: updateParams }).exec();
+		} catch (error) {
+			throw new Error(`Failed to update user: ${error}`);
+		}
+	}
 
-async function createNewUser(params) {
-  try {
-    const newUser = new User(params);
-    return newUser.save();
-  } catch (error) {
-    throw new Error(`Failed to create new User: ${error}`);
-  }
-}
+	async getUserByEmail(email) {
+		try {
+			return await this.#userModel.findOne({ email }).exec();
+		} catch (error) {
+			throw new Error(`Failed to get DB user: ${error}`);
+		}
+	}
 
-async function getUserByPasswordResetToken(tokenId) {
-  try {
-    return User.findOne({ passwordResetToken: tokenId }).exec();
-  } catch (error) {
-    throw new Error(`Failed to get User: ${error}`);
-  }
-}
+	async getUserByVerificationHash(verificationHash) {
+		try {
+			return await this.#userModel.findOne({ verificationHash }).lean().exec();
+		} catch (error) {
+			throw new Error(`Failed to get DB user: ${error}`);
+		}
+	}
 
-async function setUserEmailVerification(userId, verified) {
-  try {
-    return await User.findOneAndUpdate(
-      { _id: userId },
-      { $set: { emailVerified: verified } },
-      { new: true },
-    ).exec();
-  } catch (error) {
-    throw new Error(`Failed to set email verification: ${error}`);
-  }
-}
+	async createNewUser(params) {
+		try {
+			return await this.#userModel.create(params);
+		} catch (error) {
+			throw new Error(`Failed to create new User: ${error}`);
+		}
+	}
 
-module.exports = {
-  getUserByObjectId,
-  updateUserById,
-  getUserByEmail,
-  getUserByVerificationHash,
-  createNewUser,
-  getUserByPasswordResetToken,
-  setUserEmailVerification,
+	async getUserByPasswordResetToken(tokenId) {
+		try {
+			return await this.#userModel.findOne({ passwordResetToken: tokenId }).exec();
+		} catch (error) {
+			throw new Error(`Failed to get User: ${error}`);
+		}
+	}
+
+	async setUserEmailVerification(userId, verified) {
+		try {
+			return await this.#userModel
+				.updateOne({ _id: userId }, { $set: { emailVerified: verified } })
+				.exec();
+		} catch (error) {
+			throw new Error(`Failed to set email verification: ${error}`);
+		}
+	}
 };

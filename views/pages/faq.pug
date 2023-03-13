@@ -1,0 +1,137 @@
+extends ../master
+
+block title
+    title Donate Gifts
+
+block content
+    section#faq
+        .container.mb-2.pb-5
+            h2.cool-font.mt-4.mb-5.blue-font.text-center Frequently Asked Questions
+            .row
+                .col-12.text-start
+                    #accordionExample.accordion
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button( type='button' data-bs-toggle='collapse' data-bs-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' )
+                                        | Is my organization required to make a wish card for each and every child or is there a way I can
+                                        | do one big wish card with all of the children that we manage?
+                            #collapseOne.collapse.show( aria-labelledby='accordionHeading' data-parent='#accordionExample' )
+                                .card-body
+                                    p Unfortunately, we don't support the bulk creation feature yet.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseTwo' aria-expanded='false' aria-controls='collapseTwo' )
+                                        | Are you charging any fees for the agency partners?
+                            #collapseTwo.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p No, we do not charge anything.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseThree' aria-expanded='false' aria-controls='collapseThree' )
+                                        | How do I get started? Our agency is interested in becoming a partner.
+                            #collapseThree.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | The first step that's required of you is to register your agency on our website:
+                                        | https://donate-gifts.com
+                                    p
+                                        | It will ask you to sign up as a foster care partner and there's a simple form with just 4 fields
+                                        | that need to be filled out for verification.
+                                    p
+                                        | Once that's done, we will review and verify your agency account & you can start listing the kids'
+                                        | wishes right on our site.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseFour' aria-expanded='false' aria-controls='collapseFour' )
+                                        | Is there a recommended price range for the wish items?
+                            #collapseFour.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | We limit wish items to be under $30 each to ensure that all kids get a chance to get their gifts
+                                        | donated.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseFive' aria-expanded='false' aria-controls='collapseFive' )
+                                        | Why is the child's photo required?
+                            #collapseFive.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | The primary goal of this project is to build personal connections between donors and foster kids, and not just a one-time donation.
+                                        | Our donors are more encouraged to donate to the wish cards with children's photos. They find this personal connection very special.
+                                        | If privacy/confidentiality is a concern, please crop the identifiable features or use photos of them making a heart with their hands, masked faces, their backside, or wearing sunglasses, etc. For alternatives, we suggest using a picture of their art (anything they made or anything that represents them) as well.
+                                        | We have this policy to prevent fraudulent wish submission and to ensure that every kid's wish gets a chance for donation.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseSix' aria-expanded='false' aria-controls='collapseSix' )
+                                        | Do the names and DoB have to be real for each child?
+                            #collapseSix.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | While we prefer real data, we understand the privacy concerns and you may use a nickname or alias. For the date of birth,
+                                        | if you are unsure or unable to share due to policies, please use your best knowledge. We only care about the birth year to
+                                        | calculate their age for eligibility, so you may make up the month and day if needed.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseSeven' aria-expanded='false' aria-controls='collapseSeven' )
+                                        | Should let the kids know that if we sign up, they might not receive a gift, correct?
+                            #collapseSeven.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | There is a small chance that some of them might not receive the gift, but we are working very hard
+                                        | to make sure all kids get their wish items by Christmas.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseEight' aria-expanded='false' aria-controls='collapseEight' )
+                                        | As a partner, do I put their requests in or do the foster students themselves?
+                            #collapseEight.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | Choosing each wish item may be up to you, or you could gather information from your kids (i.e.
+                                        | what item do they want for Christmas).
+                                    p
+                                        | We do offer a pre-selected list of gift items that you can click and choose from.
+                                    p
+                                        | However, only you or your agency staff members can post the wishcards on the kids' behalf due to
+                                        | our security policies.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseNine' aria-expanded='false' aria-controls='collapseNine' )
+                                        | What is the age range of children you’ll accept on the website?
+                            #collapseNine.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p We donate to any foster or homeless youth under 25 years old.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseTen' aria-expanded='false' aria-controls='collapseTen' )
+                                        | Will we be able to receive reports of donors, so we can properly thank them?
+                            #collapseTen.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | This is currently under development and the feature is projected to be released around December.
+                                        | Each agency will have its own "profile" page that will show all wishes from the kids under their
+                                        | care. You will be able to share the page and send your supporters to donate directly to your kids.
+                        #accordion--card.card
+                            #accordion--heading.card-header
+                                h2.mb-0
+                                    button.accordion--button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseEleven' aria-expanded='false' aria-controls='collapseEleven' )
+                                        | Does each partner have its own page people can access? So that we could send donors to a page that
+                                        | shows all of our youth and children specifically?
+                            #collapseEleven.collapse( aria-labelledby='accordion--heading' data-parent='#accordionExample' )
+                                .card-body
+                                    p
+                                        | This is currently under development and the feature is projected to be released around December.
+                                        | Each agency will have its own "profile" page that will show all wishes from the kids under their
+                                        | care. You will be able to share the page and send your supporters to donate directly to your kids.
+                                    p
+                                        | Right now, we only post the wishes collectively in one page on
+                                        a( href='https://donate-gifts.com/wishcards' ) https://donate-gifts.com/wishcards

@@ -1,0 +1,193 @@
+extends ../master
+
+block title
+    title See Each Wish Card | Donate Gifts
+
+block content
+    .container-fluid
+        .create-wish-card
+            form#wishCardFormGuided.container-fluid( method='POST' enctype='multipart/form-data' )
+                h4.crayon-font.wish-card-form-title
+                    | Faster wish card creation
+                    br
+                    | Choose the item from our suggestion
+                .mb-5.pt-5
+                    .quick-font
+                        h6 Select Child's Wish Item:
+                        h6 (Items Ordered By Age Group)
+                        select#ageGroupSelector( name='ageGroup' )
+                            option( selected='' value='1' ) Babies &amp; Toddlers
+                            option( value='2' ) Pre-schoolers
+                            option( value='3' ) Kids (Age: 6-8)
+                            option( value='4' ) Kids (Age: 9-11)
+                            option( value='5' ) Teens
+                            option( value='6' ) Youth
+                            option( value='7' ) All Ages (Option A)
+                            option( value='8' ) All Ages (Option B)
+                    .row.justify-content-center.choicesContainer
+                    .row.pt-4
+                        .col-lg-6.quick-font.form-group
+                            label( for='childFirstName' ) Child's First Name
+                            input#childFirstName.form-control( type='text' name='childFirstName' required='' placeholder='Nick name is also ok' )
+                        .col-lg-6.ms-auto.quick-font.form-group
+                            label( for='childLastName' ) Child's Last Name
+                            input#childLastName.form-control( type='text' name='childLastName' placeholder='Initial is also ok' )
+                    .row
+                        .col-lg-6.quick-font.form-group
+                            label( for='childBirthday' ) Child's Birthday
+                            input#childBirthday.form-control( type='date' name='childBirthday' placeholder='Child\'s Birthday' )
+                        .col-lg-6.ms-auto.quick-font.form-group
+                            label( for='childInterest' ) Child's Interest
+                            input#childInterest.form-control( type='text' name='childInterest' placeholder='Write something that the child likes to do' )
+                        .col-lg-6.quick-font.form-group
+                            label( for='childStory' ) Share their story
+                            textarea#childStory.form-control( name='childStory'
+                                required
+                                placeholder='(e.g. why they want this gift, what their favorite subject is, or some info about the child)'
+                            )
+                        .col-lg-6.ms-auto
+                            .box
+                                .content
+                                    p
+                                        | Child's photo is required; if confidentiality is an issue, try using a photo of their
+                                        | hands making a heart, masked face, wearing sunglasses, cropping, etc.
+                                        a.help-modal( data-bs-toggle='modal' data-bs-target='#formQuestionHelper3' )
+                                            i.fa.fa-question-circle( aria-hidden='true' )
+                                            | why is this required
+                                    .uploader-left
+                                        img#preview( src='/img/img-placeholder.png' alt='image-placeholder' )
+                                    .uploader-right
+                                        span.file-wrapper
+                                            input#filetag.uploader.upload-btn.btn-large.btn-alpha( type='file' required name='wishCardImage' )
+                    .row.pb-5
+                        .col-lg-6.ms-auto.quick-font.form-group
+                            label( for='deliveryDate' )
+                                | Set last date for the wish item delivery (skip if no
+                                | deadline)
+                            input#deliveryDate.form-control( type='date' name='deliveryDate' )
+                        .col-lg-6.ms-auto.quick-font.form-group
+                            label( for='occasion' ) What's the occasion?
+                            input#occasion.form-control( type='text' name='occasion' placeholder='(e.g. holiday, birthday, graduation)' )
+                    h6.grn-font.quick-font.pb-2 Shipping address (where to deliver this item?)
+                    .row
+                        .col-lg-4.quick-font.form-group
+                            label( for='address1' ) Address Line 1
+                            input#address1.form-control( type='text' name='address1' placeholder='(e.g. 1004 Donate St.)' )
+                        .col-lg-4.quick-font.form-group
+                            label( for='address2' ) Address Line 2
+                            input#address2.form-control( type='text' name='address2' placeholder='(e.g. Suite 200)' )
+                        .col-lg-4.quick-font.form-group
+                            label( for='address_city' ) City
+                            input#address_city.form-control( type='text' name='address_city' placeholder='(e.g. Chicago )' )
+                    .row.pb-2
+                        .col-lg-4.quick-font.form-group
+                            label( for='address_state' ) State
+                            input#address_state.form-control( type='text' name='address_state' placeholder='(e.g. Illinois )' )
+                        .col-lg-4.quick-font.form-group
+                            label( for='address_zip' ) Zipcode
+                            input#address_zip.form-control( type='text' name='address_zip' placeholder='(e.g. 60640 )' )
+                        .col-lg-4.quick-font.form-group
+                            label( for='address_country' ) Country
+                            input#address_country.form-control( type='text' name='address_country' placeholder='(e.g. USA )' )
+                    p.force-text-center.quick-font.p-2.mt-2
+                        | Each wish will be submitted as a draft &amp; will be published by our staff after review due to security policies.
+                    #submit-btn.quick-font
+                        input.button.button-submit.d-inline-flex( value='Submit' type='submit' )
+
+    #formQuestionHelper3.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+        .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+            .modal-content
+                .modal-header.d-flex.align-items-start
+                    h1.form-helper-title.quick-font.px-5 Why is the child's photo required?
+                    button.close( type='button' data-dismiss='modal' aria-label='Close' )
+                        span( aria-hidden='true' ) x
+                .modal-body.quick-font
+                    .container
+                        .row.justify-content-center
+                            p.px-5
+                                | The primary goal of this project is to build personal connections between
+                                | donors and foster kids, and not just a one-time donation.
+                            p.px-5
+                                | Our donors are more encouraged to donate to the wish cards with children's photos. They find
+                                | this personal connection very special.
+                            p.px-5
+                                | If privacy/confidentiality is a concern, please crop the identifiable features or use photos
+                                | of them making a heart with their hands, masked faces, their backside, or wearing
+                                | sunglasses, etc.
+                        .row
+                            p.px-5
+                                | We have this policy to prevent fraudulent wish submission and to ensure that
+                                | every kid's wish gets a chance for donation.
+                .modal-footer
+                    button.btn.btn-secondary( type='button' data-dismiss='modal' ) Close
+
+block scripts
+    script.
+        $(document).ready(() => {
+            const ageCategory = $('#ageGroupSelector').val();
+
+            $.ajax({
+                type: 'GET',
+                url: `/wishcards/defaults/${ageCategory}`,
+                statusCode: {
+                    200: (response) => {
+                        $('.choicesContainer').replaceWith(response.html);
+                    },
+                    403: (response) => {
+                        showToast('Access Forbidden: Your account lacks sufficient permissions');
+                        setTimeout(() => location.assign(response.responseJSON.url), 3000);
+                    },
+                },
+            });
+
+            $('#ageGroupSelector').change(() => {
+                const ageCategory = $('#ageGroupSelector').val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: `/wishcards/defaults/${ageCategory}`,
+                    success: (response) => {
+                        $('.choicesContainer').replaceWith(response.html);
+                    },
+                    error: (response) => {
+                        showToast('Images could not be retrieved');
+                    },
+                });
+            });
+
+            $('#wishCardFormGuided').on('submit', function(e) {
+                e.preventDefault();
+
+                const form = $(this);
+
+                console.log(form);
+
+                const formdata = new FormData(form[0]);
+
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    url: '/wishcards/guided',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    statusCode: {
+                        200: (response) => {
+                            $('#wishCardFormGuided')[0].reset();
+                            showToast('WishCard Created!');
+                            setTimeout(() => location.assign(response.url), 2000);
+                        },
+                        400: (responseObject) => {
+                            showToast(responseObject.responseJSON.error.msg);
+                        },
+                        403: (responseObject) => {
+                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            let { url } = responseObject.responseJSON;
+                            setTimeout(() => location.assign(url), 1200);
+                        },
+                    },
+                });
+            });
+        });

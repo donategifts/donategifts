@@ -1,0 +1,69 @@
+mixin carouselInnerPart(increment)
+    .carousel-inner
+        - var i = 0;
+        while i < wishcards.length
+            - var activeClass = i == 0 ? 'active' : ''
+            .carousel-item( class=activeClass )
+                .row.justify-content-center
+                    - var j = i;
+                    while j < (i + increment)
+                        .col-lg-4.col-xs-12.mb-5.px-4
+                            #card-fix.card.h-100
+                                .view.overlay
+                                    img#img-fix.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
+                                    a( href='#' )
+                                        .mask.rgba-white-slight
+                                .card-body
+                                    a.wishcard__icon--fixed.msg-icon( href='/wishcards/' + wishcards[j]._id )
+                                        i.far.fa-envelope
+                                    .card-details
+                                        -
+                                            var title = 'My name is ' + wishcards[j].childFirstName;
+                                            var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
+                                                ? wishcards[j].wishItemName.substring(0, 23) + "..."
+                                                : wishcards[j].wishItemName);
+                                            var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
+                                            var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
+                                                ? wishcards[j].childInterest.substring(0, 23) + "..."
+                                                : wishcards[j].childInterest);
+
+                                        h3.card-title.text-center.crayon-font= title
+                                        p
+                                            span.font-weight-bold= wish
+                                        p.wish-price
+                                            span.font-weight-bold= itemPrice
+                                        p
+                                            span.font-weight-bold= interest
+                                        .card-action.row
+                                            .col-sm-6.mb-2
+                                                a.wishcard__link--white.bdr-2( href='/wishcards/single/' + wishcards[j]._id ) View More
+                                            .col-sm-6.mb-2
+                                                if wishcards[j].status === 'donated'
+                                                    button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
+                                                else
+                                                    if user
+                                                        a( href='wishcards/donate/' + wishcards[j]._id )
+                                                            button.wishcard__button--blue.bdr-2( type='button' ) Donate Gift
+                                                    else
+                                                        button.wishcard__button--blue.bdr-2( type='button' data-bs-toggle='modal' data-bs-target='#loginModalCenter' ) Donate Gift
+                        - j++;
+            - i += increment;
+
+.wishcards
+    h1 Become Our Secret Santa
+    .wishcards-container.mx-auto
+        #carouselExampleIndicators.carousel.slide( data-ride='carousel' )
+            +carouselInnerPart(3)
+
+            a.carousel-control-left( href='#carouselExampleIndicators' role='button' data-slide='prev' )
+                span.carousel-control-prev-icon( aria-hidden='true' )
+                    i.fa.fa-arrow-circle-left.fa-2x
+                span.sr-only Previous
+            a.carousel-control-right( href='#carouselExampleIndicators' role='button' data-slide='next' )
+                span.carousel-control-next-icon( aria-hidden='true' )
+                    i.fa.fa-arrow-circle-right.fa-2x
+                span.sr-only Next
+
+    .mobile__carousel-wrapper
+        #mobileCarousel.carousel.slide( data-ride='carousel' )
+            +carouselInnerPart(1)

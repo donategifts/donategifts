@@ -1,0 +1,286 @@
+extends ../master
+
+block title
+    title See Each Wish Card | Donate Gifts
+
+block content
+    .container.checkout
+        .page-wrapper
+            .page-title.mt-4
+                h2.text-center.cool-font.grn-font Wish Donation Secure Checkout
+                p.quick-font.font-md-2.text-center
+                    span.cap.bold-text= wishcard.childFirstName + '\'s gift will be delivered to our partner agency,'
+                    br
+                    a.help-modal.org-font.cap.bold-text.pointer( data-bs-toggle='modal' data-bs-target='#checkoutHelper' )
+                        = agency.agencyName
+                        i.fa.fa-info-circle( aria-hidden='true' )
+                    |
+                    span , after confirmed payment.
+
+            .receipt-info.mt-5.quick-font
+                p From this donation, you will receive:
+                p
+                    .d-flex
+                        i.fa.fa-heart( aria-hidden='true' )
+                        span 100% tax-deductible receipt &amp; shipping details
+                    .d-flex
+                        i.fa.fa-heart( aria-hidden='true' )
+                        span Notification with a delivery proof
+                    .d-flex
+                        i.fa.fa-heart( aria-hidden='true' )
+                        div
+                            - var text = `Message &amp; photo from <span class="cap bold-text">${wishcard.childFirstName}</span> if partner agency permits`;
+
+                            span!= text
+                img.img-height.img-fluid.rounded-lg( src= wishcard.wishCardImage alt='wish card kid photo' )
+                p.mt-1
+                    = 'Wish item: ' + wishcard.wishItemName
+                .receipt
+                    p#cardId.card-text( hidden )= wishcard._id
+                    p#userId.card-text( hidden )= user._id
+                    p#agencyName.card-text( hidden )= agency.agencyName
+                    .pt-2.d-flex.justify-content-between
+                        p Subtotal
+                        p= '$' + wishcard.wishItemPrice + '.00'
+                    .d-flex.justify-content-between.bold-text.force-no-mg
+                        p Shipping
+                        p= extendedPaymentInfo.shipping
+                    .d-flex.justify-content-between.force-no-mg
+                        p
+                            span Processing fee
+                            a.help-modal.grn-font( data-bs-toggle='modal' data-bs-target='#checkoutHelper2' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                        p= '$' + extendedPaymentInfo.processingFee
+                    .d-flex.justify-content-between.force-no-mg
+                        p
+                            span Item sales tax
+                            a.help-modal.grn-font( data-bs-toggle='modal' data-bs-target='#checkoutHelper3' )
+                                i.fa.fa-question-circle( aria-hidden='true' )
+                        p= '$' + extendedPaymentInfo.tax
+                    #user-donation-div.d-flex.justify-content-between.force-no-mg
+                        p Cash donation
+                        p#user-donation $0
+                    .d-flex.justify-content-between.grn-font.bold-text.force-no-mg
+                        p Total
+                        p#total-cost= '$' + extendedPaymentInfo.totalItemCost
+
+            .stripe-section.mt-5.quick-font
+                .support-donations.pb-1
+                    p.support-text.bold-text
+                        span.cap= user.fName + 'would you like to support our cause?'
+                    p
+                        span Add cash donation to sponsor our project, so we can help more kids
+                        a.help-modal.grn-font.pointer( data-bs-toggle='modal' data-bs-target='#checkoutHelper4' )
+                            i.fa.fa-question-circle( aria-hidden='true' )
+                            span More Info
+                    .text-center
+                        button.additional-donation.btn.btn-outline-primary.green( type='button' value=5 ) $5
+                        button.additional-donation.btn.btn-outline-primary.green( type='button' value=10 ) $10
+                        button.additional-donation.btn.btn-outline-primary.green( type='button' value=50 ) $50
+                        button.additional-donation.btn.btn-outline-primary.green( type='button' value=100 ) $100
+                p.line-middle
+                    span Use credit or debit card
+
+                form#payment-form( action='/payment/createIntent' method='post' )
+                    .d-flex.justify-content-between
+                        label( for='billingName' ) Name on card
+                        input#billingName.CheckoutInput.Input.Input--empty.grn( autocomplete='ccname'
+                            autocorrect='off'
+                            spellcheck='false'
+                            name='billingName'
+                            type='text'
+                            aria-invalid='false'
+                            value=''
+                        )
+                    p.pt-3 Card information
+                    #card-element.form-control
+                    #card-errors.error-text.bold-text( role='alert' )
+                    .text-center
+                        button#submit.mt-3
+                            #spinner.spinner.hidden
+                            span#button-text Pay
+                    p.result-message.hidden
+                        | Payment succeeded
+                    #card-errors( role='alert' )
+                p.line-middle.pt-4
+                    span Or donate with PayPal
+                #smart-button-container
+                    #paypal-button-container( style='text-align: center; margin-top: 0.25em;' )
+            .security-guarantee
+                p.quick-font Secure Checkout Guaranteed
+                img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
+            p#total-cost-hidden( hidden )= extendedPaymentInfo.totalItemCost
+
+    include ../components/modal/checkoutHelperModals.pug
+
+block scripts
+    script( src='https://js.stripe.com/v3/' )
+    script.
+        const stripe = Stripe('#{locals.env.stripe}');
+
+        const elements = stripe.elements();
+
+        // Todo: this needs to be edited
+        // Custom styling can be passed to options when creating an Element.
+        const style = {
+            base: {
+                fontSize: '16px',
+                color: '#00a19a',
+            },
+        };
+
+        const card = elements.create('card', { style });
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.on('change', function (event) {
+            if (event.error) {
+                $('#card-errors').text(event.error.message);
+            } else {
+                $('#card-errors').text('');
+            }
+        });
+
+        // Form submission.
+        $('#payment-form').submit(function (e) {
+            e.preventDefault();
+
+            loading(true);
+
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    // Inform the user if there was an error.
+                    $('#card-errors').text(result.error.message);
+
+                    loading(false);
+                } else {
+                    // Send the token to your server.
+                    $.ajax({
+                        method: 'POST',
+                        url: '/payment/createIntent',
+                        data: {
+                            wishCardId: $('#cardId').text(),
+                            agencyName: $('#agencyName').text(),
+                            userDonation: $('#user-donation').text().replace('$', '')
+                        },
+                        success: (response) => {
+                            console.log(response);
+                            payWithCard(stripe, card, response.clientSecret);
+                        },
+                        error: () => {
+                            console.error('Error:', error);
+                            showToast('An error has occured while processing payment');
+                            loading(false);
+                        },
+                    });
+                }
+            });
+        });
+
+        const payWithCard = function (stripe, card, clientSecret) {
+            loading(true);
+            stripe
+                .confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card,
+                    },
+                })
+                .then(function (result) {
+                    if (result.error) {
+                        showError(result.error.message);
+                    } else {
+                        orderComplete(result.paymentIntent.id);
+                    }
+                });
+        };
+
+        const loading = function (isLoading) {
+            if (isLoading) {
+                // Disable the button and show a spinner
+                $('#submit').attr('disabled', true);
+                $('#spinner').removeClass('hidden');
+                $('#button-text').addClass('hidden');
+            } else {
+                $('#submit').attr('disabled', false);
+                $('#spinner').addClass('hidden');
+                $('#button-text').removeClass('hidden');
+            }
+        };
+
+        const orderComplete = function (paymentIntentId) {
+            loading(false);
+            $('.result-message').removeClass('hidden');
+            $('#submit').attr('disabled', true);
+            redirectAfterSuccessfullPayment();
+        };
+
+        const showError = function (errorMsgText) {
+            loading(false);
+
+            $('#card-errors').text(errorMsgText);
+
+            setTimeout(function () {
+                $('#card-errors').text('');
+            }, 4000);
+        };
+
+        const redirectAfterSuccessfullPayment = function () {
+            const wishCardId = $('#cardId');
+            const totalAmount = $('#total-cost');
+            window.location.replace(`/payment/success/${wishCardId.text()}&${totalAmount.text()}`);
+        }
+
+    script( src=`https://www.paypal.com/sdk/js?client-id=${locals.env.paypal}&disable-funding=credit,card` )
+    script.
+        $(document).ready(function () {
+
+            let totalAmount = 0;
+            let wishCardId;
+            let userDonation;
+            let userId;
+            let agencyName;
+
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        application_context: {
+                            shipping_preference: 'NO_SHIPPING'
+                        },
+                        purchase_units: [{
+                            reference_id: `${userId}%${wishCardId}%${userDonation}%${agencyName}`,
+                            amount: {
+                                value: parseFloat(totalAmount),
+                            },
+                        }]
+                    });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            const wishCardId = $('#cardId').text();
+                            const totalAmount = $('#total-cost').text();
+                            window.location.replace(`/payment/success/${wishCardId}&${totalAmount}`);
+                        });
+                    },
+                    onClick: function () {
+                        totalAmount = $('#total-cost').text().replace('$', '');
+                        wishCardId = $('#cardId').text();
+                        userId = $('#userId').text();
+                        userDonation =  $('#user-donation').text().replace('$', '');
+                        agencyName = $('#agencyName').text();
+                    }
+            }).render('#paypal-button-container');
+        });
+
+    script.
+        $(document).ready(function () {
+            $('.additional-donation').click(function () {
+                const additional = Math.floor($(this).val() * 100) / 100
+                const totalAmount = Math.floor(
+                    (parseFloat('#{extendedPaymentInfo.totalItemCost}') + additional) * 100
+                ) / 100;
+                $('#total-cost').text('$' + totalAmount);
+                $('#user-donation').text('$' + additional);
+            });
+        });

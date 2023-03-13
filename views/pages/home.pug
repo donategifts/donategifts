@@ -1,0 +1,282 @@
+extends ../master
+
+block title
+    title Holiday Gift Donation | Donate Gifts to Foster Kids -Virtual Toy Drive
+
+block meta
+    meta( name="description"
+        content="How to help children in foster care | Send holiday birthday gifts to foster kids easily by using embedded Amazon delivery"
+    )
+    meta( name="robots" content="index, follow" )
+    meta( name="keywords" content="children, gift, wish, foster, donate" )
+
+block content
+    #fb-root
+
+    include ../components/modal/wishcardDonationModal.pug
+
+    #home-bg.hero.container-fluid.d-flex.justify-content-center.align-items-center
+        .row
+            .col-12
+                h1
+                    | Send Gifts to
+                    |
+                    span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
+                h4.hide Every child should feel valued and loved
+                h4.m-mobile
+                    | Donate holiday gifts and school supplies to kids in need
+                a.btn-white-navy-lg.text-decoration-none( href='/howto' ) How It Works
+                a.btn-orange-navy-lg.text-decoration-none( href='/wishcards' ) See Wish Cards
+
+    include ../components/modal/loginModal.pug
+    include ../components/homeSampleCards.pug
+
+    .status-section.container-fluid.justify-content-center
+        .status-info.row-auto
+            .col-md
+                .circle.text-center
+                    p.status
+                        img.wreath3( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
+                        if undonatedCards === 1 || undonatedCards === 0
+                            span.status-numbers= undonatedCards
+                            span.status-text
+                                | child
+                                | awaiting
+                                br
+                                | your donation
+                        else
+                            span.status-numbers= undonatedCards
+                            span.status-text
+                                | children
+                                | awaiting
+                                br
+                                | your donation
+            .col-md
+                .circle.text-center
+                    p.status
+                        img.wreath2( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
+                        span.status-numbers= donatedCards
+                        span.status-text
+                            | children
+                            | received
+                            br
+                            | their gifts!
+            .col-md
+                .circle.text-center
+                    p.status
+                        img.wreath3( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
+                        span.status-numbers= verifiedAgencies
+                        span.status-text
+                            | agencies
+                            | partnered
+                            br
+                            | with DonateGifts
+    .partners-container.mb-5
+        h1.mt-3 Our Partner Agencies
+        .container-fluid
+            .small3
+                ul.small-ul.px-0( data-small3='' )
+                    li
+                        a( href='https://centraltexastableofgrace.org/' target='_blank' )
+                            img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
+                    li
+                        a( href='https://onehopeunited.org/' target='_blank' )
+                            img( src='/img/onehopeunited.png' alt='One Hope United logo' loading='lazy' )
+                    li
+                        a( href='https://www.newalternativesnyc.org/' target='_blank' )
+                            img( src='/img/new-alternatives-logo.png' alt='New Alternatives logo' loading='lazy' )
+                    li
+                        img( src='/svg/childrens-aid-logo.svg' alt='Childrens Aid NYC Agency logo' loading='lazy' )
+                    li
+                        a( href='http://www.lacasanorte.org/' target='_blank' )
+                            img( src='/img/la-casa-norte-logo.png' alt='La casa norte logo' loading='lazy' )
+                    li
+                        a( href='https://www.yos.org/' target='_blank' )
+                            img( src='/img/yos-logo-2.jpeg' alt='Youth Outreach Services logo' loading='lazy' )
+                    li
+                        img( src='/img/partner-coalition-nyc.jpg' alt='Partner Coalition of NewYork City logo' loading='lazy' )
+                    li
+                        a( href='https://www.fosteringhopefoundation.org' target='_blank' )
+                            img( src='/img/fostering-hope-logo.jpg' alt='Fostering Hope logo' loading='lazy' )
+                    li
+                        img( src='/img/you-gotta-believe-logo.jpg' alt='You gotta believe logo' loading='lazy' )
+                    li
+                        img( src='/img/penny-lane-logo.png' alt='Penny Lane Agency logo' loading='lazy' )
+                    li
+                        img( src='/img/epworth-tran-logo.png' alt='Epworth Village logo' loading='lazy' )
+                    li
+                        a( href='https://www.echoesofhope.org/' target='_blank' )
+                            img( src='/img/echoes-of-hope-logo.png' alt='Echoes of Hope logo' loading='lazy' )
+                    li
+                        a( href='https://www.blueskiesforchildren.org/' target='_blank' )
+                            img( src='/img/blue-sky-agency-logo.png' alt='Blue Skies for Children logo'  loading='lazy' )
+                    li
+                        a( href='https://casala.org/' target='_blank' )
+                            img( src='/img/casa-la-logo.png' alt='CASA of Los Angeles logo' loading='lazy' )
+                    li
+                        a( href='https://www.hartdistrict.org/' target='_blank' )
+                            img( src='/img/hart-district-logo.png' alt='William Hart district logo' loading='lazy' )
+                    li
+                        a( href='https://www.nyap.org/' target='_blank' )
+                            img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
+                span.small-span
+                    i.fa.fa-arrow-circle-right.fa-2x
+                span.small-span
+                    i.fa.fa-arrow-circle-left.fa-2x
+
+    .thanks.custom-wrapper.py-5
+        #about.container
+            h1.mb-3 We Need Your Help
+            .row
+                .col-md-6.order-1.p-5
+                    img.img-fluid.grn-box( src='/img/kids-cover.jpg' alt='donation drop off near me' loading='lazy' )
+                .col-md-6.text-center.py-5.px-3
+                    p.text-start.subtext.quick-font
+                        | 500,000+ kids spend time in foster care each year and
+                        | 4.2M+ youth are homeless in the United States.
+                        | For many of them, Christmas time can be sad and lonely because they are undergoing stressful situations.
+                        | With your
+                        | generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By
+                        | creating this platform, we wish to provide effortless and convenient ways to share the joy of the
+                        | holidays.
+                        br
+                        | Your gifts make it possible to bring happiness to the kids.
+                    a.btn.button--green.quick-font.text-white( href='/contact' ) How To Contact Us
+
+block scripts
+    script.
+        //- do not remove, needed for socket wish card locking
+        countdown = [];
+
+    include ../mixins/loginToast.pug
+    if !user
+        +loginToastJS
+
+    script.
+        (() => {
+            class TypeWriter {
+                constructor(txtElement, words, wait = 2000) {
+                    this.txtElement = txtElement;
+                    this.words = words;
+                    this.txt = '';
+                    this.wordIndex = 0;
+                    this.wait = parseInt(wait, 10);
+                    this.type();
+                    this.isDeleting = false;
+                }
+
+                type () {
+                    const current = this.wordIndex % this.words.length;
+                    const fullTxt = this.words[current];
+                    if (this.isDeleting) {
+                        this.txt = fullTxt.substring(0, this.txt.length - 1);
+                    } else {
+                        this.txt = fullTxt.substring(0, this.txt.length + 1);
+                    }
+                    this.txtElement.innerHTML = `<span>${this.txt}</span>`;
+
+                    let typeSpeed = 180;
+
+                    if (this.isDeleting) {
+                        typeSpeed /= 2;
+                    }
+                    if (!this.isDeleting && this.txt === fullTxt) {
+                        typeSpeed = this.wait;
+                        this.isDeleting = true;
+                    } else if (this.isDeleting && this.txt === '') {
+                        this.isDeleting = false;
+                        this.wordIndex++;
+                        typeSpeed = 350;
+                    }
+                    setTimeout(() => this.type(), typeSpeed);
+                }
+            }
+
+            const init = () => {
+                const txtElement = document.querySelector('.typing');
+                const words = JSON.parse(txtElement.getAttribute('data-words'));
+                const wait = txtElement.getAttribute('data-wait');
+                new TypeWriter(txtElement, words, wait);
+            }
+
+            document.addEventListener('DOMContentLoaded', init);
+        })()
+
+    script.
+        $(document).ready(() => {
+            const carouselDiv = $('.small3');
+            let imgList = $('.small3 .small-ul li');
+            const arrowBtns = $('.small3 .small-span');
+
+            imgList.parent().attr('data-small3', imgList.length);
+
+            const carouselImg = () => {
+                imgList = $('.small3 .small-ul li');
+                if (imgList.length <= imgList.parent().data('small3')) {
+                    imgList
+                        .parent()
+                        .append('<li>' + imgList.first().html() + '</li>')
+                        .children()
+                        .first()
+                        .animate(
+                            {
+                                marginLeft: -imgList.first().outerWidth(),
+                            },
+                            3000,
+                            () => {
+                                imgList.first().remove();
+                            }
+                        );
+                }
+            };
+
+            let autoSlideCarousel = setInterval(carouselImg, 2500);
+
+            carouselDiv.mouseenter(() => {
+                clearInterval(autoSlideCarousel);
+            });
+
+            carouselDiv.mouseleave(() => {
+                autoSlideCarousel = setInterval(carouselImg, 1000);
+            });
+
+            arrowBtns.first().on('click', () => {
+                imgList = $('.small3 .small-ul li');
+                const leftImg = imgList.first().html();
+                if (imgList.length <= imgList.parent().data('small3')) {
+                    imgList
+                        .parent()
+                        .append('<li>' + leftImg + '</li>')
+                        .children()
+                        .first()
+                        .remove();
+                }
+            });
+
+            arrowBtns.last().on('click', () => {
+                imgList = $('.small3 .small-ul li');
+                const lastImg = imgList.last().html();
+                if (imgList.length <= imgList.parent().data('small3')) {
+                    imgList
+                        .parent()
+                        .prepend('<li>' + lastImg + '</li>')
+                        .children()
+                        .last()
+                        .remove();
+                }
+            });
+        });
+
+    script.
+        $(document).ready( () => {
+            $.ajax({
+                type: 'GET',
+                url: '/wishcards/get/random',
+                success: (html) => {
+                    $('.wishcards').replaceWith(html);
+                },
+                error: (_) => {
+                    //- logged server side
+                },
+            });
+        });

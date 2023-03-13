@@ -7,31 +7,31 @@ const mongoose = require('mongoose');
 // SCHEMA SETUP
 const { Schema } = mongoose;
 const ContactSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    subject: {
-      type: String,
-      required: true,
-    },
-    message: {
-      type: String,
-      required: true,
-    },
-    sentDate: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    collection: 'contacts',
-  },
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+			required: true,
+		},
+		subject: {
+			type: String,
+			required: true,
+		},
+		message: {
+			type: String,
+			required: true,
+		},
+		sentDate: {
+			type: Date,
+			default: Date.now,
+		},
+	},
+	{
+		collection: 'contacts',
+	},
 );
 
 module.exports = mongoose.model('Contact', ContactSchema);

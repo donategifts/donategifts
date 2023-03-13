@@ -1,14 +1,10 @@
 const express = require('express');
+const TeamHandler = require('../handler/team');
+
+const teamHandler = new TeamHandler();
 
 const router = express.Router();
-const log = require('../helper/logger');
 
-router.get('/', (req, res) => {
-  try {
-    res.status(200).render('team', { user: res.locals.user });
-  } catch (error) {
-    log.error(req, error);
-  }
-});
+router.get('/', teamHandler.handleGetIndex);
 
 module.exports = router;

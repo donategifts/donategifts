@@ -1,0 +1,29 @@
+{
+  "eslint.enable": true,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "editor.tabSize": 4,
+  "puglint.enable": true,
+  "puglint.config": {
+    "disallowClassAttributeWithStaticValue": true,
+    "disallowIdAttributeWithStaticValue": true,
+    "requireClassLiteralsBeforeAttributes": true,
+    "requireIdLiteralsBeforeAttributes": true,
+    "disallowClassLiteralsBeforeIdLiterals": true,
+    "disallowDuplicateAttributes": true,
+    "disallowMultipleLineBreaks": true,
+    "disallowTrailingSpaces": true,
+    "requireLowerCaseAttributes": true,
+    "requireLowerCaseTags": true,
+    "requireSpacesInsideAttributeBrackets": true,
+    "requireSpaceAfterCodeOperator": true,
+    "validateDivTags": true,
+    "validateIndentation": 4,
+    "excludeFiles": [
+      "node_modules/**"
+    ]
+  }
+}
