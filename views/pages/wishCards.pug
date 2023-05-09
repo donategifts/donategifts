@@ -51,16 +51,16 @@ block content
                     .d-lg-flex.justify-content-between.px-3
                         .form-group
                             .form-check
-                                input#child-age-check-younger.form-check-input( name='younger'
+                                input#child-age-check-younger( name='younger'
                                     value='14'
                                     checked
                                     type='checkbox'
                                     style='margin-right: 10px'
                                 )
-                                label.form-check-label( for='child-age-radio-younger' ) Age Under 15
+                                label.form-check-label( for='child-age-check-younger' ) Age Under 15
                         .form-group
                             .form-check
-                                input#child-age-check-older.form-check-input( name='older'
+                                input#child-age-check-older( name='older'
                                     value='15'
                                     checked
                                     type='checkbox'
@@ -83,7 +83,7 @@ block content
                                     value='true'
                                     name='recentlyAdded'
                                 )
-                                label( for='recentlyAdded' ) lRecently Added
+                                label( for='recentlyAdded' ) Recently Added
 
                     .d-flex.justify-content-end.mt-3
                         button.wishcard__button--blue.button-apply.col-lg-3( type='submit' )

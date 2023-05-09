@@ -52,18 +52,11 @@ mixin carouselInnerPart(increment)
 .wishcards
     h1 Become Our Secret Santa
     .wishcards-container.mx-auto
-        #carouselExampleIndicators.carousel.slide( data-ride='carousel' )
-            +carouselInnerPart(3)
 
-            a.carousel-control-left( href='#carouselExampleIndicators' role='button' data-slide='prev' )
-                span.carousel-control-prev-icon( aria-hidden='true' )
-                    i.fa.fa-arrow-circle-left.fa-2x
-                span.sr-only Previous
-            a.carousel-control-right( href='#carouselExampleIndicators' role='button' data-slide='next' )
-                span.carousel-control-next-icon( aria-hidden='true' )
-                    i.fa.fa-arrow-circle-right.fa-2x
-                span.sr-only Next
+        .d-block.d-lg-none
+            #mobile-carousel.carousel.slide( data-bs-ride='carousel' )
+                +carouselInnerPart(1)
 
-    .mobile__carousel-wrapper
-        #mobileCarousel.carousel.slide( data-ride='carousel' )
-            +carouselInnerPart(1)
+        .d-none.d-lg-block
+            #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
+                +carouselInnerPart(3)

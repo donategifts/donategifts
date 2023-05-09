@@ -280,3 +280,12 @@ block scripts
                 },
             });
         });
+
+    script.
+        $(document).ready(() => {
+            const sampleCardsCarousel = $('#sample-cards-carousel')
+            new bootstrap.Carousel(sampleCardsCarousel, {
+                interval: 1000,
+                touch: true,
+            });
+        });
