@@ -27,8 +27,8 @@ block content
                             label.contact__label( for='subject' ) Subject
                             input#subject.contact__input( name='subject' type='text' placeholder='Subject' required )
                         .form-group
-                            label.contact__label( for='message' ) Message
-                            textarea#message.contact__textarea( name='message' type='text' placeholder='Message' required )
+                            label.contact__label( for='contact-message' ) Message
+                            textarea#contact-message.contact__textarea( name='message' type='text' placeholder='Message' required )
                         .form-group.text-center
                             button.contact__button( type='submit' ) Contact Us
 
@@ -49,9 +49,7 @@ block scripts
                         }, {}),
                     success: () => {
                         showToast('Message sent, thank you for your feedback!', true);
-                        $('#emailForm').each(function () {
-                            $(this).reset();
-                        });
+                        $('#emailForm').trigger('reset');
                     },
                     error: (response) => {
                         showToast(response.responseJSON.error.msg);
