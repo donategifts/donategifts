@@ -31,21 +31,21 @@ block content
                                         path( fill-rule='evenodd'
                                             d='M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z'
                                         )
-                            .col-auto
-                                button.wishcard__button--filter.button-filter.mt-0( type='button'
-                                    style='width: auto'
-                                    data-bs-toggle='collapse'
-                                    data-bs-target='#filter-panel'
-                                ) Filter by
-                                    svg.bi.bi-funnel-fill( width='1em'
-                                        height='1em'
-                                        viewbox='0 0 16 16'
-                                        fill='currentColor'
-                                        xmlns='http://www.w3.org/2000/svg'
+                        .d-flex.justify-content-end.mt-3
+                            button.btn.btn-link( type='button'
+                                style='width: auto'
+                                data-bs-toggle='collapse'
+                                data-bs-target='#filter-panel'
+                            ) Filter by
+                                svg.bi.bi-funnel-fill( width='1em'
+                                    height='1em'
+                                    viewbox='0 0 16 16'
+                                    fill='currentColor'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                )
+                                    path( fill-rule='evenodd'
+                                        d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z'
                                     )
-                                        path( fill-rule='evenodd'
-                                            d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z'
-                                        )
 
                 #filter-panel.quick-font.collapse.filter-card.ms-auto
                     .d-lg-flex.justify-content-between.px-3
@@ -68,22 +68,22 @@ block content
                                 )
                                 label.form-check-label( for='child-age-check-older' ) Age 15 And Older
                         .form-group
-                            .checkbox
+                            .form-check
                                 input#donated( type='checkbox'
                                     style='margin-right: 10px'
                                     value='true'
                                     checked
                                     name='showDonatedCheck'
                                 )
-                                label( for='donated' ) Include Donated Wishes
+                                label.form-check-label( for='donated' ) Include Donated Wishes
                         .form-group
-                            .checkbox
+                            .form-check
                                 input#recentlyAdded( type='checkbox'
                                     style='margin-right: 10px'
                                     value='true'
                                     name='recentlyAdded'
                                 )
-                                label( for='recentlyAdded' ) Recently Added
+                                label.form-check-label( for='recentlyAdded' ) Recently Added
 
                     .d-flex.justify-content-end.mt-3
                         button.wishcard__button--blue.button-apply.col-lg-3( type='submit' )
