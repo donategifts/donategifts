@@ -2,21 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 const MiddleWare = require('../middleware');
-const { donationPostValidation, validate } = require('../helper/validations');
-const Community = require('../handler/community');
+const Validator = require('../helper/validations');
+const Community = require('../controller/community');
 
-const communityHandler = new Community();
+const communityController = new Community();
 const middleware = new MiddleWare();
 
-router.get('/', communityHandler.handleGetIndex);
+router.get('/', communityController.handleGetIndex);
 
 router.post(
 	'/',
 	middleware.upload.single('postImage'),
 	MiddleWare.redirectLogin,
-	donationPostValidation(),
-	validate,
-	communityHandler.handlePostIndex,
+	Validator.donationPostValidation(),
+	Validator.validate,
+	communityController.handlePostIndex,
 );
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const AgencyRepository = require('../../db/repository/AgencyRepository');
-const { sendAgencyVerifiedMail } = require('../../helper/messaging');
+const MessageHelper = require('../../helper/messaging');
 const log = require('../../helper/logger');
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
 
 		try {
 			const result = await AgencyRepository.verifyAgency(id);
-			await sendAgencyVerifiedMail(result.accountManager.email);
+			await MessageHelper.sendAgencyVerifiedMail(result.accountManager.email);
 			await interaction.editReply(`Agency ${result.agencyName} verified and email is sent!`);
 		} catch (error) {
 			log.error(error);

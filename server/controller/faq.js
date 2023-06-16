@@ -1,6 +1,6 @@
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
-module.exports = class FaqHandler extends BaseHandler {
+module.exports = class FaqController extends BaseController {
 	constructor() {
 		super();
 

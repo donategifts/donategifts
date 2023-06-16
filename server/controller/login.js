@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 const UserRepository = require('../db/repository/UserRepository');
 
-module.exports = class LoginHandler extends BaseHandler {
+module.exports = class LoginController extends BaseController {
 	#userRepository;
 
 	constructor() {
@@ -39,7 +39,7 @@ module.exports = class LoginHandler extends BaseHandler {
 
 		if (id_token) {
 			try {
-				const user = await LoginHandler.verifyGoogleToken(id_token);
+				const user = await LoginController.verifyGoogleToken(id_token);
 				const fName = user.firstName;
 				const lName = user.lastName;
 				const email = user.mail.toLowerCase();
@@ -58,8 +58,8 @@ module.exports = class LoginHandler extends BaseHandler {
 					fName,
 					lName,
 					email,
-					password: LoginHandler.createDefaultPassword(),
-					verificationHash: LoginHandler.createEmailVerificationHash(),
+					password: LoginController.createDefaultPassword(),
+					verificationHash: LoginController.createEmailVerificationHash(),
 					userRole: 'donor',
 					loginMode: 'Google',
 					emailVerified: true,
@@ -107,8 +107,8 @@ module.exports = class LoginHandler extends BaseHandler {
 					fName,
 					lName: lName || 'LastnameUnset',
 					email: email.toLowerCase(),
-					password: LoginHandler.createDefaultPassword(),
-					verificationHash: LoginHandler.createEmailVerificationHash(),
+					password: LoginController.createDefaultPassword(),
+					verificationHash: LoginController.createEmailVerificationHash(),
 					userRole: 'donor',
 					loginMode: 'Facebook',
 					emailVerified: true,

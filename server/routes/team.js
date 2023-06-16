@@ -1,10 +1,10 @@
 const express = require('express');
-const TeamHandler = require('../handler/team');
+const TeamController = require('../controller/team');
 
-const teamHandler = new TeamHandler();
+const teamController = new TeamController();
 
 const router = express.Router();
 
-router.get('/', teamHandler.handleGetIndex);
+router.get('/', teamController.handleGetIndex);
 
 module.exports = router;

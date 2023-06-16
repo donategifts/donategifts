@@ -1,14 +1,10 @@
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 const Utils = require('../helper/utils');
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const {
-	createEmailVerificationHash,
-	sendVerificationEmail,
-	sendAgencyVerificationNotification,
-} = require('../helper/messaging');
+const MessageHelper = require('../helper/messaging');
 
-module.exports = class SignupHandler extends BaseHandler {
+module.exports = class SignupController extends BaseController {
 	#userRepository;
 
 	#agencyRepository;
@@ -40,7 +36,7 @@ module.exports = class SignupHandler extends BaseHandler {
 	}
 
 	async #sendEmail(email, verificationHash) {
-		const emailResponse = await sendVerificationEmail(email, verificationHash);
+		const emailResponse = await MessageHelper.sendVerificationEmail(email, verificationHash);
 		const response = emailResponse ? emailResponse.data : '';
 		if (process.env.NODE_ENV === 'development') {
 			this.log.info(response);
@@ -75,7 +71,7 @@ module.exports = class SignupHandler extends BaseHandler {
 		}
 
 		const hashedPassword = await Utils.hashPassword(password);
-		const verificationHash = createEmailVerificationHash();
+		const verificationHash = MessageHelper.createEmailVerificationHash();
 
 		const newUser = await this.#userRepository.createNewUser({
 			fName,
@@ -126,7 +122,7 @@ module.exports = class SignupHandler extends BaseHandler {
 			});
 
 			if (process.env.NODE_ENV !== 'test') {
-				await sendAgencyVerificationNotification({
+				await MessageHelper.sendAgencyVerificationNotification({
 					id: result.agency._id,
 					name: result.agency.agencyName,
 					website: result.agency.agencyWebsite,

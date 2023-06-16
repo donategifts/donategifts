@@ -2,9 +2,9 @@ const AgencyRepository = require('../db/repository/AgencyRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
-module.exports = class ProfileHandler extends BaseHandler {
+module.exports = class ProfileController extends BaseController {
 	#agencyRepository;
 
 	#wishCardRepository;

@@ -3,21 +3,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const MiddleWare = require('../middleware');
-const PaymentProviderHandler = require('../handler/paymentProvider');
+const PaymentProviderController = require('../controller/paymentProvider');
 
 const router = express.Router();
-const paymentProviderHandler = new PaymentProviderHandler();
+const paymentProviderController = new PaymentProviderController();
 
 router.post(
 	'/createIntent',
 	MiddleWare.redirectLogin,
-	paymentProviderHandler.handlePostCreateIntent,
+	paymentProviderController.handlePostCreateIntent,
 );
 
 router.post(
 	'/webhook',
 	bodyParser.raw({ type: 'application/json' }),
-	paymentProviderHandler.handlePostWebhook,
+	paymentProviderController.handlePostWebhook,
 );
 
 // called from frontend after stripe payment confirmation
@@ -25,7 +25,7 @@ router.post(
 router.get(
 	'/success/:id&:totalAmount',
 	MiddleWare.redirectLogin,
-	paymentProviderHandler.handleGetPaymentSuccess,
+	paymentProviderController.handleGetPaymentSuccess,
 );
 
 module.exports = router;

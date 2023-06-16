@@ -5,7 +5,7 @@ const MessageRepository = require('../db/repository/MessageRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
 const Utils = require('../helper/utils');
 const { getMessageChoices } = require('../helper/defaultMessages');
@@ -20,7 +20,7 @@ const {
 	allAgesB,
 } = require('../helper/defaultItems');
 
-module.exports = class WishCardHandler extends BaseHandler {
+module.exports = class WishCardController extends BaseController {
 	#wishCardRepository;
 
 	#agencyRepository;

@@ -1,9 +1,9 @@
 const moment = require('moment');
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 
-module.exports = class HomeHandler extends BaseHandler {
+module.exports = class HomeController extends BaseController {
 	#agencyRepository;
 
 	#wishCardRepository;

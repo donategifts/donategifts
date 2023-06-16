@@ -1,109 +1,106 @@
 const express = require('express');
 
-const {
-	createWishcardValidationRules,
-	createGuidedWishcardValidationRules,
-	getByIdValidationRules,
-	updateWishCardValidationRules,
-	postMessageValidationRules,
-	getDefaultCardsValidationRules,
-	validate,
-} = require('../helper/validations');
+const Validator = require('../helper/validations');
 const MiddleWare = require('../middleware');
-const WishCardHandler = require('../handler/wishcard');
+const WishCardController = require('../controller/wishcard');
 
 const middleWare = new MiddleWare();
-const wishCardHandler = new WishCardHandler();
+const wishCardController = new WishCardController();
 
 const router = express.Router();
 
-router.get('/', wishCardHandler.handleGetIndex);
+router.get('/', wishCardController.handleGetIndex);
 
 router.post(
 	'/',
-	wishCardHandler.limiter,
+	wishCardController.limiter,
 	middleWare.renderPermissions,
 	middleWare.upload.single('wishCardImage'),
-	createWishcardValidationRules(),
-	validate,
-	wishCardHandler.handlePostIndex,
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostIndex,
 );
 
 router.post(
 	'/guided/',
-	wishCardHandler.limiter,
+	wishCardController.limiter,
 	middleWare.renderPermissions,
 	middleWare.upload.single('wishCardImage'),
-	createGuidedWishcardValidationRules(),
-	validate,
-	wishCardHandler.handlePostGuided,
+	Validator.createGuidedWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostGuided,
 );
 
 router.get(
 	'/edit/:id',
-	wishCardHandler.limiter,
+	wishCardController.limiter,
 	middleWare.renderPermissionsRedirect,
-	wishCardHandler.handleGetEdit,
+	wishCardController.handleGetEdit,
 );
 
 router.post(
 	'/edit/:id',
-	wishCardHandler.limiter,
+	wishCardController.limiter,
 	middleWare.renderPermissions,
-	createWishcardValidationRules(),
-	validate,
-	wishCardHandler.handlePostEdit,
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostEdit,
 );
 
 router.delete(
 	'/delete/:id',
-	wishCardHandler.limiter,
+	wishCardController.limiter,
 	middleWare.renderPermissions,
-	wishCardHandler.handleDeleteSingle,
+	wishCardController.handleDeleteSingle,
 );
 
-router.get('/me', middleWare.renderPermissionsRedirect, wishCardHandler.handleGetMe);
+router.get('/me', middleWare.renderPermissionsRedirect, wishCardController.handleGetMe);
 
-router.get('/create', middleWare.renderPermissionsRedirect, wishCardHandler.handleGetCreate);
+router.get('/create', middleWare.renderPermissionsRedirect, wishCardController.handleGetCreate);
 
-router.post('/search/:init?', wishCardHandler.handlePostSearch);
+router.post('/search/:init?', wishCardController.handlePostSearch);
 
-router.get('/single/:id', getByIdValidationRules(), validate, wishCardHandler.handleGetSingle);
+router.get(
+	'/single/:id',
+	Validator.getByIdValidationRules(),
+	Validator.validate,
+	wishCardController.handleGetSingle,
+);
 
 router.get(
 	'/donate/:id',
 	MiddleWare.redirectLogin,
-	getByIdValidationRules(),
-	wishCardHandler.handleGetDonate,
+	Validator.getByIdValidationRules(),
+	wishCardController.handleGetDonate,
 );
 
-router.get('/get/random', wishCardHandler.handleGetRandom);
+router.get('/get/random', wishCardController.handleGetRandom);
 
 // is this still needed? it does nothing actually
 router.put(
 	'/update/:id',
 	middleWare.renderPermissions,
-	updateWishCardValidationRules(),
-	validate,
-	wishCardHandler.handlePutUpdate,
+	Validator.updateWishCardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePutUpdate,
 );
 
 router.post(
 	'/message',
 	MiddleWare.checkVerifiedUser,
-	postMessageValidationRules(),
-	validate,
-	wishCardHandler.handlePostMessage,
+	Validator.postMessageValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostMessage,
 );
 
 router.get(
 	'/defaults/:id',
 	middleWare.renderPermissions,
-	getDefaultCardsValidationRules(),
-	validate,
-	wishCardHandler.handleGetDefaults,
+	Validator.getDefaultCardsValidationRules(),
+	Validator.validate,
+	wishCardController.handleGetDefaults,
 );
 
-router.get('/choose', MiddleWare.redirectLogin, wishCardHandler.handleGetChoose);
+router.get('/choose', MiddleWare.redirectLogin, wishCardController.handleGetChoose);
 
 module.exports = router;

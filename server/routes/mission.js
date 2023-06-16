@@ -1,11 +1,11 @@
 const express = require('express');
 
-const MissionHandler = require('../handler/mission');
+const MissionController = require('../controller/mission');
 
 const router = express.Router();
 
-const missionHandler = new MissionHandler();
+const missionController = new MissionController();
 
-router.get('/', missionHandler.handleGetIndex);
+router.get('/', missionController.handleGetIndex);
 
 module.exports = router;

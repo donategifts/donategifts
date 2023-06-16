@@ -1,10 +1,10 @@
 const express = require('express');
-const TermsHandler = require('../handler/terms');
+const TermsController = require('../controller/terms');
 
-const termsHandler = new TermsHandler();
+const termsController = new TermsController();
 
 const router = express.Router();
 
-router.get('/', termsHandler.handleGetIndex);
+router.get('/', termsController.handleGetIndex);
 
 module.exports = router;

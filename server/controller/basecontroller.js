@@ -1,7 +1,7 @@
 const { rateLimit } = require('express-rate-limit');
 const log = require('../helper/logger');
 
-module.exports = class BaseHandler {
+module.exports = class BaseController {
 	constructor(limitTime = 15) {
 		this.log = log;
 

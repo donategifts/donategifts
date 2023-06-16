@@ -1,35 +1,30 @@
 const express = require('express');
 
-const LoginHandler = require('../handler/login');
+const LoginController = require('../controller/login');
 const MiddleWare = require('../middleware');
-const {
-	loginValidationRules,
-	validate,
-	googlesignupValidationRules,
-	fbsignupValidationRules,
-} = require('../helper/validations');
+const Validator = require('../helper/validations');
 
 const router = express.Router();
 
-const loginHandler = new LoginHandler();
+const loginController = new LoginController();
 
-router.get('/', MiddleWare.redirectProfile, loginHandler.handleGetIndex);
+router.get('/', MiddleWare.redirectProfile, loginController.handleGetIndex);
 
 router.post(
 	'/',
-	loginHandler.limiter,
-	loginValidationRules(),
-	validate,
+	loginController.limiter,
+	Validator.loginValidationRules(),
+	Validator.validate,
 	MiddleWare.redirectProfile,
-	loginHandler.handlePostIndex,
+	loginController.handlePostIndex,
 );
 
 router.post(
 	'/google-signin',
-	loginHandler.limiter,
-	googlesignupValidationRules(),
-	validate,
-	loginHandler.handlePostGoogleLogin,
+	loginController.limiter,
+	Validator.googlesignupValidationRules(),
+	Validator.validate,
+	loginController.handlePostGoogleLogin,
 );
 
 // @desc    handle facebook signup/login
@@ -38,10 +33,10 @@ router.post(
 // @tested 	Not yet
 router.post(
 	'/fb-signin',
-	loginHandler.limiter,
-	fbsignupValidationRules(),
-	validate,
-	loginHandler.handlePostFacebookLogin,
+	loginController.limiter,
+	Validator.fbsignupValidationRules(),
+	Validator.validate,
+	loginController.handlePostFacebookLogin,
 );
 
 module.exports = router;

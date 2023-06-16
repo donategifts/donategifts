@@ -1,10 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-const FaqHandler = require('../handler/faq');
+const FaqController = require('../controller/faq');
 
-const faqHandler = new FaqHandler();
+const faqController = new FaqController();
 
-router.get('/', faqHandler.handleGetIndex);
+router.get('/', faqController.handleGetIndex);
 
 module.exports = router;

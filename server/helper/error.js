@@ -1,15 +1,6 @@
 // TODO: ADD MORE ERROR HANDLING HERE
 const log = require('./logger');
 
-class ErrorHandler extends Error {
-	constructor(statusCode, message, name) {
-		super();
-		this.statusCode = statusCode;
-		this.message = message;
-		this.name = name;
-	}
-}
-
 const handleError = (res, code, errorMsg) => {
 	let statusCode = 400;
 	let name = 'Error handler';
@@ -45,6 +36,5 @@ const handleError = (res, code, errorMsg) => {
 };
 
 module.exports = {
-	ErrorHandler,
 	handleError,
 };

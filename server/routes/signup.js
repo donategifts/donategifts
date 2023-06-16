@@ -1,35 +1,31 @@
 const express = require('express');
 
-const SignupHandler = require('../handler/signup');
+const SignupController = require('../controller/signup');
 const MiddleWare = require('../middleware');
-const {
-	signupValidationRules,
-	validate,
-	createAgencyValidationRules,
-} = require('../helper/validations');
+const Validator = require('../helper/validations');
 
 const router = express.Router();
 
-const signupHandler = new SignupHandler();
+const signupController = new SignupController();
 
-router.get('/', MiddleWare.redirectProfile, signupHandler.handleGetIndex);
+router.get('/', MiddleWare.redirectProfile, signupController.handleGetIndex);
 
 router.post(
 	'/',
-	signupHandler.limiter,
-	signupValidationRules(),
-	validate,
-	signupHandler.handlePostSignup,
+	signupController.limiter,
+	Validator.signupValidationRules(),
+	Validator.validate,
+	signupController.handlePostSignup,
 );
 
-router.get('/agency', MiddleWare.redirectLogin, signupHandler.handleGetAgency);
+router.get('/agency', MiddleWare.redirectLogin, signupController.handleGetAgency);
 
 router.post(
 	'/agency',
-	signupHandler.limiter,
-	createAgencyValidationRules(),
-	validate,
-	signupHandler.handlePostAgency,
+	signupController.limiter,
+	Validator.createAgencyValidationRules(),
+	Validator.validate,
+	signupController.handlePostAgency,
 );
 
 module.exports = router;

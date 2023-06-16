@@ -1,6 +1,6 @@
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
-module.exports = class TeamHandler extends BaseHandler {
+module.exports = class TeamController extends BaseController {
 	constructor() {
 		super();
 

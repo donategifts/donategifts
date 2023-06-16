@@ -1,14 +1,14 @@
 const express = require('express');
 
 const router = express.Router();
-const ContactHandler = require('../handler/contact');
+const ContactController = require('../controller/contact');
 
-const contactHandler = new ContactHandler();
+const contactController = new ContactController();
 
-router.get('/', contactHandler.handleGetIndex);
+router.get('/', contactController.handleGetIndex);
 
-router.post('/email', contactHandler.handlePostEmail);
+router.post('/email', contactController.handlePostEmail);
 
-router.post('/customer-service', contactHandler.handlePostCustomerService);
+router.post('/customer-service', contactController.handlePostCustomerService);
 
 module.exports = router;

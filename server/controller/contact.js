@@ -1,8 +1,8 @@
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 const ContactRepository = require('../db/repository/ContactRepository');
-const { sendMail, sendFeedbackMessage } = require('../helper/messaging');
+const MessageHelper = require('../helper/messaging');
 
-module.exports = class ContactHandler extends BaseHandler {
+module.exports = class ContactController extends BaseController {
 	#contactRepository;
 
 	constructor() {
@@ -27,7 +27,7 @@ module.exports = class ContactHandler extends BaseHandler {
 				message: req.body.message,
 			});
 
-			const mailResponse = await sendMail(
+			const mailResponse = await MessageHelper.sendMail(
 				contact.email,
 				'stacy.sealky.lee@gmail.com',
 				contact.subject,
@@ -48,7 +48,7 @@ module.exports = class ContactHandler extends BaseHandler {
 
 	async handlePostCustomerService(req, res, _next) {
 		const { name, email, subject, message } = req.body;
-		const done = await sendFeedbackMessage({ name, email, subject, message });
+		const done = await MessageHelper.sendFeedbackMessage({ name, email, subject, message });
 
 		if (done) {
 			return res.status(200).send({

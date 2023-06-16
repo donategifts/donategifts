@@ -1,16 +1,20 @@
 const express = require('express');
 
-const AdminHandler = require('../handler/admin');
+const AdminController = require('../controller/admin');
 const MiddleWare = require('../middleware');
 
 const router = express.Router();
 
-const adminHandler = new AdminHandler();
+const adminController = new AdminController();
 
-router.get('/', MiddleWare.checkAdminPermission, adminHandler.handleGetIndex);
+router.get('/', MiddleWare.checkAdminPermission, adminController.handleGetIndex);
 
-router.put('/', MiddleWare.checkAdminPermission, adminHandler.handlePutIndex);
+router.put('/', MiddleWare.checkAdminPermission, adminController.handlePutIndex);
 
-router.get('/single/:wishCardId', MiddleWare.checkAdminPermission, adminHandler.handleGetWishCard);
+router.get(
+	'/single/:wishCardId',
+	MiddleWare.checkAdminPermission,
+	adminController.handleGetWishCard,
+);
 
 module.exports = router;

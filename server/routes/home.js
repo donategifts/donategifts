@@ -2,12 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 
-const HomeHandler = require('../handler/home');
+const HomeController = require('../controller/home');
 
-const homeHandler = new HomeHandler();
+const homeController = new HomeController();
 
-router.get('/', homeHandler.handleGetIndex);
+router.get('/', homeController.handleGetIndex);
 
-router.get('/health', homeHandler.handleGetHealth);
+router.get('/health', homeController.handleGetHealth);
 
 module.exports = router;

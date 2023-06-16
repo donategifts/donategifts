@@ -1,9 +1,9 @@
 const DonationRepository = require('../db/repository/DonationRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
-module.exports = class AdminHandler extends BaseHandler {
+module.exports = class AdminController extends BaseController {
 	#wishCardRepository;
 
 	#donationsRepository;

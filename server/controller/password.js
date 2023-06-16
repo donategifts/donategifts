@@ -2,12 +2,12 @@ const { v4: UUIDV4 } = require('uuid');
 const moment = require('moment');
 
 const UserRepository = require('../db/repository/UserRepository');
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 
-const { sendPasswordResetMail } = require('../helper/messaging');
+const MessageHelper = require('../helper/messaging');
 const Utils = require('../helper/utils');
 
-module.exports = class PasswordHandler extends BaseHandler {
+module.exports = class PasswordController extends BaseController {
 	#userRepository;
 
 	constructor() {
@@ -38,7 +38,7 @@ module.exports = class PasswordHandler extends BaseHandler {
 			userObject.passwordResetTokenExpires = moment().add(1, 'hours');
 			userObject.save();
 
-			sendPasswordResetMail(userObject.email, resetToken);
+			await MessageHelper.sendPasswordResetMail(userObject.email, resetToken);
 
 			res.send({ success: true });
 		} catch (error) {

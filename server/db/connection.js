@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const BaseHandler = require('../handler/basehandler');
+const BaseController = require('../controller/basecontroller');
 
-module.exports = class MongooseConnection extends BaseHandler {
+module.exports = class MongooseConnection extends BaseController {
 	#mongoose;
 
 	#options;

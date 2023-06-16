@@ -2,19 +2,15 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET);
 const moment = require('moment');
 const paypal = require('paypal-rest-sdk');
 
-const BaseHandler = require('./basehandler');
+const BaseController = require('./basecontroller');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const {
-	sendAgencyDonationAlert,
-	sendDonationConfirmationMail,
-	sendDiscordDonationNotification,
-} = require('../helper/messaging');
+const MessageHelper = require('../helper/messaging');
 const Utils = require('../helper/utils');
 
-module.exports = class PaymentProviderHandler extends BaseHandler {
+module.exports = class PaymentProviderController extends BaseController {
 	#lastWishcardDonation;
 
 	#wishCardRepository;
@@ -52,7 +48,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 		const agency = await this.#agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
-			const emailResponse = await sendDonationConfirmationMail({
+			const emailResponse = await MessageHelper.sendDonationConfirmationMail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,
@@ -77,7 +73,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 			wishCard.status = 'donated';
 			wishCard.save();
 
-			await sendAgencyDonationAlert({
+			await MessageHelper.sendAgencyDonationAlert({
 				email: agency.accountManager.email,
 				item: wishCard.wishItemName,
 				price: wishCard.wishItemPrice,
@@ -85,7 +81,7 @@ module.exports = class PaymentProviderHandler extends BaseHandler {
 				agency: agencyName,
 			});
 
-			await sendDiscordDonationNotification({
+			await MessageHelper.sendDiscordDonationNotification({
 				user: user.fName,
 				service,
 				wishCard: {
