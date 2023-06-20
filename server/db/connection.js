@@ -22,7 +22,7 @@ module.exports = class MongooseConnection extends BaseController {
 		this.#mongoose.set('strictQuery', false);
 		this.#mongoose.connect(process.env.MONGO_URI, this.#options, (err, database) => {
 			if (err) {
-				this.log.error(err, 'Unable to connect to DB.');
+				this.log.error('Unable to connect to DB:', err);
 			} else {
 				if (process.env.NODE_ENV === 'production') {
 					const WishCardRepository = require('./repository/WishCardRepository');
@@ -42,7 +42,7 @@ module.exports = class MongooseConnection extends BaseController {
 		try {
 			await this.#mongoose.disconnect();
 		} catch (error) {
-			this.log.error(error, 'failed to disconnect mongoose');
+			this.log.error('Failed to disconnect mongoose:', error);
 		} finally {
 			process.exit(1);
 		}
