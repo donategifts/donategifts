@@ -37,7 +37,7 @@ module.exports = class ContactController extends BaseController {
 			if (mailResponse.error) {
 				this.log.error({ ...req, ...mailResponse.error });
 			} else {
-				this.log.info(req, 'email successfully sent');
+				this.log.info('email successfully sent', req);
 			}
 
 			return res.status(201).redirect('/');

@@ -1,6 +1,6 @@
 const { pino } = require('pino');
 
-const logger = pino({
+const pinoLogger = pino({
 	transport: {
 		target: 'pino-pretty',
 		options: {
@@ -18,6 +18,24 @@ const logger = pino({
 	},
 });
 
-logger.level = process.env.LOG_LEVEL || 'info';
+pinoLogger.level = process.env.LOG_LEVEL || 'info';
+
+const logger = {
+	info: (...args) => {
+		pinoLogger.info(...args.reverse());
+	},
+	warn: (...args) => {
+		pinoLogger.warn(...args.reverse());
+	},
+	error: (...args) => {
+		pinoLogger.error(...args.reverse());
+	},
+	critical: (...args) => {
+		pinoLogger.fatal(...args.reverse());
+	},
+	debug: (...args) => {
+		pinoLogger.debug(...args.reverse());
+	},
+};
 
 module.exports = logger;
