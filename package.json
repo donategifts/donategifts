@@ -75,22 +75,22 @@
   },
   "devDependencies": {
     "chai": "4.3.7",
-    "chai-http": "4.3.0",
+    "chai-http": "4.4.0",
     "connect-livereload": "0.6.1",
     "cross-env": "7.0.3",
-    "eslint": "8.30.0",
+    "eslint": "8.43.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.26.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-import": "2.27.5",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "4.2.1",
     "faker": "5.5.3",
-    "husky": "8.0.2",
+    "husky": "8.0.3",
     "livereload": "0.9.3",
     "mocha": "10.2.0",
-    "nodemon": "2.0.20",
-    "npm-check-updates": "16.6.2",
-    "prettier": "2.8.1",
-    "pug-lint": "2.6.0"
+    "nodemon": "2.0.22",
+    "npm-check-updates": "16.10.13",
+    "prettier": "2.8.8",
+    "pug-lint": "2.7.0"
   }
 }
