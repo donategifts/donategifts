@@ -13,8 +13,6 @@ block meta
 block content
     #fb-root
 
-    include ../components/modal/wishcardDonationModal.pug
-
     #home-bg.hero.container-fluid.d-flex.justify-content-center.align-items-center
         .row
             .col-12
@@ -28,7 +26,6 @@ block content
                 a.btn-white-navy-lg.text-decoration-none( href='/howto' ) How It Works
                 a.btn-orange-navy-lg.text-decoration-none( href='/wishcards' ) See Wish Cards
 
-    include ../components/modal/loginModal.pug
     include ../components/homeSampleCards.pug
 
     .status-section.container-fluid.justify-content-center
@@ -142,6 +139,10 @@ block content
                         br
                         | Your gifts make it possible to bring happiness to the kids.
                     a.btn.button--green.quick-font.text-white( href='/contact' ) How To Contact Us
+
+block modal
+    include ../components/modal/wishcardDonationModal.pug
+    include ../components/modal/loginModal.pug
 
 block scripts
     script.

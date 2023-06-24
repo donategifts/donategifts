@@ -10,6 +10,8 @@
   width: 100%;
   height: 100%;
   /* Fix issue with youtube video anchoring to the top left on chrome */
+  backface-visibility: hidden;
+  transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0);
 }
