@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js --ignore-path .eslintignore server/",
     "lint-pug": "npx pug-lint views",
     "build": "gulp",
-    "prepare": "husky install"
+    "prepare": "test -d node_modules/husky && husky install"
   },
   "repository": {
     "type": "git",
