@@ -4,14 +4,18 @@ const fs = require('fs');
 const log = require('../helper/logger');
 
 module.exports = class DGBot {
+	#commandsPath;
+
+	#commandFiles;
+
 	constructor() {
 		this.#getCommands();
 	}
 
 	#getCommands() {
-		this.commandsPath = path.join(__dirname, 'commands');
-		this.commandFiles = fs
-			.readdirSync(this.commandsPath)
+		this.#commandsPath = path.join(__dirname, 'commands');
+		this.#commandFiles = fs
+			.readdirSync(this.#commandsPath)
 			.filter((file) => file.endsWith('.js'));
 	}
 
@@ -24,8 +28,8 @@ module.exports = class DGBot {
 
 		client.commands = new Collection();
 
-		for (const file of this.commandFiles) {
-			const filePath = path.join(this.commandsPath, file);
+		for (const file of this.#commandFiles) {
+			const filePath = path.join(this.#commandsPath, file);
 			const command = require(filePath);
 			if ('data' in command && 'execute' in command) {
 				client.commands.set(command.data.name, command);
@@ -69,7 +73,7 @@ module.exports = class DGBot {
 	async refreshCommands() {
 		const commands = [];
 
-		for (const file of this.commandFiles) {
+		for (const file of this.#commandFiles) {
 			const command = require(`./commands/${file}`);
 			commands.push(command.data.toJSON());
 		}

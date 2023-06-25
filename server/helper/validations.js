@@ -3,8 +3,8 @@ const { body, validationResult, param } = require('express-validator');
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 
+const Utils = require('./utils');
 const { handleError } = require('./error');
-const { getMessageChoices } = require('./defaultMessages');
 
 module.exports = class Validator {
 	static signupValidationRules() {
@@ -266,7 +266,10 @@ module.exports = class Validator {
 				.withMessage('Message is required')
 				.custom((value, { req }) => {
 					const { messageFrom: user, messageTo: wishcard } = req.body;
-					const allMessages = getMessageChoices(user.fName, wishcard.childFirstName);
+					const allMessages = Utils.getMessageChoices(
+						user.fName,
+						wishcard.childFirstName,
+					);
 					if (!allMessages.includes(value)) {
 						throw new Error('Message Error - Message Choice not found');
 					}

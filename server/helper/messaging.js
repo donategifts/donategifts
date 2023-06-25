@@ -6,7 +6,7 @@ const axios = require('axios');
 const { Colors } = require('discord.js');
 const log = require('./logger');
 
-module.exports = class MessageHelper {
+module.exports = class Messaging {
 	static get templates() {
 		return {
 			emailTemplate: fs.readFileSync(

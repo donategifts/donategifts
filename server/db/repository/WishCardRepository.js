@@ -2,7 +2,7 @@ const moment = require('moment');
 const { Types } = require('mongoose');
 const WishCard = require('../models/WishCard');
 const UserRepository = require('./UserRepository');
-const MessageHelper = require('../../helper/messaging');
+const Messaging = require('../../helper/messaging');
 const DonationRepository = require('./DonationRepository');
 
 module.exports = class WishCardRepository {
@@ -236,7 +236,7 @@ module.exports = class WishCardRepository {
 		const donation = await this.#donationRepository.getDonationByWishCardId(wishCard._id);
 
 		await this.#donationRepository.updateDonationStatus(donation._id, 'ordered');
-		await MessageHelper.sendDonationOrderedEmail({
+		await Messaging.sendDonationOrderedEmail({
 			agencyEmail: accountManager.email,
 			agencyName: agency.agencyName,
 			childName: wishCard.childFirstName,

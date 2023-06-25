@@ -7,7 +7,7 @@ const WishCardRepository = require('../db/repository/WishCardRepository');
 const UserRepository = require('../db/repository/UserRepository');
 const DonationRepository = require('../db/repository/DonationRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const MessageHelper = require('../helper/messaging');
+const Messaging = require('../helper/messaging');
 const Utils = require('../helper/utils');
 
 module.exports = class PaymentProviderController extends BaseController {
@@ -48,7 +48,7 @@ module.exports = class PaymentProviderController extends BaseController {
 		const agency = await this.#agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
-			const emailResponse = await MessageHelper.sendDonationConfirmationMail({
+			const emailResponse = await Messaging.sendDonationConfirmationMail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,
@@ -73,7 +73,7 @@ module.exports = class PaymentProviderController extends BaseController {
 			wishCard.status = 'donated';
 			wishCard.save();
 
-			await MessageHelper.sendAgencyDonationAlert({
+			await Messaging.sendAgencyDonationAlert({
 				email: agency.accountManager.email,
 				item: wishCard.wishItemName,
 				price: wishCard.wishItemPrice,
@@ -81,7 +81,7 @@ module.exports = class PaymentProviderController extends BaseController {
 				agency: agencyName,
 			});
 
-			await MessageHelper.sendDiscordDonationNotification({
+			await Messaging.sendDiscordDonationNotification({
 				user: user.fName,
 				service,
 				wishCard: {

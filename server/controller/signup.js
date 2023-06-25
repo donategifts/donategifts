@@ -2,7 +2,7 @@ const BaseController = require('./basecontroller');
 const Utils = require('../helper/utils');
 const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
-const MessageHelper = require('../helper/messaging');
+const Messaging = require('../helper/messaging');
 
 module.exports = class SignupController extends BaseController {
 	#userRepository;
@@ -36,7 +36,7 @@ module.exports = class SignupController extends BaseController {
 	}
 
 	async #sendEmail(email, verificationHash) {
-		const emailResponse = await MessageHelper.sendVerificationEmail(email, verificationHash);
+		const emailResponse = await Messaging.sendVerificationEmail(email, verificationHash);
 		const response = emailResponse ? emailResponse.data : '';
 		if (process.env.NODE_ENV === 'development') {
 			this.log.info(response);
@@ -71,7 +71,7 @@ module.exports = class SignupController extends BaseController {
 		}
 
 		const hashedPassword = await Utils.hashPassword(password);
-		const verificationHash = MessageHelper.createEmailVerificationHash();
+		const verificationHash = Messaging.createEmailVerificationHash();
 
 		const newUser = await this.#userRepository.createNewUser({
 			fName,
@@ -122,7 +122,7 @@ module.exports = class SignupController extends BaseController {
 			});
 
 			if (process.env.NODE_ENV !== 'test') {
-				await MessageHelper.sendAgencyVerificationNotification({
+				await Messaging.sendAgencyVerificationNotification({
 					id: result.agency._id,
 					name: result.agency.agencyName,
 					website: result.agency.agencyWebsite,

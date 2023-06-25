@@ -7,7 +7,7 @@ const WishCard = require('../server/db/models/WishCard');
 const Agency = require('../server/db/models/Agency');
 const Message = require('../server/db/models/Message');
 const Donation = require('../server/db/models/Donation');
-const { getMessageChoices } = require('../server/helper/defaultMessages');
+const Utils = require('../server/helper/utils');
 const log = require('../server/helper/logger');
 
 (async () => {
@@ -42,7 +42,7 @@ const log = require('../server/helper/logger');
 			};
 
 			const createMessage = async (donor, card) => {
-				const allMessages = getMessageChoices(donor.fName, card.childFirstName);
+				const allMessages = Utils.getMessageChoices(donor.fName, card.childFirstName);
 				// eslint-disable-next-line no-bitwise
 				const message = allMessages[(allMessages.length * Math.random()) | 0];
 				await Message.create({

@@ -8,17 +8,7 @@ const WishCardRepository = require('../db/repository/WishCardRepository');
 const BaseController = require('./basecontroller');
 
 const Utils = require('../helper/utils');
-const { getMessageChoices } = require('../helper/defaultMessages');
-const {
-	babies,
-	preschoolers,
-	kids6_8,
-	kids9_11,
-	teens,
-	youth,
-	allAgesA,
-	allAgesB,
-} = require('../helper/defaultItems');
+const DefaultItems = require('../helper/defaultItems');
 
 module.exports = class WishCardController extends BaseController {
 	#wishCardRepository;
@@ -428,7 +418,10 @@ module.exports = class WishCardController extends BaseController {
 			const messages = await this.#messageRepository.getMessagesByWishCardId(wishcard._id);
 			let defaultMessages;
 			if (res.locals.user) {
-				defaultMessages = getMessageChoices(res.locals.user.fName, wishcard.childFirstName);
+				defaultMessages = Utils.getMessageChoices(
+					res.locals.user.fName,
+					wishcard.childFirstName,
+				);
 			}
 
 			this.renderView(res, 'wishCardFullPage', {
@@ -543,28 +536,28 @@ module.exports = class WishCardController extends BaseController {
 
 		switch (ageCategory) {
 			case 1:
-				itemChoices = babies;
+				itemChoices = DefaultItems.babies;
 				break;
 			case 2:
-				itemChoices = preschoolers;
+				itemChoices = DefaultItems.preschoolers;
 				break;
 			case 3:
-				itemChoices = kids6_8;
+				itemChoices = DefaultItems.kids6_8;
 				break;
 			case 4:
-				itemChoices = kids9_11;
+				itemChoices = DefaultItems.kids9_11;
 				break;
 			case 5:
-				itemChoices = teens;
+				itemChoices = DefaultItems.teens;
 				break;
 			case 6:
-				itemChoices = youth;
+				itemChoices = DefaultItems.youth;
 				break;
 			case 7:
-				itemChoices = allAgesA;
+				itemChoices = DefaultItems.allAgesA;
 				break;
 			default:
-				itemChoices = allAgesB;
+				itemChoices = DefaultItems.allAgesB;
 				break;
 		}
 

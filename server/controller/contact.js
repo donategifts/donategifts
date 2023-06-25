@@ -1,6 +1,6 @@
 const BaseController = require('./basecontroller');
 const ContactRepository = require('../db/repository/ContactRepository');
-const MessageHelper = require('../helper/messaging');
+const Messaging = require('../helper/messaging');
 
 module.exports = class ContactController extends BaseController {
 	#contactRepository;
@@ -27,7 +27,7 @@ module.exports = class ContactController extends BaseController {
 				message: req.body.message,
 			});
 
-			const mailResponse = await MessageHelper.sendMail(
+			const mailResponse = await Messaging.sendMail(
 				contact.email,
 				'stacy.sealky.lee@gmail.com',
 				contact.subject,
@@ -48,7 +48,7 @@ module.exports = class ContactController extends BaseController {
 
 	async handlePostCustomerService(req, res, _next) {
 		const { name, email, subject, message } = req.body;
-		const done = await MessageHelper.sendFeedbackMessage({ name, email, subject, message });
+		const done = await Messaging.sendFeedbackMessage({ name, email, subject, message });
 
 		if (done) {
 			return res.status(200).send({

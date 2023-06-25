@@ -4,7 +4,7 @@ const moment = require('moment');
 const UserRepository = require('../db/repository/UserRepository');
 const BaseController = require('./basecontroller');
 
-const MessageHelper = require('../helper/messaging');
+const Messaging = require('../helper/messaging');
 const Utils = require('../helper/utils');
 
 module.exports = class PasswordController extends BaseController {
@@ -38,7 +38,7 @@ module.exports = class PasswordController extends BaseController {
 			userObject.passwordResetTokenExpires = moment().add(1, 'hours');
 			userObject.save();
 
-			await MessageHelper.sendPasswordResetMail(userObject.email, resetToken);
+			await Messaging.sendPasswordResetMail(userObject.email, resetToken);
 
 			res.send({ success: true });
 		} catch (error) {
