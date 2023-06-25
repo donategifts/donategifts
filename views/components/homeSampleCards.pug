@@ -60,3 +60,15 @@ mixin carouselInnerPart(increment)
         .d-none.d-lg-block
             #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
                 +carouselInnerPart(3)
+                button.carousel-control-prev( type='button'
+                    data-bs-target='#sample-cards-carousel'
+                    data-bs-slide='prev'
+                )
+                    span.carousel-control-prev-icon( aria-hidden='true' )
+                    span.visually-hidden Previous
+                button.carousel-control-next( type='button'
+                    data-bs-target='#sample-cards-carousel'
+                    data-bs-slide='next'
+                )
+                    span.carousel-control-next-icon( aria-hidden='true' )
+                    span.visually-hidden Next
