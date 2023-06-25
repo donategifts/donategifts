@@ -50,10 +50,10 @@ module.exports = class AdminController extends BaseController {
 
 	async handlePutIndex(req, res, _next) {
 		try {
-			const { wishCardId, wishItemURL } = req.body;
+			const { wishCardId, wishItemUrl } = req.body;
 
 			const wishCardModifiedFields = {
-				wishItemURL,
+				wishItemUrl,
 				status: 'published',
 			};
 

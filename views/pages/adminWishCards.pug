@@ -23,51 +23,71 @@ block content
                                 .card-body
                                     .card-text-container
                                         h3.card-title.text-center.crayon-font My name is
-                                        |= card.childFirstName
+                                            |
+                                            |
+                                            = card.childFirstName
 
                                         .quick-font
                                             p.card-text
                                                 span.font-weight-bold Status:
-                                                |= card.status
+                                                    |
+                                                    |
+                                                    = card.status
                                             p.card-text
                                                 span.font-weight-bold Age:
-                                                |= card.age
+                                                    |
+                                                    |
+                                                    = card.age
                                             p.card-text
-                                                - var wishItemName = card.wishItemName.length > 25 ? card.wishItemName.substring(0, 25) + "..." : card.wishItemName
+                                                - var wishItemName = card.wishItemName.length > 25 ? card.wishItemName.substring(0, 25) + '...' : card.wishItemName
 
                                                 span.font-weight-bold Wish:
-                                                |= wishItemName
+                                                    |
+                                                    |
+                                                    = wishItemName
                                             p.card-text
                                                 - var wishItemPrice = '$ ' + card.wishItemPrice
 
                                                 span.font-weight-bold Item Price:
-                                                |= wishItemPrice
+                                                    |
+                                                    |
+                                                    = wishItemPrice
                                             p
                                                 span Item Url:
-                                                a( id='oldWishItemUrl' + card._id href=card.wishItemURL ) Link
+                                                    |
+                                                    |
+                                                    a( id='oldWishItemUrl' + card._id href=card.wishItemURL ) Link
 
-                                            input.input1( id='newWishItemUrl' + card._id type='text' name='newWishItemUrl' placeholder='Url for wish item...' )
-                                            button.col.wishcard-btn.btn-navy-bg( type='button' id='donate-btn-'+card._id data-value-id=card._id ) Publish WishCard
+                                            input.input1( id='newWishItemUrl' + card._id
+                                                type='text'
+                                                name='newWishItemUrl'
+                                                placeholder='Url for wish item...'
+                                            )
+                                            button.col.wishcard-btn.btn-navy-bg( type='button'
+                                                id='donate-btn-' + card._id data-value-id=card._id
+                                            ) Publish WishCard
 
 block scripts
     script.
         $(document).ready(() => {
             const unlockCardButtonClick = (e) => {
-                const wishCardId = e.target.dataset.valueId;
-                const oldItemUrl = $("#oldWishItemUrl" + wishCardId);
-                const newItemUrl = $("#newWishItemUrl" + wishCardId);
-                const wishItemUrl = newItemUrl[0].value ? newItemUrl[0].value : oldItemUrl[0].href;
                 const elementRef = e.target;
+                const wishCardId = elementRef.dataset.valueId;
+                const $oldItemUrl = $('#oldWishItemUrl' + wishCardId);
+                const $newItemUrl = $('#newWishItemUrl' + wishCardId);
+                const wishItemUrl = $newItemUrl.val() !== '' ? $newItemUrl.val() : $oldItemUrl.attr('href');
+
+                console.log(wishItemUrl);
 
                 $.ajax({
                     type: 'PUT',
-                    url: '/wishcards/admin',
+                    url: '/admin',
                     data: {
                         wishCardId,
-                        wishItemURL,
+                        wishItemUrl,
                     },
                     success: (_) => {
-                        showToast("Card status updated");
+                        showToast('Card status updated');
                         removeWishCardFromDOM(elementRef);
                     },
                     error: (response) => {
@@ -77,7 +97,7 @@ block scripts
             }
 
             const removeWishCardFromDOM = (node) => {
-                const divName = "row justify-content-center";
+                const divName = 'row justify-content-center';
                 if (node.parentNode.className !== divName) {
                     removeWishCardFromDOM(node.parentNode);
                 } else {
@@ -87,7 +107,7 @@ block scripts
                 }
             }
 
-            $(".col.wishcard-btn.btn-navy-bg").each(function () {
+            $('.col.wishcard-btn.btn-navy-bg').each(function () {
                 $(this).click(unlockCardButtonClick);
             })
         });

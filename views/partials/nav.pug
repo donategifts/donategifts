@@ -19,14 +19,15 @@
                     .nav-item
                         a.nav-link( href='/login' ) Log In
                 else
-                    //- if user.userRole == 'partner'
-                        //- .nav-item
-                        //-     a.nav-link( href='/wishcards/me' ) My Wishes
-                        //- .nav-item
-                        //-     a.nav-link( href='/wishcards/create' ) Create a Wish Card
+                    if user.userRole == 'partner'
+                        if agency && agency.isVerified
+                            .nav-item
+                                a.nav-link( href='/wishcards/me' ) My Wishes
+                            .nav-item
+                                a.nav-link( href='/wishcards/create' ) Create a Wish Card
                     if user.userRole == 'admin'
                         li.nav-item
-                            a.nav-link( href='/wishcards/admin/' ) Admin Panel
+                            a.nav-link( href='/admin/' ) Admin Panel
                     li.nav-item
                         a.nav-link( href='/profile' ) Profile
 

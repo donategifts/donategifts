@@ -19,16 +19,7 @@ module.exports = class BaseController {
 			templateString = `pages/${template}`;
 		}
 
-		const vars = {};
-
-		if (res.locals.user) {
-			vars.user = { ...res.locals.user };
-		}
-
-		return res.status(status).render(templateString, {
-			...vars,
-			...templateVars,
-		});
+		return res.status(status).render(templateString, templateVars);
 	}
 
 	handleError({ res, code, error, renderErrorPage = false }) {

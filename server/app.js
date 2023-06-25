@@ -114,8 +114,8 @@ app.locals.env = {
 };
 
 app.use((req, res, next) => {
+	// TODO: assign agency to locals if there's one present in the request
 	if (req.session?.user) {
-		// assign user to locals if there's one present in the session
 		res.locals.user = req.session.user;
 	}
 

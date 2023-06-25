@@ -116,11 +116,11 @@ module.exports = class MiddleWare {
 		const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
-			res.status(403).send({ success: false, url: '/login' });
+			res.status(403).redirect('/login');
 		} else if (user.userRole === 'admin') {
 			next();
 		} else if (await this.#isNullOrNotVerifiedAgency(userInfo)) {
-			res.status(403).send({ success: false, url: '/profile' });
+			res.status(403).redirect('/profile');
 		} else {
 			next();
 		}
@@ -131,35 +131,34 @@ module.exports = class MiddleWare {
 		const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
 		const userInfo = { user, agency };
 		if (!user) {
-			res.status(403).render('error/403');
-		} else if (user.userRole === 'admin') {
-			next();
-		} else if (await this.#isNullOrNotVerifiedAgency(userInfo)) {
-			res.status(403).render('error/403');
-		} else {
-			next();
+			return res.status(403).redirect('/login');
 		}
+
+		if (await this.#isNullOrNotVerifiedAgency(userInfo)) {
+			return res.status(403).redirect('/profile');
+		}
+
+		next();
 	}
 
 	static checkVerifiedUser(_req, res, next) {
 		const { user } = res.locals;
 		if (!user) {
-			res.status(403).send({ success: false, url: '/login' });
+			return res.status(403).redirect('/login');
 		}
 		if (!user.emailVerified) {
-			res.status(403).send({ success: false, url: '/profile' });
-		} else {
-			next();
+			return res.status(403).redirect('/profile');
 		}
+
+		next();
 	}
 
 	static checkAdminPermission(_req, res, next) {
 		const { user } = res.locals;
 
 		if (!user) {
-			return res.status(403).send({ success: false, url: '/login' });
+			return res.status(403).redirect('/login');
 		}
-
 		if (user.userRole !== 'admin') {
 			return res.status(404).render('error/404', { user: res.locals.user });
 		}
