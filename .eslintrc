@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "ecmaVersion": 13
+    "ecmaVersion": 2022
   },
   "extends": [
     "airbnb-base",

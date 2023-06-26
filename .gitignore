@@ -1,26 +1,8 @@
-# Ignore Mac system files & workspace
 .DS_store
-VS-workspace.code-workspace
 .settings
 .project
-
-# Ignore image file folder
 uploads
-# Ignore node_modules folder
 node_modules
-
-# Ignore files related to API keys
 .idea
 config/config.env
-
-# generated logs folder
-server/logs
-.eslintcache
-dump.*
-.adminbro
 .env
-
-server/db/seederCredentials.json
-v1doc.md
-
-*.min.*

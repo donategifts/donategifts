@@ -122,6 +122,17 @@ block scripts
     +donateModalJS
 
     script.
+        $(document).ready(function () {
+            ReactDOM.render(
+                React.createElement(
+                    WishCards,
+                    {}
+                ),
+                document.getElementById('react-bundle-root')
+            );
+        })
+
+    script.
         countdown = [];
 
         $(document).ready(function () {

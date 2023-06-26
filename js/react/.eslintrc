@@ -1,0 +1,29 @@
+{
+    "extends": [
+        "../../.eslintrc",
+        "airbnb/hooks"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-prototype-builtins": "off",
+        "no-case-declarations": "off"
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es2022": true
+    },
+    "globals": {
+        "React": false,
+        "ReactDOM": false
+    }
+}

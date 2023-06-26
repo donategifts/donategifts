@@ -2,8 +2,9 @@
   "watch": [
     "server",
     "views",
-    "design"
+    "design",
+    "js"
   ],
-  "ext": "js,pug,scss",
+  "ext": "js,jsx,pug,scss",
   "exec": "node --inspect=0.0.0.0:9229 server/app.js"
 }

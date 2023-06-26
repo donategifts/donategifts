@@ -48,7 +48,7 @@ const scss = (done) =>
 		.on('end', onSuccess('sass', done));
 
 const js = (done) =>
-	src(['./js/**/*.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.js'])
+	src(['./js/app/**/*.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.js'])
 		.pipe(plumber(onError('js', done)))
 		.pipe(gulpif(isDev, sourcemaps.init()))
 		.pipe(concat('app.min.js'))
