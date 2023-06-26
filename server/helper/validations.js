@@ -2,11 +2,45 @@ const { body, validationResult, param } = require('express-validator');
 
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
+const log = require('./logger');
 
 const Utils = require('./utils');
-const { handleError } = require('./error');
 
 module.exports = class Validator {
+	static #handleError(res, code, errorMsg) {
+		let statusCode = 400;
+		let name = 'Error handler';
+		let error;
+
+		if (typeof errorMsg === 'object') {
+			if (errorMsg.name) {
+				name = errorMsg.name;
+			}
+
+			statusCode = errorMsg.statusCode;
+			error = errorMsg;
+		} else if (typeof errorMsg === 'string') {
+			error = { msg: errorMsg };
+		}
+
+		statusCode = code || statusCode;
+
+		if (errorMsg instanceof Error) {
+			log.error(errorMsg);
+		} else {
+			log.error({
+				msg: name,
+				statusCode,
+				error,
+			});
+		}
+
+		res.status(statusCode).send({
+			statusCode,
+			error,
+		});
+	}
+
 	static signupValidationRules() {
 		return [
 			body('fName', 'First name is required!').notEmpty().isString(),
@@ -295,7 +329,7 @@ module.exports = class Validator {
 	static validate(req, res, next) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return handleError(res, 400, errors.array({ onlyFirstError: true })[0]);
+			return this.#handleError(res, 400, errors.array({ onlyFirstError: true })[0]);
 		}
 		next();
 	}
