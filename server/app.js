@@ -168,6 +168,16 @@ for (const route of routes) {
 	}
 }
 
+const apis = fs.readdirSync(path.join(__dirname, './api'));
+
+// dynamically mount all api routes present in /api folder
+for (const api of apis) {
+	if (fs.lstatSync(path.join(__dirname, `./api/${api}`)).isFile()) {
+		const file = api.split('.')[0];
+		app.use(`/api/${file}`, require(`./api/${file}`));
+	}
+}
+
 app.use('/robots.txt', (_req, res, _next) => {
 	res.type('text/plain');
 	res.sendFile(path.join(__dirname, '../public/robots.txt'));

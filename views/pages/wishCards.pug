@@ -123,12 +123,12 @@ block scripts
 
     script.
         $(document).ready(function () {
-            ReactDOM.render(
+            const root = ReactRoot(document.getElementById('react-bundle-root'));
+            root.render(
                 React.createElement(
                     WishCards,
                     {}
-                ),
-                document.getElementById('react-bundle-root')
+                )
             );
         })
 

@@ -15,7 +15,9 @@
     ],
     "rules": {
         "no-prototype-builtins": "off",
-        "no-case-declarations": "off"
+        "no-case-declarations": "off",
+
+        "import/no-extraneous-dependencies": "off"
     },
     "env": {
         "browser": true,
