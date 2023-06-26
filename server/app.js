@@ -31,9 +31,13 @@ if (process.env.NODE_ENV === 'development') {
 	const liveReloadServer = livereload.createServer();
 
 	liveReloadServer.server.once('connection', () => {
-		setTimeout(() => {
-			liveReloadServer.refresh('/');
-		}, 1000);
+		setTimeout(
+			() => {
+				liveReloadServer.refresh('/');
+			},
+			// set timeout to 2 seconds so that react can finish compiling
+			2000,
+		);
 	});
 
 	app.use(connectLiveReload());
