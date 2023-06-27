@@ -14,7 +14,7 @@ block content
             if wishcard.status === 'donated'
                 button#donate-btn.btn-disabled-long( type='button' disabled='' aria-disabled='true' ) Donated
             else if user
-                a#donate-btn.donate-btn( type='button' href='/donate/' + wishcard._id ) Donate Gift
+                a#donate-btn.donate-btn( type='button' href='/wishcards/donate/' + wishcard._id ) Donate Gift
             else
                 button#donate-btn.btn-orange-navy-lg-long( type='button'
                     data-bs-toggle='modal'
@@ -121,8 +121,8 @@ block scripts
                     type: 'POST',
                     url: '/wishcards/message',
                     data: {
-                        messageFrom: #{messageFrom},
-                        messageTo: #{messageTo},
+                        messageFrom: '',
+                        messageTo: '',
                         message: $('.custom-select option:selected').text(),
                     },
                     statusCode: {

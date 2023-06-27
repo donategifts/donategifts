@@ -66,17 +66,16 @@
   },
   "devDependencies": {
     "@babel/core": "7.22.5",
-    "@babel/plugin-transform-runtime": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/plugin-transform-runtime": "7.22.5",
+    "@babel/preset-env": "7.22.5",
     "@babel/preset-react": "7.22.5",
     "autoprefixer": "10.4.13",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^9.1.2",
+    "babel-loader": "9.1.2",
     "bootstrap": "5.1.0",
-    "concurrently": "^8.2.0",
+    "concurrently": "8.2.0",
     "connect-livereload": "0.6.1",
     "eslint": "8.43.0",
-    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
@@ -101,9 +100,9 @@
     "pug-lint": "2.7.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "rimraf": "^5.0.1",
+    "rimraf": "5.0.1",
     "sass": "1.57.1",
-    "webpack": "^5.88.0",
-    "webpack-cli": "^5.1.4"
+    "webpack": "5.88.0",
+    "webpack-cli": "5.1.4"
   }
 }
