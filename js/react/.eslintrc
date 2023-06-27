@@ -11,7 +11,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "import"
     ],
     "rules": {
         "no-prototype-builtins": "off",

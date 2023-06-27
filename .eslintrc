@@ -8,8 +8,7 @@
     "prettier"
   ],
   "plugins": [
-    "prettier",
-    "mocha"
+    "prettier"
   ],
   "env": {
     "mocha": true
