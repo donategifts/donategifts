@@ -65,9 +65,11 @@
                 if item.addPipe
                     span |
 
-        .d-flex.justify-content-center.pt-3
-            p 501(c)(3) non profit charitable organization
-        .d-flex.justify-content-center
+        .d-flex.justify-content-center.py-3
+            a.px-2.footer-item( href='/proof'
+                target='_blank'
+             ) 501(c)(3) non profit charitable organization
+        .d-flex.justify-content-center.pb-2
             - var copyright = '© ' + new Date().getFullYear() + ' All rights reserved!'
 
             p.px-2 Donate Gifts Inc.
