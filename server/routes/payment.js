@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const MiddleWare = require('../middleware');
+const Permissions = require('../middleware/permissions');
 const PaymentProviderController = require('../controller/paymentProvider');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const paymentProviderController = new PaymentProviderController();
 
 router.post(
 	'/createIntent',
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	paymentProviderController.handlePostCreateIntent,
 );
 
@@ -24,7 +24,7 @@ router.post(
 // redirect to a thank you page
 router.get(
 	'/success/:id&:totalAmount',
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	paymentProviderController.handleGetPaymentSuccess,
 );
 

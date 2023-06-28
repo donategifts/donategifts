@@ -1,11 +1,11 @@
 const express = require('express');
 const CommunityController = require('../controller/community');
-const MiddleWare = require('../middleware');
+const FileUpload = require('../middleware/fileupload');
 
 const router = express.Router();
 const communityController = new CommunityController();
-const middleWare = new MiddleWare();
+const fileUpload = new FileUpload();
 
-router.post('/', middleWare.upload.single('image'), communityController.handleAddPost);
+router.post('/', fileUpload.upload.single('image'), communityController.handleAddPost);
 
 module.exports = router;

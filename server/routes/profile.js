@@ -8,35 +8,36 @@ const ProfileController = require('../controller/profile');
 const passwordController = new PasswordController();
 const profileController = new ProfileController();
 
-const MiddleWare = require('../middleware');
-const Validator = require('../helper/validations');
+const Permissions = require('../middleware/permissions');
+const FileUpload = require('../middleware/fileupload');
+const Validator = require('../middleware/validations');
 const Utils = require('../helper/utils');
 
-const middleWare = new MiddleWare();
+const fileUpload = new FileUpload();
 
-router.get('/', MiddleWare.redirectLogin, profileController.handleGetIndex);
+router.get('/', Permissions.redirectLogin, profileController.handleGetIndex);
 
 router.put(
 	'/',
 	Validator.updateProfileValidationRules(),
 	Validator.validate,
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	profileController.handlePutIndex,
 );
 
 router.post(
 	'/picture',
 	profileController.limiter,
-	middleWare.upload.single('profileImage'),
+	fileUpload.upload.single('profileImage'),
 	Validator.validate,
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	profileController.handlePostImage,
 );
 
 router.delete(
 	'/picture',
 	profileController.limiter,
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	profileController.handleDeleteImage,
 );
 
@@ -65,9 +66,9 @@ router.post(
 	passwordController.handlePostResetToken,
 );
 
-router.get('/logout', MiddleWare.redirectLogin, Utils.logoutUser);
+router.get('/logout', Permissions.redirectLogin, Utils.logoutUser);
 
-router.get('/donations', MiddleWare.redirectLogin, profileController.handleGetDonations);
+router.get('/donations', Permissions.redirectLogin, profileController.handleGetDonations);
 
 router.get(
 	'/verify/:hash',

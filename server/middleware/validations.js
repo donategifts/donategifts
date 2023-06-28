@@ -2,11 +2,11 @@ const { body, validationResult, param } = require('express-validator');
 
 const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
-const log = require('./logger');
+const log = require('../helper/logger');
 
-const Utils = require('./utils');
+const Utils = require('../helper/utils');
 
-module.exports = class Validator {
+module.exports = class Validations {
 	static #handleError(res, code, errorMsg) {
 		let statusCode = 400;
 		let name = 'Error handler';

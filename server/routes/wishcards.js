@@ -1,10 +1,11 @@
 const express = require('express');
 
-const Validator = require('../helper/validations');
-const MiddleWare = require('../middleware');
+const Validator = require('../middleware/validations');
+const Permissions = require('../middleware/permissions');
+const FileUpload = require('../middleware/fileupload');
 const WishCardController = require('../controller/wishcard');
 
-const middleWare = new MiddleWare();
+const fileUpload = new FileUpload();
 const wishCardController = new WishCardController();
 
 const router = express.Router();
@@ -14,8 +15,8 @@ router.get('/', wishCardController.handleGetIndex);
 router.post(
 	'/',
 	wishCardController.limiter,
-	middleWare.renderPermissions,
-	middleWare.upload.single('wishCardImage'),
+	Permissions.checkViewPermission,
+	fileUpload.upload.single('wishCardImage'),
 	Validator.createWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostIndex,
@@ -24,8 +25,8 @@ router.post(
 router.post(
 	'/guided/',
 	wishCardController.limiter,
-	middleWare.renderPermissions,
-	middleWare.upload.single('wishCardImage'),
+	Permissions.checkViewPermission,
+	fileUpload.upload.single('wishCardImage'),
 	Validator.createGuidedWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostGuided,
@@ -34,14 +35,14 @@ router.post(
 router.get(
 	'/edit/:id',
 	wishCardController.limiter,
-	middleWare.renderPermissionsRedirect,
+	Permissions.checkViewPermission,
 	wishCardController.handleGetEdit,
 );
 
 router.post(
 	'/edit/:id',
 	wishCardController.limiter,
-	middleWare.renderPermissions,
+	Permissions.checkViewPermission,
 	Validator.createWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostEdit,
@@ -50,13 +51,13 @@ router.post(
 router.delete(
 	'/delete/:id',
 	wishCardController.limiter,
-	middleWare.renderPermissions,
+	Permissions.checkViewPermission,
 	wishCardController.handleDeleteSingle,
 );
 
-router.get('/me', middleWare.renderPermissionsRedirect, wishCardController.handleGetMe);
+router.get('/me', Permissions.checkViewPermission, wishCardController.handleGetMe);
 
-router.get('/create', middleWare.renderPermissionsRedirect, wishCardController.handleGetCreate);
+router.get('/create', Permissions.checkViewPermission, wishCardController.handleGetCreate);
 
 router.post('/search/:init?', wishCardController.handlePostSearch);
 
@@ -69,7 +70,7 @@ router.get(
 
 router.get(
 	'/donate/:id',
-	MiddleWare.redirectLogin,
+	Permissions.redirectLogin,
 	Validator.getByIdValidationRules(),
 	wishCardController.handleGetDonate,
 );
@@ -79,7 +80,7 @@ router.get('/get/random', wishCardController.handleGetRandom);
 // is this still needed? it does nothing actually
 router.put(
 	'/update/:id',
-	middleWare.renderPermissions,
+	Permissions.checkViewPermission,
 	Validator.updateWishCardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePutUpdate,
@@ -87,7 +88,7 @@ router.put(
 
 router.post(
 	'/message',
-	MiddleWare.checkVerifiedUser,
+	Permissions.checkUserVerification,
 	Validator.postMessageValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostMessage,
@@ -95,12 +96,12 @@ router.post(
 
 router.get(
 	'/defaults/:id',
-	middleWare.renderPermissions,
+	Permissions.checkViewPermission,
 	Validator.getDefaultCardsValidationRules(),
 	Validator.validate,
 	wishCardController.handleGetDefaults,
 );
 
-router.get('/choose', MiddleWare.redirectLogin, wishCardController.handleGetChoose);
+router.get('/choose', Permissions.redirectLogin, wishCardController.handleGetChoose);
 
 module.exports = router;

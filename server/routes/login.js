@@ -1,29 +1,29 @@
 const express = require('express');
 
 const LoginController = require('../controller/login');
-const MiddleWare = require('../middleware');
-const Validator = require('../helper/validations');
+const Permissions = require('../middleware/permissions');
+const Validations = require('../middleware/validations');
 
 const router = express.Router();
 
 const loginController = new LoginController();
 
-router.get('/', MiddleWare.redirectProfile, loginController.handleGetIndex);
+router.get('/', Permissions.redirectProfile, loginController.handleGetIndex);
 
 router.post(
 	'/',
 	loginController.limiter,
-	Validator.loginValidationRules(),
-	Validator.validate,
-	MiddleWare.redirectProfile,
+	Validations.loginValidationRules(),
+	Validations.validate,
+	Permissions.redirectProfile,
 	loginController.handlePostIndex,
 );
 
 router.post(
 	'/google-signin',
 	loginController.limiter,
-	Validator.googlesignupValidationRules(),
-	Validator.validate,
+	Validations.googlesignupValidationRules(),
+	Validations.validate,
 	loginController.handlePostGoogleLogin,
 );
 
@@ -34,8 +34,8 @@ router.post(
 router.post(
 	'/fb-signin',
 	loginController.limiter,
-	Validator.fbsignupValidationRules(),
-	Validator.validate,
+	Validations.fbsignupValidationRules(),
+	Validations.validate,
 	loginController.handlePostFacebookLogin,
 );
 
