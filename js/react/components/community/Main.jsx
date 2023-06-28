@@ -16,7 +16,7 @@ function Community(props) {
 		formData.append('message', message);
 		formData.append('image', image);
 
-		fetch('/community', {
+		fetch('/api/community', {
 			method: 'POST',
 			body: formData,
 		})

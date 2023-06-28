@@ -14,7 +14,8 @@ module.exports = class CommunityController extends BaseController {
 		this.#agencyRepository = new AgencyRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handlePostIndex = this.handlePostIndex.bind(this);
+
+		this.handleAddPost = this.handleAddPost.bind(this);
 	}
 
 	async handleGetIndex(req, res, _next) {
@@ -28,7 +29,7 @@ module.exports = class CommunityController extends BaseController {
 		}
 	}
 
-	async handlePostIndex(req, res, _next) {
+	async handleAddPost(req, res, _next) {
 		try {
 			const { user } = req.session;
 
