@@ -10,8 +10,6 @@ If you have additional questions reach out to us on our [Discord](https://discor
 
 ## Contributing
 
-testing 
-
 In general, we follow the "fork-and-pull" Git workflow.
 
  1. **Fork** the repo on GitHub
@@ -28,7 +26,11 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
     - `nvm use` if you have nvm installed
     - download from the official [node page](https://nodejs.org/en/download)
 
-- Have docker installed, the local database is running in a mongo docker container so that you don't have to run mongo natively
+- Install Docker Desktop. The local database is running in a mongo docker container so that you don't have to run mongo natively
+
+For Mac users:
+- If you don't have mongodb, run `brew tap mongodb/brew` then `brew install mongodb-database-tools`
+- If you don't have command line tools, run `xcode-select --install`
 
 ## Install dependencies
 
@@ -36,9 +38,13 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 ## Running all the things
 
-There are several scripts that can be executed to run/build the project/assets, the ones listed below are what you will be using most of the time tho
+Must do first:
+- copy 'example-config.env' file and rename it to 'config.env'
 
-- `docker-compose up`: starts the mongo db container
+There are several scripts that can be executed to run/build the project/assets, the ones listed below are what you will be using most of the time.
+
+- `docker-compose up`: starts the mongo db container 
+(leave it running and open a new terminal for npm commands)
 - `npm run dev`: this will start the server as well as the webpack watcher for react
 - `npm run build`: will cleanup all generated files and afterwards build all the assets/js into minified versions
 
