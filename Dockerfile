@@ -1,12 +1,21 @@
-FROM node:16
+FROM node:18
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /app
+
+WORKDIR /app
 
 COPY package*.json ./
 
 COPY ./ .
-RUN npm install
+
+RUN npm install --ignore-scripts
+
+RUN npm run build
+
+RUN npm ci --omit=dev --ignore-scripts
+
+RUN npm rebuild
+
 EXPOSE 8080
 
 CMD [ "npm", "start" ]

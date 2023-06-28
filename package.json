@@ -16,7 +16,7 @@
     "lint:pug": "npx pug-lint views",
     "lint:server": "eslint --ext .js server/",
     "lint:jsx": "eslint -c ./js/react/.eslintrc --ext .jsx js/react/",
-    "prepare": "test -d node_modules/husky && husky install",
+    "prepare": "husky install",
     "start": "node server/app.js",
     "webpack:build": "webpack --mode=production",
     "webpack:watch": "webpack --mode=development --watch"
