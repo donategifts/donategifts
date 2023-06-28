@@ -10,6 +10,8 @@ If you have additional questions reach out to us on our [Discord](https://discor
 
 ## Contributing
 
+testing 
+
 In general, we follow the "fork-and-pull" Git workflow.
 
  1. **Fork** the repo on GitHub
