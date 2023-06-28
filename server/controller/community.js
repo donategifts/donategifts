@@ -19,7 +19,9 @@ module.exports = class CommunityController extends BaseController {
 
 	async handleGetIndex(req, res, _next) {
 		try {
-			const posts = await this.#postRepository.getAllPosts();
+			const posts = (await this.#postRepository.getAllPosts()).sort(
+				(a, b) => a.createdAt - b.createdAt,
+			);
 			this.renderView(res, 'pages/community', { posts, moment });
 		} catch (error) {
 			return this.handleError({ res, code: 400, error });
@@ -30,12 +32,11 @@ module.exports = class CommunityController extends BaseController {
 		try {
 			const { user } = req.session;
 
-			// only partner users can publish donation thank you posts
-			if (user.userRole !== 'partner') {
-				res.status(401).send({
-					success: false,
-					error: 'Only partners user can publish thank you posts',
-					data: null,
+			if (!user) {
+				return this.handleError({
+					res,
+					code: 401,
+					error: 'You must be logged in to make a post!',
 				});
 			}
 
@@ -53,18 +54,19 @@ module.exports = class CommunityController extends BaseController {
 			}
 
 			const newPost = {
-				message: req.body.postText,
+				message: req.body.message,
 				image: profileImage || null,
 				belongsTo: agency,
-				agency,
 			};
 
 			await this.#postRepository.createNewPost(newPost);
 
+			const posts = (await this.#postRepository.getAllPosts()).sort(
+				(a, b) => a.createdAt - b.createdAt,
+			);
+
 			res.status(200).send({
-				success: true,
-				error: null,
-				data: newPost,
+				posts,
 			});
 		} catch (error) {
 			return this.handleError({ res, code: 400, error });

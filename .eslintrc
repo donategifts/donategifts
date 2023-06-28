@@ -20,6 +20,14 @@
         "endOfLine": "lf"
       }
     ],
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
     "no-unused-vars": [
       "error",
       {

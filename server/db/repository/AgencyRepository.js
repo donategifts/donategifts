@@ -13,7 +13,7 @@ module.exports = class AgencyRepository {
 
 	async getAgencyByUserId(userId) {
 		try {
-			return this.#agencyModel.findOne({ accountManager: userId }).exec();
+			return this.#agencyModel.findOne({ accountManager: userId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency: ${error}`);
 		}

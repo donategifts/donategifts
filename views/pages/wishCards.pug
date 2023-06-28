@@ -110,7 +110,7 @@ block modal
     include ../components/modal/loginModal.pug
     include ../components/modal/wishcardDonationModal.pug
 
-block scripts
+append scripts
     include ../mixins/loginToast.pug
     include ../mixins/wishcards/cardLoader.pug
     include ../mixins/wishcards/donateModal.pug
@@ -123,7 +123,7 @@ block scripts
 
     //- script.
     //-     $(document).ready(function () {
-    //-         const root = ReactRoot(document.getElementById('react-bundle-root'));
+    //-         const root = ReactRoot(document.querySelector('#app-root'));
     //-         root.render(
     //-             React.createElement(
     //-                 WishCards,

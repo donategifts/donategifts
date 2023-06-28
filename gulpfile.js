@@ -18,7 +18,7 @@ const logger = require('./server/helper/logger');
 const isDev = process.env.NODE_ENV === 'development';
 
 const onError = (runner, done) => (error) => {
-	logger.error(error, `error - ${runner}`);
+	logger.error(`error - ${runner}`, error);
 	done();
 };
 

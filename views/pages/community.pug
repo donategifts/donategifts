@@ -3,93 +3,17 @@ extends ../master
 block title
     title Donate Gifts Community
 
-block content
-    section.community
-    .container
-        .row.mb-4
-            .col-12
-                if user && user.userRole == 'partner'
-                    .card.border-white.mt-5.mb-3.card-border
-                        .card-title.quick-font.border-bottom.p-3
-                            h5.pl-3 Post a message to your donors
-                        .card-body
-                            form#communityPost( action='post' )
-                                .row
-                                    .col-12.d-flex.justify-content-start.align-items-center
-                                    if agency && agency.agencyProfileImage
-                                        img.img-fluid.rounded.float-left.agency-profile-logo.d-inline.me-4( src=agency.agencyProfileImage alt='your agency logo' )
-                                    textarea#postText.form-control.border.border-white.quick-font( name='post-text' placeholder='Write a thank you message here' rows='5' )
-
-                                .row.mt-4
-                                    .offset-md-6.col-md-6.d-flex.align-items-center
-                                    #imagePreview
-                                    .row
-                                        .col-sm-6.text-center
-                                        label.wishcard__button--yellow.me-md-3.rounded-pill.d-inline-block.quick-font( for='postImage' )
-                                            | Upload Photo
-                                        input#postImage( type='file' hidden )
-                                        .col-sm-6.text-center
-                                            button.createPost_button.me-md-3.rounded-pill.d-inline-block.quick-font( type='submit' )
-                                                | Submit Post
-    .container.pb-5
-        .card-columns
-            if posts
-                - var posts = posts.reverse()
-                each post in posts
-                    .card.my-3.py-4.px-1.border-white.card-border.quick-font
-                        .row.px-3
-                        .col-12
-                            img.img-fluid.rounded.float-left.me-2.post-logo( src=post.belongsTo.agencyProfileImage alt='partner agency logo' )
-                            h6.bold-text= post.belongsTo.agencyName
-                        .card-body
-                        span.text-muted.post-date Posted on
-                            = moment(post.createdAt).format('MMM DD, YYYY')
-                        p.mt-2= post.message
-                        if post.image
-                            img.img-fluid.rounded-lg( src=post.image alt='agency posted image proof of gift delivery' )
-
-block scripts
+append scripts
     script.
-        $(document).ready(() => {
-            $('#communityPost').on('submit', (event) => {
-                event.preventDefault();
-
-                const $buttonUploadPostImage = $('#postImage');
-                const $postTextInput = $('#postText')
-                const formData = new FormData();
-
-                formData.append('postImage', $buttonUploadPostImage.prop('files')[0]);
-                formData.append('postText', $postTextInput.val());
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/community',
-                    data: formData,
-                    onSuccess: (res) => {
-                        if (data.statusCode >= 400) {
-                            showToast(data.error.msg);
-                            return;
-                        }
-                        showToast("Post published");
-                        location.reload();
-                    },
-                    onError: (error) => {
-                        showToast("Post could not be saved");
+        $(document).ready(function () {
+            const root = ReactRoot(document.querySelector('#app-root'));
+            root.render(
+                React.createElement(
+                    Community,
+                    {
+                        user: !{JSON.stringify(user || null)},
+                        posts: !{JSON.stringify(posts.reverse())}
                     }
-                })
-            });
-
-            $('#postImage').change(() => {
-                const $postImage = $('#postImage');
-                const image = postImage.prop('files')[0];
-
-                if (image) {
-                    const fileReader = new FileReader();
-                    fileReader.readAsDataURL(image);
-                    fileReader.addEventListener('load', () => {
-                        const imageElementContainer = document.getElementById('imagePreview');
-                        imageElementContainer.innerHTML = '<img class="display-image" src="' + this.result + '" />';
-                    });
-                }
-            });
-        });
+                )
+            );
+        })

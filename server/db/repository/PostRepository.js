@@ -9,7 +9,7 @@ module.exports = class PostRepository {
 
 	async getAllPosts() {
 		try {
-			return this.#postModel.find().populate('belongsTo');
+			return await this.#postModel.find().populate('belongsTo').lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to get all Posts: ${error}`);
 		}
