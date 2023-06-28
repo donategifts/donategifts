@@ -24,10 +24,6 @@ module.exports = class AdminController extends BaseController {
 
 	async handleGetIndex(_req, res, _next) {
 		try {
-			if (res.locals.user.userRole !== 'admin') {
-				return res.status(404).render('404');
-			}
-
 			const wishcards = await this.#wishCardRepository.getWishCardsByStatus('draft');
 			const wishCardsWithAgencyDetails = [];
 

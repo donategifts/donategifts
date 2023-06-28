@@ -15,37 +15,12 @@ const Utils = require('../helper/utils');
 
 const fileUpload = new FileUpload();
 
-router.get('/', Permissions.redirectLogin, profileController.handleGetIndex);
-
-router.put(
-	'/',
-	Validator.updateProfileValidationRules(),
-	Validator.validate,
-	Permissions.redirectLogin,
-	profileController.handlePutIndex,
-);
-
-router.post(
-	'/picture',
-	profileController.limiter,
-	fileUpload.upload.single('profileImage'),
-	Validator.validate,
-	Permissions.redirectLogin,
-	profileController.handlePostImage,
-);
-
-router.delete(
-	'/picture',
-	profileController.limiter,
-	Permissions.redirectLogin,
-	profileController.handleDeleteImage,
-);
+router.use(profileController.limiter);
 
 router.get('/password/reset', passwordController.handleGetReset);
 
 router.post(
 	'/password/reset',
-	profileController.limiter,
 	Validator.passwordRequestValidationRules(),
 	Validator.validate,
 	passwordController.handlePostReset,
@@ -60,15 +35,10 @@ router.get(
 
 router.post(
 	'/password/reset/:token',
-	profileController.limiter,
 	Validator.postPasswordResetValidationRules(),
 	Validator.validate,
 	passwordController.handlePostResetToken,
 );
-
-router.get('/logout', Permissions.redirectLogin, Utils.logoutUser);
-
-router.get('/donations', Permissions.redirectLogin, profileController.handleGetDonations);
 
 router.get(
 	'/verify/:hash',
@@ -76,5 +46,31 @@ router.get(
 	Validator.validate,
 	profileController.handleGetVerify,
 );
+
+// ------------ only logged in users from here on ------------
+
+router.use(Permissions.redirectLogin);
+
+router.get('/', profileController.handleGetIndex);
+
+router.put(
+	'/',
+	Validator.updateProfileValidationRules(),
+	Validator.validate,
+	profileController.handlePutIndex,
+);
+
+router.post(
+	'/picture',
+	fileUpload.upload.single('profileImage'),
+	Validator.validate,
+	profileController.handlePostImage,
+);
+
+router.delete('/picture', profileController.handleDeleteImage);
+
+router.get('/donations', profileController.handleGetDonations);
+
+router.get('/logout', Utils.logoutUser);
 
 module.exports = router;

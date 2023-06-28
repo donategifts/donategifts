@@ -8,6 +8,4 @@ const homeController = new HomeController();
 
 router.get('/', homeController.handleGetIndex);
 
-router.get('/health', homeController.handleGetHealth);
-
 module.exports = router;

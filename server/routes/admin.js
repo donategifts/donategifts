@@ -7,14 +7,12 @@ const router = express.Router();
 
 const adminController = new AdminController();
 
-router.get('/', Permissions.checkAdminPermission, adminController.handleGetIndex);
+router.use(Permissions.checkAdminPermission);
 
-router.put('/', Permissions.checkAdminPermission, adminController.handlePutIndex);
+router.get('/', adminController.handleGetIndex);
 
-router.get(
-	'/single/:wishCardId',
-	Permissions.checkAdminPermission,
-	adminController.handleGetWishCard,
-);
+router.put('/', adminController.handlePutIndex);
+
+router.get('/single/:wishCardId', adminController.handleGetWishCard);
 
 module.exports = router;

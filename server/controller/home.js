@@ -13,7 +13,6 @@ module.exports = class HomeController extends BaseController {
 		this.#agencyRepository = new AgencyRepository();
 		this.#wishCardRepository = new WishCardRepository();
 
-		this.handleGetHealth = this.handleGetHealth.bind(this);
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 	}
 
@@ -34,10 +33,6 @@ module.exports = class HomeController extends BaseController {
 		}
 
 		return christmasData;
-	}
-
-	handleGetHealth(_req, res, _next) {
-		res.json({ status: 'ok' });
 	}
 
 	async handleGetIndex(_req, res, _next) {

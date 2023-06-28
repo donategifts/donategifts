@@ -8,11 +8,7 @@ const PaymentProviderController = require('../controller/paymentProvider');
 const router = express.Router();
 const paymentProviderController = new PaymentProviderController();
 
-router.post(
-	'/createIntent',
-	Permissions.redirectLogin,
-	paymentProviderController.handlePostCreateIntent,
-);
+router.use(paymentProviderController.limiter);
 
 router.post(
 	'/webhook',
@@ -20,12 +16,12 @@ router.post(
 	paymentProviderController.handlePostWebhook,
 );
 
+router.use(Permissions.redirectLogin);
+
+router.post('/createIntent', paymentProviderController.handlePostCreateIntent);
+
 // called from frontend after stripe payment confirmation
 // redirect to a thank you page
-router.get(
-	'/success/:id&:totalAmount',
-	Permissions.redirectLogin,
-	paymentProviderController.handleGetPaymentSuccess,
-);
+router.get('/success/:id&:totalAmount', paymentProviderController.handleGetPaymentSuccess);
 
 module.exports = router;

@@ -10,56 +10,9 @@ const wishCardController = new WishCardController();
 
 const router = express.Router();
 
+router.use(wishCardController.limiter);
+
 router.get('/', wishCardController.handleGetIndex);
-
-router.post(
-	'/',
-	wishCardController.limiter,
-	Permissions.checkViewPermission,
-	fileUpload.upload.single('wishCardImage'),
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostIndex,
-);
-
-router.post(
-	'/guided/',
-	wishCardController.limiter,
-	Permissions.checkViewPermission,
-	fileUpload.upload.single('wishCardImage'),
-	Validator.createGuidedWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostGuided,
-);
-
-router.get(
-	'/edit/:id',
-	wishCardController.limiter,
-	Permissions.checkViewPermission,
-	wishCardController.handleGetEdit,
-);
-
-router.post(
-	'/edit/:id',
-	wishCardController.limiter,
-	Permissions.checkViewPermission,
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostEdit,
-);
-
-router.delete(
-	'/delete/:id',
-	wishCardController.limiter,
-	Permissions.checkViewPermission,
-	wishCardController.handleDeleteSingle,
-);
-
-router.get('/me', Permissions.checkViewPermission, wishCardController.handleGetMe);
-
-router.get('/create', Permissions.checkViewPermission, wishCardController.handleGetCreate);
-
-router.post('/search/:init?', wishCardController.handlePostSearch);
 
 router.get(
 	'/single/:id',
@@ -77,15 +30,6 @@ router.get(
 
 router.get('/get/random', wishCardController.handleGetRandom);
 
-// is this still needed? it does nothing actually
-router.put(
-	'/update/:id',
-	Permissions.checkViewPermission,
-	Validator.updateWishCardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePutUpdate,
-);
-
 router.post(
 	'/message',
 	Permissions.checkUserVerification,
@@ -94,14 +38,58 @@ router.post(
 	wishCardController.handlePostMessage,
 );
 
+router.post('/search/:init?', wishCardController.handlePostSearch);
+
+// ------------- only agencies and admins from here on -------------
+
+router.use(Permissions.isAdminOrAgency);
+
+router.get('/choose', wishCardController.handleGetChoose);
+
+router.post(
+	'/',
+	fileUpload.upload.single('wishCardImage'),
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostIndex,
+);
+
+router.post(
+	'/guided/',
+	fileUpload.upload.single('wishCardImage'),
+	Validator.createGuidedWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostGuided,
+);
+
+router.get('/edit/:id', wishCardController.handleGetEdit);
+
+router.post(
+	'/edit/:id',
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostEdit,
+);
+
+router.delete('/delete/:id', wishCardController.handleDeleteSingle);
+
+router.get('/me', wishCardController.handleGetMe);
+
+router.get('/create', wishCardController.handleGetCreate);
+
+// is this still needed? it does nothing actually
+router.put(
+	'/update/:id',
+	Validator.updateWishCardValidationRules(),
+	Validator.validate,
+	wishCardController.handlePutUpdate,
+);
+
 router.get(
 	'/defaults/:id',
-	Permissions.checkViewPermission,
 	Validator.getDefaultCardsValidationRules(),
 	Validator.validate,
 	wishCardController.handleGetDefaults,
 );
-
-router.get('/choose', Permissions.redirectLogin, wishCardController.handleGetChoose);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const AgencyRepository = require('../db/repository/AgencyRepository');
 
 module.exports = class Permissions {
-	static redirectLogin(_req, res, next) {
-		if (!res.locals.user) {
+	static redirectLogin(req, res, next) {
+		if (!req.session?.user) {
 			return res.redirect('/login');
 		}
 
@@ -10,14 +10,14 @@ module.exports = class Permissions {
 	}
 
 	static redirectProfile(req, res, next) {
-		if (req.session.user) {
+		if (req.session?.user) {
 			return res.redirect('/profile');
 		}
 
 		next();
 	}
 
-	static async checkViewPermission(req, res, next) {
+	static async isAdminOrAgency(req, res, next) {
 		const { user } = req.session;
 
 		if (!user) {
@@ -62,7 +62,7 @@ module.exports = class Permissions {
 		}
 
 		if (user.userRole !== 'admin') {
-			return res.status(404).render('error/404', { user: res.locals.user });
+			return res.status(404).render('error/404');
 		}
 
 		next();

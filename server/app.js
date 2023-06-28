@@ -186,6 +186,10 @@ app.use('/robots.txt', (_req, res, _next) => {
 	res.sendFile(path.join(__dirname, '../public/robots.txt'));
 });
 
+app.use('/health', (_req, res, _next) => {
+	res.status(200).json({ status: 'ok' });
+});
+
 if (process.env.MAINTENANCE_ENABLED === 'true') {
 	app.get('*', (_req, res) => {
 		res.status(200).render('maintenance');
