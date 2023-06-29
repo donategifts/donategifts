@@ -1,13 +1,18 @@
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../../config/config.env') });
+const path = require('node:path');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../config/config.env') });
+
+const mongoose = require('mongoose');
 const MongooseConnection = require('../server/db/connection');
-const { allUsers, wishcards, agency } = require('./seederData');
+
+const Agency = require('../server/db/models/Agency');
+const Contact = require('../server/db/models/Contact');
+const Donation = require('../server/db/models/Donation');
+const Message = require('../server/db/models/Message');
+const Post = require('../server/db/models/Post');
 const User = require('../server/db/models/User');
 const WishCard = require('../server/db/models/WishCard');
-const Agency = require('../server/db/models/Agency');
-const Message = require('../server/db/models/Message');
-const Donation = require('../server/db/models/Donation');
-const Utils = require('../server/helper/utils');
+
 const log = require('../server/helper/logger');
 
 (async () => {
@@ -16,112 +21,160 @@ const log = require('../server/helper/logger');
 		if (process.env.NODE_ENV === 'development') {
 			mongooseConnection.connect();
 
-			const createWishCard = async (partnerId, createdAgency, card) => {
-				await WishCard.create({
-					...card,
-					childFirstName: `${card.childFirstName}-${
-						card.status
-					}-${card.createdAt.toDateString()}`,
-					createdBy: partnerId,
-					belongsTo: createdAgency._id,
-				});
-			};
+			const addAgencies = async () => {
+				const agenciesData = require('./seeder-data/agencies.json');
 
-			const createDonation = async (donorId, agencyId, card) => {
-				const statusChoices = ['confirmed', 'ordered', 'delivered'];
-				// eslint-disable-next-line no-bitwise
-				const newStatus = statusChoices[(statusChoices.length * Math.random()) | 0];
-				await Donation.create({
-					donationFrom: donorId,
-					donationTo: agencyId,
-					donationCard: card._id,
-					donationPrice: card.wishItemPrice,
-
-					status: newStatus,
-				});
-			};
-
-			const createMessage = async (donor, card) => {
-				const allMessages = Utils.getMessageChoices(donor.fName, card.childFirstName);
-				// eslint-disable-next-line no-bitwise
-				const message = allMessages[(allMessages.length * Math.random()) | 0];
-				await Message.create({
-					messageFrom: donor._id,
-					messageTo: card._id,
-					// eslint-disable-next-line no-undef
-					message,
-				});
-			};
-
-			const createRecords = async () => {
-				const { donorUser, partnerUser, adminUser } = allUsers;
-				await User.insertMany([adminUser, partnerUser]);
-				const donor = await User.create(donorUser);
-				const partnerUserId = await User.findOne({ email: partnerUser.email })
-					.select('_id')
-					.lean()
-					.exec();
-				const createdAgency = await Agency.create({
-					...agency,
-					accountManager: partnerUserId,
-				});
-				await Promise.all(
-					wishcards.map(async (card) => {
-						await createWishCard(partnerUserId, createdAgency, card);
-					}),
-				);
-				const donatedCards = await WishCard.find({ status: 'donated' });
-				await Promise.all(
-					donatedCards.map(async (donatedCard) => {
-						await createDonation(donor._id, createdAgency, donatedCard);
-					}),
-				);
-
-				const allCards = await WishCard.find({});
-				await Promise.all(
-					allCards.map(async (card) => {
-						await createMessage(donor, card);
-					}),
+				log.info('Adding agencies to database...');
+				await Agency.insertMany(
+					agenciesData.map((agency) => ({
+						...agency,
+						_id: mongoose.Types.ObjectId(agency._id.$oid),
+						joined: new Date(agency.joined.$date),
+						accountManager: agency.accountManager
+							? mongoose.Types.ObjectId(agency.accountManager.$oid)
+							: null,
+					})),
 				);
 			};
 
-			const insertData = async () => {
-				await createRecords();
+			const addContacts = async () => {
+				const contactsData = require('./seeder-data/contacts.json');
+
+				log.info('Adding contacts to database...');
+				await Contact.insertMany(
+					contactsData.map((contact) => ({
+						...contact,
+						_id: mongoose.Types.ObjectId(contact._id.$oid),
+						sentDate: new Date(contact.sentDate.$date),
+					})),
+				);
+			};
+
+			const addDonations = async () => {
+				const donationsData = require('./seeder-data/donations.json');
+
+				log.info('Adding donations to database...');
+				await Donation.insertMany(
+					donationsData.map((donation) => ({
+						...donation,
+						_id: mongoose.Types.ObjectId(donation._id.$oid),
+						donationTo: mongoose.Types.ObjectId(donation.donationTo.$oid),
+						donationDate: new Date(donation.donationDate.$date),
+						donationFrom: donation.donationFrom
+							? mongoose.Types.ObjectId(donation.donationFrom.$oid)
+							: null,
+						donationCard: donation.donationCard
+							? mongoose.Types.ObjectId(donation.donationCard.$oid)
+							: null,
+					})),
+				);
+			};
+
+			const addMessages = async () => {
+				const messagesData = require('./seeder-data/messages.json');
+
+				log.info('Adding messages to database...');
+				await Message.insertMany(
+					messagesData.map((message) => ({
+						...message,
+						_id: mongoose.Types.ObjectId(message._id.$oid),
+						messageFrom: mongoose.Types.ObjectId(message.messageFrom.$oid),
+						messageTo: mongoose.Types.ObjectId(message.messageTo.$oid),
+						createdAt: new Date(message.createdAt.$date),
+					})),
+				);
+			};
+
+			const addPosts = async () => {
+				const postsData = require('./seeder-data/posts.json');
+
+				log.info('Adding posts to database...');
+				await Post.insertMany(
+					postsData.map((post) => ({
+						...post,
+						_id: mongoose.Types.ObjectId(post._id.$oid),
+						belongsTo: mongoose.Types.ObjectId(post.belongsTo.$oid),
+						createdAt: new Date(post.createdAt.$date),
+					})),
+				);
+			};
+
+			const addUsers = async () => {
+				const usersData = require('./seeder-data/users.json');
+
+				log.info('Adding users to database...');
+				await User.insertMany(
+					usersData.map((user) => ({
+						...user,
+						_id: mongoose.Types.ObjectId(user._id.$oid),
+						joined: new Date(user.joined.$date),
+						passwordResetTokenExpires: user.passwordResetTokenExpires
+							? new Date(user.passwordResetTokenExpires.$date)
+							: null,
+					})),
+				);
+			};
+
+			const addWishCards = async () => {
+				const wishCardsData = require('./seeder-data/wishcards.json');
+
+				log.info('Adding wish cards to database...');
+				await WishCard.insertMany(
+					wishCardsData.map((wishCard) => ({
+						...wishCard,
+						_id: mongoose.Types.ObjectId(wishCard._id.$oid),
+						childBirthday:
+							wishCard.childBirthday &&
+							typeof wishCard.childBirthday.$date === 'string'
+								? new Date(wishCard.childBirthday.$date)
+								: null,
+						createdBy: mongoose.Types.ObjectId(wishCard.createdBy.$oid),
+						deliveryDate: wishCard.deliveryDate
+							? new Date(wishCard.deliveryDate.$date)
+							: null,
+						createdAt: new Date(wishCard.createdAt.$date),
+						belongsTo: wishCard.belongsTo
+							? mongoose.Types.ObjectId(wishCard.belongsTo.$oid)
+							: null,
+						messages: wishCard.messages
+							? wishCard.messages.map((message) =>
+									mongoose.Types.ObjectId(message.$oid),
+							  )
+							: null,
+						isLockedBy: wishCard.isLockedBy
+							? mongoose.Types.ObjectId(wishCard.isLockedBy.$oid)
+							: null,
+						isLockedUntil: wishCard.isLockedUntil
+							? new Date(wishCard.isLockedUntil.$date)
+							: null,
+					})),
+				);
 			};
 
 			const deleteDataAndImport = async () => {
 				await Agency.deleteMany();
+				await Contact.deleteMany();
+				await Donation.deleteMany();
+				await Message.deleteMany();
+				await Post.deleteMany();
 				await User.deleteMany();
 				await WishCard.deleteMany();
-				await Message.deleteMany();
-				await Donation.deleteMany();
 
-				await createRecords();
+				await addAgencies();
+				await addContacts();
+				await addDonations();
+				await addMessages();
+				await addPosts();
+				await addUsers();
+				await addWishCards();
 			};
 
-			const destroyData = async () => {
-				await Agency.deleteMany();
-				await User.deleteMany();
-				await WishCard.deleteMany();
-				await Message.deleteMany();
-				await Donation.deleteMany();
-			};
+			await deleteDataAndImport();
 
-			if (process.argv[2] === '-d') {
-				log.info('calling destroyData, purging db');
-				await destroyData();
-			} else if (process.argv[2] === '-i') {
-				log.info('calling insertData, inserting new entries');
-				await insertData();
-			} else {
-				log.info('calling deleteDataAndImport, purging db and inserting new entries');
-				await deleteDataAndImport();
-			}
+			await mongooseConnection.disconnect();
 		}
 	} catch (error) {
 		log.error(error);
-		await mongooseConnection.disconnect();
-	} finally {
 		await mongooseConnection.disconnect();
 	}
 })();

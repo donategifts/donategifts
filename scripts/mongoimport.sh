@@ -5,23 +5,21 @@
 
 if [[ -n "$1" ]]
   then
-    mongoexport --uri="$1"  --collection=agencies  --out=agencies.json
-    mongoexport --uri="$1"  --collection=contacts  --out=contacts.json
-    mongoexport --uri="$1"  --collection=donations  --out=donations.json
-    mongoexport --uri="$1"  --collection=messages  --out=messages.json
-    mongoexport --uri="$1"  --collection=posts  --out=posts.json
-    mongoexport --uri="$1"  --collection=sessions  --out=sessions.json
-    mongoexport --uri="$1"  --collection=users  --out=users.json
-    mongoexport --uri="$1"  --collection=wishcards  --out=wishcards.json
-    
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=agencies --file=agencies.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=contacts --file=contacts.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=donations --file=donations.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=messages --file=messages.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=posts --file=posts.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=sessions --file=sessions.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=users --file=users.json
-    mongoimport --uri="mongodb://localhost/donategifts" --collection=wishcards --file=wishcards.json
+    mongoexport --uri="$1"  --collection=agencies  --out=seeder-data/agencies.json
+    mongoexport --uri="$1"  --collection=contacts  --out=seeder-data/contacts.json
+    mongoexport --uri="$1"  --collection=donations  --out=seeder-data/donations.json
+    mongoexport --uri="$1"  --collection=messages  --out=seeder-data/messages.json
+    mongoexport --uri="$1"  --collection=posts  --out=seeder-data/posts.json
+    mongoexport --uri="$1"  --collection=users  --out=seeder-data/users.json
+    mongoexport --uri="$1"  --collection=wishcards  --out=seeder-data/wishcards.json
+
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=agencies --file=seeder-data/agencies.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=contacts --file=seeder-data/contacts.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=donations --file=seeder-data/donations.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=messages --file=seeder-data/messages.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=posts --file=seeder-data/posts.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=users --file=seeder-data/users.json
+    # mongoimport --uri="mongodb://localhost/donategifts" --collection=wishcards --file=seeder-data/wishcards.json
 
     rm *.json
 fi

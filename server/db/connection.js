@@ -40,6 +40,7 @@ module.exports = class MongooseConnection extends BaseController {
 
 	async disconnect() {
 		try {
+			this.log.info('Disconnecting mongoose');
 			await this.#mongoose.disconnect();
 		} catch (error) {
 			this.log.error('Failed to disconnect mongoose:', error);
