@@ -10,35 +10,35 @@ module.exports = class Messaging {
 	static get templates() {
 		return {
 			emailTemplate: fs.readFileSync(
-				path.resolve(__dirname, '../resources/email/emailTemplate.html'),
+				path.resolve(__dirname, '../../resources/email/emailTemplate.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
 
 			donorDonationReceipt: fs.readFileSync(
-				path.resolve(__dirname, '../resources/email/donorDonationReceipt.html'),
+				path.resolve(__dirname, '../../resources/email/donorDonationReceipt.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
 
 			agencyDonationAlert: fs.readFileSync(
-				path.resolve(__dirname, '../resources/email/agencyDonationAlert.html'),
+				path.resolve(__dirname, '../../resources/email/agencyDonationAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
 
 			partnerDonationAlert: fs.readFileSync(
-				path.resolve(__dirname, '../resources/email/partnerDonationAlert.html'),
+				path.resolve(__dirname, '../../resources/email/partnerDonationAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
 
 			agencyVerified: fs.readFileSync(
-				path.resolve(__dirname, '../resources/email/agencyVerified.html'),
+				path.resolve(__dirname, '../../resources/email/agencyVerified.html'),
 				{
 					encoding: 'utf-8',
 				},
@@ -51,35 +51,38 @@ module.exports = class Messaging {
 			donationTemplateAttachments: [
 				{
 					filename: 'new-donate-gifts-logo-2.png',
-					path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+					path: path.resolve(
+						__dirname,
+						'../../resources/email/new-donate-gifts-logo-2.png',
+					),
 					cid: 'new-donate-gifts-logo-2.png',
 				},
 				{
 					filename: 'email-gifts-illustration-removebg-preview.png',
 					path: path.resolve(
 						__dirname,
-						'../resources/email/email-gifts-illustration-removebg-preview.png',
+						'../../resources/email/email-gifts-illustration-removebg-preview.png',
 					),
 					cid: 'email-gifts-illustration-removebg-preview.png',
 				},
 				{
 					filename: 'instagram2x.png',
-					path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/instagram2x.png'),
 					cid: 'instagram2x.png',
 				},
 				{
 					filename: 'telegram2x.png',
-					path: path.resolve(__dirname, '../resources/email/telegram2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/telegram2x.png'),
 					cid: 'telegram2x.png',
 				},
 				{
 					filename: 'mail2x.png',
-					path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/mail2x.png'),
 					cid: 'mail2x.png',
 				},
 				{
 					filename: 'website2x.png',
-					path: path.resolve(__dirname, '../resources/email/website2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/website2x.png'),
 					cid: 'website2x.png',
 				},
 			],
@@ -87,32 +90,35 @@ module.exports = class Messaging {
 			templateAttachments: [
 				{
 					filename: 'instagram2x.png',
-					path: path.resolve(__dirname, '../resources/email/instagram2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/instagram2x.png'),
 					cid: 'instagram2x.png', // same cid value as in the html img src
 				},
 				{
 					filename: 'telegram2x.png',
-					path: path.resolve(__dirname, '../resources/email/telegram2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/telegram2x.png'),
 					cid: 'telegram2x.png',
 				},
 				{
 					filename: 'website2x.png',
-					path: path.resolve(__dirname, '../resources/email/website2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/website2x.png'),
 					cid: 'website2x.png', // same cid value as in the html img src
 				},
 				{
 					filename: 'mail2x.png',
-					path: path.resolve(__dirname, '../resources/email/mail2x.png'),
+					path: path.resolve(__dirname, '../../resources/email/mail2x.png'),
 					cid: 'mail2x.png', // same cid value as in the html img src
 				},
 				{
 					filename: 'new-donate-gifts-logo-2.png',
-					path: path.resolve(__dirname, '../resources/email/new-donate-gifts-logo-2.png'),
+					path: path.resolve(
+						__dirname,
+						'../../resources/email/new-donate-gifts-logo-2.png',
+					),
 					cid: 'new-donate-gifts-logo-2.png', // same cid value as in the html img src
 				},
 				{
 					filename: 'Img1_2x.jpg',
-					path: path.resolve(__dirname, '../resources/email/Img1_2x.jpg'),
+					path: path.resolve(__dirname, '../../resources/email/Img1_2x.jpg'),
 					cid: 'Img1_2x.jpg', // same cid value as in the html img src
 				},
 			],
