@@ -22,16 +22,12 @@ jobs:
     steps:
       - uses: actions/checkout@3
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
       - uses: actions/setup-node@3
         with:
           node-version: 18
 
       - name: install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm install
 
       - name: lint
-        run: pnpm run lint
+        run: npm run lint
