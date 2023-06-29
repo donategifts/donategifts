@@ -59,7 +59,6 @@
 @import "legacy/home";
 @import "legacy/howTo";
 @import "legacy/loadingSpinner";
-@import "legacy/profile";
 @import "legacy/search";
 @import "legacy/signup";
 @import "legacy/stripe";
@@ -67,3 +66,7 @@
 @import "legacy/toast";
 @import "legacy/utils";
 @import "legacy/wishCardFull";
+
+// NOTE: currently WIP for updating the legacy styles
+@import "updated/footer";
+@import "updated/profile";

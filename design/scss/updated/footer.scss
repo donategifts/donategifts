@@ -1,0 +1,27 @@
+/*--------------------------------------------------------------
+    Footer
+--------------------------------------------------------------*/
+.footer-bar {
+	padding: 0.25rem 0 1rem 0;
+	font-size: 1rem;
+	color: $white;
+	text-align: center;
+	background: $navy-dark;
+	font-family: $font-body;
+	.support {
+		color: $custom-yellow;
+		font-weight: $semi-bold;
+		font-size: 1.25rem;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+.footer-item {
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+		color: $custom-yellow;
+	}
+}

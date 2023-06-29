@@ -4,22 +4,18 @@ body {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	overflow-x: hidden;
 }
 
 a {
 	font-family: $font-body;
+	color: inherit;
+	text-decoration: none;
 }
 
 .y-scroll {
 	overflow-y: scroll;
 	max-height: 100px;
-}
-
-.fa-user,
-.fa-bell,
-.fa-cogs,
-.fa-gift {
-	font-size: 2.4em;
 }
 
 .fa,
@@ -38,193 +34,12 @@ textarea {
 	background-color: transparentize($white, 0.5);
 }
 
-/* 
------------------------------
-Reusable Utils - Button
------------------------------
-*/
-%btn {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	outline: none;
-	padding: 12px 15px;
-	width: 100%;
-	border: 0.5px solid transparent;
-	transition: all 0.2s ease-in-out;
-	text-decoration: none;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
+img {
+	vertical-align: baseline;
 }
 
-%btn-lg {
-	padding: 1rem 2rem;
-	font-size: 1.3rem;
-	margin: 10px;
-	line-height: 1.2em;
-	transition: all 0.2s ease-in-out;
-	border: 0.15rem solid transparent;
-	display: inline-flex;
-	border-radius: 1rem;
-	-webkit-border-radius: 1rem;
-	-moz-border-radius: 1rem;
-	-ms-border-radius: 1rem;
-	-o-border-radius: 1rem;
-	outline: none;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-}
-
-%hover-navy {
-	background-color: $navy;
-	color: $white !important;
-	border: 0.15rem solid $white;
-	text-decoration: none;
-}
-
-.btn-orange-navy-lg {
-	@extend %btn-lg;
-	background-color: $custom-orange;
-	color: $white !important;
-	&:hover {
-		@extend %hover-navy;
-	}
-}
-
-.btn-white-navy-lg {
-	@extend %btn-lg;
-	background-color: $white;
-	color: $navy !important;
-	&:hover {
-		@extend %hover-navy;
-	}
-}
-
-%btn-long {
-	padding: 1rem 3rem;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	outline: none;
-	opacity: 1;
-	border: 0.15rem solid transparent;
-	border-radius: 1rem;
-	-webkit-border-radius: 1rem;
-	-moz-border-radius: 1rem;
-	-ms-border-radius: 1rem;
-	-o-border-radius: 1rem;
-	width: 40vw !important;
-	height: 8vh !important;
-	padding: 1rem 2rem;
-	font-size: 1.3rem;
-	margin: 10px;
-	line-height: 1.2em;
-	text-align: center !important;
-	align-items: center;
-	justify-content: center;
-}
-
-.btn-orange-navy-lg-long {
-	@extend %btn-long;
-	background-color: $custom-orange;
-	color: $white !important;
-	&:hover {
-		@extend %hover-navy;
-	}
-}
-
-.btn-disabled-long {
-	@extend %btn-long;
-	background-color: lighten($gray, 25%);
-	color: $white !important;
-}
-
-@media only screen and (max-width: 768px) {
-	.btn-disabled-long {
-		width: 80vw !important;
-	}
-	.btn-orange-navy-lg-long {
-		width: 80vw !important;
-	}
-}
-
-/* 
------------------------------
-Reusable Hero
------------------------------
-*/
-.hero {
-	text-align: center;
-	color: $white;
-	h1 {
-		@include font-styling($font-heading, 3.4em);
-		text-transform: uppercase;
-	}
-	h4 {
-		@include font-styling($font-body, 1.3rem);
-		padding-bottom: 0.5rem;
-	}
-}
-
-/*--------------------------------------------------------------
-    Footer
---------------------------------------------------------------*/
-.footer-bar {
-	padding: 10px 0;
-	font-size: 1rem;
-	color: $white;
-	text-align: center;
-	background: lighten($black, 5);
-}
-
-.footer-item {
-	text-decoration: none;
-
-	&:hover {
-		text-decoration: underline;
-		color: $custom-orange !important;
-	}
-}
-
-/* 
------------------------------
-Text Typing Effect 
------------------------------
-*/
-.typing {
-	// margin-left: 10px;
-	position: relative;
-	&:after {
-		content: '';
-		position: absolute;
-		width: 1px;
-		height: 60px;
-		border: 2px solid $white;
-		animation: blink 0.5s infinite ease;
-		-webkit-animation: blink 0.5s infinite ease;
-	}
-}
-
-@-webkit-keyframes blink {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-
-@keyframes blink {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+button:focus {
+	outline: 0;
 }
 
 /* 
@@ -398,136 +213,6 @@ move this later -- from home.ejs
 	}
 }
 
-/* 
------------------------------
-from profile.ejs/css
------------------------------
-*/
-.profile {
-	background-color: lighten($cream, 7) !important;
-	@include font-styling($font-body, 1rem);
-	.profile-welcome {
-		background: url('../img/profile-bg.png') bottom center no-repeat;
-		background-size: cover;
-		min-height: 40vh;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		h1 {
-			@include font-styling($font-heading, 3rem, $custom-orange);
-			text-transform: capitalize;
-			text-align: center;
-		}
-	}
-	&-button {
-		@extend %btn;
-		background-color: $custom-orange;
-		color: $white !important;
-		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
-		font-size: 1.25rem;
-		&:hover {
-			background-color: $navy;
-			color: $white;
-			border: 0.5px solid $navy;
-			text-decoration: none;
-		}
-	}
-	&-button-inverted {
-		@extend %btn;
-		background-color: $white;
-		border: 0.12rem solid $custom-orange;
-		color: $custom-orange !important;
-		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
-		font-size: 1.25rem;
-		&:hover {
-			background-color: $custom-orange;
-			color: $white !important;
-			text-decoration: none;
-		}
-	}
-	&-button-navy {
-		@extend %btn;
-		background-color: $navy;
-		color: $white !important;
-		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
-		font-size: 1.25rem;
-		&:hover {
-			background-color: $custom-orange;
-			color: $white;
-			text-decoration: none;
-		}
-	}
-	&-button-navy-inverted {
-		@extend %btn;
-		background-color: $white;
-		color: $navy !important;
-		border: 0.12rem solid $navy;
-		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
-		font-size: 1.25rem;
-		&:hover {
-			background-color: $navy;
-			color: $white !important;
-			text-decoration: none;
-		}
-	}
-	i {
-		color: $custom-orange;
-	}
-}
-
-.profile-panel {
-	background-color: $white;
-	padding: 1.75em;
-	border-radius: 0.5rem;
-	-webkit-border-radius: 0.5rem;
-	-moz-border-radius: 0.5rem;
-	-ms-border-radius: 0.5rem;
-	-o-border-radius: 0.5rem;
-	h4 {
-		@include font-styling($font-body, 1.6rem, lighten($black, 15), $semi-bold);
-		text-align: center;
-	}
-	span {
-		@include font-styling($font-body, 1.1rem, $custom-orange, $semi-bold);
-		margin-left: 1rem;
-	}
-	input {
-		border-bottom: 0.12rem solid $custom-orange;
-		color: $custom-orange;
-		width: 50%;
-	}
-	textarea {
-		border-bottom: 0.12rem solid $custom-orange;
-		color: $custom-orange;
-		width: 100%;
-	}
-}
-
-@media screen and (max-width: 755px) {
-	.profile-panel input {
-		width: 100%;
-	}
-}
-
-.profile-header {
-	padding: 1em 0;
-}
 
 /* ---- About me edit pencil ---- */
 .about-me-edit {
