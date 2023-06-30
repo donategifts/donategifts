@@ -1,7 +1,7 @@
 {
     "extends": [
         "../../.eslintrc",
-        "airbnb/hooks"
+        "plugin:react/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -11,8 +11,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-        "import"
+        "react"
     ],
     "rules": {
         "no-prototype-builtins": "off",
@@ -22,8 +21,7 @@
     },
     "env": {
         "browser": true,
-        "node": true,
-        "es2022": true
+        "node": true
     },
     "globals": {
         "React": false,

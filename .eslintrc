@@ -3,44 +3,6 @@
     "ecmaVersion": 2022
   },
   "extends": [
-    "airbnb-base",
-    "eslint:recommended",
-    "prettier"
-  ],
-  "plugins": [
-    "prettier"
-  ],
-  "env": {
-    "mocha": true
-  },
-  "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "lf"
-      }
-    ],
-    "no-console": [
-      "error",
-      {
-        "allow": [
-          "error"
-        ]
-      }
-    ],
-    "no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ],
-    "no-restricted-syntax": "off",
-    "camelcase": "off",
-    "no-plusplus": "off",
-    "consistent-return": "off",
-    "no-underscore-dangle": "off",
-    "global-require": "off",
-    "import/no-dynamic-require": "off",
-    "class-methods-use-this": "off"
-  }
+    "slurp-config"
+  ]
 }
