@@ -214,10 +214,7 @@ module.exports = class WishCardRepository {
 		return (
 			change &&
 			change.operationType === 'update' &&
-			change.updateDescription &&
-			change.updateDescription.updatedFields &&
-			change.updateDescription.updatedFields.status &&
-			change.updateDescription.updatedFields.status === status
+			change.updateDescription?.updatedFields?.status === status
 		);
 	}
 
@@ -252,6 +249,7 @@ module.exports = class WishCardRepository {
 		return undefined;
 	}
 
+	// TODO: check if this is still needed
 	watch() {
 		this.#wishCardChangeListener.on('change', async (change) => {
 			if (this.#wishcardIsOrdered(change)) {
