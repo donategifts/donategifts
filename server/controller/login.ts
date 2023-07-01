@@ -1,11 +1,13 @@
 import bcrypt from 'bcrypt';
+import { NextFunction, Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 
 import UserRepository from '../db/repository/UserRepository';
+import Utils from '../helper/utils';
 
 import BaseController from './basecontroller';
 
-module.exports = class LoginController extends BaseController {
+export default class LoginController extends BaseController {
 	private userRepository: UserRepository;
 
 	constructor() {
@@ -18,11 +20,11 @@ module.exports = class LoginController extends BaseController {
 		this.handlePostGoogleLogin = this.handlePostGoogleLogin.bind(this);
 	}
 
-	handleGetIndex(_req, res, _next) {
+	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		this.renderView(res, 'login');
 	}
 
-	async handlePostIndex(req, res, _next) {
+	async handlePostIndex(req: Request, res: Response, _next: NextFunction) {
 		const { email, password } = req.body;
 		const user = await this.userRepository.getUserByEmail(email.toLowerCase());
 		if (user) {
@@ -35,7 +37,7 @@ module.exports = class LoginController extends BaseController {
 				}
 
 				res.locals.user = user;
-				return res.status(200).send({ success: true, url: '/profile' });
+				return res.status(200).redirect('/profile');
 			}
 		}
 		this.handleError({ res, code: 403, error: 'Username and/or password incorrect' });
@@ -79,7 +81,7 @@ module.exports = class LoginController extends BaseController {
 						lName,
 						email,
 						password: Utils.createDefaultPassword(),
-						verificationHash: Messaging.createEmailVerificationHash(),
+						verificationHash: Utils.createEmailVerificationHash(),
 						userRole: 'donor',
 						loginMode: 'Google',
 						emailVerified: true,
@@ -179,4 +181,4 @@ module.exports = class LoginController extends BaseController {
 			mail: payload?.email || 'EmailUnset',
 		};
 	}
-};
+}

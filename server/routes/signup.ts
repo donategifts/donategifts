@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 
-const SignupController = require('../controller/signup');
-const Permissions = require('../middleware/permissions');
-const Validations = require('../middleware/validations');
+import SignupController from '../controller/signup';
+import Permissions from '../middleware/permissions';
+import Validations from '../middleware/validations';
 
 const router = express.Router();
 
@@ -28,4 +28,4 @@ router.post(
 
 router.get('/agency', Permissions.redirectLogin, signupController.handleGetAgency);
 
-module.exports = router;
+export default router;

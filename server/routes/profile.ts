@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
+
+import PasswordController from '../controller/password';
+import ProfileController from '../controller/profile';
+import Utils from '../helper/utils';
+import FileUpload from '../middleware/fileupload';
+import Permissions from '../middleware/permissions';
+import Validator from '../middleware/validations';
 
 const router = express.Router();
-
-const PasswordController = require('../controller/password');
-const ProfileController = require('../controller/profile');
-const Utils = require('../helper/utils');
-const FileUpload = require('../middleware/fileupload');
-const Permissions = require('../middleware/permissions');
-const Validator = require('../middleware/validations');
 
 const passwordController = new PasswordController();
 const profileController = new ProfileController();
@@ -72,4 +72,4 @@ router.get('/donations', profileController.handleGetDonations);
 
 router.get('/logout', Utils.logoutUser);
 
-module.exports = router;
+export default router;

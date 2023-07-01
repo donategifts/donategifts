@@ -1,19 +1,19 @@
-const { v4: UUIDV4 } = require('uuid');
-const moment = require('moment');
+import moment from 'moment';
+import { v4 as UUIDV4 } from 'uuid';
 
-const UserRepository = require('../db/repository/UserRepository');
-const BaseController = require('./basecontroller');
+import UserRepository from '../db/repository/UserRepository';
+import Messaging from '../helper/messaging';
+import Utils from '../helper/utils';
 
-const Messaging = require('../helper/messaging');
-const Utils = require('../helper/utils');
+import BaseController from './basecontroller';
 
-module.exports = class PasswordController extends BaseController {
-	#userRepository;
+export default class PasswordController extends BaseController {
+	private userRepository: UserRepository;
 
 	constructor() {
 		super();
 
-		this.#userRepository = new UserRepository();
+		this.userRepository = new UserRepository();
 
 		this.handleGetReset = this.handleGetReset.bind(this);
 		this.handlePostReset = this.handlePostReset.bind(this);
@@ -27,50 +27,51 @@ module.exports = class PasswordController extends BaseController {
 
 	async handlePostReset(req, res, _next) {
 		try {
-			const userObject = await this.#userRepository.getUserByEmail(req.body.email);
+			const userObject = await this.userRepository.getUserByEmail(req.body.email);
 
 			if (!userObject) {
-				return this.handleError(res, 400, 'user not found');
+				return this.handleError({ res, code: 400, error: 'user not found' });
 			}
 
 			const resetToken = UUIDV4();
 			userObject.passwordResetToken = resetToken;
-			userObject.passwordResetTokenExpires = moment().add(1, 'hours');
+			userObject.passwordResetTokenExpires = moment().add(1, 'hours').toDate();
 			userObject.save();
 
 			await Messaging.sendPasswordResetMail(userObject.email, resetToken);
 
 			res.send({ success: true });
 		} catch (error) {
-			return this.handleError(res, 400, error);
+			return this.handleError({ res, code: 400, error });
 		}
 	}
 
+	// FIXME: redirects to wrong template
 	async handleGetResetToken(req, res, _next) {
 		try {
-			const userObject = await this.#userRepository.getUserByPasswordResetToken(
+			const userObject = await this.userRepository.getUserByPasswordResetToken(
 				req.params.token,
 			);
 
 			if (userObject) {
-				if (new Date(userObject.passwordResetTokenExpires) > new Date()) {
+				if (new Date(String(userObject.passwordResetTokenExpires)) > new Date()) {
 					this.renderView(res, 'resetPassword', {
 						token: req.params.token,
 					});
 				} else {
-					return this.handleError(res, 400, 'Password token expired');
+					return this.handleError({ res, code: 400, error: 'Password token expired' });
 				}
 			} else {
-				return this.handleError(res, 400, 'User not found');
+				return this.handleError({ res, code: 400, error: 'User not found' });
 			}
 		} catch (error) {
-			return this.handleError(res, 400, error);
+			return this.handleError({ res, code: 400, error });
 		}
 	}
 
 	async handlePostResetToken(req, res) {
 		try {
-			const userObject = await this.#userRepository.getUserByPasswordResetToken(
+			const userObject = await this.userRepository.getUserByPasswordResetToken(
 				req.params.token,
 			);
 
@@ -88,13 +89,13 @@ module.exports = class PasswordController extends BaseController {
 
 					res.send({ success: true });
 				} else {
-					return this.handleError(res, 400, 'Password token expired');
+					return this.handleError({ res, code: 400, error: 'Password token expired' });
 				}
 			} else {
-				return this.handleError(res, 400, 'User not found');
+				return this.handleError({ res, code: 400, error: 'User not found' });
 			}
 		} catch (error) {
-			return this.handleError(res, 400, error);
+			return this.handleError({ res, code: 400, error });
 		}
 	}
-};
+}

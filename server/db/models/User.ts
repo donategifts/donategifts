@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
 
 interface User {
+	_id: string;
 	fName: string;
 	lName: string;
 	email: string;
 	verificationHash: string;
 	emailVerified: boolean;
 	password: string;
-	passwordResetToken: string;
-	passwordResetTokenExpires: Date;
+	passwordResetToken: string | null;
+	passwordResetTokenExpires: Date | null;
 	userRole: string;
 	joined: Date;
 	aboutMe: string;

@@ -57,8 +57,9 @@ export default class UserRepository {
 
 	async setUserEmailVerification(userId: string, verified: boolean) {
 		try {
-			return await this.userModel
+			await this.userModel
 				.updateOne({ _id: userId }, { $set: { emailVerified: verified } })
+				.lean()
 				.exec();
 		} catch (error) {
 			throw new Error(`Failed to set email verification: ${error}`);

@@ -1,39 +1,40 @@
-const fs = require('fs');
-const path = require('path');
+// TODO: fix ts-ignore
+import fs from 'fs';
+import path from 'path';
 
-const { Client, Collection, Events, GatewayIntentBits, REST, Routes } = require('discord.js');
+import { Client, Collection, Events, GatewayIntentBits, REST, Routes } from 'discord.js';
 
-const log = require('../helper/logger');
+import log from '../helper/logger';
 
-module.exports = class DGBot {
-	#commandsPath;
+export default class DGBot {
+	private commandsPath = '';
 
-	#commandFiles;
+	private commandFiles: string[] = [];
 
 	constructor() {
-		this.#getCommands();
+		this.getCommands();
 	}
 
-	#getCommands() {
-		this.#commandsPath = path.join(__dirname, 'commands');
-		this.#commandFiles = fs
-			.readdirSync(this.#commandsPath)
-			.filter((file) => file.endsWith('.js'));
+	private getCommands() {
+		this.commandsPath = path.join(__dirname, 'commands');
+		this.commandFiles = fs.readdirSync(this.commandsPath);
 	}
 
-	#isValidInteractionRequest(interaction) {
+	private isValidInteractionRequest(interaction) {
 		return interaction.isChatInputCommand(); // || interaction.isButton();
 	}
 
 	async initClient() {
 		const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+		// @ts-ignore
 		client.commands = new Collection();
 
-		for (const file of this.#commandFiles) {
-			const filePath = path.join(this.#commandsPath, file);
+		for (const file of this.commandFiles) {
+			const filePath = path.join(this.commandsPath, file);
 			const command = require(filePath);
 			if ('data' in command && 'execute' in command) {
+				// @ts-ignore
 				client.commands.set(command.data.name, command);
 			} else {
 				log.warn(
@@ -47,13 +48,15 @@ module.exports = class DGBot {
 		});
 
 		client.on(Events.InteractionCreate, async (interaction) => {
-			if (!this.#isValidInteractionRequest(interaction)) {
+			if (!this.isValidInteractionRequest(interaction)) {
 				return;
 			}
 
+			// @ts-ignore
 			const command = interaction.client.commands.get(interaction.commandName);
 
 			if (!command) {
+				// @ts-ignore
 				log.error(`No command matching ${interaction.commandName} was found.`);
 				return;
 			}
@@ -62,6 +65,7 @@ module.exports = class DGBot {
 				await command.execute(interaction);
 			} catch (error) {
 				log.error(error);
+				// @ts-ignore
 				await interaction.reply({
 					content: 'There was an error while executing this command!',
 					ephemeral: true,
@@ -75,23 +79,27 @@ module.exports = class DGBot {
 	async refreshCommands() {
 		const commands = [];
 
-		for (const file of this.#commandFiles) {
+		for (const file of this.commandFiles) {
 			const command = require(`./commands/${file}`);
+			// @ts-ignore
 			commands.push(command.data.toJSON());
 		}
 
-		const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+		const rest = new REST({ version: '10' }).setToken(String(process.env.DISCORD_TOKEN));
 
 		try {
 			log.info(`Started refreshing ${commands.length} application (/) commands.`);
 
-			const data = await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), {
-				body: commands,
-			});
+			const data = await rest.put(
+				Routes.applicationCommands(String(process.env.DISCORD_CLIENT_ID)),
+				{
+					body: commands,
+				},
+			);
 
-			log.info(`Successfully reloaded ${data.length} application (/) commands.`);
+			log.info(`Successfully reloaded ${(data as []).length} application (/) commands.`);
 		} catch (error) {
 			log.error(error);
 		}
 	}
-};
+}

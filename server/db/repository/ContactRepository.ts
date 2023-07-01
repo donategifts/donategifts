@@ -7,7 +7,7 @@ export default class ContactRepository {
 		this.contactModel = Contact;
 	}
 
-	async createNewContact(contactParams: Contact) {
+	async createNewContact(contactParams: Partial<Contact>) {
 		try {
 			return this.contactModel.create(contactParams);
 		} catch (error) {

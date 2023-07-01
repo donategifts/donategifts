@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const ProofController = require('../controller/proof');
+import ProofController from '../controller/proof';
 
 const proofController = new ProofController();
 
@@ -8,4 +8,4 @@ const router = express.Router();
 
 router.get('/', proofController.handleGetIndex);
 
-module.exports = router;
+export default router;

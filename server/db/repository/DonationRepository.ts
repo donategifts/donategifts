@@ -10,7 +10,7 @@ export default class DonationRepository {
 		this.donationModel = Donation;
 	}
 
-	async createNewDonation(params: Donation) {
+	async createNewDonation(params: Partial<Donation>) {
 		try {
 			return await this.donationModel.create(params);
 		} catch (error) {

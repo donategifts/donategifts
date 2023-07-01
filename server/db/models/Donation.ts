@@ -9,6 +9,7 @@ const Status = {
 export type STATUS = keyof typeof Status;
 
 interface Donation {
+	_id: string;
 	donationFrom: string;
 	donationTo: string;
 	donationCard: string;

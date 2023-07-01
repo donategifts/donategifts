@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 
-const WishCardController = require('../controller/wishcard');
-const FileUpload = require('../middleware/fileupload');
-const Permissions = require('../middleware/permissions');
-const Validator = require('../middleware/validations');
+import WishCardController from '../controller/wishcard';
+import FileUpload from '../middleware/fileupload';
+import Permissions from '../middleware/permissions';
+import Validator from '../middleware/validations';
 
 const fileUpload = new FileUpload();
 const wishCardController = new WishCardController();
@@ -77,14 +77,6 @@ router.get('/me', wishCardController.handleGetMe);
 
 router.get('/create', wishCardController.handleGetCreate);
 
-// is this still needed? it does nothing actually
-router.put(
-	'/update/:id',
-	Validator.updateWishCardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePutUpdate,
-);
-
 router.get(
 	'/defaults/:id',
 	Validator.getDefaultCardsValidationRules(),
@@ -92,4 +84,4 @@ router.get(
 	wishCardController.handleGetDefaults,
 );
 
-module.exports = router;
+export default router;

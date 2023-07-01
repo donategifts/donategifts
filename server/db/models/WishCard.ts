@@ -9,6 +9,7 @@ const Status = {
 export type STATUS = keyof typeof Status;
 
 interface WishCard {
+	_id: string;
 	childFirstName: string;
 	childLastName: string;
 	childBirthday: Date;

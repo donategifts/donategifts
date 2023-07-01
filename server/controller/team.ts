@@ -1,6 +1,6 @@
-const BaseController = require('./basecontroller');
+import BaseController from './basecontroller';
 
-module.exports = class TeamController extends BaseController {
+export default class TeamController extends BaseController {
 	constructor() {
 		super();
 
@@ -10,4 +10,4 @@ module.exports = class TeamController extends BaseController {
 	handleGetIndex(_req, res, _next) {
 		this.renderView(res, 'team');
 	}
-};
+}

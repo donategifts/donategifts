@@ -15,7 +15,7 @@ export default class PostRepository {
 		}
 	}
 
-	async createNewPost(postParams: Omit<Post, 'createdAt'>) {
+	async createNewPost(postParams: Partial<Post>) {
 		try {
 			await this.postModel.create(postParams);
 		} catch (error) {

@@ -15,4 +15,4 @@ router.put('/', adminController.handlePutIndex);
 
 router.get('/single/:wishCardId', adminController.handleGetWishCard);
 
-module.exports = router;
+export default router;

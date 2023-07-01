@@ -1,25 +1,27 @@
+import moment from 'moment';
+import paypal from 'paypal-rest-sdk';
+
+import AgencyRepository from '../db/repository/AgencyRepository';
+import DonationRepository from '../db/repository/DonationRepository';
+import UserRepository from '../db/repository/UserRepository';
+import WishCardRepository from '../db/repository/WishCardRepository';
+import Messaging from '../helper/messaging';
+import Utils from '../helper/utils';
+
+import BaseController from './basecontroller';
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
-const moment = require('moment');
-const paypal = require('paypal-rest-sdk');
 
-const BaseController = require('./basecontroller');
-const WishCardRepository = require('../db/repository/WishCardRepository');
-const UserRepository = require('../db/repository/UserRepository');
-const DonationRepository = require('../db/repository/DonationRepository');
-const AgencyRepository = require('../db/repository/AgencyRepository');
-const Messaging = require('../helper/messaging');
-const Utils = require('../helper/utils');
+export default class PaymentProviderController extends BaseController {
+	private lastWishcardDonation: string;
 
-module.exports = class PaymentProviderController extends BaseController {
-	#lastWishcardDonation;
+	private wishCardRepository: WishCardRepository;
 
-	#wishCardRepository;
+	private userRepository: UserRepository;
 
-	#userRepository;
+	private donationRepository: DonationRepository;
 
-	#donationRepository;
-
-	#agencyRepository;
+	private agencyRepository: AgencyRepository;
 
 	constructor() {
 		super();
@@ -30,31 +32,31 @@ module.exports = class PaymentProviderController extends BaseController {
 			client_secret: process.env.PAYPAL_SECRET,
 		});
 
-		this.#wishCardRepository = new WishCardRepository();
-		this.#userRepository = new UserRepository();
-		this.#donationRepository = new DonationRepository();
-		this.#agencyRepository = new AgencyRepository();
+		this.wishCardRepository = new WishCardRepository();
+		this.userRepository = new UserRepository();
+		this.donationRepository = new DonationRepository();
+		this.agencyRepository = new AgencyRepository();
 
-		this.#lastWishcardDonation = '';
+		this.lastWishcardDonation = '';
 
 		this.handlePostCreateIntent = this.handlePostCreateIntent.bind(this);
 		this.handleGetPaymentSuccess = this.handleGetPaymentSuccess.bind(this);
 		this.handlePostWebhook = this.handlePostWebhook.bind(this);
 	}
 
-	async #handleDonation({ service, userId, wishCardId, amount, userDonation, agencyName }) {
-		const user = await this.#userRepository.getUserByObjectId(userId);
-		const wishCard = await this.#wishCardRepository.getWishCardByObjectId(wishCardId);
-		const agency = await this.#agencyRepository.getAgencyByName(agencyName);
+	async handleDonation({ service, userId, wishCardId, amount, userDonation, agencyName }) {
+		const user = await this.userRepository.getUserByObjectId(userId);
+		const wishCard = await this.wishCardRepository.getWishCardByObjectId(wishCardId);
+		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
 			const emailResponse = await Messaging.sendDonationConfirmationMail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,
-				childName: wishCard.childFirstName,
-				item: wishCard.wishItemName,
-				price: wishCard.wishItemPrice,
+				childName: wishCard?.childFirstName,
+				item: wishCard?.wishItemName,
+				price: wishCard?.wishItemPrice,
 				agency: agencyName,
 			});
 
@@ -63,21 +65,23 @@ module.exports = class PaymentProviderController extends BaseController {
 				this.log.info(response);
 			}
 
-			await this.#donationRepository.createNewDonation({
-				donationFrom: user._id,
-				donationTo: wishCard.belongsTo,
-				donationCard: wishCard._id,
+			await this.donationRepository.createNewDonation({
+				donationFrom: user._id.toString(),
+				donationTo: wishCard!.belongsTo._id.toString(),
+				donationCard: wishCard!._id.toString(),
 				donationPrice: amount,
 			});
 
-			wishCard.status = 'donated';
-			wishCard.save();
+			wishCard!.status = 'donated';
+			wishCard!.save();
 
 			await Messaging.sendAgencyDonationAlert({
-				email: agency.accountManager.email,
-				item: wishCard.wishItemName,
-				price: wishCard.wishItemPrice,
-				childName: wishCard.childFirstName,
+				firstName: user.fName,
+				lastName: user.lName,
+				email: agency?.accountManager.email,
+				item: wishCard?.wishItemName,
+				price: wishCard?.wishItemPrice,
+				childName: wishCard?.childFirstName,
 				agency: agencyName,
 			});
 
@@ -85,9 +89,9 @@ module.exports = class PaymentProviderController extends BaseController {
 				user: user.fName,
 				service,
 				wishCard: {
-					item: wishCard.wishItemName,
-					url: wishCard.wishItemURL,
-					child: wishCard.childFirstName,
+					item: wishCard?.wishItemName,
+					url: wishCard?.wishItemURL,
+					child: wishCard?.childFirstName,
 				},
 				donation: {
 					amount,
@@ -100,7 +104,7 @@ module.exports = class PaymentProviderController extends BaseController {
 	async handlePostCreateIntent(req, res, _next) {
 		const { wishCardId, email, agencyName, userDonation } = req.body;
 		// Create a PaymentIntent with the order amount and currency
-		const wishCard = await this.#wishCardRepository.getWishCardByObjectId(wishCardId);
+		const wishCard = await this.wishCardRepository.getWishCardByObjectId(wishCardId);
 
 		if (wishCard) {
 			// By default stripe accepts "pennies" and we are storing in a full "dollars". 1$ == 100
@@ -145,20 +149,20 @@ module.exports = class PaymentProviderController extends BaseController {
 			try {
 				event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
-				if (this.#lastWishcardDonation !== event.data.object.metadata.wishCardId) {
-					this.#lastWishcardDonation = event.data.object.metadata.wishCardId;
+				if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
+					this.lastWishcardDonation = event.data.object.metadata.wishCardId;
 
-					await this.#handleDonation({
+					await this.handleDonation({
 						service: 'Stripe',
 						userId: event.data.object.metadata.userId,
-						wishcardId: event.data.object.metadata.wishCardId,
+						wishCardId: event.data.object.metadata.wishCardId,
 						amount: event.data.object.amount / 100,
 						userDonation: event.data.object.metadata.userDonation,
 						agencyName: event.data.object.metadata.agencyName,
 					});
 				}
-			} catch (err) {
-				res.status(400).send(`Webhook Error: ${err.message}`);
+			} catch (error) {
+				res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
 
@@ -179,7 +183,7 @@ module.exports = class PaymentProviderController extends BaseController {
 					const agencyName = data[3];
 					const amount = req.body.resource.purchase_units[0].amount.value;
 
-					await this.#handleDonation({
+					await this.handleDonation({
 						service: 'Paypal',
 						userId,
 						wishCardId,
@@ -197,14 +201,14 @@ module.exports = class PaymentProviderController extends BaseController {
 	async handleGetPaymentSuccess(req, res, _next) {
 		try {
 			const { id, totalAmount } = req.params;
-			const wishCard = await this.#wishCardRepository.getWishCardByObjectId(id);
+			const wishCard = await this.wishCardRepository.getWishCardByObjectId(id);
 			const currentDate = moment(Date.now());
 			const donationInformation = {
 				email: res.locals.user.email,
 				totalAmount,
 				orderDate: currentDate.format('MMM D YYYY'),
-				itemName: wishCard.wishItemName,
-				childName: wishCard.childFirstName,
+				itemName: wishCard?.wishItemName,
+				childName: wishCard?.childFirstName,
 			};
 
 			this.renderView(res, 'successPayment', {
@@ -214,4 +218,4 @@ module.exports = class PaymentProviderController extends BaseController {
 			this.handleError({ res, code: 400, error });
 		}
 	}
-};
+}

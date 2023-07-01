@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import AgencyRepository from '../db/repository/AgencyRepository';
 import PostRepository from '../db/repository/PostRepository';
 
@@ -25,8 +23,8 @@ export default class CommunityController extends BaseController {
 			const posts = (await this.postRepository.getAllPosts()).sort(
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
-			this.renderView(res, 'pages/community', { posts, moment });
-		} catch (error) {
+			this.renderView(res, 'pages/community', { posts });
+		} catch (error: any) {
 			return this.handleError({ res, code: 400, error });
 		}
 	}
@@ -59,7 +57,7 @@ export default class CommunityController extends BaseController {
 			const newPost = {
 				message: req.body.message,
 				image: profileImage,
-				belongsTo: agency!._id.toString(),
+				belongsTo: agency?._id.toString() || user._id.toString(),
 			};
 
 			await this.postRepository.createNewPost(newPost);
@@ -71,7 +69,7 @@ export default class CommunityController extends BaseController {
 			res.status(200).send({
 				posts,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			return this.handleError({ res, code: 400, error });
 		}
 	}

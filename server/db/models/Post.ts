@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 interface Post {
+	_id: string;
 	message: string;
 	image: string | null;
 	belongsTo: string;

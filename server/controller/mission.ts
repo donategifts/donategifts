@@ -1,6 +1,6 @@
-const BaseController = require('./basecontroller');
+import BaseController from './basecontroller';
 
-module.exports = class Mission extends BaseController {
+export default class Mission extends BaseController {
 	constructor() {
 		super();
 
@@ -10,4 +10,4 @@ module.exports = class Mission extends BaseController {
 	handleGetIndex(_req, res, _next) {
 		this.renderView(res, 'mission');
 	}
-};
+}

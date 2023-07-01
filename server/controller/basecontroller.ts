@@ -1,14 +1,15 @@
-import { rateLimit } from 'express-rate-limit';
+import { Response } from 'express';
+import { RateLimitRequestHandler, rateLimit } from 'express-rate-limit';
 
 import logger from '../helper/logger';
 
 export default class BaseController {
 	public log: typeof logger;
 
-	public limiter: typeof rateLimit;
+	public limiter: RateLimitRequestHandler;
 
 	constructor(limitTime = 15) {
-		this.log = log;
+		this.log = logger;
 
 		this.limiter = rateLimit({
 			windowMs: limitTime * 60 * 1000,
@@ -16,7 +17,7 @@ export default class BaseController {
 		});
 	}
 
-	renderView(res, template, templateVars = {}, status = 200) {
+	renderView(res: Response, template: string, templateVars = {}, status = 200) {
 		const parts = template.split('/');
 		let templateString = template;
 		if (parts[0] !== 'pages') {

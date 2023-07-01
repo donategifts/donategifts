@@ -1,20 +1,22 @@
-const AgencyRepository = require('../db/repository/AgencyRepository');
-const UserRepository = require('../db/repository/UserRepository');
-const Messaging = require('../helper/messaging');
-const Utils = require('../helper/utils');
+import { NextFunction, Request, Response } from 'express';
 
-const BaseController = require('./basecontroller');
+import AgencyRepository from '../db/repository/AgencyRepository';
+import UserRepository from '../db/repository/UserRepository';
+import Messaging from '../helper/messaging';
+import Utils from '../helper/utils';
 
-module.exports = class SignupController extends BaseController {
-	#userRepository;
+import BaseController from './basecontroller';
 
-	#agencyRepository;
+export default class SignupController extends BaseController {
+	private userRepository: UserRepository;
+
+	private agencyRepository: AgencyRepository;
 
 	constructor() {
 		super();
 
-		this.#userRepository = new UserRepository();
-		this.#agencyRepository = new AgencyRepository();
+		this.userRepository = new UserRepository();
+		this.agencyRepository = new AgencyRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostSignup = this.handlePostSignup.bind(this);
@@ -22,7 +24,7 @@ module.exports = class SignupController extends BaseController {
 		this.handlePostAgency = this.handlePostAgency.bind(this);
 	}
 
-	handleGetIndex(_req, res, _next) {
+	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		let userRole = null;
 
 		if (res.locals?.user) {
@@ -36,7 +38,7 @@ module.exports = class SignupController extends BaseController {
 		}
 	}
 
-	async #sendEmail(email, verificationHash) {
+	async sendEmail(email: string, verificationHash: string) {
 		const emailResponse = await Messaging.sendVerificationEmail(email, verificationHash);
 		const response = emailResponse ? emailResponse.data : '';
 		if (process.env.NODE_ENV === 'development') {
@@ -44,7 +46,7 @@ module.exports = class SignupController extends BaseController {
 		}
 	}
 
-	async handlePostSignup(req, res, _next) {
+	async handlePostSignup(req: Request, res: Response, _next: NextFunction) {
 		const { fName, lName, email, password, userRole, captchaToken } = req.body;
 
 		// validate captcha code. False if its invalid
@@ -61,7 +63,7 @@ module.exports = class SignupController extends BaseController {
 			});
 		}
 
-		const candidate = await this.#userRepository.getUserByEmail(email.toLowerCase());
+		const candidate = await this.userRepository.getUserByEmail(email.toLowerCase());
 
 		if (candidate) {
 			return this.handleError({
@@ -72,9 +74,9 @@ module.exports = class SignupController extends BaseController {
 		}
 
 		const hashedPassword = await Utils.hashPassword(password);
-		const verificationHash = Messaging.createEmailVerificationHash();
+		const verificationHash = Utils.createEmailVerificationHash();
 
-		const newUser = await this.#userRepository.createNewUser({
+		const newUser = await this.userRepository.createNewUser({
 			fName,
 			lName,
 			email: email.toLowerCase(),
@@ -85,49 +87,53 @@ module.exports = class SignupController extends BaseController {
 		});
 
 		try {
-			this.#sendEmail(email, verificationHash);
+			if (req) {
+				this.sendEmail(email, verificationHash);
 
-			let url = '';
-			req.session.user = newUser;
-			if (newUser.userRole === 'partner') {
-				url = '/signup/agency';
+				let url = '';
+				req.session.user = newUser;
+				if (newUser.userRole === 'partner') {
+					url = '/signup/agency';
+				} else {
+					url = '/profile';
+				}
+
+				return res.status(200).send({
+					url,
+					user: newUser,
+				});
 			} else {
-				url = '/profile';
+				return this.handleError({ res, code: 206, error: 'request already ended' });
 			}
-
-			return res.status(200).send({
-				url,
-				user: newUser,
-			});
 		} catch (error) {
 			return this.handleError({ res, code: 206, error });
 		}
 	}
 
-	async handleGetAgency(_req, res) {
+	async handleGetAgency(_req: Request, res: Response) {
 		this.renderView(res, 'agency');
 	}
 
-	async handlePostAgency(req, res, _next) {
+	async handlePostAgency(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { agencyName, agencyWebsite, agencyPhone, agencyBio, agencyAddress } = req.body;
 
-			const result = await this.#agencyRepository.createNewAgency({
+			const agency = await this.agencyRepository.createNewAgency({
 				...req.body,
 				agencyName,
 				agencyWebsite,
 				agencyPhone,
 				agencyBio,
 				agencyAddress,
-				accountManager: req.session.user._id,
+				accountManager: req.session.user?._id,
 			});
 
 			if (process.env.NODE_ENV !== 'test') {
 				await Messaging.sendAgencyVerificationNotification({
-					id: result.agency._id,
-					name: result.agency.agencyName,
-					website: result.agency.agencyWebsite,
-					bio: result.agency.agencyBio,
+					id: agency._id,
+					name: agency.agencyName,
+					website: agency.agencyWebsite,
+					bio: agency.agencyBio,
 				});
 			}
 
@@ -140,4 +146,4 @@ module.exports = class SignupController extends BaseController {
 			return this.handleError({ res, code: 400, error });
 		}
 	}
-};
+}

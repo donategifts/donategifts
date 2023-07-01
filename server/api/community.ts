@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-const CommunityController = require('../controller/community');
-const FileUpload = require('../middleware/fileupload');
+import CommunityController from '../controller/community';
+import FileUpload from '../middleware/fileupload';
 
 const router = express.Router();
 const communityController = new CommunityController();
@@ -9,4 +9,4 @@ const fileUpload = new FileUpload();
 
 router.post('/', fileUpload.upload.single('image'), communityController.handleAddPost);
 
-module.exports = router;
+export default router;

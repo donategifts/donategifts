@@ -1,6 +1,6 @@
 import BaseController from './basecontroller';
 
-module.exports = class HowToController extends BaseController {
+export default class HowToController extends BaseController {
 	constructor() {
 		super();
 
@@ -10,4 +10,4 @@ module.exports = class HowToController extends BaseController {
 	handleGetIndex(req, res) {
 		this.renderView(res, 'howto');
 	}
-};
+}

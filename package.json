@@ -7,8 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "build": "npm run clean && npm run gulp:build && npm run webpack:build",
-    "clean": "rimraf uploads public/css/*.css public/js/*.js",
+    "build": "npm run clean && npm run compile && npm run gulp:build && npm run webpack:build",
+    "clean": "rimraf uploads dist public/css/*.css public/js/*.js",
+    "compile": "tsc",
     "debug": "nodemon",
     "dev": "concurrently \"npm run debug\" \"npm run webpack:watch\" \"npm run gulp:watch\"",
     "gulp:build": "gulp",
@@ -17,7 +18,7 @@
     "lint:server": "eslint --ext .js server/",
     "lint:jsx": "eslint -c ./js/react/.eslintrc --ext .jsx js/react/",
     "prepare": "husky install",
-    "start": "node server/app.js",
+    "start": "node dist/index.js",
     "webpack:build": "webpack --mode=production",
     "webpack:watch": "webpack --mode=development --watch"
   },
@@ -69,6 +70,8 @@
     "@babel/plugin-transform-runtime": "7.22.5",
     "@babel/preset-env": "7.22.5",
     "@babel/preset-react": "7.22.5",
+    "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
     "autoprefixer": "10.4.13",
     "babel-loader": "9.1.2",
     "bootstrap": "5.3.0",

@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+
+import FaqController from '../controller/faq';
 
 const router = express.Router();
-const FaqController = require('../controller/faq');
 
 const faqController = new FaqController();
 
 router.get('/', faqController.handleGetIndex);
 
-module.exports = router;
+export default router;

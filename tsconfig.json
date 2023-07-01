@@ -5,7 +5,7 @@
             "ES2022",
         ],
         "outDir": "dist",
-        "module": "ES2022",
+        "module": "CommonJS",
         "moduleResolution": "Node",
         "strict": true,
         "resolveJsonModule": true,
@@ -13,6 +13,7 @@
         "skipLibCheck": true,
         "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
+        "typeRoots": ["./types", "./node_modules/@types"],
     },
     "include": [
         "server/**/*",

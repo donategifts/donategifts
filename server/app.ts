@@ -1,23 +1,25 @@
-require('dotenv').config({
+import path from 'path';
+
+import bodyParser from 'body-parser';
+import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { config } from 'dotenv';
+import express, { Request, Response } from 'express';
+import mongoSanitize from 'express-mongo-sanitize';
+import session from 'express-session';
+import requestIp from 'request-ip';
+import responseTime from 'response-time';
+
+import { routes as apiRoutes } from './api/';
+import MongooseConnection from './db/connection';
+import DGBot from './discord/bot';
+import log from './helper/logger';
+import { routes } from './routes/';
+
+config({
 	path: './config/config.env',
 });
-
-const fs = require('fs');
-const path = require('path');
-
-const bodyParser = require('body-parser');
-const MongoStore = require('connect-mongo');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const express = require('express');
-const mongoSanitize = require('express-mongo-sanitize');
-const session = require('express-session');
-const requestIp = require('request-ip');
-const responseTime = require('response-time');
-
-const MongooseConnection = require('./db/connection');
-const DGBot = require('./discord/bot');
-const log = require('./helper/logger');
 
 const app = express();
 
@@ -101,10 +103,10 @@ app.use(
 			// interval is now in minutes
 			autoRemoveInterval: 60,
 		}),
-		name: process.env.SESS_NAME,
+		name: String(process.env.SESS_NAME),
 		resave: false,
 		saveUninitialized: false,
-		secret: process.env.SESS_SECRET,
+		secret: String(process.env.SESS_SECRET),
 		cookie: {
 			maxAge: Number(process.env.SESS_LIFE),
 			sameSite: true,
@@ -115,10 +117,10 @@ app.use(
 
 // apply some of our environment variables to the app locals so that they can be used in the templates
 app.locals.env = {
-	stripe: process.env.STRIPE_KEY,
-	paypal: process.env.PAYPAL_CLIENT_ID,
-	facebook: process.env.FB_APP_ID,
-	google: process.env.G_CLIENT_ID,
+	stripe: String(process.env.STRIPE_KEY),
+	paypal: String(process.env.PAYPAL_CLIENT_ID),
+	facebook: String(process.env.FB_APP_ID),
+	google: String(process.env.G_CLIENT_ID),
 };
 
 app.use((req, res, next) => {
@@ -132,10 +134,10 @@ app.use((req, res, next) => {
 
 app.use(
 	express.json({
-		verify(req, _res, buf) {
+		verify(req: Request, _res: Response, buffer: Buffer) {
 			const url = req.originalUrl;
 			if (url.startsWith('/payment')) {
-				req.rawBody = buf.toString();
+				req.rawBody = buffer.toString();
 			}
 		},
 	}),
@@ -144,7 +146,6 @@ app.use(
 app.use(
 	bodyParser.urlencoded({
 		extended: true,
-		useUnifiedTopology: true,
 	}),
 );
 
@@ -158,29 +159,8 @@ app.use(
 
 app.use(cookieParser());
 
-const routes = fs.readdirSync(path.join(__dirname, './routes'));
-
-// dynamically mount all routes present in /routes folder
-for (const route of routes) {
-	if (fs.lstatSync(path.join(__dirname, `./routes/${route}`)).isFile()) {
-		const file = route.split('.')[0];
-		if (file === 'home') {
-			app.use('/', require(`./routes/${file}`));
-		} else {
-			app.use(`/${file}`, require(`./routes/${file}`));
-		}
-	}
-}
-
-const apis = fs.readdirSync(path.join(__dirname, './api'));
-
-// dynamically mount all api routes present in /api folder
-for (const api of apis) {
-	if (fs.lstatSync(path.join(__dirname, `./api/${api}`)).isFile()) {
-		const file = api.split('.')[0];
-		app.use(`/api/${file}`, require(`./api/${file}`));
-	}
-}
+app.use('/', routes);
+app.use('/api', apiRoutes);
 
 app.use('/robots.txt', (_req, res, _next) => {
 	res.type('text/plain');
@@ -213,12 +193,4 @@ app.use((err, req, res, _next) => {
 	res.status(500).render('error/500');
 });
 
-app.listen(process.env.PORT, () => {
-	log.info(`App listening on port ${process.env.PORT}`);
-});
-
-process.on('uncaughtException', (err) => {
-	log.error(err);
-});
-
-module.exports = app;
+export default app;

@@ -1,30 +1,31 @@
-const moment = require('moment');
+import moment from 'moment';
 
-const AgencyRepository = require('../db/repository/AgencyRepository');
-const MessageRepository = require('../db/repository/MessageRepository');
-const UserRepository = require('../db/repository/UserRepository');
-const WishCardRepository = require('../db/repository/WishCardRepository');
-const DefaultItems = require('../helper/defaultItems');
-const Utils = require('../helper/utils');
+import WishCard from '../db/models/WishCard';
+import AgencyRepository from '../db/repository/AgencyRepository';
+import MessageRepository from '../db/repository/MessageRepository';
+import UserRepository from '../db/repository/UserRepository';
+import WishCardRepository from '../db/repository/WishCardRepository';
+import * as DefaultItems from '../helper/defaultItems';
+import Utils from '../helper/utils';
 
-const BaseController = require('./basecontroller');
+import BaseController from './basecontroller';
 
-module.exports = class WishCardController extends BaseController {
-	#wishCardRepository;
+export default class WishCardController extends BaseController {
+	private wishCardRepository: WishCardRepository;
 
-	#agencyRepository;
+	private agencyRepository: AgencyRepository;
 
-	#userRepository;
+	private userRepository: UserRepository;
 
-	#messageRepository;
+	private messageRepository: MessageRepository;
 
 	constructor() {
 		super();
 
-		this.#wishCardRepository = new WishCardRepository();
-		this.#agencyRepository = new AgencyRepository();
-		this.#userRepository = new UserRepository();
-		this.#messageRepository = new MessageRepository();
+		this.wishCardRepository = new WishCardRepository();
+		this.agencyRepository = new AgencyRepository();
+		this.userRepository = new UserRepository();
+		this.messageRepository = new MessageRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
@@ -38,20 +39,19 @@ module.exports = class WishCardController extends BaseController {
 		this.handleGetSingle = this.handleGetSingle.bind(this);
 		this.handleGetDonate = this.handleGetDonate.bind(this);
 		this.handleGetRandom = this.handleGetRandom.bind(this);
-		this.handlePutUpdate = this.handlePutUpdate.bind(this);
 		this.handlePostMessage = this.handlePostMessage.bind(this);
 		this.handleGetDefaults = this.handleGetDefaults.bind(this);
 		this.handleGetChoose = this.handleGetChoose.bind(this);
 	}
 
-	async #getWishCardSearchResult(
+	async getWishCardSearchResult(
 		itemName,
 		childAge,
 		cardIds,
 		showDonated = false,
 		reverseSort = false,
 	) {
-		const fuzzySearchResult = await this.#wishCardRepository.getWishCardsFuzzy(
+		const fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
 			(itemName && itemName.trim()) || '',
 			showDonated,
 			reverseSort,
@@ -87,8 +87,13 @@ module.exports = class WishCardController extends BaseController {
 		);
 	}
 
-	async #getLockedWishCards(req) {
-		const response = {
+	async getLockedWishCards(req) {
+		const response: {
+			userId?: string;
+			wishCardId?: string;
+			alreadyLockedWishCard?: any;
+			error?: string;
+		} = {
 			wishCardId: req.params.id,
 		};
 
@@ -97,13 +102,13 @@ module.exports = class WishCardController extends BaseController {
 			return response;
 		}
 
-		const user = await this.#userRepository.getUserByObjectId(req.session.user._id);
+		const user = await this.userRepository.getUserByObjectId(req.session.user._id);
 		if (!user) {
 			response.error = 'User not found';
 			return response;
 		}
 		response.userId = user._id;
-		response.alreadyLockedWishCard = await this.#wishCardRepository.getLockedWishcardsByUserId(
+		response.alreadyLockedWishCard = await this.wishCardRepository.getLockedWishcardsByUserId(
 			req.session.user._id,
 		);
 
@@ -112,17 +117,19 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetIndex(_req, res, _next) {
 		try {
-			const wishcards = await this.#wishCardRepository.getAllWishCards();
+			const wishcards = await this.wishCardRepository.getAllWishCards();
+
+			const data = [] as unknown as WishCard & { age: number }[];
 
 			for (let i = 0; i < wishcards.length; i++) {
 				const birthday = moment(new Date(wishcards[i].childBirthday));
 				const today = moment(new Date());
 
-				wishcards[i].age = today.diff(birthday, 'years');
+				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
 			}
 
 			this.renderView(res, 'wishCards', {
-				wishcards,
+				wishcards: data,
 			});
 		} catch (error) {
 			this.handleError({ res, code: 400, error });
@@ -143,16 +150,16 @@ module.exports = class WishCardController extends BaseController {
 				const filePath =
 					process.env.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
-				const userAgency = await this.#agencyRepository.getAgencyByUserId(
+				const userAgency = await this.agencyRepository.getAgencyByUserId(
 					res.locals.user._id,
 				);
 
-				const newWishCard = await this.#wishCardRepository.createNewWishCard({
+				const newWishCard = await this.wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
 					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
-					belongsTo: userAgency._id,
+					belongsTo: userAgency?._id,
 					address: {
 						address1: req.body.address1,
 						address2: req.body.address2,
@@ -166,7 +173,7 @@ module.exports = class WishCardController extends BaseController {
 
 				this.log.info({
 					msg: 'Wishcard created',
-					agency: userAgency._id,
+					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
 
@@ -205,17 +212,17 @@ module.exports = class WishCardController extends BaseController {
 				}
 
 				itemChoice = JSON.parse(itemChoice);
-				const userAgency = await this.#agencyRepository.getAgencyByUserId(
+				const userAgency = await this.agencyRepository.getAgencyByUserId(
 					res.locals.user._id,
 				);
-				const newWishCard = await this.#wishCardRepository.createNewWishCard({
+				const newWishCard = await this.wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemName: itemChoice.Name,
 					wishItemPrice: Number(itemChoice.Price),
 					wishItemURL: itemChoice.ItemURL,
 					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
-					belongsTo: userAgency._id,
+					belongsTo: userAgency?._id,
 					address: {
 						address1,
 						address2,
@@ -230,7 +237,7 @@ module.exports = class WishCardController extends BaseController {
 				this.log.info({
 					mgs: 'Wishcard created',
 					type: 'wishcard_created',
-					agency: userAgency._id,
+					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
 				res.status(200).send({ success: true, url: '/wishcards/me' });
@@ -242,21 +249,21 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetEdit(req, res, _next) {
 		try {
-			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
 			if (res.locals.user.userRole !== 'admin') {
-				const userAgency = await this.#agencyRepository.getAgencyByUserId(
+				const userAgency = await this.agencyRepository.getAgencyByUserId(
 					res.locals.user._id,
 				);
 
-				if (wishcard.belongsTo._id.toString() !== userAgency._id.toString()) {
+				if (wishcard?.belongsTo._id.toString() !== userAgency?._id.toString()) {
 					return res.status(403).send({ success: false, url: '/profile' });
 				}
 			}
 
-			const agency = wishcard.belongsTo;
+			const agency = wishcard!.belongsTo;
 			const { agencyAddress } = agency;
-			const childBirthday = moment(wishcard.childBirthday).format('YYYY-MM-DD');
+			const childBirthday = moment(wishcard?.childBirthday).format('YYYY-MM-DD');
 
 			this.renderView(res, 'wishcardEdit', { wishcard, agencyAddress, childBirthday });
 		} catch (error) {
@@ -267,25 +274,23 @@ module.exports = class WishCardController extends BaseController {
 	async handlePostEdit(req, res, _next) {
 		try {
 			const { childBirthday, wishItemPrice } = req.body;
-			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
-			await this.#wishCardRepository.updateWishCard(wishcard._id, {
+			await this.wishCardRepository.updateWishCard(wishcard!._id, {
 				...req.body,
-				childBirthday: childBirthday ? new Date(childBirthday) : wishcard.childBirthday,
-				wishItemPrice: wishItemPrice ? Number(wishItemPrice) : wishcard.wishItemPrice,
+				childBirthday: childBirthday ? new Date(childBirthday) : wishcard?.childBirthday,
+				wishItemPrice: wishItemPrice ? Number(wishItemPrice) : wishcard?.wishItemPrice,
 				address: {
-					address1: req.body.address1 ? req.body.address1 : wishcard.address.address1,
-					address2: req.body.address2 ? req.body.address2 : wishcard.address.address2,
-					city: req.body.address_city
-						? req.body.address_city
-						: wishcard.address.address_city,
+					address1: req.body.address1 ? req.body.address1 : wishcard?.address.address1,
+					address2: req.body.address2 ? req.body.address2 : wishcard?.address.address2,
+					city: req.body.address_city ? req.body.address_city : wishcard?.address.city,
 					state: req.body.address_state
 						? req.body.address_state
-						: wishcard.address.address_state,
-					zip: req.body.address_zip ? req.body.address_zip : wishcard.address.address_zip,
+						: wishcard?.address.state,
+					zip: req.body.address_zip ? req.body.address_zip : wishcard?.address.zipcode,
 					country: req.body.address_country
 						? req.body.address_country
-						: wishcard.address.address_country,
+						: wishcard?.address.country,
 				},
 			});
 
@@ -296,7 +301,7 @@ module.exports = class WishCardController extends BaseController {
 
 			this.log.info({
 				mgs: 'Wishcard Updated',
-				wishCardId: wishcard.id,
+				wishCardId: wishcard?.id,
 			});
 
 			res.status(200).send({ success: true, url });
@@ -307,26 +312,26 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleDeleteSingle(req, res, _next) {
 		try {
-			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
-			const agency = wishcard.belongsTo;
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
+			const agency = wishcard!.belongsTo;
 
 			let url = '/wishcards/';
 
 			if (res.locals.user.userRole !== 'admin') {
-				const userAgency = await this.#agencyRepository.getAgencyByUserId(
+				const userAgency = await this.agencyRepository.getAgencyByUserId(
 					res.locals.user._id,
 				);
-				if (String(agency._id) !== String(userAgency._id)) {
+				if (String(agency._id) !== String(userAgency?._id)) {
 					return res.status(403).render('403');
 				}
 				url += 'me';
 			}
 
-			await this.#wishCardRepository.deleteWishCard(wishcard._id);
+			await this.wishCardRepository.deleteWishCard(wishcard!._id);
 
 			this.log.info({
 				mgs: 'Wishcard Deleted',
-				wishCardId: wishcard.id,
+				wishCardId: wishcard?.id,
 			});
 			res.status(200).send({ success: true, url });
 		} catch (error) {
@@ -336,8 +341,8 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetMe(_req, res, _next) {
 		try {
-			const userAgency = await this.#agencyRepository.getAgencyByUserId(res.locals.user._id);
-			const wishCards = await this.#wishCardRepository.getWishCardByAgencyId(userAgency._id);
+			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
+			const wishCards = await this.wishCardRepository.getWishCardByAgencyId(userAgency!._id);
 
 			const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
 			const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
@@ -382,7 +387,7 @@ module.exports = class WishCardController extends BaseController {
 				childAge = 0;
 			}
 
-			const results = await this.#getWishCardSearchResult(
+			const results = await this.getWishCardSearchResult(
 				wishitem,
 				childAge,
 				cardIds || [],
@@ -401,31 +406,28 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetSingle(req, res, _next) {
 		try {
-			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
 			// this agency object is returning undefined and breaking frontend
-			const agency = wishcard.belongsTo;
-			let birthday;
-			if (wishcard.childBirthday) {
-				birthday = moment(new Date(wishcard.childBirthday));
-				const today = moment(new Date());
-				wishcard.age = today.diff(birthday, 'years');
-			} else {
-				wishcard.age = 'Not Provided';
-			}
-
-			const messages = await this.#messageRepository.getMessagesByWishCardId(wishcard._id);
+			const agency = wishcard!.belongsTo;
+			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
 			let defaultMessages;
 			if (res.locals.user) {
 				defaultMessages = Utils.getMessageChoices(
 					res.locals.user.fName,
-					wishcard.childFirstName,
+					wishcard?.childFirstName,
 				);
 			}
 
 			this.renderView(res, 'wishCardFullPage', {
-				wishcard: wishcard || [],
-				agency: agency || [],
+				wishcard:
+					{
+						...wishcard,
+						age: wishcard?.childBirthday
+							? moment(new Date()).diff(wishcard?.childBirthday, 'years')
+							: 'Not Provided',
+					} || {},
+				agency: agency || {},
 				messages,
 				defaultMessages: defaultMessages || [],
 			});
@@ -436,22 +438,22 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetDonate(req, res, _next) {
 		try {
-			const wishcard = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
-			const agency = wishcard.belongsTo;
+			const agency = wishcard!.belongsTo;
 			const processingFee = 1.08;
 			const shipping = 'FREE';
 			const tax = 1.0712;
 
-			const totalItemCost = await Utils.calculateWishItemTotalPrice(wishcard.wishItemPrice);
+			const totalItemCost = await Utils.calculateWishItemTotalPrice(wishcard!.wishItemPrice);
 
 			const extendedPaymentInfo = {
 				processingFee: (
-					wishcard.wishItemPrice * processingFee -
-					wishcard.wishItemPrice
+					wishcard!.wishItemPrice * processingFee -
+					wishcard!.wishItemPrice
 				).toFixed(2),
 				shipping,
-				tax: (wishcard.wishItemPrice * tax - wishcard.wishItemPrice).toFixed(2),
+				tax: (wishcard!.wishItemPrice * tax - wishcard!.wishItemPrice).toFixed(2),
 				totalItemCost,
 				agency,
 			};
@@ -468,10 +470,10 @@ module.exports = class WishCardController extends BaseController {
 
 	async handleGetRandom(_req, res, _next) {
 		try {
-			let wishcards = await this.#wishCardRepository.getWishCardsByStatus('published');
+			let wishcards = await this.wishCardRepository.getWishCardsByStatus('published');
 
 			if (!wishcards || wishcards.length < 6) {
-				const donatedWishCards = await this.#wishCardRepository.getWishCardsByStatus(
+				const donatedWishCards = await this.wishCardRepository.getWishCardsByStatus(
 					'donated',
 				);
 
@@ -502,20 +504,10 @@ module.exports = class WishCardController extends BaseController {
 		}
 	}
 
-	async handlePutUpdate(req, res, _next) {
-		// what are we doing here?
-		try {
-			const result = await this.#wishCardRepository.getWishCardByObjectId(req.params.id);
-			result.save();
-		} catch (error) {
-			this.handleError({ res, code: 400, error });
-		}
-	}
-
 	async handlePostMessage(req, res, _next) {
 		try {
 			const { messageFrom, messageTo, message } = req.body;
-			const newMessage = await this.#messageRepository.createNewMessage({
+			const newMessage = await this.messageRepository.createNewMessage({
 				messageFrom,
 				messageTo,
 				message,
@@ -576,7 +568,7 @@ module.exports = class WishCardController extends BaseController {
 			let params = {};
 
 			if (user.userRole === 'partner') {
-				const agency = await this.#agencyRepository.getAgencyByUserId(user._id);
+				const agency = await this.agencyRepository.getAgencyByUserId(user._id);
 
 				if (!agency) {
 					return this.handleError({ res, code: 404, error: 'Agency Not Found' });
@@ -590,4 +582,4 @@ module.exports = class WishCardController extends BaseController {
 			return this.handleError({ res, code: 400, error });
 		}
 	}
-};
+}

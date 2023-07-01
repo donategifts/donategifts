@@ -1,7 +1,9 @@
-const AgencyRepository = require('../db/repository/AgencyRepository');
+import type { Request, Response, NextFunction } from 'express';
 
-module.exports = class Permissions {
-	static redirectLogin(req, res, next) {
+import AgencyRepository from '../db/repository/AgencyRepository';
+
+export default class Permissions {
+	static redirectLogin(req: Request, res: Response, next: NextFunction) {
 		if (!req.session?.user) {
 			return res.redirect('/login');
 		}
@@ -9,7 +11,7 @@ module.exports = class Permissions {
 		next();
 	}
 
-	static redirectProfile(req, res, next) {
+	static redirectProfile(req: Request, res: Response, next) {
 		if (req.session?.user) {
 			return res.redirect('/profile');
 		}
@@ -17,7 +19,7 @@ module.exports = class Permissions {
 		next();
 	}
 
-	static async isAdminOrAgency(req, res, next) {
+	static async isAdminOrAgency(req: Request, res: Response, next) {
 		const { user } = req.session;
 
 		if (!user) {
@@ -41,7 +43,7 @@ module.exports = class Permissions {
 		next();
 	}
 
-	static checkUserVerification(req, res, next) {
+	static checkUserVerification(req: Request, res: Response, next) {
 		const { user } = req.session;
 		if (!user) {
 			return res.status(403).redirect('/login');
@@ -54,7 +56,7 @@ module.exports = class Permissions {
 		next();
 	}
 
-	static checkAdminPermission(req, res, next) {
+	static checkAdminPermission(req: Request, res: Response, next) {
 		const { user } = req.session;
 
 		if (!user) {
@@ -67,4 +69,4 @@ module.exports = class Permissions {
 
 		next();
 	}
-};
+}

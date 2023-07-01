@@ -15,7 +15,7 @@ export default class MessageRepository {
 		}
 	}
 
-	async createNewMessage(messageParams: Message) {
+	async createNewMessage(messageParams: Partial<Message>) {
 		try {
 			return await this.messageModel.create(messageParams);
 		} catch (error) {

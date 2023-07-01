@@ -1,4 +1,5 @@
 import Agency from '../models/Agency';
+import User from '../models/User';
 
 export default class AgencyRepository {
 	private agencyModel: typeof Agency;
@@ -9,7 +10,19 @@ export default class AgencyRepository {
 
 	async getAgencyByUserId(userId: string) {
 		try {
-			return this.agencyModel.findOne({ accountManager: userId }).lean().exec();
+			return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
+		} catch (error) {
+			throw new Error(`Failed to get Agency: ${error}`);
+		}
+	}
+
+	async getAgencyByName(agencyName: string) {
+		try {
+			return await this.agencyModel
+				.findOne({ name: agencyName })
+				.populate<{ accountManager: User }>('accountManager')
+				.lean()
+				.exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency: ${error}`);
 		}
@@ -25,8 +38,9 @@ export default class AgencyRepository {
 
 	async verifyAgency(agencyId: string) {
 		try {
-			return this.agencyModel
+			return await this.agencyModel
 				.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
+				.populate<{ accountManager: User }>('accountManager')
 				.lean()
 				.exec();
 		} catch (error) {

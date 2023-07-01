@@ -3,17 +3,16 @@ const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '../config/config.env') });
 
 const mongoose = require('mongoose');
-const MongooseConnection = require('../server/db/connection');
 
-const Agency = require('../server/db/models/Agency');
-const Contact = require('../server/db/models/Contact');
-const Donation = require('../server/db/models/Donation');
-const Message = require('../server/db/models/Message');
-const Post = require('../server/db/models/Post');
-const User = require('../server/db/models/User');
-const WishCard = require('../server/db/models/WishCard');
-
-const log = require('../server/helper/logger');
+const MongooseConnection = require('../dist/db/connection').default;
+const Agency = require('../dist/db/models/Agency').default;
+const Contact = require('../dist/db/models/Contact').default;
+const Donation = require('../dist/db/models/Donation').default;
+const Message = require('../dist/db/models/Message').default;
+const Post = require('../dist/db/models/Post').default;
+const User = require('../dist/db/models/User').default;
+const WishCard = require('../dist/db/models/WishCard').default;
+const log = require('../dist/helper/logger').default;
 
 (async () => {
 	const mongooseConnection = new MongooseConnection();

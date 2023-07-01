@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 interface Agency {
+	_id: string;
 	agencyName: string;
 	agencyWebsite: string;
 	agencyPhone: string;

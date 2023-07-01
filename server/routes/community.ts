@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+
+import Community from '../controller/community';
 
 const router = express.Router();
-const Community = require('../controller/community');
 
 const communityController = new Community();
 
 router.get('/', communityController.handleGetIndex);
 
-module.exports = router;
+export default router;

@@ -1,17 +1,24 @@
-const { body, validationResult, param } = require('express-validator');
+import { NextFunction, Request, Response } from 'express';
+import { body, validationResult, param, Result, ValidationError } from 'express-validator';
 
-const UserRepository = require('../db/repository/UserRepository');
-const WishCardRepository = require('../db/repository/WishCardRepository');
-const log = require('../helper/logger');
-const Utils = require('../helper/utils');
+import UserRepository from '../db/repository/UserRepository';
+import WishCardRepository from '../db/repository/WishCardRepository';
+import log from '../helper/logger';
+import Utils from '../helper/utils';
 
-module.exports = class Validations {
-	static #handleError(res, code, errorMsg) {
+export default class Validations {
+	private static handleError(
+		res: Response,
+		code: number,
+		errorMsg: { name: string; statusCode: number } | Result<ValidationError> | string,
+	) {
 		let statusCode = 400;
 		let name = 'Error handler';
 		let error;
 
-		if (typeof errorMsg === 'object') {
+		if (errorMsg instanceof Result) {
+			error = errorMsg.array({ onlyFirstError: true })[0];
+		} else if (typeof errorMsg === 'object') {
 			if (errorMsg.name) {
 				name = errorMsg.name;
 			}
@@ -279,7 +286,7 @@ module.exports = class Validations {
 				.notEmpty()
 				.withMessage('Message From - User is required')
 				.custom(async (value) => {
-					const foundUser = await UserRepository.getUserByObjectId(value._id);
+					const foundUser = await new UserRepository().getUserByObjectId(value._id);
 					if (!foundUser) {
 						throw new Error('User Error - User not found');
 					}
@@ -289,7 +296,9 @@ module.exports = class Validations {
 				.notEmpty()
 				.withMessage('Message To - Wishcard is required')
 				.custom(async (value) => {
-					const foundWishcard = await WishCardRepository.getWishCardByObjectId(value._id);
+					const foundWishcard = await new WishCardRepository().getWishCardByObjectId(
+						value._id,
+					);
 					if (!foundWishcard) {
 						throw new Error('Wishcard Error - Wishcard not found');
 					}
@@ -325,11 +334,11 @@ module.exports = class Validations {
 		];
 	}
 
-	static validate(req, res, next) {
+	static validate(req: Request, res: Response, next: NextFunction) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return this.#handleError(res, 400, errors.array({ onlyFirstError: true })[0]);
+			return this.handleError(res, 400, errors);
 		}
 		next();
 	}
-};
+}

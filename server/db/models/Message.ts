@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 interface Message {
+	_id: string;
 	messageFrom: string;
 	messageTo: string;
 	message: string;

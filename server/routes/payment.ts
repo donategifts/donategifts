@@ -1,8 +1,8 @@
-const bodyParser = require('body-parser');
-const express = require('express');
+import bodyParser from 'body-parser';
+import express from 'express';
 
-const PaymentProviderController = require('../controller/paymentProvider');
-const Permissions = require('../middleware/permissions');
+import PaymentProviderController from '../controller/paymentProvider';
+import Permissions from '../middleware/permissions';
 
 const router = express.Router();
 const paymentProviderController = new PaymentProviderController();
@@ -23,4 +23,4 @@ router.post('/createIntent', paymentProviderController.handlePostCreateIntent);
 // redirect to a thank you page
 router.get('/success/:id&:totalAmount', paymentProviderController.handleGetPaymentSuccess);
 
-module.exports = router;
+export default router;

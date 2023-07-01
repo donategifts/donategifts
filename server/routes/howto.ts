@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+
+import HowToController from '../controller/howto';
 
 const router = express.Router();
-const HowToController = require('../controller/howto');
 
 const howToController = new HowToController();
 
 router.get('/', howToController.handleGetIndex);
 
-module.exports = router;
+export default router;

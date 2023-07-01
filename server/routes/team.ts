@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const TeamController = require('../controller/team');
+import TeamController from '../controller/team';
 
 const teamController = new TeamController();
 
@@ -8,4 +8,4 @@ const router = express.Router();
 
 router.get('/', teamController.handleGetIndex);
 
-module.exports = router;
+export default router;

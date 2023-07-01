@@ -300,13 +300,4 @@ const allAgesB = [
 	},
 ];
 
-module.exports = {
-	babies,
-	preschoolers,
-	kids6_8,
-	kids9_11,
-	teens,
-	youth,
-	allAgesA,
-	allAgesB,
-};
+export { babies, preschoolers, kids6_8, kids9_11, teens, youth, allAgesA, allAgesB };

@@ -22,19 +22,24 @@ pinoLogger.level = process.env.LOG_LEVEL || 'info';
 
 const logger = {
 	info: <T>(...args: T[]) => {
-		pinoLogger.info(args.reverse());
+		// @ts-ignore
+		pinoLogger.info(...args.reverse());
 	},
 	warn: <T>(...args: T[]) => {
-		pinoLogger.warn(args.reverse());
+		// @ts-ignore
+		pinoLogger.warn(...args.reverse());
 	},
 	error: <T>(...args: T[]) => {
-		pinoLogger.error(args.reverse());
+		// @ts-ignore
+		pinoLogger.error(...args.reverse());
 	},
 	critical: <T>(...args: T[]) => {
-		pinoLogger.fatal(args.reverse());
+		// @ts-ignore
+		pinoLogger.fatal(...args.reverse());
 	},
 	debug: <T>(...args: T[]) => {
-		pinoLogger.debug(args.reverse());
+		// @ts-ignore
+		pinoLogger.debug(...args.reverse());
 	},
 };
 
