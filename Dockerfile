@@ -16,7 +16,7 @@ RUN npm ci --omit=dev --ignore-scripts
 
 RUN npm rebuild
 
-COPY ./config/config-live.env ./config/config.env
+COPY ./config/config-test.env ./config/config.env
 
 EXPOSE 8080
 
