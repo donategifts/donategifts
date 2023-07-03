@@ -4,9 +4,9 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY package*.json ./
-
 COPY ./ .
+
+RUN ls -la
 
 RUN npm install --ignore-scripts
 
@@ -15,6 +15,8 @@ RUN npm run build
 RUN npm ci --omit=dev --ignore-scripts
 
 RUN npm rebuild
+
+COPY ./config/config-live.env ./config/config.env
 
 EXPOSE 8080
 
