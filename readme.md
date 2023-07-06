@@ -10,16 +10,16 @@ This web app offers users to send holiday gifts and school supplies to the child
 
 [https://donate-gifts.(com|org)](https://donate-gifts.com)
 
-## Author
+## Admin
 
-- Stacy Sealky Lee
+- [Stacy Sealky Lee](https://github.com/stacysealky)
+- [Marco Schuster](https://github.com/Enubia)
 
-## Contributors
+## Past Contributors
 
 - Patric Hoffmann
 - Ivan Repusic
 - Jacob Jeevan
-- Marco Schuster
 - Markell Richards
 - Maria Nguyen
 - Deep Patel

@@ -50,4 +50,14 @@ module.exports = class AgencyRepository {
 	async getUnverifiedAgencies() {
 		return this.#agencyModel.find({ isVerified: false }).exec();
 	}
+
+	async updateAgency(id, agencyFields) {
+		try {
+			return await this.#agencyModel
+				.updateOne({ accountManager: id }, { $set: { ...agencyFields } })
+				.exec();
+		} catch (error) {
+			throw new Error(`Failed to update agency details: ${error}`);
+		}
+	}
 };

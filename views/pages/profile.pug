@@ -40,9 +40,14 @@ block content
         if user.userRole == 'partner'
             .container
                 .profile-panel.mb-5.shadow
+                    img.profile-edit-icon( data-bs-toggle='modal'
+                        data-bs-target='#agencyDetailsModal'
+                        src='/svg/edit-profile.svg'
+                        alt='Edit Agency Details'
+                    )
                     .card-body
                         h2.pb-5 Agency Details
-                        form#accountDetails( method='POST' )
+                        form#agencyDetails( method='POST' )
                             .row.justify-content-center.mb-4
                                 .mb-2.col-lg-12.col-sm-12
                                     span.text-muted Agency name:
@@ -52,6 +57,13 @@ block content
                                         i.fas.fa-check-circle( aria-hidden='true' )
                                     else
                                         span.text-accent Not Verified
+                            .row.justify-content-center.mb-4
+                                .mb-2.col-lg-12.col-sm-12
+                                    span Agency description:
+                                    if agency.agencyBio
+                                        span#agencyBio.mx-2= agency.agencyBio
+                                    else
+                                        span.mx-2 Not provided
                             .row.justify-content-center.my-1
                                 .mb-2.col-lg-6.col-sm-12
                                     p
@@ -100,15 +112,13 @@ block content
                                             span Zipcode:
                                             span#zipcode.mx-2= agency.agencyAddress.zipcode
 
-                            .row.justify-content-center
-                                .mb-2.col-lg-12.col-sm-12
-                                    span Agency description:
-                                    if agency.agencyBio && agency.agencyBio.length
-                                        span#agencyBio.mx-2= agency.agencyBio
-                                    else
-                                        span.mx-2 Not provided
         .container
             .profile-panel.my-4.shadow
+                img.profile-edit-icon( data-bs-toggle='modal'
+                    data-bs-target='#accountDetailsModal'
+                    src='/svg/edit-profile.svg'
+                    alt='Edit Account Details'
+                )
                 .card-body
                     h2.pb-5 Account Details
                     form#accountDetails( method='POST' )
@@ -137,7 +147,7 @@ block content
                         .card-title
                             i.fa.fa-user( aria-hidden='true' )
                             span About Me
-                            img#update-about-me.about-me-edit( data-bs-toggle='modal'
+                            img#update-about-me.profile-edit-icon( data-bs-toggle='modal'
                                 data-bs-target='#aboutMeModal'
                                 src='/svg/edit-profile.svg'
                                 alt='Edit profile'
@@ -178,20 +188,89 @@ block modal
         .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
             .modal-content
                 .modal-header
-                    h5#exampleModalLongTitle.modal-title.rale-font.grn-font.bold-text Edit about me
+                    h5#exampleModalLongTitle.modal-title Edit about me
                     button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
-                .modal-body.rale-font
+                .modal-body
                     .container-fluid
                         if user.aboutMe
                             textarea#about-me-text.textarea-about-me= user.aboutMe
                         else
                             textarea#about-me-text.textarea-about-me
-                .modal-footer
-                    button#save-about-me-button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Save
+                .modal-footer.d-flex.justify-content-center
+                    button#save-about-me-button.button-primary( type='button' data-bs-dismiss='modal' ) Save
+
+    #accountDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+        .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+            .modal-content
+                .modal-header
+                    h5#exampleModalLongTitle.modal-title.mx-2 Edit Account Details
+                    button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                .modal-body
+                    .container-fluid
+                        .row.justify-content-center.my-2
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='fName' ) First Name:
+                                input#fName.mx-2.edit-input( type='text' name='fName' placeholder= user.fName )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='lName' ) Last Name:
+                                input#lName.mx-2.edit-input( type='text' name='lName' placeholder= user.lName )
+                .modal-footer.d-flex.justify-content-center
+                    button#save-account-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
+
+    #agencyDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+        .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+            .modal-content
+                .modal-header
+                    h5#exampleModalLongTitle.modal-title.mx-2 Edit Agency Details
+                    button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                .modal-body
+                    .container-fluid
+                        .row.justify-content-center.my-2
+                            label( for='agencyBio' ) Agency Description:
+                            textarea#agencyBio.edit-input( name='agencyBio' placeholder=agency.agencyBio rows='3' )
+                        .row.justify-content-center.my-2
+                            label( for='agencyPhone' ) Contact Number:
+                            input#agencyPhone.mx-2.edit-input( type='text' name='agencyPhone' placeholder= agency.agencyPhone )
+                        .row.justify-content-center.my-2
+                            label( for='agencyWebsite' ) Website:
+                            input#agencyWebsite.mx-2.edit-input( type='text' name='agencyWebsite' placeholder= agency.agencyWebsite )
+                        .row.justify-content-center.my-2
+                            label( for='address1' ) Address Line 1:
+                            input#address1.mx-2.edit-input( type='text' name='address1' placeholder= agency.agencyAddress.address1 )
+                        .row.justify-content-center.my-2
+                            label( for='address2' ) Address Line 2:
+                            input#address1.mx-2.edit-input( type='text' name='address2' placeholder= agency.agencyAddress.address2 )
+                        .row.justify-content-center.my-2
+                            label( for='city' ) City:
+                            input#city.mx-2.edit-input( type='text' name='city' placeholder= agency.agencyAddress.city )
+                        .row.justify-content-center.my-2
+                            label( for='state' ) State:
+                            input#state.mx-2.edit-input( type='text' name='state' placeholder= agency.agencyAddress.state )
+                        .row.justify-content-center.my-2
+                            label( for='country' ) Country:
+                            input#country.mx-2.edit-input( type='text' name='country' placeholder= agency.agencyAddress.country )
+                        .row.justify-content-center.my-2
+                            label( for='zipcode' ) Zipcode:
+                            input#zipcode.mx-2.edit-input( type='text' name='zipcode' placeholder= agency.agencyAddress.zipcode )
+                .modal-footer.d-flex.justify-content-center
+                    button#save-agency-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
 
 block scripts
     script.
         $(document).ready(() => {
+            $('[placeholder]').focus(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                }
+            }).blur(function() {
+                var input = $(this);
+                if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                }
+            }).blur();
             $('#save-about-me-button').click(() => {
                 $.ajax({
                     type: 'PUT',
@@ -206,6 +285,64 @@ block scripts
                     },
                     error: (_) => {
                         showToast('Could not update about me info.');
+                    }
+                });
+            });
+
+            $('#save-account-details').click(() => {
+                const fName = $('input#fName').val();
+                const lName = $('input#lName').val();
+                console.log(fName, lName)
+                $.ajax({
+                    type: 'PUT',
+                    url: '/profile/account',
+                    data: { fName, lName },
+                    success: (response) => {
+                        if (response.error) {
+                            return showToast('Error: Could not update account details');
+                        }
+                        showToast('Success: Updated your account details', true);
+                        console.log("response from ajax call ", response); // not updating correctly after refresh
+                        $('#fName').text(response.data.fName);
+                        $('#lName').text(response.data.lName);
+                    },
+                    error: (_) => {
+                        showToast('Error: Could not update account details');
+                    }
+                });
+            });
+
+            $('#save-agency-details').click(() => {
+                const agencyBio = $('textarea#agencyBio').val();
+                const agencyPhone = $('input#agencyPhone').val();
+                const agencyWebsite = $('input#agencyWebsite').val();
+                const address1 = $('input#address1').val();
+                const address2 = $('input#address2').val();
+                const city = $('input#city').val();
+                const state = $('input#state').val();
+                const country = $('input#country').val();
+                const zipcode = $('input#zipcode').val();
+                $.ajax({
+                    type: 'PUT',
+                    url: '/profile/agency',
+                    data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode },
+                    success: (response) => {
+                        if (response.error) {
+                            return showToast('Error: Could not update agency details');
+                        }
+                        showToast('Success: Updated your agency details', true);
+                        $('#agencyBio').text(response.data.agencyBio);
+                        $('#agencyPhone').text(response.data.agencyPhone);
+                        $('#agencyWebsite').text(response.data.agencyWebsite);
+                        $('#address1').text(response.data.address1);
+                        $('#address2').text(response.data.address2);
+                        $('#city').text(response.data.city);
+                        $('#state').text(response.data.state);
+                        $('#country').text(response.data.country);
+                        $('#zipcode').text(response.data.zipcode);
+                    },
+                    error: (_) => {
+                        showToast('Error: Could not update agency details');
                     }
                 });
             });

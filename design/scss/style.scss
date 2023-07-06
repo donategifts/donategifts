@@ -55,12 +55,6 @@ move this later -- from home.ejs
 	}
 }
 
-.thanks {
-	h1 {
-		@include font-styling($font-heading, 2.5rem, $custom-green, $medium);
-		text-align: center;
-	}
-}
 
 // TODO: this stuff is for createWishcard.ejs and will be moved later
 .create-wish {
@@ -213,27 +207,11 @@ move this later -- from home.ejs
 	}
 }
 
-
-/* ---- About me edit pencil ---- */
-.about-me-edit {
-	position: relative;
-	float: right;
-	margin-top: 1em;
-	margin-right: 0.5em;
-	width: 1.5em;
-	height: 1.5em;
-	cursor: pointer;
-}
-
-.textarea-about-me {
-	position: relative;
-	display: flex;
-	margin: auto;
-	padding: auto;
-	width: inherit;
-	height: inherit;
-}
-
+/* 
+-----------------------------
+team
+-----------------------------
+*/
 .team {
 	padding: 1.5rem;
 	&-card {
@@ -267,6 +245,11 @@ move this later -- from home.ejs
 	}
 }
 
+/* 
+-----------------------------
+wishcards
+-----------------------------
+*/
 .wishcards {
 	position: relative;
 	padding: 3em 0;

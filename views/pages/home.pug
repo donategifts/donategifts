@@ -68,9 +68,9 @@ block content
                             | partnered
                             br
                             | with DonateGifts
-    .partners-container.mb-5
+    .partners-container.mb-5.mt-5
         h1.mt-3 Our Partner Agencies
-        .container-fluid
+        .container-fluid.pb-4
             .small3
                 ul.small-ul.px-0( data-small3='' )
                     li
@@ -121,25 +121,25 @@ block content
                 span.small-span
                     i.fa.fa-arrow-circle-left.fa-2x
 
-    .thanks.custom-wrapper.py-5
-        #about.container
+    .info-section.py-3.my-4
+        .container.pb-4.mb-3
             h1.mb-3 We Need Your Help
             .row
-                .col-md-6.order-1.p-5
-                    img.img-fluid.grn-box( src='/img/kids-cover.jpg' alt='donation drop off near me' loading='lazy' )
-                .col-md-6.text-center.py-5.px-3
-                    p.text-start.subtext.quick-font
-                        | 500,000+ kids spend time in foster care each year and
-                        | 4.2M+ youth are homeless in the United States.
-                        | For many of them, Christmas time can be sad and lonely because they are undergoing stressful situations.
+                .col-lg-6.col-12.p-5.d-flex.justify-content-end
+                    img.img-fluid( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
+                .col-lg-6.col-12.p-5.d-flex.flex-column
+                    p.pb-4
+                        | Over 500,000 kids spend time in foster care each year and
+                        | over 4.2 million youth are homeless in the United States.
+                        | For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations.
                         | With your
                         | generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By
                         | creating this platform, we wish to provide effortless and convenient ways to share the joy of the
                         | holidays.
                         br
+                        br
                         | Your gifts make it possible to bring happiness to the kids.
-                    a.btn.button--green.quick-font.text-white( href='/contact' ) How To Contact Us
-
+                    a.button-primary.d-flex.justify-content-center.w-50( href='/contact' ) Contact DonateGifts
 block modal
     include ../components/modal/wishcardDonationModal.pug
     include ../components/modal/loginModal.pug

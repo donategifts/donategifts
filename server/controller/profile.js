@@ -23,6 +23,8 @@ module.exports = class ProfileController extends BaseController {
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePutIndex = this.handlePutIndex.bind(this);
+		this.handleUpdateAccount = this.handleUpdateAccount.bind(this);
+		this.handleUpdateAgency = this.handleUpdateAgency.bind(this);
 		this.handlePostImage = this.handlePostImage.bind(this);
 		this.handleDeleteImage = this.handleDeleteImage.bind(this);
 		this.handleGetDonations = this.handleGetDonations.bind(this);
@@ -51,6 +53,7 @@ module.exports = class ProfileController extends BaseController {
 				);
 
 				this.renderView(res, 'profile', {
+					user,
 					agency,
 					wishCardsLength,
 					draftWishcards,
@@ -85,6 +88,90 @@ module.exports = class ProfileController extends BaseController {
 				success: true,
 				error: null,
 				data: aboutMe,
+			});
+		} catch (err) {
+			return this.handleError(res, 400, err);
+		}
+	}
+
+	async handleUpdateAccount(req, res, _next) {
+		try {
+			const { fName, lName } = req.body;
+
+			if (!res.locals.user) {
+				return this.handleError(res, 403, 'No user id in request');
+			}
+
+			const user = await this.#userRepository.getUserByObjectId(res.locals.user._id);
+
+			if (!user) {
+				return this.handleError(res, 404, 'User could not be found');
+			}
+
+			await this.#userRepository.updateUserById(user._id, { fName, lName });
+
+			res.status(200).send({
+				success: true,
+				error: null,
+				data: { fName, lName },
+			});
+		} catch (err) {
+			return this.handleError(res, 400, err);
+		}
+	}
+
+	async handleUpdateAgency(req, res, _next) {
+		try {
+			const {
+				agencyBio,
+				agencyPhone,
+				agencyWebsite,
+				address1,
+				address2,
+				city,
+				state,
+				country,
+				zipcode,
+			} = req.body;
+
+			if (!res.locals.user) {
+				return this.handleError(res, 403, 'No user id in request');
+			}
+
+			const accountManager = await this.#agencyRepository.getAgencyByUserId(
+				res.locals.user._id,
+			);
+
+			if (!accountManager) {
+				return this.handleError(res, 404, 'Agency could not be found');
+			}
+
+			await this.#agencyRepository.updateAgency(accountManager, {
+				agencyBio,
+				agencyPhone,
+				agencyWebsite,
+				address1,
+				address2,
+				city,
+				state,
+				country,
+				zipcode,
+			});
+
+			res.status(200).send({
+				success: true,
+				error: null,
+				data: {
+					agencyBio,
+					agencyPhone,
+					agencyWebsite,
+					address1,
+					address2,
+					city,
+					state,
+					country,
+					zipcode,
+				},
 			});
 		} catch (err) {
 			return this.handleError(res, 400, err);

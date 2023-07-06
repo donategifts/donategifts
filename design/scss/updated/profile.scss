@@ -62,3 +62,46 @@
 		color: $custom-orange;
 	}
 }
+
+/*--------------------------------------------------------------
+    Profile Edit
+--------------------------------------------------------------*/
+.profile-edit-icon {
+	position: relative;
+	float: right;
+	margin-top: 1em;
+	margin-right: 0.5em;
+	width: 1.5em;
+	height: 1.5em;
+	cursor: pointer;
+}
+
+.edit-input {
+	border: 1px solid $navy;
+	border-radius: 0.25rem;
+	background-color: $gray-100;
+}
+
+#accountDetailsModal, #agencyDetailsModal, #aboutMeModal {
+	h5 {
+		@include font-styling($font-body, 1.25rem, $navy, $semi-bold);
+	}
+	.modal-body {
+		@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+	}
+	.modal-footer button {
+		width: 30%;
+	}
+	input::placeholder, textarea::placeholder {
+		color: $navy-dark !important;
+	}
+}
+
+.textarea-about-me {
+	position: relative;
+	display: flex;
+	margin: auto;
+	padding: auto;
+	width: inherit;
+	height: inherit;
+}
