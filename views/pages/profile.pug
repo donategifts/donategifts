@@ -259,13 +259,13 @@ block scripts
     script.
         $(document).ready(() => {
             $('[placeholder]').focus(function() {
-                var input = $(this);
+                const input = $(this);
                 if (input.val() == input.attr('placeholder')) {
                     input.val('');
                     input.removeClass('placeholder');
                 }
             }).blur(function() {
-                var input = $(this);
+                const input = $(this);
                 if (input.val() == '' || input.val() == input.attr('placeholder')) {
                     input.addClass('placeholder');
                     input.val(input.attr('placeholder'));
@@ -292,7 +292,6 @@ block scripts
             $('#save-account-details').click(() => {
                 const fName = $('input#fName').val();
                 const lName = $('input#lName').val();
-                console.log(fName, lName)
                 $.ajax({
                     type: 'PUT',
                     url: '/profile/account',
@@ -302,7 +301,6 @@ block scripts
                             return showToast('Error: Could not update account details');
                         }
                         showToast('Success: Updated your account details', true);
-                        console.log("response from ajax call ", response); // not updating correctly after refresh
                         $('#fName').text(response.data.fName);
                         $('#lName').text(response.data.lName);
                     },
