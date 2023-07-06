@@ -13,11 +13,11 @@ on:
 
 jobs:
   lint:
-    runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [ubuntu-latest]
+    
+    runs-on: ${{ matrix.os }}
     
     steps:
       - uses: actions/checkout@v3
