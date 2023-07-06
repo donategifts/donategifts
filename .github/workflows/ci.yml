@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [synchronize]
+
+  push:
+    branches:
+      - "**"
+      - "!master"
+
+jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    
+    steps:
+      - uses: actions/checkout@3
+
+      - uses: actions/setup-node@3
+        with:
+          node-version: 18
+
+      - name: install dependencies
+        run: npm install
+
+      - name: lint
+        run: npm run lint

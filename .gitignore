@@ -5,5 +5,4 @@ uploads
 node_modules
 .idea
 config/config.env
-.env
 private
