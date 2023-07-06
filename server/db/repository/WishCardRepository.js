@@ -4,6 +4,7 @@ const WishCard = require('../models/WishCard');
 const UserRepository = require('./UserRepository');
 const Messaging = require('../../helper/messaging');
 const DonationRepository = require('./DonationRepository');
+const config = require('../../../config');
 
 module.exports = class WishCardRepository {
 	#wishCardModel;
@@ -21,7 +22,7 @@ module.exports = class WishCardRepository {
 
 		this.#donationRepository = new DonationRepository();
 
-		if (!this.#wishCardChangeListener && process.env.NODE_ENV === 'production') {
+		if (!this.#wishCardChangeListener && config.NODE_ENV === 'production') {
 			this.#wishCardChangeListener = this.#wishCardModel.watch();
 		}
 	}
@@ -174,7 +175,7 @@ module.exports = class WishCardRepository {
 		try {
 			const wishCard = await this.getWishCardById(id);
 			wishCard.isLockedBy = userId;
-			wishCard.isLockedUntil = moment().add(process.env.WISHCARD_LOCK_IN_MINUTES, 'minutes');
+			wishCard.isLockedUntil = moment().add(config.WISHCARD_LOCK_IN_MINUTES, 'minutes');
 			wishCard.save();
 			return wishCard;
 		} catch (error) {

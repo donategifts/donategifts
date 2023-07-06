@@ -4,6 +4,8 @@ const multerS3 = require('multer-sharp-s3');
 const { v4: UUIDv4 } = require('uuid');
 const path = require('path');
 
+const config = require('../../config');
+
 module.exports = class FileUpload {
 	#s3;
 
@@ -11,24 +13,14 @@ module.exports = class FileUpload {
 
 	constructor() {
 		this.#s3 = new AWS.S3({
-			accessKeyId: process.env.AWS_KEY,
-			secretAccessKey: process.env.AWS_SECRET,
+			accessKeyId: config.AWS.KEY,
+			secretAccessKey: config.AWS.SECRET,
 		});
 
-		if (process.env.USE_AWS !== 'true') {
-			this.#storage = multer.diskStorage({
-				destination: `${path.join(__dirname, '../../uploads/')}`,
-				filename: (_req, file, cb) => {
-					cb(
-						null,
-						`${UUIDv4()}-${file.filename || path.parse(file.originalname).name}.jpeg`,
-					);
-				},
-			});
-		} else {
+		if (config.AWS.USE) {
 			this.#storage = multerS3({
 				s3: this.#s3,
-				Bucket: process.env.S3BUCKET,
+				Bucket: config.AWS.S3BUCKET,
 				ACL: 'public-read',
 				cacheControl: 'max-age=31536000',
 				key(_req, _file, cb) {
@@ -38,6 +30,16 @@ module.exports = class FileUpload {
 					height: 640,
 				},
 				toFormat: 'jpeg',
+			});
+		} else {
+			this.#storage = multer.diskStorage({
+				destination: `${path.join(__dirname, '../../uploads/')}`,
+				filename: (_req, file, cb) => {
+					cb(
+						null,
+						`${UUIDv4()}-${file.filename || path.parse(file.originalname).name}.jpeg`,
+					);
+				},
 			});
 		}
 

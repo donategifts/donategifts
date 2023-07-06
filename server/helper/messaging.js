@@ -5,6 +5,7 @@ const fs = require('fs');
 const axios = require('axios');
 const { Colors } = require('discord.js');
 const log = require('./logger');
+const config = require('../../config');
 
 module.exports = class Messaging {
 	static get templates() {
@@ -126,7 +127,7 @@ module.exports = class Messaging {
 	}
 
 	static async getTransport() {
-		if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+		if (config.NODE_ENV === 'development' || config.NODE_ENV === 'test') {
 			const account = await nodemailer.createTestAccount();
 
 			if (account) {
@@ -146,8 +147,8 @@ module.exports = class Messaging {
 				host: 'smtp.gmail.com',
 				port: 587,
 				auth: {
-					user: process.env.DEFAULT_EMAIL,
-					pass: process.env.DEFAULT_EMAIL_PASSWORD,
+					user: config.EMAIL.ADDRESS,
+					pass: config.EMAIL.PASSWORD,
 				},
 			});
 		}
@@ -174,7 +175,7 @@ module.exports = class Messaging {
 					return { success: false };
 				}
 
-				if (process.env.NODE_ENV === 'development') {
+				if (config.NODE_ENV === 'development') {
 					return { success: true, data: nodemailer.getTestMessageUrl(data) };
 				}
 
@@ -207,7 +208,7 @@ module.exports = class Messaging {
 			.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 		return this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			email,
 			'Donate-gifts.com Donation Receipt',
 			body,
@@ -234,7 +235,7 @@ module.exports = class Messaging {
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear());
 
 		return this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			agencyEmail,
 			'Donate-gifts.com Donation Item Ordered',
 			body,
@@ -244,7 +245,7 @@ module.exports = class Messaging {
 
 	static sendVerificationEmail(to, hash) {
 		const body = this.templates.donorDonationReceipt
-			.replace('%linkplaceholder%', `${process.env.BASE_URL}/profile/verify/${hash}`)
+			.replace('%linkplaceholder%', `${config.BASE_URL}/profile/verify/${hash}`)
 			.replace('%headerPlaceHolder%', 'Verify Your Email Account')
 			.replace('%titlePlaceHolder%', 'Thank you for creating an account!')
 			.replace(
@@ -255,7 +256,7 @@ module.exports = class Messaging {
 			.replace('%buttonText%', 'Confirm Your Email');
 
 		return this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			to,
 			'Donate-gifts.com Email verification',
 			body,
@@ -265,7 +266,7 @@ module.exports = class Messaging {
 
 	static sendPasswordResetMail(to, hash) {
 		const body = this.templates.donorDonationReceipt
-			.replace('%linkplaceholder%', `${process.env.BASE_URL}/profile/password/reset/${hash}`)
+			.replace('%linkplaceholder%', `${config.BASE_URL}/profile/password/reset/${hash}`)
 			.replace('%titlePlaceHolder%', 'Your password reset request')
 			.replace('%headerPlaceHolder%', '')
 			.replace('%bodyPlaceHolder%', 'Please click the button below to reset your password')
@@ -273,7 +274,7 @@ module.exports = class Messaging {
 			.replace('%buttonText%', 'Reset Password');
 
 		return this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			to,
 			'Donate-gifts.com Password Reset',
 			body,
@@ -294,7 +295,7 @@ module.exports = class Messaging {
 
 	static async sendAgencyVerifiedMail(to) {
 		this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			to,
 			'Donate-gifts.com Agency Account Verified',
 			this.templates.agencyVerified,
@@ -304,12 +305,12 @@ module.exports = class Messaging {
 
 	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
 		try {
-			let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'A new agency has registered! <@766721399497687042>';
 
 			await axios({
 				method: 'POST',
-				url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+				url: `${config.DISCORD.STATUS_WEBHOOK_URL}`,
 				header: {
 					'Content-Type': 'application/json',
 				},
@@ -353,7 +354,7 @@ module.exports = class Messaging {
 			.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 		return this.sendMail(
-			process.env.DEFAULT_EMAIL,
+			config.EMAIL.ADDRESS,
 			email,
 			'Donate-gifts.com Donation Receipt',
 			body,
@@ -363,12 +364,12 @@ module.exports = class Messaging {
 
 	static async sendFeedbackMessage({ name, email, subject, message }) {
 		try {
-			let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'A new message from our contact form! <@766721399497687042>';
 
 			return await axios({
 				method: 'POST',
-				url: `${process.env.DISCORD_CONTACT_WEBHOOK_URL}`,
+				url: `${config.DISCORD.CONTACT_WEBHOOK_URL}`,
 				header: {
 					'Content-Type': 'application/json',
 				},
@@ -402,12 +403,12 @@ module.exports = class Messaging {
 		donation: { amount, userDonation },
 	}) {
 		try {
-			let content = process.env.NODE_ENV !== 'production' ? '[TEST] ' : '';
+			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'One of our wish cards received a donation! <@766721399497687042>';
 
 			return await axios({
 				method: 'POST',
-				url: `${process.env.DISCORD_STATUS_WEBHOOK_URL}`,
+				url: `${config.DISCORD.STATUS_WEBHOOK_URL}`,
 				header: {
 					'Content-Type': 'application/json',
 				},

@@ -7,6 +7,8 @@ const BaseController = require('./basecontroller');
 const Messaging = require('../helper/messaging');
 const Utils = require('../helper/utils');
 
+const config = require('../../config');
+
 module.exports = class PasswordController extends BaseController {
 	#userRepository;
 
@@ -83,7 +85,7 @@ module.exports = class PasswordController extends BaseController {
 					userObject.save();
 
 					req.session.destroy(() => {
-						res.clearCookie(process.env.SESS_NAME);
+						res.clearCookie(config.SESSION.NAME);
 					});
 
 					res.send({ success: true });

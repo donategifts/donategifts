@@ -2,6 +2,7 @@ const moment = require('moment');
 const BaseController = require('./basecontroller');
 const PostRepository = require('../db/repository/PostRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
+const config = require('../../config');
 
 module.exports = class CommunityController extends BaseController {
 	#postRepository;
@@ -47,11 +48,11 @@ module.exports = class CommunityController extends BaseController {
 
 			if (req.file !== undefined) {
 				let filePath;
-				if (process.env.NODE_ENV === 'development') {
+				if (config.NODE_ENV === 'development') {
 					// locally when using multer images are saved inside this folder
 					filePath = `/uploads/${req.file.filename}`;
 				}
-				profileImage = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
+				profileImage = config.AWS.USE ? req.file.Location : filePath;
 			}
 
 			const newPost = {

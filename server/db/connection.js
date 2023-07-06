@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const BaseController = require('../controller/basecontroller');
+const config = require('../../config');
 
 module.exports = class MongooseConnection extends BaseController {
 	#mongoose;
@@ -20,11 +21,11 @@ module.exports = class MongooseConnection extends BaseController {
 	connect() {
 		this.#mongoose.Promise = Promise;
 		this.#mongoose.set('strictQuery', false);
-		this.#mongoose.connect(process.env.MONGO_URI, this.#options, (err, database) => {
+		this.#mongoose.connect(config.MONGO_URI, this.#options, (err, database) => {
 			if (err) {
 				this.log.error('Unable to connect to DB:', err);
 			} else {
-				if (process.env.NODE_ENV === 'production') {
+				if (config.NODE_ENV === 'production') {
 					const WishCardRepository = require('./repository/WishCardRepository');
 					new WishCardRepository().watch();
 				}

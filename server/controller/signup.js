@@ -4,6 +4,8 @@ const UserRepository = require('../db/repository/UserRepository');
 const AgencyRepository = require('../db/repository/AgencyRepository');
 const Messaging = require('../helper/messaging');
 
+const config = require('../../config');
+
 module.exports = class SignupController extends BaseController {
 	#userRepository;
 
@@ -38,7 +40,7 @@ module.exports = class SignupController extends BaseController {
 	async #sendEmail(email, verificationHash) {
 		const emailResponse = await Messaging.sendVerificationEmail(email, verificationHash);
 		const response = emailResponse ? emailResponse.data : '';
-		if (process.env.NODE_ENV === 'development') {
+		if (config.NODE_ENV === 'development') {
 			this.log.info(response);
 		}
 	}
@@ -121,7 +123,7 @@ module.exports = class SignupController extends BaseController {
 				accountManager: req.session.user._id,
 			});
 
-			if (process.env.NODE_ENV !== 'test') {
+			if (config.NODE_ENV !== 'test') {
 				await Messaging.sendAgencyVerificationNotification({
 					id: result.agency._id,
 					name: result.agency.agencyName,

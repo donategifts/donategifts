@@ -4,6 +4,8 @@ const UserRepository = require('../db/repository/UserRepository');
 const WishCardRepository = require('../db/repository/WishCardRepository');
 const BaseController = require('./basecontroller');
 
+const config = require('../../config');
+
 module.exports = class ProfileController extends BaseController {
 	#agencyRepository;
 
@@ -103,11 +105,11 @@ module.exports = class ProfileController extends BaseController {
 		try {
 			let filePath;
 
-			if (process.env.NODE_ENV === 'development') {
+			if (config.NODE_ENV === 'development') {
 				// locally when using multer images are saved inside this folder
 				filePath = `/uploads/${req.file.filename}`;
 			}
-			const profileImage = process.env.USE_AWS === 'true' ? req.file.Location : filePath;
+			const profileImage = config.AWS.USE === 'true' ? req.file.Location : filePath;
 			await this.#userRepository.updateUserById(res.locals.user._id, { profileImage });
 
 			this.log.info({

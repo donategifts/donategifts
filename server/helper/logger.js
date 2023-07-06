@@ -1,4 +1,5 @@
 const { pino } = require('pino');
+const config = require('../../config');
 
 const pinoLogger = pino({
 	transport: {
@@ -18,7 +19,7 @@ const pinoLogger = pino({
 	},
 });
 
-pinoLogger.level = process.env.LOG_LEVEL || 'info';
+pinoLogger.level = config.LOG_LEVEL;
 
 const logger = {
 	info: (...args) => {

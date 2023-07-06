@@ -1,4 +1,7 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
+// eslint-disable-next-line import/order
+const config = require('../../config');
+
+const stripe = require('stripe')(config.STRIPE.SECRET);
 const moment = require('moment');
 const paypal = require('paypal-rest-sdk');
 
@@ -25,9 +28,9 @@ module.exports = class PaymentProviderController extends BaseController {
 		super();
 
 		paypal.configure({
-			mode: process.env.NODE_ENV === 'development' ? 'sandbox' : 'live', // sandbox or live
-			client_id: process.env.PAYPAL_CLIENT_ID,
-			client_secret: process.env.PAYPAL_SECRET,
+			mode: config.NODE_ENV === 'development' ? 'sandbox' : 'live', // sandbox or live
+			client_id: config.PAYPAL.CLIENT_ID,
+			client_secret: config.PAYPAL.SECRET,
 		});
 
 		this.#wishCardRepository = new WishCardRepository();
@@ -58,7 +61,7 @@ module.exports = class PaymentProviderController extends BaseController {
 				agency: agencyName,
 			});
 
-			if (process.env.NODE_ENV === 'development') {
+			if (config.NODE_ENV === 'development') {
 				const response = emailResponse ? emailResponse.data : '';
 				this.log.info(response);
 			}
@@ -139,7 +142,7 @@ module.exports = class PaymentProviderController extends BaseController {
 
 		// STRIPE WEBHOOK
 		if (sig) {
-			const endpointSecret = process.env.STRIPE_SECRET;
+			const endpointSecret = config.STRIPE.SECRET;
 			let event;
 
 			try {

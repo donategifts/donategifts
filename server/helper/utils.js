@@ -3,13 +3,14 @@ const { OAuth2Client } = require('google-auth-library');
 const axios = require('axios');
 
 const log = require('./logger');
+const config = require('../../config');
 
 module.exports = class Utils {
 	static async verifyGoogleToken(token) {
-		const oauthClient = new OAuth2Client(process.env.G_CLIENT_ID);
+		const oauthClient = new OAuth2Client(config.G_CLIENT_ID);
 		const ticket = await oauthClient.verifyIdToken({
 			idToken: token,
-			audience: process.env.G_CLIENT_ID,
+			audience: config.G_CLIENT_ID,
 		});
 		const payload = ticket.getPayload();
 		return {
@@ -42,14 +43,14 @@ module.exports = class Utils {
 	}
 
 	static async validateReCaptchaToken(token) {
-		if (process.env.NODE_ENV !== 'production') {
+		if (config.NODE_ENV !== 'production') {
 			return true;
 		}
 
 		try {
 			const res = await axios({
 				method: 'GET',
-				url: `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_CAPTCHA_KEY}&response=${token}`,
+				url: `https://www.google.com/recaptcha/api/siteverify?secret=${config.GOOGLE_CAPTCHA_KEY}&response=${token}`,
 			});
 			return res.data.success;
 		} catch (err) {
@@ -60,7 +61,7 @@ module.exports = class Utils {
 
 	static logoutUser(req, res, _next) {
 		req.session.destroy(() => {
-			res.clearCookie(process.env.SESS_NAME);
+			res.clearCookie(config.SESSION.NAME);
 			res.redirect('/login');
 		});
 	}

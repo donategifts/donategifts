@@ -20,7 +20,7 @@ module.exports = {
 	},
 
 	AWS: {
-		USE: process.env.USE_AWS ? Boolean(process.env.USE_AWS) : false,
+		USE: process.env.USE_AWS || false,
 		KEY: process.env.AWS_KEY ? String(process.env.AWS_KEY) : undefined,
 		SECRET: process.env.AWS_SECRET ? String(process.env.AWS_SECRET) : undefined,
 		S3BUCKET: process.env.S3BUCKET ? String(process.env.S3BUCKET) : undefined,
@@ -78,4 +78,6 @@ module.exports = {
 	},
 
 	LOG_LEVEL: process.env.LOG_LEVEL ? String(process.env.LOG_LEVEL) : 'debug',
+
+	MAINTENANCE_ENABLED: process.env.MAINTENANCE_ENABLED || false,
 };

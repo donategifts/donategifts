@@ -2,6 +2,7 @@ const { Client, Collection, Events, GatewayIntentBits, REST, Routes } = require(
 const path = require('path');
 const fs = require('fs');
 const log = require('../helper/logger');
+const config = require('../../config');
 
 module.exports = class DGBot {
 	#commandsPath;
@@ -67,7 +68,7 @@ module.exports = class DGBot {
 			}
 		});
 
-		client.login(process.env.DISCORD_TOKEN);
+		client.login(config.DISCORD.TOKEN);
 	}
 
 	async refreshCommands() {
@@ -78,12 +79,12 @@ module.exports = class DGBot {
 			commands.push(command.data.toJSON());
 		}
 
-		const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+		const rest = new REST({ version: '10' }).setToken(config.DISCORD.TOKEN);
 
 		try {
 			log.info(`Started refreshing ${commands.length} application (/) commands.`);
 
-			const data = await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), {
+			const data = await rest.put(Routes.applicationCommands(config.DISCORD.CLIENT_ID), {
 				body: commands,
 			});
 

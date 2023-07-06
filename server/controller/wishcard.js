@@ -9,6 +9,7 @@ const BaseController = require('./basecontroller');
 
 const Utils = require('../helper/utils');
 const DefaultItems = require('../helper/defaultItems');
+const config = require('../../config');
 
 module.exports = class WishCardController extends BaseController {
 	#wishCardRepository;
@@ -142,7 +143,7 @@ module.exports = class WishCardController extends BaseController {
 				const { childBirthday, wishItemPrice } = req.body;
 
 				const filePath =
-					process.env.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
+					config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
 				const userAgency = await this.#agencyRepository.getAgencyByUserId(
 					res.locals.user._id,
@@ -151,7 +152,7 @@ module.exports = class WishCardController extends BaseController {
 				const newWishCard = await this.#wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
-					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency._id,
 					address: {
@@ -200,7 +201,7 @@ module.exports = class WishCardController extends BaseController {
 
 				let filePath;
 
-				if (process.env.NODE_ENV === 'development') {
+				if (config.NODE_ENV === 'development') {
 					// locally when using multer images are saved inside this folder
 					filePath = `/uploads/${req.file.filename}`;
 				}
@@ -214,7 +215,7 @@ module.exports = class WishCardController extends BaseController {
 					wishItemName: itemChoice.Name,
 					wishItemPrice: Number(itemChoice.Price),
 					wishItemURL: itemChoice.ItemURL,
-					wishCardImage: process.env.USE_AWS === 'true' ? req.file.Location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency._id,
 					address: {

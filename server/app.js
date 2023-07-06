@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
+const config = require('../config');
 
 const MongooseConnection = require('./db/connection');
 const log = require('./helper/logger');
@@ -23,7 +24,7 @@ const app = express();
 const mongooseConnection = new MongooseConnection();
 
 // hot reloading in dev environment
-if (process.env.NODE_ENV === 'development') {
+if (config.NODE_ENV === 'development') {
 	// eslint-disable-next-line import/no-extraneous-dependencies
 	const livereload = require('livereload');
 	// eslint-disable-next-line import/no-extraneous-dependencies
@@ -74,7 +75,7 @@ app.use(
 
 mongooseConnection.connect();
 
-if (process.env.DISCORD_CLIENT_ID) {
+if (config.DISCORD.CLIENT_ID) {
 	const bot = new DGBot();
 
 	bot.refreshCommands();
@@ -88,24 +89,24 @@ app.set('view engine', 'pug');
 
 app.use(express.static('public'));
 
-if (process.env.NODE_ENV === 'development') {
+if (config.NODE_ENV === 'development') {
 	app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 }
 
 app.use(
 	session({
 		store: MongoStore.create({
-			mongoUrl: process.env.MONGO_URI,
+			mongoUrl: config.MONGO_URI,
 			autoRemove: 'interval',
 			// interval is now in minutes
 			autoRemoveInterval: 60,
 		}),
-		name: process.env.SESS_NAME,
+		name: config.SESSION.NAME,
 		resave: false,
 		saveUninitialized: false,
-		secret: process.env.SESS_SECRET,
+		secret: config.SESSION.SECRET,
 		cookie: {
-			maxAge: Number(process.env.SESS_LIFE),
+			maxAge: Number(config.SESSION.LIFE),
 			sameSite: true,
 			secure: false,
 		},
@@ -114,10 +115,10 @@ app.use(
 
 // apply some of our environment variables to the app locals so that they can be used in the templates
 app.locals.env = {
-	stripe: process.env.STRIPE_KEY,
-	paypal: process.env.PAYPAL_CLIENT_ID,
-	facebook: process.env.FB_APP_ID,
-	google: process.env.G_CLIENT_ID,
+	stripe: config.STRIPE.KEY,
+	paypal: config.PAYPAL.CLIENT_ID,
+	facebook: config.FB_APP_ID,
+	google: config.G_CLIENT_ID,
 };
 
 app.use((req, res, next) => {
@@ -190,7 +191,7 @@ app.use('/health', (_req, res, _next) => {
 	res.status(200).json({ status: 'ok' });
 });
 
-if (process.env.MAINTENANCE_ENABLED === 'true') {
+if (config.MAINTENANCE_ENABLED === 'true') {
 	app.get('*', (_req, res) => {
 		res.status(200).render('maintenance');
 	});
@@ -212,8 +213,8 @@ app.use((err, req, res, _next) => {
 	res.status(500).render('error/500');
 });
 
-app.listen(process.env.PORT, () => {
-	log.info(`App listening on port ${process.env.PORT}`);
+app.listen(config.PORT, () => {
+	log.info(`App listening on port ${config.PORT}`);
 });
 
 process.on('uncaughtException', (err) => {

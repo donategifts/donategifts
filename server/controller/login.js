@@ -4,6 +4,8 @@ const { OAuth2Client } = require('google-auth-library');
 const BaseController = require('./basecontroller');
 const UserRepository = require('../db/repository/UserRepository');
 
+const config = require('../../config');
+
 module.exports = class LoginController extends BaseController {
 	#userRepository;
 
@@ -136,10 +138,10 @@ module.exports = class LoginController extends BaseController {
 	}
 
 	static async verifyGoogleToken(token) {
-		const oauthClient = new OAuth2Client(process.env.G_CLIENT_ID);
+		const oauthClient = new OAuth2Client(config.G_CLIENT_ID);
 		const ticket = await oauthClient.verifyIdToken({
 			idToken: token,
-			audience: process.env.G_CLIENT_ID,
+			audience: config.G_CLIENT_ID,
 		});
 		const payload = ticket.getPayload();
 		return {
