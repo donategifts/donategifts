@@ -21,6 +21,7 @@ const envVariables = [
 	'STRIPE_API',
 	'STRIPE_KEY',
 	'STRIPE_SECRET',
+	'WISHCARD_LOCK_IN_MINUTES',
 	'PAYPAL_CLIENT_ID',
 	'PAYPAL_SECRET',
 	'PAYPAL_WEBHOOK_ID',
@@ -50,15 +51,15 @@ for (const variable of envVariables) {
 }
 
 module.exports = {
-	PORT: envVars.PORT || 3000,
+	PORT: envVars.PORT,
 
-	MONGO_URI: envVars.MONGO_URI || 'mongodb://localhost/donategifts?w=majority',
-	NODE_ENV: envVars.NODE_ENV || 'development',
+	MONGO_URI: envVars.MONGO_URI,
+	NODE_ENV: envVars.NODE_ENV,
 
 	SESSION: {
-		NAME: envVars.SESS_NAME || 'sid',
-		SECRET: envVars.SESS_SECRET || 'something-super-duper-secret',
-		LIFE: envVars.SESS_LIFE || 3600000,
+		NAME: envVars.SESS_NAME,
+		SECRET: envVars.SESS_SECRET,
+		LIFE: envVars.SESS_LIFE,
 	},
 
 	MAILGUN: {
@@ -78,7 +79,7 @@ module.exports = {
 		PASSWORD: envVars.DEFAULT_EMAIL_PASSWORD,
 	},
 
-	BASE_URL: envVars.BASE_URL || 'http://localhost:3000',
+	BASE_URL: envVars.BASE_URL,
 
 	GOOGLE_CAPTCHA_KEY: envVars.GOOGLE_CAPTCHA_KEY,
 
@@ -93,7 +94,7 @@ module.exports = {
 		SECRET: envVars.STRIPE_SECRET,
 	},
 
-	WISHCARD_LOCK_IN_MINUTES: 10,
+	WISHCARD_LOCK_IN_MINUTES: envVars.WISHCARD_LOCK_IN_MINUTES,
 
 	PAYPAL: {
 		CLIENT_ID: envVars.PAYPAL_CLIENT_ID,
@@ -108,7 +109,7 @@ module.exports = {
 		CONTACT_WEBHOOK_URL: envVars.DISCORD_CONTACT_WEBHOOK_URL,
 	},
 
-	LOG_LEVEL: envVars.LOG_LEVEL || 'debug',
+	LOG_LEVEL: envVars.LOG_LEVEL,
 
 	MAINTENANCE_ENABLED: envVars.MAINTENANCE_ENABLED,
 };
