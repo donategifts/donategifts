@@ -1,83 +1,114 @@
-module.exports = {
-	PORT: process.env.PORT ? Number(process.env.PORT) : 3000,
+const envVariables = [
+	'PORT',
+	'MONGO_URI',
+	'NODE_ENV',
+	'SESS_NAME',
+	'SESS_SECRET',
+	'SESS_LIFE',
+	'MAILGUN_API_KEY',
+	'MAILGUN_DOMAIN',
+	'USE_AWS',
+	'AWS_KEY',
+	'AWS_SECRET',
+	'S3BUCKET',
+	'DEFAULT_EMAIL',
+	'DEFAULT_EMAIL_PASSWORD',
+	'BASE_URL',
+	'GOOGLE_CAPTCHA_KEY',
+	'G_CLIENT_ID',
+	'FB_APP_ID',
+	'SCRAPINGBEE_APIKEY',
+	'STRIPE_API',
+	'STRIPE_KEY',
+	'STRIPE_SECRET',
+	'PAYPAL_CLIENT_ID',
+	'PAYPAL_SECRET',
+	'PAYPAL_WEBHOOK_ID',
+	'DISCORD_CLIENT_ID',
+	'DISCORD_TOKEN',
+	'DISCORD_STATUS_WEBHOOK_URL',
+	'DISCORD_CONTACT_WEBHOOK_URL',
+	'LOG_LEVEL',
+	'MAINTENANCE_ENABLED',
+];
 
-	MONGO_URI: process.env.MONGO_URI
-		? String(process.env.MONGO_URI)
-		: 'mongodb://localhost/donategifts?w=majority',
-	NODE_ENV: process.env.NODE_ENV ? String(process.env.NODE_ENV) : 'development',
+const envVars = {};
+
+// set them to null if they're empty
+for (const variable of envVariables) {
+	if (!process.env[variable] || process.env[variable] === '') {
+		envVars[variable] = null;
+	} else if (process.env[variable] === 'true') {
+		envVars[variable] = true;
+	} else if (process.env[variable] === 'false') {
+		envVars[variable] = false;
+	} else if (parseInt(process.env[variable], 10)) {
+		envVars[variable] = parseInt(process.env[variable], 10);
+	} else {
+		envVars[variable] = process.env[variable];
+	}
+}
+
+module.exports = {
+	PORT: envVars.PORT || 3000,
+
+	MONGO_URI: envVars.MONGO_URI || 'mongodb://localhost/donategifts?w=majority',
+	NODE_ENV: envVars.NODE_ENV || 'development',
 
 	SESSION: {
-		NAME: process.env.SESS_NAME ? String(process.env.SESS_NAME) : 'sid',
-		SECRET: process.env.SESS_SECRET
-			? String(process.env.SESS_SECRET)
-			: 'something-super-duper-secret',
-		LIFE: process.env.SESS_LIFE ? Number(process.env.SESS_LIFE) : 3600000,
+		NAME: envVars.SESS_NAME || 'sid',
+		SECRET: envVars.SESS_SECRET || 'something-super-duper-secret',
+		LIFE: envVars.SESS_LIFE || 3600000,
 	},
 
 	MAILGUN: {
-		API_KEY: process.env.MAILGUN_API_KEY ? String(process.env.MAILGUN_API_KEY) : undefined,
-		DOMAIN: process.env.MAILGUN_DOMAIN ? String(process.env.MAILGUN_DOMAIN) : undefined,
+		API_KEY: envVars.MAILGUN_API_KEY,
+		DOMAIN: envVars.MAILGUN_DOMAIN,
 	},
 
 	AWS: {
-		USE: process.env.USE_AWS || false,
-		KEY: process.env.AWS_KEY ? String(process.env.AWS_KEY) : undefined,
-		SECRET: process.env.AWS_SECRET ? String(process.env.AWS_SECRET) : undefined,
-		S3BUCKET: process.env.S3BUCKET ? String(process.env.S3BUCKET) : undefined,
+		USE: envVars.USE_AWS,
+		KEY: envVars.AWS_KEY,
+		SECRET: envVars.AWS_SECRET,
+		S3BUCKET: envVars.S3BUCKET,
 	},
 
 	EMAIL: {
-		ADDRESS: process.env.DEFAULT_EMAIL ? String(process.env.DEFAULT_EMAIL) : undefined,
-		PASSWORD: process.env.DEFAULT_EMAIL_PASSWORD
-			? String(process.env.DEFAULT_EMAIL_PASSWORD)
-			: undefined,
+		ADDRESS: envVars.DEFAULT_EMAIL,
+		PASSWORD: envVars.DEFAULT_EMAIL_PASSWORD,
 	},
 
-	BASE_URL: process.env.BASE_URL
-		? String(process.env.BASE_URL)
-		: undefined || 'http://localhost:3000',
+	BASE_URL: envVars.BASE_URL || 'http://localhost:3000',
 
-	GOOGLE_CAPTCHA_KEY: process.env.GOOGLE_CAPTCHA_KEY
-		? String(process.env.GOOGLE_CAPTCHA_KEY)
-		: undefined,
+	GOOGLE_CAPTCHA_KEY: envVars.GOOGLE_CAPTCHA_KEY,
 
-	G_CLIENT_ID: process.env.G_CLIENT_ID ? String(process.env.G_CLIENT_ID) : undefined,
-	FB_APP_ID: process.env.FB_APP_ID ? String(process.env.FB_APP_ID) : undefined,
+	G_CLIENT_ID: envVars.G_CLIENT_ID,
+	FB_APP_ID: envVars.FB_APP_ID,
 
-	SCRAPINGBEE_APIKEY: process.env.SCRAPINGBEE_APIKEY
-		? String(process.env.SCRAPINGBEE_APIKEY)
-		: undefined,
+	SCRAPINGBEE_APIKEY: envVars.SCRAPINGBEE_APIKEY,
 
 	STRIPE: {
-		API: process.env.STRIPE_API ? String(process.env.STRIPE_API) : undefined,
-		KEY: process.env.STRIPE_KEY ? String(process.env.STRIPE_KEY) : undefined,
-		SECRET: process.env.STRIPE_SECRET ? String(process.env.STRIPE_SECRET) : undefined,
+		API: envVars.STRIPE_API,
+		KEY: envVars.STRIPE_KEY,
+		SECRET: envVars.STRIPE_SECRET,
 	},
 
 	WISHCARD_LOCK_IN_MINUTES: 10,
 
 	PAYPAL: {
-		CLIENT_ID: process.env.PAYPAL_CLIENT_ID ? String(process.env.PAYPAL_CLIENT_ID) : undefined,
-		SECRET: process.env.PAYPAL_SECRET ? String(process.env.PAYPAL_SECRET) : undefined,
-		WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID
-			? String(process.env.PAYPAL_WEBHOOK_ID)
-			: undefined,
+		CLIENT_ID: envVars.PAYPAL_CLIENT_ID,
+		SECRET: envVars.PAYPAL_SECRET,
+		WEBHOOK_ID: envVars.PAYPAL_WEBHOOK_ID,
 	},
 
 	DISCORD: {
-		CLIENT_ID: process.env.DISCORD_CLIENT_ID
-			? String(process.env.DISCORD_CLIENT_ID)
-			: undefined,
-		TOKEN: process.env.DISCORD_TOKEN ? String(process.env.DISCORD_TOKEN) : undefined,
-		STATUS_WEBHOOK_URL: process.env.DISCORD_STATUS_WEBHOOK_URL
-			? String(process.env.DISCORD_STATUS_WEBHOOK_URL)
-			: undefined,
-		CONTACT_WEBHOOK_URL: process.env.DISCORD_CONTACT_WEBHOOK_URL
-			? String(process.env.DISCORD_CONTACT_WEBHOOK_URL)
-			: undefined,
+		CLIENT_ID: envVars.DISCORD_CLIENT_ID,
+		TOKEN: envVars.DISCORD_TOKEN,
+		STATUS_WEBHOOK_URL: envVars.DISCORD_STATUS_WEBHOOK_URL,
+		CONTACT_WEBHOOK_URL: envVars.DISCORD_CONTACT_WEBHOOK_URL,
 	},
 
-	LOG_LEVEL: process.env.LOG_LEVEL ? String(process.env.LOG_LEVEL) : 'debug',
+	LOG_LEVEL: envVars.LOG_LEVEL || 'debug',
 
-	MAINTENANCE_ENABLED: process.env.MAINTENANCE_ENABLED || false,
+	MAINTENANCE_ENABLED: envVars.MAINTENANCE_ENABLED,
 };
