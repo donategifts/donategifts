@@ -217,43 +217,44 @@ block modal
                 .modal-footer.d-flex.justify-content-center
                     button#save-account-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
 
-    #agencyDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
-        .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-            .modal-content
-                .modal-header
-                    h5#exampleModalLongTitle.modal-title.mx-2 Edit Agency Details
-                    button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
-                .modal-body
-                    .container-fluid
-                        .row.justify-content-center.my-2
-                            label( for='agencyBio' ) Agency Description:
-                            textarea#agencyBio.edit-input( name='agencyBio' placeholder=agency.agencyBio rows='3' )
-                        .row.justify-content-center.my-2
-                            label( for='agencyPhone' ) Contact Number:
-                            input#agencyPhone.mx-2.edit-input( type='text' name='agencyPhone' placeholder= agency.agencyPhone )
-                        .row.justify-content-center.my-2
-                            label( for='agencyWebsite' ) Website:
-                            input#agencyWebsite.mx-2.edit-input( type='text' name='agencyWebsite' placeholder= agency.agencyWebsite )
-                        .row.justify-content-center.my-2
-                            label( for='address1' ) Address Line 1:
-                            input#address1.mx-2.edit-input( type='text' name='address1' placeholder= agency.agencyAddress.address1 )
-                        .row.justify-content-center.my-2
-                            label( for='address2' ) Address Line 2:
-                            input#address1.mx-2.edit-input( type='text' name='address2' placeholder= agency.agencyAddress.address2 )
-                        .row.justify-content-center.my-2
-                            label( for='city' ) City:
-                            input#city.mx-2.edit-input( type='text' name='city' placeholder= agency.agencyAddress.city )
-                        .row.justify-content-center.my-2
-                            label( for='state' ) State:
-                            input#state.mx-2.edit-input( type='text' name='state' placeholder= agency.agencyAddress.state )
-                        .row.justify-content-center.my-2
-                            label( for='country' ) Country:
-                            input#country.mx-2.edit-input( type='text' name='country' placeholder= agency.agencyAddress.country )
-                        .row.justify-content-center.my-2
-                            label( for='zipcode' ) Zipcode:
-                            input#zipcode.mx-2.edit-input( type='text' name='zipcode' placeholder= agency.agencyAddress.zipcode )
-                .modal-footer.d-flex.justify-content-center
-                    button#save-agency-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
+    if agency
+        #agencyDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+            .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
+                .modal-content
+                    .modal-header
+                        h5#exampleModalLongTitle.modal-title.mx-2 Edit Agency Details
+                        button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                    .modal-body
+                        .container-fluid
+                            .row.justify-content-center.my-2
+                                label( for='agencyBio' ) Agency Description:
+                                textarea#agencyBio.edit-input( name='agencyBio' placeholder=agency.agencyBio rows='3' )
+                            .row.justify-content-center.my-2
+                                label( for='agencyPhone' ) Contact Number:
+                                input#agencyPhone.mx-2.edit-input( type='text' name='agencyPhone' placeholder= agency.agencyPhone )
+                            .row.justify-content-center.my-2
+                                label( for='agencyWebsite' ) Website:
+                                input#agencyWebsite.mx-2.edit-input( type='text' name='agencyWebsite' placeholder= agency.agencyWebsite )
+                            .row.justify-content-center.my-2
+                                label( for='address1' ) Address Line 1:
+                                input#address1.mx-2.edit-input( type='text' name='address1' placeholder= agency.agencyAddress.address1 )
+                            .row.justify-content-center.my-2
+                                label( for='address2' ) Address Line 2:
+                                input#address1.mx-2.edit-input( type='text' name='address2' placeholder= agency.agencyAddress.address2 )
+                            .row.justify-content-center.my-2
+                                label( for='city' ) City:
+                                input#city.mx-2.edit-input( type='text' name='city' placeholder= agency.agencyAddress.city )
+                            .row.justify-content-center.my-2
+                                label( for='state' ) State:
+                                input#state.mx-2.edit-input( type='text' name='state' placeholder= agency.agencyAddress.state )
+                            .row.justify-content-center.my-2
+                                label( for='country' ) Country:
+                                input#country.mx-2.edit-input( type='text' name='country' placeholder= agency.agencyAddress.country )
+                            .row.justify-content-center.my-2
+                                label( for='zipcode' ) Zipcode:
+                                input#zipcode.mx-2.edit-input( type='text' name='zipcode' placeholder= agency.agencyAddress.zipcode )
+                    .modal-footer.d-flex.justify-content-center
+                        button#save-agency-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
 
 block scripts
     script.
