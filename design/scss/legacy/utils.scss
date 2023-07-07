@@ -1,259 +1,219 @@
 /* 
 -----------------------------
-file: utils.css
-desc: this file has all reusable utilities for css
------------------------------ 
-New Color Scheme Reference:
-primary red:
-    #ff5c6f
-    rgba(255, 92, 111, 1)
-primary orange:
-    #ff826b
-    rgba(255, 130, 107, 1)
-light cream:
-    #fff6ed
-    rgba(255, 246, 237, 1)
-cream:
-    #f8e4c9
-    rgba(248, 228, 201, 1)
-primary green:
-    #00a19a
-    rgba(0, 161, 154, 1)
-primary yellow:
-    #ffbb59
-    rgba(255, 187, 89, 1)
-secondary yellow:
-    #f9a14c
-    rgba(249, 161, 76, 1)
-primary navy:
-    #333a64
-    rgba(51, 58, 100, 1)
-secondary navy:
-    #414254
-    rgba(65, 66, 84, 1)
-dark grey:
-    #313131
-    rgba(49, 49, 49, 1)
------------------------------ 
+Reusable Utils - Button 
+
+TODO: this needs to be edited!
+-----------------------------
+*/
+%btn {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	padding: 1rem 1.75rem;
+	width: 100%;
+	border: 0.5px solid transparent;
+	transition: all 0.2s ease-in-out;
+	text-decoration: none;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+%btn-lg {
+	padding: 1rem 2rem;
+	font-size: 1.3rem;
+	margin: 10px;
+	line-height: 1.2em;
+	transition: all 0.2s ease-in-out;
+	border: 0.15rem solid transparent;
+	display: inline-flex;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	-moz-border-radius: 1rem;
+	-ms-border-radius: 1rem;
+	-o-border-radius: 1rem;
+	outline: none;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+%hover-navy {
+	background-color: $navy;
+	color: $white !important;
+	border: 0.15rem solid $white;
+	text-decoration: none;
+}
+
+.btn-orange-navy-lg {
+	@extend %btn-lg;
+	background-color: $custom-orange;
+	color: $white !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+.btn-white-navy-lg {
+	@extend %btn-lg;
+	background-color: $white;
+	color: $navy !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+%btn-long {
+	padding: 1rem 3rem;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	opacity: 1;
+	border: 0.15rem solid transparent;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	-moz-border-radius: 1rem;
+	-ms-border-radius: 1rem;
+	-o-border-radius: 1rem;
+	width: 40vw !important;
+	height: 8vh !important;
+	padding: 1rem 2rem;
+	font-size: 1.3rem;
+	margin: 10px;
+	line-height: 1.2em;
+	text-align: center !important;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-orange-navy-lg-long {
+	@extend %btn-long;
+	background-color: $custom-orange;
+	color: $white !important;
+	&:hover {
+		@extend %hover-navy;
+	}
+}
+
+.btn-disabled-long {
+	@extend %btn-long;
+	background-color: lighten($gray, 25%);
+	color: $white !important;
+}
+
+@media only screen and (max-width: 768px) {
+	.btn-disabled-long {
+		width: 80vw !important;
+	}
+	.btn-orange-navy-lg-long {
+		width: 80vw !important;
+	}
+}
+
+
+/* 
+-----------------------------
+Updated buttons
+-----------------------------
 */
 
-/* ------------- new local fonts -------------- */
-/* @font-face {
-  font-family: 'DjbTeacherFont';
-  src: local('DjbTeacherFont'), url('/fonts/DjbTeacherFont.ttf');
-} */
-
-@font-face {
-  font-family: 'DkCoolCrayon';
-  src: url('/fonts/dkcoolcrayon-webfont.woff') format('woff');
+%btn-updated {
+	border-radius: 0.5rem;
+	-webkit-border-radius: 0.5rem;
+	-moz-border-radius: 0.5rem;
+	-ms-border-radius: 0.5rem;
+	-o-border-radius: 0.5rem;
+	font-size: 1.25rem;
+	border: none;
+	font-weight: $semi-bold;
 }
 
-@font-face {
-  font-family: 'DK-Crayon-Crumble';
-  src: url('/fonts/dk-crayon-crumble-webfont.woff') format('woff');
+.button-accent {
+	@extend %btn;
+	@extend %btn-updated;
+	background-color: $custom-orange;
+	color: $white;
+	&:hover {
+		background-color: darken($custom-orange, 10);
+	}
 }
 
-/* SOON TO BE DELETED!!
-----------------------------------------
+.button-primary {
+	@extend %btn;
+	@extend %btn-updated;
+	background-color: lighten($navy, 5);
+	color: $white;
+	&:hover {
+		background-color: darken($navy, 10);
+	}
+}
+.button-secondary {
+	@extend %btn;
+	@extend %btn-updated;
+	background-color: $gray-200;
+	color: $navy;
+	&:hover {
+		background-color: $gray-400;
+		color: darken($navy, 10);
+	}
+}
+
+/* 
+-----------------------------
+Reusable Hero
+-----------------------------
 */
-
-.cool-font {
-  font-family: 'DkCoolCrayon', sans-serif;
+.hero {
+	text-align: center;
+	color: $white;
+	h1 {
+		@include font-styling($font-heading, 3.4em);
+		text-transform: uppercase;
+	}
+	h4 {
+		@include font-styling($font-body, 1.3rem);
+		padding-bottom: 0.5rem;
+	}
 }
 
-.teac-font {
-  font-family: 'DjbTeacherFont', sans-serif;
-}
 
-.quick-font {
-  font-family: 'Quicksand', sans-serif;
-}
-
-.crayon-font {
-  font-family: 'DK-Crayon-Crumble', sans-serif;
-}
-
-/* Text Styling
-----------------------------------------
+/* 
+-----------------------------
+Text Typing Effect 
+-----------------------------
 */
-.bold-text {
-  font-weight: 600;
-  font-size: 1em;
+.typing {
+	// margin-left: 10px;
+	position: relative;
+	&:after {
+		content: "";
+		position: absolute;
+		width: 1px;
+		height: 60px;
+		border: 2px solid $white;
+		animation: blink 0.5s infinite ease;
+		-webkit-animation: blink 0.5s infinite ease;
+	}
 }
 
-#section-text {
-  font-size: 1em;
+@-webkit-keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
-.subtext {
-  font-weight: 300;
-  font-size: 1em;
-  line-height: 2.1em;
-  display: flex;
-  text-align: center;
-}
-
-.text-fix {
-  line-height: 2em !important;
-}
-
-.force-flex {
-  display: flex !important;
-}
-
-.force-text-center {
-  text-align: center !important;
-}
-
-#grn-font {
-  color: rgba(0, 161, 154, 1);
-}
-
-.grn-font {
-  color: rgba(0, 161, 154, 1) !important;
-}
-
-.blue-font {
-  color: #333a64 !important;
-}
-
-.red-font {
-  color: #ff5c6f !important;
-}
-
-.org-font {
-  color: #ff826b !important;
-}
-
-#navy {
-  color: rgba(65, 66, 84, 1);
-}
-
-.org-bg {
-  background: rgba(249, 161, 76, 1);
-}
-
-.font-md-2 {
-  font-size: 1.2em;
-}
-
-.font-md {
-  font-size: 1.45em;
-}
-
-.font-lg {
-  font-size: 2.5em;
-}
-
-.yellow {
-  color: rgba(255, 187, 89, 1);
-}
-
-#blk {
-  color: #262626;
-}
-
-.highlighted {
-  color: rgba(51, 58, 100, 1);
-  font-weight: bolder;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 1.2em;
-  text-decoration: underline;
-}
-
-/* commonly used utils
-----------------------------------------
-*/
-body {
-  margin: auto 0;
-  overflow-x: hidden;
-}
-
-a {
-  color: inherit !important;
-}
-
-img {
-  vertical-align: baseline;
-}
-
-button:focus {
-  outline: 0;
-}
-
-.grn-box {
-  box-shadow: 20px 20px rgba(0, 161, 154, 1);
-}
-
-.yel-box {
-  box-shadow: 20px 20px rgba(255, 187, 89, 1);
-}
-
-.err-banner {
-  background-color: rgba(248, 228, 201, 0.4);
-}
-
-.err-banner img {
-  max-height: 350px;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Hamburger Menu
-----------------------------------------
-*/
-.hamburger-menu {
-  position: relative;
-  width: 24px;
-  height: 22px;
-  margin: 0 auto;
-  transition: 0.5s ease-in-out;
-  cursor: pointer;
-}
-
-.hamburger-menu span {
-  display: block;
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  background: #262626;
-  border-radius: 10px;
-  opacity: 1;
-  left: 0;
-  transition: 0.25s ease-in-out;
-}
-
-.hamburger-menu span:nth-child(1) {
-  top: 2px;
-}
-
-.hamburger-menu span:nth-child(2),
-.hamburger-menu span:nth-child(3) {
-  top: 10px;
-}
-
-.hamburger-menu span:nth-child(4) {
-  top: 18px;
-}
-
-.hamburger-menu.open span:nth-child(1) {
-  top: 18px;
-  width: 0;
-  left: 50%;
-}
-
-.hamburger-menu.open span:nth-child(2) {
-  transform: rotate(45deg);
-}
-
-.hamburger-menu.open span:nth-child(3) {
-  transform: rotate(-45deg);
-}
-
-.hamburger-menu.open span:nth-child(4) {
-  top: 18px;
-  width: 0;
-  left: 50%;
+@keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

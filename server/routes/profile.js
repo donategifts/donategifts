@@ -60,6 +60,15 @@ router.put(
 	profileController.handlePutIndex,
 );
 
+router.put(
+	'/account',
+	Validator.updateAccountDetailsRules(),
+	Validator.validate,
+	profileController.handleUpdateAccount,
+);
+
+router.put('/agency', Validator.updateAgencyDetailsRules(), profileController.handleUpdateAgency);
+
 router.post(
 	'/picture',
 	fileUpload.upload.single('profileImage'),

@@ -17,7 +17,10 @@ module.exports = class UserRepository {
 
 	async updateUserById(id, updateParams) {
 		try {
-			await this.#userModel.updateOne({ _id: id }, { $set: updateParams }).exec();
+			await this.#userModel
+				.updateOne({ _id: id }, { $set: { ...updateParams } })
+				.lean()
+				.exec();
 		} catch (error) {
 			throw new Error(`Failed to update user: ${error}`);
 		}

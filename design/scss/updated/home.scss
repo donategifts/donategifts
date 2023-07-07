@@ -1,0 +1,15 @@
+.info-section {
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $navy, $medium);
+		text-align: center;
+	}
+    p {
+        @include font-styling($font-body, 1em, $navy-dark, $normal);
+		text-align: left;
+        line-height: 1.5;
+    }
+    img {
+        width: 80%;
+        border-radius: 0.5rem;
+    }
+}
