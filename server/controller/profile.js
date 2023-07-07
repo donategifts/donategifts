@@ -138,15 +138,13 @@ module.exports = class ProfileController extends BaseController {
 				return this.handleError(res, 403, 'No user id in request');
 			}
 
-			const accountManager = await this.#agencyRepository.getAgencyByUserId(
-				res.locals.user._id,
-			);
+			const agency = await this.#agencyRepository.getAgencyByUserId(res.locals.user._id);
 
-			if (!accountManager) {
+			if (!agency) {
 				return this.handleError(res, 404, 'Agency could not be found');
 			}
 
-			await this.#agencyRepository.updateAgency(accountManager, {
+			await this.#agencyRepository.updateAgency(res.locals.user._id, {
 				agencyBio,
 				agencyPhone,
 				agencyWebsite,
