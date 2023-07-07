@@ -6,9 +6,23 @@ services:
     restart: unless-stopped
     ports:
       - 27017:27017
-
     volumes:
-      - donategifts_mongo:/data/db
+      - mongo:/data/db
+
+  # postgres:
+  #   image: postgres:14.1-alpine
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   ports:
+  #     - '5432:5432'
+  #   volumes: 
+  #     - postgres:/var/lib/postgresql/data
+
 
 volumes:
-  donategifts_mongo:
+  mongo:
+
+  # postgres:
+  #   driver: local

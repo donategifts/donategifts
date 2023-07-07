@@ -4,7 +4,6 @@
 uploads
 node_modules
 .idea
-config/config.env
-.env
+config/config*.env
 private
 dist

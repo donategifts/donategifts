@@ -26,11 +26,13 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
     - `nvm use` if you have nvm installed
     - download from the official [node page](https://nodejs.org/en/download)
 
+
 - Have Docker installed (Docker Desktop for mac and windows). The local database is running in a mongo docker container so that you don't have to run mongo natively
 
-<!-- For Mac users:
+For Mac users:
 - If you don't have mongodb, run `brew tap mongodb/brew` then `brew install mongodb-database-tools`
-- If you don't have command line tools, run `xcode-select --install` -->
+- If you don't have command line tools, run `xcode-select --install`
+
 
 ## Install dependencies
 
@@ -39,6 +41,7 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 ## Running all the things
 
 Must do first:
+
 - copy `example-config.env` file and rename it to `config.env`
 
 There are several scripts that can be executed to run/build the project/assets, the ones listed below are what you will be using most of the time.

@@ -86,6 +86,27 @@ export default class Validations {
 		return [body('aboutMe', 'About me text is required!').exists()];
 	}
 
+	static updateAccountDetailsRules() {
+		return [
+			body('fName', 'First name is required!').exists(),
+			body('lName', 'Last name is required!').exists(),
+		];
+	}
+
+	static updateAgencyDetailsRules() {
+		return [
+			body('agencyBio').optional(),
+			body('agencyWebsite').optional(),
+			body('agencyPhone', 'Agency Phone is required!').exists(),
+			body('address1', 'Agency Address is required!').exists(),
+			body('address2', 'Agency Address is required!').exists(),
+			body('city', 'City is required!').exists(),
+			body('state', 'State is required!').exists(),
+			body('country', 'Country is required!').exists(),
+			body('zipcode', 'zipcode is required!').exists(),
+		];
+	}
+
 	static createAgencyValidationRules() {
 		return [
 			body('agencyName').notEmpty().isString().withMessage('Agency name is required!'),
