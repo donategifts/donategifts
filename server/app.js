@@ -1,5 +1,10 @@
-require('dotenv').config({
-	path: './config/config.env',
+const path = require('path');
+const fs = require('fs');
+
+const dotenv = require('dotenv');
+
+dotenv.config({
+	path: path.join(__dirname, '../config/config.env'),
 });
 
 const cors = require('cors');
@@ -7,8 +12,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const responseTime = require('response-time');
 const requestIp = require('request-ip');
-const path = require('path');
-const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');

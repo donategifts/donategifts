@@ -14,12 +14,7 @@
     "mocha": true
   },
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "lf"
-      }
-    ],
+    "prettier/prettier": "error",
     "no-console": [
       "error",
       {
