@@ -30,7 +30,7 @@ if locals.env.facebook != ''
     script.
         window.fbAsyncInit = function () {
             FB.init({
-                appId: #{locals.env.facebook},
+                appId: '#{locals.env.facebook}',
                 cookie: true,
                 xfbml: true,
                 version: 'v8.0',

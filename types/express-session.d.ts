@@ -1,4 +1,4 @@
-import User from '../server/db/models/User';
+import User from '../src/db/models/User';
 
 import 'express-session';
 

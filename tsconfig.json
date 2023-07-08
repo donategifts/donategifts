@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "target": "ES2022",
+        "target": "ESNext",
         "lib": [
-            "ES2022",
+            "ESNext",
         ],
         "outDir": "dist",
         "module": "CommonJS",
@@ -13,9 +13,13 @@
         "skipLibCheck": true,
         "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
-        "typeRoots": ["./types", "./node_modules/@types"],
+    },
+    "ts-node": {
+        "files": true,
     },
     "include": [
-        "server/**/*",
+        "src/**/*.ts",
+        "types/**/*.ts",
+        "config/**/*.ts",
     ]
 }
