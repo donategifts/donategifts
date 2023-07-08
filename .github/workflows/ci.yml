@@ -32,6 +32,9 @@ jobs:
       - name: lint
         run: npm run lint
 
+      - name: build
+        run: npm run build
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
