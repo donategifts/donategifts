@@ -15,7 +15,7 @@
     "gulp:build": "gulp",
     "gulp:watch": "gulp watch",
     "lint:pug": "npx pug-lint views",
-    "lint:src": "eslint --ext .js src/",
+    "lint:src": "eslint --ext .ts src/",
     "lint:jsx": "eslint -c ./js/react/.eslintrc --ext .jsx js/react/",
     "lint": "npm run lint:pug && npm run lint:src && npm run lint:jsx",
     "prepare": "husky install",
