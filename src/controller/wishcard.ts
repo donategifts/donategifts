@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 
 import config from '../../config';
-import { MulterRequest } from '../../types/multerrequest';
 import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import MessageRepository from '../db/repository/MessageRepository';
@@ -90,7 +89,7 @@ export default class WishCardController extends BaseController {
 		);
 	}
 
-	async getLockedWishCards(req: Request, _res: Response, _next: NextFunction) {
+	async getLockedWishCards(req: Request, res: Response, _next: NextFunction) {
 		const response: {
 			userId?: string;
 			wishCardId?: string;
@@ -100,19 +99,14 @@ export default class WishCardController extends BaseController {
 			wishCardId: req.params.id,
 		};
 
-		if (!req.session.user) {
-			response.error = 'User not found';
-			return response;
-		}
-
-		const user = await this.userRepository.getUserByObjectId(req.session.user._id);
+		const user = await this.userRepository.getUserByObjectId(res.locals.user._id);
 		if (!user) {
 			response.error = 'User not found';
 			return response;
 		}
 		response.userId = user._id;
 		response.alreadyLockedWishCard = await this.wishCardRepository.getLockedWishcardsByUserId(
-			req.session.user._id,
+			res.locals.user._id,
 		);
 
 		return response;
@@ -139,7 +133,7 @@ export default class WishCardController extends BaseController {
 		}
 	}
 
-	async handlePostIndex(req: MulterRequest, res: Response, _next: NextFunction) {
+	async handlePostIndex(req: Request, res: Response, _next: NextFunction) {
 		if (!req.file) {
 			this.handleError(
 				res,
@@ -159,7 +153,7 @@ export default class WishCardController extends BaseController {
 				const newWishCard = await this.wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
-					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {
@@ -186,7 +180,7 @@ export default class WishCardController extends BaseController {
 		}
 	}
 
-	async handlePostGuided(req: MulterRequest, res: Response, _next: NextFunction) {
+	async handlePostGuided(req: Request, res: Response, _next: NextFunction) {
 		if (!req.file) {
 			this.handleError(
 				res,
@@ -221,7 +215,7 @@ export default class WishCardController extends BaseController {
 					wishItemName: itemChoice.Name,
 					wishItemPrice: Number(itemChoice.Price),
 					wishItemURL: itemChoice.ItemURL,
-					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {

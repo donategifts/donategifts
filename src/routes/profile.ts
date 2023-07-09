@@ -14,8 +14,6 @@ const profileController = new ProfileController();
 
 const fileUpload = new FileUpload();
 
-router.use(profileController.limiter);
-
 router.get('/password/reset', passwordController.handleGetReset);
 
 router.post(
@@ -48,12 +46,11 @@ router.get(
 
 // ------------ only logged in users from here on ------------
 
-router.use(Permissions.redirectLogin);
-
-router.get('/', profileController.handleGetIndex);
+router.get('/', Permissions.redirectLogin, profileController.handleGetIndex);
 
 router.put(
 	'/',
+	Permissions.redirectLogin,
 	Validator.updateProfileValidationRules(),
 	Validator.validate,
 	profileController.handlePutIndex,
@@ -61,24 +58,31 @@ router.put(
 
 router.put(
 	'/account',
+	Permissions.redirectLogin,
 	Validator.updateAccountDetailsRules(),
 	Validator.validate,
 	profileController.handlePutAccount,
 );
 
-router.put('/agency', Validator.updateAgencyDetailsRules(), profileController.handlePutAgency);
+router.put(
+	'/agency',
+	Permissions.redirectLogin,
+	Validator.updateAgencyDetailsRules(),
+	profileController.handlePutAgency,
+);
 
 router.post(
 	'/picture',
+	Permissions.redirectLogin,
 	fileUpload.upload.single('profileImage'),
 	Validator.validate,
 	profileController.handlePostImage,
 );
 
-router.delete('/picture', profileController.handleDeleteImage);
+router.delete('/picture', Permissions.redirectLogin, profileController.handleDeleteImage);
 
-router.get('/donations', profileController.handleGetDonations);
+router.get('/donations', Permissions.redirectLogin, profileController.handleGetDonations);
 
-router.get('/logout', Utils.logoutUser);
+router.get('/logout', Permissions.redirectLogin, Utils.logoutUser);
 
 export default router;

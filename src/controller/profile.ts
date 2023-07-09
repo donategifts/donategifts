@@ -37,9 +37,9 @@ export default class ProfileController extends BaseController {
 		this.handlePutAgency = this.handlePutAgency.bind(this);
 	}
 
-	async handleGetIndex(req: Request, res: Response, _next: NextFunction) {
+	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			const { user } = req.session;
+			const { user } = res.locals;
 			if (user?.userRole === 'partner') {
 				const agency = await this.agencyRepository.getAgencyByUserId(user._id);
 
@@ -77,10 +77,6 @@ export default class ProfileController extends BaseController {
 		try {
 			const { aboutMe } = req.body;
 
-			if (!req.session?.user) {
-				return this.handleError(res, 'No user id in request', 403);
-			}
-
 			const user = await this.userRepository.getUserByObjectId(res.locals.user._id);
 
 			if (!user) {
@@ -99,11 +95,7 @@ export default class ProfileController extends BaseController {
 		}
 	}
 
-	async handlePostImage(
-		req: Request & { file?: { filename: string; Location: string } },
-		res: Response,
-		_next: NextFunction,
-	) {
+	async handlePostImage(req: Request, res: Response, _next: NextFunction) {
 		if (!req.file) {
 			return this.handleError(
 				res,
@@ -118,7 +110,7 @@ export default class ProfileController extends BaseController {
 				// locally when using multer images are saved inside this folder
 				filePath = `/uploads/${req.file.filename}`;
 			}
-			const profileImage = config.AWS.USE ? req.file.Location : filePath;
+			const profileImage = config.AWS.USE ? req.file.location : filePath;
 			await this.userRepository.updateUserById(res.locals.user._id, { profileImage });
 
 			this.log.info({
@@ -300,17 +292,13 @@ export default class ProfileController extends BaseController {
 				zipcode,
 			} = req.body;
 
-			if (!req.session.user) {
-				return this.handleError(res, 'No user id in request', 403);
-			}
-
-			const agency = await this.agencyRepository.getAgencyByUserId(req.session.user._id);
+			const agency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 
 			if (!agency) {
 				return this.handleError(res, 'Agency could not be found', 404);
 			}
 
-			await this.agencyRepository.updateAgency(req.session.user._id, {
+			await this.agencyRepository.updateAgency(res.locals.user._id, {
 				agencyBio,
 				agencyPhone,
 				agencyWebsite,

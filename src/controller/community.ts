@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
 import config from '../../config';
-import { MulterRequest } from '../../types/multerrequest';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import PostRepository from '../db/repository/PostRepository';
 
@@ -18,7 +17,6 @@ export default class CommunityController extends BaseController {
 		this.agencyRepository = new AgencyRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
-
 		this.handleAddPost = this.handleAddPost.bind(this);
 	}
 
@@ -33,7 +31,7 @@ export default class CommunityController extends BaseController {
 		}
 	}
 
-	async handleAddPost(req: MulterRequest, res: Response, _next: NextFunction) {
+	async handleAddPost(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = req.session;
 
@@ -45,13 +43,13 @@ export default class CommunityController extends BaseController {
 
 			let profileImage: string | null = null;
 
-			if (req.file !== undefined) {
+			if (req.file) {
 				let filePath;
 				if (config.NODE_ENV === 'development') {
 					// locally when using multer images are saved inside this folder
 					filePath = `/uploads/${req.file.filename}`;
 				}
-				profileImage = config.AWS.USE ? req.file.Location : filePath;
+				profileImage = config.AWS.USE ? req.file.location : filePath;
 			}
 
 			const newPost = {

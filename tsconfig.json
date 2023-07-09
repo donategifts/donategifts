@@ -13,9 +13,14 @@
         "skipLibCheck": true,
         "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "types"
+        ],
     },
     "ts-node": {
-        "files": true,
+        "transpileOnly": true,
+        "files": true
     },
     "include": [
         "src/**/*.ts",

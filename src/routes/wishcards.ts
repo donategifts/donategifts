@@ -10,8 +10,6 @@ const wishCardController = new WishCardController();
 
 const router = express.Router();
 
-router.use(wishCardController.limiter);
-
 router.get('/', wishCardController.handleGetIndex);
 
 router.get(
@@ -42,12 +40,11 @@ router.post('/search/:init?', wishCardController.handlePostSearch);
 
 // ------------- only agencies and admins from here on -------------
 
-router.use(Permissions.isAdminOrAgency);
-
-router.get('/choose', wishCardController.handleGetChoose);
+router.get('/choose', Permissions.isAdminOrAgency, wishCardController.handleGetChoose);
 
 router.post(
 	'/',
+	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
 	Validator.createWishcardValidationRules(),
 	Validator.validate,
@@ -56,29 +53,32 @@ router.post(
 
 router.post(
 	'/guided/',
+	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
 	Validator.createGuidedWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostGuided,
 );
 
-router.get('/edit/:id', wishCardController.handleGetEdit);
+router.get('/edit/:id', Permissions.isAdminOrAgency, wishCardController.handleGetEdit);
 
 router.post(
 	'/edit/:id',
+	Permissions.isAdminOrAgency,
 	Validator.createWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostEdit,
 );
 
-router.delete('/delete/:id', wishCardController.handleDeleteSingle);
+router.delete('/delete/:id', Permissions.isAdminOrAgency, wishCardController.handleDeleteSingle);
 
-router.get('/me', wishCardController.handleGetMe);
+router.get('/me', Permissions.isAdminOrAgency, wishCardController.handleGetMe);
 
-router.get('/create', wishCardController.handleGetCreate);
+router.get('/create', Permissions.isAdminOrAgency, wishCardController.handleGetCreate);
 
 router.get(
 	'/defaults/:id',
+	Permissions.isAdminOrAgency,
 	Validator.getDefaultCardsValidationRules(),
 	Validator.validate,
 	wishCardController.handleGetDefaults,

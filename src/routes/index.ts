@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import BaseController from '../controller/basecontroller';
+
 import admin from './admin';
 import community from './community';
 import contact from './contact';
@@ -18,18 +20,20 @@ import wishcards from './wishcards';
 
 export const routes = Router();
 
+const limiter = new BaseController().limiter;
+
 routes.use('/admin', admin);
-routes.use('/community', community);
-routes.use('/contact', contact);
+routes.use('/community', limiter, community);
+routes.use('/contact', limiter, contact);
 routes.use('/faq', faq);
 routes.use('/', home);
 routes.use('/howto', howto);
-routes.use('/login', login);
+routes.use('/login', limiter, login);
 routes.use('/mission', mission);
-routes.use('/payment', payment);
-routes.use('/profile', profile);
+routes.use('/payment', limiter, payment);
+routes.use('/profile', limiter, profile);
 routes.use('/proof', proof);
-routes.use('/signup', signup);
+routes.use('/signup', limiter, signup);
 routes.use('/team', team);
 routes.use('/terms', terms);
-routes.use('/wishcards', wishcards);
+routes.use('/wishcards', limiter, wishcards);

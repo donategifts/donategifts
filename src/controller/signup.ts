@@ -26,11 +26,7 @@ export default class SignupController extends BaseController {
 	}
 
 	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
-		let userRole = null;
-
-		if (res.locals?.user) {
-			userRole = res.locals.user.userRole;
-		}
+		const { userRole } = res.locals.user;
 
 		if (userRole === 'partner') {
 			this.renderView(res, 'agency');
@@ -96,7 +92,7 @@ export default class SignupController extends BaseController {
 					user: newUser,
 				});
 			} else {
-				return this.handleError(res, 'request already ended', 206);
+				return this.handleError(res, 'request already ended', 500);
 			}
 		} catch (error) {
 			return this.handleError(res, error, 206);
@@ -118,7 +114,7 @@ export default class SignupController extends BaseController {
 				agencyPhone,
 				agencyBio,
 				agencyAddress,
-				accountManager: req.session.user?._id,
+				accountManager: res.locals.user._id,
 			});
 
 			if (config.NODE_ENV !== 'test') {
@@ -132,7 +128,7 @@ export default class SignupController extends BaseController {
 
 			return res.status(200).send({
 				success: true,
-				user: req.session.user,
+				user: res.locals.user,
 				url: '/profile',
 			});
 		} catch (error) {

@@ -48,7 +48,7 @@ export default class Utils {
 	static logoutUser(req, res, _next) {
 		req.session.destroy(() => {
 			res.clearCookie(config.SESSION.NAME);
-			res.redirect('/login');
+			res.redirect('/');
 		});
 	}
 

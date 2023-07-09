@@ -7,8 +7,6 @@ const router = express.Router();
 
 const loginController = new LoginController();
 
-router.use(loginController.limiter);
-
 router.get('/', loginController.handleGetIndex);
 
 router.post(

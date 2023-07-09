@@ -33,15 +33,14 @@ export default class LoginController extends BaseController {
 				if (req) {
 					req.session.user = user;
 				} else {
-					this.log.warn('req is undefined');
-					return this.handleError(res, 'Internal Server Error', 500);
+					return this.handleError(res, 'request already ended', 500);
 				}
 
-				res.locals.user = user;
 				return res.status(200).redirect('/profile');
 			}
 		}
-		this.handleError(res, 'Username and/or password incorrect', 403);
+
+		this.renderView(res, 'login', { error: 'Username and/or password incorrect' }, 403);
 	}
 
 	async handlePostGoogleLogin(req: Request, res: Response, _next: NextFunction) {
@@ -62,11 +61,8 @@ export default class LoginController extends BaseController {
 						if (req) {
 							req.session.user = user;
 						} else {
-							this.log.warn('req is undefined');
-							return this.handleError(res, 'Internal Server Error', 500);
+							return this.handleError(res, 'request already ended', 500);
 						}
-
-						res.locals.user = user;
 
 						return res.status(200).send({
 							url: '/profile',
@@ -87,11 +83,9 @@ export default class LoginController extends BaseController {
 					if (req) {
 						req.session.user = newUser;
 					} else {
-						this.log.warn('req is undefined');
-						return this.handleError(res, 'Internal Server Error', 500);
+						return this.handleError(res, 'request already ended', 500);
 					}
 
-					res.locals.user = newUser;
 					return res.status(200).send({
 						url: '/profile',
 					});
@@ -115,10 +109,11 @@ export default class LoginController extends BaseController {
 			if (dbUser) {
 				if (req) {
 					req.session.user = dbUser;
-					res.locals.user = dbUser;
 					return res.status(200).send({
 						url: '/profile',
 					});
+				} else {
+					return this.handleError(res, 'request already ended', 500);
 				}
 			}
 
@@ -136,10 +131,11 @@ export default class LoginController extends BaseController {
 
 				if (req) {
 					req.session.user = newUser;
-					res.locals.user = newUser;
 					return res.status(200).send({
 						url: '/profile',
 					});
+				} else {
+					return this.handleError(res, 'request already ended', 500);
 				}
 			} catch (error) {
 				return this.handleError(res, 'Error during login!\nTry again in a few minutes!');

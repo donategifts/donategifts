@@ -8,8 +8,6 @@ const router = express.Router();
 
 const signupController = new SignupController();
 
-router.use(signupController.limiter);
-
 router.get('/', Permissions.redirectProfile, signupController.handleGetIndex);
 
 router.post(

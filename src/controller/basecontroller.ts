@@ -21,7 +21,6 @@ export default class BaseController {
 		const parts = template.split('/');
 		let templateString = template;
 		if (parts[0] !== 'pages') {
-			// eslint-disable-next-line no-param-reassign
 			templateString = `pages/${template}`;
 		}
 

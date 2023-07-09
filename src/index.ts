@@ -22,25 +22,25 @@ const app = express();
 
 (async () => {
 	// hot reloading in dev environment
-	if (config.NODE_ENV === 'development') {
-		// eslint-disable-next-line import/no-extraneous-dependencies
-		const livereload = require('livereload');
-		// eslint-disable-next-line import/no-extraneous-dependencies
-		const connectLiveReload = require('connect-livereload');
-		const liveReloadServer = livereload.createServer();
+	// if (config.NODE_ENV === 'development') {
+	// 	// eslint-disable-next-line import/no-extraneous-dependencies
+	// 	const livereload = require('livereload');
+	// 	// eslint-disable-next-line import/no-extraneous-dependencies
+	// 	const connectLiveReload = require('connect-livereload');
+	// 	const liveReloadServer = livereload.createServer();
 
-		liveReloadServer.server.once('connection', () => {
-			setTimeout(
-				() => {
-					liveReloadServer.refresh('/');
-				},
-				// set timeout to 2 seconds so that react can finish compiling
-				2000,
-			);
-		});
+	// 	liveReloadServer.server.once('connection', () => {
+	// 		setTimeout(
+	// 			() => {
+	// 				liveReloadServer.refresh('/');
+	// 			},
+	// 			// set timeout to 2 seconds so that react can finish compiling
+	// 			2000,
+	// 		);
+	// 	});
 
-		app.use(connectLiveReload());
-	}
+	// 	app.use(connectLiveReload());
+	// }
 
 	app.use(
 		responseTime((req, res, _time) => {
@@ -51,6 +51,7 @@ const app = express();
 				'svg',
 				'jpeg',
 				'woff',
+				'ttf',
 				'css',
 				'ico',
 				'map',

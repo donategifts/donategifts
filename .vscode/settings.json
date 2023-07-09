@@ -18,7 +18,6 @@
     "disallowTrailingSpaces": true,
     "requireLowerCaseAttributes": true,
     "requireLowerCaseTags": true,
-    "requireSpacesInsideAttributeBrackets": true,
     "requireSpaceAfterCodeOperator": true,
     "validateDivTags": true,
     "validateIndentation": 4,
