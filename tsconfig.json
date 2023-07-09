@@ -13,10 +13,6 @@
         "skipLibCheck": true,
         "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
-        "typeRoots": [
-            "node_modules/@types",
-            "types"
-        ],
     },
     "ts-node": {
         "transpileOnly": true,
