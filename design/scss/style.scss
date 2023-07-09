@@ -30,10 +30,6 @@ textarea {
 	border: none;
 }
 
-.tinted {
-	background-color: transparentize($white, 0.5);
-}
-
 img {
 	vertical-align: baseline;
 }
@@ -369,77 +365,3 @@ wishcards
 	}
 }
 
-// ------------- wishcard/:id page ------------
-.wishpage {
-	margin: 0 auto;
-	padding: 0 auto;
-	box-sizing: border-box;
-	background-color: lighten($cream, 8);
-	@include font-styling($font-body);
-	h1 {
-		@include font-styling($font-heading, 2.5rem, $navy);
-		text-align: center;
-	}
-	h3 {
-		@include font-styling($font-body, 1.5rem, $custom-orange, $semi-bold);
-		text-align: center;
-		text-transform: uppercase;
-	}
-	p {
-		text-align: left;
-		word-wrap: break-word;
-	}
-	i {
-		color: $custom-orange;
-		font-size: 1.5rem;
-	}
-	.wrapper {
-		width: 40vw;
-		border-radius: 2rem;
-		-webkit-border-radius: 2rem;
-		-moz-border-radius: 2rem;
-		-ms-border-radius: 2rem;
-		-o-border-radius: 2rem;
-	}
-	.row {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		img {
-			background: $white;
-			width: 40vw;
-			padding: 1rem;
-			border-radius: 1rem;
-			-webkit-border-radius: 1rem;
-			-moz-border-radius: 1rem;
-			-ms-border-radius: 1rem;
-			-o-border-radius: 1rem;
-		}
-	}
-	.msg-each {
-		background-color: lighten($cream, 7);
-		margin: 0.5rem;
-		padding: 0.5rem;
-	}
-	.donate-btn {
-		@extend %btn-lg;
-		text-decoration: none !important;
-		background-color: $custom-orange;
-		color: $white !important;
-		min-width: 40vw;
-		display: inline-block !important;
-	}
-}
-
-@media only screen and (max-width: 768px) {
-	.wishpage {
-		.wrapper {
-			width: 80vw !important;
-		}
-		.row {
-			img {
-				width: 80vw !important;
-			}
-		}
-	}
-}

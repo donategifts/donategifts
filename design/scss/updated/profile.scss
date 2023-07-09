@@ -49,11 +49,13 @@
 	.card-body {
 		padding: 2rem !important;
 	}
-	span {
-		@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
-	}
-	span.mx-2 {
-		font-weight: $semi-bold !important;
+	p {
+		span:first-child {
+			font-weight: $semi-bold !important;
+		}
+		span {
+			@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+		}
 	}
 	.text-accent {
 		color: $custom-orange;
@@ -79,7 +81,9 @@
 	background-color: $gray-100;
 }
 
-#accountDetailsModal, #agencyDetailsModal, #aboutMeModal {
+#accountDetailsModal,
+#agencyDetailsModal,
+#aboutMeModal {
 	h5 {
 		@include font-styling($font-body, 1.25rem, $navy, $semi-bold);
 	}
@@ -89,7 +93,8 @@
 	.modal-footer button {
 		width: 30%;
 	}
-	input::placeholder, textarea::placeholder {
+	input::placeholder,
+	textarea::placeholder {
 		color: $navy-dark !important;
 	}
 }

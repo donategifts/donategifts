@@ -99,21 +99,6 @@ TODO: this needs to be edited!
 	}
 }
 
-.btn-disabled-long {
-	@extend %btn-long;
-	background-color: lighten($gray, 25%);
-	color: $white !important;
-}
-
-@media only screen and (max-width: 768px) {
-	.btn-disabled-long {
-		width: 80vw !important;
-	}
-	.btn-orange-navy-lg-long {
-		width: 80vw !important;
-	}
-}
-
 
 /* 
 -----------------------------
@@ -151,6 +136,7 @@ Updated buttons
 		background-color: darken($navy, 10);
 	}
 }
+
 .button-secondary {
 	@extend %btn;
 	@extend %btn-updated;
@@ -160,6 +146,14 @@ Updated buttons
 		background-color: $gray-400;
 		color: darken($navy, 10);
 	}
+}
+
+.button-disabled {
+	@extend %btn;
+	@extend %btn-updated;
+	background-color: $gray-500;
+	color: $white;
+	cursor: not-allowed;
 }
 
 /* 
