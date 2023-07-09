@@ -1,9 +1,9 @@
 import path from 'path';
 
-import AWS from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import multer from 'multer';
 import multerS3 from 'multer-sharp-s3';
-import { v4 as UUIDv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '../../config';
 
@@ -21,7 +21,7 @@ export default class FileUpload {
 				filename: (_req, file, cb) => {
 					cb(
 						null,
-						`${UUIDv4()}-${file.filename || path.parse(file.originalname).name}.jpeg`,
+						`${uuidv4()}-${file.filename || path.parse(file.originalname).name}.jpeg`,
 					);
 				},
 			});
@@ -32,7 +32,7 @@ export default class FileUpload {
 				);
 			}
 
-			this.s3 = new AWS.S3({
+			this.s3 = new S3({
 				accessKeyId: config.AWS.KEY,
 				secretAccessKey: config.AWS.SECRET,
 			});
@@ -43,7 +43,7 @@ export default class FileUpload {
 				ACL: 'public-read',
 				CacheControl: 'max-age=31536000',
 				Key(_req, _file, cb) {
-					cb(null, `${UUIDv4()}.jpeg`);
+					cb(null, `${uuidv4()}.jpeg`);
 				},
 				resize: {
 					height: 640,

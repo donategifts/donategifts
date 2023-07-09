@@ -13,10 +13,13 @@ import responseTime from 'response-time';
 import config from '../config';
 
 import { routes as apiRoutes } from './api';
+import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
 import DGBot from './discord/bot';
 import log from './helper/logger';
 import { routes } from './routes';
+
+const limiter = new BaseController().limiter;
 
 const app = express();
 
@@ -141,7 +144,7 @@ const app = express();
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
 
-	app.use('/robots.txt', (_req, res, _next) => {
+	app.use('/robots.txt', limiter, (_req, res, _next) => {
 		res.type('text/plain');
 		res.sendFile(path.join(__dirname, '../public/robots.txt'));
 	});

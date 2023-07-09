@@ -1,5 +1,6 @@
 import axios from 'axios';
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '../../config';
 
@@ -12,7 +13,7 @@ export default class Utils {
 	}
 
 	static createDefaultPassword() {
-		return Math.random().toString(36).slice(-8);
+		return uuidv4().slice(0, 6);
 	}
 
 	static async calculateWishItemTotalPrice(itemPrice) {

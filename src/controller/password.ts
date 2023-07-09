@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
-import { v4 as UUIDV4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '../../config';
 import UserRepository from '../db/repository/UserRepository';
@@ -35,7 +35,7 @@ export default class PasswordController extends BaseController {
 				return this.handleError(res, 'user not found');
 			}
 
-			const resetToken = UUIDV4();
+			const resetToken = uuidv4();
 			userObject.passwordResetToken = resetToken;
 			userObject.passwordResetTokenExpires = moment().add(1, 'hours').toDate();
 			userObject.save();
