@@ -7,8 +7,8 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import session from 'express-session';
+import { csrf } from 'lusca';
 import requestIp from 'request-ip';
-import responseTime from 'response-time';
 
 import config from '../config';
 
@@ -24,38 +24,35 @@ const limiter = new BaseController().limiter;
 const app = express();
 
 (async () => {
-	app.use(
-		responseTime((req, res, _time) => {
-			const ignoredRequests = [
-				'png',
-				'jpg',
-				'js',
-				'svg',
-				'jpeg',
-				'woff',
-				'ttf',
-				'css',
-				'ico',
-				'map',
-				'gif',
-			];
+	app.use((req, res, next) => {
+		const ignoredRequests = [
+			'png',
+			'jpg',
+			'js',
+			'svg',
+			'jpeg',
+			'woff',
+			'ttf',
+			'css',
+			'ico',
+			'map',
+			'gif',
+		];
 
-			const parts = req.originalUrl.split('.');
+		const parts = req.originalUrl.split('.');
 
-			if (
-				req.originalUrl !== '/health' &&
-				!ignoredRequests.includes(parts[parts.length - 1])
-			) {
-				const clientIp = requestIp.getClientIp(req);
+		if (req.originalUrl !== '/health' && !ignoredRequests.includes(parts[parts.length - 1])) {
+			const clientIp = requestIp.getClientIp(req);
 
-				const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
-					res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
-				}) path: ${req.originalUrl}`;
+			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
+				res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
+			}) path: ${req.originalUrl}`;
 
-				log.info(logString);
-			}
-		}),
-	);
+			log.info(logString);
+		}
+
+		next();
+	});
 
 	await new MongooseConnection().connect();
 
@@ -107,7 +104,7 @@ const app = express();
 
 	app.use((req, res, next) => {
 		// TODO: assign agency to locals if there's one present in the request
-		if (req.session?.user) {
+		if (req.session.user) {
 			res.locals.user = req.session.user;
 		}
 
@@ -140,6 +137,8 @@ const app = express();
 	);
 
 	app.use(cookieParser());
+
+	app.use(csrf());
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);

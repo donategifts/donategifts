@@ -25,21 +25,25 @@ export default class SignupController extends BaseController {
 		this.handlePostAgency = this.handlePostAgency.bind(this);
 	}
 
-	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
-		const { userRole } = res.locals.user;
-
-		if (userRole === 'partner') {
-			this.renderView(res, 'agency');
-		} else {
-			this.renderView(res, 'signup');
-		}
-	}
-
-	async sendEmail(email: string, verificationHash: string) {
+	private async sendEmail(email: string, verificationHash: string) {
 		const emailResponse = await Messaging.sendVerificationEmail(email, verificationHash);
 		const response = emailResponse ? emailResponse.data : '';
 		if (config.NODE_ENV === 'development') {
 			this.log.info(response);
+		}
+	}
+
+	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
+		if (res.locals.user) {
+			const { userRole } = res.locals.user;
+
+			if (userRole === 'partner') {
+				return this.renderView(res, 'agency');
+			}
+
+			this.renderView(res, 'profile');
+		} else {
+			this.renderView(res, 'signup');
 		}
 	}
 

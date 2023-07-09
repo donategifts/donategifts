@@ -183,6 +183,8 @@ block content
                             span Friends
                         p.card-text.p-4 You have invited 0 friends.
 
+    input( type='hidden' name='_csrf' value=_csrf )
+
 block modal
     #aboutMeModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
         .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
@@ -272,11 +274,15 @@ block scripts
                     input.val(input.attr('placeholder'));
                 }
             }).blur();
+
             $('#save-about-me-button').click(() => {
+                const aboutMe = $('#about-me-text').val();
+                const _csrf = $('input[name=_csrf]').val();
+
                 $.ajax({
                     type: 'PUT',
                     url: '/profile',
-                    data: { aboutMe: $('#about-me-text').val() },
+                    data: { aboutMe, _csrf },
                     success: (response) => {
                         if (response.error) {
                             return showToast('Could not update about me info.');
@@ -293,10 +299,12 @@ block scripts
             $('#save-account-details').click(() => {
                 const fName = $('input#fName').val();
                 const lName = $('input#lName').val();
+                const _csrf = $('input[name=_csrf]').val();
+
                 $.ajax({
                     type: 'PUT',
                     url: '/profile/account',
-                    data: { fName, lName },
+                    data: { fName, lName, _csrf },
                     success: (response) => {
                         if (response.error) {
                             return showToast('Error: Could not update account details');
@@ -321,10 +329,12 @@ block scripts
                 const state = $('input#state').val();
                 const country = $('input#country').val();
                 const zipcode = $('input#zipcode').val();
+                const _csrf = $('input[name=_csrf]').val();
+
                 $.ajax({
                     type: 'PUT',
                     url: '/profile/agency',
-                    data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode },
+                    data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode, _csrf },
                     success: (response) => {
                         if (response.error) {
                             return showToast('Error: Could not update agency details');
@@ -367,6 +377,9 @@ block scripts
                     $.ajax({
                         type: 'POST',
                         url: '/profile/picture',
+                        headers: {
+                            'x-csrf-token': $('input[name=_csrf]').val()
+                        },
                         data: formData,
                         success: (response) => {
                             replaceImage(response.data);
@@ -382,6 +395,9 @@ block scripts
                 $.ajax('/profile/picture', {
                     type: 'DELETE',
                     url: '/profile/picture',
+                    headers: {
+                        'x-csrf-token': $('input[name=_csrf]').val()
+                    },
                     success: (response) => {
                         replaceImage(response.data);
                     },

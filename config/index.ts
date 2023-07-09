@@ -97,6 +97,7 @@ export default {
 	PORT: envVars.PORT || 3000,
 
 	MONGO_URI: envVars.MONGO_URI || 'mongodb://localhost/donategifts?w=majority',
+
 	NODE_ENV: envVars.NODE_ENV || 'development',
 
 	SESSION: {
@@ -127,6 +128,7 @@ export default {
 	GOOGLE_CAPTCHA_KEY: envVars.GOOGLE_CAPTCHA_KEY,
 
 	G_CLIENT_ID: envVars.G_CLIENT_ID,
+
 	FB_APP_ID: envVars.FB_APP_ID,
 
 	SCRAPINGBEE_APIKEY: envVars.SCRAPINGBEE_APIKEY,
