@@ -138,9 +138,11 @@ const app = express();
 
 	app.use(cookieParser());
 
-	app.use(csrf({
-		allowlist: ['/profile', '/community', '/signup']
-	}));
+	app.use(
+		csrf({
+			allowlist: ['/profile', '/community', '/signup'],
+		}),
+	);
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
