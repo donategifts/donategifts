@@ -42,21 +42,21 @@ const envVariables = [
 ];
 
 interface EnvVars {
-	PORT: number | null;
-	MONGO_URI: string | null;
-	NODE_ENV: string | null;
-	SESS_NAME: string | null;
-	SESS_SECRET: string | null;
-	SESS_LIFE: number | null;
+	PORT: number;
+	MONGO_URI: string;
+	NODE_ENV: string;
+	SESS_NAME: string;
+	SESS_SECRET: string;
+	SESS_LIFE: number;
 	MAILGUN_API_KEY: string | null;
 	MAILGUN_DOMAIN: string | null;
-	USE_AWS: boolean | null;
+	USE_AWS: boolean;
 	AWS_KEY: string | null;
 	AWS_SECRET: string | null;
 	S3BUCKET: string | null;
 	DEFAULT_EMAIL: string | null;
 	DEFAULT_EMAIL_PASSWORD: string | null;
-	BASE_URL: string | null;
+	BASE_URL: string;
 	GOOGLE_CAPTCHA_KEY: string | null;
 	G_CLIENT_ID: string | null;
 	FB_APP_ID: string | null;
@@ -64,7 +64,7 @@ interface EnvVars {
 	STRIPE_API: string | null;
 	STRIPE_KEY: string | null;
 	STRIPE_SECRET: string | null;
-	WISHCARD_LOCK_IN_MINUTES: number | null;
+	WISHCARD_LOCK_IN_MINUTES: number;
 	PAYPAL_CLIENT_ID: string | null;
 	PAYPAL_SECRET: string | null;
 	PAYPAL_WEBHOOK_ID: string | null;
@@ -72,8 +72,8 @@ interface EnvVars {
 	DISCORD_TOKEN: string | null;
 	DISCORD_STATUS_WEBHOOK_URL: string | null;
 	DISCORD_CONTACT_WEBHOOK_URL: string | null;
-	LOG_LEVEL: string | null;
-	MAINTENANCE_ENABLED: boolean | null;
+	LOG_LEVEL: string;
+	MAINTENANCE_ENABLED: boolean;
 }
 
 const envVars = {} as EnvVars;
@@ -94,16 +94,16 @@ for (const variable of envVariables) {
 }
 
 export default {
-	PORT: envVars.PORT || 3000,
+	PORT: envVars.PORT,
 
-	MONGO_URI: envVars.MONGO_URI || 'mongodb://localhost/donategifts?w=majority',
+	MONGO_URI: envVars.MONGO_URI,
 
-	NODE_ENV: envVars.NODE_ENV || 'development',
+	NODE_ENV: envVars.NODE_ENV,
 
 	SESSION: {
-		NAME: envVars.SESS_NAME || 'sid',
-		SECRET: envVars.SESS_SECRET || 'something-super-duper-secret',
-		LIFE: envVars.SESS_LIFE || 3600000,
+		NAME: envVars.SESS_NAME,
+		SECRET: envVars.SESS_SECRET,
+		LIFE: envVars.SESS_LIFE,
 	},
 
 	MAILGUN: {
@@ -112,7 +112,7 @@ export default {
 	},
 
 	AWS: {
-		USE: envVars.USE_AWS || false,
+		USE: envVars.USE_AWS,
 		KEY: envVars.AWS_KEY,
 		SECRET: envVars.AWS_SECRET,
 		S3BUCKET: envVars.S3BUCKET,
@@ -123,7 +123,7 @@ export default {
 		PASSWORD: envVars.DEFAULT_EMAIL_PASSWORD,
 	},
 
-	BASE_URL: envVars.BASE_URL || 'http://localhost:3000',
+	BASE_URL: envVars.BASE_URL,
 
 	GOOGLE_CAPTCHA_KEY: envVars.GOOGLE_CAPTCHA_KEY,
 
@@ -139,7 +139,7 @@ export default {
 		SECRET: envVars.STRIPE_SECRET,
 	},
 
-	WISHCARD_LOCK_IN_MINUTES: envVars.WISHCARD_LOCK_IN_MINUTES || 10,
+	WISHCARD_LOCK_IN_MINUTES: envVars.WISHCARD_LOCK_IN_MINUTES,
 
 	PAYPAL: {
 		CLIENT_ID: envVars.PAYPAL_CLIENT_ID,
@@ -154,7 +154,7 @@ export default {
 		CONTACT_WEBHOOK_URL: envVars.DISCORD_CONTACT_WEBHOOK_URL,
 	},
 
-	LOG_LEVEL: envVars.LOG_LEVEL || 'debug',
+	LOG_LEVEL: envVars.LOG_LEVEL,
 
-	MAINTENANCE_ENABLED: envVars.MAINTENANCE_ENABLED || false,
+	MAINTENANCE_ENABLED: envVars.MAINTENANCE_ENABLED,
 };

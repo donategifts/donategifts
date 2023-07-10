@@ -10,6 +10,7 @@ module.exports = {
   disallowMultipleLineBreaks: true,
   disallowTrailingSpaces: true,
 
+  requireSpacesInsideAttributeBrackets: true,
   requireLowerCaseAttributes: true,
   requireLowerCaseTags: true,
   requireSpaceAfterCodeOperator: true,

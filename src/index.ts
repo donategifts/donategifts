@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import bodyParser from 'body-parser';
 import MongoStore from 'connect-mongo';
@@ -138,7 +138,9 @@ const app = express();
 
 	app.use(cookieParser());
 
-	app.use(csrf());
+	app.use(csrf({
+		allowlist: ['/profile', '/community', '/signup']
+	}));
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
