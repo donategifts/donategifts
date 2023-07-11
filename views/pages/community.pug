@@ -12,7 +12,8 @@ append scripts
                     Community,
                     {
                         user: !{JSON.stringify(user || null)},
-                        posts: !{JSON.stringify(posts.reverse())}
+                        posts: !{JSON.stringify(posts.reverse())},
+                        _csrf: "#{_csrf}"
                     }
                 )
             );

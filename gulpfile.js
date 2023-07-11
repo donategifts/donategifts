@@ -5,25 +5,24 @@ require('dotenv').config({
 });
 
 const { src, dest, series, watch, task } = require('gulp');
-const plumber = require('gulp-plumber');
 const prefix = require('gulp-autoprefixer');
-const sass = require('gulp-dart-sass');
-const sourcemaps = require('gulp-sourcemaps');
-const gulpif = require('gulp-if');
 const concat = require('gulp-concat');
+const sass = require('gulp-dart-sass');
+const gulpif = require('gulp-if');
+const plumber = require('gulp-plumber');
+const sourcemaps = require('gulp-sourcemaps');
 const stripDebug = require('gulp-strip-debug');
 const uglify = require('gulp-uglify');
-const logger = require('./server/helper/logger');
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const onError = (runner, done) => (error) => {
-	logger.error(`error - ${runner}`, error);
+	console.error(`error - ${runner}`, error);
 	done();
 };
 
 const onSuccess = (runner, done) => () => {
-	logger.info(`finished - ${runner}`);
+	console.info(`finished - ${runner}`);
 	done();
 };
 

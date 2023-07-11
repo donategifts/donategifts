@@ -1,16 +1,16 @@
 meta( charset='utf-8' )
-meta( name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no' )
+meta( name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' )
 meta( http-equiv='X-UA-Compatible', content='IE=edge' )
 
-link( rel='icon', href='/gift.ico' )
+link( rel='icon' href='/gift.ico' )
 
-link( href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap', rel='stylesheet' )
+link( href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap' rel='stylesheet' )
 
-link( rel='stylesheet', type='text/css', href='/css/app.min.css' )
+link( rel='stylesheet' type='text/css' href='/css/app.min.css' )
 
-link( rel='stylesheet', type='text/css', href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css' )
+link( rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css' )
 
-script( src='https://kit.fontawesome.com/7a735561bb.js', crossorigin='anonymous' )
+script( src='https://kit.fontawesome.com/45fe5fa387.js' crossorigin='anonymous' )
 
 script( async src="https://www.googletagmanager.com/gtag/js?id=UA-180152810-1" )
 script.
@@ -30,7 +30,7 @@ if locals.env.facebook != ''
     script.
         window.fbAsyncInit = function () {
             FB.init({
-                appId: #{locals.env.facebook},
+                appId: '#{locals.env.facebook}',
                 cookie: true,
                 xfbml: true,
                 version: 'v8.0',

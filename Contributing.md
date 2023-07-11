@@ -61,7 +61,7 @@ We have a pre commit hook running which runs our linters before you make a commi
 ---
 
 ## Our tech stack:
-- Server: [express.js](https://expressjs.com/)
+- Server: [express.js](https://expressjs.com/) with [Typescript](https://www.typescriptlang.org/)
 - Template engine: [pug.js](https://pugjs.org/api/getting-started.html)
 - Our new components: [react.js](https://react.dev/)
 - Our current database: [mongodb](https://www.mongodb.com)
@@ -135,7 +135,7 @@ scripts/
 ```
 Scripts holds our utilities e.g. db seeder files and such
 ```
-server/
+src/
 ├── api/
 │   └── [viewname].js
 ├──...
@@ -156,7 +156,7 @@ server/
 This route is meant to be used together with ajax calls/react components. Routes in this directory are only meant to return `JSON` objects. They are automatically mounted and accessible on `/api/<filename>` and should always have the view name as filename if they are used in a single template/react component.
 
 ```
-server/
+src/
 ├──...
 │   
 ├── controller/
@@ -176,7 +176,7 @@ server/
 ### Controllers
 Hold the business logic, are the only way of accessing the database via the repositories.
 ```
-server/
+src/
 ├──...
 │   
 ├──...
@@ -196,7 +196,7 @@ server/
 ### DB
 Has everything database specific, e.g. Models, Repositories,...
 ```
-server/
+src/
 ├──...
 │   
 ├──...
@@ -216,7 +216,7 @@ server/
 ### Discord
 We use a discord bot to verify agencies and send status messages via webhooks
 ```
-server/
+src/
 ├──...
 │  
 ├──...
@@ -236,7 +236,7 @@ server/
 ### Helper
 Includes logger, some utils, our validations and messaging related things
 ```
-server/
+src/
 ├──...
 │  
 ├──...
@@ -262,7 +262,7 @@ resources/
 ### Resources
 Email templates
 ```
-server/
+src/
 ├──...
 │  
 ├──...
@@ -281,7 +281,7 @@ server/
     └── [viewname].js
 ```
 ### Routes
-Every file in this directory is automatically mounted and available as route to be accessed. Each route in this directory is meant to render a page and not just return data. If you only need data fetching to fill a template, use an ajax call from the [api](/server/api/). The filename needs to represent the route of the view.
+Every file in this directory is automatically mounted and available as route to be accessed. Each route in this directory is meant to render a page and not just return data. If you only need data fetching to fill a template, use an ajax call from the [api](/src/api/). The filename needs to represent the route of the view.
 ```
 views/
 ├── components/

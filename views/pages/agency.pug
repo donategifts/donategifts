@@ -54,6 +54,8 @@ block content
                                 .form-group.col-12.text-center
                                     button.agency__button( type='submit' ) Submit
 
+                            input( type='hidden' name='_csrf' value=_csrf )
+
 block scripts
     script.
         $(document).ready(function () {
@@ -71,6 +73,7 @@ block scripts
                 const state = $('#state').val();
                 const country = $('#country').val();
                 const zipcode = $('#zipcode').val();
+                const _csrf = $('input[name=_csrf]').val();
 
                 $.ajax({
                     type: 'POST',
@@ -87,7 +90,8 @@ block scripts
                             state,
                             country,
                             zipcode
-                        }
+                        },
+                        _csrf
                     },
                     success: function (response) {
                         $('#submit-btn').prop('disabled', false);

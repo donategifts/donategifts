@@ -7,7 +7,7 @@ mixin carouselInnerPart(increment)
                 .row.justify-content-center
                     - var j = i;
                     while j < (i + increment)
-                        .col-lg-4.col-xs-12.mb-5.px-4
+                        .col-lg-4.col-xs-12.p-4
                             #card-fix.card.h-100
                                 .view.overlay
                                     img#img-fix.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
@@ -57,18 +57,18 @@ mixin carouselInnerPart(increment)
             #mobile-carousel.carousel.slide( data-bs-ride='carousel' )
                 +carouselInnerPart(1)
 
-        .d-none.d-lg-block
+        .d-none.d-lg-flex.align-items-center
+            button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+                data-bs-target='#sample-cards-carousel'
+                data-bs-slide='prev'
+            )
+                .fa-solid.fa-chevron-left.fa-2xl.text-dark
+
             #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
                 +carouselInnerPart(3)
-                button.carousel-control-prev( type='button'
-                    data-bs-target='#sample-cards-carousel'
-                    data-bs-slide='prev'
-                )
-                    span.carousel-control-prev-icon( aria-hidden='true' )
-                    span.visually-hidden Previous
-                button.carousel-control-next( type='button'
-                    data-bs-target='#sample-cards-carousel'
-                    data-bs-slide='next'
-                )
-                    span.carousel-control-next-icon( aria-hidden='true' )
-                    span.visually-hidden Next
+
+            button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+                data-bs-target='#sample-cards-carousel'
+                data-bs-slide='next'
+            )
+                .fa-solid.fa-chevron-right.fa-2xl.text-dark

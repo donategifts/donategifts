@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": [
+            "ESNext",
+        ],
+        "outDir": "dist",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "strict": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false,
+        "allowSyntheticDefaultImports": true,
+    },
+    "ts-node": {
+        "transpileOnly": true,
+        "files": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "types/**/*.ts",
+        "config/**/*.ts",
+    ]
+}

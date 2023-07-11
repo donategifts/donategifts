@@ -42,78 +42,50 @@ block scripts
     include ../mixins/formvalidation
     +passwordToggleJS
 
-    if successNotification
+    if error
         script.
-            showToast('#{successNotification.msg}');
-
-    if errorNotification
-        script.
-            showToast('#{errorNotification.msg}');
+            showToast('#{error}');
 
     script.
-        $(document).ready(() => {
-            $('.signup').submit((e) => {
-                e.preventDefault();
-                $('#submit-btn').prop('disabled', true);
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/login',
-                    data: {
-                        email: $('#email').val(),
-                        password: $('#password').val()
-                    },
-                    success: (response) => {
-                        $('#submit-btn').prop('disabled', false);
-                        location.reload();
-                    },
-                    error: (response) => {
-                        showToast(response.responseJSON.error.msg);
-                        $('#submit-btn').prop('disabled', false);
-                    },
+        const facebookLogin = (fbUser) => {
+            if (fbUser.authResponse && fbUser.status === 'connected') {
+                FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
+                    if (response.id) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/fb-signin',
+                            data: {
+                                userName: response.name,
+                                email: response.email,
+                            },
+                            success: (_) => {
+                                location.reload();
+                            },
+                            error: (response) => {
+                                const txtToJson = JSON.parse(response.responseText);
+                                showToast(txtToJson.error.msg);
+                            },
+                        });
+                    }
                 });
+            }
+        }
+
+        const googleLogin = (googleUser) => {
+            var id_token = googleUser.getAuthResponse().id_token;
+            googleUser.disconnect();
+
+            $.ajax({
+                type: 'POST',
+                url: '/google-signin',
+                data: {
+                    id_token,
+                },
+                success: (_) => {
+                    location.reload();
+                },
+                error: (response) => {
+                    showToast(response.responseJSON.error.msg);
+                },
             });
-
-            const facebookLogin = (fbUser) => {
-                if (fbUser.authResponse && fbUser.status === 'connected') {
-                    FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
-                        if (response.id) {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/fb-signin',
-                                data: {
-                                    userName: response.name,
-                                    email: response.email,
-                                },
-                                success: (_) => {
-                                    location.reload();
-                                },
-                                error: (response) => {
-                                    const txtToJson = JSON.parse(response.responseText);
-                                    showToast(txtToJson.error.msg);
-                                },
-                            });
-                        }
-                    });
-                }
-            }
-
-            const googleLogin = (googleUser) => {
-                var id_token = googleUser.getAuthResponse().id_token;
-                googleUser.disconnect();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/google-signin',
-                    data: {
-                        id_token,
-                    },
-                    success: (_) => {
-                        location.reload();
-                    },
-                    error: (response) => {
-                        showToast(response.responseJSON.error.msg);
-                    },
-                });
-            }
-        });
+        }

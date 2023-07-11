@@ -6,6 +6,15 @@
     "source.organizeImports": false
   },
   "editor.tabSize": 4,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "public/css/*.css": true,
+    "public/js/*.js": true,
+    "resources": true,
+    "package-lock.json": true,
+  },
   "puglint.enable": true,
   "puglint.config": {
     "disallowClassAttributeWithStaticValue": true,

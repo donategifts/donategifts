@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 function Community(props) {
-	const { user } = props;
+	const { user, _csrf } = props;
 
 	const [posts, setPosts] = useState(props.posts);
 
-	const submitPost = (e) => {
-		e.preventDefault();
+	const submitPost = (event) => {
+		event.preventDefault();
 		const message = document.querySelector('#message').value;
 		const image = document.querySelector('#image').files[0];
 		const formData = new FormData();
@@ -18,6 +18,9 @@ function Community(props) {
 
 		fetch('/api/community', {
 			method: 'POST',
+			headers: {
+				'x-csrf-token': _csrf,
+			},
 			body: formData,
 		})
 			.then((res) => res.json())
@@ -158,6 +161,7 @@ function Community(props) {
 
 Community.propTypes = {
 	user: PropTypes.object,
+	_csrf: PropTypes.string,
 	posts: PropTypes.arrayOf(
 		PropTypes.shape({
 			belongsTo: PropTypes.shape({
