@@ -7,7 +7,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import session from 'express-session';
-import { csrf } from 'lusca';
+// import { csrf } from 'lusca';
 import requestIp from 'request-ip';
 
 import config from '../config';
@@ -138,11 +138,11 @@ const app = express();
 
 	app.use(cookieParser());
 
-	app.use(
-		csrf({
-			allowlist: ['/profile', '/community', '/signup'],
-		}),
-	);
+	// app.use(
+	// 	csrf({
+	// 		allowlist: ['/profile', '/community', '/signup'],
+	// 	}),
+	// );
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);

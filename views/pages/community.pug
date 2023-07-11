@@ -13,7 +13,7 @@ append scripts
                     {
                         user: !{JSON.stringify(user || null)},
                         posts: !{JSON.stringify(posts.reverse())},
-                        _csrf: !{JSON.stringify(_csrf)}
+                        _csrf: "#{_csrf}"
                     }
                 )
             );
