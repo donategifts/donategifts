@@ -58,8 +58,8 @@ const app = express();
 	if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
 		const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
 
-		bot.refreshCommands();
-		bot.initClient();
+		await bot.refreshCommands();
+		await bot.initClient();
 	}
 
 	app.use(cors());
