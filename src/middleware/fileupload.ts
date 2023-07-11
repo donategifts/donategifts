@@ -5,7 +5,7 @@ import multer from 'multer';
 import multerS3 from 'multer-sharp-s3';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '../../config';
+import config from '../helper/config';
 
 export default class FileUpload {
 	private s3: AWS.S3 | undefined;

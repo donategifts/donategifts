@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Types } from 'mongoose';
 
-import config from '../../../config';
+import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 import Agency from '../models/Agency';
 import { STATUS } from '../models/WishCard';

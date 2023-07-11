@@ -2,8 +2,7 @@ import axios from 'axios';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '../../config';
-
+import config from './config';
 import log from './logger';
 
 export default class Utils {

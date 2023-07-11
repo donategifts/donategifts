@@ -3,7 +3,7 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 
 dotenv.config({
-	path: path.join(__dirname, '../config/config.env'),
+	path: path.join(__dirname, '../../config.env'),
 });
 
 const envVariables = [

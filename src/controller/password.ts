@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '../../config';
 import UserRepository from '../db/repository/UserRepository';
+import config from '../helper/config';
 import Messaging from '../helper/messaging';
 import Utils from '../helper/utils';
 

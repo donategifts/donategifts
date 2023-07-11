@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 
-import config from '../../config';
+import config from '../helper/config';
 import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import MessageRepository from '../db/repository/MessageRepository';

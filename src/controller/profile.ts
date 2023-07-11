@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 
-import config from '../../config';
 import Agency from '../db/models/Agency';
 import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import DonationRepository from '../db/repository/DonationRepository';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
+import config from '../helper/config';
 
 import BaseController from './basecontroller';
 

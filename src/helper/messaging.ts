@@ -6,8 +6,7 @@ import { Colors } from 'discord.js';
 import moment from 'moment';
 import nodemailer from 'nodemailer';
 
-import config from '../../config';
-
+import config from './config';
 import log from './logger';
 
 export default class Messaging {

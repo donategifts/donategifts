@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 import paypal from 'paypal-rest-sdk';
 
-import config from '../../config';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import DonationRepository from '../db/repository/DonationRepository';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
+import config from '../helper/config';
 import Messaging from '../helper/messaging';
 import Utils from '../helper/utils';
 

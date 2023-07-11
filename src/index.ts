@@ -10,12 +10,11 @@ import session from 'express-session';
 // import { csrf } from 'lusca';
 import requestIp from 'request-ip';
 
-import config from '../config';
-
 import { routes as apiRoutes } from './api';
 import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
 import DGBot from './discord/bot';
+import config from './helper/config';
 import log from './helper/logger';
 import { routes } from './routes';
 

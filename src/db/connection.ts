@@ -1,7 +1,7 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 
-import config from '../../config';
 import BaseController from '../controller/basecontroller';
+import config from '../helper/config';
 
 export default class MongooseConnection extends BaseController {
 	private mongoose: typeof mongoose;

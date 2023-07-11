@@ -19,7 +19,7 @@
     "lint:jsx": "eslint -c ./js/react/.eslintrc --ext .jsx js/react/",
     "lint": "npm run lint:pug && npm run lint:src && npm run lint:jsx",
     "prepare": "husky install",
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "webpack:build": "webpack --mode=production",
     "webpack:watch": "webpack --mode=development --watch"
   },

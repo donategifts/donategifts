@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 
-import config from '../../config';
 import UserRepository from '../db/repository/UserRepository';
+import config from '../helper/config';
 import Utils from '../helper/utils';
 
 import BaseController from './basecontroller';

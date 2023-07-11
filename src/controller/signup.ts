@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import config from '../../config';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import UserRepository from '../db/repository/UserRepository';
+import config from '../helper/config';
 import Messaging from '../helper/messaging';
 import Utils from '../helper/utils';
 

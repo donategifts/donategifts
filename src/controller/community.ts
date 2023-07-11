@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import config from '../../config';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import PostRepository from '../db/repository/PostRepository';
+import config from '../helper/config';
 
 import BaseController from './basecontroller';
 
