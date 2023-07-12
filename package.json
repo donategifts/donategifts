@@ -118,6 +118,6 @@
 		"js/react/**/*.jsx": "eslint -c ./js/react/.eslintrc",
 		"src/**/*.ts": "eslint --ext .ts src/",
 		"views/**/*.pug": "pug-lint",
-		"design/**/.scss": "stylelint design/"
+		"design/**/*.scss": "stylelint design/"
 	}
 }
