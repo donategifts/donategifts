@@ -50,7 +50,7 @@ TODO: this needs to be edited!
 
 .btn-orange-navy-lg {
 	@extend %btn-lg;
-	background-color: $custom-orange;
+	background-color: $secondary;
 	color: $white !important;
 	&:hover {
 		@extend %hover-navy;
@@ -92,7 +92,7 @@ TODO: this needs to be edited!
 
 .btn-orange-navy-lg-long {
 	@extend %btn-long;
-	background-color: $custom-orange;
+	background-color: $secondary;
 	color: $white !important;
 	&:hover {
 		@extend %hover-navy;
@@ -129,16 +129,16 @@ Updated buttons
 	-o-border-radius: 0.5rem;
 	font-size: 1.25rem;
 	border: none;
-	font-weight: $semi-bold;
+	font-weight: $fw-semi-bold;
 }
 
 .button-accent {
 	@extend %btn;
 	@extend %btn-updated;
-	background-color: $custom-orange;
+	background-color: $secondary;
 	color: $white;
 	&:hover {
-		background-color: darken($custom-orange, 10);
+		background-color: darken($secondary, 10);
 	}
 }
 

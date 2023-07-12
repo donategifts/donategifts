@@ -41,7 +41,7 @@ block content
             .container
                 .profile-panel.mb-5.shadow
                     img.profile-edit-icon( data-bs-toggle='modal'
-                        data-bs-target='#agencyDetailsModal'
+                        data-bs-target='#agency-details-modal'
                         src='/svg/edit-profile.svg'
                         alt='Edit Agency Details'
                     )
@@ -115,7 +115,7 @@ block content
         .container
             .profile-panel.my-4.shadow
                 img.profile-edit-icon( data-bs-toggle='modal'
-                    data-bs-target='#accountDetailsModal'
+                    data-bs-target='#account-details-modal'
                     src='/svg/edit-profile.svg'
                     alt='Edit Account Details'
                 )
@@ -148,7 +148,7 @@ block content
                             i.fa.fa-user( aria-hidden='true' )
                             span About Me
                             img#update-about-me.profile-edit-icon( data-bs-toggle='modal'
-                                data-bs-target='#aboutMeModal'
+                                data-bs-target='#about-me-modal'
                                 src='/svg/edit-profile.svg'
                                 alt='Edit profile'
                             )
@@ -186,7 +186,7 @@ block content
     input( type='hidden' name='_csrf' value=_csrf )
 
 block modal
-    #aboutMeModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+    #about-me-modal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
         .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
             .modal-content
                 .modal-header
@@ -201,7 +201,7 @@ block modal
                 .modal-footer.d-flex.justify-content-center
                     button#save-about-me-button.button-primary( type='button' data-bs-dismiss='modal' ) Save
 
-    #accountDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+    #account-details-modal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
         .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
             .modal-content
                 .modal-header
@@ -220,7 +220,7 @@ block modal
                     button#save-account-details.button-primary( type='button' data-bs-dismiss='modal' ) Save
 
     if agency
-        #agencyDetailsModal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
+        #agency-details-modal.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
             .modal-dialog.modal-dialog-centered.modal-lg( role='document' )
                 .modal-content
                     .modal-header

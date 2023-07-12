@@ -1,40 +1,51 @@
 .profile {
 	background-color: lighten($cream, 10) !important;
+
 	@include font-styling($font-body, 1rem);
+
 	.profile-welcome {
-		background: url("../img/profile-bg.png") bottom center no-repeat;
+		background: url('../img/profile-bg.png') bottom center no-repeat;
 		background-size: cover;
 		min-height: 33vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	
 		h1 {
-			@include font-styling($font-heading, 3rem, $custom-orange);
+			@include font-styling($font-heading, 3rem, $secondary);
+			
 			text-transform: capitalize;
 			text-align: center;
 		}
 	}
+
 	i {
-		color: $custom-orange;
+		color: $secondary;
 	}
+
 	h2 {
-		@include font-styling($font-body, 1.35em, $navy-dark, $semi-bold);
+		@include font-styling($font-body, 1.35em, $navy-dark, $fw-semi-bold);
+		
 		text-align: left;
 	}
+
 	h5 {
-		@include font-styling($font-body, 1.5em, $navy-dark, $semi-bold);
+		@include font-styling($font-body, 1.5em, $navy-dark, $fw-semi-bold);
 	}
+
 	.fas.fa-check-circle {
 		font-size: 1.25rem;
 	}
+
 	.fa-user,
 	.fa-bell,
 	.fa-cogs,
 	.fa-gift {
 		font-size: 2em;
 	}
+
 	.card-title span {
-		@include font-styling($font-body, 1.35em, $navy-dark, $semi-bold);
+		@include font-styling($font-body, 1.35em, $navy-dark, $fw-semi-bold);
 	}
 }
 
@@ -42,27 +53,24 @@
 	background-color: $white;
 	padding: 1.5em;
 	border-radius: 0.5rem;
-	-webkit-border-radius: 0.5rem;
-	-moz-border-radius: 0.5rem;
-	-ms-border-radius: 0.5rem;
-	-o-border-radius: 0.5rem;
+
 	.card-body {
 		padding: 2rem !important;
 	}
+
 	span {
-		@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+		@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
 	}
+
 	span.mx-2 {
-		font-weight: $semi-bold !important;
+		font-weight: $fw-semi-bold !important;
 	}
+
 	.text-accent {
-		color: $custom-orange;
+		color: $secondary;
 	}
 }
 
-/*--------------------------------------------------------------
-    Profile Edit
---------------------------------------------------------------*/
 .profile-edit-icon {
 	position: relative;
 	float: right;
@@ -79,17 +87,23 @@
 	background-color: $gray-100;
 }
 
-#accountDetailsModal, #agencyDetailsModal, #aboutMeModal {
+#account-details-modal,
+#agency-details-modal,
+#about-me-modal {
 	h5 {
-		@include font-styling($font-body, 1.25rem, $navy, $semi-bold);
+		@include font-styling($font-body, 1.25rem, $navy, $fw-semi-bold);
 	}
+
 	.modal-body {
-		@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+		@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
 	}
+
 	.modal-footer button {
 		width: 30%;
 	}
-	input::placeholder, textarea::placeholder {
+
+	input::placeholder,
+	textarea::placeholder {
 		color: $navy-dark !important;
 	}
 }
