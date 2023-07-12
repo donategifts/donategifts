@@ -14,12 +14,16 @@
         "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
     },
+    "files": [
+        "types/discord.d.ts",
+        "types/express-session.d.ts",
+        "types/express.d.ts",
+    ],
     "ts-node": {
         "transpileOnly": true,
         "files": true
     },
     "include": [
         "src/**/*.ts",
-        "types/**/*.ts",
     ]
 }

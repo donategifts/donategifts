@@ -8,9 +8,12 @@ declare module 'express-serve-static-core' {
 		rawBody: string;
 		file: Express.Multer.File & Express.MulterS3.File;
 	}
+
+	interface Locals {
+		user: User;
+	}
+
 	interface Response {
-		locals: {
-			user: User;
-		};
+		locals: Locals;
 	}
 }
