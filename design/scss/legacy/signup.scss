@@ -213,55 +213,6 @@ textarea {
   text-align: left;
 }
 
-input::-moz-placeholder {
-  color: rgba(255, 255, 255, 1);
-}
-
-input:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 1);
-}
-
-input::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 1);
-}
-
-input::-ms-input-placeholder {
-  color: rgba(255, 255, 255, 1);
-}
-
-input::placeholder {
-  color: rgba(255, 255, 255, 1);
-}
-
-input:checked {
-  border: 6px solid black;
-}
-
-textarea::-moz-placeholder {
-  color: rgb(255, 95, 109);
-  padding: 10px;
-}
-
-textarea:-ms-input-placeholder {
-  color: rgb(255, 95, 109);
-  padding: 10px;
-}
-
-textarea::-webkit-input-placeholder {
-  color: rgb(255, 95, 109);
-  padding: 10px;
-}
-
-textarea::-ms-input-placeholder {
-  color: rgb(255, 95, 109);
-  padding: 10px;
-}
-
-textarea::placeholder {
-  color: rgb(255, 95, 109);
-  padding: 10px;
-}
-
 .input-default {
   display: block;
   width: 100%;

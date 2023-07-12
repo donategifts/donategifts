@@ -57,13 +57,14 @@
 	.card-body {
 		padding: 2rem !important;
 	}
+	p {
+		span:first-child {
+			font-weight: $semi-bold !important;
+		}
 
-	span {
-		@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
-	}
-
-	span.mx-2 {
-		font-weight: $fw-semi-bold !important;
+		span {
+			@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+		}
 	}
 
 	.text-accent {
