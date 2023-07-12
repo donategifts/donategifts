@@ -2,6 +2,7 @@
     "extends": "stylelint-config-standard-scss",
     "rules": {
         "scss/no-global-function-names": null,
-        "no-descending-specificity": null
+        "no-descending-specificity": null,
+        "indentation": "tab"
     }
 }
