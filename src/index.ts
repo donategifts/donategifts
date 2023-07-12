@@ -1,7 +1,7 @@
 import path from 'node:path';
+import MongoStore from 'connect-mongo';
 
 import bodyParser from 'body-parser';
-import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
