@@ -11,6 +11,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Create env file
+        run: |
+          touch config-test.env
+          echo API_KEY=${{ secrets.API_KEY }} >> config-test.env
+          echo PORT=${{ secrets.PORT }} >> config-test.env
+          echo MONGO_URI=${{ secrets.MONGO_URI }} >> config-test.env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> config-test.env
+          echo SESS_NAME=${{ secrets.SESS_NAME }} >> config-test.env
+          echo SESS_SECRET=${{ secrets.SESS_SECRET }} >> config-test.env
+          echo SESS_LIFE=${{ secrets.SESS_LIFE }} >> config-test.env
+          echo MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} >> config-test.env
+          echo MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} >> config-test.env
+          echo USE_AWS=${{ secrets.USE_AWS }} >> config-test.env
+          echo AWS_KEY=${{ secrets.AWS_KEY }} >> config-test.env
+          echo AWS_SECRET=${{ secrets.AWS_SECRET }} >> config-test.env
+          echo S3BUCKET=${{ secrets.S3BUCKET }} >> config-test.env
+          echo DEFAULT_EMAIL=${{ secrets.DEFAULT_EMAIL }} >> config-test.env
+          echo DEFAULT_EMAIL_PASSWORD=${{ secrets.DEFAULT_EMAIL_PASSWORD }} >> config-test.env
+          echo BASE_URL=${{ secrets.BASE_URL }} >> config-test.env
+          echo GOOGLE_CAPTCHA_KEY=${{ secrets.GOOGLE_CAPTCHA_KEY }} >> config-test.env
+          echo G_CLIENT_ID=${{ secrets.G_CLIENT_ID }} >> config-test.env
+          echo FB_APP_ID=${{ secrets.FB_APP_ID }} >> config-test.env
+          echo SCRAPINGBEE_APIKEY=${{ secrets.SCRAPINGBEE_APIKEY }} >> config-test.env
+          echo STRIPE_API=${{ secrets.STRIPE_API }} >> config-test.env
+          echo STRIPE_KEY=${{ secrets.STRIPE_KEY }} >> config-test.env
+          echo STRIPE_SECRET=${{ secrets.STRIPE_SECRET }} >> config-test.env
+          echo WISHCARD_LOCK_IN_MINUTES=${{ secrets.WISHCARD_LOCK_IN_MINUTES }} >> config-test.env
+          echo PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }} >> config-test.env
+          echo PAYPAL_SECRET=${{ secrets.PAYPAL_SECRET }} >> config-test.env
+          echo PAYPAL_WEBHOOK_ID=${{ secrets.PAYPAL_WEBHOOK_ID }} >> config-test.env
+          echo DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} >> config-test.env
+          echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> config-test.env
+          echo DISCORD_STATUS_WEBHOOK_URL=${{ secrets.DISCORD_STATUS_WEBHOOK_URL }} >> config-test.env
+          echo DISCORD_CONTACT_WEBHOOK_URL=${{ secrets.DISCORD_CONTACT_WEBHOOK_URL }} >> config-test.env
+          echo LOG_LEVEL=${{ secrets.LOG_LEVEL }} >> config-test.env
+          echo MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} >> config-test.env
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
