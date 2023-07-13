@@ -146,6 +146,12 @@ const app = express();
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
 
+	if (config.NODE_ENV !== 'production') {
+		app.use('/theme', (_req, res) => {
+			res.render('theme/master.pug');
+		});
+	}
+
 	app.use('/robots.txt', limiter, (_req, res, _next) => {
 		res.type('text/plain');
 		res.sendFile(path.join(__dirname, '../public/robots.txt'));

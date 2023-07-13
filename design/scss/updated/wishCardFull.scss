@@ -22,7 +22,7 @@
 			line-height: 1.5;
 
 			span:first-child {
-				font-weight: $semi-bold !important;
+				font-weight: $fw-semi-bold !important;
 			}
 		}
 
@@ -43,14 +43,14 @@
 	}
 
 	h2 {
-		@include font-styling($font-body, 1.4em, $navy, $semi-bold);
+		@include font-styling($font-body, 1.4em, $navy, $fw-semi-bold);
 
 		text-align: left;
 		text-transform: uppercase;
 	}
 
 	i {
-		color: $custom-orange;
+		color: $secondary;
 		font-size: 1.25rem;
 		margin-left: 0;
 	}
@@ -88,7 +88,7 @@
 
 		p:first-child {
 			margin-bottom: 0 !important;
-			font-weight: $semi-bold;
+			font-weight: $fw-semi-bold;
 			font-size: 1.1em;
 		}
 

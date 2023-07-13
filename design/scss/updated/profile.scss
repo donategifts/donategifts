@@ -60,11 +60,11 @@
 
 	p {
 		span:first-child {
-			font-weight: $semi-bold !important;
+			font-weight: $fw-semi-bold !important;
 		}
 
 		span {
-			@include font-styling($font-body, 1.1rem, $navy-dark, $normal);
+			@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
 		}
 	}
 
