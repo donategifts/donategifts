@@ -37,13 +37,13 @@
 	}
 
 	h1 {
-		@include font-styling($font-heading, 2rem, $navy);
+		@include font-styling($font-heading, 2rem, $primary);
 
 		text-align: center;
 	}
 
 	h2 {
-		@include font-styling($font-body, 1.4em, $navy, $fw-semi-bold);
+		@include font-styling($font-body, 1.4em, $primary, $fw-semi-bold);
 
 		text-align: left;
 		text-transform: uppercase;

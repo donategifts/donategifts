@@ -6,8 +6,6 @@ WORKDIR /app
 
 COPY ./ .
 
-RUN ls -la
-
 RUN npm install --ignore-scripts
 
 RUN npm run build

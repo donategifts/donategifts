@@ -42,7 +42,7 @@ TODO: this needs to be edited!
 }
 
 %hover-navy {
-	background-color: $navy;
+	background-color: $primary;
 	color: $white !important;
 	border: 0.15rem solid $white;
 	text-decoration: none;
@@ -60,7 +60,7 @@ TODO: this needs to be edited!
 .btn-white-navy-lg {
 	@extend %btn-lg;
 	background-color: $white;
-	color: $navy !important;
+	color: $primary !important;
 	&:hover {
 		@extend %hover-navy;
 	}
@@ -130,10 +130,10 @@ Updated buttons
 .button-primary {
 	@extend %btn;
 	@extend %btn-updated;
-	background-color: lighten($navy, 5);
+	background-color: lighten($primary, 5);
 	color: $white;
 	&:hover {
-		background-color: darken($navy, 10);
+		background-color: darken($primary, 10);
 	}
 }
 
@@ -141,10 +141,10 @@ Updated buttons
 	@extend %btn;
 	@extend %btn-updated;
 	background-color: $gray-200;
-	color: $navy;
+	color: $primary;
 	&:hover {
 		background-color: $gray-400;
-		color: darken($navy, 10);
+		color: darken($primary, 10);
 	}
 }
 

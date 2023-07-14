@@ -24,13 +24,13 @@
 	}
 
 	h2 {
-		@include font-styling($font-body, 1.35em, $navy-dark, $fw-semi-bold);
+		@include font-styling($font-body, 1.35em, $primary-dark, $fw-semi-bold);
 		
 		text-align: left;
 	}
 
 	h5 {
-		@include font-styling($font-body, 1.5em, $navy-dark, $fw-semi-bold);
+		@include font-styling($font-body, 1.5em, $primary-dark, $fw-semi-bold);
 	}
 
 	.fas.fa-check-circle {
@@ -45,7 +45,7 @@
 	}
 
 	.card-title span {
-		@include font-styling($font-body, 1.35em, $navy-dark, $fw-semi-bold);
+		@include font-styling($font-body, 1.35em, $primary-dark, $fw-semi-bold);
 	}
 }
 
@@ -64,7 +64,7 @@
 		}
 
 		span {
-			@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
+			@include font-styling($font-body, 1.1rem, $primary-dark, $fw-normal);
 		}
 	}
 
@@ -84,7 +84,7 @@
 }
 
 .edit-input {
-	border: 1px solid $navy;
+	border: 1px solid $primary;
 	border-radius: 0.25rem;
 	background-color: $gray-100;
 }
@@ -93,11 +93,11 @@
 #agency-details-modal,
 #about-me-modal {
 	h5 {
-		@include font-styling($font-body, 1.25rem, $navy, $fw-semi-bold);
+		@include font-styling($font-body, 1.25rem, $primary, $fw-semi-bold);
 	}
 
 	.modal-body {
-		@include font-styling($font-body, 1.1rem, $navy-dark, $fw-normal);
+		@include font-styling($font-body, 1.1rem, $primary-dark, $fw-normal);
 	}
 
 	.modal-footer button {
@@ -106,7 +106,7 @@
 
 	input::placeholder,
 	textarea::placeholder {
-		color: $navy-dark !important;
+		color: $primary-dark !important;
 	}
 }
 
