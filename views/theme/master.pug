@@ -1,0 +1,1792 @@
+html(  lang='en'  )
+    head
+        meta(  charset='UTF-8'  )
+        meta(  name='viewport' content='width=device-width, initial-scale=1.0'  )
+        title Theme
+        link(  rel='stylesheet' type='text/css' href='/css/app.min.css'  )
+        script(  src='https://kit.fontawesome.com/45fe5fa387.js' crossorigin='anonymous'  )
+        style.
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+            }
+            @media ( min-width: 768px ) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+            .b-example-divider {
+                width: 100%;
+                height: 3rem;
+                background-color: rgba( 0, 0, 0, 0.1 );
+                border: solid rgba( 0, 0, 0, 0.15 );
+                border-width: 1px 0;
+                box-shadow: inset 0 0.5em 1.5em rgba( 0, 0, 0, 0.1 ),
+                inset 0 0.125em 0.5em rgba( 0, 0, 0, 0.15 );
+            }
+            .b-example-vr {
+                flex-shrink: 0;
+                width: 1.5rem;
+                height: 100vh;
+            }
+            .bi {
+                vertical-align: -0.125em;
+                fill: currentColor;
+            }
+            .nav-scroller {
+                position: relative;
+                z-index: 2;
+                height: 2.75rem;
+                overflow-y: hidden;
+            }
+            .nav-scroller .nav {
+                display: flex;
+                flex-wrap: nowrap;
+                padding-bottom: 1rem;
+                margin-top: -1px;
+                overflow-x: auto;
+                text-align: center;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .btn-bd-primary {
+                --bd-violet-bg: #712cf9;
+                --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+                --bs-btn-font-weight: 600;
+                --bs-btn-color: var( --bs-white );
+                --bs-btn-bg: var( --bd-violet-bg );
+                --bs-btn-border-color: var( --bd-violet-bg );
+                --bs-btn-hover-color: var( --bs-white );
+                --bs-btn-hover-bg: #6528e0;
+                --bs-btn-hover-border-color: #6528e0;
+                --bs-btn-focus-shadow-rgb: var( --bd-violet-rgb );
+                --bs-btn-active-color: var( --bs-btn-hover-color );
+                --bs-btn-active-bg: #5a23c8;
+                --bs-btn-active-border-color: #5a23c8;
+            }
+            .bd-mode-toggle {
+                z-index: 1500;
+            }
+
+        style.
+            body {
+                scroll-behavior: smooth;
+            }
+            /**
+            * Bootstrap "Journal code" icon
+            * @link https://icons.getbootstrap.com/icons/journal-code/
+            */
+            .bd-heading a::before {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                margin-right: 0.25rem;
+                content: '';
+                background-image: url( "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%25230d6efd' viewBox='0 0 16 16'%3E%3Cpath d='M4 1h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1H2a2 2 0 0 1 2-2z'/%3E%3Cpath d='M2 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H2zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H2zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H2z'/%3E%3Cpath fill-rule='evenodd' d='M8.646 5.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 8 8.646 6.354a.5.5 0 0 1 0-.708zm-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 8l1.647-1.646a.5.5 0 0 0 0-.708z'/%3E%3C/svg%3E" );
+                background-size: 1em;
+            }
+            .bd-heading+div>*+* {
+                margin-top: 3rem;
+            }
+            .bd-aside a {
+                padding: 0.1875rem 0.5rem;
+                margin-top: 0.125rem;
+                margin-left: 0.3125rem;
+                color: rgba( 0, 0, 0, 0.65 );
+            }
+            .bd-aside a:hover,
+            .bd-aside a:focus {
+                color: rgba( 0, 0, 0, 0.85 );
+                background-color: rgba( 121, 82, 179, 0.1 );
+            }
+            .bd-aside .active {
+                font-weight: 600;
+                color: rgba( 0, 0, 0, 0.85 );
+            }
+            .bd-aside .btn {
+                padding: 0.25rem 0.5rem;
+                font-weight: 600;
+                color: rgba( 0, 0, 0, 0.65 );
+            }
+            .bd-aside .btn:hover,
+            .bd-aside .btn:focus {
+                color: rgba( 0, 0, 0, 0.85 );
+                background-color: rgba( 121, 82, 179, 0.1 );
+            }
+            .bd-aside .btn:focus {
+                box-shadow: 0 0 0 1px rgba( 121, 82, 179, 0.7 );
+            }
+            .bd-aside .btn::before {
+                width: 1.25em;
+                line-height: 0;
+                content: url( "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e" );
+                transition: transform 0.35s ease;
+                transform-origin: 0.5em 50%;
+            }
+            .bd-aside .btn[aria-expanded='true']::before {
+                transform: rotate( 90deg );
+            }
+            .scrollspy-example {
+                height: 200px;
+            }
+            [id='modal'] .bd-example .btn,
+            [id='buttons'] .bd-example .btn,
+            [id='tooltips'] .bd-example .btn,
+            [id='popovers'] .bd-example .btn,
+            [id='dropdowns'] .bd-example .btn-group,
+            [id='dropdowns'] .bd-example .dropdown,
+            [id='dropdowns'] .bd-example .dropup,
+            [id='dropdowns'] .bd-example .dropend,
+            [id='dropdowns'] .bd-example .dropstart {
+                margin: 0 1rem 1rem 0;
+            }
+            @media ( min-width: 1200px ) {
+                body {
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr 4fr 1fr;
+                    gap: 1rem;
+                }
+                .bd-header {
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    z-index: 1030;
+                    grid-column: 1 / span 3;
+                }
+                .bd-aside,
+                .bd-cheatsheet {
+                    padding-top: 4rem;
+                }
+                /**
+                * 1. Too bad only Firefox supports subgrids ATM
+                */
+                .bd-cheatsheet,
+                .bd-cheatsheet section,
+                .bd-cheatsheet article {
+                    display: inherit;
+                    /* 1 */
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr 4fr;
+                    grid-column: 1 / span 2;
+                    gap: inherit;
+                    /* 1 */
+                }
+                .bd-aside {
+                    grid-area: 1 / 3;
+                    scroll-margin-top: 4rem;
+                }
+                .bd-cheatsheet section,
+                .bd-cheatsheet section>h2 {
+                    top: 2rem;
+                    scroll-margin-top: 2rem;
+                }
+                .bd-cheatsheet section>h2::before {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: -2rem;
+                    left: 0;
+                    z-index: -1;
+                    content: '';
+                    background-image: linear-gradient( to bottom,
+                    rgba( 255, 255, 255, 1 ) calc( 100% - 3rem ),
+                    rgba( 255, 255, 255, 0.01 ) );
+                }
+                .bd-cheatsheet article,
+                .bd-cheatsheet .bd-heading {
+                    top: 8rem;
+                    scroll-margin-top: 8rem;
+                }
+                .bd-cheatsheet .bd-heading {
+                    z-index: 1;
+                }
+            }
+    body
+        header.bd-header.bg-dark.py-3.d-flex.align-items-stretch.border-bottom.border-dark
+            .container-fluid.d-flex.align-items-center
+                h1.d-flex.align-items-center.fs-4.text-white.mb-0
+                    img.me-3( src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-white.svg' width='38' height='30' alt='Bootstrap' )
+                    |  Cheatsheet
+        aside.bd-aside.sticky-xl-top.text-body-secondary.align-self-start.mb-3.mb-xl-5.px-2
+            h2.h6.pt-4.pb-3.mb-4.border-bottom On this page
+            nav#toc.small
+                ul.list-unstyled
+                    li.my-2
+                        button.btn.d-inline-flex.align-items-center.collapsed.border-0( data-bs-toggle='collapse' aria-expanded='false' data-bs-target='#contents-collapse' aria-controls='contents-collapse' ) Contents
+                        ul#contents-collapse.list-unstyled.ps-3.collapse
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#typography' ) Typography
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#images' ) Images
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#tables' ) Tables
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#figures' ) Figures
+                    li.my-2
+                        button.btn.d-inline-flex.align-items-center.collapsed.border-0( data-bs-toggle='collapse' aria-expanded='false' data-bs-target='#forms-collapse' aria-controls='forms-collapse' ) Forms
+                        ul#forms-collapse.list-unstyled.ps-3.collapse
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#overview' ) Overview
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#disabled-forms' ) Disabled forms
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#sizing' ) Sizing
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#input-group' ) Input group
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#floating-labels' ) Floating labels
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#validation' )  Validation
+                    li.my-2
+                        button.btn.d-inline-flex.align-items-center.collapsed.border-0( data-bs-toggle='collapse' aria-expanded='false' data-bs-target='#components-collapse' aria-controls='components-collapse' ) Components
+                        ul#components-collapse.list-unstyled.ps-3.collapse
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#accordion' ) Accordion
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#alerts' ) Alerts
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#badge' ) Badge
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#breadcrumb' ) Breadcrumb
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#buttons' ) Buttons
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#button-group' ) Button group
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#card' ) Card
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#carousel' ) Carousel
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#dropdowns' ) Dropdowns
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#list-group' ) List group
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#modal' ) Modal
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#navs' ) Navs
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#navbar' ) Navbar
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#pagination' ) Pagination
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#popovers' ) Popovers
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#progress' ) Progress
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#scrollspy' ) Scrollspy
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#spinners' ) Spinners
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#toasts' ) Toasts
+                            li
+                                a.d-inline-flex.align-items-center.rounded.text-decoration-none( href='#tooltips' ) Tooltips
+        .bd-cheatsheet.container-fluid.bg-body
+            section#content
+                h2.sticky-xl-top.fw-bold.pt-3.pt-xl-5.pb-2.pb-xl-3 Contents
+                article#typography.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Typography
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/content/typography/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                p.display-1 Display 1
+                                p.display-2 Display 2
+                                p.display-3 Display 3
+                                p.display-4 Display 4
+                                p.display-5 Display 5
+                                p.display-6 Display 6
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                p.h1 Heading 1
+                                p.h2 Heading 2
+                                p.h3 Heading 3
+                                p.h4 Heading 4
+                                p.h5 Heading 5
+                                p.h6 Heading 6
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                p.lead This is a lead paragraph. It stands out from regular paragraphs.
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                p
+                                    | You can use the mark tag to
+                                    mark highlight
+                                    |  text.
+                                p
+                                    del
+                                        | This line of text is meant to be treated as deleted
+                                        | text.
+                                p
+                                    s
+                                        | This line of text is meant to be treated as no longer
+                                        | accurate.
+                                p
+                                    ins
+                                        | This line of text is meant to be treated as an addition to
+                                        | the document.
+                                p
+                                    u This line of text will render as underlined.
+                                p
+                                    small
+                                        | This line of text is meant to be treated as fine
+                                        | print.
+                                p
+                                    strong This line rendered as bold text.
+                                p
+                                    em This line rendered as italicized text.
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                hr
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                blockquote.blockquote
+                                    p A well-known quote, contained in a blockquote element.
+                                    footer.blockquote-footer
+                                        | Someone famous in
+                                        cite( title='Source Title' ) Source Title
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                ul.list-unstyled
+                                    li This is a list.
+                                    li It appears completely unstyled.
+                                    li Structurally, it's still a list.
+                                    li
+                                        | However, this style only applies to immediate child
+                                        | elements.
+                                    li
+                                        | Nested lists:
+                                        ul
+                                            li are unaffected by this style
+                                            li will still show a bullet
+                                            li and have appropriate left margin
+                                    li This may still come in handy in some situations.
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                ul.list-inline
+                                    li.list-inline-item This is a list item.
+                                    li.list-inline-item And another one.
+                                    li.list-inline-item But they're displayed inline.
+                article#images.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Images
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/content/images/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                svg.bd-placeholder-img.bd-placeholder-img-lg.img-fluid( width='100%' height='250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Responsive image' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                    title Placeholder
+                                    rect( width='100%' height='100%' fill='#868e96' )
+                                    text( x='50%' y='50%' fill='#dee2e6' dy='.3em' ) Responsive image
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                svg.bd-placeholder-img.img-thumbnail( width='200' height='200' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                    title
+                                        | A generic square placeholder image with a white border
+                                        | around it, making it resemble a photograph taken with an old
+                                        | instant camera
+                                    rect( width='100%' height='100%' fill='#868e96' )
+                                    text( x='50%' y='50%' fill='#dee2e6' dy='.3em' ) 200x200
+                article#tables.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Tables
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/content/tables/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                table.table.table-striped
+                                    thead
+                                        tr
+                                            th( scope='col' ) #
+                                            th( scope='col' ) First
+                                            th( scope='col' ) Last
+                                            th( scope='col' ) Handle
+                                    tbody
+                                        tr
+                                            th( scope='row' ) 1
+                                            td Mark
+                                            td Otto
+                                            td @mdo
+                                        tr
+                                            th( scope='row' ) 2
+                                            td Jacob
+                                            td Thornton
+                                            td @fat
+                                        tr
+                                            th( scope='row' ) 3
+                                            td( colspan='2' ) Larry the Bird
+                                            td @twitter
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                table.table.table-dark.table-borderless
+                                    thead
+                                        tr
+                                            th( scope='col' ) #
+                                            th( scope='col' ) First
+                                            th( scope='col' ) Last
+                                            th( scope='col' ) Handle
+                                    tbody
+                                        tr
+                                            th( scope='row' ) 1
+                                            td Mark
+                                            td Otto
+                                            td @mdo
+                                        tr
+                                            th( scope='row' ) 2
+                                            td Jacob
+                                            td Thornton
+                                            td @fat
+                                        tr
+                                            th( scope='row' ) 3
+                                            td( colspan='2' ) Larry the Bird
+                                            td @twitter
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                table.table.table-hover
+                                    thead
+                                        tr
+                                            th( scope='col' ) Class
+                                            th( scope='col' ) Heading
+                                            th( scope='col' ) Heading
+                                    tbody
+                                        tr
+                                            th( scope='row' ) Default
+                                            td Cell
+                                            td Cell
+                                        tr.table-primary
+                                            th( scope='row' ) Primary
+                                            td Cell
+                                            td Cell
+                                        tr.table-secondary
+                                            th( scope='row' ) Secondary
+                                            td Cell
+                                            td Cell
+                                        tr.table-success
+                                            th( scope='row' ) Success
+                                            td Cell
+                                            td Cell
+                                        tr.table-danger
+                                            th( scope='row' ) Danger
+                                            td Cell
+                                            td Cell
+                                        tr.table-warning
+                                            th( scope='row' ) Warning
+                                            td Cell
+                                            td Cell
+                                        tr.table-info
+                                            th( scope='row' ) Info
+                                            td Cell
+                                            td Cell
+                                        tr.table-light
+                                            th( scope='row' ) Light
+                                            td Cell
+                                            td Cell
+                                        tr.table-dark
+                                            th( scope='row' ) Dark
+                                            td Cell
+                                            td Cell
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                table.table.table-sm.table-bordered
+                                    thead
+                                        tr
+                                            th( scope='col' ) #
+                                            th( scope='col' ) First
+                                            th( scope='col' ) Last
+                                            th( scope='col' ) Handle
+                                    tbody
+                                        tr
+                                            th( scope='row' ) 1
+                                            td Mark
+                                            td Otto
+                                            td @mdo
+                                        tr
+                                            th( scope='row' ) 2
+                                            td Jacob
+                                            td Thornton
+                                            td @fat
+                                        tr
+                                            th( scope='row' ) 3
+                                            td( colspan='2' ) Larry the Bird
+                                            td @twitter
+                article#figures.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Figures
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/content/figures/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                figure.figure
+                                    svg.bd-placeholder-img.figure-img.img-fluid.rounded( width='400' height='300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: 400x300' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                        title Placeholder
+                                        rect( width='100%' height='100%' fill='#868e96' )
+                                        text( x='50%' y='50%' fill='#dee2e6' dy='.3em' ) 400x300
+                                    figcaption.figure-caption A caption for the above image.
+            section#forms( data-dashlane-rid='953a9476dce67e35' data-form-type='register' )
+                h2.sticky-xl-top.fw-bold.pt-3.pt-xl-5.pb-2.pb-xl-3 Forms
+                article#overview.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Overview
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/overview/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                form( data-dashlane-rid='2e7f9f2636b3c107' data-form-type='register' )
+                                    .mb-3
+                                        label.form-label( for='exampleInputEmail1' ) Email address
+                                        input#exampleInputEmail1.form-control( type='email' aria-describedby='emailHelp' data-dashlane-rid='315a157a3db42e45' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-0' data-form-type='email' )
+                                        #emailHelp.form-text We'll never share your email with anyone else.
+                                    .mb-3
+                                        label.form-label( for='exampleInputPassword1' ) Password
+                                        input#exampleInputPassword1.form-control( type='password' data-dashlane-rid='0e45bdcd9d493c03' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-1' data-form-type='password,new' )
+                                    .mb-3
+                                        label.form-label( for='exampleSelect' ) Select menu
+                                        select#exampleSelect.form-select( data-dashlane-rid='d1c01b8cf5e49777' data-form-type='other' )
+                                            option( selected='' ) Open this select menu
+                                            option( value='1' ) One
+                                            option( value='2' ) Two
+                                            option( value='3' ) Three
+                                    .mb-3.form-check
+                                        input#exampleCheck1.form-check-input( type='checkbox' data-dashlane-rid='57936139e8f0b97d' data-form-type='other' )
+                                        label.form-check-label( for='exampleCheck1' ) Check me out
+                                    fieldset.mb-3
+                                        legend Radios buttons
+                                        .form-check
+                                            input#exampleRadio1.form-check-input( type='radio' name='radios' data-dashlane-rid='f91df319bbd7d19f' data-form-type='other' )
+                                            label.form-check-label( for='exampleRadio1' ) Default radio
+                                        .mb-3.form-check
+                                            input#exampleRadio2.form-check-input( type='radio' name='radios' data-dashlane-rid='44539244ab718bcc' data-form-type='other' )
+                                            label.form-check-label( for='exampleRadio2' ) Another radio
+                                    .mb-3
+                                        label.form-label( for='customFile' ) Upload
+                                        input#customFile.form-control( type='file' data-dashlane-rid='e7f25e79e52fe02f' data-form-type='other' )
+                                    .mb-3.form-check.form-switch
+                                        input#flexSwitchCheckChecked.form-check-input( type='checkbox' role='switch' checked='' data-dashlane-rid='06cb40af123174be' data-form-type='other' )
+                                        label.form-check-label( for='flexSwitchCheckChecked' ) Checked switch checkbox input
+                                    .mb-3
+                                        label.form-label( for='customRange3' ) Example range
+                                        input#customRange3.form-range( type='range' min='0' max='5' step='0.5' data-dashlane-rid='dd1e5876967a20c4' data-form-type='other' )
+                                    button.btn.btn-primary( type='submit' data-dashlane-rid='9225f35663b2c733' data-dashlane-label='true' data-form-type='action,register' ) Submit
+                article#disabled-forms.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Disabled forms
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/overview/#disabled-forms' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                form( data-dashlane-rid='bf6abe79291329ea' data-form-type='other' )
+                                    fieldset( disabled='' aria-label='Disabled fieldset example' )
+                                        .mb-3
+                                            label.form-label( for='disabledTextInput' ) Disabled input
+                                            input#disabledTextInput.form-control( type='text' placeholder='Disabled input' data-dashlane-rid='7cc0fc731f20b32e' data-form-type='other' )
+                                        .mb-3
+                                            label.form-label( for='disabledSelect' ) Disabled select menu
+                                            select#disabledSelect.form-select( data-dashlane-rid='c9a8889dbb1e2365' data-form-type='other' )
+                                                option Disabled select
+                                        .mb-3
+                                            .form-check
+                                                input#disabledFieldsetCheck.form-check-input( type='checkbox' disabled='' data-dashlane-rid='2d39ef6f8cfc5672' data-form-type='other' )
+                                                label.form-check-label( for='disabledFieldsetCheck' ) Can't check this
+                                        fieldset.mb-3
+                                            legend Disabled radios buttons
+                                            .form-check
+                                                input#disabledRadio1.form-check-input( type='radio' name='radios' disabled='' data-dashlane-rid='8b5b838319f33e61' data-form-type='other' )
+                                                label.form-check-label( for='disabledRadio1' ) Disabled radio
+                                            .mb-3.form-check
+                                                input#disabledRadio2.form-check-input( type='radio' name='radios' disabled='' data-dashlane-rid='5b9e20521cbbf877' data-form-type='other' )
+                                                label.form-check-label( for='disabledRadio2' ) Another radio
+                                        .mb-3
+                                            label.form-label( for='disabledCustomFile' ) Upload
+                                            input#disabledCustomFile.form-control( type='file' disabled='' data-dashlane-rid='e6722f27b72d83be' data-form-type='other' )
+                                        .mb-3.form-check.form-switch
+                                            input#disabledSwitchCheckChecked.form-check-input( type='checkbox' role='switch' checked='' disabled='' data-dashlane-rid='f7a9e5ed78752e90' data-form-type='other' )
+                                            label.form-check-label( for='disabledSwitchCheckChecked' ) Disabled checked switch checkbox input
+                                        .mb-3
+                                            label.form-label( for='disabledRange' ) Disabled range
+                                            input#disabledRange.form-range( type='range' min='0' max='5' step='0.5' data-dashlane-rid='e10642ae12d70632' data-form-type='other' )
+                                        button.btn.btn-primary( type='submit' data-dashlane-rid='1b9c3c10dcbaff71' data-dashlane-label='true' data-form-type='action,register' ) Submit
+                article#sizing.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Sizing
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/form-control/#sizing' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .mb-3
+                                    input.form-control.form-control-lg( type='text' placeholder='.form-control-lg' aria-label='.form-control-lg example' data-dashlane-rid='36f33d49334495cd' data-form-type='other' )
+                                .mb-3
+                                    select.form-select.form-select-lg( aria-label='.form-select-lg example' data-dashlane-rid='f32e3a566987f38e' data-form-type='other' )
+                                        option( selected='' ) Open this select menu
+                                        option( value='1' ) One
+                                        option( value='2' ) Two
+                                        option( value='3' ) Three
+                                .mb-3
+                                    input.form-control.form-control-lg( type='file' aria-label='Large file input example' data-dashlane-rid='f7b94a61bb1d229b' data-form-type='other' )
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .mb-3
+                                    input.form-control.form-control-sm( type='text' placeholder='.form-control-sm' aria-label='.form-control-sm example' data-dashlane-rid='5f1c374c36d85c94' data-form-type='other' )
+                                .mb-3
+                                    select.form-select.form-select-sm( aria-label='.form-select-sm example' data-dashlane-rid='687791ca40d4275b' data-form-type='other' )
+                                        option( selected='' ) Open this select menu
+                                        option( value='1' ) One
+                                        option( value='2' ) Two
+                                        option( value='3' ) Three
+                                .mb-3
+                                    input.form-control.form-control-sm( type='file' aria-label='Small file input example' data-dashlane-rid='225a86fde8243dd1' data-form-type='other' )
+                article#input-group.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Input group
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/input-group/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .input-group.mb-3
+                                    span#basic-addon1.input-group-text @
+                                    input.form-control( type='text' placeholder='Username' aria-label='Username' aria-describedby='basic-addon1' data-dashlane-rid='c2a4ac2d47fc9e1d' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-10' data-form-type='username,new' )
+                                .input-group.mb-3
+                                    input.form-control( type='text' placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby='basic-addon2' data-dashlane-rid='ec1ec839e380f3e6' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-11' data-form-type='username,new' )
+                                    span#basic-addon2.input-group-text @example.com
+                                label.form-label( for='basic-url' ) Your vanity URL
+                                .input-group.mb-3
+                                    span#basic-addon3.input-group-text https://example.com/users/
+                                    input#basic-url.form-control( type='text' aria-describedby='basic-addon3' data-dashlane-rid='83aeaa05493ab8d6' data-form-type='website' )
+                                .input-group.mb-3
+                                    span.input-group-text $
+                                    input.form-control( type='text' aria-label='Amount ( to the nearest dollar )' data-dashlane-rid='6c41bd5167081d44' data-form-type='other' )
+                                    span.input-group-text .00
+                                .input-group
+                                    span.input-group-text With textarea
+                                    textarea.form-control( aria-label='With textarea' data-dashlane-rid='36ae23346e2f0fe1' data-form-type='other' )
+                article#floating-labels.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Floating labels
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/floating-labels/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                form( data-dashlane-rid='172b69bebea8ce8f' data-form-type='login' )
+                                    .form-floating.mb-3
+                                        input#floatingInput.form-control( type='email' placeholder='name@example.com' data-dashlane-rid='c1ef7f7a86d0fd0f' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-2' data-form-type='email' )
+                                        label( for='floatingInput' ) Email address
+                                    .form-floating
+                                        input#floatingPassword.form-control( type='password' placeholder='Password' data-dashlane-rid='0e9f9c22064cbc3a' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-3' data-form-type='password,new' )
+                                        label( for='floatingPassword' ) Password
+                article#validation.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Validation
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/forms/validation/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                form.row.g-3( data-dashlane-rid='95f114c3f0167be5' data-form-type='register' )
+                                    .col-md-4
+                                        label.form-label( for='validationServer01' ) First name
+                                        input#validationServer01.form-control.is-valid( type='text' value='Mark' required='' data-dashlane-rid='44cc0abb69eadc1c' data-kwcachedvalue='Mark' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-4' data-form-type='name,first' )
+                                        .valid-feedback Looks good!
+                                    .col-md-4
+                                        label.form-label( for='validationServer02' ) Last name
+                                        input#validationServer02.form-control.is-valid( type='text' value='Otto' required='' data-dashlane-rid='ea4c05b895cc180b' data-kwcachedvalue='Otto' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-5' data-form-type='name,last' )
+                                        .valid-feedback Looks good!
+                                    .col-md-4
+                                        label.form-label( for='validationServerUsername' ) Username
+                                        .input-group.has-validation
+                                            span#inputGroupPrepend3.input-group-text @
+                                            input#validationServerUsername.form-control.is-invalid( type='text' aria-describedby='inputGroupPrepend3' required='' data-dashlane-rid='405b559efbcb1518' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-6' data-form-type='username,new' )
+                                            .invalid-feedback Please choose a username.
+                                    .col-md-6
+                                        label.form-label( for='validationServer03' ) City
+                                        input#validationServer03.form-control.is-invalid( type='text' required='' data-dashlane-rid='7a11753d00393c6c' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-7' data-form-type='address,city' )
+                                        .invalid-feedback Please provide a valid city.
+                                    .col-md-3
+                                        label.form-label( for='validationServer04' ) State
+                                        select#validationServer04.form-select.is-invalid( required='' data-dashlane-rid='9ab3793ae544bee9' data-kwimpalastatus='dead' data-form-type='address,region' )
+                                            option( selected='' disabled='' value='' ) Choose...
+                                            option ...
+                                        .invalid-feedback Please select a valid state.
+                                    .col-md-3
+                                        label.form-label( for='validationServer05' ) Zip
+                                        input#validationServer05.form-control.is-invalid( type='text' required='' data-dashlane-rid='53d95015d7576900' data-kwimpalastatus='alive' data-kwimpalaid='1689236837059-9' data-form-type='address,zip' )
+                                        .invalid-feedback Please provide a valid zip.
+                                    .col-12
+                                        .form-check
+                                            input#invalidCheck3.form-check-input.is-invalid( type='checkbox' value='' required='' data-dashlane-rid='da4d59079dabc08d' data-form-type='consent,terms' )
+                                            label.form-check-label( for='invalidCheck3' ) Agree to terms and conditions
+                                            .invalid-feedback You must agree before submitting.
+                                    .col-12
+                                        button.btn.btn-primary( type='submit' data-dashlane-rid='b052ff046c80c423' data-dashlane-label='true' data-form-type='action,register' ) Submit form
+            section#components
+                h2.sticky-xl-top.fw-bold.pt-3.pt-xl-5.pb-2.pb-xl-3 Components
+                article#accordion.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Accordion
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/accordion/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                #accordionExample.accordion
+                                    .accordion-item
+                                        h4.accordion-header
+                                            button.accordion-button( type='button' data-bs-toggle='collapse' data-bs-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' ) Accordion Item #1
+                                        #collapseOne.accordion-collapse.collapse.show( data-bs-parent='#accordionExample' )
+                                            .accordion-body
+                                                strong
+                                                    | This is the first item's accordion
+                                                    | body.
+                                                |  It is hidden by default, until the collapse plugin
+                                                |                                             adds the appropriate classes that we use to style
+                                                |                                             each element. These classes control the overall
+                                                |                                             appearance, as well as the showing and hiding via
+                                                |                                             CSS transitions. You can modify any of this with
+                                                |                                             custom CSS or overriding our default variables. It's
+                                                |                                             also worth noting that just about any HTML can go
+                                                |                                             within the
+                                                code .accordion-body
+                                                | , though the
+                                                |                                             transition does limit overflow.
+                                    .accordion-item
+                                        h4.accordion-header
+                                            button.accordion-button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseTwo' aria-expanded='false' aria-controls='collapseTwo' ) Accordion Item #2
+                                        #collapseTwo.accordion-collapse.collapse( data-bs-parent='#accordionExample' )
+                                            .accordion-body
+                                                strong
+                                                    | This is the second item's accordion
+                                                    | body.
+                                                |  It is hidden by default, until the collapse plugin
+                                                |                                             adds the appropriate classes that we use to style
+                                                |                                             each element. These classes control the overall
+                                                |                                             appearance, as well as the showing and hiding via
+                                                |                                             CSS transitions. You can modify any of this with
+                                                |                                             custom CSS or overriding our default variables. It's
+                                                |                                             also worth noting that just about any HTML can go
+                                                |                                             within the
+                                                code .accordion-body
+                                                | , though the
+                                                |                                             transition does limit overflow.
+                                    .accordion-item
+                                        h4.accordion-header
+                                            button.accordion-button.collapsed( type='button' data-bs-toggle='collapse' data-bs-target='#collapseThree' aria-expanded='false' aria-controls='collapseThree' ) Accordion Item #3
+                                        #collapseThree.accordion-collapse.collapse( data-bs-parent='#accordionExample' )
+                                            .accordion-body
+                                                strong
+                                                    | This is the third item's accordion
+                                                    | body.
+                                                |  It is hidden by default, until the collapse plugin
+                                                |                                             adds the appropriate classes that we use to style
+                                                |                                             each element. These classes control the overall
+                                                |                                             appearance, as well as the showing and hiding via
+                                                |                                             CSS transitions. You can modify any of this with
+                                                |                                             custom CSS or overriding our default variables. It's
+                                                |                                             also worth noting that just about any HTML can go
+                                                |                                             within the
+                                                code .accordion-body
+                                                | , though the
+                                                |                                             transition does limit overflow.
+                article#alerts.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Alerts
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/alerts/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .alert.alert-primary.alert-dismissible.fade.show( role='alert' )
+                                    | A simple primary alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-secondary.alert-dismissible.fade.show( role='alert' )
+                                    | A simple secondary alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-success.alert-dismissible.fade.show( role='alert' )
+                                    | A simple success alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-danger.alert-dismissible.fade.show( role='alert' )
+                                    | A simple danger alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-warning.alert-dismissible.fade.show( role='alert' )
+                                    | A simple warning alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-info.alert-dismissible.fade.show( role='alert' )
+                                    | A simple info alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-light.alert-dismissible.fade.show( role='alert' )
+                                    | A simple light alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                                .alert.alert-dark.alert-dismissible.fade.show( role='alert' )
+                                    | A simple dark alert with
+                                    a.alert-link( href='#' ) an example link
+                                    | . Give it a
+                                    |                                 click if you like.
+                                    button.btn-close( type='button' data-bs-dismiss='alert' aria-label='Close' )
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .alert.alert-success( role='alert' )
+                                    h4.alert-heading Well done!
+                                    p
+                                        | Aww yeah, you successfully read this important alert
+                                        | message. This example text is going to run a bit longer so
+                                        | that you can see how spacing within an alert works with this
+                                        | kind of content.
+                                    hr
+                                    p.mb-0
+                                        | Whenever you need to, be sure to use margin utilities to
+                                        | keep things nice and tidy.
+                article#badge.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Badge
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/badge/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                p.h1
+                                    | Example heading
+                                    span.badge.bg-primary New
+                                p.h2
+                                    | Example heading
+                                    span.badge.bg-secondary New
+                                p.h3
+                                    | Example heading
+                                    span.badge.bg-success New
+                                p.h4
+                                    | Example heading
+                                    span.badge.bg-danger New
+                                p.h5
+                                    | Example heading
+                                    span.badge.text-bg-warning New
+                                p.h6
+                                    | Example heading
+                                    span.badge.text-bg-info New
+                                p.h6
+                                    | Example heading
+                                    span.badge.text-bg-light New
+                                p.h6
+                                    | Example heading
+                                    span.badge.bg-dark New
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                span.badge.rounded-pill.bg-primary Primary
+                                span.badge.rounded-pill.bg-secondary Secondary
+                                span.badge.rounded-pill.bg-success Success
+                                span.badge.rounded-pill.bg-danger Danger
+                                span.badge.rounded-pill.text-bg-warning Warning
+                                span.badge.rounded-pill.text-bg-info Info
+                                span.badge.rounded-pill.text-bg-light Light
+                                span.badge.rounded-pill.bg-dark Dark
+                article#breadcrumb.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Breadcrumb
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/breadcrumb/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav( aria-label='breadcrumb' )
+                                    ol.breadcrumb
+                                        li.breadcrumb-item
+                                            a( href='#' ) Home
+                                        li.breadcrumb-item
+                                            a( href='#' ) Library
+                                        li.breadcrumb-item.active( aria-current='page' ) Data
+                article#buttons.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Buttons
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/buttons/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                button.btn.btn-primary( type='button' ) Primary
+                                button.btn.btn-secondary( type='button' ) Secondary
+                                button.btn.btn-success( type='button' ) Success
+                                button.btn.btn-danger( type='button' ) Danger
+                                button.btn.btn-warning( type='button' ) Warning
+                                button.btn.btn-info( type='button' ) Info
+                                button.btn.btn-light( type='button' ) Light
+                                button.btn.btn-dark( type='button' ) Dark
+                                button.btn.btn-link( type='button' ) Link
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                button.btn.btn-outline-primary( type='button' ) Primary
+                                button.btn.btn-outline-secondary( type='button' ) Secondary
+                                button.btn.btn-outline-success( type='button' ) Success
+                                button.btn.btn-outline-danger( type='button' ) Danger
+                                button.btn.btn-outline-warning( type='button' ) Warning
+                                button.btn.btn-outline-info( type='button' ) Info
+                                button.btn.btn-outline-light( type='button' ) Light
+                                button.btn.btn-outline-dark( type='button' ) Dark
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                button.btn.btn-primary.btn-sm( type='button' ) Small button
+                                button.btn.btn-primary( type='button' ) Standard button
+                                button.btn.btn-primary.btn-lg( type='button' ) Large button
+                article#button-group.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Button group
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/button-group/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .btn-toolbar( role='toolbar' aria-label='Toolbar with button groups' )
+                                    .btn-group.me-2( role='group' aria-label='First group' )
+                                        button.btn.btn-secondary( type='button' ) 1
+                                        button.btn.btn-secondary( type='button' ) 2
+                                        button.btn.btn-secondary( type='button' ) 3
+                                        button.btn.btn-secondary( type='button' ) 4
+                                    .btn-group.me-2( role='group' aria-label='Second group' )
+                                        button.btn.btn-secondary( type='button' ) 5
+                                        button.btn.btn-secondary( type='button' ) 6
+                                        button.btn.btn-secondary( type='button' ) 7
+                                    .btn-group( role='group' aria-label='Third group' )
+                                        button.btn.btn-secondary( type='button' ) 8
+                article#card.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Card
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/card/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .row.row-cols-1.row-cols-md-2.g-4
+                                    .col
+                                        .card
+                                            svg.bd-placeholder-img.card-img-top( width='100%' height='180' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Image cap' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                                title Placeholder
+                                                rect( width='100%' height='100%' fill='#868e96' )
+                                                text( x='50%' y='50%' fill='#dee2e6' dy='.3em' ) Image cap
+                                            .card-body
+                                                h5.card-title Card title
+                                                p.card-text
+                                                    | Some quick example text to build on the card
+                                                    | title and make up the bulk of the card's
+                                                    | content.
+                                                a.btn.btn-primary( href='#' ) Go somewhere
+                                    .col
+                                        .card
+                                            .card-header Featured
+                                            .card-body
+                                                h5.card-title Card title
+                                                p.card-text
+                                                    | Some quick example text to build on the card
+                                                    | title and make up the bulk of the card's
+                                                    | content.
+                                                a.btn.btn-primary( href='#' ) Go somewhere
+                                            .card-footer.text-body-secondary 2 days ago
+                                    .col
+                                        .card
+                                            .card-body
+                                                h5.card-title Card title
+                                                p.card-text
+                                                    | Some quick example text to build on the card
+                                                    | title and make up the bulk of the card's
+                                                    | content.
+                                            ul.list-group.list-group-flush
+                                                li.list-group-item An item
+                                                li.list-group-item A second item
+                                                li.list-group-item A third item
+                                            .card-body
+                                                a.card-link( href='#' ) Card link
+                                                a.card-link( href='#' ) Another link
+                                    .col
+                                        .card
+                                            .row.g-0
+                                                .col-md-4
+                                                    svg.bd-placeholder-img( width='100%' height='250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Image' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                                        title Placeholder
+                                                        rect( width='100%' height='100%' fill='#868e96' )
+                                                        text( x='50%' y='50%' fill='#dee2e6' dy='.3em' ) Image
+                                                .col-md-8
+                                                    .card-body
+                                                        h5.card-title Card title
+                                                        p.card-text
+                                                            | This is a wider card with supporting
+                                                            | text below as a natural lead-in to
+                                                            | additional content. This content is a
+                                                            | little bit longer.
+                                                        p.card-text
+                                                            small.text-body-secondary Last updated 3 mins ago
+                article#carousel.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Carousel
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/carousel/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                #carouselExampleCaptions.carousel.slide( data-bs-ride='carousel' )
+                                    .carousel-indicators
+                                        button( type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide-to='0' aria-label='Slide 1' )
+                                        button( type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide-to='1' aria-label='Slide 2' )
+                                        button.active( type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide-to='2' aria-label='Slide 3' aria-current='true' )
+                                    .carousel-inner
+                                        .carousel-item
+                                            svg.bd-placeholder-img.bd-placeholder-img-lg.d-block.w-100( width='800' height='400' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: First slide' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                                title Placeholder
+                                                rect( width='100%' height='100%' fill='#777' )
+                                                text( x='50%' y='50%' fill='#555' dy='.3em' ) First slide
+                                            .carousel-caption.d-none.d-md-block
+                                                h5 First slide label
+                                                p
+                                                    | Some representative placeholder content for the
+                                                    | first slide.
+                                        .carousel-item.active.carousel-item-start
+                                            svg.bd-placeholder-img.bd-placeholder-img-lg.d-block.w-100( width='800' height='400' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Second slide' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                                title Placeholder
+                                                rect( width='100%' height='100%' fill='#666' )
+                                                text( x='50%' y='50%' fill='#444' dy='.3em' ) Second slide
+                                            .carousel-caption.d-none.d-md-block
+                                                h5 Second slide label
+                                                p
+                                                    | Some representative placeholder content for the
+                                                    | second slide.
+                                        .carousel-item.carousel-item-next.carousel-item-start
+                                            svg.bd-placeholder-img.bd-placeholder-img-lg.d-block.w-100( width='800' height='400' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: Third slide' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                                title Placeholder
+                                                rect( width='100%' height='100%' fill='#555' )
+                                                text( x='50%' y='50%' fill='#333' dy='.3em' ) Third slide
+                                            .carousel-caption.d-none.d-md-block
+                                                h5 Third slide label
+                                                p
+                                                    | Some representative placeholder content for the
+                                                    | third slide.
+                                    button.carousel-control-prev( type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide='prev' )
+                                        span.carousel-control-prev-icon( aria-hidden='true' )
+                                        span.visually-hidden Previous
+                                    button.carousel-control-next( type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide='next' )
+                                        span.carousel-control-next-icon( aria-hidden='true' )
+                                        span.visually-hidden Next
+                article#dropdowns.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Dropdowns
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/dropdowns/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .btn-group.w-100.align-items-center.justify-content-between.flex-wrap
+                                    .dropdown
+                                        button.btn.btn-secondary.btn-sm.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropdown button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                                    .dropdown
+                                        button.btn.btn-secondary.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropdown button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                                    .dropdown
+                                        button.btn.btn-secondary.btn-lg.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropdown button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .btn-group
+                                    button.btn.btn-primary( type='button' ) Primary
+                                    button.btn.btn-primary.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                                .btn-group
+                                    button.btn.btn-secondary( type='button' ) Secondary
+                                    button.btn.btn-secondary.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                                .btn-group
+                                    button.btn.btn-success( type='button' ) Success
+                                    button.btn.btn-success.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                                .btn-group
+                                    button.btn.btn-info( type='button' ) Info
+                                    button.btn.btn-info.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                                .btn-group
+                                    button.btn.btn-warning( type='button' ) Warning
+                                    button.btn.btn-warning.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                                .btn-group
+                                    button.btn.btn-danger( type='button' ) Danger
+                                    button.btn.btn-danger.dropdown-toggle.dropdown-toggle-split( type='button' data-bs-toggle='dropdown' aria-expanded='false' )
+                                        span.visually-hidden Toggle Dropdown
+                                    ul.dropdown-menu
+                                        li
+                                            a.dropdown-item( href='#' ) Action
+                                        li
+                                            a.dropdown-item( href='#' ) Another action
+                                        li
+                                            a.dropdown-item( href='#' ) Something else here
+                                // /btn-group
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .btn-group.w-100.align-items-center.justify-content-between.flex-wrap
+                                    .dropend
+                                        button.btn.btn-secondary.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropend button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                                    .dropup
+                                        button.btn.btn-secondary.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropup button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                                    .dropstart
+                                        button.btn.btn-secondary.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropstart button
+                                        ul.dropdown-menu
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                a.dropdown-item( href='#' ) Something else here
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .btn-group
+                                    .dropdown
+                                        button.btn.btn-secondary.dropdown-toggle( type='button' data-bs-toggle='dropdown' aria-expanded='false' ) End-aligned menu
+                                        ul.dropdown-menu.dropdown-menu-end
+                                            li
+                                                h6.dropdown-header Dropdown header
+                                            li
+                                                a.dropdown-item( href='#' ) Action
+                                            li
+                                                a.dropdown-item( href='#' ) Another action
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#' ) Separated link
+                article#list-group.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 List group
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/list-group/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                ul.list-group
+                                    li.list-group-item.disabled( aria-disabled='true' ) A disabled item
+                                    li.list-group-item A second item
+                                    li.list-group-item A third item
+                                    li.list-group-item A fourth item
+                                    li.list-group-item And a fifth one
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                ul.list-group.list-group-flush
+                                    li.list-group-item An item
+                                    li.list-group-item A second item
+                                    li.list-group-item A third item
+                                    li.list-group-item A fourth item
+                                    li.list-group-item And a fifth one
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .list-group
+                                    a.list-group-item.list-group-item-action( href='#' ) A simple default list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-primary( href='#' ) A simple primary list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-secondary( href='#' ) A simple secondary list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-success( href='#' ) A simple success list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-danger( href='#' ) A simple danger list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-warning( href='#' ) A simple warning list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-info( href='#' ) A simple info list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-light( href='#' ) A simple light list group item
+                                    a.list-group-item.list-group-item-action.list-group-item-dark( href='#' ) A simple dark list group item
+                article#modal.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Modal
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/modal/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .d-flex.justify-content-between.flex-wrap
+                                    button.btn.btn-primary( type='button' data-bs-toggle='modal' data-bs-target='#exampleModalDefault' ) Launch demo modal
+                                    button.btn.btn-primary( type='button' data-bs-toggle='modal' data-bs-target='#staticBackdropLive' ) Launch static backdrop modal
+                                    button.btn.btn-primary( type='button' data-bs-toggle='modal' data-bs-target='#exampleModalCenteredScrollable' ) Vertically centered scrollable modal
+                                    button.btn.btn-primary( type='button' data-bs-toggle='modal' data-bs-target='#exampleModalFullscreen' ) Full screen
+                article#navs.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Navs
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/navs-tabs/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav.nav
+                                    a.nav-link.active( aria-current='page' href='#' ) Active
+                                    a.nav-link( href='#' ) Link
+                                    a.nav-link( href='#' ) Link
+                                    a.nav-link.disabled Disabled
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav
+                                    #nav-tab.nav.nav-tabs.mb-3( role='tablist' )
+                                        button#nav-home-tab.nav-link.active( data-bs-toggle='tab' data-bs-target='#nav-home' type='button' role='tab' aria-controls='nav-home' aria-selected='true' ) Home
+                                        button#nav-profile-tab.nav-link( data-bs-toggle='tab' data-bs-target='#nav-profile' type='button' role='tab' aria-controls='nav-profile' aria-selected='false' tabindex='-1' ) Profile
+                                        button#nav-contact-tab.nav-link( data-bs-toggle='tab' data-bs-target='#nav-contact' type='button' role='tab' aria-controls='nav-contact' aria-selected='false' tabindex='-1' ) Contact
+                                #nav-tabContent.tab-content
+                                    #nav-home.tab-pane.fade.show.active( role='tabpanel' aria-labelledby='nav-home-tab' )
+                                        p
+                                            | This is some placeholder content the
+                                            strong Home tab's
+                                            |  associated content. Clicking
+                                            |                                         another tab will toggle the visibility of this one for
+                                            |                                         the next. The tab JavaScript swaps classes to control
+                                            |                                         the content visibility and styling. You can use it with
+                                            |                                         tabs, pills, and any other
+                                            code .nav
+                                            | -powered
+                                            |                                         navigation.
+                                    #nav-profile.tab-pane.fade( role='tabpanel' aria-labelledby='nav-profile-tab' )
+                                        p
+                                            | This is some placeholder content the
+                                            strong Profile tab's
+                                            |  associated content.
+                                            |                                         Clicking another tab will toggle the visibility of this
+                                            |                                         one for the next. The tab JavaScript swaps classes to
+                                            |                                         control the content visibility and styling. You can use
+                                            |                                         it with tabs, pills, and any other
+                                            code .nav
+                                            | -powered navigation.
+                                    #nav-contact.tab-pane.fade( role='tabpanel' aria-labelledby='nav-contact-tab' )
+                                        p
+                                            | This is some placeholder content the
+                                            strong Contact tab's
+                                            |  associated content.
+                                            |                                         Clicking another tab will toggle the visibility of this
+                                            |                                         one for the next. The tab JavaScript swaps classes to
+                                            |                                         control the content visibility and styling. You can use
+                                            |                                         it with tabs, pills, and any other
+                                            code .nav
+                                            | -powered navigation.
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                ul.nav.nav-pills
+                                    li.nav-item
+                                        a.nav-link.active( aria-current='page' href='#' ) Active
+                                    li.nav-item
+                                        a.nav-link( href='#' ) Link
+                                    li.nav-item
+                                        a.nav-link( href='#' ) Link
+                                    li.nav-item
+                                        a.nav-link.disabled Disabled
+                article#navbar.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Navbar
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/navbar/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav.navbar.navbar-expand-lg.bg-body-tertiary
+                                    .container-fluid
+                                        a.navbar-brand( href='#' )
+                                            img.d-inline-block.align-top( src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-white.svg' width='38' height='30' alt='Bootstrap' loading='lazy' style='											filter: invert( 1 ) grayscale( 100% )											brightness( 200% );											' )
+                                        button.navbar-toggler( type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation' )
+                                            span.navbar-toggler-icon
+                                        #navbarSupportedContent.collapse.navbar-collapse
+                                            ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                                                li.nav-item
+                                                    a.nav-link.active( aria-current='page' href='#' ) Home
+                                                li.nav-item
+                                                    a.nav-link( href='#' ) Link
+                                                li.nav-item.dropdown
+                                                    a.nav-link.dropdown-toggle( href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropdown
+                                                    ul.dropdown-menu
+                                                        li
+                                                            a.dropdown-item( href='#' ) Action
+                                                        li
+                                                            a.dropdown-item( href='#' ) Another action
+                                                        li
+                                                            hr.dropdown-divider
+                                                        li
+                                                            a.dropdown-item( href='#' ) Something else here
+                                                li.nav-item
+                                                    a.nav-link.disabled Disabled
+                                            form.d-flex( role='search' data-dashlane-rid='7450886833e2da68' data-form-type='' )
+                                                input.form-control.me-2( type='search' placeholder='Search' aria-label='Search' data-dashlane-rid='9dd2239d08633e23' data-form-type='' )
+                                                button.btn.btn-outline-dark( type='submit' data-dashlane-rid='4740710642176cfc' data-form-type='' data-dashlane-label='true' ) Search
+                                nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.mt-5
+                                    .container-fluid
+                                        a.navbar-brand( href='#' )
+                                            img.d-inline-block.align-top( src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-white.svg' width='38' height='30' alt='Bootstrap' loading='lazy' )
+                                        button.navbar-toggler( type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent2' aria-controls='navbarSupportedContent2' aria-expanded='false' aria-label='Toggle navigation' )
+                                            span.navbar-toggler-icon
+                                        #navbarSupportedContent2.collapse.navbar-collapse
+                                            ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                                                li.nav-item
+                                                    a.nav-link.active( aria-current='page' href='#' ) Home
+                                                li.nav-item
+                                                    a.nav-link( href='#' ) Link
+                                                li.nav-item.dropdown
+                                                    a.nav-link.dropdown-toggle( href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false' ) Dropdown
+                                                    ul.dropdown-menu
+                                                        li
+                                                            a.dropdown-item( href='#' ) Action
+                                                        li
+                                                            a.dropdown-item( href='#' ) Another action
+                                                        li
+                                                            hr.dropdown-divider
+                                                        li
+                                                            a.dropdown-item( href='#' ) Something else here
+                                                li.nav-item
+                                                    a.nav-link.disabled Disabled
+                                            form.d-flex( role='search' data-dashlane-rid='1159e0b986d19e55' data-form-type='' )
+                                                input.form-control.me-2( type='search' placeholder='Search' aria-label='Search' data-dashlane-rid='904612982c8f9726' data-form-type='' )
+                                                button.btn.btn-outline-light( type='submit' data-dashlane-rid='97d6ff55167b7982' data-form-type='' data-dashlane-label='true' ) Search
+                article#pagination.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Pagination
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/pagination/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav( aria-label='Pagination example' )
+                                    ul.pagination.pagination-sm
+                                        li.page-item
+                                            a.page-link( href='#' ) 1
+                                        li.page-item.active( aria-current='page' )
+                                            a.page-link( href='#' ) 2
+                                        li.page-item
+                                            a.page-link( href='#' ) 3
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav( aria-label='Standard pagination example' )
+                                    ul.pagination
+                                        li.page-item
+                                            a.page-link( href='#' aria-label='Previous' )
+                                                span( aria-hidden='true' ) «
+                                        li.page-item
+                                            a.page-link( href='#' ) 1
+                                        li.page-item
+                                            a.page-link( href='#' ) 2
+                                        li.page-item
+                                            a.page-link( href='#' ) 3
+                                        li.page-item
+                                            a.page-link( href='#' aria-label='Next' )
+                                                span( aria-hidden='true' ) »
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                nav( aria-label='Another pagination example' )
+                                    ul.pagination.pagination-lg.flex-wrap
+                                        li.page-item.disabled
+                                            a.page-link Previous
+                                        li.page-item
+                                            a.page-link( href='#' ) 1
+                                        li.page-item.active( aria-current='page' )
+                                            a.page-link( href='#' ) 2
+                                        li.page-item
+                                            a.page-link( href='#' ) 3
+                                        li.page-item
+                                            a.page-link( href='#' ) Next
+                article#popovers.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Popovers
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/popovers/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                button.btn.btn-lg.btn-danger( type='button' data-bs-toggle='popover' data-bs-content="And here's some amazing content. It's very engaging. Right?" data-bs-original-title='Popover title' ) Click to toggle popover
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                button.btn.btn-secondary( type='button' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='top' data-bs-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.' ) Popover on top
+                                button.btn.btn-secondary( type='button' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='right' data-bs-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.' ) Popover on end
+                                button.btn.btn-secondary( type='button' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='bottom' data-bs-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.' ) Popover on bottom
+                                button.btn.btn-secondary( type='button' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.' ) Popover on start
+                article#progress.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Progress
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/progress/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .progress.mb-3( role='progressbar' aria-label='Example with label' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' )
+                                    .progress-bar 0%
+                                .progress.mb-3( role='progressbar' aria-label='Success example with label' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100' )
+                                    .progress-bar.bg-success.w-25 25%
+                                .progress.mb-3( role='progressbar' aria-label='Info example with label' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100' )
+                                    .progress-bar.text-bg-info.w-50 50%
+                                .progress.mb-3( role='progressbar' aria-label='Warning example with label' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' )
+                                    .progress-bar.text-bg-warning.w-75 75%
+                                .progress( role='progressbar' aria-label='Danger example with label' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' )
+                                    .progress-bar.bg-danger.w-100 100%
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .progress-stacked
+                                    .progress( role='progressbar' aria-label='Segment one - default example' style='width: 15%' aria-valuenow='15' aria-valuemin='0' aria-valuemax='100' )
+                                        .progress-bar
+                                    .progress( role='progressbar' aria-label='Segment two - animated striped success example' style='width: 40%' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' )
+                                        .progress-bar.progress-bar-striped.progress-bar-animated.bg-success
+                article#scrollspy.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Scrollspy
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/scrollspy/' target="_blank" ) Documentation
+                    div
+                        .bd-example
+                            nav#navbar-example2.navbar.bg-body-tertiary.px-3
+                                a.navbar-brand( href='#' ) Navbar
+                                ul.nav.nav-pills
+                                    li.nav-item
+                                        a.nav-link.active( href='#scrollspyHeading1' ) First
+                                    li.nav-item
+                                        a.nav-link( href='#scrollspyHeading2' ) Second
+                                    li.nav-item.dropdown
+                                        a.nav-link.dropdown-toggle( data-bs-toggle='dropdown' href='#' role='button' aria-expanded='false' ) Dropdown
+                                        ul.dropdown-menu
+                                            li
+                                                a.dropdown-item( href='#scrollspyHeading3' ) Third
+                                            li
+                                                a.dropdown-item( href='#scrollspyHeading4' ) Fourth
+                                            li
+                                                hr.dropdown-divider
+                                            li
+                                                a.dropdown-item( href='#scrollspyHeading5' ) Fifth
+                            .scrollspy-example.position-relative.mt-2.overflow-auto( data-bs-spy='scroll' data-bs-target='#navbar-example2' data-bs-offset='0' tabindex='0' )
+                                h4#scrollspyHeading1 First heading
+                                p
+                                    | This is some placeholder content for the scrollspy page. Note
+                                    | that as you scroll down the page, the appropriate navigation
+                                    | link is highlighted. It's repeated throughout the component
+                                    | example. We keep adding some more example copy here to emphasize
+                                    | the scrolling and highlighting.
+                                h4#scrollspyHeading2 Second heading
+                                p
+                                    | This is some placeholder content for the scrollspy page. Note
+                                    | that as you scroll down the page, the appropriate navigation
+                                    | link is highlighted. It's repeated throughout the component
+                                    | example. We keep adding some more example copy here to emphasize
+                                    | the scrolling and highlighting.
+                                h4#scrollspyHeading3 Third heading
+                                p
+                                    | This is some placeholder content for the scrollspy page. Note
+                                    | that as you scroll down the page, the appropriate navigation
+                                    | link is highlighted. It's repeated throughout the component
+                                    | example. We keep adding some more example copy here to emphasize
+                                    | the scrolling and highlighting.
+                                h4#scrollspyHeading4 Fourth heading
+                                p
+                                    | This is some placeholder content for the scrollspy page. Note
+                                    | that as you scroll down the page, the appropriate navigation
+                                    | link is highlighted. It's repeated throughout the component
+                                    | example. We keep adding some more example copy here to emphasize
+                                    | the scrolling and highlighting.
+                                h4#scrollspyHeading5 Fifth heading
+                                p
+                                    | This is some placeholder content for the scrollspy page. Note
+                                    | that as you scroll down the page, the appropriate navigation
+                                    | link is highlighted. It's repeated throughout the component
+                                    | example. We keep adding some more example copy here to emphasize
+                                    | the scrolling and highlighting.
+                article#spinners.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Spinners
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/spinners/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .spinner-border.text-primary( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-secondary( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-success( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-danger( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-warning( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-info( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-light( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-border.text-dark( role='status' )
+                                    span.visually-hidden Loading...
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0
+                                .spinner-grow.text-primary( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-secondary( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-success( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-danger( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-warning( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-info( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-light( role='status' )
+                                    span.visually-hidden Loading...
+                                .spinner-grow.text-dark( role='status' )
+                                    span.visually-hidden Loading...
+                article#toasts.my-3
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Toasts
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/toasts/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0.bg-light.p-5.align-items-center
+                                .toast.fade.show( role='alert' aria-live='assertive' aria-atomic='true' )
+                                    .toast-header
+                                        svg.bd-placeholder-img.rounded.me-2( width='20' height='20' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' preserveaspectratio='xMidYMid slice' focusable='false' )
+                                            rect( width='100%' height='100%' fill='#007aff' )
+                                        strong.me-auto Bootstrap
+                                        small.text-body-secondary 11 mins ago
+                                        button.btn-close( type='button' data-bs-dismiss='toast' aria-label='Close' )
+                                    .toast-body Hello, world! This is a toast message.
+                article#tooltips.mt-3.mb-5.pb-5
+                    .bd-heading.sticky-xl-top.align-self-start.mt-5.mb-3.mt-xl-0.mb-xl-2
+                        h3 Tooltips
+                        a.d-flex.align-items-center( href='https://getbootstrap.com/docs/5.3/components/tooltips/' target="_blank" ) Documentation
+                    div
+                        .bd-example-snippet.bd-code-snippet
+                            .bd-example.m-0.border-0.tooltip-demo
+                                button.btn.btn-secondary( type='button' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top' ) Tooltip on top
+                                button.btn.btn-secondary( type='button' data-bs-toggle='tooltip' data-bs-placement='right' title='Tooltip on end' ) Tooltip on end
+                                button.btn.btn-secondary( type='button' data-bs-toggle='tooltip' data-bs-placement='bottom' title='Tooltip on bottom' ) Tooltip on bottom
+                                button.btn.btn-secondary( type='button' data-bs-toggle='tooltip' data-bs-placement='left' title='Tooltip on start' ) Tooltip on start
+                                button.btn.btn-secondary( type='button' data-bs-toggle='tooltip' data-bs-html='true' title='<em>Tooltip</em> <u>with</u> <b>HTML</b>' ) Tooltip with HTML
+        #exampleModalDefault.modal.fade( tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true' )
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h1#exampleModalLabel.modal-title.fs-5 Modal title
+                        button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                    .modal-body ...
+                    .modal-footer
+                        button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
+                        button.btn.btn-primary( type='button' ) Save changes
+        #staticBackdropLive.modal.fade( data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLiveLabel' aria-hidden='true' )
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h1#staticBackdropLiveLabel.modal-title.fs-5 Modal title
+                        button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                    .modal-body
+                        p
+                            | I will not close if you click outside me. Don't even try to press escape
+                            | key.
+                    .modal-footer
+                        button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
+                        button.btn.btn-primary( type='button' ) Understood
+        #exampleModalCenteredScrollable.modal.fade( tabindex='-1' aria-labelledby='exampleModalCenteredScrollableTitle' aria-hidden='true' )
+            .modal-dialog.modal-dialog-centered.modal-dialog-scrollable
+                .modal-content
+                    .modal-header
+                        h1#exampleModalCenteredScrollableTitle.modal-title.fs-5 Modal title
+                        button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                    .modal-body
+                        p
+                            | This is some placeholder content to show the scrolling behavior for
+                            | modals. We use repeated line breaks to demonstrate how content can
+                            | exceed minimum inner height, thereby showing inner scrolling. When
+                            | content becomes longer than the predefined max-height of modal, content
+                            | will be cropped and scrollable within the modal.
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        br
+                        p This content should appear at the bottom after you scroll.
+                    .modal-footer
+                        button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
+                        button.btn.btn-primary( type='button' ) Save changes
+        #exampleModalFullscreen.modal.fade( tabindex='-1' aria-labelledby='exampleModalFullscreenLabel' aria-hidden='true' )
+            .modal-dialog.modal-fullscreen
+                .modal-content
+                    .modal-header
+                        h1#exampleModalFullscreenLabel.modal-title.fs-4 Full screen modal
+                        button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+                    .modal-body ...
+                    .modal-footer
+                        button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
+        script( src='/js/app.min.js' )
+        script.
+            (() => {
+                'use strict';
+                // Tooltip and popover demos
+                document.querySelectorAll('.tooltip-demo').forEach((tooltip) => {
+                    new bootstrap.Tooltip(tooltip, {
+                        selector: '[data-bs-toggle="tooltip"]',
+                    });
+                });
+                document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popover) => {
+                    new bootstrap.Popover(popover);
+                });
+                document.querySelectorAll('.toast').forEach((toastNode) => {
+                    const toast = new bootstrap.Toast(toastNode, {
+                        autohide: false,
+                    });
+                    toast.show();
+                });
+                // Disable empty links and submit buttons
+                document.querySelectorAll('[href="#"], [type="submit"]').forEach((link) => {
+                    link.addEventListener('click', (event) => {
+                        event.preventDefault();
+                    });
+                });
+                function setActiveItem() {
+                    const { hash } = window.location;
+                    if (hash === '') {
+                        return;
+                    }
+                    const link = document.querySelector(`.bd-aside a[href="${hash}"]`);
+                    if (!link) {
+                        return;
+                    }
+                    const active = document.querySelector('.bd-aside .active');
+                    const parent = link.parentNode.parentNode.previousElementSibling;
+                    link.classList.add('active');
+                    if (parent.classList.contains('collapsed')) {
+                        parent.click();
+                    }
+                    if (!active) {
+                        return;
+                    }
+                    const expanded = active.parentNode.parentNode.previousElementSibling;
+                    active.classList.remove('active');
+                    if (expanded && parent !== expanded) {
+                        expanded.click();
+                    }
+                }
+                setActiveItem();
+                window.addEventListener('hashchange', setActiveItem);
+            })();

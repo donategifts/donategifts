@@ -8,6 +8,7 @@ block content
         .container
             form#wishCardForm( method='POST' )
                 h4 Create a wish card
+
                 .mt-2.card.shadow
                     .card-body
                         .row.mx-auto.my-1
@@ -24,6 +25,7 @@ block content
                             .mb-2.col-lg-6.col-sm-12
                                 label( for='childInterest' ) Child's Interest
                                 input#childInterest.input-block( type='text' name='childInterest' placeholder='' )
+
                 .mt-5.card.shadow
                     .card-body
                         .row.mx-auto.my-1
@@ -32,65 +34,63 @@ block content
                             input#wishItemName.input-block( type='text' name='wishItemName' placeholder='' )
                             .mb-2.col-lg-6.col-sm-12
                             label( for='wishItemPrice' ) Wish Item Price (numeric only, round it up)
-                            a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper2' )
-                                i.fa.fa-question-circle( aria-hidden='true' )
-                                | click for help
+                                a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper2' )
+                                    i.fa.fa-question-circle( aria-hidden='true' )
+                                    | click for help
                             input#wishItemPrice.input-block( type='number' name='wishItemPrice' placeholder='Price must be under $35' min='1' max='35' )
                         .row.mx-auto.my-1.pt-3
                             .col-12
-                            label( for='wishItemURL' )
-                                | Wish Item Amazon URL
-                            a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper' )
-                                i.fa.fa-question-circle( aria-hidden='true' )
-                                | click for help
+                            label( for='wishItemURL' ) Wish Item Amazon URL
+                                a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper' )
+                                    i.fa.fa-question-circle( aria-hidden='true' )
+                                    | click for help
                             input#wishItemURL.input-block( type='text' name='wishItemURL' placeholder='(Item page link https://www.amazon.....)' )
+
                 .mt-5.card.shadow
-                    .card-body
-                        .row.mx-auto.my-1
-                            .mb-1.col-lg-6.col-sm-12( data-validate='Message is required' )
+                    .card-body.center-elements
+                        .col-lg-6.col-sm-12( data-validate='Message is required' )
                             label( for='childStory' ) Share their story
                             textarea#childStory.input-block( name='childStory'
                                 placeholder="(e.g. what's their story? why do they want this item? what's their favorite subject?)"
                                 rows='6'
                             )
-                            .mb-1.col-lg-6.col-sm-12
-                                label( for='preview' ) Upload their photo
-                                p
-                                    | Required to use an image that is representative of the child. (Also allowed: masked faces, cropped or
-                                    | blurred features, art or something they made, their wish item)
-                                    a.help-modal( data-bs-toggle='modal' data-bs-target='#formQuestionHelper3' )
+                        .col-lg-6.col-sm-12
+                            label( for='preview' ) Upload their photo
+                            p
+                                | Required to use an image that is representative of the child. (Also allowed: masked faces, cropped or
+                                | blurred features, art or something they made, their wish item)
+                                a.help-modal( data-bs-toggle='modal' data-bs-target='#formQuestionHelper3' )
                                     i.fa.fa-question-circle( aria-hidden='true' )
                                     | click for help
-                                .uploader-left
-                                    img#preview( src='/img/img-placeholder.png' alt='image-placeholder' )
-                                .uploader-right
-                                    input#filetag.uploader( type='file' name='wishCardImage' )
+                            img#preview.img-fluid( src='/img/img-placeholder.png' alt='image-placeholder' )
+                            input#filetag.form-control.bg-secondary( type='file' name='wishCardImage' )
+
                 .mt-5.card.shadow
                     .card-body
-                    .row.mx-auto.my-1
-                        label.mx-3
-                        input#agencyAddressCheckBox.mx-1( type='checkbox' )
-                        | Ship this wish item to my agency address
-                    .row.mx-auto.my-1.pt-4
-                        .col-lg-4
-                            label( for='address1' ) Address Line 1
-                            input#address1.input-block( type='text' name='address1' placeholder='' )
-                        .col-lg-4
-                            label( for='address2' ) Address Line 2
-                            input#address2.input-block( type='text' name='address2' placeholder='(e.g. unit or suite number)' )
-                        .col-lg-4
-                            label( for='address_city' ) City
-                            input#address_city.input-block( type='text' name='address_city' placeholder='' )
-                    .row.mx-auto.my-1.pt-3
-                        .col-lg-4
-                            label( for='address_state' ) State
-                            input#address_state.input-block( type='text' name='address_state' placeholder='' )
-                        .col-lg-4
-                            label( for='address_zip' ) Zipcode
-                            input#address_zip.input-block( type='text' name='address_zip' placeholder='' )
-                        .col-lg-4
-                            label( for='address_country' ) Country
-                            input#address_country.input-block( type='text' name='address_country' placeholder='(e.g. USA)' )
+                        .row.mx-auto.my-1
+                            .form-check
+                                input#agencyAddressCheckBox.form-check-input( type='checkbox' )
+                                label.form-check-label( for="agencyAddressCheckBox" ) Ship this wish item to my agency address
+                        .row.mx-auto.my-1.pt-4
+                            .col-lg-4
+                                label( for='address1' ) Address Line 1
+                                input#address1.input-block( type='text' name='address1' placeholder='' )
+                            .col-lg-4
+                                label( for='address2' ) Address Line 2
+                                input#address2.input-block( type='text' name='address2' placeholder='(e.g. unit or suite number)' )
+                            .col-lg-4
+                                label( for='address_city' ) City
+                                input#address_city.input-block( type='text' name='address_city' placeholder='' )
+                        .row.mx-auto.my-1.pt-3
+                            .col-lg-4
+                                label( for='address_state' ) State
+                                input#address_state.input-block( type='text' name='address_state' placeholder='' )
+                            .col-lg-4
+                                label( for='address_zip' ) Zipcode
+                                input#address_zip.input-block( type='text' name='address_zip' placeholder='' )
+                            .col-lg-4
+                                label( for='address_country' ) Country
+                                input#address_country.input-block( type='text' name='address_country' placeholder='(e.g. USA)' )
                 .text-center.mt-5.pt-1
                     p.p-2.mt-2 Wish card will be published once reviewed and approved by DonateGifts
                 #submit-btn.quick-font

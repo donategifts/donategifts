@@ -15,6 +15,10 @@
     "resources": true,
     "package-lock.json": true,
   },
+  "stylelint.validate": [
+    "css",
+    "scss"
+  ],
   "puglint.enable": true,
   "puglint.config": {
     "disallowClassAttributeWithStaticValue": true,

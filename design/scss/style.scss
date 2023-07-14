@@ -45,26 +45,32 @@ move this later -- from home.ejs
 */
 .partners-container {
 	h1 {
-		@include font-styling($font-heading, 2.5rem, $navy, $medium);
+		@include font-styling($font-heading, 2.5rem, $primary, $fw-medium);
+
 		text-align: center;
-		padding: 1rem 0rem 3rem 0rem;
+		padding: 1rem 0 3rem;
 	}
 }
 
 
 // TODO: this stuff is for createWishcard.ejs and will be moved later
 .create-wish {
-	padding: 2.5rem 0rem;
+	padding: 2.5rem 0;
 	background-color: lighten($cream, 9);
+
 	.card-body {
 		padding: 2.5rem;
+
 		@include font-styling($font-body);
 	}
+
 	h4 {
-		@include font-styling($font-heading, 2.5rem, $custom-orange);
+		@include font-styling($font-heading, 2.5rem, $secondary);
+
 		text-align: center;
 		margin-bottom: 2.5rem;
 	}
+
 	.input-block {
 		display: block;
 		width: 100%;
@@ -72,68 +78,71 @@ move this later -- from home.ejs
 		line-height: 1.75;
 		color: $black;
 		padding: 0.5rem 1.25rem;
-		border: 0.1rem solid $custom-orange;
+		border: 0.1rem solid $secondary;
 		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
 	}
+
 	label {
-		font-weight: $semi-bold;
+		font-weight: $fw-semi-bold;
 		color: $black;
 	}
+
 	a {
 		cursor: pointer;
-		color: $custom-orange !important;
+		color: $secondary !important;
+
 		&:hover {
 			text-decoration: underline !important;
 		}
 	}
+
 	.uploader {
-		background-color: lighten($custom-orange, 14);
+		background-color: lighten($secondary, 14);
 		text-align: center;
 		vertical-align: middle;
 		padding: 0.4em 0.7em;
 		outline: none;
 		width: auto;
 		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
+
 		&:hover {
-			background-color: $custom-orange;
+			background-color: $secondary;
 		}
 	}
+
 	.form-submit {
-		background-color: $custom-orange;
+		background-color: $secondary;
 		color: $white;
 		padding: 0.6em 5em;
+
 		&:hover {
-			background-color: lighten($navy, 5);
+			background-color: lighten($primary, 5);
 		}
 	}
 }
 
 .navbar {
 	background-color: transparent;
-	color: $navy;
+	color: $primary;
 	padding-bottom: 0;
 	margin-bottom: -5px;
 	font-family: $font-body;
+
 	img {
 		height: 4.5rem;
 		width: auto;
 		margin-bottom: 0.5rem;
 	}
+
 	i {
-		color: $navy;
+		color: $primary;
 		font-size: 1.75rem;
 	}
+
 	a:hover {
-		color: $custom-orange !important;
+		color: $secondary !important;
 	}
+
 	.navbar-nav li {
 		text-align: right;
 	}
@@ -152,8 +161,10 @@ move this later -- from home.ejs
 	list-style: none;
 	overflow-x: scroll;
 	text-align: center;
+
 	li {
 		margin: 0 0.75rem;
+
 		a {
 			display: block;
 			padding: 10px 0;
@@ -162,10 +173,9 @@ move this later -- from home.ejs
 		}
 	}
 }
-/*
-  pc screen
-  --------------------------------*/
-@media screen and (min-width: 992px) {
+
+// pc screen
+@media screen and (width >= 992px) {
 	.site-navigation ul {
 		position: relative;
 		top: auto;
@@ -176,6 +186,7 @@ move this later -- from home.ejs
 		padding: 1.4rem 0;
 		overflow: auto;
 		background: transparent;
+
 		li a {
 			padding: 0;
 		}
@@ -184,15 +195,18 @@ move this later -- from home.ejs
 
 .mission {
 	background-color: lighten($cream, 8);
+
 	.header {
 		min-height: 30vh;
-		color: $navy-dark;
+		color: $primary-dark;
+
 		h1 {
 			padding-top: 1em;
 			font-family: $font-heading;
-			border-bottom: 11px dotted $custom-yellow;
+			border-bottom: 11px dotted $warning;
 			padding-bottom: 0.15em;
 		}
+
 		h4 {
 			font-family: $font-body;
 			font-size: 1.15em;
@@ -210,32 +224,35 @@ team
 */
 .team {
 	padding: 1.5rem;
+
 	&-card {
 		border-radius: 0.3rem;
-		-webkit-border-radius: 0.3rem;
-		-moz-border-radius: 0.3rem;
-		-ms-border-radius: 0.3rem;
-		-o-border-radius: 0.3rem;
 		background-color: lighten($cream, 1);
 		padding: 1rem;
 		margin: 1rem;
 		min-height: 390px;
 		text-align: center;
 	}
+
 	h1 {
-		@include font-styling($font-heading, 2.75rem, $custom-red, $semi-bold);
+		@include font-styling($font-heading, 2.75rem, $danger, $fw-semi-bold);
+
 		text-align: center;
 		margin: 1rem;
 		padding: 1rem;
 	}
+
 	h4 {
-		@include font-styling($font-body, 1.5rem, $custom-green, $semi-bold);
+		@include font-styling($font-body, 1.5rem, $success, $fw-semi-bold);
 	}
+
 	h5 {
 		@include font-styling($font-body, 1.25rem, $black);
+
 		text-align: center;
 		margin-top: -1rem;
 	}
+
 	p {
 		@include font-styling($font-body, 0.95rem, $black);
 	}
@@ -249,25 +266,27 @@ wishcards
 .wishcards {
 	position: relative;
 	padding: 3em 0;
+
 	h1 {
-		@include font-styling($font-heading, 2.5rem, $navy, $medium);
+		@include font-styling($font-heading, 2.5rem, $primary, $fw-medium);
+
 		text-align: center;
-		padding: 1rem 0rem 3rem 0rem;
+		padding: 1rem 0 3rem;
 	}
+
 	&-container {
 		max-width: 1300px;
+
 		// Just so it doesn't expand all the way in large screens
 	}
+
 	.create-more {
 		@extend %btn-lg;
+
 		text-decoration: none !important;
-		background-color: $custom-orange;
+		background-color: $secondary;
 		color: $white !important;
 		border-radius: 0.5rem;
-		-webkit-border-radius: 0.5rem;
-		-moz-border-radius: 0.5rem;
-		-ms-border-radius: 0.5rem;
-		-o-border-radius: 0.5rem;
 		font-size: 1.25rem;
 	}
 }
@@ -287,28 +306,36 @@ wishcards
 		transition: all 0.25s ease-in-out;
 		text-decoration: none;
 	}
+
 	&__button--blue {
 		@extend %btn;
-		background-color: $navy;
+
+		background-color: $primary;
 		color: $white;
+
 		&:hover {
 			background-color: $white;
-			color: $navy;
-			border: 0.5px solid $navy;
+			color: $primary;
+			border: 0.5px solid $primary;
 		}
 	}
+
 	&__button--disabled {
 		@extend %btn;
+
 		background-color: lighten($gray, 25%);
 		color: $white;
 	}
+
 	&__button--filter {
 		@extend %btn;
+
 		background-color: $white;
-		color: $custom-yellow;
-		border: 0.5px solid $custom-yellow;
+		color: $warning;
+		border: 0.5px solid $warning;
+
 		&:hover {
-			background-color: $custom-yellow;
+			background-color: $warning;
 			color: $white;
 		}
 	}
@@ -316,52 +343,47 @@ wishcards
 
 .card-body {
 	padding: 1.1rem !important;
+
 	.card-details {
 		p {
 			@include font-styling($font-body);
-			margin-bottom: 0rem;
+
+			margin-bottom: 0;
 		}
+
 		.wish-price {
-			-webkit-text-decoration-line: underline;
 			text-decoration-line: underline;
-			-moz-text-decoration-line: underline;
-			-webkit-text-decoration-color: $custom-red;
-			text-decoration-color: $custom-red;
-			-moz-text-decoration-color: $custom-red;
+			text-decoration-color: $danger;
 		}
 	}
+
 	.card-action {
 		@include font-styling($font-body);
+
 		margin-top: 1rem;
 		margin-bottom: -1rem;
 		text-align: center;
 	}
 }
 
-//move this later
+// move this later
 .msg-icon {
-	background-color: $custom-yellow;
+	background-color: $warning;
 	padding: 0.6em 0.8em;
 	border: none;
+
 	&:hover {
 		text-decoration: none;
-		background-color: darken($custom-yellow, 25%);
+		background-color: darken($warning, 25%);
 	}
 }
 
 .search-border {
 	background-color: lighten($cream, 8);
 	border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	-ms-border-radius: 20px;
-	-o-border-radius: 20px;
+
 	button {
 		border-radius: 0 20px 20px 0;
-		-webkit-border-radius: 0 20px 20px 0;
-		-moz-border-radius: 0 20px 20px 0;
-		-ms-border-radius: 0 20px 20px 0;
-		-o-border-radius: 0 20px 20px 0;
 	}
 }
 

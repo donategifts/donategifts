@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 
-import config from '../helper/config';
 import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import MessageRepository from '../db/repository/MessageRepository';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
+import config from '../helper/config';
 import * as DefaultItems from '../helper/defaultItems';
 import Utils from '../helper/utils';
 

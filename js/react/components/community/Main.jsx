@@ -125,11 +125,11 @@ function Community(props) {
 										{post.belongsTo?.agencyProfileImage && (
 											<img
 												className="img-fluid me-2 post-logo"
-												src={post.belongsTo.agencyProfileImage}
+												src={post.belongsTo?.agencyProfileImage}
 												alt="partner agency logo"
 											/>
 										)}
-										<h6 className="bold-text">{post.belongsTo.agencyName}</h6>
+										<h6 className="bold-text">{post.belongsTo?.agencyName}</h6>
 									</div>
 								</div>
 								<div className="card-body">
