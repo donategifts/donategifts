@@ -95,7 +95,7 @@ const app = express();
 
 	// apply some of our environment variables to the app locals so that they can be used in the templates
 	app.locals.env = {
-		stripe: config.STRIPE.API,
+		stripe: config.STRIPE.PUBLISHABLE_KEY,
 		paypal: config.PAYPAL.CLIENT_ID,
 		facebook: config.FB_APP_ID,
 		google: config.G_CLIENT_ID,
