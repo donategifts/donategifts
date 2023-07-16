@@ -116,121 +116,123 @@ block modal
 block scripts
     script( src='https://js.stripe.com/v3/' )
     script.
-        const stripe = Stripe('#{locals.env.stripe}');
+        $(document).ready(function () {
+            const stripe = Stripe('#{locals.env.stripe}');
 
-        const elements = stripe.elements();
+            const elements = stripe.elements();
 
-        // Todo: this needs to be edited
-        // Custom styling can be passed to options when creating an Element.
-        const style = {
-            base: {
-                fontSize: '16px',
-                color: '#00a19a',
-            },
-        };
+            // Todo: this needs to be edited
+            // Custom styling can be passed to options when creating an Element.
+            const style = {
+                base: {
+                    fontSize: '16px',
+                    color: '#00a19a',
+                },
+            };
 
-        const card = elements.create('card', { style });
+            const card = elements.create('card', { style });
 
-        // Add an instance of the card Element into the `card-element` <div>.
-        card.mount('#card-element');
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
 
-        // Handle real-time validation errors from the card Element.
-        card.on('change', function (event) {
-            if (event.error) {
-                $('#card-errors').text(event.error.message);
-            } else {
-                $('#card-errors').text('');
-            }
-        });
-
-        // Form submission.
-        $('#payment-form').submit(function (e) {
-            e.preventDefault();
-
-            loading(true);
-
-            stripe.createToken(card).then(function (result) {
-                if (result.error) {
-                    // Inform the user if there was an error.
-                    $('#card-errors').text(result.error.message);
-
-                    loading(false);
+            // Handle real-time validation errors from the card Element.
+            card.on('change', function (event) {
+                if (event.error) {
+                    $('#card-errors').text(event.error.message);
                 } else {
-                    // Send the token to your server.
-                    $.ajax({
-                        method: 'POST',
-                        url: '/payment/createIntent',
-                        data: {
-                            wishCardId: $('#cardId').text(),
-                            agencyName: $('#agencyName').text(),
-                            userDonation: $('#user-donation').text().replace('$', '')
-                        },
-                        success: (response) => {
-                            console.log(response);
-                            payWithCard(stripe, card, response.clientSecret);
-                        },
-                        error: () => {
-                            console.error('Error:', error);
-                            showToast('An error has occured while processing payment');
-                            loading(false);
-                        },
-                    });
+                    $('#card-errors').text('');
                 }
             });
-        });
 
-        const payWithCard = function (stripe, card, clientSecret) {
-            loading(true);
-            stripe
-                .confirmCardPayment(clientSecret, {
-                    payment_method: {
-                        card,
-                    },
-                })
-                .then(function (result) {
+            // Form submission.
+            $('#payment-form').submit(function (e) {
+                e.preventDefault();
+
+                loading(true);
+
+                stripe.createToken(card).then(function (result) {
                     if (result.error) {
-                        showError(result.error.message);
+                        // Inform the user if there was an error.
+                        $('#card-errors').text(result.error.message);
+
+                        loading(false);
                     } else {
-                        orderComplete(result.paymentIntent.id);
+                        // Send the token to your server.
+                        $.ajax({
+                            method: 'POST',
+                            url: '/payment/createIntent',
+                            data: {
+                                wishCardId: $('#cardId').text(),
+                                agencyName: $('#agencyName').text(),
+                                userDonation: $('#user-donation').text().replace('$', '')
+                            },
+                            success: (response) => {
+                                console.log(response);
+                                payWithCard(stripe, card, response.clientSecret);
+                            },
+                            error: () => {
+                                console.error('Error:', error);
+                                showToast('An error has occured while processing payment');
+                                loading(false);
+                            },
+                        });
                     }
                 });
-        };
+            });
 
-        const loading = function (isLoading) {
-            if (isLoading) {
-                // Disable the button and show a spinner
+            const payWithCard = function (stripe, card, clientSecret) {
+                loading(true);
+                stripe
+                    .confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card,
+                        },
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            showError(result.error.message);
+                        } else {
+                            orderComplete(result.paymentIntent.id);
+                        }
+                    });
+            };
+
+            const loading = function (isLoading) {
+                if (isLoading) {
+                    // Disable the button and show a spinner
+                    $('#submit').attr('disabled', true);
+                    $('#spinner').removeClass('hidden');
+                    $('#button-text').addClass('hidden');
+                } else {
+                    $('#submit').attr('disabled', false);
+                    $('#spinner').addClass('hidden');
+                    $('#button-text').removeClass('hidden');
+                }
+            };
+
+            const orderComplete = function (paymentIntentId) {
+                loading(false);
+                $('.result-message').removeClass('hidden');
                 $('#submit').attr('disabled', true);
-                $('#spinner').removeClass('hidden');
-                $('#button-text').addClass('hidden');
-            } else {
-                $('#submit').attr('disabled', false);
-                $('#spinner').addClass('hidden');
-                $('#button-text').removeClass('hidden');
-            }
-        };
+                redirectAfterSuccessfullPayment();
+            };
 
-        const orderComplete = function (paymentIntentId) {
-            loading(false);
-            $('.result-message').removeClass('hidden');
-            $('#submit').attr('disabled', true);
-            redirectAfterSuccessfullPayment();
-        };
+            const showError = function (errorMsgText) {
+                loading(false);
 
-        const showError = function (errorMsgText) {
-            loading(false);
+                $('#card-errors').text(errorMsgText);
 
-            $('#card-errors').text(errorMsgText);
+                setTimeout(function () {
+                    $('#card-errors').text('');
+                }, 4000);
+            };
 
-            setTimeout(function () {
-                $('#card-errors').text('');
-            }, 4000);
-        };
-
-        const redirectAfterSuccessfullPayment = function () {
-            const wishCardId = $('#cardId');
-            const totalAmount = $('#total-cost');
-            window.location.replace(`/payment/success/${wishCardId.text()}&${totalAmount.text()}`);
-        }
+            const redirectAfterSuccessfullPayment = function () {
+                const wishCardId = $('#cardId');
+                const totalAmount = $('#total-cost');
+                window.location.replace(`/payment/success/${wishCardId.text()}&${totalAmount.text()}`);
+            };
+        })
 
     script( src=`https://www.paypal.com/sdk/js?client-id=${locals.env.paypal}&disable-funding=credit,card` )
     script.

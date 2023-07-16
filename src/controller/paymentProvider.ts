@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
-import paypal from 'paypal-rest-sdk';
+import PayPal from 'paypal-rest-sdk';
+import Stripe from 'stripe';
 
 import AgencyRepository from '../db/repository/AgencyRepository';
 import DonationRepository from '../db/repository/DonationRepository';
@@ -11,8 +12,6 @@ import Messaging from '../helper/messaging';
 import Utils from '../helper/utils';
 
 import BaseController from './basecontroller';
-
-const stripe = require('stripe')(config.STRIPE.SECRET);
 
 export default class PaymentProviderController extends BaseController {
 	private lastWishcardDonation: string;
@@ -25,13 +24,20 @@ export default class PaymentProviderController extends BaseController {
 
 	private agencyRepository: AgencyRepository;
 
+	private stripeClient: Stripe;
+
 	constructor() {
 		super();
 
-		paypal.configure({
+		PayPal.configure({
 			mode: config.NODE_ENV === 'development' ? 'sandbox' : 'live', // sandbox or live
 			client_id: config.PAYPAL.CLIENT_ID,
 			client_secret: config.PAYPAL.SECRET,
+		});
+
+		this.stripeClient = new Stripe(config.STRIPE.SECRET_KEY, {
+			apiVersion: '2022-11-15',
+			typescript: true,
 		});
 
 		this.wishCardRepository = new WishCardRepository();
@@ -119,7 +125,7 @@ export default class PaymentProviderController extends BaseController {
 				totalItemPrice += parseFloat(userDonation);
 			}
 
-			const paymentIntent = await stripe.paymentIntents.create({
+			const paymentIntent = await this.stripeClient.paymentIntents.create({
 				amount: Math.floor(totalItemPrice * PENNY),
 				currency: 'usd',
 				receipt_email: email,
@@ -128,6 +134,7 @@ export default class PaymentProviderController extends BaseController {
 					userId: res.locals.user._id.toString(),
 					agencyName,
 					userDonation,
+					amount: totalItemPrice,
 				},
 			});
 
@@ -140,15 +147,16 @@ export default class PaymentProviderController extends BaseController {
 	}
 
 	async handlePostWebhook(req: Request, res: Response, _next: NextFunction) {
-		const sig = req.headers['stripe-signature'];
+		const signature = req.headers['stripe-signature'];
 
 		// STRIPE WEBHOOK
-		if (sig) {
-			const endpointSecret = config.STRIPE.SECRET;
-			let event;
-
+		if (signature) {
 			try {
-				event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+				const event = this.stripeClient.webhooks.constructEvent(
+					req.rawBody,
+					signature,
+					config.STRIPE.SECRET_KEY,
+				);
 
 				if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
 					this.lastWishcardDonation = event.data.object.metadata.wishCardId;
@@ -157,7 +165,7 @@ export default class PaymentProviderController extends BaseController {
 						service: 'Stripe',
 						userId: event.data.object.metadata.userId,
 						wishCardId: event.data.object.metadata.wishCardId,
-						amount: event.data.object.amount / 100,
+						amount: event.data.object.amount,
 						userDonation: event.data.object.metadata.userDonation,
 						agencyName: event.data.object.metadata.agencyName,
 					});
@@ -169,14 +177,11 @@ export default class PaymentProviderController extends BaseController {
 
 		// PAYPAL WEBHOOK
 		if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
-			paypal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, response) => {
+			PayPal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, _response) => {
 				if (error) {
 					this.log.info(error);
 					throw error;
 				} else {
-					// needed to shut up lint
-					this.log.info(response);
-
 					const data = req.body.resource.purchase_units[0].reference_id.split('%');
 					const userId = data[0];
 					const wishCardId = data[1];

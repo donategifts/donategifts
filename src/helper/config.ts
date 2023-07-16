@@ -26,9 +26,8 @@ const envVariables = [
 	'G_CLIENT_ID',
 	'FB_APP_ID',
 	'SCRAPINGBEE_APIKEY',
-	'STRIPE_API',
-	'STRIPE_KEY',
-	'STRIPE_SECRET',
+	'STRIPE_PUBLISHABLE_KEY',
+	'STRIPE_SECRET_KEY',
 	'WISHCARD_LOCK_IN_MINUTES',
 	'PAYPAL_CLIENT_ID',
 	'PAYPAL_SECRET',
@@ -61,13 +60,12 @@ interface EnvVars {
 	G_CLIENT_ID: string | null;
 	FB_APP_ID: string | null;
 	SCRAPINGBEE_APIKEY: string | null;
-	STRIPE_API: string | null;
-	STRIPE_KEY: string | null;
-	STRIPE_SECRET: string | null;
+	STRIPE_PUBLISHABLE_KEY: string;
+	STRIPE_SECRET_KEY: string;
 	WISHCARD_LOCK_IN_MINUTES: number;
-	PAYPAL_CLIENT_ID: string | null;
-	PAYPAL_SECRET: string | null;
-	PAYPAL_WEBHOOK_ID: string | null;
+	PAYPAL_CLIENT_ID: string;
+	PAYPAL_SECRET: string;
+	PAYPAL_WEBHOOK_ID: string;
 	DISCORD_CLIENT_ID: string | null;
 	DISCORD_TOKEN: string | null;
 	DISCORD_STATUS_WEBHOOK_URL: string | null;
@@ -134,9 +132,8 @@ export default {
 	SCRAPINGBEE_APIKEY: envVars.SCRAPINGBEE_APIKEY,
 
 	STRIPE: {
-		API: envVars.STRIPE_API,
-		KEY: envVars.STRIPE_KEY,
-		SECRET: envVars.STRIPE_SECRET,
+		PUBLISHABLE_KEY: envVars.STRIPE_PUBLISHABLE_KEY,
+		SECRET_KEY: envVars.STRIPE_SECRET_KEY,
 	},
 
 	WISHCARD_LOCK_IN_MINUTES: envVars.WISHCARD_LOCK_IN_MINUTES,

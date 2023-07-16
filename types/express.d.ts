@@ -5,7 +5,7 @@ import User from '../src/db/models/User';
 
 declare module 'express-serve-static-core' {
 	interface Request {
-		rawBody: string;
+		rawBody: paypal.notification.webhookEvent.WebhookEvent;
 		file: Express.Multer.File & Express.MulterS3.File;
 	}
 

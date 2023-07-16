@@ -34,10 +34,8 @@ jobs:
           echo GOOGLE_CAPTCHA_KEY=${{ secrets.GOOGLE_CAPTCHA_KEY }} >> config-test.env
           echo G_CLIENT_ID=${{ secrets.G_CLIENT_ID }} >> config-test.env
           echo FB_APP_ID=${{ secrets.FB_APP_ID }} >> config-test.env
-          echo SCRAPINGBEE_APIKEY=${{ secrets.SCRAPINGBEE_APIKEY }} >> config-test.env
-          echo STRIPE_API=${{ secrets.STRIPE_API }} >> config-test.env
-          echo STRIPE_KEY=${{ secrets.STRIPE_KEY }} >> config-test.env
-          echo STRIPE_SECRET=${{ secrets.STRIPE_SECRET }} >> config-test.env
+          echo STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} >> config-test.env
+          echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> config-test.env
           echo WISHCARD_LOCK_IN_MINUTES=${{ secrets.WISHCARD_LOCK_IN_MINUTES }} >> config-test.env
           echo PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }} >> config-test.env
           echo PAYPAL_SECRET=${{ secrets.PAYPAL_SECRET }} >> config-test.env
