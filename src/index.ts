@@ -18,6 +18,10 @@ import config from './helper/config';
 import log from './helper/logger';
 import { routes } from './routes';
 
+if (config.NODE_ENV !== 'production') {
+	log.info(JSON.stringify(config, null, 2));
+}
+
 const limiter = new BaseController().limiter;
 
 const app = express();
