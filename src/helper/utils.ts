@@ -28,11 +28,7 @@ export default class Utils {
 		return roundTotalPrice;
 	}
 
-	static async validateReCaptchaToken(token) {
-		if (config.NODE_ENV !== 'production') {
-			return true;
-		}
-
+	static async validateReCaptchaToken(token: string) {
 		try {
 			const res = await axios({
 				method: 'GET',

@@ -50,14 +50,16 @@ export default class SignupController extends BaseController {
 	async handlePostSignup(req: Request, res: Response, _next: NextFunction) {
 		const { fName, lName, email, password, userRole, captchaToken } = req.body;
 
-		// validate captcha code. False if its invalid
-		const isCaptchaValid = await Utils.validateReCaptchaToken(captchaToken);
-		if (isCaptchaValid === false) {
-			return this.handleError(res, {
-				msg: 'Provided captcha token is not valid',
-				param: 'captchaToken',
-				location: 'body',
-			});
+		if (config.NODE_ENV === 'production') {
+			// validate captcha code. False if its invalid
+			const isCaptchaValid = await Utils.validateReCaptchaToken(captchaToken);
+			if (isCaptchaValid === false) {
+				return this.handleError(res, {
+					msg: 'Provided captcha token is not valid',
+					param: 'captchaToken',
+					location: 'body',
+				});
+			}
 		}
 
 		const candidate = await this.userRepository.getUserByEmail(email.toLowerCase());
