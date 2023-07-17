@@ -4,7 +4,8 @@ block title
     title Sign Up | Donate Gifts
 
 append head
-    script( src='https://www.google.com/recaptcha/api.js' async defer )
+    if locals.env.captcha
+        script( src='https://www.google.com/recaptcha/api.js' async defer )
 
 block content
     .signup-bg.d-flex.container-fluid.justify-content-center.py-5
@@ -78,13 +79,6 @@ block scripts
 
     script.
         $(document).ready(() => {
-            $('.signup').submit((e) => {
-                e.preventDefault();
-                $('#submit-btn').prop('disabled', true);
-                grecaptcha.execute();
-                return;
-            });
-
             $('#password-repeat').focusout((e) => {
                 const password = $('#password').val();
                 const passwordRepeat = $(e.currentTarget).val();
@@ -97,38 +91,86 @@ block scripts
                     }
                 }
             });
-
-            const confirmCaptchaSubmit = (response) => {
-                const captchaToken = response;
-                const fName = $('#fName').val();
-                const lName = $('#lName').val();
-                const email = $('#email').val();
-                const password = $('#password').val();
-                const passwordConfirm = $('#password-repeat').val();
-                const userRole = $("input[type='radio']:checked").val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/signup',
-                    data: {
-                        fName,
-                        lName,
-                        email,
-                        password,
-                        passwordConfirm,
-                        userRole,
-                        captchaToken,
-                    },
-                    success: function (response, textStatus, xhr) {
-                        $('#submit-btn').prop('disabled', false);
-                        location.assign(response.url);
-                    },
-                    error: function (response, textStatus, errorThrown) {
-                        $('#submit-btn').prop('disabled', false);
-                        showToast(response.responseJSON.error.msg);
-                        grecaptcha.reset();
-                    },
-                });
-            };
-
-            window.confirmCaptchaSubmit = confirmCaptchaSubmit;
         });
+
+    if locals.env.captcha
+        script.
+            $(document).ready(() => {
+                $('.signup').submit((event) => {
+                    event.preventDefault();
+                    $('#submit-btn').prop('disabled', true);
+                    grecaptcha.execute();
+                });
+
+                const confirmCaptchaSubmit = (response) => {
+                    const captchaToken = response;
+                    const fName = $('#fName').val();
+                    const lName = $('#lName').val();
+                    const email = $('#email').val();
+                    const password = $('#password').val();
+                    const passwordConfirm = $('#password-repeat').val();
+                    const userRole = $("input[type='radio']:checked").val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/signup',
+                        data: {
+                            fName,
+                            lName,
+                            email,
+                            password,
+                            passwordConfirm,
+                            userRole,
+                            captchaToken,
+                        },
+                        success: function (response, textStatus, xhr) {
+                            $('#submit-btn').prop('disabled', false);
+                            location.assign(response.url);
+                        },
+                        error: function (response, textStatus, errorThrown) {
+                            $('#submit-btn').prop('disabled', false);
+                            showToast(response.responseJSON.error.msg);
+                            grecaptcha.reset();
+                        },
+                    });
+                };
+
+                window.confirmCaptchaSubmit = confirmCaptchaSubmit;
+            });
+    else
+        script.
+            $(document).ready(() => {
+                $('.signup').submit((event) => {
+                    event.preventDefault();
+                    $('#submit-btn').prop('disabled', false);
+
+                    const captchaToken = '';
+                    const fName = $('#fName').val();
+                    const lName = $('#lName').val();
+                    const email = $('#email').val();
+                    const password = $('#password').val();
+                    const passwordConfirm = $('#password-repeat').val();
+                    const userRole = $("input[type='radio']:checked").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/signup',
+                        data: {
+                            fName,
+                            lName,
+                            email,
+                            password,
+                            passwordConfirm,
+                            userRole,
+                            captchaToken,
+                        },
+                        success: function (response, textStatus, xhr) {
+                            $('#submit-btn').prop('disabled', false);
+                            location.assign(response.url);
+                        },
+                        error: function (response, textStatus, errorThrown) {
+                            $('#submit-btn').prop('disabled', false);
+                            showToast(response.responseJSON.error.msg);
+                        },
+                    });
+                });
+            });

@@ -99,6 +99,7 @@ const app = express();
 		paypal: config.PAYPAL.CLIENT_ID,
 		facebook: config.FB_APP_ID,
 		google: config.G_CLIENT_ID,
+		captcha: config.GOOGLE_CAPTCHA_KEY,
 	};
 
 	app.use((req, res, next) => {
