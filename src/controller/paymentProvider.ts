@@ -217,7 +217,7 @@ export default class PaymentProviderController extends BaseController {
 				childName: wishCard?.childFirstName,
 			};
 
-			this.renderView(res, 'successPayment', {
+			this.renderView(res, 'payment/success', {
 				donationInformation,
 			});
 		} catch (error) {

@@ -1,4 +1,4 @@
-extends ../master
+extends ../../master
 
 block title
     title See Each Wish Card | Donate Gifts
@@ -111,7 +111,7 @@ block content
                 img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
             p#total-cost-hidden( hidden )= extendedPaymentInfo.totalItemCost
 block modal
-    include ../components/modal/checkoutHelperModals.pug
+    include ../../components/modal/checkoutHelperModals.pug
 
 block scripts
     script( src='https://js.stripe.com/v3/' )

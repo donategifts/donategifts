@@ -452,7 +452,7 @@ export default class WishCardController extends BaseController {
 				agency,
 			};
 
-			this.renderView(res, 'donate', {
+			this.renderView(res, 'wishcard/donate', {
 				wishcard: wishcard || [],
 				extendedPaymentInfo,
 				agency,
@@ -555,6 +555,7 @@ export default class WishCardController extends BaseController {
 		});
 	}
 
+	// TODO: is this still needed?
 	async handleGetChoose(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = res.locals;
@@ -571,7 +572,7 @@ export default class WishCardController extends BaseController {
 				params = { ...params, agency };
 			}
 
-			this.renderView(res, 'pages/chooseItem', params);
+			this.renderView(res, 'wishcard/guided', params);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

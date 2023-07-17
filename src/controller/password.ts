@@ -24,7 +24,7 @@ export default class PasswordController extends BaseController {
 	}
 
 	handleGetReset(_req: Request, res: Response, _next: NextFunction) {
-		this.renderView(res, 'resetPassword');
+		this.renderView(res, 'passwordreset');
 	}
 
 	async handlePostReset(req, res, _next) {
@@ -57,7 +57,7 @@ export default class PasswordController extends BaseController {
 
 			if (userObject) {
 				if (new Date(String(userObject.passwordResetTokenExpires)) > new Date()) {
-					this.renderView(res, 'resetPassword', {
+					this.renderView(res, 'passwordreset', {
 						token: req.params.token,
 					});
 				} else {
