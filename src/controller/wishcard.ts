@@ -125,7 +125,7 @@ export default class WishCardController extends BaseController {
 				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
 			}
 
-			this.renderView(res, 'wishCards', {
+			this.renderView(res, 'wishcard/search', {
 				wishcards: data,
 			});
 		} catch (error) {
@@ -260,7 +260,7 @@ export default class WishCardController extends BaseController {
 			const { agencyAddress } = agency;
 			const childBirthday = moment(wishcard?.childBirthday).format('YYYY-MM-DD');
 
-			this.renderView(res, 'wishcardEdit', { wishcard, agencyAddress, childBirthday });
+			this.renderView(res, 'wishcard/edit', { wishcard, agencyAddress, childBirthday });
 		} catch (error) {
 			this.handleError(res, error);
 		}
@@ -343,7 +343,7 @@ export default class WishCardController extends BaseController {
 			const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
 			const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
-			this.renderView(res, 'agencyWishCards', {
+			this.renderView(res, 'wishcard/agencycards', {
 				draftWishcards,
 				activeWishcards,
 				inactiveWishcards,
@@ -354,7 +354,7 @@ export default class WishCardController extends BaseController {
 	}
 
 	handleGetCreate(_req: Request, res: Response, _next: NextFunction) {
-		this.renderView(res, 'createWishcard');
+		this.renderView(res, 'wishcard/create');
 	}
 
 	async handlePostSearch(req: Request, res: Response, _next: NextFunction) {
@@ -414,7 +414,7 @@ export default class WishCardController extends BaseController {
 				);
 			}
 
-			this.renderView(res, 'wishCardFullPage', {
+			this.renderView(res, 'wishcard/single', {
 				wishcard: {
 					...wishcard,
 					age: wishcard?.childBirthday
@@ -452,7 +452,7 @@ export default class WishCardController extends BaseController {
 				agency,
 			};
 
-			this.renderView(res, 'donate', {
+			this.renderView(res, 'wishcard/donate', {
 				wishcard: wishcard || [],
 				extendedPaymentInfo,
 				agency,
@@ -555,6 +555,7 @@ export default class WishCardController extends BaseController {
 		});
 	}
 
+	// TODO: is this still needed?
 	async handleGetChoose(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = res.locals;
@@ -571,7 +572,7 @@ export default class WishCardController extends BaseController {
 				params = { ...params, agency };
 			}
 
-			this.renderView(res, 'pages/chooseItem', params);
+			this.renderView(res, 'wishcard/guided', params);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

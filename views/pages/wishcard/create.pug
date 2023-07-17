@@ -1,4 +1,4 @@
-extends ../master
+extends ../../master
 
 block title
     title Create a wish card | Donate Gifts
@@ -98,10 +98,10 @@ block content
                     button#submitInput.button.form-submit
                         span.button__text Submit
 block modal
-    include ../components/modal/formHelperModals.pug
+    include ../../components/modal/formHelperModals.pug
 
 block scripts
-    include ../mixins/agencyFetching.pug
+    include ../../mixins/agencyFetching.pug
     +agencyFetchingJS
 
     script.

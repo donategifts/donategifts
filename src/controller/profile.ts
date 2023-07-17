@@ -45,7 +45,7 @@ export default class ProfileController extends BaseController {
 
 				// If user hadn't filled out agency info, redirect them to form
 				if (!agency) {
-					return this.renderView(res, 'agency');
+					return this.renderView(res, 'signup/agencydata');
 				}
 
 				const wishCards = await this.wishCardRepository.getWishCardByAgencyId(agency._id);
@@ -58,7 +58,7 @@ export default class ProfileController extends BaseController {
 					(wishcard) => wishcard.status === 'donated',
 				);
 
-				this.renderView(res, 'profile', {
+				this.renderView(res, 'profile/overview', {
 					agency,
 					wishCardsLength,
 					draftWishcards,
@@ -66,7 +66,7 @@ export default class ProfileController extends BaseController {
 					inactiveWishcards,
 				});
 			} else {
-				this.renderView(res, 'profile');
+				this.renderView(res, 'profile/overview');
 			}
 		} catch (error) {
 			return this.handleError(res, error);
@@ -164,7 +164,7 @@ export default class ProfileController extends BaseController {
 				donations = await this.donationRepository.getDonationsByUser(user._id);
 			}
 
-			this.renderView(res, 'donationHistory', { donations });
+			this.renderView(res, 'profile/history', { donations });
 		} catch (error) {
 			this.handleError(res, error);
 		}
@@ -203,7 +203,7 @@ export default class ProfileController extends BaseController {
 
 				if (user.emailVerified) {
 					if (res.locals.user) {
-						return res.status(200).render('profile', {
+						return res.status(200).render('profile/overview', {
 							user: res.locals.user,
 							agency,
 							wishCards,
@@ -224,7 +224,7 @@ export default class ProfileController extends BaseController {
 				await this.userRepository.setUserEmailVerification(user._id.toString(), true);
 				user = await this.userRepository.getUserByObjectId(user._id.toString());
 
-				return this.renderView(res, 'profile', {
+				return this.renderView(res, 'profile/overview', {
 					user,
 					agency,
 					wishCards,

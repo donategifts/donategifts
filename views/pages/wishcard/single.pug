@@ -1,4 +1,4 @@
-extends ../master
+extends ../../master
 
 block title
     - var childName = `${wishcard.childFirstName}'s Wish Card Page | DonateGifts`
@@ -107,7 +107,7 @@ block content
                                                     i.far.fa-comment-dots
                                                     span.mx-2= message.message
 block modal
-    include ../components/modal/loginModal.pug
+    include ../../components/modal/loginModal.pug
 
 block scripts
     script.

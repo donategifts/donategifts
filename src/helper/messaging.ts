@@ -46,6 +46,12 @@ export default class Messaging {
 					encoding: 'utf-8',
 				},
 			),
+			verifyEmail: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/verifyEmail.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
 		};
 	}
 
@@ -247,7 +253,7 @@ export default class Messaging {
 	}
 
 	static sendVerificationEmail(to, hash) {
-		const body = this.templates.donorDonationReceipt
+		const body = this.templates.verifyEmail
 			.replace('%linkplaceholder%', `${config.BASE_URL}/profile/verify/${hash}`)
 			.replace('%headerPlaceHolder%', 'Verify Your Email Account')
 			.replace('%titlePlaceHolder%', 'Thank you for creating an account!')
@@ -268,7 +274,7 @@ export default class Messaging {
 	}
 
 	static sendPasswordResetMail(to, hash) {
-		const body = this.templates.donorDonationReceipt
+		const body = this.templates.emailTemplate
 			.replace('%linkplaceholder%', `${config.BASE_URL}/profile/password/reset/${hash}`)
 			.replace('%titlePlaceHolder%', 'Your password reset request')
 			.replace('%headerPlaceHolder%', '')

@@ -41,7 +41,7 @@ export default class AdminController extends BaseController {
 				wishCardsWithAgencyDetails.push(mergedObj);
 			}
 
-			this.renderView(res, 'adminWishCards', { wishCardsWithAgencyDetails });
+			this.renderView(res, 'admin/wishcards', { wishCardsWithAgencyDetails });
 		} catch (error) {
 			this.handleError(res, error);
 		}
@@ -84,7 +84,7 @@ export default class AdminController extends BaseController {
 			return this.handleError(res, 'AccountManager not found');
 		}
 
-		this.renderView(res, 'adminDonationDetails', {
+		this.renderView(res, 'admin/donationdetails', {
 			wishCard: donation.donationCard,
 			agency: donation.donationTo,
 			donation,
