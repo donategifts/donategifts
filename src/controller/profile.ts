@@ -45,7 +45,7 @@ export default class ProfileController extends BaseController {
 
 				// If user hadn't filled out agency info, redirect them to form
 				if (!agency) {
-					return this.renderView(res, 'agency');
+					return this.renderView(res, 'signup/agencydata');
 				}
 
 				const wishCards = await this.wishCardRepository.getWishCardByAgencyId(agency._id);

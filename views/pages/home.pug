@@ -124,25 +124,18 @@ block content
                 span.small-span
                     i.fa.fa-arrow-circle-left.fa-2x
 
-    .info-section.py-3.my-4
-        .container.pb-4.mb-3
-            h1.mb-3 We Need Your Help
-            .row
-                .col-lg-6.col-12.p-5.d-flex.justify-content-end
-                    img.img-fluid( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
-                .col-lg-6.col-12.p-5.d-flex.flex-column
-                    p.pb-4
-                        | Over 500,000 kids spend time in foster care each year and
-                        | over 4.2 million youth are homeless in the United States.
-                        | For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations.
-                        | With your
-                        | generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By
-                        | creating this platform, we wish to provide effortless and convenient ways to share the joy of the
-                        | holidays.
-                        br
-                        br
-                        | Your gifts make it possible to bring happiness to the kids.
-                    a.button-primary.d-flex.justify-content-center.w-50( href='/contact' ) Contact DonateGifts
+    .info-section.my-4
+        .container.mb-3
+            h1.mb-3.text-center We Need Your Help
+            .d-md-flex
+                .col-md-6.p-5
+                    img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
+                .col-md-6.p-5
+                    p.lh-lg Over 500,000 kids spend time in foster care each year and over 4.2 million youth are homeless in the United States. For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations. With your generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By creating this platform, we wish to provide effortless and convenient ways to share the joy of the holidays.
+                    p.lh-lg Your gifts make it possible to bring happiness to the kids.
+                    .col-md-6.text-center.text-md-start
+                        a.btn.btn-lg.btn-primary( href='/contact' ) Contact DonateGifts
+
 block modal
     include ../components/modal/wishcardDonationModal.pug
     include ../components/modal/loginModal.pug

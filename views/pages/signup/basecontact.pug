@@ -1,4 +1,4 @@
-extends ../master
+extends ../../master
 
 block title
     title Sign Up | Donate Gifts
@@ -70,10 +70,10 @@ block content
                     button#submit-btn.form-btn.quick-font( type='submit' ) Sign Up
 
 block modal
-    include ../components/modal/signupModal.pug
+    include ../../components/modal/signupModal.pug
 
 block scripts
-    include ../mixins/formvalidation
+    include ../../mixins/formvalidation
     +passwordToggleJS
 
     script.

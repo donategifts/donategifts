@@ -1,4 +1,4 @@
-extends ../master
+extends ../../master
 
 block title
     title Wish Cards
@@ -107,13 +107,13 @@ block content
                 button#load-more.quick-font.wishcard__link--white.bdr-2( type='button' style='width: auto' ) Load more
 
 block modal
-    include ../components/modal/loginModal.pug
-    include ../components/modal/wishcardDonationModal.pug
+    include ../../components/modal/loginModal.pug
+    include ../../components/modal/wishcardDonationModal.pug
 
 append scripts
-    include ../mixins/loginToast.pug
-    include ../mixins/wishcards/cardLoader.pug
-    include ../mixins/wishcards/donateModal.pug
+    include ../../mixins/loginToast.pug
+    include ../../mixins/wishcards/cardLoader.pug
+    include ../../mixins/wishcards/donateModal.pug
 
     if !user
         +loginToastJS

@@ -38,12 +38,12 @@ export default class SignupController extends BaseController {
 			const { userRole } = res.locals.user;
 
 			if (userRole === 'partner') {
-				return this.renderView(res, 'agency');
+				return this.renderView(res, 'signup/agencydata');
 			}
 
 			this.renderView(res, 'profile');
 		} else {
-			this.renderView(res, 'signup');
+			this.renderView(res, 'signup/basecontact');
 		}
 	}
 
@@ -104,7 +104,7 @@ export default class SignupController extends BaseController {
 	}
 
 	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
-		this.renderView(res, 'agency');
+		this.renderView(res, 'signup/agencydata');
 	}
 
 	async handlePostAgency(req: Request, res: Response, _next: NextFunction) {
