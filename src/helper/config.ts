@@ -78,16 +78,17 @@ const envVars = {} as EnvVars;
 
 // set them to null if they're empty
 for (const variable of envVariables) {
-	if (!process.env[variable] || process.env[variable] === '') {
+	const currentEnvVar = process.env[variable];
+	if (!currentEnvVar || currentEnvVar === '') {
 		envVars[variable] = null;
-	} else if (process.env[variable] === 'true') {
+	} else if (currentEnvVar === 'true') {
 		envVars[variable] = true;
-	} else if (process.env[variable] === 'false') {
+	} else if (currentEnvVar === 'false') {
 		envVars[variable] = false;
-	} else if (parseInt(process.env[variable] as string, 10)) {
-		envVars[variable] = parseInt(process.env[variable] as string, 10);
+	} else if (!isNaN(currentEnvVar as any)) {
+		envVars[variable] = parseInt(currentEnvVar as string, 10);
 	} else {
-		envVars[variable] = process.env[variable];
+		envVars[variable] = currentEnvVar;
 	}
 }
 
