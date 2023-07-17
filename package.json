@@ -51,7 +51,6 @@
 		"express-validator": "7.0.1",
 		"google-auth-library": "8.9.0",
 		"jsonwebtoken": "9.0.1",
-		"lusca": "1.7.0",
 		"moment": "2.29.4",
 		"mongoose": "6.8.1",
 		"multer": "1.4.5-lts.1",
