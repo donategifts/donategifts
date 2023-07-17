@@ -10,7 +10,10 @@ export default class DGBot {
 
 	private commandFiles: string[] = [];
 
-	constructor(private readonly token: string, private readonly clientId: string) {
+	constructor(
+		private readonly token: string,
+		private readonly clientId: string,
+	) {
 		this.getCommands();
 	}
 
