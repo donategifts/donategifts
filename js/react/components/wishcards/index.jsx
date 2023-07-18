@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import LoadingCard from '../shared/LoadingCard.jsx';
 
@@ -10,37 +11,42 @@ function WishCards({ wishCards }) {
 	useEffect(() => {
 		setCards(
 			wishCards.map((wishCard) => (
-				<div className="col-12 col-md-4" key={wishCard._id}>
-					<div className="card border-0 shadow my-3">
-						<img
-							className="card-img-top img-fluid rounded-0 rounded-top-3"
-							src={wishCard.wishCardImage}
-							alt={wishCard.wishItemName}
-							loading="lazy"
-						/>
-						<div className="card-body bg-cream ounded-0 rounded-bottom-3">
-							<h5 className="card-title text-center crayon-font">
-								My name is {wishCard.childFirstName}
-							</h5>
-							<div className="card-text">
-								<p>Wish: {wishCard.wishItemName}</p>
-								<p>Item Price: ${wishCard.wishItemPrice}</p>
-								<p>Interest: {wishCard.childInterest}</p>
-							</div>
-							<div className="d-md-flex">
-								<button className="btn btn-primary col-12 mb-2 mb-md-0 col-md-6 me-md-1">
-									View More
+				<div className="card border-0 shadow my-3" key={wishCard._id}>
+					<img
+						className="card-img-top img-fluid rounded-0 rounded-top-3"
+						src={wishCard.wishCardImage}
+						alt={wishCard.wishItemName}
+						loading="eager"
+					/>
+					<div className="card-body bg-cream ounded-0 rounded-bottom-3">
+						<h5 className="card-title text-center crayon-font">
+							My name is {wishCard.childFirstName}
+						</h5>
+						<div className="card-text">
+							<p>Wish: {wishCard.wishItemName}</p>
+							<p>Item Price: ${wishCard.wishItemPrice}</p>
+							<p>Interest: {wishCard.childInterest}</p>
+						</div>
+						<div className="d-md-flex">
+							<a
+								className="btn btn-primary col-12 mb-2 mb-md-0 col-md-6 me-md-1"
+								href={`/wishcards/single/${wishCard._id}`}
+							>
+								View More
+							</a>
+							{wishCard.status === 'donated' ? (
+								<button className="btn btn-dark disabled col-12 col-md-6 ms-md-1">
+									Donated
 								</button>
-								{wishCard.status === 'donated' ? (
-									<button className="btn btn-dark disabled col-12 col-md-6 ms-md-1">
-										Donated
-									</button>
-								) : (
-									<button className="btn btn-dark col-12 col-md-6 ms-md-1">
-										Donate
-									</button>
-								)}
-							</div>
+							) : (
+								// TODO: check for user and show login modal if not logged in
+								<a
+									className="btn btn-dark col-12 col-md-6 ms-md-1"
+									href={`/wishcards/donate/${wishCard._id}`}
+								>
+									Donate
+								</a>
+							)}
 						</div>
 					</div>
 				</div>
@@ -61,9 +67,9 @@ function WishCards({ wishCards }) {
 					))}
 				</div>
 			)}
-			<div className="d-md-flex flex-wrap justify-content-center align-items-center">
-				{!isLoading && cards.map((card) => card)}
-			</div>
+			<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
+				<Masonry gutter="1rem">{!isLoading && cards.map((card) => card)}</Masonry>
+			</ResponsiveMasonry>
 		</div>
 	);
 }
