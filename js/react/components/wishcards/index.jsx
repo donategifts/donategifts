@@ -1,14 +1,38 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-function Wishcards({ _wishcards }) {}
+import LoadingCard from '../shared/LoadingCard.jsx';
 
-Wishcards.propTypes = {
-	wishcards: PropTypes.arrayOf(
+function WishCards(props) {
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		(async () => {
+			console.log(props.wishCards.length);
+		})();
+	}, []);
+
+	return (
+		<div className="container">
+			{isLoading && (
+				<div className="d-md-flex flex-wrap justify-content-center align-items-center">
+					{new Array(6).fill(0).map((_, index) => (
+						<LoadingCard key={index} enableButtons={true} />
+					))}
+				</div>
+			)}
+			<></>
+		</div>
+	);
+}
+
+WishCards.propTypes = {
+	wishCards: PropTypes.arrayOf(
 		PropTypes.shape({
 			_id: PropTypes.string.isRequired,
 			childFirstName: PropTypes.string.isRequired,
 			childLastName: PropTypes.string.isRequired,
-			childBirthday: PropTypes.instanceOf(Date).isRequired,
+			childBirthday: PropTypes.instanceOf(Date),
 			childInterest: PropTypes.string.isRequired,
 			wishItemName: PropTypes.string.isRequired,
 			wishItemPrice: PropTypes.number.isRequired,
@@ -36,4 +60,4 @@ Wishcards.propTypes = {
 	),
 };
 
-export default Wishcards;
+export default WishCards;
