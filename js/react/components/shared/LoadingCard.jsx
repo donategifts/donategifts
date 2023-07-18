@@ -28,7 +28,7 @@ export default function LoadingCard({ enableButtons = false }) {
 				{enableButtons && (
 					<div className="d-md-flex">
 						<button className="btn btn-primary disabled placeholder col-12 mb-2 mb-md-0 col-md-6 me-md-1"></button>
-						<button className="btn btn-secondary disabled placeholder col-12 col-md-6 ms-md-1"></button>
+						<button className="btn btn-dark bg-dark placeholder col-12 col-md-6 ms-md-1"></button>
 					</div>
 				)}
 			</div>
