@@ -95,7 +95,7 @@ WishCards.propTypes = {
 			}),
 			isLockedBy: PropTypes.string,
 			isLockedUntil: PropTypes.string,
-			approvedByAdmin: PropTypes.boolean,
+			approvedByAdmin: PropTypes.bool,
 			status: PropTypes.string.isRequired,
 			belongsTo: PropTypes.string.isRequired,
 		}),
