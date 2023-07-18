@@ -16,7 +16,7 @@ export default function LoadingCard({ enableButtons = false }) {
 				<title>Placeholder</title>
 				<rect width="100%" height="100%" fill="#868e96"></rect>
 			</svg>
-			<div className="card-body">
+			<div className="card-body bg-cream">
 				<h5 className="card-title text-center placeholder-glow">
 					<span className="placeholder col-8"></span>
 				</h5>

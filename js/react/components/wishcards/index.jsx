@@ -4,53 +4,67 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import LoadingCard from '../shared/LoadingCard.jsx';
 
-function WishCards({ wishCards }) {
+function WishCards({ wishCards, user }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cards, setCards] = useState([]);
 
 	useEffect(() => {
 		setCards(
-			wishCards.map((wishCard) => (
-				<div className="card border-0 shadow my-3" key={wishCard._id}>
-					<img
-						className="card-img-top img-fluid rounded-0 rounded-top-3"
-						src={wishCard.wishCardImage}
-						alt={wishCard.wishItemName}
-						loading="eager"
-					/>
-					<div className="card-body bg-cream ounded-0 rounded-bottom-3">
-						<h5 className="card-title text-center crayon-font">
-							My name is {wishCard.childFirstName}
-						</h5>
-						<div className="card-text">
-							<p>Wish: {wishCard.wishItemName}</p>
-							<p>Item Price: ${wishCard.wishItemPrice}</p>
-							<p>Interest: {wishCard.childInterest}</p>
-						</div>
-						<div className="d-md-flex">
-							<a
-								className="btn btn-primary col-12 mb-2 mb-md-0 col-md-6 me-md-1"
-								href={`/wishcards/single/${wishCard._id}`}
-							>
-								View More
-							</a>
-							{wishCard.status === 'donated' ? (
-								<button className="btn btn-dark disabled col-12 col-md-6 ms-md-1">
-									Donated
-								</button>
-							) : (
-								// TODO: check for user and show login modal if not logged in
+			wishCards.map((wishCard) => {
+				let attributes = {};
+
+				if (!user._id) {
+					attributes = {
+						'data-bs-toggle': 'modal',
+						'data-bs-target': '#loginModalCenter',
+					};
+				} else {
+					attributes = {
+						href: `/wishcards/donate/${wishCard._id}`,
+					};
+				}
+
+				return (
+					<div className="card border-0 shadow my-3" key={wishCard._id}>
+						<img
+							className="card-img-top img-fluid rounded-0 rounded-top-3"
+							src={wishCard.wishCardImage}
+							alt={wishCard.wishItemName}
+							loading="eager"
+						/>
+						<div className="card-body bg-cream ounded-0 rounded-bottom-3">
+							<h5 className="card-title text-center crayon-font">
+								My name is {wishCard.childFirstName}
+							</h5>
+							<div className="card-text">
+								<p>Wish: {wishCard.wishItemName}</p>
+								<p>Item Price: ${wishCard.wishItemPrice}</p>
+								<p>Interest: {wishCard.childInterest}</p>
+							</div>
+							<div className="d-md-flex">
 								<a
-									className="btn btn-dark col-12 col-md-6 ms-md-1"
-									href={`/wishcards/donate/${wishCard._id}`}
+									className="btn btn-primary col-12 mb-2 mb-md-0 col-md-6 me-md-1"
+									href={`/wishcards/single/${wishCard._id}`}
 								>
-									Donate
+									View More
 								</a>
-							)}
+								{wishCard.status === 'donated' ? (
+									<button className="btn btn-dark disabled col-12 col-md-6 ms-md-1">
+										Donated
+									</button>
+								) : (
+									<a
+										className="btn btn-dark col-12 col-md-6 ms-md-1"
+										{...attributes}
+									>
+										Donate
+									</a>
+								)}
+							</div>
 						</div>
 					</div>
-				</div>
-			)),
+				);
+			}),
 		);
 
 		setTimeout(() => {
@@ -67,14 +81,19 @@ function WishCards({ wishCards }) {
 					))}
 				</div>
 			)}
-			<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
-				<Masonry gutter="1rem">{!isLoading && cards.map((card) => card)}</Masonry>
-			</ResponsiveMasonry>
+			{!isLoading && (
+				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
+					<Masonry gutter="1rem">{cards.map((card) => card)}</Masonry>
+				</ResponsiveMasonry>
+			)}
 		</div>
 	);
 }
 
 WishCards.propTypes = {
+	user: PropTypes.shape({
+		_id: PropTypes.string,
+	}),
 	wishCards: PropTypes.arrayOf(
 		PropTypes.shape({
 			_id: PropTypes.string.isRequired,

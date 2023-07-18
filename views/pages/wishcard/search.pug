@@ -15,6 +15,7 @@ append scripts
                 React.createElement(
                     WishCards,
                     {
+                        user: !{user ? JSON.stringify(user) : JSON.stringify({})},
                         wishCards: !{JSON.stringify(wishcards)},
                     }
                 )
