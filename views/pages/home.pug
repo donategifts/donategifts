@@ -23,11 +23,8 @@ block content
                     | Send Gifts to
                     |
                     span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
-                h4.hide Every child should feel valued and loved
-                h4.m-mobile
-                    | Donate holiday gifts and school supplies to kids in need
-                a.btn-white-navy-lg( href='/howto' ) How It Works
-                a.btn-orange-navy-lg( href='/wishcards' ) See Wish Cards
+                a.btn.btn-lg.btn-light.mx-1.px-4.mb-3.mb-md-0( href='/howto' ) How It Works
+                a.btn.btn-lg.btn-secondary.mx-1( href='/wishcards' ) See Wish Cards
 
     include ../components/homeSampleCards.pug
 
@@ -261,17 +258,6 @@ block scripts
                         .children()
                         .last()
                         .remove();
-                }
-            });
-        });
-
-    script.
-        $(document).ready( () => {
-            $.ajax({
-                type: 'GET',
-                url: '/api/wishcards/random',
-                success: (html) => {
-                    $('.wishcards').replaceWith(html);
                 }
             });
         });

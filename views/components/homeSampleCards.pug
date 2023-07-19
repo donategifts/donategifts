@@ -1,25 +1,26 @@
 mixin carouselInnerPart(increment)
     .carousel-inner
         - var i = 0;
-        while i < wishcards.length
+        while i < wishCards.length
             - var activeClass = i == 0 ? 'active' : ''
             .carousel-item( class=activeClass data-bs-interval="20000" )
                 .row.justify-content-center
                     - var j = i;
                     while j < (i + increment)
+                        - var currentCard = wishCards[j];
                         .col-lg-4.col-xs-12.p-4
                             #card-fix.card.border-0.rounded-4.d-flex.shadow
-                                img.img-fluid.rounded-0.rounded-top-4.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
+                                img.img-fluid.rounded-0.rounded-top-4.card-img-top( src=currentCard.wishCardImage alt='Card image' )
                                 .card-body
                                     -
-                                        var title = 'My name is ' + wishcards[j].childFirstName;
-                                        var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
-                                            ? wishcards[j].wishItemName.substring(0, 23) + "..."
-                                            : wishcards[j].wishItemName);
-                                        var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
-                                        var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
-                                            ? wishcards[j].childInterest.substring(0, 23) + "..."
-                                            : wishcards[j].childInterest);
+                                        var title = 'My name is ' + currentCard.childFirstName;
+                                        var wish = 'Wish: ' + (currentCard.wishItemName.length > 24
+                                            ? currentCard.wishItemName.substring(0, 23) + "..."
+                                            : currentCard.wishItemName);
+                                        var itemPrice = 'Item Price: $' + currentCard.wishItemPrice;
+                                        var interest = 'Interest: ' + (currentCard.childInterest.length > 24
+                                            ? currentCard.childInterest.substring(0, 23) + "..."
+                                            : currentCard.childInterest);
 
                                     h3.card-title.text-center.crayon-font= title
                                     p
@@ -30,39 +31,38 @@ mixin carouselInnerPart(increment)
                                         span.font-weight-bold= interest
                                     .d-md-flex.justify-content-between
                                         .col-12.col-md-5.mb-2.mb-md-0
-                                            a.btn.btn-lg.btn-primary.w-100( href='/wishcards/single/' + wishcards[j]._id ) View More
+                                            a.btn.btn-lg.btn-primary.w-100( href='/wishcards/single/' + currentCard._id ) View More
                                         .col-12.col-md-5
-                                            if wishcards[j].status === 'donated'
+                                            if currentCard.status === 'donated'
                                                 button.btn.btn-lg.btn-dark.w-100.disabled( type='button' disabled ) Donated
                                             else
                                                 if user
-                                                    a( href='wishcards/donate/' + wishcards[j]._id )
+                                                    a( href='wishcards/donate/' + currentCard._id )
                                                         button.btn.btn-lg.btn-dark.w-100( type='button' ) Donate Gift
                                                 else
                                                     button.btn.btn-lg.btn-dark.w-100( type='button' data-bs-toggle='modal' data-bs-target='#loginModalCenter' ) Donate Gift
                         - j++;
             - i += increment;
 
-.wishcards
-    h1.mt-4 Become Our Secret Santa
-    .wishcards-container.mx-auto
+.container
+    .display-5.dk-cool-crayon.text-center.text-primary Become Our Secret Santa
 
-        .d-block.d-lg-none
-            #mobile-carousel.carousel.slide( data-bs-ride='carousel' )
-                +carouselInnerPart(1)
+    .d-block.d-lg-none
+        .carousel.slide( data-bs-ride='carousel' )
+            +carouselInnerPart(1)
 
-        .d-none.d-lg-flex.align-items-center
-            button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
-                data-bs-target='#sample-cards-carousel'
-                data-bs-slide='prev'
-            )
-                .fa-solid.fa-chevron-left.fa-2xl.text-dark
+    .d-none.d-lg-flex.align-items-center
+        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+            data-bs-target='#sample-cards-carousel'
+            data-bs-slide='prev'
+        )
+            .fa-solid.fa-chevron-left.fa-2xl.text-dark
 
-            #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
-                +carouselInnerPart(3)
+        #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
+            +carouselInnerPart(3)
 
-            button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
-                data-bs-target='#sample-cards-carousel'
-                data-bs-slide='next'
-            )
-                .fa-solid.fa-chevron-right.fa-2xl.text-dark
+        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+            data-bs-target='#sample-cards-carousel'
+            data-bs-slide='next'
+        )
+            .fa-solid.fa-chevron-right.fa-2xl.text-dark

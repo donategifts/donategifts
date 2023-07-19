@@ -1,0 +1,11 @@
+.navbar-brand {
+	img {
+		width: 80px;
+	}
+}
+
+.nav-link {
+	&:hover {
+		color: $secondary;
+	}
+}
