@@ -103,6 +103,7 @@
 		"pug-lint": "2.7.0",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-responsive-masonry": "^2.1.7",
 		"rimraf": "5.0.1",
 		"sass": "1.63.6",
 		"stylelint": "^15.10.1",

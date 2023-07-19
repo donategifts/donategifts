@@ -1,6 +1,7 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 function Community(props) {
 	const { user, _csrf } = props;
@@ -116,10 +117,13 @@ function Community(props) {
 		<>
 			{user?.userRole === 'partner' && createPost()}
 			<div className="container">
-				<div className="row m-0">
-					{posts.map((post) => (
-						<div className="col-md-6" key={post._id}>
-							<div className="card shadow rounded-3 my-3 border-0 quick-font">
+				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
+					<Masonry gutter="1rem">
+						{posts.map((post) => (
+							<div
+								className="card shadow rounded-3 my-3 border-0 quick-font"
+								key={post._id}
+							>
 								<div className="card-header p-4 bg-white border-0">
 									<div className="text-center">
 										{post.belongsTo?.agencyProfileImage && (
@@ -151,9 +155,9 @@ function Community(props) {
 									)}
 								</div>
 							</div>
-						</div>
-					))}
-				</div>
+						))}
+					</Masonry>
+				</ResponsiveMasonry>
 			</div>
 		</>
 	);
