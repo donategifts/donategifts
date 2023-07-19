@@ -464,31 +464,11 @@ export default class WishCardController extends BaseController {
 
 	async handleGetRandom(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			let wishcards = await this.wishCardRepository.getWishCardsByStatus('published');
-
-			if (!wishcards || wishcards.length < 6) {
-				const donatedWishCards = await this.wishCardRepository.getWishCardsByStatus(
-					'donated',
-				);
-
-				wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length));
-			} else {
-				wishcards.sort(() => Math.random() - 0.5);
-
-				const requiredLength = 3 * Math.ceil(wishcards.length / 3);
-				const rem = requiredLength - wishcards.length;
-
-				if (rem !== 0 && wishcards.length > 3) {
-					for (let j = 0; j < rem; j++) {
-						wishcards.push(wishcards[j]);
-					}
-				}
-			}
+			const wishcards = await this.wishCardRepository.getRandom('published', 6);
 
 			res.render('components/homeSampleCards', { wishcards }, (error, html) => {
 				if (error) {
-					this.log.error(error);
-					res.status(400).json({ success: false, error });
+					throw error;
 				} else {
 					res.status(200).send(html);
 				}

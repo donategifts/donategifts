@@ -33,7 +33,7 @@ const scss = (done) =>
 		.pipe(concat('app.min.css'))
 		.pipe(
 			sass({
-				includePaths: ['./design/scss/**/*.scss', 'node_modules/bootstrap/scss/**/*.scss'],
+				includePaths: ['./design/scss/style.scss'],
 				outputStyle: 'compressed',
 			}),
 		)

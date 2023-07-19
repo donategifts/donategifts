@@ -25,7 +25,7 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div className="card border-0 shadow my-3" key={wishCard._id}>
+					<div className="card border-0 shadow" key={wishCard._id}>
 						<img
 							className="card-img-top img-fluid rounded-0 rounded-top-3"
 							src={wishCard.wishCardImage}
@@ -41,20 +41,20 @@ function WishCards({ wishCards, user }) {
 								<p>Item Price: ${wishCard.wishItemPrice}</p>
 								<p>Interest: {wishCard.childInterest}</p>
 							</div>
-							<div className="d-md-flex">
+							<div className="d-md-flex justify-content-between">
 								<a
-									className="btn btn-primary col-12 mb-2 mb-md-0 col-md-6 me-md-1"
+									className="btn btn-lg btn-primary col-12 mb-2 mb-md-0 col-md-5"
 									href={`/wishcards/single/${wishCard._id}`}
 								>
 									View More
 								</a>
 								{wishCard.status === 'donated' ? (
-									<button className="btn btn-dark disabled col-12 col-md-6 ms-md-1">
+									<button className="btn btn-lg btn-dark disabled col-12 col-md-5">
 										Donated
 									</button>
 								) : (
 									<a
-										className="btn btn-dark col-12 col-md-6 ms-md-1"
+										className="btn btn-lg btn-dark col-12 col-md-6"
 										{...attributes}
 									>
 										Donate
@@ -83,7 +83,7 @@ function WishCards({ wishCards, user }) {
 			)}
 			{!isLoading && (
 				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
-					<Masonry gutter="1rem">{cards.map((card) => card)}</Masonry>
+					<Masonry gutter="2rem">{cards.map((card) => card)}</Masonry>
 				</ResponsiveMasonry>
 			)}
 		</div>

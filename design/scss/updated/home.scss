@@ -1,9 +1,69 @@
-.info-section {
-	h1 {
-		@include font-styling($font-heading, 2.5rem, $primary, $fw-medium);
+.dk-cool-crayon {
+	font-family: DkCoolCrayon, sans-serif;
+}
+
+.hero {
+	background: url('/svg/dg-2022-bg-01.svg') center center;
+	min-height: 90vh;
+	height: 100px;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+#card-fix {
+	&:hover {
+		cursor: pointer;
+		transform: translateY(-2px);
+		box-shadow: 0 1.2rem 1.5rem #0009;
+	}
+}
+
+#status-section {
+	background-image: url('/svg/paper-bg-2.svg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	min-height: 30rem;
+	width: 100%;
+	font-family: DkCoolCrayon, sans-serif;
+}
+
+.small3 {
+	overflow: hidden;
+	position: relative;
+
+	.small-ul {
+		display: flex;
+		top: 0;
+
+		li {
+			list-style: none;
+			margin-left: 6%;
+
+			img {
+				max-width: 200px;
+				height: 160px;
+				width: auto;
+			}
+		}
 	}
 
-	p {
-		@include font-styling($font-body, 1em, $primary-dark, $fw-normal);
+	.small-span {
+		position: absolute;
+		top: calc(50% - 20px);
+		opacity: 0.6;
+		cursor: pointer;
+		color: $white;
+
+		&:hover {
+			opacity: 0.4;
+		}
+
+		&:first-of-type {
+			right: 10px;
+		}
+
+		&:last-of-type {
+			left: 10px;
+		}
 	}
 }

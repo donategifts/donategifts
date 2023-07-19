@@ -26,8 +26,6 @@ router.get(
 	wishCardController.handleGetDonate,
 );
 
-router.get('/get/random', wishCardController.handleGetRandom);
-
 router.post(
 	'/message',
 	Permissions.checkUserVerification,

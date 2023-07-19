@@ -16,7 +16,7 @@ block external
 block content
     #fb-root
 
-    #home-bg.hero.container-fluid.d-flex.justify-content-center.align-items-center
+    .hero.container-fluid.d-flex.justify-content-center.align-items-center
         .row
             .col-12
                 h1
@@ -31,48 +31,49 @@ block content
 
     include ../components/homeSampleCards.pug
 
-    .status-section.container-fluid.justify-content-center
-        .status-info.row-auto
-            .col-md
-                .circle.text-center
-                    p.status
-                        img.wreath3( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
-                        if undonatedCards === 1 || undonatedCards === 0
-                            span.status-numbers= undonatedCards
-                            span.status-text
-                                | child
-                                | awaiting
-                                br
-                                | your donation
-                        else
-                            span.status-numbers= undonatedCards
-                            span.status-text
-                                | children
-                                | awaiting
-                                br
-                                | your donation
-            .col-md
-                .circle.text-center
-                    p.status
-                        img.wreath2( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
-                        span.status-numbers= donatedCards
-                        span.status-text
-                            | children
-                            | received
-                            br
-                            | their gifts!
-            .col-md
-                .circle.text-center
-                    p.status
-                        img.wreath3( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
-                        span.status-numbers= verifiedAgencies
-                        span.status-text
-                            | agencies
-                            | partnered
-                            br
-                            | with DonateGifts
-    .partners-container.mb-5.mt-5
-        h1.mt-3 Our Partner Agencies
+    #status-section.container-fluid.d-md-flex.justify-content-center.align-items-center
+        .col-md
+            .text-center
+                .status
+                    img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
+                .display-2.text-danger= undonatedCards
+                if undonatedCards < 2
+                    .fs-6.text-primary
+                        = undonatedCards > 0 ? 'child' : 'children '
+                        | awaiting
+                        br
+                        | your donation
+                else
+                    .fs-6.text-primary
+                        | children
+                        | awaiting
+                        br
+                        | your donation
+
+        .col-md
+            .text-center
+                .status
+                    img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
+                .display-2.text-danger= donatedCards
+                .fs-6.text-primary
+                    | children
+                    | received
+                    br
+                    | their gifts!
+
+        .col-md
+            .text-center
+                .status
+                    img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
+                .display-2.text-danger= verifiedAgencies
+                .fs-6.text-primary
+                    | agencies
+                    | partnered
+                    br
+                    | with DonateGifts
+
+    .my-5
+        .dk-cool-crayon.text-primary.display-5.text-center.mb-3 Our Partner Agencies
         .container-fluid.pb-4
             .small3
                 ul.small-ul.px-0( data-small3='' )
@@ -119,14 +120,14 @@ block content
                     li
                         a( href='https://www.nyap.org/' target='_blank' )
                             img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
-                span.small-span
+                span.small-span.text-dark
                     i.fa.fa-arrow-circle-right.fa-2x
-                span.small-span
+                span.small-span.text-dark
                     i.fa.fa-arrow-circle-left.fa-2x
 
-    .info-section.my-4
-        .container.mb-3
-            h1.mb-3.text-center We Need Your Help
+    .my-4
+        .container
+            .dk-cool-crayon.text-primary.display-5.mb-3.text-center We Need Your Help
             .d-md-flex
                 .col-md-6.p-5
                     img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
@@ -268,13 +269,10 @@ block scripts
         $(document).ready( () => {
             $.ajax({
                 type: 'GET',
-                url: '/wishcards/get/random',
+                url: '/api/wishcards/random',
                 success: (html) => {
                     $('.wishcards').replaceWith(html);
-                },
-                error: (_) => {
-                    //- logged server side
-                },
+                }
             });
         });
 

@@ -3,49 +3,43 @@ mixin carouselInnerPart(increment)
         - var i = 0;
         while i < wishcards.length
             - var activeClass = i == 0 ? 'active' : ''
-            .carousel-item( class=activeClass )
+            .carousel-item( class=activeClass data-bs-interval="20000" )
                 .row.justify-content-center
                     - var j = i;
                     while j < (i + increment)
                         .col-lg-4.col-xs-12.p-4
-                            #card-fix.card.h-100
-                                .view.overlay
-                                    img#img-fix.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
-                                    a( href='#' )
-                                        .mask.rgba-white-slight
+                            #card-fix.card.border-0.rounded-4.d-flex.shadow
+                                img.img-fluid.rounded-0.rounded-top-4.card-img-top( src=wishcards[j].wishCardImage alt='Card image' )
                                 .card-body
-                                    a.wishcard__icon--fixed.msg-icon( href='/wishcards/' + wishcards[j]._id )
-                                        i.far.fa-envelope
-                                    .card-details
-                                        -
-                                            var title = 'My name is ' + wishcards[j].childFirstName;
-                                            var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
-                                                ? wishcards[j].wishItemName.substring(0, 23) + "..."
-                                                : wishcards[j].wishItemName);
-                                            var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
-                                            var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
-                                                ? wishcards[j].childInterest.substring(0, 23) + "..."
-                                                : wishcards[j].childInterest);
+                                    -
+                                        var title = 'My name is ' + wishcards[j].childFirstName;
+                                        var wish = 'Wish: ' + (wishcards[j].wishItemName.length > 24
+                                            ? wishcards[j].wishItemName.substring(0, 23) + "..."
+                                            : wishcards[j].wishItemName);
+                                        var itemPrice = 'Item Price: $' + wishcards[j].wishItemPrice;
+                                        var interest = 'Interest: ' + (wishcards[j].childInterest.length > 24
+                                            ? wishcards[j].childInterest.substring(0, 23) + "..."
+                                            : wishcards[j].childInterest);
 
-                                        h3.card-title.text-center.crayon-font= title
-                                        p
-                                            span.font-weight-bold= wish
-                                        p.wish-price
-                                            span.font-weight-bold= itemPrice
-                                        p
-                                            span.font-weight-bold= interest
-                                        .card-action.row
-                                            .col-sm-6.mb-2
-                                                a.wishcard__link--white.bdr-2( href='/wishcards/single/' + wishcards[j]._id ) View More
-                                            .col-sm-6.mb-2
-                                                if wishcards[j].status === 'donated'
-                                                    button.wishcard__button--disabled.bdr-2( type='button' disabled ) Donated
+                                    h3.card-title.text-center.crayon-font= title
+                                    p
+                                        span.font-weight-bold= wish
+                                    p.wish-price
+                                        span.font-weight-bold= itemPrice
+                                    p
+                                        span.font-weight-bold= interest
+                                    .d-md-flex.justify-content-between
+                                        .col-12.col-md-5.mb-2.mb-md-0
+                                            a.btn.btn-lg.btn-primary.w-100( href='/wishcards/single/' + wishcards[j]._id ) View More
+                                        .col-12.col-md-5
+                                            if wishcards[j].status === 'donated'
+                                                button.btn.btn-lg.btn-dark.w-100.disabled( type='button' disabled ) Donated
+                                            else
+                                                if user
+                                                    a( href='wishcards/donate/' + wishcards[j]._id )
+                                                        button.btn.btn-lg.btn-dark.w-100( type='button' ) Donate Gift
                                                 else
-                                                    if user
-                                                        a( href='wishcards/donate/' + wishcards[j]._id )
-                                                            button.wishcard__button--blue.bdr-2( type='button' ) Donate Gift
-                                                    else
-                                                        button.wishcard__button--blue.bdr-2( type='button' data-bs-toggle='modal' data-bs-target='#loginModalCenter' ) Donate Gift
+                                                    button.btn.btn-lg.btn-dark.w-100( type='button' data-bs-toggle='modal' data-bs-target='#loginModalCenter' ) Donate Gift
                         - j++;
             - i += increment;
 
