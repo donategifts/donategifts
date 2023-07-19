@@ -47,6 +47,24 @@ export default class WishCardRepository {
 		}
 	}
 
+	async getRandom(status: STATUS, sampleSize: number) {
+		const result = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status } }, { $sample: { size: sampleSize } }])
+			.exec();
+
+		if (result.length < sampleSize) {
+			const donated = await this.wishCardModel
+				.aggregate<WishCard>([
+					{ $match: { status: 'donated' } },
+					{ $sample: { size: sampleSize - result.length } },
+				])
+				.exec();
+			return [...result, ...donated];
+		}
+
+		return result;
+	}
+
 	async getViewableWishCards(showDonated: boolean) {
 		try {
 			const searchArray = [{ status: 'published' }];

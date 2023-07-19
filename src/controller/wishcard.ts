@@ -114,7 +114,7 @@ export default class WishCardController extends BaseController {
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcards = await this.wishCardRepository.getAllWishCards();
+			const wishcards = await this.wishCardRepository.getRandom('published', 20);
 
 			const data = [] as unknown as WishCard & { age: number }[];
 
