@@ -124,8 +124,8 @@ block content
                             span.text-muted Your role:
                             span.mx-2= user.userRole
 
-            .row.mb-3
-                .col-md-6.h
+            .row.mb-5.mb-md-3
+                .col-md-6.mb-5.mb-md-0
                     .card.h-100.shadow.border-0.p-3
                         .card-title.d-flex.justify-content-between.p-3
                             .fs-6
@@ -139,7 +139,7 @@ block content
                         else
                             #about-me.p-4 You have no description saved.
 
-                .col-md-6.h
+                .col-md-6
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
                             .fs-6
@@ -151,20 +151,20 @@ block content
                                 a.btn.btn-lg.btn-light( href='/profile/donations' ) See My Donation History
 
             .row.mb-5
-                .col-md-6.h
+                .col-md-6.mb-5.mb-md-0
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
                             .fs-6
                                 .fa.fa-cogs.text-secondary.me-1
                                 span Settings
 
-                        .row.justify-content-center.py-2.mt-3
-                            .col-auto.mb-4
-                                a.button-primary( href='/profile/password/reset/' ) Reset Password
-                            .col-auto.mb-4
-                                a.button-secondary( href='/profile/logout' ) Log Out
+                        .row.p-3
+                            .col-12.col-md-6
+                                a.btn.btn-lg.btn-primary.w-100( href='/profile/password/reset/' ) Reset Password
+                            .col-12.col-md-6.mt-3.mt-md-0
+                                a.btn.btn-lg.btn-light.w-100( href='/profile/logout' ) Log Out
 
-                .col-md-6.h
+                .col-md-6
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
                             .fs-6
