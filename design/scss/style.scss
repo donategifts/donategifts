@@ -5,6 +5,7 @@ body {
 	margin: 0;
 	box-sizing: border-box;
 	overflow-x: hidden;
+	font-family: $font-body;
 }
 
 .dk-cool-crayon {
@@ -19,6 +20,11 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.placeholder {
+	background-color: inherit;
+	cursor: default;
 }
 
 // a {

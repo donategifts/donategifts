@@ -9,6 +9,10 @@ function WishCards({ wishCards, user }) {
 	const [cards, setCards] = useState([]);
 
 	useEffect(() => {
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 1000);
+
 		setCards(
 			wishCards.map((wishCard) => {
 				let attributes = {};
@@ -32,7 +36,7 @@ function WishCards({ wishCards, user }) {
 							alt={wishCard.wishItemName}
 							loading="eager"
 						/>
-						<div className="card-body bg-cream ounded-0 rounded-bottom-3">
+						<div className="card-body rounded-0 rounded-bottom-3">
 							<h5 className="card-title text-center crayon-font">
 								My name is {wishCard.childFirstName}
 							</h5>
@@ -41,51 +45,50 @@ function WishCards({ wishCards, user }) {
 								<p>Item Price: ${wishCard.wishItemPrice}</p>
 								<p>Interest: {wishCard.childInterest}</p>
 							</div>
-							<div className="d-md-flex justify-content-between">
-								<a
-									className="btn btn-lg btn-primary col-12 mb-2 mb-md-0 col-md-5"
-									href={`/wishcards/single/${wishCard._id}`}
-								>
-									View More
-								</a>
-								{wishCard.status === 'donated' ? (
-									<button className="btn btn-lg btn-dark disabled col-12 col-md-5">
-										Donated
-									</button>
-								) : (
+							<div className="d-md-flex justify-content-center">
+								<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
 									<a
-										className="btn btn-lg btn-dark col-12 col-md-6"
-										{...attributes}
+										className="btn btn-lg btn-primary w-100"
+										href={`/wishcards/single/${wishCard._id}`}
 									>
-										Donate
+										View More
 									</a>
-								)}
+								</div>
+								<div className="col-12 col-md-6 ms-0 ms-md-1">
+									{wishCard.status === 'donated' ? (
+										<button className="btn btn-lg btn-dark disabled w-100">
+											Donated
+										</button>
+									) : (
+										<a className="btn btn-lg btn-dark w-100" {...attributes}>
+											Donate
+										</a>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>
 				);
 			}),
 		);
-
-		setTimeout(() => {
-			setIsLoading(false);
-		}, 1000);
 	}, []);
 
 	return (
-		<div className="container">
-			{isLoading && (
-				<div className="d-md-flex flex-wrap justify-content-center align-items-center">
-					{new Array(6).fill(0).map((_, index) => (
-						<LoadingCard key={index} enableButtons={true} />
-					))}
-				</div>
-			)}
-			{!isLoading && (
-				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
-					<Masonry gutter="2rem">{cards.map((card) => card)}</Masonry>
-				</ResponsiveMasonry>
-			)}
+		<div id="wishcards" className="bg-light p-4">
+			<div className="container">
+				{isLoading && (
+					<div className="d-md-flex flex-wrap justify-content-center align-items-center">
+						{new Array(6).fill(0).map((_, index) => (
+							<LoadingCard key={index} enableButtons={true} />
+						))}
+					</div>
+				)}
+				{!isLoading && (
+					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
+						<Masonry gutter="2rem">{cards.map((card) => card)}</Masonry>
+					</ResponsiveMasonry>
+				)}
+			</div>
 		</div>
 	);
 }

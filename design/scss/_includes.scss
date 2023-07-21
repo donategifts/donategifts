@@ -53,20 +53,19 @@
 // loads of stylings in there which we don't need
 @import "legacy/agency";
 @import "legacy/chooseItem";
-@import "legacy/community";
 @import "legacy/contact";
 @import "legacy/faq";
 @import "legacy/howTo";
 @import "legacy/loadingSpinner";
-@import "legacy/search";
 @import "legacy/signup";
 @import "legacy/stripe";
 @import "legacy/successPayment";
-@import "legacy/toast";
 @import "legacy/utils";
 
 // NOTE: currently WIP for updating the legacy styles
 @import "custom/footer";
-@import "custom/profile";
 @import "custom/home";
 @import "custom/navbar";
+@import "custom/profile";
+@import "custom/community";
+@import "custom/wishcards";
