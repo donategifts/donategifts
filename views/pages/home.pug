@@ -16,10 +16,10 @@ block external
 block content
     #fb-root
 
-    .hero.container-fluid.d-flex.justify-content-center.align-items-center
+    #hero.container-fluid.d-flex.justify-content-center.align-items-center.text-center.text-white
         .row
             .col-12
-                h1
+                h1.display-4.dk-cool-crayon.text-uppercase
                     | Send Gifts to
                     |
                     span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
@@ -29,11 +29,11 @@ block content
     include ../components/homeSampleCards.pug
 
     #status-section.container-fluid.d-md-flex.justify-content-center.align-items-center
-        .col-md
+        .col-md.mb-3.mb-md-0
             .text-center
                 .status
                     img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
-                .display-2.text-danger= undonatedCards
+                .display-3.text-danger= undonatedCards
                 if undonatedCards < 2
                     .fs-6.text-primary
                         = undonatedCards > 0 ? 'child' : 'children '
@@ -47,7 +47,7 @@ block content
                         br
                         | your donation
 
-        .col-md
+        .col-md.mb-3.mb-md-0
             .text-center
                 .status
                     img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
@@ -72,8 +72,8 @@ block content
     .my-5
         .dk-cool-crayon.text-primary.display-5.text-center.mb-3 Our Partner Agencies
         .container-fluid.pb-4
-            .small3
-                ul.small-ul.px-0( data-small3='' )
+            #partner-carousel
+                ul.small-ul.px-0( data-partner-carousel='' )
                     li
                         a( href='https://centraltexastableofgrace.org/' target='_blank' )
                             img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
@@ -117,18 +117,18 @@ block content
                     li
                         a( href='https://www.nyap.org/' target='_blank' )
                             img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
-                span.small-span.text-dark
+                span.text-dark
                     i.fa.fa-arrow-circle-right.fa-2x
-                span.small-span.text-dark
+                span.text-dark
                     i.fa.fa-arrow-circle-left.fa-2x
 
     .my-4
         .container
             .dk-cool-crayon.text-primary.display-5.mb-3.text-center We Need Your Help
             .d-md-flex
-                .col-md-6.p-5
+                .col-md-6.p-3.p-md-5
                     img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
-                .col-md-6.p-5
+                .col-md-6.p-3.p-md-5
                     p.lh-lg Over 500,000 kids spend time in foster care each year and over 4.2 million youth are homeless in the United States. For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations. With your generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By creating this platform, we wish to provide effortless and convenient ways to share the joy of the holidays.
                     p.lh-lg Your gifts make it possible to bring happiness to the kids.
                     .col-md-6.text-center.text-md-start
@@ -139,14 +139,6 @@ block modal
     include ../components/modal/loginModal.pug
 
 block scripts
-    script.
-        //- do not remove, needed for socket wish card locking
-        countdown = [];
-
-    include ../mixins/loginToast.pug
-    if !user
-        +loginToastJS
-
     script.
         (() => {
             class TypeWriter {
@@ -199,15 +191,15 @@ block scripts
 
     script.
         $(document).ready(() => {
-            const carouselDiv = $('.small3');
-            let imgList = $('.small3 .small-ul li');
-            const arrowBtns = $('.small3 .small-span');
+            const carouselDiv = $('#partner-carousel');
+            let imgList = $('#partner-carousel ul li');
+            const arrowBtns = $('#partner-carousel span');
 
-            imgList.parent().attr('data-small3', imgList.length);
+            imgList.parent().attr('data-partner-carousel', imgList.length);
 
             const carouselImg = () => {
-                imgList = $('.small3 .small-ul li');
-                if (imgList.length <= imgList.parent().data('small3')) {
+                imgList = $('#partner-carousel ul li');
+                if (imgList.length <= imgList.parent().data('partner-carousel')) {
                     imgList
                         .parent()
                         .append('<li>' + imgList.first().html() + '</li>')
@@ -236,9 +228,9 @@ block scripts
             });
 
             arrowBtns.first().on('click', () => {
-                imgList = $('.small3 .small-ul li');
+                imgList = $('#partner-carousel ul li');
                 const leftImg = imgList.first().html();
-                if (imgList.length <= imgList.parent().data('small3')) {
+                if (imgList.length <= imgList.parent().data('partner-carousel')) {
                     imgList
                         .parent()
                         .append('<li>' + leftImg + '</li>')
@@ -249,9 +241,9 @@ block scripts
             });
 
             arrowBtns.last().on('click', () => {
-                imgList = $('.small3 .small-ul li');
+                imgList = $('#partner-carousel ul li');
                 const lastImg = imgList.last().html();
-                if (imgList.length <= imgList.parent().data('small3')) {
+                if (imgList.length <= imgList.parent().data('partner-carousel')) {
                     imgList
                         .parent()
                         .prepend('<li>' + lastImg + '</li>')
@@ -264,7 +256,7 @@ block scripts
 
     script.
         $(document).ready(() => {
-            const sampleCardsCarousel = $('#sample-cards-carousel')
+            const sampleCardsCarousel = $('#sample-cards-carousel');
             new bootstrap.Carousel(sampleCardsCarousel, {
                 interval: 1000,
                 touch: true,

@@ -1,4 +1,4 @@
-.hero {
+#hero {
 	background: url('/svg/dg-2022-bg-01.svg') center center;
 	min-height: 90vh;
 	height: 100px;
@@ -6,11 +6,9 @@
 	background-repeat: no-repeat;
 }
 
-#card-fix {
-	&:hover {
-		cursor: pointer;
-		transform: translateY(-2px);
-		box-shadow: 0 1.2rem 1.5rem #0009;
+#sample-cards-carousel {
+	.card-body {
+		background-color: lighten($cream, 8%);
 	}
 }
 
@@ -23,11 +21,11 @@
 	font-family: DkCoolCrayon, sans-serif;
 }
 
-.small3 {
+#partner-carousel {
 	overflow: hidden;
 	position: relative;
 
-	.small-ul {
+	ul {
 		display: flex;
 		top: 0;
 
@@ -43,7 +41,7 @@
 		}
 	}
 
-	.small-span {
+	span {
 		position: absolute;
 		top: calc(50% - 20px);
 		opacity: 0.6;
