@@ -8,38 +8,42 @@ block external
 
 block content
     #fb-root
-    .signup-bg.d-flex.container-fluid.justify-content-center.py-5
-        .wrap-box
-            form.signup( method='post' )
-                .sign-row.lg.title-text.mg-sm
-                    a.userLogBtn.text-decoration-none( href='/login' ) Log In
-                    span OR
-                    a.userLogBtn.text-decoration-none( href='/signup' ) Sign Up
-                .wrap-input.mg-btm( data-validate='Email is required' )
-                    input#email.input-default.quick-font( required type='email' name='email' placeholder='Email' title='example: username@xyz.com' )
-                .wrap-input.mg-btm2( data-validate='Password is required' )
-                    input#password.input-default.quick-font( required
-                        type='password'
-                        name='password'
-                        placeholder='Password'
-                    )
-                    i#showPassword.fas.fa-eye.text-white.pointer
-                a.text-white( href='/profile/password/reset/' ) Forgot Password?
-                .container-form-btn
-                    button.form-btn.quick-font( type='submit' ) Log In
+    #login
+        .container.py-5
+            form.p-5.rounded-4( method='post' )
+                .col-md-8.mx-auto.text-white
+                    .py-2
+                        label.form-label( for='email' ) Email
+                        input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required type='email'
+                            name='email'
+                            placeholder='username@xyz.com'
+                        )
+                    .py-2
+                        label.form-label( for='password' ) Password
+                        .input-group
+                            input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                                type='password'
+                                name='password'
+                            )
+                            span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
+                                #showPassword.fas.fa-eye.text-white.pointer
+                    .py-2
+                        a.text-white( href='/profile/password/reset/' ) Forgot Password?
 
-            #google-fb-login
-                .d-flex.justify-content-center
-                    .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
-                .d-flex.justify-content-center
-                    .fb-login-button.mt-3( data-size='large'
-                        data-button-type='login_with'
-                        data-layout='default'
-                        data-auto-logout-link='false'
-                        data-use-continue-as='false'
-                        data-scope='public_profile,email'
-                        data-onlogin='facebookLogin'
-                    )
+                    .row.py-2.justify-content-center
+                        .col-md-4
+                            button.btn.btn-lg.btn-primary.w-100( type='submit' ) Login
+
+                            #google-fb-login
+                                .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
+                                .fb-login-button.mt-3( data-size='large'
+                                    data-button-type='login_with'
+                                    data-layout='default'
+                                    data-auto-logout-link='false'
+                                    data-use-continue-as='false'
+                                    data-scope='public_profile,email'
+                                    data-onlogin='facebookLogin'
+                                )
 
 block scripts
     include ../mixins/formvalidation
