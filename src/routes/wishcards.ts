@@ -38,8 +38,6 @@ router.post('/search/:init?', wishCardController.handlePostSearch);
 
 // ------------- only agencies and admins from here on -------------
 
-router.get('/choose', Permissions.isAdminOrAgency, wishCardController.handleGetChoose);
-
 router.post(
 	'/',
 	Permissions.isAdminOrAgency,

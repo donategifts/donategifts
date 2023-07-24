@@ -43,7 +43,6 @@ export default class WishCardController extends BaseController {
 		this.handleGetRandom = this.handleGetRandom.bind(this);
 		this.handlePostMessage = this.handlePostMessage.bind(this);
 		this.handleGetDefaults = this.handleGetDefaults.bind(this);
-		this.handleGetChoose = this.handleGetChoose.bind(this);
 	}
 
 	async getWishCardSearchResult(
@@ -533,28 +532,5 @@ export default class WishCardController extends BaseController {
 				res.status(200).send({ success: true, html });
 			}
 		});
-	}
-
-	// TODO: is this still needed?
-	async handleGetChoose(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const { user } = res.locals;
-
-			let params = {};
-
-			if (user.userRole === 'partner') {
-				const agency = await this.agencyRepository.getAgencyByUserId(user._id);
-
-				if (!agency) {
-					return this.handleError(res, 'Agency Not Found', 404);
-				}
-
-				params = { ...params, agency };
-			}
-
-			this.renderView(res, 'wishcard/guided', params);
-		} catch (error) {
-			return this.handleError(res, error);
-		}
 	}
 }

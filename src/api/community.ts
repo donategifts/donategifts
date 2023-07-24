@@ -7,6 +7,6 @@ const router = express.Router();
 const communityController = new CommunityController();
 const fileUpload = new FileUpload();
 
-router.post('/', fileUpload.upload.single('image'), communityController.handleAddPost);
+router.post('/', fileUpload.upload.single('image'), communityController.apiAddPost);
 
 export default router;
