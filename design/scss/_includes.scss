@@ -49,8 +49,6 @@
 @import "node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
 
-// @TODO: revisit this here,
-// loads of stylings in there which we don't need
 @import "legacy/agency";
 @import "legacy/chooseItem";
 @import "legacy/contact";
@@ -59,13 +57,16 @@
 @import "legacy/signup";
 @import "legacy/stripe";
 @import "legacy/successPayment";
-@import "legacy/utils";
 
-// updated styles from legacy things
+// ----------------------------
+// TODO: check if we really need custom buttons
+@import "custom/buttons";
+// ----------------------------
 @import "custom/community";
 @import "custom/footer";
 @import "custom/home";
 @import "custom/howto";
+@import "custom/mission";
 @import "custom/navbar";
 @import "custom/profile";
 @import "custom/wishcards";
