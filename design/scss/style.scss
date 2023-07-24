@@ -22,6 +22,10 @@ body {
 	align-items: center;
 }
 
+#header {
+	background-color: lighten($warning, 10%);
+}
+
 .typing {
 	// margin-left: 10px;
 	position: relative;
