@@ -115,7 +115,7 @@ function Community(props) {
 
 	return (
 		<div className="bg-light">
-			<div id="community" className="container">
+			<div id="community" className="container py-3">
 				{user?.userRole === 'partner' && createPost()}
 				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 					<Masonry gutter="1rem">
