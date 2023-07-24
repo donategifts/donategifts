@@ -9,10 +9,6 @@ function WishCards({ wishCards, user }) {
 	const [cards, setCards] = useState([]);
 
 	useEffect(() => {
-		setTimeout(() => {
-			setIsLoading(false);
-		}, 1000);
-
 		setCards(
 			wishCards.map((wishCard) => {
 				let attributes = {};
@@ -37,9 +33,9 @@ function WishCards({ wishCards, user }) {
 							loading="eager"
 						/>
 						<div className="card-body rounded-0 rounded-bottom-3">
-							<h5 className="card-title text-center crayon-font">
+							<h4 className="card-title text-center text-primary">
 								My name is {wishCard.childFirstName}
-							</h5>
+							</h4>
 							<div className="card-text">
 								<p>Wish: {wishCard.wishItemName}</p>
 								<p>Item Price: ${wishCard.wishItemPrice}</p>
@@ -71,6 +67,10 @@ function WishCards({ wishCards, user }) {
 				);
 			}),
 		);
+
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 1000);
 	}, []);
 
 	return (

@@ -13,7 +13,7 @@ mixin donateModalJS()
 
             const modalWarningMessage = `
                 <div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
-                    <h4 class="crayon-font donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
+                    <h4 class="donate-modal-title">Ready to reserve ${childName}'s wish for donation?</h4>
                     <img class="img-fluid modal-img" src="/public/img/shipping-info.png" >
                     <p class="modal-p">
                         Follow the new tab link to check out from Amazon.
@@ -37,7 +37,7 @@ mixin donateModalJS()
             if (emailVerified === 'false') {
                 modalBody.html(`
                     <div class="quick-font donate-modal" id="donateModalMsg-${wishCardId}">
-                        <h3 class="crayon-font">
+                        <h3>
                             Please verify your email address to enable donation gifting.
                         </h3>
                     </div>
@@ -176,7 +176,7 @@ mixin donateModalJS()
                 } else {
                     element.html(`
                         <div class="donate-modal">
-                            <h1 class="crayon-font donate-modal-title">
+                            <h1 class="donate-modal-title">
                                 You reserved this wish card for
                             </h1>
                             <div class="cool-font countdown">${minutes}:${seconds}</div>

@@ -4,104 +4,106 @@ block title
     title Donate Gifts
 
 block content
-    #header-bg.mb-3
-        .container.py-5
-            .row
-                .col-12.text-center
-                    h1.blue-font.cool-font.my-3
+    #how-to.bg-light
+        #header-bg
+            .container.py-5
+                .text-center.text-primary
+                    h1.my-3.dk-cool-crayon
                         | How Does It Work For
-                    h1.cool-font
-                        a.btn.link--blue( href='#donor' ) Donors
-                        | &amp;
-                        a.btn.link--blue( href='#partner' ) Partners
-    section#donor
-        .container
-            h2.cool-font.blue-font.py-5.text-center.mt-3 How do I send gifts as a donor?
-            .row
-                .col-md-6
-                    h3.yellow.cool-font Step 1
-                    h3.mb-4.quick-font.font-300 Choose wish cards to "Donate Gift"
-                    p.quick-font.subtext.text-start
-                        | Each wish card is for a different foster child, created and managed by our certified
-                        | foster agency partner. Browse the wishes and become a Secret Santa to make their
-                        | wish come true.
-                    p.quick-font.subtext.text-start
-                        | Click the 'Donate Gift' button on the card or on their wish page to begin the
-                        | donation process.
-                .col-md-6.d-flex.justify-content-center.align-items-center
-                    img.img-fluid( src='/svg/wishcard-click.svg' alt='click on the wishcard' )
-            .row.my-4.py-4
-                .col-md-6.order-md-2.order-sm-1
-                    h3.yellow.cool-font Step 2
-                    h3.mb-4.quick-font.font-300
-                        | Wish donation secure checkout
-                    p.quick-font.subtext.text-start
-                        | Your payment transaction is powered by Stripe,
-                        | which is audited by a PCI-certified auditor and is certified to PCI Service Provider Level 1.
-                        | This is the most stringent level of certification available in the payments industry.
-                    p.quick-font.subtext.text-start
-                        | Simply enter the name on card, card number, expiration date, CVC (security code 3-4 digits), and the zipcode.
-                    p.quick-font.subtext.text-start
-                        | That's it! You will be notified after confirmed payment with the donation and shipping details.
-                .col-md-6.order-md-1.order-sm-2.d-flex.justify-content-center.align-items-center
-                    img.img-fluid( src='/svg/howto-checkout.svg' alt='easy secure checkout' )
-            .row.my-4.py-4
-                .col-md-6
-                    h3.yellow.cool-font Step 3
-                    h3.mb-4.quick-font.font-300 Get 100% tax deductible receipt
-                    p.quick-font.subtext.text-start
-                        | After checkout, we will deliver the gift to each managing foster agency.
-                        | All kids and youth are under our partner agencies' care and the
-                        | agency staff will collect and distribute the shipped wish items.
-                    p.quick-font.subtext.text-start
-                        | We don't have a drop-off site because we handle all shipping orders to make the donation experience more
-                        | easy and efficient for you.
-                    p.quick-font.subtext.text-start
-                        | You will receive a tax-exempt receipt, shipping details, and delivery proof in the confirmation email.
-                        | If our partner agency permits, you will also get a thank you message and photos from the child.
-                .col-md-6.d-flex.justify-content-center.align-items-center
-                    img.img-fluid( src='/svg/howto-gift.svg' alt='gift delivered' )
-            .row.my-5.pb-3
-                .col-12.text-center
-                    h2.cool-font.blue-font.mb-5 Ready to make the foster kids happy?
-                    a.link--blue.bdr-2( href='/wishcards' ) Start browsing wishes
-    section#partner.mt-5.pt-3
-        .container
-            h2.cool-font.blue-font.py-5.text-center How do I create wishes as a partner?
-            .row
-                .col-md-6
-                    h3.yellow.cool-font Step 1
-                    h3.mb-4.quick-font.font-300 Register as a partner
-                    p.quick-font.subtext.text-start
-                        | We accept partnerships with state-certified foster care organizations, adoption agencies,
-                        | licensed domestic foster homes,
-                        | and other 501(c)(3) non-profit organizations that help homeless youth and children at risk.
-                .col-md-6.d-flex.justify-content-center.align-items-center
-                    img.img-fluid( src='/svg/register.svg' alt='' )
-            .row.my-4.py-4
-                .col-md-6
-                    h3.yellow.cool-font Step 2
-                    h3.mb-4.quick-font.font-300 Become verified
-                    p.quick-font.subtext.text-start
-                        | Agency verification may take up to 1-2 business days due to our security regulations. You will be notified once your agency account is verified.
-                .col-md-6
-                    h3.yellow.cool-font Step 3
-                    h3.mb-4.quick-font.font-300 Create wish cards
-                    p.quick-font.subtext.text-start
-                        | Create wish cards by filling out a simple form.
-                        | Choose wish items from our suggested list, or search &amp; add the product link if the child wishes for a specific item.
-                        | Your submission will be created as a draft and will be published after our review process.
-            .row.my-4.py-4
-                .col-md-6.order-md-2.order-sm-1
-                    h3.yellow.cool-font Step 4
-                    h3.mb-4.quick-font.font-300
-                        | Get notified
-                    p.quick-font.subtext.text-start
-                        | That's it! You will be notified when your wish cards are published, as well as when gifts are on their way.
-                        | More questions? Check out the FAQs.
-                .col-md-6.order-md-1.order-sm-2.d-flex.justify-content-center.align-items-center
-                    img.img-fluid( src='/svg/notified.svg' alt='' )
-            .row.py-5
-                .col-12.text-center.mb-4
-                    h2.cool-font.blue-font.mb-5 Ready to become a foster care partner?
-                    a.link--blue.bdr-2( href='/signup' ) Register your agency
+                    .fs-2.fw-bold.center-elements
+                        a.btn.btn-lg.btn-primary.me-2( href='#donor' ) Donors
+                        .dk-cool-crayon &amp;
+                        a.btn.btn-lg.btn-primary.ms-2( href='#partner' ) Partners
+
+        section#donor
+            .container
+                h2.text-primary.py-4.text-center How do I send gifts as a donor?
+                .row
+                    .col-md-6
+                        h3.text-secondary Step 1
+                        h3.mb-4.fw-light Choose wish cards to "Donate Gift"
+                        p
+                            | Each wish card is for a different foster child, created and managed by our certified
+                            | foster agency partner. Browse the wishes and become a Secret Santa to make their
+                            | wish come true.
+                        p
+                            | Click the 'Donate Gift' button on the card or on their wish page to begin the
+                            | donation process.
+                    .col-md-6.center-elements
+                        img.img-fluid( src='/svg/wishcard-click.svg' alt='click on the wishcard' )
+                .row.my-4
+                    .col-md-6.order-md-2.order-sm-1
+                        h3.text-secondary Step 2
+                        h3.mb-4.fw-light
+                            | Wish donation secure checkout
+                        p
+                            | Your payment transaction is powered by Stripe,
+                            | which is audited by a PCI-certified auditor and is certified to PCI Service Provider Level 1.
+                            | This is the most stringent level of certification available in the payments industry.
+                        p
+                            | Simply enter the name on card, card number, expiration date, CVC (security code 3-4 digits), and the zipcode.
+                        p
+                            | That's it! You will be notified after confirmed payment with the donation and shipping details.
+                    .col-md-6.order-md-1.order-sm-2.center-elements
+                        img.img-fluid( src='/svg/howto-checkout.svg' alt='easy secure checkout' )
+                .row.my-4
+                    .col-md-6
+                        h3.text-secondary Step 3
+                        h3.mb-4.fw-light Get 100% tax deductible receipt
+                        p
+                            | After checkout, we will deliver the gift to each managing foster agency.
+                            | All kids and youth are under our partner agencies' care and the
+                            | agency staff will collect and distribute the shipped wish items.
+                        p
+                            | We don't have a drop-off site because we handle all shipping orders to make the donation experience more
+                            | easy and efficient for you.
+                        p
+                            | You will receive a tax-exempt receipt, shipping details, and delivery proof in the confirmation email.
+                            | If our partner agency permits, you will also get a thank you message and photos from the child.
+                    .col-md-6.center-elements
+                        img.img-fluid( src='/svg/howto-gift.svg' alt='gift delivered' )
+                .row.my-4
+                    .text-center
+                        h2.text-primary.mb-5 Ready to make the foster kids happy?
+                        a.btn.btn-lg.btn-primary( href='/wishcards' ) Start browsing wishes
+
+        section#partner.bg-white
+            .container
+                h2.text-primary.py-4.text-center How do I create wishes as a partner?
+                .row.my-4
+                    .col-md-6
+                        h3.text-secondary Step 1
+                        h3.mb-4.fw-light Register as a partner
+                        p
+                            | We accept partnerships with state-certified foster care organizations, adoption agencies,
+                            | licensed domestic foster homes,
+                            | and other 501(c)(3) non-profit organizations that help homeless youth and children at risk.
+                    .col-md-6.center-elements
+                        img.img-fluid( src='/svg/register.svg' alt='' )
+                .row.my-4
+                    .col-md-6
+                        h3.text-secondary Step 2
+                        h3.mb-4.fw-light Become verified
+                        p
+                            | Agency verification may take up to 1-2 business days due to our security regulations. You will be notified once your agency account is verified.
+                    .col-md-6
+                        h3.text-secondary Step 3
+                        h3.mb-4.fw-light Create wish cards
+                        p
+                            | Create wish cards by filling out a simple form.
+                            | Choose wish items from our suggested list, or search &amp; add the product link if the child wishes for a specific item.
+                            | Your submission will be created as a draft and will be published after our review process.
+                .row.my-4
+                    .col-md-6.order-md-2.order-sm-1
+                        h3.text-secondary Step 4
+                        h3.mb-4.fw-light
+                            | Get notified
+                        p
+                            | That's it! You will be notified when your wish cards are published, as well as when gifts are on their way.
+                            | More questions? Check out the FAQs.
+                    .col-md-6.order-md-1.order-sm-2.center-elements
+                        img.img-fluid( src='/svg/notified.svg' alt='' )
+                .row.py-4
+                    .col-12.text-center.mb-4
+                        h2.text-primary.mb-5 Ready to become a foster care partner?
+                        a.btn.btn-lg.btn-primary( href='/signup' ) Register your agency

@@ -55,17 +55,17 @@
 @import "legacy/chooseItem";
 @import "legacy/contact";
 @import "legacy/faq";
-@import "legacy/howTo";
 @import "legacy/loadingSpinner";
 @import "legacy/signup";
 @import "legacy/stripe";
 @import "legacy/successPayment";
 @import "legacy/utils";
 
-// NOTE: currently WIP for updating the legacy styles
+// updated styles from legacy things
+@import "custom/community";
 @import "custom/footer";
 @import "custom/home";
+@import "custom/howto";
 @import "custom/navbar";
 @import "custom/profile";
-@import "custom/community";
 @import "custom/wishcards";
