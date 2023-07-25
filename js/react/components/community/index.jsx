@@ -130,7 +130,7 @@ function Community(props) {
 												alt="partner agency logo"
 											/>
 										)}
-										<div className="mt-3 display-6 text-primary dk-cool-crayon">
+										<div className="mt-3 display-6 text-primary cool-font">
 											{post.belongsTo?.agencyName}
 										</div>
 									</div>

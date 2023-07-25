@@ -1,18 +1,5 @@
 #sign-up {
-	background:
-		linear-gradient(#ff5f6d00, #ffc37100),
-		url('/img/gift-white-bg.jpeg') center center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-
 	form {
-		background: linear-gradient(45deg, $danger, $warning);
-
-		.form-control::placeholder {
-			color: $white;
-		}
-
 		.btn-outline-light {
 			&:hover {
 				background-color: $light;
