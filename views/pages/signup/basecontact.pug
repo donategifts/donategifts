@@ -10,7 +10,7 @@ append head
 block content
     #sign-up
         .container.py-5
-            form.p-5.rounded-4
+            form#sign-up-form.p-5.rounded-4
                 .col-md-8.mx-auto.text-white
                     .py-2
                         label.form-label( for='fName' ) First Name
@@ -110,7 +110,7 @@ block scripts
     if locals.env.captcha
         script.
             $(document).ready(() => {
-                $('.signup').submit((event) => {
+                $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', true);
                     grecaptcha.execute();
@@ -153,7 +153,7 @@ block scripts
     else
         script.
             $(document).ready(() => {
-                $('.signup').submit((event) => {
+                $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', false);
 

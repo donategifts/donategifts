@@ -49,7 +49,7 @@
 @import "node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
 
-@import "legacy/agency";
+// @import "legacy/agency";
 @import "legacy/contact";
 @import "legacy/stripe";
 
@@ -57,6 +57,8 @@
 // TODO: check if we really need custom buttons
 @import "custom/buttons";
 // ----------------------------
+@import "custom/signup/agencydata";
+@import "custom/signup/basecontact";
 @import "custom/community";
 @import "custom/faq";
 @import "custom/footer";
@@ -65,5 +67,4 @@
 @import "custom/navbar";
 @import "custom/passwordreset";
 @import "custom/profile";
-@import "custom/signup";
 @import "custom/wishcards";
