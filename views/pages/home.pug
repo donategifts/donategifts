@@ -14,125 +14,125 @@ block external
     include ../mixins/googlefacebookscripts.pug
 
 block content
-    #fb-root
+    #home
+        #fb-root
+        #hero.container-fluid.d-flex.justify-content-center.align-items-center.text-center.text-white
+            .row
+                .col-12
+                    h1.display-4.cool-font.text-uppercase
+                        | Send Gifts to
+                        |
+                        span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
+                    a.btn.btn-lg.btn-light.mx-1.px-4.mb-3.mb-md-0( href='/howto' ) How It Works
+                    a.btn.btn-lg.btn-secondary.mx-1( href='/wishcards' ) See Wish Cards
 
-    #hero.container-fluid.d-flex.justify-content-center.align-items-center.text-center.text-white
-        .row
-            .col-12
-                h1.display-4.cool-font.text-uppercase
-                    | Send Gifts to
-                    |
-                    span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
-                a.btn.btn-lg.btn-light.mx-1.px-4.mb-3.mb-md-0( href='/howto' ) How It Works
-                a.btn.btn-lg.btn-secondary.mx-1( href='/wishcards' ) See Wish Cards
+        include ../components/homeSampleCards.pug
 
-    include ../components/homeSampleCards.pug
+        #status-section.container-fluid.d-md-flex.justify-content-center.align-items-center
+            .col-md.mb-3.mb-md-0
+                .text-center
+                    .status
+                        img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
+                    .display-3.text-danger= undonatedCards
+                    if undonatedCards < 2
+                        .fs-6.text-primary
+                            = undonatedCards > 0 ? 'child' : 'children '
+                            | awaiting
+                            br
+                            | your donation
+                    else
+                        .fs-6.text-primary
+                            | children
+                            | awaiting
+                            br
+                            | your donation
 
-    #status-section.container-fluid.d-md-flex.justify-content-center.align-items-center
-        .col-md.mb-3.mb-md-0
-            .text-center
-                .status
-                    img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
-                .display-3.text-danger= undonatedCards
-                if undonatedCards < 2
-                    .fs-6.text-primary
-                        = undonatedCards > 0 ? 'child' : 'children '
-                        | awaiting
-                        br
-                        | your donation
-                else
+            .col-md.mb-3.mb-md-0
+                .text-center
+                    .status
+                        img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
+                    .display-2.text-danger= donatedCards
                     .fs-6.text-primary
                         | children
-                        | awaiting
+                        | received
                         br
-                        | your donation
+                        | their gifts!
 
-        .col-md.mb-3.mb-md-0
-            .text-center
-                .status
-                    img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
-                .display-2.text-danger= donatedCards
-                .fs-6.text-primary
-                    | children
-                    | received
-                    br
-                    | their gifts!
+            .col-md
+                .text-center
+                    .status
+                        img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
+                    .display-2.text-danger= verifiedAgencies
+                    .fs-6.text-primary
+                        | agencies
+                        | partnered
+                        br
+                        | with DonateGifts
 
-        .col-md
-            .text-center
-                .status
-                    img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
-                .display-2.text-danger= verifiedAgencies
-                .fs-6.text-primary
-                    | agencies
-                    | partnered
-                    br
-                    | with DonateGifts
+        .my-5
+            .cool-font.text-primary.display-5.text-center.mb-3 Our Partner Agencies
+            .container-fluid.pb-4
+                #partner-carousel
+                    ul.small-ul.px-0( data-partner-carousel='' )
+                        li
+                            a( href='https://centraltexastableofgrace.org/' target='_blank' )
+                                img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
+                        li
+                            a( href='https://onehopeunited.org/' target='_blank' )
+                                img( src='/img/onehopeunited.png' alt='One Hope United logo' loading='lazy' )
+                        li
+                            a( href='https://www.newalternativesnyc.org/' target='_blank' )
+                                img( src='/img/new-alternatives-logo.png' alt='New Alternatives logo' loading='lazy' )
+                        li
+                            img( src='/svg/childrens-aid-logo.svg' alt='Childrens Aid NYC Agency logo' loading='lazy' )
+                        li
+                            a( href='http://www.lacasanorte.org/' target='_blank' )
+                                img( src='/img/la-casa-norte-logo.png' alt='La casa norte logo' loading='lazy' )
+                        li
+                            a( href='https://www.yos.org/' target='_blank' )
+                                img( src='/img/yos-logo-2.jpeg' alt='Youth Outreach Services logo' loading='lazy' )
+                        li
+                            img( src='/img/partner-coalition-nyc.jpg' alt='Partner Coalition of NewYork City logo' loading='lazy' )
+                        li
+                            a( href='https://www.fosteringhopefoundation.org' target='_blank' )
+                                img( src='/img/fostering-hope-logo.jpg' alt='Fostering Hope logo' loading='lazy' )
+                        li
+                            img( src='/img/you-gotta-believe-logo.jpg' alt='You gotta believe logo' loading='lazy' )
+                        li
+                            img( src='/img/penny-lane-logo.png' alt='Penny Lane Agency logo' loading='lazy' )
+                        li
+                            img( src='/img/epworth-tran-logo.png' alt='Epworth Village logo' loading='lazy' )
+                        li
+                            a( href='https://www.echoesofhope.org/' target='_blank' )
+                                img( src='/img/echoes-of-hope-logo.png' alt='Echoes of Hope logo' loading='lazy' )
+                        li
+                            a( href='https://www.blueskiesforchildren.org/' target='_blank' )
+                                img( src='/img/blue-sky-agency-logo.png' alt='Blue Skies for Children logo'  loading='lazy' )
+                        li
+                            a( href='https://casala.org/' target='_blank' )
+                                img( src='/img/casa-la-logo.png' alt='CASA of Los Angeles logo' loading='lazy' )
+                        li
+                            a( href='https://www.hartdistrict.org/' target='_blank' )
+                                img( src='/img/hart-district-logo.png' alt='William Hart district logo' loading='lazy' )
+                        li
+                            a( href='https://www.nyap.org/' target='_blank' )
+                                img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
+                    span.text-dark
+                        i.fa.fa-arrow-circle-right.fa-2x
+                    span.text-dark
+                        i.fa.fa-arrow-circle-left.fa-2x
 
-    .my-5
-        .cool-font.text-primary.display-5.text-center.mb-3 Our Partner Agencies
-        .container-fluid.pb-4
-            #partner-carousel
-                ul.small-ul.px-0( data-partner-carousel='' )
-                    li
-                        a( href='https://centraltexastableofgrace.org/' target='_blank' )
-                            img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
-                    li
-                        a( href='https://onehopeunited.org/' target='_blank' )
-                            img( src='/img/onehopeunited.png' alt='One Hope United logo' loading='lazy' )
-                    li
-                        a( href='https://www.newalternativesnyc.org/' target='_blank' )
-                            img( src='/img/new-alternatives-logo.png' alt='New Alternatives logo' loading='lazy' )
-                    li
-                        img( src='/svg/childrens-aid-logo.svg' alt='Childrens Aid NYC Agency logo' loading='lazy' )
-                    li
-                        a( href='http://www.lacasanorte.org/' target='_blank' )
-                            img( src='/img/la-casa-norte-logo.png' alt='La casa norte logo' loading='lazy' )
-                    li
-                        a( href='https://www.yos.org/' target='_blank' )
-                            img( src='/img/yos-logo-2.jpeg' alt='Youth Outreach Services logo' loading='lazy' )
-                    li
-                        img( src='/img/partner-coalition-nyc.jpg' alt='Partner Coalition of NewYork City logo' loading='lazy' )
-                    li
-                        a( href='https://www.fosteringhopefoundation.org' target='_blank' )
-                            img( src='/img/fostering-hope-logo.jpg' alt='Fostering Hope logo' loading='lazy' )
-                    li
-                        img( src='/img/you-gotta-believe-logo.jpg' alt='You gotta believe logo' loading='lazy' )
-                    li
-                        img( src='/img/penny-lane-logo.png' alt='Penny Lane Agency logo' loading='lazy' )
-                    li
-                        img( src='/img/epworth-tran-logo.png' alt='Epworth Village logo' loading='lazy' )
-                    li
-                        a( href='https://www.echoesofhope.org/' target='_blank' )
-                            img( src='/img/echoes-of-hope-logo.png' alt='Echoes of Hope logo' loading='lazy' )
-                    li
-                        a( href='https://www.blueskiesforchildren.org/' target='_blank' )
-                            img( src='/img/blue-sky-agency-logo.png' alt='Blue Skies for Children logo'  loading='lazy' )
-                    li
-                        a( href='https://casala.org/' target='_blank' )
-                            img( src='/img/casa-la-logo.png' alt='CASA of Los Angeles logo' loading='lazy' )
-                    li
-                        a( href='https://www.hartdistrict.org/' target='_blank' )
-                            img( src='/img/hart-district-logo.png' alt='William Hart district logo' loading='lazy' )
-                    li
-                        a( href='https://www.nyap.org/' target='_blank' )
-                            img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
-                span.text-dark
-                    i.fa.fa-arrow-circle-right.fa-2x
-                span.text-dark
-                    i.fa.fa-arrow-circle-left.fa-2x
-
-    .my-4
-        .container
-            .cool-font.text-primary.display-5.mb-3.text-center We Need Your Help
-            .d-md-flex
-                .col-md-6.p-3.p-md-5
-                    img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
-                .col-md-6.p-3.p-md-5
-                    p.lh-lg Over 500,000 kids spend time in foster care each year and over 4.2 million youth are homeless in the United States. For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations. With your generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By creating this platform, we wish to provide effortless and convenient ways to share the joy of the holidays.
-                    p.lh-lg Your gifts make it possible to bring happiness to the kids.
-                    .col-md-6.text-center.text-md-start
-                        a.btn.btn-lg.btn-primary( href='/contact' ) Contact DonateGifts
+        .my-4
+            .container
+                .cool-font.text-primary.display-5.mb-3.text-center We Need Your Help
+                .d-md-flex
+                    .col-md-6.p-3.p-md-5
+                        img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
+                    .col-md-6.p-3.p-md-5
+                        p.lh-lg Over 500,000 kids spend time in foster care each year and over 4.2 million youth are homeless in the United States. For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations. With your generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By creating this platform, we wish to provide effortless and convenient ways to share the joy of the holidays.
+                        p.lh-lg Your gifts make it possible to bring happiness to the kids.
+                        .col-md-6.text-center.text-md-start
+                            a.btn.btn-lg.btn-primary( href='/contact' ) Contact DonateGifts
 
 block modal
     include ../components/modal/wishcardDonationModal.pug

@@ -1,10 +1,6 @@
 @import "includes";
 
 body {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	overflow-x: hidden;
 	font-family: $font-body;
 }
 
@@ -40,29 +36,5 @@ body {
 		.form-control::placeholder {
 			color: $white;
 		}
-	}
-}
-
-.typing {
-	// margin-left: 10px;
-	position: relative;
-
-	&::after {
-		content: "";
-		position: absolute;
-		width: 1px;
-		height: 60px;
-		border: 2px solid $white;
-		animation: blink 0.5s infinite ease;
-	}
-}
-
-@keyframes blink {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
 	}
 }
