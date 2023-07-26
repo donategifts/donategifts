@@ -135,6 +135,11 @@ $min-contrast-ratio: 2 !default;
 	src: url('/fonts/dkcoolcrayon-webfont.woff') format('woff');
 }
 
+@font-face {
+	font-family: 'DK-Crayon-Crumble';
+	src: url('../fonts/dk-crayon-crumble-webfont.woff') format('woff');
+}
+
 $font-heading: DkCoolCrayon, Helvetica, sans-serif;
 $font-body: Quicksand, sans-serif;
 
