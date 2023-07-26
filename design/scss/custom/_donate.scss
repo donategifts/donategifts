@@ -1,0 +1,8 @@
+#donate {
+	.btn-outline-success {
+		&:hover {
+			background-color: $success;
+			color: $white;
+		}
+	}
+}

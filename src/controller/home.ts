@@ -45,15 +45,17 @@ export default class HomeController extends BaseController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		const agencies = await this.agencyRepository.getVerifiedAgencies();
 
+		const wishCards = await this.wishCardRepository.getRandom('published', 6);
+
 		const undonatedWishcards = await this.wishCardRepository.getWishCardsByStatus('published');
 
 		const donatedWishcards = await this.wishCardRepository.getWishCardsByStatus('donated');
 
 		this.renderView(res, 'home', {
-			wishcards: [],
+			wishCards,
 			verifiedAgencies: agencies.length,
 			undonatedCards: undonatedWishcards.length,
-			donatedCards: Number(donatedWishcards.length) + 200,
+			donatedCards: donatedWishcards.length,
 			christmasData: this.getChristmasString(),
 		});
 	}

@@ -1,0 +1,20 @@
+.footer {
+	background: $primary-dark;
+
+	.support {
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.footer-item {
+		color: $white;
+		text-decoration: none;
+	
+		&:hover {
+			text-decoration: underline;
+			color: $warning;
+		}
+	}
+}
+

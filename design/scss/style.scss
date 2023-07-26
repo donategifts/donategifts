@@ -1,389 +1,44 @@
 @import "includes";
 
 body {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	overflow-x: hidden;
-}
-
-a {
 	font-family: $font-body;
-	color: inherit;
-	text-decoration: none;
 }
 
-.y-scroll {
-	overflow-y: scroll;
-	max-height: 100px;
+.cool-font {
+	font-family: DkCoolCrayon, sans-serif;
 }
 
-.fa,
-.fas {
-	margin: 0.3em 0.5em;
+.crumble-font {
+	font-family: DK-Crayon-Crumble, sans-serif;
 }
 
-input,
-textarea {
-	text-decoration: none;
-	outline: none;
-	border: none;
+.quicksand {
+	font-family: Quicksand, sans-serif;
 }
 
-img {
-	vertical-align: baseline;
+.center-elements {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-button:focus {
-	outline: 0;
+#header {
+	background-color: lighten($warning, 10%);
 }
 
-/* 
------------------------------
-move this later -- from home.ejs
------------------------------
-*/
-.partners-container {
-	h1 {
-		@include font-styling($font-heading, 2.5rem, $primary, $fw-medium);
+.gradient-form {
+	background:
+		linear-gradient(#ff5f6d00, #ffc37100),
+		url('/img/gift-white-bg.jpeg') center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 
-		text-align: center;
-		padding: 1rem 0 3rem;
-	}
-}
+	form {
+		background: linear-gradient(45deg, $danger, $warning);
 
-
-// TODO: this stuff is for createWishcard.ejs and will be moved later
-.create-wish {
-	padding: 2.5rem 0;
-	background-color: lighten($cream, 9);
-
-	.card-body {
-		padding: 2.5rem;
-
-		@include font-styling($font-body);
-	}
-
-	h4 {
-		@include font-styling($font-heading, 2.5rem, $secondary);
-
-		text-align: center;
-		margin-bottom: 2.5rem;
-	}
-
-	.input-block {
-		display: block;
-		width: 100%;
-		background: $white;
-		line-height: 1.75;
-		color: $black;
-		padding: 0.5rem 1.25rem;
-		border: 0.1rem solid $secondary;
-		border-radius: 0.5rem;
-	}
-
-	label {
-		font-weight: $fw-semi-bold;
-		color: $black;
-	}
-
-	a {
-		cursor: pointer;
-		color: $secondary !important;
-
-		&:hover {
-			text-decoration: underline !important;
-		}
-	}
-
-	.uploader {
-		background-color: lighten($secondary, 14);
-		text-align: center;
-		vertical-align: middle;
-		padding: 0.4em 0.7em;
-		outline: none;
-		width: auto;
-		border-radius: 0.5rem;
-
-		&:hover {
-			background-color: $secondary;
-		}
-	}
-
-	.form-submit {
-		background-color: $secondary;
-		color: $white;
-		padding: 0.6em 5em;
-
-		&:hover {
-			background-color: lighten($primary, 5);
-		}
-	}
-}
-
-.navbar {
-	background-color: transparent;
-	color: $primary;
-	padding-bottom: 0;
-	margin-bottom: -5px;
-	font-family: $font-body;
-
-	img {
-		height: 4.5rem;
-		width: auto;
-		margin-bottom: 0.5rem;
-	}
-
-	i {
-		color: $primary;
-		font-size: 1.75rem;
-	}
-
-	a:hover {
-		color: $secondary !important;
-	}
-
-	.navbar-nav li {
-		text-align: right;
-	}
-}
-
-.site-navigation ul {
-	position: fixed;
-	top: 0;
-	left: -320px;
-	z-index: 3;
-	width: 320px;
-	max-width: calc(100% - 120px);
-	padding: 0;
-	margin: 0;
-	background: $white;
-	list-style: none;
-	overflow-x: scroll;
-	text-align: center;
-
-	li {
-		margin: 0 0.75rem;
-
-		a {
-			display: block;
-			padding: 10px 0;
-			font-size: 1.1rem;
-			text-decoration: none;
-		}
-	}
-}
-
-// pc screen
-@media screen and (width >= 992px) {
-	.site-navigation ul {
-		position: relative;
-		top: auto;
-		left: auto;
-		width: 100%;
-		max-width: 100%;
-		height: auto;
-		padding: 1.4rem 0;
-		overflow: auto;
-		background: transparent;
-
-		li a {
-			padding: 0;
-		}
-	}
-}
-
-.mission {
-	background-color: lighten($cream, 8);
-
-	.header {
-		min-height: 30vh;
-		color: $primary-dark;
-
-		h1 {
-			padding-top: 1em;
-			font-family: $font-heading;
-			border-bottom: 11px dotted $warning;
-			padding-bottom: 0.15em;
-		}
-
-		h4 {
-			font-family: $font-body;
-			font-size: 1.15em;
-			line-height: 1.15em;
-			margin: 0.5em 2em;
-			text-align: center;
-		}
-	}
-}
-
-/* 
------------------------------
-team
------------------------------
-*/
-.team {
-	padding: 1.5rem;
-
-	&-card {
-		border-radius: 0.3rem;
-		background-color: lighten($cream, 1);
-		padding: 1rem;
-		margin: 1rem;
-		min-height: 390px;
-		text-align: center;
-	}
-
-	h1 {
-		@include font-styling($font-heading, 2.75rem, $danger, $fw-semi-bold);
-
-		text-align: center;
-		margin: 1rem;
-		padding: 1rem;
-	}
-
-	h4 {
-		@include font-styling($font-body, 1.5rem, $success, $fw-semi-bold);
-	}
-
-	h5 {
-		@include font-styling($font-body, 1.25rem, $black);
-
-		text-align: center;
-		margin-top: -1rem;
-	}
-
-	p {
-		@include font-styling($font-body, 0.95rem, $black);
-	}
-}
-
-/* 
------------------------------
-wishcards
------------------------------
-*/
-.wishcards {
-	position: relative;
-	padding: 3em 0;
-
-	h1 {
-		@include font-styling($font-heading, 2.5rem, $primary, $fw-medium);
-
-		text-align: center;
-		padding: 1rem 0 3rem;
-	}
-
-	&-container {
-		max-width: 1300px;
-
-		// Just so it doesn't expand all the way in large screens
-	}
-
-	.create-more {
-		@extend %btn-lg;
-
-		text-decoration: none !important;
-		background-color: $secondary;
-		color: $white !important;
-		border-radius: 0.5rem;
-		font-size: 1.25rem;
-	}
-}
-
-.wishcard {
-	&__icon--fixed {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		top: -10px;
-		right: -10px;
-		border-radius: 50%;
-		padding: 0;
-		width: 3.5rem;
-		height: 3.5rem;
-		transition: all 0.25s ease-in-out;
-		text-decoration: none;
-	}
-
-	&__button--blue {
-		@extend %btn;
-
-		background-color: $primary;
-		color: $white;
-
-		&:hover {
-			background-color: $white;
-			color: $primary;
-			border: 0.5px solid $primary;
-		}
-	}
-
-	&__button--disabled {
-		@extend %btn;
-
-		background-color: lighten($gray, 25%);
-		color: $white;
-	}
-
-	&__button--filter {
-		@extend %btn;
-
-		background-color: $white;
-		color: $warning;
-		border: 0.5px solid $warning;
-
-		&:hover {
-			background-color: $warning;
+		.form-control::placeholder {
 			color: $white;
 		}
 	}
 }
-
-.card-body {
-	padding: 1.1rem !important;
-
-	.card-details {
-		p {
-			@include font-styling($font-body);
-
-			margin-bottom: 0;
-		}
-
-		.wish-price {
-			text-decoration-line: underline;
-			text-decoration-color: $danger;
-		}
-	}
-
-	.card-action {
-		@include font-styling($font-body);
-
-		margin-top: 1rem;
-		margin-bottom: -1rem;
-		text-align: center;
-	}
-}
-
-// move this later
-.msg-icon {
-	background-color: $warning;
-	padding: 0.6em 0.8em;
-	border: none;
-
-	&:hover {
-		text-decoration: none;
-		background-color: darken($warning, 25%);
-	}
-}
-
-.search-border {
-	background-color: lighten($cream, 8);
-	border-radius: 20px;
-
-	button {
-		border-radius: 0 20px 20px 0;
-	}
-}
-

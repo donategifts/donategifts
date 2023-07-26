@@ -26,8 +26,6 @@ router.get(
 	wishCardController.handleGetDonate,
 );
 
-router.get('/get/random', wishCardController.handleGetRandom);
-
 router.post(
 	'/message',
 	Permissions.checkUserVerification,
@@ -39,8 +37,6 @@ router.post(
 router.post('/search/:init?', wishCardController.handlePostSearch);
 
 // ------------- only agencies and admins from here on -------------
-
-router.get('/choose', Permissions.isAdminOrAgency, wishCardController.handleGetChoose);
 
 router.post(
 	'/',

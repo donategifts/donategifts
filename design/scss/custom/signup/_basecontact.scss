@@ -1,0 +1,10 @@
+#sign-up {
+	form {
+		.btn-outline-light {
+			&:hover {
+				background-color: $light;
+				color: $black;
+			}
+		}
+	}
+}

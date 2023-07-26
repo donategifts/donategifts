@@ -5,7 +5,7 @@ block title
     title= childName
 
 block content
-    .wishpage.py-4
+    .py-4.bg-light
         .container-fluid
             -
                 var header = `Hi, I am ${wishcard.childFirstName}!`;
@@ -20,9 +20,9 @@ block content
 
             .row.justify-content-center.align-items-start
                 .col-md-4.col-lg-3.col-12.mt-4
-                    .card-body.shadow-lg.p-4.d-flex.justify-content-center.align-items-center.flex-column
-                        img.img-fluid.mt-2( src= wishcard.wishCardImage alt= wishcard.wishItemName loading='lazy' )
-                        h1.my-3= header
+                    .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1
+                        img.img-fluid.mt-2.rounded-3( src= wishcard.wishCardImage alt= wishcard.wishItemName loading='lazy' )
+                        h1.cool-font.text-primary.text-center.my-3= header
                         if wishcard.status === 'donated'
                             button#donate-btn.button-disabled.text-center( type='button' disabled='' aria-disabled='true' ) Gift Donated
                         else if user
@@ -32,66 +32,69 @@ block content
                                 data-bs-toggle='modal'
                                 data-bs-target='#loginModalCenter'
                             ) Donate Gift
-                .col-md-8.col-lg-8.col-12.mt-4
-                    .card-body.shadow-lg.p-4.mb-4
+
+                .col-md-8.col-12.mt-4
+                    .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
                         .row.m-2
                             .col-md-6.col-lg-6.col-12
-                                h2.my-4= about
+                                .display-6.text-primary.my-4= about
                                 p
-                                    span My Age:
+                                    span.fw-bold My Age:
                                     span.mx-2= wishcard.age
                                 p
-                                    span My Interest:
+                                    span.fw-bold My Interest:
                                     span.mx-2= wishcard.childInterest
                                 p
-                                    span My Story:
+                                    span.fw-bold My Story:
                                     span.mx-2= wishcard.childStory
                             .col-md-6.col-lg-6.col-12
-                                h2.my-4 Care Agency
+                                .display-6.text-primary.my-4 Care Agency
                                 p
-                                    i.fas.fa-building
+                                    i.fas.fa-building.text-secondary.me-2
                                     span= agency.agencyName
                                 if agency.agencyAddress
                                     p
-                                        i.fas.fa-map-marker-alt
+                                        i.fas.fa-map-marker-alt.text-secondary.me-2
                                         span= agencyAddress
                                 if agency.agencyPhone
                                     p
-                                        i.fas.fa-phone-alt
+                                        i.fas.fa-phone-alt.text-secondary.me-2
                                         = agency.agencyPhone
                                 if agency.agencyWebsite
                                     p
-                                        a.agency-link( href= agency.agencyWebsite target='_blank' rel='noopener noreferrer' )
-                                            i.fas.fa-link
+                                        a.text-decoration-none.text-decoration( href= agency.agencyWebsite target='_blank' rel='noopener noreferrer' )
+                                            i.fas.fa-link.text-secondary.me-2
                                             = agency.agencyWebsite
                                 if agency.agencyBio
                                     p
-                                        i.fas.fa-address-card
+                                        i.fas.fa-address-card.text-secondary.me-2
                                         span= agency.agencyBio
-                    .card-body.shadow-lg.wish-panel
-                        .row.mx-2.mt-2
+
+                    .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
+                        .row.m-2
                             .col-md-6.col-lg-6.col-12
-                                h2.my-4 My Wish
-                                img.img-fluid.mb-3( src= wishItemImg  alt= wishcard.wishItemName loading='lazy' )
+                                .display-6.text-primary.my-4 My Wish
+                                img.img-fluid.mb-3.rounded-3( src= wishItemImg  alt= wishcard.wishItemName loading='lazy' )
                                 p
-                                    span Item Name:
+                                    span.fw-bold Item Name:
                                     span.mx-2= wishcard.wishItemName
                                 p
-                                    span Item Price:
+                                    span.fw-bold Item Price:
                                     span.mx-2= wishItemPrice
                             .col-md-6.col-lg-6.col-12
                                 if user
-                                    h2.my-4 Send Message
-                                    form.message.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
-                                        select.custom-select
+                                    .display-6.text-primary.my-4 Send Message
+                                    form.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
+                                        select.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
                                             option( selected ) Select a message to send
                                             each message, index in defaultMessages
                                                 option( value=index )= message
-                                        textarea.mt-3.p-3( rows= "7" placeholder="or write your custom message..." )
-                                        input#submit.mt-4.button-primary.d-flex.justify-content-center( type='submit' value= messageChildName )
-                    .card-body.shadow-lg.p-4.my-4
+                                        textarea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." )
+                                        button.btn.btn-lg.btn-primary.mt-4.d-flex.justify-content-center( type='submit' )= messageChildName
+
+                    .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
                         .row.m-2
-                            h2.my-4 Message Board
+                            .display-6.text-primary.my-4 Message Board
                             if messages.length === 0
                                 p= defaultText
                             else
@@ -101,26 +104,26 @@ block content
                                             - var createdAt = message.createdAt.toLocaleDateString('en-us', options);
                                             if message.messageFrom && message.messageFrom.fName && message.messageFrom.lName
                                                 - var posterName = `${message.messageFrom.fName} ${message.messageFrom.lName.charAt(0)}.`
-                                                p= posterName
-                                                p.time-stamp= createdAt
-                                                p.d-flex.align-items-start
-                                                    i.far.fa-comment-dots
-                                                    span.mx-2= message.message
+                                                .fw-bold= posterName
+                                                p.mt-0= createdAt
+                                                p.d-flex.align-items-center
+                                                    i.far.fa-comment-dots.text-secondary.me-2.fs-4
+                                                    span= message.message
 block modal
     include ../../components/modal/loginModal.pug
 
 block scripts
     script.
         $(document).ready(function () {
-            $('.message').submit(function (e) {
-                e.preventDefault();
+            $('form').submit(function (event) {
+                event.preventDefault();
 
                 $.ajax({
                     type: 'POST',
                     url: '/wishcards/message',
                     data: {
-                        messageFrom: '',
-                        messageTo: '',
+                        messageFrom: '#{user ? user._id : ''}',
+                        messageTo: '#{wishcard._id}',
                         message: $('.custom-select option:selected').text(),
                     },
                     statusCode: {

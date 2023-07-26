@@ -43,7 +43,6 @@ export default class WishCardController extends BaseController {
 		this.handleGetRandom = this.handleGetRandom.bind(this);
 		this.handlePostMessage = this.handlePostMessage.bind(this);
 		this.handleGetDefaults = this.handleGetDefaults.bind(this);
-		this.handleGetChoose = this.handleGetChoose.bind(this);
 	}
 
 	async getWishCardSearchResult(
@@ -464,31 +463,11 @@ export default class WishCardController extends BaseController {
 
 	async handleGetRandom(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			let wishcards = await this.wishCardRepository.getWishCardsByStatus('published');
-
-			if (!wishcards || wishcards.length < 6) {
-				const donatedWishCards = await this.wishCardRepository.getWishCardsByStatus(
-					'donated',
-				);
-
-				wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length));
-			} else {
-				wishcards.sort(() => Math.random() - 0.5);
-
-				const requiredLength = 3 * Math.ceil(wishcards.length / 3);
-				const rem = requiredLength - wishcards.length;
-
-				if (rem !== 0 && wishcards.length > 3) {
-					for (let j = 0; j < rem; j++) {
-						wishcards.push(wishcards[j]);
-					}
-				}
-			}
+			const wishcards = await this.wishCardRepository.getRandom('published', 6);
 
 			res.render('components/homeSampleCards', { wishcards }, (error, html) => {
 				if (error) {
-					this.log.error(error);
-					res.status(400).json({ success: false, error });
+					throw error;
 				} else {
 					res.status(200).send(html);
 				}
@@ -553,28 +532,5 @@ export default class WishCardController extends BaseController {
 				res.status(200).send({ success: true, html });
 			}
 		});
-	}
-
-	// TODO: is this still needed?
-	async handleGetChoose(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const { user } = res.locals;
-
-			let params = {};
-
-			if (user.userRole === 'partner') {
-				const agency = await this.agencyRepository.getAgencyByUserId(user._id);
-
-				if (!agency) {
-					return this.handleError(res, 'Agency Not Found', 404);
-				}
-
-				params = { ...params, agency };
-			}
-
-			this.renderView(res, 'wishcard/guided', params);
-		} catch (error) {
-			return this.handleError(res, error);
-		}
 	}
 }

@@ -15,14 +15,14 @@ block content
                 .row.justify-content-center
                     each card in wishCardsWithAgencyDetails
                         .col-lg-4.col-xs-12.mb-5.mt-4
-                            #card-fix.card.mb-3
+                            .card.mb-3
                                 .view.overlay
                                     img#img-fix.card-img-top( src=card.wishCardImage alt='Card image' )
                                     a( href='#' )
                                         .mask.rgba-white-slight
                                 .card-body
                                     .card-text-container
-                                        h3.card-title.text-center.crayon-font My name is
+                                        h3.card-title.text-center My name is
                                             |
                                             |
                                             = card.childFirstName

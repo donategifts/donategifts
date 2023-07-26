@@ -1,7 +1,7 @@
 const path = require('node:path');
 
 require('dotenv').config({
-	path: path.join(__dirname, './config/config.env'),
+	path: path.join(__dirname, './config.env'),
 });
 
 const { src, dest, series, watch, task } = require('gulp');
@@ -27,13 +27,12 @@ const onSuccess = (runner, done) => () => {
 };
 
 const scss = (done) =>
-	src('./design/scss/**/*.scss')
+	src('./design/scss/style.scss')
 		.pipe(plumber(onError('scss', done)))
 		.pipe(gulpif(isDev, sourcemaps.init()))
 		.pipe(concat('app.min.css'))
 		.pipe(
 			sass({
-				includePaths: ['./design/scss/**/*.scss', 'node_modules/bootstrap/scss/**/*.scss'],
 				outputStyle: 'compressed',
 			}),
 		)

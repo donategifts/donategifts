@@ -4,9 +4,9 @@ mixin agencyFetchingJS()
             const fetchAgencyData = function () {
                 $.ajax({
                     type: 'GET',
-                    url: '/agency/address',
+                    url: '/api/agency',
                     success: (response) => {
-                        const agency = response.agency;
+                        const agency = response.data;
 
                         if (agency.agencyAddress) {
                             $('#address1').val(agency.agencyAddress.address1);
@@ -27,16 +27,15 @@ mixin agencyFetchingJS()
 
             $('#agencyAddressCheckBox').click(function () {
                 if ($(this).is(':checked')) {
-                    if (
-                        (
-                            $('#address1').val().length ||
-                            $('#address2').val().length ||
-                            $('#address_zip').val().length ||
-                            $('#address_city').val().length ||
-                            $('#address_country').val().length ||
-                            $('#address_state').val().length ||
-                        ) === 0
-                    ) {
+                    var fields = [
+                        $('#address1').val().length,
+                        $('#address2').val().length,
+                        $('#address_zip').val().length,
+                        $('#address_city').val().length,
+                        $('#address_country').val().length,
+                        $('#address_state').val().length
+                    ];
+                    if (fields.includes(0)) {
                         fetchAgencyData();
                     } else {
                         const confirmation = confirm('Do you want to overwrite the address with agency address?');

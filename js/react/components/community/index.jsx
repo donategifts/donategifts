@@ -54,10 +54,10 @@ function Community(props) {
 	};
 
 	const createPost = () => (
-		<div className="community d-md-flex justify-content-center">
-			<div className="row m-0 col-md-8 p-3">
-				<div className="card m-0 border-white shadow rounded">
-					<div className="card-title quick-font border-bottom mb-3 text-center">
+		<div className="d-md-flex justify-content-center">
+			<div className="col-12 py-3">
+				<div className="card border-white shadow rounded">
+					<div className="card-title pt-3 text-center">
 						<h3 className="py-2">Post a message to your donors</h3>
 					</div>
 					<div className="card-body">
@@ -66,7 +66,7 @@ function Community(props) {
 								<div className="col-md-8">
 									<div className="form-group">
 										<textarea
-											className="form-control bg-white border quick-font"
+											className="form-control bg-white border"
 											id="message"
 											rows="5"
 											placeholder="Write a thank you message here"
@@ -81,9 +81,9 @@ function Community(props) {
 							<div className="row mt-4 d-flex justify-content-md-center">
 								<div className="col-md-6">
 									<div className="d-md-flex justify-content-between">
-										<div className="col-md-5 mb-2 mb-md-0 text-center">
+										<div className="col-md-6 mb-2 me-0 me-md-1 mb-md-0 text-center">
 											<label
-												className="wishcard__button--yellow rounded-pill d-inline-block quick-font"
+												className="btn btn-lg btn-secondary w-100"
 												htmlFor="image"
 											>
 												Upload Photo
@@ -95,9 +95,9 @@ function Community(props) {
 												onChange={handleImagePreview}
 											/>
 										</div>
-										<div className="col-md-5 text-center">
+										<div className="col-md-6 text-center ms-0 ms-md-1">
 											<button
-												className="createPost_button rounded-pill d-inline-block quick-font"
+												className="btn btn-lg btn-primary w-100"
 												onClick={submitPost}
 											>
 												Submit Post
@@ -114,16 +114,13 @@ function Community(props) {
 	);
 
 	return (
-		<>
-			{user?.userRole === 'partner' && createPost()}
-			<div className="container">
+		<div className="bg-light">
+			<div id="community" className="container py-3">
+				{user?.userRole === 'partner' && createPost()}
 				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 					<Masonry gutter="1rem">
 						{posts.map((post) => (
-							<div
-								className="card shadow rounded-3 my-3 border-0 quick-font"
-								key={post._id}
-							>
+							<div className="card shadow rounded-3 border-0" key={post._id}>
 								<div className="card-header p-4 bg-white border-0">
 									<div className="text-center">
 										{post.belongsTo?.agencyProfileImage && (
@@ -133,17 +130,16 @@ function Community(props) {
 												alt="partner agency logo"
 											/>
 										)}
-										<h6 className="bold-text">{post.belongsTo?.agencyName}</h6>
+										<div className="mt-3 display-6 text-primary cool-font">
+											{post.belongsTo?.agencyName}
+										</div>
 									</div>
 								</div>
-								<div className="card-body">
-									<div className="mx-5">
-										<span className="text-muted post-date">
-											Posted on{' '}
-											{moment(post.createdAt).format('MMM DD, YYYY')}
-										</span>
-										<p className="mt-2">{post.message}</p>
-									</div>
+								<div className="card-body mx-1">
+									<small className="text-muted">
+										Posted on {moment(post.createdAt).format('MMM DD, YYYY')}
+									</small>
+									<div className="my-2">{post.message}</div>
 									{post.image && (
 										<div className="d-flex justify-content-center">
 											<img
@@ -159,7 +155,7 @@ function Community(props) {
 					</Masonry>
 				</ResponsiveMasonry>
 			</div>
-		</>
+		</div>
 	);
 }
 

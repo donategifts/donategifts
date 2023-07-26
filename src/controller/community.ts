@@ -17,7 +17,7 @@ export default class CommunityController extends BaseController {
 		this.agencyRepository = new AgencyRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handleAddPost = this.handleAddPost.bind(this);
+		this.apiAddPost = this.apiAddPost.bind(this);
 	}
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
@@ -31,7 +31,7 @@ export default class CommunityController extends BaseController {
 		}
 	}
 
-	async handleAddPost(req: Request, res: Response, _next: NextFunction) {
+	async apiAddPost(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = req.session;
 

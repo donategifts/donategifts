@@ -8,67 +8,81 @@ append head
         script( src='https://www.google.com/recaptcha/api.js' async defer )
 
 block content
-    .signup-bg.d-flex.container-fluid.justify-content-center.py-5
-        .wrap-box
-            form.signup( action='/signup' method='post' )
-                .sign-row.lg.title-text.crayon-font.mg-sm
-                    a.userLogBtn( href='/signup' ) Sign Up
-                    span OR
-                    a.userLogBtn( href='/login' )  Log In
-                .wrap-input.mg-btm( data-validate='First name is required' )
-                    input#fName.input-default.quick-font( required
-                        type='text'
-                        name='fName'
-                        placeholder='First name'
-                        title='First name must contain alphabets only'
-                    )
-                .wrap-input.mg-btm( data-validate='Last name is required' )
-                    input#lName.input-default.quick-font( required
-                        type='text'
-                        name='lName'
-                        placeholder='Last name'
-                        title='Last name must contain alphabets only'
-                    )
-                .wrap-input.mg-btm( data-validate='Email is required' )
-                    input#email.input-default.quick-font( required
-                        type='email'
-                        name='email'
-                        placeholder='Email'
-                        title='example: username@xyz.com'
-                    )
-                .wrap-input.mg-btm2( data-validate='Password is required' )
-                    input#password.input-default.quick-font( required
-                        type='password'
-                        name='password'
-                        placeholder='Password'
-                    )
-                    i#showPassword.fas.fa-eye.text-white.pointer
-                small#password-error.hidden.text-danger Passwords do not match
-                .wrap-input.mg-btm2( data-validate='Password is required' )
-                    input#password-repeat.input-default.quick-font( required
-                        type='password'
-                        name='password-repeat'
-                        placeholder='Confirm Password'
-                    )
-                fieldset.wrap-radio.quick-font
-                    legend.md2 Signing up as:
-                    .form-check.d-flex.align-items-center.ms-2
-                        input#donor.form-check-input( type='radio' name='userRole' value='donor' )
-                        label.form-check-label( for='donor' ) Gift Sender
-                    .form-check.d-flex.align-items-center.ms-2
-                        input#partner.form-check-input( type='radio'
-                            name='userRole'
-                            value='partner'
-                            data-bs-toggle='modal'
-                            data-bs-target='#signupModalCenter'
+    #sign-up.gradient-form
+        .container.py-5
+            form#sign-up-form.p-5.rounded-4
+                .col-md-8.mx-auto.text-white
+                    .py-2
+                        label.form-label( for='fName' ) First Name
+                        input#fName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='text'
+                            name='fName'
+                            placeholder='John'
                         )
-                        label.form-check-label( for='partner' ) Foster Care Partner
-                .g-recaptcha( data-sitekey='6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe'
-                    data-callback='confirmCaptchaSubmit'
-                    data-size='invisible'
-                )
-                .container-form-btn
-                    button#submit-btn.form-btn.quick-font( type='submit' ) Sign Up
+
+                    .py-2
+                        label.form-label( for='lName' ) Last Name
+                        input#lName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='text'
+                            name='lName'
+                            placeholder='Doe'
+                        )
+
+                    .py-2
+                        label.form-label( for='email' ) Email
+                        input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='email'
+                            name='email'
+                            placeholder='username@xyz.com'
+                        )
+
+                    .py-2
+                        label.form-label( for='password' ) Password
+                        div
+                            .input-group
+                                input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                                    type='password'
+                                    name='password'
+                                )
+                                span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
+                                    #showPassword.fas.fa-eye.text-white.pointer
+                            small#password-error.hidden.text-primary Passwords do not match
+
+                    .py-2
+                        label.form-label( for='password-repeat' ) Confirm Password
+                        input#password-repeat.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='password'
+                            name='password-repeat'
+                        )
+
+                    .py-2
+                        label Signing up as:
+                        .row.px-2
+                            input#donor.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='donor'
+                                autocomplete='off'
+                                checked
+                            )
+                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='donor' ) Gift Sender
+
+                            input#partner.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='partner'
+                                autocomplete='off'
+                                data-bs-toggle='modal'
+                                data-bs-target='#signupModalCenter'
+                            )
+                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='partner' ) Foster Care Partner
+
+                    .g-recaptcha( data-sitekey='6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe'
+                        data-callback='confirmCaptchaSubmit'
+                        data-size='invisible'
+                    )
+
+                    .row.py-2.justify-content-end
+                        .col-md-4
+                            button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Sign Up
 
 block modal
     include ../../components/modal/signupModal.pug
@@ -96,7 +110,7 @@ block scripts
     if locals.env.captcha
         script.
             $(document).ready(() => {
-                $('.signup').submit((event) => {
+                $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', true);
                     grecaptcha.execute();
@@ -139,7 +153,7 @@ block scripts
     else
         script.
             $(document).ready(() => {
-                $('.signup').submit((event) => {
+                $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', false);
 

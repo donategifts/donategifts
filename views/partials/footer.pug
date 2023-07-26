@@ -1,9 +1,9 @@
-.footer.footer-bar
+.footer
     .container
-        .d-flex.justify-content-center.pt-3
-            p.support.px-2
+        .d-flex.justify-content-center.py-3
+            .support.text-warning
                 i.fa.fa-heart( aria-hidden='true' )
-                a( href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LA5DA2K2C8HLW'
+                a.text-warning.fs-5.px-2.text-decoration-none( href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LA5DA2K2C8HLW'
                     title='support our organization by paypal donation'
                     target='_blank'
                 ) Support Our Cause
@@ -63,12 +63,12 @@
             each item in footerList
                 a.px-2.footer-item( href=item.link target=item.target || '' )!= item.text
                 if item.addPipe
-                    span |
+                    span.text-white |
 
         .d-flex.justify-content-center.py-3
             a.px-2.footer-item( href='/proof' target='_blank' ) 501(c)(3) non profit charitable organization
-        .d-flex.justify-content-center.pb-2
+        .d-flex.justify-content-center.pb-2.text-white
             - var copyright = '© ' + new Date().getFullYear() + ' All rights reserved!'
 
-            p.px-2 Donate Gifts Inc.
+            p.pe-2 Donate Gifts Inc.
             p= copyright
