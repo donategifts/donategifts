@@ -1,0 +1,19 @@
+{
+    "extends": [
+        "config:base",
+        "helpers:pinGitHubActionDigests"
+    ],
+    "dependencyDashboard": true,
+    "packageRules": [
+        {
+            "packageNames": [
+                "node"
+            ],
+            "enabled": false
+        }
+    ],
+    "pinVersions": true,
+    "schedule": [
+        "every weekend"
+    ]
+}
