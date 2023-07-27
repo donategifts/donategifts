@@ -1,0 +1,10 @@
+{
+  "watch": [
+    "src",
+    "views",
+    "design",
+    "js"
+  ],
+  "ext": "ts,js,jsx,pug,scss",
+  "exec": "node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts"
+}

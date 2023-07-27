@@ -1,0 +1,77 @@
+extends ../../master
+
+block title
+    title See Wish Card Details | Donate Gifts
+
+block content
+    #profile-bg.bg
+        .profile-title
+            h1#cray-font Details for Donation from
+            |= donation.donationDate
+    .admin-donation
+        .container
+            .admin-wishcard-details
+                - var childName = wishCard.childFirstName + ' ' + wishCard.childLastName
+
+                h3 Wishcard Details
+
+                div
+                    span Childname:
+                    |= childName
+                div
+                    span Birthday:
+                |= wishCard.childBirthday
+                div
+                    span Wishitemname:
+                    |= wishCard.wishItemName
+                div
+                    span Wishitemprice:
+                    |= wishCard.wishItemPrice
+                div
+                    span Wishitemurl:
+                    a( href=wishCard.wishItemURL )= wishCard.wishItemURL
+                div
+                    span Deliverydate:
+                    |= wishCard.deliveryDate
+                div
+                    span Status:
+                    |= wishCard.status
+                div
+                    span Address:
+                    |= JSON.stringify(wishCard.address, null, 2)
+
+            .admin-agency-details
+                - var accountManagerName = accountManager.fName + ' ' + accountManager.lName
+
+                h3 Agency Details
+
+                div
+                    span Name:
+                    |= agency.agencyName
+                div
+                    span Website:
+                    |= agency.agencyWebsite
+                div
+                    span Phone:
+                    |= agency.agencyPhone
+                div
+                    span Account Manager:
+                    div
+                        span= accountManagerName
+                    div
+                        span= accountManager.email
+                    div
+                        span Address:
+                        |= agency.agencyAddress
+
+            .admin-donor-details
+                - var donorName = donor.fName + ' ' + donor.lName
+
+                h3 Donor Detail
+
+                div
+                    span Donor:
+                    div
+                        span= donorName
+                    div
+                        span= donor.email

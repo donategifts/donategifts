@@ -1,0 +1,22 @@
+mixin passwordToggleJS()
+    script.
+        $(document).ready(() => {
+            $('#showPassword').click((e) => {
+                const imageHideClass = 'fas fa-eye';
+                const imageVisibleClass = 'fas fa-eye-slash';
+                const $passwordInput = $('#password');
+                const passworInputType = $passwordInput.attr('type');
+
+                const $this = $(e.currentTarget);
+
+                if (passworInputType === 'password') {
+                        $passwordInput.attr('type', 'text');
+                        $this.removeClass(imageHideClass);
+                        $this.addClass(imageVisibleClass);
+                } else {
+                        $passwordInput.attr('type', 'password');
+                        $this.removeClass(imageVisibleClass);
+                        $this.addClass(imageHideClass);
+                }
+            });
+        });

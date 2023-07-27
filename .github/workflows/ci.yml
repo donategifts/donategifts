@@ -1,0 +1,44 @@
+name: "Linter and CodeQL"
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened]
+
+  push:
+    branches:
+      - "**"
+      - "!master"
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: install dependencies
+        run: npm install
+
+      - name: lint
+        run: npm run lint
+
+      - name: build
+        run: npm run build
+
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v2
+      #   with:
+      #     languages: javascript
+
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v2

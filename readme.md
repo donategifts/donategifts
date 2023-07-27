@@ -1,64 +1,45 @@
-# DonateGifts Project
+<p align="center">
+    <img width=200 height=200 src="./public/img/new-donate-gifts-logo-2.png">
+</p>
 
-> Overview: This project enables users to donate holiday & birthday gifts to the foster children and homeless youth --simply by clicking one button-- which will automatically add the child's wish item to the user's Amazon cart & deliver to the child's address.
+This web app offers users to send holiday gifts and school supplies to the children in foster care and emergency shelters.
 
-# Live Production: 
-> https://donate-gifts.com/ 
+---
 
-> https://donate-gifts.org
+## Live Production:
 
-# Dev Server: 
-> https://dev.donate-gifts.com
+[https://donate-gifts.(com|org)](https://donate-gifts.com)
 
-## Author
+## Admin
 
-> Stacy Sealky Lee
+- [Stacy Sealky Lee](https://github.com/stacysealky)
+- [Marco Schuster](https://github.com/Enubia)
 
-## Contributors
+## Past Contributors
 
-  
-> Patric  
-> Ivan Repusic  
-> Jacob Jeevan  
-> Jordan Huang  
-> Maria Nguyen  
+- Patric Hoffmann
+- Ivan Repusic
+- Jacob Jeevan
+- Markell Richards
+- Maria Nguyen
+- Deep Patel
 
-## Usage
+## Questions?
 
-Install Mongo or use Docker to spin up a Docker container
-start container with:
-`docker-compose up`
+support@donate-gifts.com
 
-App will not run without config.env
+## Contributing
 
-Dev server uses a separate db 
-
-public dir has all the static components and assets 
-
-We are saving media files to AWS S3
-
-add more test files in __tests__ dir
-
-## Install Dependencies
-
-```
-npm install
-```
-
-## Run App
-
-```
-# Run in dev mode
-npx nodemon app.js  ||  npm run dev 
-
-# Run in prod mode
-node app.js ||  npm start 
-```
+Checkout our contributing [guidelines](/Contributing.md)
 
 ## Demo
 
 https://youtu.be/KhgQV0MTxlA
 
-- Version: 1.0
-- Copyrights: Stacy Sealky Lee
-- Do not distribute this code without permission
+---
+
+Copyrights: DonateGifts Inc.
+
+Do not distribute this code without permission
+
+

@@ -1,0 +1,13 @@
+{
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "extends": [
+    "slurp-config"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

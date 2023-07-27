@@ -1,0 +1,169 @@
+extends ../../master
+
+block title
+    title Edit Wishcard Page | Donate Gifts
+
+block content
+    .container-fluid
+        .create-wish-card
+            form#wishCardForm.container-fluid( method='POST' )
+                h4.wish-card-form-title
+                    | Edit wish card for the child or youth under your care
+                .mt-2.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-2.col-lg-6.col-sm-12( data-validate='Name is required' )
+                                label( for='childFirstName' ) Child's First Name
+                                input#childFirstName.input-block( type='text'
+                                    name='childFirstName'
+                                    value= wishcard.childFirstName || ''
+                                    placeholder='(Also allowed: nickname, alias)'
+                                )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childLastName' ) Child's Last Name
+                                input#childLastName.input-block( type='text'
+                                    name='childLastName'
+                                    value= wishcard.childLastName || ''
+                                    placeholder='(Also allowed: last initial)'
+                                )
+                        .row.mx-auto.pt-3.my-1
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childBirthday' ) Child's Birthday
+                                input#childBirthday.input-block( type='date'
+                                    name='childBirthday'
+                                    value= childBirthday || ''
+                                    placeholder="Child's Birthday"
+                                )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='childInterest' ) Child's Interest
+                                input#childInterest.input-block( type='text'
+                                    name='childInterest'
+                                    value= wishcard.childInterest || ''
+                                )
+                .mt-5.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-2.col-lg-6.col-sm-12( data-validate='Name is required' )
+                                label( for='wishItemName' ) Wish Item Name
+                                input#wishItemName.input-block( type='text'
+                                    name='wishItemName'
+                                    value= wishcard.wishItemName || ''
+                                )
+                            .mb-2.col-lg-6.col-sm-12
+                                label( for='wishItemPrice' ) Wish Item Price (numeric only, round it up)
+                                a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper2' )
+                                    i.fa.fa-question-circle( aria-hidden='true' )
+                                    | click for help
+                                input#wishItemPrice.input-block( type='number'
+                                    name='wishItemPrice'
+                                    value= wishcard.wishItemPrice || ''
+                                    placeholder='Price must be under $35'
+                                    min='1'
+                                    max='35'
+                                )
+                        .row.mx-auto.my-1.pt-3
+                            .col-12
+                                label( for='wishItemURL' )
+                                    | Wish Item Amazon URL
+                                a( data-bs-toggle='modal' data-bs-target='#formQuestionHelper' )
+                                    i.fa.fa-question-circle( aria-hidden='true' )
+                                    | click for help
+                                input#wishItemURL.input-block( type='text'
+                                    name='wishItemURL'
+                                    value= wishcard.wishItemURL || ''
+                                    placeholder='(Item page link https://www.amazon.....)'
+                                )
+                .mt-5.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            .mb-1.col-12( data-validate='Message is required' )
+                                label( for='childStory' ) Share their story
+                                textarea#childStory.input-block( name='childStory'
+                                    value= wishcard.childStory || ''
+                                    placeholder="(e.g. what's their story? why do they want this item? what's their favorite subject?)"
+                                    rows='6'
+                                )
+                .mt-5.card.shadow
+                    .card-body
+                        .row.mx-auto.my-1
+                            label.mx-3( for='agencyAddressCheckBox' ) Ship this wish item to my agency address
+                            input#agencyAddressCheckBox.mx-1( type='checkbox' )
+                        .row.mx-auto.my-1.pt-4
+                            .col-lg-4
+                                label( for='address1' ) Address Line 1
+                                input#address1.input-block( type='text'
+                                    name='address1'
+                                    value= wishcard.address.address1 || ''
+                                )
+                            .col-lg-4
+                                label( for='address2' ) Address Line 2
+                                input#address2.input-block( type='text'
+                                    name='address2'
+                                    value= wishcard.address.address2 || ''
+                                    placeholder='(e.g. unit or suite number)'
+                                )
+                            .col-lg-4
+                                label( for='address_city' ) City
+                                input#address_city.input-block( type='text'
+                                    name='address_city'
+                                    value= wishcard.address.address_city || ''
+                                    placeholder='(e.g. Chicago)'
+                                )
+                        .row.mx-auto.my-1.pt-3
+                            .col-lg-4
+                                label( for='address_state' ) State
+                                input#address_state.input-block( type='text'
+                                    name='address_state'
+                                    value= wishcard.address.address_state || ''
+                                    placeholder='(e.g. Illinois)'
+                                )
+                            .col-lg-4
+                                label( for='address_zip' ) Zipcode
+                                input#address_zip.input-block( type='text'
+                                    name='address_zip'
+                                    value= wishcard.address.address_zip || ''
+                                    placeholder='(e.g. 60640 )'
+                                )
+                            .col-lg-4
+                                label( for='address_country' ) Country
+                                input#address_country.input-block( type='text'
+                                    name='address_country'
+                                    value= wishcard.address.address_country || ''
+                                    placeholder='(e.g. USA)'
+                                )
+                .text-center.mt-5.pt-1
+                    p.p-2.mt-2 Wish card will be published once reviewed and approved by DonateGifts
+                #submit-btn.quick-font
+                    input.button.form-submit( value='Save' type='submit' )
+
+block scripts
+    include ../../mixins/agencyFetching.pug
+    +agencyFetchingJS
+
+    script.
+        $(document).ready(function () {
+            $('#wishCardForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: `/wishcards/edit/#{wishcard._id}`,
+                    data: $(this).serialize(),
+                    statusCode: {
+                        200: function (response) {
+                            $('#wishCardForm')[0].reset();
+
+                            showToast('WishCard Updated!');
+                            setTimeout(() => location.assign(response.url), 2000);
+                        },
+                        400: function (response) {
+                            showToast(response.responseJSON.error.msg);
+                        },
+                        403: function (response) {
+                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            setTimeout(() => location.assign(response.responseJSON.url), 1200);
+                        },
+                    },
+                });
+            });
+        });

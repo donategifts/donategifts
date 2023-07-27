@@ -1,0 +1,60 @@
+script( src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous" )
+
+script( src='/js/app.min.js' )
+script( src='/js/react-bundle.js' )
+
+script( src='https://cdn.jsdelivr.net/npm/toastify-js' )
+script.
+    window.showToast = (
+        message,
+        success = false,
+        duration = 3000,
+        offset = { x: 0, y: 0 },
+        className = 'px-3 py-4 rounded',
+        escapeMarkup = true
+    ) => {
+        let color = success ? '#00a19a' : '#ff5c6f';
+        let close = false;
+
+        //Login toast has duration of -1(displays until closed by user), styling is below for it.
+        if (duration === -1) {
+            color = '#f8e4c9CC';
+            close = true;
+        }
+
+        Toastify({
+            text: message,
+            duration,
+            newWindow: true,
+            close,
+            gravity: 'top',
+            position: 'center',
+            backgroundColor: `linear-gradient(to right, ${color}, ${color})`,
+            stopOnFocus: true,
+            className,
+            offset,
+            escapeMarkup,
+        }).showToast();
+    }
+
+script.
+    $(document).ready(function () {
+        $('#login-modal-form').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                method: 'POST',
+                url: '/login',
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
+                success: (response) => {
+                    setTimeout(() => location.assign(response.url), 2000);
+                },
+                error: (response) => {
+                    showToast(response.responseJSON.error.msg);
+                },
+            });
+        })
+    });

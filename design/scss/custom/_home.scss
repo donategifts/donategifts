@@ -1,0 +1,93 @@
+#home {
+	#hero {
+		background: url('/svg/dg-2022-bg-01.svg') center center;
+		min-height: 90vh;
+		height: 100px;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+
+	#sample-cards-carousel {
+		img {
+			max-height: 300px;
+			height: 50%;
+		}
+
+		.card-body {
+			background-color: lighten($cream, 8%);
+		}
+	}
+
+	#status-section {
+		background-image: url('/svg/paper-bg-2.svg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		min-height: 30rem;
+		width: 100%;
+		font-family: DkCoolCrayon, sans-serif;
+	}
+
+	#partner-carousel {
+		overflow: hidden;
+		position: relative;
+
+		ul {
+			display: flex;
+			top: 0;
+
+			li {
+				list-style: none;
+				margin-left: 6%;
+
+				img {
+					max-width: 200px;
+					height: 160px;
+					width: auto;
+				}
+			}
+		}
+
+		span {
+			position: absolute;
+			top: calc(50% - 20px);
+			opacity: 0.6;
+			cursor: pointer;
+			color: $white;
+
+			&:hover {
+				opacity: 0.4;
+			}
+
+			&:first-of-type {
+				right: 10px;
+			}
+
+			&:last-of-type {
+				left: 10px;
+			}
+		}
+	}
+
+	.typing {
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 1px;
+			height: 60px;
+			border: 2px solid $white;
+			animation: blink 0.5s infinite ease;
+		}
+	}
+
+	@keyframes blink {
+		0% {
+			opacity: 0;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+}

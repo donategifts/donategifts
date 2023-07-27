@@ -1,0 +1,20 @@
+extends ../master
+
+block title
+    title Donate Gifts Community
+
+append scripts
+    script.
+        $(document).ready(function () {
+            const root = ReactRoot(document.querySelector('#app-root'));
+            root.render(
+                React.createElement(
+                    Community,
+                    {
+                        user: !{JSON.stringify(user || null)},
+                        posts: !{JSON.stringify(posts.reverse())},
+                        _csrf: "#{_csrf}"
+                    }
+                )
+            );
+        })

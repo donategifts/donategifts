@@ -1,0 +1,54 @@
+extends ../../master
+
+block title
+    title See Donation History | Donate Gifts
+
+block content
+    .container
+        if user.userRole === 'partner'
+            h3.cool-font Donations Received
+        else
+            h3.cool-font My Donations
+
+        if donations.length === 0
+            .no-donation.quick-font
+                h4.mt-5 You have 0 donations to display
+                p Should we check out some wish cards first?
+                .container-form-btn
+                    a( href='/wishcards' )
+                        button.px-5.py-4.quick-font.wishcard-btn.grn-btn( type='button' ) Browse Wish Cards
+        else
+            table.table.table-striped.mt-4
+                thead
+                    tr
+                        th( scope='col' ) #
+                        th( scope='col' ) Order Id
+
+                        if user.userRole === 'partner'
+                            th( scope='col' ) Donated By
+
+                        th( scope='col' ) Donated For
+                        th( scope='col' ) Price
+                        th( scope='col' ) Item
+                        th( scope='col' ) Date
+                        th( scope='col' ) Status
+                tbody
+                    each donation, index in donations
+                        tr
+                            th( scope='row' )= index + 1
+                            td= donation._id
+
+                            if user.userRole === 'partner'
+                                td= donation.donationFrom.fName
+
+                            td= donation.donationCard.childFirstName
+                            td= donation.donationPrice
+                            td= donation.donationCard.wishItemName
+                            td= donation.donationDate
+
+                            if donation.status === 'confirmed'
+                                td Awaiting Order
+                            else if donation.status === 'ordered'
+                                td Order Placed
+                            else
+                                td Order Delivered

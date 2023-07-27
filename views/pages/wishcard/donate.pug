@@ -1,0 +1,320 @@
+extends ../../master
+
+block title
+    title See Each Wish Card | Donate Gifts
+
+block content
+    #donate.bg-light
+        .container.py-3
+            h1.text-center.cool-font.text-primary Wish Donation Secure Checkout
+            .text-center
+                -
+                    var text = wishcard.childFirstName + "'s gift will be delivered to our partner agency,";
+                    text += '<a href="#" class="fw-bold mx-1" data-bs-toggle="modal" data-bs-target="#checkoutHelper">' + agency.agencyName + '<i class="fa fa-info-circle ms-1" aria-hidden="true"></i></a>';
+                    text += '<span>, after confirmed payment.</span>';
+
+                != text
+
+            .row
+                .col-md-6.mt-5
+                    .card
+                        .card-header
+                            span From this donation, you will receive:
+                            .mt-1
+                                .center-elements.justify-content-start
+                                    .fa.fa-heart.text-secondary
+                                    .ms-1 100% tax-deductible receipt &amp; shipping details
+                                .center-elements.justify-content-start
+                                    .fa.fa-heart.text-secondary
+                                    .ms-1 Notification with a delivery proof
+                                .center-elements.justify-content-start
+                                    .fa.fa-heart.text-secondary
+                                    .ms-1 Message &amp; photo from <span class="fw-bold">#{wishcard.childFirstName}</span> if partner agency permits
+                        .card-body
+                            .col-6.mx-auto
+                                img.img-fluid.rounded-3( src= wishcard.wishCardImage alt='wish card kid photo' )
+
+                            .py-3 Wish item: #{wishcard.wishItemName}
+
+                            .d-flex.justify-content-between
+                                span Subtotal
+                                span= '$' + wishcard.wishItemPrice + '.00'
+                            .d-flex.justify-content-between
+                                span Shipping
+                                span.fw-bold= extendedPaymentInfo.shipping
+                            .d-flex.justify-content-between
+                                span
+                                    span Processing fee
+                                    a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper2' )
+                                        .fa.fa-question-circle.ms-1
+                                span= '$' + extendedPaymentInfo.processingFee
+                            .d-flex.justify-content-between
+                                span Item sales tax
+                                    a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper3' )
+                                        .fa.fa-question-circle.ms-1
+                                span= '$' + extendedPaymentInfo.tax
+                            #user-donation-div.d-flex.justify-content-between
+                                span Cash donation
+                                span#user-donation $0
+                            hr
+                            .d-flex.justify-content-between.fw-bold
+                                span Total
+                                span#total-cost.text-success= '$' + extendedPaymentInfo.totalItemCost
+
+                .col-md-6.mt-5
+                    .card
+                        .card-body
+                            .pb-1
+                                .fw-bold= user.fName + 'would you like to support our cause?'
+
+                                .my-3 Add cash donation to sponsor our project, so we can help more kids
+                                    a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper4' )
+                                        .fa.fa-question-circle.ms-1
+
+                                .d-md-flex.justify-content-center.align-items-center
+                                    .col-md-3.mb-3.mb-md-0.p-0.p-md-2
+                                        input#button-5.btn-check.col-auto( type='radio'
+                                            name='additional-donation'
+                                            value=5
+                                            autocomplete='off'
+                                        )
+                                        label.btn.btn-outline-success.py-3.d-flex.flex-column.justify-content-center( for='button-5' ) $5
+                                    .col-md-3.mb-3.mb-md-0.p-0.p-md-2
+                                        input#button-10.btn-check.col-auto( type='radio'
+                                            name='additional-donation'
+                                            value=10
+                                            autocomplete='off'
+                                        )
+                                        label.btn.btn-outline-success.py-3.d-flex.flex-column.justify-content-center( for='button-10' ) $10
+                                    .col-md-3.mb-3.mb-md-0.p-0.p-md-2
+                                        input#button-50.btn-check.col-auto( type='radio'
+                                            name='additional-donation'
+                                            value=50
+                                            autocomplete='off'
+                                        )
+                                        label.btn.btn-outline-success.py-3.d-flex.flex-column.justify-content-center( for='button-50' ) $50
+                                    .col-md-3.p-0.p-md-2
+                                        input#button-100.btn-check.col-auto( type='radio'
+                                            name='additional-donation'
+                                            value=100
+                                            autocomplete='off'
+                                        )
+                                        label.btn.btn-outline-success.py-3.d-flex.flex-column.justify-content-center( for='button-100' ) $100
+                            hr
+                            .fw-bold Use credit or debit card
+
+                            form#payment-form
+                                .my-1
+                                    label.form-label( for='billingName' ) Name on card
+                                    input#billingName.form-control( autocomplete='ccname'
+                                        autocorrect='off'
+                                        spellcheck='false'
+                                        name='billingName'
+                                        type='text'
+                                        aria-invalid='false'
+                                        value=''
+                                    )
+                                .pt-3 Card information
+
+                                #card-element.form-control
+                                #card-errors.error-text.bold-text( role='alert' )
+
+                                .mt-3.col-md-6.mx-auto
+                                    button#submit.btn.btn-lg.btn-primary.w-100.center-elements
+                                        span#button-text Pay
+                                        #spinner.spinner-border.spinner-border-sm.text-white.ms-1.d-none( role='status' )
+                                            span.visually-hidden Loading...
+                                .result-message.d-none Payment succeeded
+
+                                #card-errors( role='alert' )
+
+                            hr
+
+                            #smart-button-container
+                                #paypal-button-container( style='text-align: center; margin-top: 0.25em;' )
+
+            .text-center.mt-2
+                .fw-bold.fs-5 Secure Checkout Guaranteed
+                img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
+
+    #cardId( hidden )= wishcard._id
+    #userId( hidden )= user._id
+    #agencyName( hidden )= agency.agencyName
+    #total-cost-hidden( hidden )= extendedPaymentInfo.totalItemCost
+
+block modal
+    include ../../components/modal/checkoutHelperModals.pug
+
+block scripts
+    script( src='https://js.stripe.com/v3/' )
+    script.
+        $(document).ready(function () {
+            const stripe = Stripe('#{locals.env.stripe}');
+
+            const elements = stripe.elements();
+
+            // Todo: this needs to be edited
+            // Custom styling can be passed to options when creating an Element.
+            const style = {
+                base: {
+                    fontSize: '16px',
+                    color: '#00a19a',
+                },
+            };
+
+            const card = elements.create('card', { style });
+
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
+
+            // Handle real-time validation errors from the card Element.
+            card.on('change', function (event) {
+                if (event.error) {
+                    $('#card-errors').text(event.error.message);
+                } else {
+                    $('#card-errors').text('');
+                }
+            });
+
+            // Form submission.
+            $('#payment-form').submit(function (event) {
+                event.preventDefault();
+
+                loading(true);
+
+                stripe.createToken(card).then(function (result) {
+                    if (result.error) {
+                        // Inform the user if there was an error.
+                        $('#card-errors').text(result.error.message);
+
+                        loading(false);
+                    } else {
+                        // Send the token to your server.
+                        $.ajax({
+                            method: 'POST',
+                            url: '/payment/createIntent',
+                            data: {
+                                wishCardId: $('#cardId').text(),
+                                agencyName: $('#agencyName').text(),
+                                userDonation: $('#user-donation').text().replace('$', '')
+                            },
+                            success: (response) => {
+                                console.log(response);
+                                payWithCard(stripe, card, response.clientSecret);
+                            },
+                            error: () => {
+                                console.error('Error:', error);
+                                showToast('An error has occured while processing payment');
+                                loading(false);
+                            },
+                        });
+                    }
+                });
+            });
+
+            const payWithCard = function (stripe, card, clientSecret) {
+                loading(true);
+                stripe
+                    .confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card,
+                        },
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            showError(result.error.message);
+                        } else {
+                            orderComplete(result.paymentIntent.id);
+                        }
+                    });
+            };
+
+            const loading = function (isLoading) {
+                if (isLoading) {
+                    // Disable the button and show a spinner
+                    $('#submit').attr('disabled', true);
+                    $('#spinner').removeClass('d-none');
+                    $('#button-text').addClass('d-none');
+                } else {
+                    $('#submit').attr('disabled', false);
+                    $('#spinner').addClass('d-none');
+                    $('#button-text').removeClass('d-none');
+                }
+            };
+
+            const orderComplete = function (paymentIntentId) {
+                loading(false);
+                $('.result-message').removeClass('d-none');
+                $('#submit').attr('disabled', true);
+                redirectAfterSuccessfullPayment();
+            };
+
+            const showError = function (errorMsgText) {
+                loading(false);
+
+                $('#card-errors').text(errorMsgText);
+
+                setTimeout(function () {
+                    $('#card-errors').text('');
+                }, 4000);
+            };
+
+            const redirectAfterSuccessfullPayment = function () {
+                const wishCardId = $('#cardId');
+                const totalAmount = $('#total-cost');
+                window.location.replace(`/payment/success/${wishCardId.text()}&${totalAmount.text()}`);
+            };
+        })
+
+    script( src=`https://www.paypal.com/sdk/js?client-id=${locals.env.paypal}&disable-funding=credit,card` )
+    script.
+        $(document).ready(function () {
+
+            let totalAmount = 0;
+            let wishCardId;
+            let userDonation;
+            let userId;
+            let agencyName;
+
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        application_context: {
+                            shipping_preference: 'NO_SHIPPING'
+                        },
+                        purchase_units: [{
+                            reference_id: `${userId}%${wishCardId}%${userDonation}%${agencyName}`,
+                            amount: {
+                                value: parseFloat(totalAmount),
+                            },
+                        }]
+                    });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            const wishCardId = $('#cardId').text();
+                            const totalAmount = $('#total-cost').text();
+                            window.location.replace(`/payment/success/${wishCardId}&${totalAmount}`);
+                        });
+                    },
+                    onClick: function () {
+                        totalAmount = $('#total-cost').text().replace('$', '');
+                        wishCardId = $('#cardId').text();
+                        userId = $('#userId').text();
+                        userDonation =  $('#user-donation').text().replace('$', '');
+                        agencyName = $('#agencyName').text();
+                    }
+            }).render('#paypal-button-container');
+        });
+
+    script.
+        $(document).ready(function () {
+            $('input[name="additional-donation"]').change(function () {
+                const additional = Math.floor($(this).val() * 100) / 100
+                const totalAmount = Math.floor(
+                    (parseFloat('#{extendedPaymentInfo.totalItemCost}') + additional) * 100
+                ) / 100;
+                $('#total-cost').text('$' + totalAmount);
+                $('#user-donation').text('$' + additional);
+            });
+        });

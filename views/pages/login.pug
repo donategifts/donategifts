@@ -1,0 +1,98 @@
+extends ../master
+
+block title
+    title Sign Up to Donate Gifts
+
+block external
+    include ../mixins/googlefacebookscripts.pug
+
+block content
+    #fb-root
+    #login.gradient-form
+        .container.py-5
+            form.p-5.rounded-4( method='post' )
+                .col-md-8.mx-auto.text-white
+                    .py-2
+                        label.form-label( for='email' ) Email
+                        input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required type='email'
+                            name='email'
+                            placeholder='username@xyz.com'
+                        )
+                    .py-2
+                        label.form-label( for='password' ) Password
+                        .input-group
+                            input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                                type='password'
+                                name='password'
+                            )
+                            span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
+                                #showPassword.fas.fa-eye.text-white.pointer
+                    .py-2
+                        a.text-white( href='/profile/password/reset/' ) Forgot Password?
+
+                    .row.py-2.justify-content-center
+                        .col-md-4
+                            button.btn.btn-lg.btn-primary.w-100( type='submit' ) Login
+
+                            #google-fb-login
+                                .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
+                                .fb-login-button.mt-3( data-size='large'
+                                    data-button-type='login_with'
+                                    data-layout='default'
+                                    data-auto-logout-link='false'
+                                    data-use-continue-as='false'
+                                    data-scope='public_profile,email'
+                                    data-onlogin='facebookLogin'
+                                )
+
+append scripts
+    include ../mixins/formvalidation
+    +passwordToggleJS
+
+    if error
+        script.
+            showToast('#{error}');
+
+    script.
+        const facebookLogin = (fbUser) => {
+            if (fbUser.authResponse && fbUser.status === 'connected') {
+                FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
+                    if (response.id) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/fb-signin',
+                            data: {
+                                userName: response.name,
+                                email: response.email,
+                            },
+                            success: (_) => {
+                                location.reload();
+                            },
+                            error: (response) => {
+                                const txtToJson = JSON.parse(response.responseText);
+                                showToast(txtToJson.error.msg);
+                            },
+                        });
+                    }
+                });
+            }
+        }
+
+        const googleLogin = (googleUser) => {
+            var id_token = googleUser.getAuthResponse().id_token;
+            googleUser.disconnect();
+
+            $.ajax({
+                type: 'POST',
+                url: '/google-signin',
+                data: {
+                    id_token,
+                },
+                success: (_) => {
+                    location.reload();
+                },
+                error: (response) => {
+                    showToast(response.responseJSON.error.msg);
+                },
+            });
+        }

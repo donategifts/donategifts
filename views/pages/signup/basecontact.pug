@@ -1,0 +1,190 @@
+extends ../../master
+
+block title
+    title Sign Up | Donate Gifts
+
+append head
+    if locals.env.captcha
+        script( src='https://www.google.com/recaptcha/api.js' async defer )
+
+block content
+    #sign-up.gradient-form
+        .container.py-5
+            form#sign-up-form.p-5.rounded-4
+                .col-md-8.mx-auto.text-white
+                    .py-2
+                        label.form-label( for='fName' ) First Name
+                        input#fName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='text'
+                            name='fName'
+                            placeholder='John'
+                        )
+
+                    .py-2
+                        label.form-label( for='lName' ) Last Name
+                        input#lName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='text'
+                            name='lName'
+                            placeholder='Doe'
+                        )
+
+                    .py-2
+                        label.form-label( for='email' ) Email
+                        input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='email'
+                            name='email'
+                            placeholder='username@xyz.com'
+                        )
+
+                    .py-2
+                        label.form-label( for='password' ) Password
+                        div
+                            .input-group
+                                input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                                    type='password'
+                                    name='password'
+                                )
+                                span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
+                                    #showPassword.fas.fa-eye.text-white.pointer
+                            small#password-error.hidden.text-primary Passwords do not match
+
+                    .py-2
+                        label.form-label( for='password-repeat' ) Confirm Password
+                        input#password-repeat.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
+                            type='password'
+                            name='password-repeat'
+                        )
+
+                    .py-2
+                        label Signing up as:
+                        .row.px-2
+                            input#donor.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='donor'
+                                autocomplete='off'
+                                checked
+                            )
+                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='donor' ) Gift Sender
+
+                            input#partner.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='partner'
+                                autocomplete='off'
+                                data-bs-toggle='modal'
+                                data-bs-target='#signupModalCenter'
+                            )
+                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='partner' ) Foster Care Partner
+
+                    .g-recaptcha( data-sitekey='6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe'
+                        data-callback='confirmCaptchaSubmit'
+                        data-size='invisible'
+                    )
+
+                    .row.py-2.justify-content-end
+                        .col-md-4
+                            button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Sign Up
+
+block modal
+    include ../../components/modal/signupModal.pug
+
+block scripts
+    include ../../mixins/formvalidation
+    +passwordToggleJS
+
+    script.
+        $(document).ready(() => {
+            $('#password-repeat').focusout((e) => {
+                const password = $('#password').val();
+                const passwordRepeat = $(e.currentTarget).val();
+
+                if (passwordRepeat !== '') {
+                    if (password !== passwordRepeat) {
+                        $('#password-error').show();
+                    } else {
+                        $('#password-error').hide();
+                    }
+                }
+            });
+        });
+
+    if locals.env.captcha
+        script.
+            $(document).ready(() => {
+                $('#sign-up-form').submit((event) => {
+                    event.preventDefault();
+                    $('#submit-btn').prop('disabled', true);
+                    grecaptcha.execute();
+                });
+
+                const confirmCaptchaSubmit = (response) => {
+                    const captchaToken = response;
+                    const fName = $('#fName').val();
+                    const lName = $('#lName').val();
+                    const email = $('#email').val();
+                    const password = $('#password').val();
+                    const passwordConfirm = $('#password-repeat').val();
+                    const userRole = $("input[type='radio']:checked").val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/signup',
+                        data: {
+                            fName,
+                            lName,
+                            email,
+                            password,
+                            passwordConfirm,
+                            userRole,
+                            captchaToken,
+                        },
+                        success: function (response, textStatus, xhr) {
+                            $('#submit-btn').prop('disabled', false);
+                            location.assign(response.url);
+                        },
+                        error: function (response, textStatus, errorThrown) {
+                            $('#submit-btn').prop('disabled', false);
+                            showToast(response.responseJSON.error.msg);
+                            grecaptcha.reset();
+                        },
+                    });
+                };
+
+                window.confirmCaptchaSubmit = confirmCaptchaSubmit;
+            });
+    else
+        script.
+            $(document).ready(() => {
+                $('#sign-up-form').submit((event) => {
+                    event.preventDefault();
+                    $('#submit-btn').prop('disabled', false);
+
+                    const captchaToken = '';
+                    const fName = $('#fName').val();
+                    const lName = $('#lName').val();
+                    const email = $('#email').val();
+                    const password = $('#password').val();
+                    const passwordConfirm = $('#password-repeat').val();
+                    const userRole = $("input[type='radio']:checked").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/signup',
+                        data: {
+                            fName,
+                            lName,
+                            email,
+                            password,
+                            passwordConfirm,
+                            userRole,
+                            captchaToken,
+                        },
+                        success: function (response, textStatus, xhr) {
+                            $('#submit-btn').prop('disabled', false);
+                            location.assign(response.url);
+                        },
+                        error: function (response, textStatus, errorThrown) {
+                            $('#submit-btn').prop('disabled', false);
+                            showToast(response.responseJSON.error.msg);
+                        },
+                    });
+                });
+            });

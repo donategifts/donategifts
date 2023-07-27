@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": [
+            "ESNext",
+        ],
+        "outDir": "dist",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "strict": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false,
+        "allowSyntheticDefaultImports": true,
+    },
+    "files": [
+        "types/discord.d.ts",
+        "types/express-session.d.ts",
+        "types/express.d.ts",
+        "types/stripe.d.ts"
+    ],
+    "ts-node": {
+        "transpileOnly": true,
+        "files": true
+    },
+    "include": [
+        "src/**/*.ts",
+    ]
+}
