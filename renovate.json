@@ -4,6 +4,9 @@
         "helpers:pinGitHubActionDigests"
     ],
     "dependencyDashboard": true,
+    "labels": [
+        "dependencies"
+    ],
     "packageRules": [
         {
             "packageNames": [
