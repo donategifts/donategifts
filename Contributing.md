@@ -29,11 +29,6 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 - Have Docker installed (Docker Desktop for mac and windows). The local database is running in a mongo docker container so that you don't have to run mongo natively
 
-For Mac users:
-- If you don't have mongodb, run `brew tap mongodb/brew` then `brew install mongodb-database-tools`
-- If you don't have command line tools, run `xcode-select --install`
-
-
 ## Install dependencies
 
 - `npm install` will install all the deps you need as well as setup husky for our hook scripts
@@ -50,6 +45,7 @@ There are several scripts that can be executed to run/build the project/assets, 
 (leave it running and open a new terminal for npm commands)
 - `npm run dev`: this will start the server as well as the webpack watcher for react
 - `npm run build`: will cleanup all generated files and afterwards build all the assets/js into minified versions
+- To seed the database you can execute the seeder.js file like so `node scripts/seeder.js`
 
 If you need to run something specific checkout the package.json scripts section
 
