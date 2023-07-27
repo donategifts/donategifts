@@ -1,3 +1,4 @@
+// stylelint-disable
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -7,7 +8,7 @@ $gray-600: #6c757d !default;
 $gray-700: #3a3e42 !default;
 $gray-800: #343a40 !default;
 $gray-900: #313131 !default;
-$black:    #262626 !default;
+$black: #262626 !default;
 
 $grays: (
 	'100': $gray-100,
@@ -18,22 +19,22 @@ $grays: (
 	'600': $gray-600,
 	'700': $gray-700,
 	'800': $gray-800,
-	'900': $gray-900
+	'900': $gray-900,
 ) !default;
 
 $navy: #333a64 !default;
 $navy-dark: #414254 !default;
 $cream: #f8e4c9 !default;
 
-$primary: 		#333A64 !default;
-$secondary:     #FF826B !default;
-$success: 		#00A19A !default;
-$warning: 		#FFBB59 !default;
-$danger: 		#FF5C6F !default;
-$info:          #0DCAF0 !default;
-$light:         #E9ECEF !default;
-$dark:          #313131 !default;
-$gray:			#6C757D !default;
+$primary: #333a64 !default;
+$secondary: #ff826b !default;
+$success: #00a19a !default;
+$warning: #ffbb59 !default;
+$danger: #ff5c6f !default;
+$info: #0dcaf0 !default;
+$light: #e9ecef !default;
+$dark: #313131 !default;
+$gray: #6c757d !default;
 
 $primary-light: tint-color($primary, 50) !default;
 $primary-dark: shade-color($primary, 50) !default;
@@ -108,19 +109,19 @@ $checkbox-colors: (
 $custom-colors: (
 	'navy': #333a64,
 	'navy-dark': #414254,
-	'cream': #f8e4c9
+	'cream': #f8e4c9,
 );
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-	'primary':    $primary,
-	'secondary':  $secondary,
-	'success':    $success,
-	'info':       $info,
-	'warning':    $warning,
-	'danger':     $danger,
-	'light':      $light,
-	'dark':       $dark
+	'primary': $primary,
+	'secondary': $secondary,
+	'success': $success,
+	'info': $info,
+	'warning': $warning,
+	'danger': $danger,
+	'light': $light,
+	'dark': $dark,
 ) !default;
 // scss-docs-end theme-colors-map
 
