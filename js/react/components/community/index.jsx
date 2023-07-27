@@ -1,12 +1,23 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+
+import LoadingCard from '../shared/LoadingCard.jsx';
 
 function Community(props) {
 	const { user, _csrf } = props;
+	const [isLoading, setIsLoading] = useState(true);
 
 	const [posts, setPosts] = useState(props.posts);
+
+	useEffect(() => {
+		if (posts.length > 0) {
+			setTimeout(() => {
+				setIsLoading(false);
+			}, 1000);
+		}
+	}, []);
 
 	const submitPost = (event) => {
 		event.preventDefault();
@@ -119,39 +130,44 @@ function Community(props) {
 				{user?.userRole === 'partner' && createPost()}
 				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 					<Masonry gutter="1rem">
-						{posts.map((post) => (
-							<div className="card shadow rounded-3 border-0" key={post._id}>
-								<div className="card-header p-4 bg-white border-0">
-									<div className="text-center">
-										{post.belongsTo?.agencyProfileImage && (
-											<img
-												className="img-fluid me-2 post-logo"
-												src={post.belongsTo?.agencyProfileImage}
-												alt="partner agency logo"
-											/>
-										)}
-										<div className="mt-3 display-6 text-primary cool-font">
-											{post.belongsTo?.agencyName}
+						{posts.map((post) =>
+							isLoading ? (
+								<LoadingCard key={post._id} enableButtons={false} />
+							) : (
+								<div className="card shadow rounded-3 border-0" key={post._id}>
+									<div className="card-header p-4 bg-white border-0">
+										<div className="text-center">
+											{post.belongsTo?.agencyProfileImage && (
+												<img
+													className="img-fluid me-2 post-logo"
+													src={post.belongsTo?.agencyProfileImage}
+													alt="partner agency logo"
+												/>
+											)}
+											<div className="mt-3 display-6 text-primary cool-font">
+												{post.belongsTo?.agencyName}
+											</div>
 										</div>
 									</div>
+									<div className="card-body mx-1">
+										<small className="text-muted">
+											Posted on{' '}
+											{moment(post.createdAt).format('MMM DD, YYYY')}
+										</small>
+										<div className="my-2">{post.message}</div>
+										{post.image && (
+											<div className="d-flex justify-content-center">
+												<img
+													className="img-fluid rounded mt-3"
+													src={post.image}
+													alt="post image"
+												/>
+											</div>
+										)}
+									</div>
 								</div>
-								<div className="card-body mx-1">
-									<small className="text-muted">
-										Posted on {moment(post.createdAt).format('MMM DD, YYYY')}
-									</small>
-									<div className="my-2">{post.message}</div>
-									{post.image && (
-										<div className="d-flex justify-content-center">
-											<img
-												className="img-fluid rounded mt-3"
-												src={post.image}
-												alt="post image"
-											/>
-										</div>
-									)}
-								</div>
-							</div>
-						))}
+							),
+						)}
 					</Masonry>
 				</ResponsiveMasonry>
 			</div>
