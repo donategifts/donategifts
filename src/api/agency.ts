@@ -3,8 +3,8 @@ import express from 'express';
 import AgencyController from './controller/agency';
 
 const router = express.Router();
-const profileController = new AgencyController();
+const agencyController = new AgencyController();
 
-router.get('/', profileController.getAgency);
+router.get('/', agencyController.getAgency);
 
 export default router;
