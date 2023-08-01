@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import LoadingCard from '../shared/LoadingCard.jsx';
 
@@ -25,41 +24,49 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div className="card border-0 shadow" key={wishCard._id}>
+					<div
+						className="card border-0 shadow m-3 mt-0 col-12 col-lg-5 col-xl-3"
+						key={wishCard._id}
+					>
 						<img
-							className="card-img-top img-fluid rounded-0 rounded-top-3"
+							className="card-img-top rounded-0 rounded-top-3"
 							src={wishCard.wishCardImage}
 							alt={wishCard.wishItemName}
 							loading="eager"
 						/>
-						<div className="card-body rounded-0 rounded-bottom-3">
-							<h4 className="card-title text-center text-primary">
-								My name is {wishCard.childFirstName}
-							</h4>
-							<div className="card-text">
-								<p>Wish: {wishCard.wishItemName}</p>
-								<p>Item Price: ${wishCard.wishItemPrice}</p>
-								<p>Interest: {wishCard.childInterest}</p>
-							</div>
-							<div className="d-md-flex justify-content-center">
-								<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
-									<a
-										className="btn btn-lg btn-primary w-100"
-										href={`/wishcards/single/${wishCard._id}`}
-									>
-										View More
-									</a>
+						<div className="card-body center-elements rounded-0 rounded-bottom-3">
+							<div className="w-100">
+								<h4 className="card-title text-center text-primary">
+									My name is {wishCard.childFirstName}
+								</h4>
+								<div className="card-text">
+									<p className="text-break">Wish: {wishCard.wishItemName}</p>
+									<p>Item Price: ${wishCard.wishItemPrice}</p>
+									<p className="text-break">Interest: {wishCard.childInterest}</p>
 								</div>
-								<div className="col-12 col-md-6 ms-0 ms-md-1">
-									{wishCard.status === 'donated' ? (
-										<button className="btn btn-lg btn-dark disabled w-100">
-											Donated
-										</button>
-									) : (
-										<a className="btn btn-lg btn-dark w-100" {...attributes}>
-											Donate
+								<div className="d-md-flex justify-content-center">
+									<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
+										<a
+											className="btn btn-lg btn-primary w-100"
+											href={`/wishcards/single/${wishCard._id}`}
+										>
+											View More
 										</a>
-									)}
+									</div>
+									<div className="col-12 col-md-6 ms-0 ms-md-1">
+										{wishCard.status === 'donated' ? (
+											<button className="btn btn-lg btn-dark disabled w-100">
+												Donated
+											</button>
+										) : (
+											<a
+												className="btn btn-lg btn-dark w-100"
+												{...attributes}
+											>
+												Donate
+											</a>
+										)}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -76,18 +83,13 @@ function WishCards({ wishCards, user }) {
 	return (
 		<div id="wishcards" className="bg-light p-4">
 			<div className="container">
-				{isLoading && (
-					<div className="d-md-flex flex-wrap justify-content-center align-items-center">
-						{new Array(6).fill(0).map((_, index) => (
-							<LoadingCard key={index} enableButtons={true} />
-						))}
-					</div>
-				)}
-				{!isLoading && (
-					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2, 1000: 3 }}>
-						<Masonry gutter="2rem">{cards.map((card) => card)}</Masonry>
-					</ResponsiveMasonry>
-				)}
+				<div className="d-flex flex-wrap justify-content-center align-items-stretch">
+					{isLoading
+						? new Array(6)
+								.fill(0)
+								.map((_, index) => <LoadingCard key={index} enableButtons={true} />)
+						: cards.map((card) => card)}
+				</div>
 			</div>
 		</div>
 	);
