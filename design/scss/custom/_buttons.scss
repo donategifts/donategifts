@@ -130,3 +130,21 @@
 	color: $white;
 	cursor: not-allowed;
 }
+
+.btn-rounded-transparent {
+	@extend %btn;
+
+	background-color: transparent;
+	color: $primary;
+	border-radius: 2rem;
+	border-color: $primary;
+}
+
+.btn-rounded-fill {
+	@extend %btn;
+
+	background-color: $white;
+	color: $primary;
+	border-radius: 2rem;
+	border: none;
+}
