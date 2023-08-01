@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { RateLimitRequestHandler, rateLimit } from 'express-rate-limit';
 
-import logger from '../helper/logger';
+import logger from '../../helper/logger';
 
 export default class BaseController {
 	public log: typeof logger;
@@ -15,16 +15,6 @@ export default class BaseController {
 			windowMs: limitTime * 60 * 1000,
 			max: 100,
 		});
-	}
-
-	renderView(res: Response, template: string, templateVars = {}, status = 200) {
-		const parts = template.split('/');
-		let templateString = template;
-		if (parts[0] !== 'pages') {
-			templateString = `pages/${template}`;
-		}
-
-		return res.status(status).render(templateString, templateVars);
 	}
 
 	sendResponse(res: Response, data: any, status = 200) {
