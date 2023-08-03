@@ -64,7 +64,7 @@ export default class CommunityController extends BaseController {
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
 
-			res.status(200).send({
+			return res.status(200).send({
 				posts,
 			});
 		} catch (error: any) {
