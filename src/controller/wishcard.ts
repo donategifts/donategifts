@@ -172,7 +172,7 @@ export default class WishCardController extends BaseController {
 					wishCardId: newWishCard._id,
 				});
 
-				res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
 				this.handleError(res, error);
 			}
@@ -234,7 +234,7 @@ export default class WishCardController extends BaseController {
 					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
-				res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
 				this.handleError(res, error);
 			}
@@ -298,7 +298,7 @@ export default class WishCardController extends BaseController {
 				wishCardId: wishcard?._id,
 			});
 
-			res.status(200).send({ success: true, url });
+			return res.status(200).send({ success: true, url });
 		} catch (error) {
 			this.handleError(res, error);
 		}
@@ -327,7 +327,7 @@ export default class WishCardController extends BaseController {
 				mgs: 'Wishcard Deleted',
 				wishCardId: wishcard?._id,
 			});
-			res.status(200).send({ success: true, url });
+			return res.status(200).send({ success: true, url });
 		} catch (error) {
 			this.handleError(res, error);
 		}
@@ -389,7 +389,7 @@ export default class WishCardController extends BaseController {
 				recentlyAdded,
 			);
 
-			res.status(200).send({
+			return res.status(200).send({
 				user: res.locals.user,
 				wishcards: results,
 			});
@@ -469,7 +469,7 @@ export default class WishCardController extends BaseController {
 				if (error) {
 					throw error;
 				} else {
-					res.status(200).send(html);
+					return res.status(200).send(html);
 				}
 			});
 		} catch (error) {
@@ -486,7 +486,7 @@ export default class WishCardController extends BaseController {
 				message,
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				data: newMessage,
 			});
 		} catch (error) {
@@ -529,7 +529,7 @@ export default class WishCardController extends BaseController {
 			if (error) {
 				this.handleError(res, error);
 			} else {
-				res.status(200).send({ success: true, html });
+				return res.status(200).send({ success: true, html });
 			}
 		});
 	}
