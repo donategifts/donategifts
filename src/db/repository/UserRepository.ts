@@ -23,6 +23,18 @@ export default class UserRepository {
 		}
 	}
 
+	async getUserAndUpdateById(id: string, updateParams: Partial<User>) {
+		try {
+			const updatedUser = await this.userModel
+				.findOneAndUpdate({ _id: id }, { $set: updateParams }, { new: true })
+				.lean()
+				.exec();
+			return updatedUser;
+		} catch (error) {
+			throw new Error(`Failed to update user: ${error}`);
+		}
+	}
+
 	async getUserByEmail(email: string) {
 		try {
 			return await this.userModel.findOne({ email }).exec();
