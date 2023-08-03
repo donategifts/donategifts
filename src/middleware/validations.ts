@@ -41,7 +41,7 @@ export default class Validations {
 			});
 		}
 
-		res.status(statusCode).send({
+		return res.status(statusCode).send({
 			statusCode,
 			error,
 		});
