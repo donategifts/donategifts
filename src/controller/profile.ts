@@ -93,7 +93,9 @@ export default class ProfileController extends BaseController {
 			);
 			// include eslint line disable because of the false positive error
 			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
-			req.session.user = updatedUser; // eslint-disable-line
+			if (updatedUser) {
+				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
+			}
 
 			res.status(200).send({
 				success: true,
@@ -285,7 +287,9 @@ export default class ProfileController extends BaseController {
 			);
 			// include eslint line disable because of the false positive error
 			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
-			req.session.user = updatedUser; // eslint-disable-line
+			if (updatedUser) {
+				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
+			}
 
 			res.status(200).send({
 				success: true,
