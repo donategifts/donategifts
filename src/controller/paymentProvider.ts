@@ -138,7 +138,7 @@ export default class PaymentProviderController extends BaseController {
 				},
 			});
 
-			res.send({
+			return res.send({
 				clientSecret: paymentIntent.client_secret,
 			});
 		} else {
@@ -171,7 +171,7 @@ export default class PaymentProviderController extends BaseController {
 					});
 				}
 			} catch (error) {
-				res.status(400).send(`Webhook Error: ${error}`);
+				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
 
