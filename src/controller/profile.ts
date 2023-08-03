@@ -87,7 +87,7 @@ export default class ProfileController extends BaseController {
 
 			await this.userRepository.updateUserById(user._id.toString(), { aboutMe });
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: aboutMe,
@@ -121,7 +121,7 @@ export default class ProfileController extends BaseController {
 				user: res.locals.user._id,
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				data: profileImage,
 			});
@@ -138,7 +138,7 @@ export default class ProfileController extends BaseController {
 				profileImage: defaultImage,
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				data: defaultImage,
 			});
@@ -270,7 +270,7 @@ export default class ProfileController extends BaseController {
 
 			await this.userRepository.updateUserById(user._id, { fName, lName });
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: { fName, lName },
@@ -314,7 +314,7 @@ export default class ProfileController extends BaseController {
 				},
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: {
@@ -342,7 +342,7 @@ export default class ProfileController extends BaseController {
 				return this.handleError(res, 'Agency could not be found', 404);
 			}
 
-			res.status(200).send({
+			return res.status(200).send({
 				data: agency,
 			});
 		} catch (error) {
