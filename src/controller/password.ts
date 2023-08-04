@@ -89,7 +89,6 @@ export default class PasswordController extends BaseController {
 						res.clearCookie(config.SESSION.NAME);
 						res.send({ success: true, url: '/login' });
 					});
-					
 				} else {
 					return this.handleError(res, 'Password token expired');
 				}
