@@ -48,7 +48,7 @@ export default class PasswordController extends BaseController {
 		}
 	}
 
-	// FIXME: redirects to wrong template
+	// FIXED: redirects to wrong template
 	async handleGetResetToken(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const userObject = await this.userRepository.getUserByPasswordResetToken(
@@ -57,7 +57,7 @@ export default class PasswordController extends BaseController {
 
 			if (userObject) {
 				if (new Date(String(userObject.passwordResetTokenExpires)) > new Date()) {
-					this.renderView(res, 'passwordreset', {
+					this.renderView(res, 'passwordresetconfirmation', {
 						token: req.params.token,
 					});
 				} else {
@@ -87,9 +87,9 @@ export default class PasswordController extends BaseController {
 
 					req.session.destroy(() => {
 						res.clearCookie(config.SESSION.NAME);
+						res.send({ success: true, url: '/login' });
 					});
-
-					res.send({ success: true });
+					
 				} else {
 					return this.handleError(res, 'Password token expired');
 				}
