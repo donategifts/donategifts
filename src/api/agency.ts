@@ -1,10 +1,10 @@
 import express from 'express';
 
-import ProfileController from '../controller/profile';
+import AgencyController from './controller/agency';
 
 const router = express.Router();
-const profileController = new ProfileController();
+const agencyController = new AgencyController();
 
-router.get('/', profileController.apiGetAgency);
+router.get('/', agencyController.getAgency);
 
 export default router;

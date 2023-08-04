@@ -9,11 +9,7 @@ export default class AgencyRepository {
 	}
 
 	async getAgencyByUserId(userId: string) {
-		try {
-			return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get Agency: ${error}`);
-		}
+		return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
 	}
 
 	async getAgencyByName(agencyName: string) {

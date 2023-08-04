@@ -35,8 +35,6 @@ export default class ProfileController extends BaseController {
 		this.handleGetVerify = this.handleGetVerify.bind(this);
 		this.handlePutAccount = this.handlePutAccount.bind(this);
 		this.handlePutAgency = this.handlePutAgency.bind(this);
-
-		this.apiGetAgency = this.apiGetAgency.bind(this);
 	}
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
@@ -349,22 +347,6 @@ export default class ProfileController extends BaseController {
 					country,
 					zipcode,
 				},
-			});
-		} catch (error) {
-			return this.handleError(res, error);
-		}
-	}
-
-	async apiGetAgency(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const agency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
-
-			if (!agency) {
-				return this.handleError(res, 'Agency could not be found', 404);
-			}
-
-			res.status(200).send({
-				data: agency,
 			});
 		} catch (error) {
 			return this.handleError(res, error);
