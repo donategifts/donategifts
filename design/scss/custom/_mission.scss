@@ -1,0 +1,48 @@
+.mission {
+    .header {
+        color: $navy-dark;
+
+        h1 {
+            font-family: $font-heading;
+            border-bottom: 6px dotted $secondary;
+        }
+
+        h3 {
+            font-family: $font-body;
+            font-size: 1.15em;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+    }
+
+    h4 {
+        @include font-styling($font-body, 1.35em, $secondary, $fw-semi-bold);
+    }
+
+    .info-text {
+        line-height: 1.75;
+
+        span {
+            a {
+                text-decoration: underline;
+                color: $secondary;
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+    }
+
+    .info-list p {
+        word-wrap: break-word;
+    }
+
+    img {
+        border-radius: 0.5em;
+    }
+
+    .img-mid {
+        max-height: 90%;
+    }
+}
