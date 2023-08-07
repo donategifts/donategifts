@@ -360,6 +360,7 @@ export default class Validations {
 		if (!errors.isEmpty()) {
 			return Validations.handleError(res, 400, errors);
 		}
-		next();
+
+		return next();
 	}
 }
