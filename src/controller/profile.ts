@@ -146,18 +146,18 @@ export default class ProfileController extends BaseController {
 				profileImage: defaultImage,
 			});
 
-			return res.status(200).send({
-				success: true,
-				data: defaultImage,
-			});
-
 			this.log.info({
 				msg: 'Profile picture deleted',
 				type: 'user_profile_picture_delete',
 				user: res.locals.user._id,
 			});
+
+			return res.status(200).send({
+				success: true,
+				data: defaultImage,
+			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
