@@ -41,7 +41,7 @@ export default class Validations {
 			});
 		}
 
-		res.status(statusCode).send({
+		return res.status(statusCode).send({
 			statusCode,
 			error,
 		});
@@ -360,6 +360,7 @@ export default class Validations {
 		if (!errors.isEmpty()) {
 			return Validations.handleError(res, 400, errors);
 		}
-		next();
+
+		return next();
 	}
 }

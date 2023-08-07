@@ -42,7 +42,7 @@ export default class PasswordController extends BaseController {
 
 			await Messaging.sendPasswordResetMail(userObject.email, resetToken);
 
-			res.send({ success: true });
+			return res.send({ success: true });
 		} catch (error) {
 			return this.handleError(res, error);
 		}
@@ -87,7 +87,7 @@ export default class PasswordController extends BaseController {
 
 					req.session.destroy(() => {
 						res.clearCookie(config.SESSION.NAME);
-						res.send({ success: true, url: '/login' });
+						return res.send({ success: true, url: '/login' });
 					});
 				} else {
 					return this.handleError(res, 'Password token expired');

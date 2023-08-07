@@ -52,7 +52,7 @@ export default class CommunityController extends BaseController {
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
 
-			this.sendResponse(res, posts);
+			return this.sendResponse(res, posts);
 		} catch (error: any) {
 			return this.handleError(res, error);
 		}

@@ -95,7 +95,7 @@ export default class ProfileController extends BaseController {
 				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
 			}
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: aboutMe,
@@ -129,7 +129,7 @@ export default class ProfileController extends BaseController {
 				user: res.locals.user._id,
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				data: profileImage,
 			});
@@ -146,18 +146,18 @@ export default class ProfileController extends BaseController {
 				profileImage: defaultImage,
 			});
 
-			res.status(200).send({
-				success: true,
-				data: defaultImage,
-			});
-
 			this.log.info({
 				msg: 'Profile picture deleted',
 				type: 'user_profile_picture_delete',
 				user: res.locals.user._id,
 			});
+
+			return res.status(200).send({
+				success: true,
+				data: defaultImage,
+			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -289,7 +289,7 @@ export default class ProfileController extends BaseController {
 				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
 			}
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: { fName, lName },
@@ -333,7 +333,7 @@ export default class ProfileController extends BaseController {
 				},
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				success: true,
 				error: null,
 				data: {
