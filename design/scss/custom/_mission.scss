@@ -1,4 +1,4 @@
-.mission {
+#mission {
     .header {
         color: $navy-dark;
 
@@ -8,10 +8,7 @@
         }
 
         h3 {
-            font-family: $font-body;
-            font-size: 1.15em;
             max-width: 85%;
-            word-wrap: break-word;
         }
     }
 
@@ -24,7 +21,6 @@
 
         span {
             a {
-                text-decoration: underline;
                 color: $secondary;
 
                 &:hover {
@@ -32,10 +28,6 @@
                 }
             }
         }
-    }
-
-    .info-list p {
-        word-wrap: break-word;
     }
 
     img {
