@@ -35,8 +35,6 @@ export default class ProfileController extends BaseController {
 		this.handleGetVerify = this.handleGetVerify.bind(this);
 		this.handlePutAccount = this.handlePutAccount.bind(this);
 		this.handlePutAgency = this.handlePutAgency.bind(this);
-
-		this.apiGetAgency = this.apiGetAgency.bind(this);
 	}
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
@@ -85,7 +83,17 @@ export default class ProfileController extends BaseController {
 				return this.handleError(res, 'User could not be found');
 			}
 
-			await this.userRepository.updateUserById(user._id.toString(), { aboutMe });
+			const updatedUser = await this.userRepository.getUserAndUpdateById(
+				user._id.toString(),
+				{
+					aboutMe,
+				},
+			);
+			// include eslint line disable because of the false positive error
+			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
+			if (updatedUser) {
+				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
+			}
 
 			return res.status(200).send({
 				success: true,
@@ -268,7 +276,18 @@ export default class ProfileController extends BaseController {
 				return this.handleError(res, 'User could not be found', 404);
 			}
 
-			await this.userRepository.updateUserById(user._id, { fName, lName });
+			const updatedUser = await this.userRepository.getUserAndUpdateById(
+				user._id.toString(),
+				{
+					fName,
+					lName,
+				},
+			);
+			// include eslint line disable because of the false positive error
+			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
+			if (updatedUser) {
+				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
+			}
 
 			return res.status(200).send({
 				success: true,
@@ -328,22 +347,6 @@ export default class ProfileController extends BaseController {
 					country,
 					zipcode,
 				},
-			});
-		} catch (error) {
-			return this.handleError(res, error);
-		}
-	}
-
-	async apiGetAgency(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const agency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
-
-			if (!agency) {
-				return this.handleError(res, 'Agency could not be found', 404);
-			}
-
-			return res.status(200).send({
-				data: agency,
 			});
 		} catch (error) {
 			return this.handleError(res, error);
