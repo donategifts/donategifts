@@ -174,7 +174,7 @@ export default class WishCardController extends BaseController {
 
 				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
-				this.handleError(res, error);
+				return this.handleError(res, error);
 			}
 		}
 	}
@@ -236,7 +236,7 @@ export default class WishCardController extends BaseController {
 				});
 				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
-				this.handleError(res, error);
+				return this.handleError(res, error);
 			}
 		}
 	}
@@ -259,9 +259,13 @@ export default class WishCardController extends BaseController {
 			const { agencyAddress } = agency;
 			const childBirthday = moment(wishcard?.childBirthday).format('YYYY-MM-DD');
 
-			this.renderView(res, 'wishcard/edit', { wishcard, agencyAddress, childBirthday });
+			return this.renderView(res, 'wishcard/edit', {
+				wishcard,
+				agencyAddress,
+				childBirthday,
+			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -300,7 +304,7 @@ export default class WishCardController extends BaseController {
 
 			return res.status(200).send({ success: true, url });
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -327,9 +331,10 @@ export default class WishCardController extends BaseController {
 				mgs: 'Wishcard Deleted',
 				wishCardId: wishcard?._id,
 			});
+
 			return res.status(200).send({ success: true, url });
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -394,7 +399,7 @@ export default class WishCardController extends BaseController {
 				wishcards: results,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -490,7 +495,7 @@ export default class WishCardController extends BaseController {
 				data: newMessage,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -527,10 +532,10 @@ export default class WishCardController extends BaseController {
 
 		res.render('partials/itemChoices', { itemChoices }, (error, html) => {
 			if (error) {
-				this.handleError(res, error);
-			} else {
-				return res.status(200).send({ success: true, html });
+				return this.handleError(res, error);
 			}
+
+			return res.status(200).send({ success: true, html });
 		});
 	}
 }
