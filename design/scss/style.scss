@@ -4,6 +4,11 @@ body {
 	font-family: $font-body;
 }
 
+.heading-primary {
+	@include font-styling($font-heading, 2.35em, $primary, $fw-medium);
+}
+
+// Need to be reviewed first and removed after testing
 .cool-font {
 	font-family: DkCoolCrayon, sans-serif;
 }
@@ -22,14 +27,8 @@ body {
 	align-items: center;
 }
 
-#header {
-	background-color: lighten($warning, 10%);
-}
-
 .gradient-form {
-	background:
-		linear-gradient(#ff5f6d00, #ffc37100),
-		url('/img/gift-white-bg.jpeg') center center;
+	background: linear-gradient(#ff5f6d00, #ffc37100), url("/img/gift-white-bg.jpeg") center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;

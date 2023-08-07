@@ -1,0 +1,40 @@
+#mission {
+    .header {
+        color: $navy-dark;
+
+        h1 {
+            font-family: $font-heading;
+            border-bottom: 6px dotted $secondary;
+        }
+
+        h3 {
+            max-width: 85%;
+        }
+    }
+
+    h4 {
+        @include font-styling($font-body, 1.35em, $secondary, $fw-semi-bold);
+    }
+
+    .info-text {
+        line-height: 1.75;
+
+        span {
+            a {
+                color: $secondary;
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+    }
+
+    img {
+        border-radius: 0.5em;
+    }
+
+    .img-mid {
+        max-height: 90%;
+    }
+}
