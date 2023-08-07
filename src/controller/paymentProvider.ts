@@ -142,7 +142,7 @@ export default class PaymentProviderController extends BaseController {
 				clientSecret: paymentIntent.client_secret,
 			});
 		} else {
-			this.handleError(res, 'Wishcard not found');
+			return this.handleError(res, 'Wishcard not found');
 		}
 	}
 
@@ -201,7 +201,7 @@ export default class PaymentProviderController extends BaseController {
 			});
 		}
 
-		res.json({ received: true });
+		return res.json({ received: true });
 	}
 
 	async handleGetPaymentSuccess(req: Request, res: Response, _next: NextFunction) {
