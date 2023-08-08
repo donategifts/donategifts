@@ -1,25 +1,38 @@
 #home {
 	#hero {
-		background: url('/svg/dg-2022-bg-01.svg') center center;
+		background: url("/svg/dg-2022-bg-01.svg") center center;
 		min-height: 90vh;
-		height: 100px;
+		height: 300px;
 		background-size: cover;
 		background-repeat: no-repeat;
+
+		h1 {
+			@include font-styling($font-heading-alt, 3.25em, $white, $fw-medium);
+		}
+
+		p {
+			@include font-styling($font-body, 1.15em, $white, $fw-normal);
+		}
 	}
 
 	#sample-cards-carousel {
 		img {
-			max-height: 300px;
-			height: 50%;
+			max-height: 280px;
+			height: 100%;
+			object-fit: cover;
 		}
 
 		.card-body {
 			background-color: lighten($cream, 8%);
 		}
+
+		h3 {
+			@include font-styling($font-heading-alt, 2.15em, $primary, $fw-medium);
+		}
 	}
 
 	#status-section {
-		background-image: url('/svg/paper-bg-2.svg');
+		background-image: url("/svg/paper-bg-2.svg");
 		background-size: cover;
 		background-repeat: no-repeat;
 		min-height: 30rem;
@@ -72,7 +85,7 @@
 		position: relative;
 
 		&::after {
-			content: '';
+			content: "";
 			position: absolute;
 			width: 1px;
 			height: 60px;
