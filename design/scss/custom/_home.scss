@@ -13,6 +13,10 @@
 		p {
 			@include font-styling($font-body, 1.15em, $white, $fw-normal);
 		}
+
+		a {
+			max-width: 215px;
+		}
 	}
 
 	#sample-cards-carousel {
@@ -102,5 +106,15 @@
 		100% {
 			opacity: 1;
 		}
+	}
+}
+
+@media (200px <= width <= 768px) {
+	.actions {
+		flex-flow: column;
+	}
+
+	.mobile-hide {
+		display: none;
 	}
 }
