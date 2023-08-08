@@ -22,7 +22,7 @@ export default class AgencyController extends BaseController {
 				return this.handleError(res, 'Agency could not be found');
 			}
 
-			this.sendResponse(res, agency);
+			return this.sendResponse(res, agency);
 		} catch (error) {
 			return this.handleError(res, error);
 		}
