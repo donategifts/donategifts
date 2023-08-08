@@ -109,7 +109,7 @@
 	}
 }
 
-@media (200px <= width <= 768px) {
+@media (width <= 768px) {
 	.actions {
 		flex-flow: column;
 	}
