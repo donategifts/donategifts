@@ -34,13 +34,32 @@ function Nav(props) {
 									Community
 								</a>
 							</div>
-							{!user ? (
+							{/* No user */}
+							{!user && (
 								<div className="nav-item">
 									<a href="/login" className="nav-link">
 										Log In
 									</a>
 								</div>
-							) : user.userRole == 'partner' && agency && agency.isVerified ? (
+							)}
+							{/* User gift sender */}
+							{!user?.isAdmin && !user?.userRole === 'partner' && (
+								<li className="nav-item">
+									<a className="nav-link" href="/profile">
+										Profile
+									</a>
+								</li>
+							)}
+							{/* User is admin */}
+							{user?.isAdmin && (
+								<li className="nav-item">
+									<a className="nav-link" href="/admin/">
+										Admin Panel
+									</a>
+								</li>
+							)}
+							{/* User partner and agency is verified */}
+							{user?.userRole === 'partner' && agency?.isVerified && (
 								<>
 									<div className="nav-item">
 										<a className="nav-link" href="/wishcards/me">
@@ -53,18 +72,6 @@ function Nav(props) {
 										</a>
 									</div>
 								</>
-							) : user.userRole == 'admin' ? (
-								<li className="nav-item">
-									<a className="nav-link" href="/admin/">
-										Admin Panel
-									</a>
-								</li>
-							) : (
-								<li className="nav-item">
-									<a className="nav-link" href="/profile">
-										Profile
-									</a>
-								</li>
 							)}
 						</div>
 					</div>
@@ -107,13 +114,32 @@ function Nav(props) {
 									Community
 								</a>
 							</li>
-							{!user ? (
+							{/* No user */}
+							{!user && (
 								<div className="nav-item">
 									<a href="/login" className="nav-link">
 										Log In
 									</a>
 								</div>
-							) : user?.userRole == 'partner' && agency && agency?.isVerified ? (
+							)}
+							{/* User gift sender */}
+							{!user?.isAdmin && !user?.userRole === 'partner' && (
+								<li className="nav-item">
+									<a className="nav-link" href="/profile">
+										Profile
+									</a>
+								</li>
+							)}
+							{/* User is admin */}
+							{user?.isAdmin && (
+								<li className="nav-item">
+									<a className="nav-link" href="/admin/">
+										Admin Panel
+									</a>
+								</li>
+							)}
+							{/* User partner and agency is verified */}
+							{user?.userRole === 'partner' && agency?.isVerified && (
 								<>
 									<div className="nav-item">
 										<a className="nav-link" href="/wishcards/me">
@@ -126,18 +152,6 @@ function Nav(props) {
 										</a>
 									</div>
 								</>
-							) : user?.userRole == 'admin' ? (
-								<li className="nav-item">
-									<a className="nav-link" href="/admin/">
-										Admin Panel
-									</a>
-								</li>
-							) : (
-								<li className="nav-item">
-									<a className="nav-link" href="/profile">
-										Profile
-									</a>
-								</li>
 							)}
 						</ul>
 					</div>
