@@ -2,7 +2,7 @@ import { ExpressValidator } from 'express-validator';
 
 export const amazonValidator = new ExpressValidator({
 	/**
-	 * Check is url is valid amazon link
+	 * Check if url is an valid amazon link
 	 * @param value
 	 * @returns {boolean}
 	 */
