@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function Modal({ modalTitle, modalBody, modalFooter, rightSide }) {
+function Modal({ title, body, footer, sideContent }) {
 	return (
 		<div
 			className="modal"
@@ -23,15 +23,15 @@ function Modal({ modalTitle, modalBody, modalFooter, rightSide }) {
 							className="h-100 d-flex flex-column justify-content-around align-items-center text-center"
 							style={{ width: '65%' }}
 						>
-							{modalTitle}
-							{modalBody}
-							{modalFooter}
+							{title}
+							{body}
+							{footer}
 						</div>
 						<div
 							className="background-gradient h-100 d-flex justify-content-center align-items-center rounded-end"
 							style={{ width: '35%' }}
 						>
-							{rightSide}
+							{sideContent}
 						</div>
 					</div>
 				</div>
@@ -41,10 +41,10 @@ function Modal({ modalTitle, modalBody, modalFooter, rightSide }) {
 }
 
 Modal.propTypes = {
-	modalTitle: PropTypes.object,
-	modalBody: PropTypes.object,
-	modalFooter: PropTypes.object,
-	rightSide: PropTypes.object,
+	title: PropTypes.object,
+	body: PropTypes.object,
+	footer: PropTypes.object,
+	sideContent: PropTypes.object,
 };
 
 export default Modal;
