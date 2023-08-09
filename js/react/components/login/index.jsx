@@ -3,8 +3,8 @@ import Modal from '../shared/Modal.jsx';
 function Login() {
 	return (
 		<Modal
-			modalTitle={<h1 className="cool-font text-secondary">Welcome back</h1>}
-			modalBody={
+			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
+			body={
 				<div className="d-flex flex-column align-items-center justify-content-center gap-5 w-50">
 					<button>Google btn</button>
 					<button>Facebook btn</button>
@@ -14,8 +14,8 @@ function Login() {
 					</button>
 				</div>
 			}
-			modalFooter={<p>Agency partner users must sign in with work email</p>}
-			rightSide={
+			footer={<p>Agency partner users must sign in with work email</p>}
+			sideContent={
 				<div className="d-flex flex-column align-items-center justify-content-around text-center gap-4">
 					<div className="d-flex flex-column align-items-center justify-content-center text-white">
 						<h2 className="cool-font">No account?</h2>
