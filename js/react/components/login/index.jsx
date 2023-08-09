@@ -12,8 +12,8 @@ function Login() {
 				>
 					<h1 className="cool-font text-secondary">Welcome back</h1>
 					<div className="d-flex flex-column align-items-center justify-content-center gap-5 w-50">
-						<button>123</button>
-						<button>123</button>
+						<button>Google btn</button>
+						<button>Facebook btn</button>
 						<button className="btn-rounded-transparent w-100 d-flex justify-content-around align-items-center">
 							<span className="fa fa-envelope-o fs-3" />
 							<p className="m-0 fs-5 fw-bold">Log in with Email</p>

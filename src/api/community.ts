@@ -1,12 +1,15 @@
 import express from 'express';
 
-import CommunityController from '../controller/community';
 import FileUpload from '../middleware/fileupload';
+
+import CommunityController from './controller/community';
 
 const router = express.Router();
 const communityController = new CommunityController();
 const fileUpload = new FileUpload();
 
-router.post('/', fileUpload.upload.single('image'), communityController.apiAddPost);
+router.use(communityController.limiter);
+
+router.post('/', fileUpload.upload.single('image'), communityController.addPost);
 
 export default router;

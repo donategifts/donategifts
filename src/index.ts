@@ -155,22 +155,22 @@ const app = express();
 
 	app.use('/robots.txt', limiter, (_req, res, _next) => {
 		res.type('text/plain');
-		res.sendFile(path.join(__dirname, '../public/robots.txt'));
+		return res.sendFile(path.join(__dirname, '../public/robots.txt'));
 	});
 
 	app.use('/health', (_req, res, _next) => {
-		res.status(200).json({ status: 'ok' });
+		return res.status(200).json({ status: 'ok' });
 	});
 
 	if (config.MAINTENANCE_ENABLED) {
 		app.get('*', (_req, res) => {
-			res.status(200).render('maintenance');
+			return res.status(200).render('maintenance');
 		});
 	}
 
 	// ERROR PAGE
 	app.get('*', (_req, res) => {
-		res.status(404).render('error/404');
+		return res.status(404).render('error/404');
 	});
 
 	// error handler
@@ -181,7 +181,7 @@ const app = express();
 
 		log.error(err);
 
-		res.status(500).render('error/500');
+		return res.status(500).render('error/500');
 	});
 
 	app.listen(config.PORT, () => {

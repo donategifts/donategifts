@@ -404,6 +404,7 @@ export default class Messaging {
 			});
 		} catch (error) {
 			log.error(error);
+			return;
 		}
 	}
 
@@ -450,6 +451,7 @@ export default class Messaging {
 			});
 		} catch (error) {
 			log.error(error);
+			return;
 		}
 	}
 }

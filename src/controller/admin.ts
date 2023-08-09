@@ -63,7 +63,7 @@ export default class AdminController extends BaseController {
 				success: true,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 

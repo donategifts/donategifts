@@ -138,11 +138,11 @@ export default class PaymentProviderController extends BaseController {
 				},
 			});
 
-			res.send({
+			return res.send({
 				clientSecret: paymentIntent.client_secret,
 			});
 		} else {
-			this.handleError(res, 'Wishcard not found');
+			return this.handleError(res, 'Wishcard not found');
 		}
 	}
 
@@ -171,7 +171,7 @@ export default class PaymentProviderController extends BaseController {
 					});
 				}
 			} catch (error) {
-				res.status(400).send(`Webhook Error: ${error}`);
+				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
 
@@ -201,7 +201,7 @@ export default class PaymentProviderController extends BaseController {
 			});
 		}
 
-		res.json({ received: true });
+		return res.json({ received: true });
 	}
 
 	async handleGetPaymentSuccess(req: Request, res: Response, _next: NextFunction) {

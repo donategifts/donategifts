@@ -10,6 +10,10 @@ This web app offers users to send holiday gifts and school supplies to the child
 
 [https://donate-gifts.(com|org)](https://donate-gifts.com)
 
+## Dev Server:
+
+[https://donate-gifts-test.fly.dev/](https://donate-gifts-test.fly.dev/)
+
 ## Admin
 
 - [Stacy Sealky Lee](https://github.com/stacysealky)
