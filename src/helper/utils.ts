@@ -82,4 +82,19 @@ export default class Utils {
 
 		return result;
 	}
+
+	/**
+	 * Extract product id from an amazon url
+	 * @param url
+	 * @returns {string}
+	 * @throws {Error}
+	 */
+	static extractProductIDFromLink(url: string) {
+		const amazonProductIDRegex = /\/dp\/([A-Z0-9]{10})/;
+		const match = url.match(amazonProductIDRegex);
+		if (match === null) {
+			throw new Error(`Could not get product id from link: ${url}`);
+		}
+		return match[1];
+	}
 }

@@ -16,7 +16,8 @@ html( lang="en" )
     body
         header
             block header
-                include partials/header.pug
+                //- include partials/header.pug
+            #header-root
 
         main
             block content
@@ -31,3 +32,17 @@ html( lang="en" )
 
         include partials/js.pug
         block scripts
+        append script
+            script.
+                $(document).ready(function () {
+                    const root = ReactRoot(document.querySelector('#header-root'));
+                    root.render(
+                        React.createElement(
+                            Nav,
+                            {
+                                user: !{JSON.stringify(user || null)},
+                                agency: !{JSON.stringify(agency || null)}
+                            }
+                        )
+                    );
+                })
