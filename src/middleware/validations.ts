@@ -83,27 +83,58 @@ export default class Validations {
 	}
 
 	static updateProfileValidationRules() {
-		return [body('aboutMe', 'About me text is required!').exists()];
+		return [body('aboutMe', 'About me text is required!').trim()];
 	}
 
 	static updateAccountDetailsRules() {
 		return [
-			body('fName', 'First name is required!').exists(),
-			body('lName', 'Last name is required!').exists(),
+			body('fName', 'First name is required!').trim().isLength({ min: 1 }).isString(),
+			body('lName', 'Last name is required!').trim().isLength({ min: 1 }).isString(),
 		];
 	}
+
+	private static readonly AGENCY_PHONE_NUMBER_REGEX =
+		/^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
 
 	static updateAgencyDetailsRules() {
 		return [
 			body('agencyBio').optional(),
-			body('agencyWebsite').optional(),
-			body('agencyPhone', 'Agency Phone is required!').exists(),
-			body('address1', 'Agency Address is required!').exists(),
-			body('address2', 'Agency Address is required!').exists(),
-			body('city', 'City is required!').exists(),
-			body('state', 'State is required!').exists(),
-			body('country', 'Country is required!').exists(),
-			body('zipcode', 'zipcode is required!').exists(),
+			body('agencyWebsite')
+				.trim()
+				.isURL()
+				.withMessage('Agency website must be a valid URL')
+				.optional({ values: 'falsy' }),
+			body('agencyPhone')
+				.trim()
+				.notEmpty()
+				.withMessage('Agency phone number is required')
+				.isLength({ min: 7 })
+				.withMessage('Phone number must be at least 7 characters long')
+				.matches(Validations.AGENCY_PHONE_NUMBER_REGEX)
+				.withMessage('Phone number must match format XXX-XXX-XXXX'),
+			body('address1')
+				.trim()
+				.notEmpty()
+				.withMessage('Agency primary address is required!')
+				.isLength({ min: 5 })
+				.withMessage('Address must contain at least 5 characters'),
+			body('address2').optional(),
+			body('city', 'City is required')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('City must contain at least 2 characters'),
+			body('state', 'State is required!')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('State must contain at least 2 characters'),
+			body('country', 'Country is required')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('Country must contain at least 2 characters'),
+			body('zipcode', 'zipcode is required!')
+				.trim()
+				.isLength({ min: 5 })
+				.withMessage('Zipcode must contain at least 5 characters'),
 		];
 	}
 
@@ -136,7 +167,7 @@ export default class Validations {
 				.notEmpty()
 				.isLength({ min: 7 })
 				.withMessage('Phone number must be at least 7 characters long')
-				.matches(/^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
+				.matches(Validations.AGENCY_PHONE_NUMBER_REGEX)
 				.withMessage('Phone number must match format XXX-XXX-XXXX'),
 			body('agencyBio').optional(),
 		];
