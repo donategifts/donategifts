@@ -200,7 +200,9 @@ export default class Validations {
 			amazonValidator
 				.body('wishItemURL')
 				.isValidLink()
-				.withMessage('Wish item url has to be a valid amazon link!'),
+				.withMessage(
+					'Item URL must start with https://www.amazon.com/ and contain a product ID to be valid.',
+				),
 			body('childStory').notEmpty().withMessage("Child's story is required").isString(),
 			body('address1')
 				.notEmpty()
