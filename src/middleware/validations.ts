@@ -1,10 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult, param, Result, ValidationError } from 'express-validator';
+import {
+	body,
+	validationResult,
+	param,
+	Result,
+	ValidationError,
+	ExpressValidator,
+} from 'express-validator';
 
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
+
+const amazonValidator = new ExpressValidator({
+	/**
+	 * Check if url is an valid amazon link
+	 * @param value
+	 * @returns {boolean}
+	 */
+	isValidLink: (value: string) => {
+		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
+		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
+		return (
+			typeof value === 'string' &&
+			amazonUrlRegex.test(value) &&
+			amazonProductRegex.test(value)
+		);
+	},
+});
 
 export default class Validations {
 	private static handleError(
@@ -196,13 +220,12 @@ export default class Validations {
 			body('childInterest').isString(),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
-			body('wishItemURL')
-				.notEmpty()
-				.withMessage('Wish item url is required')
-				.isString()
-				// https://regex101.com/r/yM5lU0/13 if you want to see it in action
-				.matches(/^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
-				.withMessage('Wish item url has to be a valid amazon link!'),
+			amazonValidator
+				.body('wishItemURL')
+				.isValidLink()
+				.withMessage(
+					'Item URL must start with https://www.amazon.com/ and contain a product ID to be valid.',
+				),
 			body('childStory').notEmpty().withMessage("Child's story is required").isString(),
 			body('address1')
 				.notEmpty()

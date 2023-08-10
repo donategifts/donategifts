@@ -14,12 +14,15 @@ services:
     #     container_name: dg-postgres
     #     restart: unless-stopped
     #     environment:
+    #         - POSTGRES_DB=donategifts
     #         - POSTGRES_USER=postgres
     #         - POSTGRES_PASSWORD=postgres
+    #         - PGDATA=/data/postgres-donategifts
     #     ports:
-    #         - '5432:5432'
+    #         - 5432:5432
     #     volumes:
-    #         - postgres:/var/lib/postgresql/data
+    #         - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    #         - donategifts:/data/postgres-donategifts
 
     # redis:
     #     image: eqalpha/keydb
@@ -30,5 +33,5 @@ services:
 volumes:
     mongo:
         driver: local
-    # postgres:
+    # donategifts:
     #     driver: local

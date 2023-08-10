@@ -1,6 +1,8 @@
 {
   "eslint.enable": true,
-  "editor.formatOnSave": true,
+  // keep this set to false, otherwhise it will format things we don't want formatted
+  // stupid default formatter
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.organizeImports": false
