@@ -140,8 +140,8 @@ export default class WishCardController extends BaseController {
 			);
 		} else {
 			try {
-				const { childBirthday, wishItemPrice } = req.body;
-
+				const { childBirthday, wishItemPrice, wishItemURL } = req.body;
+				const productID = Utils.extractProductIDFromLink(wishItemURL);
 				const filePath =
 					config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
@@ -152,6 +152,7 @@ export default class WishCardController extends BaseController {
 				const newWishCard = await this.wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
+					productID,
 					wishCardImage: config.AWS.USE ? req.file.location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
