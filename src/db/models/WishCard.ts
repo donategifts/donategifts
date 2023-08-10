@@ -36,6 +36,7 @@ interface WishCard {
 	approvedByAdmin: boolean;
 	status: string;
 	belongsTo: string;
+	productID: string;
 }
 
 const { Schema } = mongoose;
@@ -60,6 +61,9 @@ const WishCardSchema = new Schema(
 			type: Number,
 		},
 		wishItemURL: {
+			type: String,
+		},
+		productID: {
 			type: String,
 		},
 		childStory: {
