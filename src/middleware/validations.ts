@@ -1,11 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult, param, Result, ValidationError } from 'express-validator';
+import {
+	body,
+	validationResult,
+	param,
+	Result,
+	ValidationError,
+	ExpressValidator,
+} from 'express-validator';
 
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
-import { amazonValidator } from '../validator/amazonLink.validator';
+
+const amazonValidator = new ExpressValidator({
+	/**
+	 * Check if url is an valid amazon link
+	 * @param value
+	 * @returns {boolean}
+	 */
+	isValidLink: (value: string) => {
+		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
+		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
+		return (
+			typeof value === 'string' &&
+			amazonUrlRegex.test(value) &&
+			amazonProductRegex.test(value)
+		);
+	},
+});
 
 export default class Validations {
 	private static handleError(
