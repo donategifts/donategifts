@@ -59,8 +59,6 @@ $light-light: tint-color($light, 50) !default;
 $light-dark: shade-color($light, 50) !default;
 $light-highlight: tint-color($light, 75) !default;
 
-// SORRY ¯\_( ͡° ͜ʖ ͡°)_/¯
-// but we need to stick to the naming convention
 $dark-light: tint-color($dark, 50) !default;
 $dark-dark: shade-color($dark, 50) !default;
 $dark-highlight: tint-color($dark, 75) !default;
