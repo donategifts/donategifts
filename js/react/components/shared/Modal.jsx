@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 function Modal({ title, body, footer, sideContent }) {
 	return (
 		<div
-			className="modal"
+			className="modal fade"
+			id="loginModal"
 			tabIndex="-1"
-			style={{
-				display: 'block',
-				backgroundColor: 'rgba(0, 0, 0, 0.5)',
-			}}
+			aria-labelledby="loginModalLabel"
+			aria-hidden="true"
+			style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
 		>
 			<div
 				className="modal-dialog modal-dialog-centered d-flex align-items-center justify-content-between"
