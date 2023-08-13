@@ -19,11 +19,19 @@ This web app offers users to send holiday gifts and school supplies to the child
 - [Stacy Sealky Lee](https://github.com/stacysealky)
 - [Marco Schuster](https://github.com/Enubia)
 
+## Current Contributors
+
+- [Ivan Repusic](https://github.com/Tokikko) 
+- [Jacob Jeevan](https://github.com/Jacobjeevan)
+- @nguyenit67
+- @NMilivojevic
+- @nick-w-nick
+- @Zinminhtet21801
+- @Calvinsd
+
 ## Past Contributors
 
 - Patric Hoffmann
-- Ivan Repusic
-- Jacob Jeevan
 - Markell Richards
 - Maria Nguyen
 - Deep Patel
@@ -36,9 +44,8 @@ support@donate-gifts.com
 
 Checkout our contributing [guidelines](/Contributing.md)
 
-## Demo
-
-https://youtu.be/KhgQV0MTxlA
+## Social Media
+[Follow DonateGifts on Instagram](https://www.instagram.com/donategifts/)
 
 ---
 
