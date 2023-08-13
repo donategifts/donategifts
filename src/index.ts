@@ -15,7 +15,7 @@ import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
 import DGBot from './discord/bot';
 import config from './helper/config';
-import log from './helper/logger';
+import logger from './helper/logger';
 import { routes } from './routes';
 
 const limiter = new BaseController().limiter;
@@ -47,7 +47,7 @@ const app = express();
 				res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
 			}) path: ${req.originalUrl}`;
 
-			log.info(logString);
+			logger.info(logString);
 		}
 
 		next();
@@ -179,18 +179,18 @@ const app = express();
 		res.locals.message = err.message;
 		res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-		log.error(err);
+		logger.error(err);
 
 		return res.status(500).render('error/500');
 	});
 
 	app.listen(config.PORT, () => {
-		log.info(`App listening on port ${config.PORT}`);
+		logger.info(`App listening on port ${config.PORT}`);
 	});
 })();
 
 process.on('uncaughtException', (err) => {
-	log.error(err);
+	logger.error(err);
 });
 
 export default app;

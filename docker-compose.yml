@@ -24,12 +24,6 @@ services:
     #         - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     #         - donategifts:/data/postgres-donategifts
 
-    # redis:
-    #     image: eqalpha/keydb
-    #     container_name: dg-redis
-    #     ports:
-    #         - '6379:6379'
-
 volumes:
     mongo:
         driver: local
