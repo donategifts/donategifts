@@ -36,7 +36,7 @@ block content
                                 a.button-secondary.button-width( href='/contact' ) Contact For Help
 
             if user.userRole == 'partner'
-                .card.shadow.mb-5.border-0.p-4
+                #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
                         .display-6 Agency Details
                         .fas.fa-edit( data-bs-toggle='modal' data-bs-target='#agency-details-modal' )
@@ -60,10 +60,7 @@ block content
                         .row.justify-content-center.my-4
                             .col-12
                                 span.text-muted Agency description:
-                                if agency.agencyBio
-                                    span.mx-2= agency.agencyBio
-                                else
-                                    span.mx-2 Not provided
+                                span#agencyBio.mx-2= agency.agencyBio || 'Not provided'
                         .row.justify-content-center.my-4
                             .col-12.col-md-6.mb-4.mb-md-0
                                 span.text-muted Number of existing wish cards:
@@ -77,7 +74,7 @@ block content
                                 span#agencyPhone.mx-2= agency.agencyPhone
                             .col-12.col-md-6
                                 span.text-muted Website:
-                                span#agencyWebsite.mx-2.text-wrap= agency.agencyWebsite
+                                span#agencyWebsite.mx-2.text-wrap= agency.agencyWebsite || 'Not provided'
 
                         if agency.agencyAddress.address1
                             .row.justify-content-center.my-4
@@ -86,7 +83,7 @@ block content
                                     span#address1.mx-2= agency.agencyAddress.address1
                                 .col-12.col-lg-6
                                     span.text-muted Address line 2:
-                                    span#address2.mx-2= agency.agencyAddress.address2
+                                    span#address2.mx-2= agency.agencyAddress.address2 || 'Not provided'
                             .row.justify-content-center.my-4
                                 .col-12.col-lg-6.mb-4.mb-md-0
                                     span.text-muted City:
@@ -183,9 +180,9 @@ block modal
                     .container-fluid
                         if user.aboutMe
                             .my-2
-                                textarea#about-me-text.form-control= user.aboutMe
+                                textarea#about-me-text.form-control( placeholder='Write something about you' )= user.aboutMe
                         else
-                            textarea#about-me-text.form-control
+                            textarea#about-me-text.form-control( placeholder='Write something about you' )
                 .modal-footer.d-flex.justify-content-end
                     .col-12.col-md-4
                         button#save-about-me.btn.btn-lg.btn-primary.w-100( type='button' data-bs-dismiss='modal' ) Save
@@ -222,10 +219,10 @@ block modal
                             #agencyDetailsForm
                                 .my-2
                                     label.form-label( for='agencyBio' ) Agency Description:
-                                    textarea#agencyBio.form-control( name='agencyBio' rows='3' )= agency.agencyBio
+                                    textarea#agencyBio.form-control( name='agencyBio' rows='3' placeholder='Enter agency description' )= agency.agencyBio
                                 .my-2
                                     label.form-label( for='agencyPhone' ) Contact Number:
-                                    input#agencyPhone.form-control( type='text' name='agencyPhone' value=agency.agencyPhone )
+                                    input#agencyPhone.form-control( type='text' name='agencyPhone' placeholder='000-000-0000' value=agency.agencyPhone )
                                 .my-2
                                     label.form-label( for='agencyWebsite' ) Website:
                                     input#agencyWebsite.form-control( type='text' name='agencyWebsite' value=agency.agencyWebsite )
@@ -252,21 +249,22 @@ block modal
                             button#save-agency-details.btn.btn-lg.btn-primary.w-100( type='button' data-bs-dismiss='modal' ) Save
 
 block scripts
+    script( src='https://unpkg.com/imask@6.0.5/dist/imask.js' )
     script.
         $(document).ready(() => {
-            $('[placeholder]').focus(function() {
-                const input = $(this);
-                if (input.val() == input.attr('placeholder')) {
-                    input.val('');
-                    input.removeClass('placeholder');
-                }
-            }).blur(function() {
-                const input = $(this);
-                if (input.val() == '' || input.val() == input.attr('placeholder')) {
-                    input.addClass('placeholder');
-                    input.val(input.attr('placeholder'));
-                }
-            }).blur();
+            //- $('[placeholder]').focus(function() {
+            //-     const input = $(this);
+            //-     if (input.val() == input.attr('placeholder')) {
+            //-         input.val('');
+            //-         input.removeClass('placeholder');
+            //-     }
+            //- }).blur(function() {
+            //-     const input = $(this);
+            //-     if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            //-         input.addClass('placeholder');
+            //-         input.val(input.attr('placeholder'));
+            //-     }
+            //- }).focus();
 
             $('#save-about-me').click(() => {
                 const aboutMe = $('#about-me-text').val();
@@ -280,7 +278,7 @@ block scripts
                             return showToast('Could not update about me info.');
                         }
                         showToast('Updated your info!', true);
-                        $('#about-me').text(response.data);
+                        $('#about-me').text(response.data || 'You have no description saved.');
                     },
                     error: (_) => {
                         showToast('Could not update about me info.');
@@ -299,7 +297,7 @@ block scripts
                     data: { fName, lName },
                     success: (response) => {
                         if (response.error) {
-                            return showToast('Error: Could not update account details');
+                            return showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
                         }
                         showToast('Success: Updated your account details', true);
                         const {fName, lName} = response.data;
@@ -307,8 +305,8 @@ block scripts
                         $('#lName').text(lName);
                         $('#welcome-title').text(`Welcome ${fName}`);
                     },
-                    error: (_) => {
-                        showToast('Error: Could not update account details');
+                    error: (response) => {
+                        showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
                     }
                 });
             });
@@ -331,21 +329,23 @@ block scripts
                     data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode },
                     success: (response) => {
                         if (response.error) {
-                            return showToast('Error: Could not update agency details');
+                            return showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
                         }
                         showToast('Success: Updated your agency details', true);
-                        $('#agencyBio').text(response.data.agencyBio);
-                        $('#agencyPhone').text(response.data.agencyPhone);
-                        $('#agencyWebsite').text(response.data.agencyWebsite);
-                        $('#address1').text(response.data.address1);
-                        $('#address2').text(response.data.address2);
-                        $('#city').text(response.data.city);
-                        $('#state').text(response.data.state);
-                        $('#country').text(response.data.country);
-                        $('#zipcode').text(response.data.zipcode);
+                        const agencyCard = $('#agencyInfoCard');
+                        $('#agencyBio', agencyCard).text(response.data.agencyBio || 'Not provided');
+                        $('#agencyPhone', agencyCard).text(response.data.agencyPhone);
+                        $('#agencyWebsite', agencyCard).text(response.data.agencyWebsite || 'Not provided');
+                        $('#address1', agencyCard).text(response.data.address1);
+                        $('#address2', agencyCard).text(response.data.address2 || 'Not provided');
+                        $('#city', agencyCard).text(response.data.city);
+                        $('#state', agencyCard).text(response.data.state);
+                        $('#country', agencyCard).text(response.data.country);
+                        $('#zipcode', agencyCard).text(response.data.zipcode);
                     },
-                    error: (_) => {
-                        showToast('Error: Could not update agency details');
+                    error: (response) => {
+                        console.log(response);
+                        showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
                     }
                 });
             });
@@ -399,5 +399,9 @@ block scripts
                         showToast("Could not remove profile picture");
                     }
                 });
+            });
+            const phoneMask = IMask(
+                document.querySelector('#agencyDetailsForm #agencyPhone.form-control'), {
+                mask: '000-000-0000'
             });
         });
