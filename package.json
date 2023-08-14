@@ -19,7 +19,7 @@
 		"lint:jsx": "eslint -c ./js/react/.eslintrc --ext .jsx js/react/",
 		"lint:scss": "stylelint design/",
 		"lint": "npm run lint:pug && npm run lint:src && npm run lint:jsx && npm run lint:scss",
-		"introspect": "kysely-codegen introspect --url postgres://postgres:postgres@localhost:5432/donategifts --out-file types/database.ts",
+		"introspect": "kysely-codegen introspect --url postgres://postgres:postgres@localhost:5432/donategifts --out-file types/generated/database.ts",
 		"prepare": "husky install | chmod ug+x .husky/*",
 		"start": "node dist/index.js",
 		"webpack:build": "webpack --mode=production",
