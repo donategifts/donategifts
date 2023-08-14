@@ -18,7 +18,8 @@ CREATE TABLE agencies(
     image_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp,
-    CONSTRAINT agencies_pkey PRIMARY KEY(id)
+    CONSTRAINT agencies_pkey PRIMARY KEY(id),
+    UNIQUE(employer_identification_number)
 );
 
 CREATE TABLE children(
