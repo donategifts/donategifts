@@ -59,7 +59,7 @@ function Nav({ user, agency }) {
 						{user?.userRole === 'partner' && agency?.isVerified ? (
 							<li className="nav-item">
 								<a className="nav-link" href="/wishcards/create">
-									Create a Wish Card
+									Create Wish Cards
 								</a>
 							</li>
 						) : null}
