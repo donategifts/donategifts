@@ -62,7 +62,8 @@ function Nav({ user, agency }) {
 									Create a Wish Card
 								</a>
 							</li>
-						) : user?.userRole === 'admin' ? (
+						) : null}
+						{user?.userRole === 'admin' ? (
 							<li className="nav-item">
 								<a className="nav-link" href="/admin/">
 									Admin Panel
