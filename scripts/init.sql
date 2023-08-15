@@ -13,7 +13,7 @@ CREATE TABLE agencies(
     country varchar(100) NOT NULL,
     zip_code varchar(50) NOT NULL,
     verified boolean NOT NULL DEFAULT false,
-    employer_identification_number varchar(255) NOT NULL,
+    employer_identification_number varchar(255),
     account_manager_id uuid NOT NULL,
     image_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -65,7 +65,7 @@ CREATE TABLE items(
 CREATE TABLE messages(
     id uuid NOT NULL DEFAULT gen_random_uuid(),
     "content" varchar(500) NOT NULL,
-    sender uuid NOT NULL,
+    sender_id uuid NOT NULL,
     wishcard_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT messages_pkey PRIMARY KEY(id)
@@ -94,7 +94,7 @@ CREATE TABLE users(
     "role" integer NOT NULL,
     login_mode integer NOT NULL,
     bio varchar(500),
-    verified boolean NOT NULL DEFAULT false,
+    is_verified boolean NOT NULL DEFAULT false,
     image_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp,
@@ -156,7 +156,7 @@ ADD
 
 ALTER TABLE messages
 ADD
-    CONSTRAINT messages_sender_fkey FOREIGN KEY (sender) REFERENCES users (id);
+    CONSTRAINT messages_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES users (id);
 
 ALTER TABLE community_posts
 ADD
