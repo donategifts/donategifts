@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-function Nav(props) {
-	const { user, agency } = props;
-
+function Nav({ user, agency }) {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
 			<div className="container">
@@ -45,8 +43,7 @@ function Nav(props) {
 								Community
 							</a>
 						</li>
-						{/* No user */}
-						{!user && (
+						{!user ? (
 							<li className="nav-item">
 								<a
 									className="nav-link"
@@ -57,38 +54,27 @@ function Nav(props) {
 									Log In
 								</a>
 							</li>
-						)}
-						{/* User gift sender */}
-						{!user?.isAdmin && !user?.userRole === 'partner' && (
+						) : (
 							<li className="nav-item">
 								<a className="nav-link" href="/profile">
 									Profile
 								</a>
 							</li>
 						)}
-						{/* User is admin */}
-						{user?.isAdmin && (
+						{user?.userRole === 'partner' && agency?.isVerified ? (
+							<li className="nav-item">
+								<a className="nav-link" href="/wishcards/create">
+									Create Wish Cards
+								</a>
+							</li>
+						) : null}
+						{user?.userRole === 'admin' ? (
 							<li className="nav-item">
 								<a className="nav-link" href="/admin/">
 									Admin Panel
 								</a>
 							</li>
-						)}
-						{/* User partner and agency is verified */}
-						{user?.userRole === 'partner' && agency?.isVerified && (
-							<>
-								<li className="nav-item">
-									<a className="nav-link" href="/wishcards/me">
-										My Wishes
-									</a>
-								</li>
-								<li className="nav-item">
-									<a className="nav-link" href="/wishcards/create">
-										Create a Wish Card
-									</a>
-								</li>
-							</>
-						)}
+						) : null}
 					</ul>
 				</div>
 			</div>
