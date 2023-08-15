@@ -21,7 +21,7 @@ export type Numeric = ColumnType<string, string | number, string | number>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Agencies {
-  id: number;
+  id: Generated<string>;
   name: string;
   website: string;
   phone: string;
@@ -33,74 +33,74 @@ export interface Agencies {
   country: string;
   zip_code: string;
   verified: Generated<boolean>;
-  employer_identification_number: string;
-  account_manager_id: number;
-  image_id: number;
+  employer_identification_number: string | null;
+  account_manager_id: string;
+  image_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
 
 export interface Children {
-  id: number;
+  id: Generated<string>;
   first_name: string;
   last_name: string;
   birth_year: number;
   interest: string;
   story: string;
-  image_id: number;
+  image_id: string;
   created_at: Generated<Timestamp>;
 }
 
 export interface CommunityPosts {
-  id: number;
+  id: Generated<string>;
   message: string;
-  agency_id: number;
-  image_id: number;
+  agency_id: string;
+  image_id: string;
   created_at: Generated<Timestamp>;
 }
 
 export interface Images {
-  id: number;
+  id: Generated<string>;
   url: string;
   meta_data: Json | null;
   created_at: Generated<Timestamp>;
 }
 
 export interface Items {
-  id: number;
+  id: Generated<string>;
   name: string;
   price: Numeric;
   link: string;
   retailer: string;
-  product_id: string;
-  image_id: number;
-  created_at: Generated<Timestamp>;
+  retailer_product_id: string;
   meta_data: Json | null;
+  image_id: string;
+  created_at: Generated<Timestamp>;
 }
 
 export interface Messages {
-  id: number;
+  id: Generated<string>;
   content: string;
-  sender: number;
-  wishcard_id: number;
+  sender_id: string;
+  wishcard_id: string;
   created_at: Generated<Timestamp>;
 }
 
 export interface Orders {
-  id: number;
+  id: Generated<string>;
   status: Generated<number>;
   delivery_date: Timestamp | null;
   tracking_info: string | null;
-  donor_id: number;
-  child_id: number;
-  item_id: number;
-  agency_id: number;
+  donor_id: string;
+  child_id: string;
+  item_id: string;
+  agency_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
 
 export interface Users {
-  id: number;
+  id: Generated<string>;
   first_name: string;
   last_name: string;
   email: string;
@@ -108,32 +108,32 @@ export interface Users {
   role: number;
   login_mode: number;
   bio: string | null;
-  verified: Generated<boolean>;
-  image_id: number;
+  is_verified: Generated<boolean>;
+  image_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
   deleted_at: Timestamp | null;
 }
 
 export interface Verifications {
-  id: number;
+  id: Generated<string>;
   email_verified: boolean;
-  user_id: number;
+  user_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
 
 export interface VerificationTokens {
-  id: number;
+  id: Generated<string>;
   token: string;
   type: number;
   expiration: Timestamp;
-  user_id: number;
+  user_id: string;
   created_at: Generated<Timestamp>;
 }
 
 export interface Wishcards {
-  id: number;
+  id: Generated<string>;
   address_line_1: string;
   address_line_2: string | null;
   city: string;
@@ -141,12 +141,12 @@ export interface Wishcards {
   country: string;
   zip_code: string;
   status: Generated<number>;
-  created_by: number;
-  agency_id: number;
-  child_id: number;
-  item_id: number;
-  image_id: number;
-  order_id: number;
+  created_by: string;
+  agency_id: string;
+  child_id: string;
+  item_id: string;
+  image_id: string;
+  order_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
