@@ -1,36 +1,32 @@
 import PropTypes from 'prop-types';
 
-function Modal({ title, body, footer, sideContent }) {
+const Modal = ({ title, body, footer, sideContent }) => {
 	return (
 		<div
 			className="modal fade"
-			id="loginModal"
+			id="authModal"
 			tabIndex="-1"
-			aria-labelledby="loginModalLabel"
+			aria-labelledby="authModalLabel"
 			aria-hidden="true"
-			style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+			style={{
+				backgroundColor: 'rgba(0, 0, 0, 0.5)',
+			}}
 		>
 			<div
-				className="modal-dialog modal-dialog-centered d-flex align-items-center justify-content-between"
+				className="modal-dialog modal-dialog-centered d-flex justify-content-between align-items-center"
 				style={{ maxWidth: 'fit-content' }}
 			>
 				<div
 					className="modal-content"
-					style={{ width: '900px', height: '600px', margin: 'auto' }}
+					style={{ width: '900px', height: '600px', margin: 'auto 1rem' }}
 				>
-					<div className="d-flex align-items-center justify-content-between w-100 h-100">
-						<div
-							className="h-100 d-flex flex-column justify-content-around align-items-center text-center"
-							style={{ width: '65%' }}
-						>
+					<div className="auth-modal w-100 h-100">
+						<div className="h-100 d-flex flex-column justify-content-around align-items-center text-center">
 							{title}
 							{body}
 							{footer}
 						</div>
-						<div
-							className="background-gradient h-100 d-flex justify-content-center align-items-center rounded-end"
-							style={{ width: '35%' }}
-						>
+						<div className="background-gradient h-100 d-flex justify-content-center align-items-center rounded-end px-3">
 							{sideContent}
 						</div>
 					</div>
@@ -38,7 +34,7 @@ function Modal({ title, body, footer, sideContent }) {
 			</div>
 		</div>
 	);
-}
+};
 
 Modal.propTypes = {
 	title: PropTypes.object,

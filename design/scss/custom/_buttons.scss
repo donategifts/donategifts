@@ -13,6 +13,7 @@
 	font-weight: $fw-semi-bold;
 }
 
+
 .button {
 	&-width {
 		width: 250px;
@@ -81,6 +82,34 @@
 		&:hover {
 			background-color: $white;
 			color: $primary;
+		}
+	}
+
+	&-modal-fill {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: none;
+		background-color: $white;
+		color: $primary;
+
+		&:hover {
+			background-color: darken($white, 10);
+		}
+	}
+
+	&-modal-outline {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: 1.5px solid $gray-500;
+		background-color: transparent;
+		color: $primary;
+		
+		&:hover {
+			background-color: darken($white, 10);
 		}
 	}
 }

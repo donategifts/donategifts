@@ -1,11 +1,11 @@
-import Login from '../login/index.jsx';
+import Auth from '../auth/index.jsx';
 import Nav from '../nav/index.jsx';
 
 function Header(props) {
 	return (
 		<header>
 			<Nav {...props} />
-			<Login />
+			<Auth />
 		</header>
 	);
 }
