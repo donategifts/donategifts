@@ -18,7 +18,8 @@ CREATE TABLE agencies(
     image_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp,
-    CONSTRAINT agencies_pkey PRIMARY KEY(id)
+    CONSTRAINT agencies_pkey PRIMARY KEY(id),
+    UNIQUE(employer_identification_number)
 );
 
 CREATE TABLE children(
@@ -56,7 +57,8 @@ CREATE TABLE items(
     price numeric(10, 2) NOT NULL,
     link varchar(2000) NOT NULL,
     retailer varchar(255) NOT NULL,
-    product_id varchar(255) NOT NULL,
+    retailer_product_id varchar(255) NOT NULL,
+    meta_data json,
     image_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT items_pkey PRIMARY KEY(id)
