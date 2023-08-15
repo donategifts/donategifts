@@ -145,12 +145,12 @@ CREATE TABLE wishcards(
 
 ALTER TABLE verifications
 ADD
-    CONSTRAINT verifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE Cascade;
+    CONSTRAINT verifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT;
 
 ALTER TABLE
     verification_tokens
 ADD
-    CONSTRAINT verification_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE Cascade;
+    CONSTRAINT verification_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT;
 
 ALTER TABLE agencies
 ADD
@@ -162,7 +162,7 @@ ADD
 
 ALTER TABLE community_posts
 ADD
-    CONSTRAINT community_posts_agency_id_fkey FOREIGN KEY (agency_id) REFERENCES agencies (id) ON DELETE Cascade;
+    CONSTRAINT community_posts_agency_id_fkey FOREIGN KEY (agency_id) REFERENCES agencies (id) ON DELETE RESTRICT;
 
 ALTER TABLE wishcards
 ADD
@@ -170,7 +170,7 @@ ADD
 
 ALTER TABLE wishcards
 ADD
-    CONSTRAINT wishcards_agency_id_fkey FOREIGN KEY (agency_id) REFERENCES agencies (id) ON DELETE Cascade;
+    CONSTRAINT wishcards_agency_id_fkey FOREIGN KEY (agency_id) REFERENCES agencies (id) ON DELETE RESTRICT;
 
 ALTER TABLE wishcards
 ADD
