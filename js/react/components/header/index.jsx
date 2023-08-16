@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import Auth from '../auth/index.jsx';
+import Auth from '../auth/Auth.jsx';
 import Nav from '../nav/index.jsx';
 
 const initialState = {
