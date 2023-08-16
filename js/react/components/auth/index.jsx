@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Modal from '../shared/Modal.jsx';
 
-const Auth = () => {
-	const [showLogin, setShowLogin] = useState(true);
-	const [showLoginWithEmail, setShowLoginWithEmail] = useState(false);
-	const [showSignUp, setShowSignUp] = useState(false);
-
+const Auth = ({ state, dispatch }) => {
+	const { showLogin, showLoginWithEmail, showSignUp } = state;
 	return showLogin ? (
 		<Modal
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
@@ -20,11 +17,7 @@ const Auth = () => {
 					</button>
 					<button
 						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
-						onClick={() => {
-							setShowLogin(false);
-							setShowLoginWithEmail(true);
-							setShowSignUp(false);
-						}}
+						onClick={() => dispatch({ type: 'LOGIN_WITH_EMAIL' })}
 					>
 						<span className="fa fa-envelope-o fs-3" />
 						<p className="m-0 fs-5 fw-bold">Log in with Email</p>
@@ -40,11 +33,7 @@ const Auth = () => {
 					</div>
 					<button
 						className="w-100 button-modal-fill fs-5 fw-bold"
-						onClick={() => {
-							setShowLogin(false);
-							setShowLoginWithEmail(false);
-							setShowSignUp(true);
-						}}
+						onClick={() => dispatch({ type: 'SIGN_UP' })}
 					>
 						Sign up
 					</button>
@@ -79,11 +68,7 @@ const Auth = () => {
 					</div>
 					<button
 						className="w-100 button-modal-fill fs-5 fw-bold"
-						onClick={() => {
-							setShowLogin(true);
-							setShowLoginWithEmail(false);
-							setShowSignUp(false);
-						}}
+						onClick={() => dispatch({ type: 'LOGIN' })}
 					>
 						Log in
 					</button>
@@ -143,11 +128,7 @@ const Auth = () => {
 					</div>
 					<button
 						className="w-100 button-modal-fill fs-5 fw-bold"
-						onClick={() => {
-							setShowLogin(false);
-							setShowLoginWithEmail(false);
-							setShowSignUp(true);
-						}}
+						onClick={() => dispatch({ type: 'SIGN_UP' })}
 					>
 						Sign up
 					</button>
@@ -155,6 +136,11 @@ const Auth = () => {
 			}
 		/>
 	) : null;
+};
+
+Auth.propTypes = {
+	state: PropTypes.object,
+	dispatch: PropTypes.func,
 };
 
 export default Auth;

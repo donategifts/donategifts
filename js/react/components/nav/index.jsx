@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function Nav({ user, agency }) {
+function Nav({ user, agency, dispatch }) {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
 			<div className="container">
@@ -51,6 +51,7 @@ function Nav({ user, agency }) {
 									// href="/login"
 									data-bs-toggle="modal"
 									data-bs-target="#authModal"
+									onClick={() => dispatch({ type: 'LOGIN' })}
 								>
 									Log In
 								</a>
@@ -86,5 +87,6 @@ function Nav({ user, agency }) {
 Nav.propTypes = {
 	user: PropTypes.object,
 	agency: PropTypes.object,
+	dispatch: PropTypes.func,
 };
 export default Nav;
