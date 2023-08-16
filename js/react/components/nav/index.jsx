@@ -49,7 +49,6 @@ function Nav({ user, agency }) {
 									className="nav-link"
 									style={{ cursor: 'pointer' }}
 									// href="/login"
-									// onClick={() => setShowModal(true)}
 									data-bs-toggle="modal"
 									data-bs-target="#authModal"
 								>

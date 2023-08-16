@@ -3,18 +3,40 @@
 	justify-content: space-between;
 	align-items: center;
 
-	div {
-		&:first-of-type {
-			width: 65%;
-		}
-
-		&:last-of-type {
-			width: 35%;
-		}
+	> div {
+		width: 65%;
 	}
-	
+
+	.background-gradient {
+		width: 35%;
+	}
 }
 
 .background-gradient {
 		background: linear-gradient(45deg, $danger, $warning);
+}
+
+@media (width <= 768px) {
+	.auth-modal {
+		flex-direction: column;
+
+		> div, .background-gradient {
+			width: 100%;
+		}
+
+		> div {
+			padding: 2rem;
+			gap: 2rem;
+		}
+
+		.background-gradient {
+			border-top-right-radius: 0 !important;
+			border-bottom-left-radius: 0.375rem;
+			padding: 2rem;
+			
+			button {
+				max-width: 50%;
+			}
+		}
+	}
 }
