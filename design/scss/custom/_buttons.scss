@@ -85,6 +85,20 @@
 		}
 	}
 
+	&-modal-secondary {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: none;
+		background-color: $secondary;
+		color: $white;
+
+		&:hover {
+			background-color: darken($secondary, 10);
+		}
+	}
+
 	&-modal-fill {
 		@extend %btn;
 		@extend %btn-main;

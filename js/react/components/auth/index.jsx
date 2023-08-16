@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import Modal from '../shared/Modal.jsx';
@@ -12,7 +11,7 @@ const Auth = () => {
 		<Modal
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
 			body={
-				<div className="d-flex flex-column align-items-center justify-content-center gap-5 w-50">
+				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
 					<button className="w-100 d-flex justify-content-around align-items-center">
 						Log in with Google
 					</button>
@@ -20,14 +19,14 @@ const Auth = () => {
 						Log in with Facebook
 					</button>
 					<button
-						className="button-modal-outline w-100 d-flex justify-content-around align-items-center"
+						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
 						onClick={() => {
 							setShowLogin(false);
 							setShowLoginWithEmail(true);
 							setShowSignUp(false);
 						}}
 					>
-						<span className="fa fa-envelope-o fs- 3" />
+						<span className="fa fa-envelope-o fs-3" />
 						<p className="m-0 fs-5 fw-bold">Log in with Email</p>
 					</button>
 				</div>
@@ -56,7 +55,7 @@ const Auth = () => {
 		<Modal
 			title={<h1 className="cool-font text-secondary">Join DonateGifts</h1>}
 			body={
-				<div className="d-flex flex-column align-items-center justify-content-center gap-5 w-50">
+				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
 					<button className="w-100 d-flex justify-content-around align-items-center">
 						Sign up with Google
 					</button>
@@ -64,10 +63,10 @@ const Auth = () => {
 						Sign up with Facebook
 					</button>
 					<button
-						className="button-modal-outline w-100 d-flex justify-content-around align-items-center"
+						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
 						onClick={() => console.log('sign up with email')}
 					>
-						<span className="fa fa-envelope-o fs- 3" />
+						<span className="fa fa-envelope-o fs-3" />
 						<p className="m-0 fs-5 fw-bold">Sign up with Email</p>
 					</button>
 				</div>
@@ -95,8 +94,44 @@ const Auth = () => {
 		<Modal
 			title={<h1 className="cool-font text-secondary">Log in with email</h1>}
 			body={
-				<div className="d-flex flex-column align-items-center justify-content-center gap-5 w-50">
-					email password login remember me forgot password
+				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
+					<form action="" method="post" className="w-100">
+						<div className="form-floating mb-3">
+							<input
+								type="email"
+								className="form-control rounded-pill"
+								id="email"
+								placeholder="Email"
+							/>
+							<label htmlFor="email">Email</label>
+						</div>
+						<div className="form-floating">
+							<input
+								type="password"
+								className="form-control rounded-pill"
+								id="password"
+								placeholder="Password"
+							/>
+							<label htmlFor="password">Password</label>
+						</div>
+						<button className="w-100 mt-5 mb-3 button-modal-secondary" type="submit">
+							Log in
+						</button>
+						<div className="w-100 d-flex justify-content-between align-items-start align-items-sm-center flex-column flex-sm-row gap-2 gap-sm-0">
+							<div className="form-check">
+								<input
+									className="form-check-input"
+									type="checkbox"
+									value=""
+									id="rememberMe"
+								/>
+								<label className="form-check-label" htmlFor="rememberMe">
+									Remember me
+								</label>
+							</div>
+							<a href="#">Forgot password?</a>
+						</div>
+					</form>
 				</div>
 			}
 			footer={<p>Agency partner users must sign in with work email</p>}
@@ -120,11 +155,6 @@ const Auth = () => {
 			}
 		/>
 	) : null;
-};
-
-Auth.propTypes = {
-	showModal: PropTypes.bool,
-	setShowModal: PropTypes.func,
 };
 
 export default Auth;

@@ -20,7 +20,7 @@ const Modal = ({ title, body, footer, sideContent }) => {
 					className="modal-content"
 					style={{ width: '900px', height: '600px', margin: 'auto 1rem' }}
 				>
-					<div className="auth-modal w-100 h-100">
+					<div className="auth-modal d-flex justify-content-between align-items-center flex-column flex-md-row w-100 h-100">
 						<div className="h-100 d-flex flex-column justify-content-around align-items-center text-center">
 							{title}
 							{body}
