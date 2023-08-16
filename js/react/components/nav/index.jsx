@@ -48,7 +48,7 @@ function Nav({ user, agency, dispatch }) {
 								<a
 									className="nav-link"
 									style={{ cursor: 'pointer' }}
-									// href="/login"
+									href="/login"
 									data-bs-toggle="modal"
 									data-bs-target="#authModal"
 									onClick={() => dispatch({ type: 'LOGIN' })}
