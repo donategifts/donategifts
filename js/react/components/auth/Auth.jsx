@@ -114,7 +114,9 @@ const Auth = ({ state, dispatch }) => {
 									Remember me
 								</label>
 							</div>
-							<a href="#">Forgot password?</a>
+							<a href="/profile/password/reset" className="text-secondary">
+								Forgot password?
+							</a>
 						</div>
 					</form>
 				</div>
