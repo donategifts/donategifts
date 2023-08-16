@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
+import { forwardRef } from 'react';
 
-const Modal = ({ title, body, footer, sideContent }) => {
+const Modal = forwardRef(({ title, body, footer, sideContent }, ref) => {
 	return (
 		<div
-			className="modal fade"
-			id="authModal"
+			className="modal fade show"
+			// id="authModal"
 			tabIndex="-1"
-			aria-labelledby="authModalLabel"
-			aria-hidden="true"
+			aria-modal="true"
+			role="dialog"
 			style={{
 				backgroundColor: 'rgba(0, 0, 0, 0.5)',
+				display: 'block',
 			}}
 		>
 			<div
@@ -20,7 +22,10 @@ const Modal = ({ title, body, footer, sideContent }) => {
 					className="modal-content"
 					style={{ width: '900px', height: '600px', margin: 'auto 1rem' }}
 				>
-					<div className="auth-modal d-flex justify-content-between align-items-center flex-column flex-md-row w-100 h-100">
+					<div
+						ref={ref}
+						className="auth-modal d-flex justify-content-between align-items-center flex-column flex-md-row w-100 h-100"
+					>
 						<div className="h-100 d-flex flex-column justify-content-around align-items-center text-center">
 							{title}
 							{body}
@@ -34,7 +39,9 @@ const Modal = ({ title, body, footer, sideContent }) => {
 			</div>
 		</div>
 	);
-};
+});
+
+Modal.displayName = 'Modal';
 
 Modal.propTypes = {
 	title: PropTypes.object,

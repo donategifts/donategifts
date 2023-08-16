@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function Nav({ user, agency, dispatch }) {
+const Nav = ({ user, agency, dispatch, setShowModal }) => {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
 			<div className="container">
@@ -48,10 +48,13 @@ function Nav({ user, agency, dispatch }) {
 								<a
 									className="nav-link"
 									style={{ cursor: 'pointer' }}
-									href="/login"
-									data-bs-toggle="modal"
-									data-bs-target="#authModal"
-									onClick={() => dispatch({ type: 'LOGIN' })}
+									// href="/login"
+									// data-bs-toggle="modal"
+									// data-bs-target="#authModal"
+									onClick={() => {
+										dispatch({ type: 'LOGIN' });
+										setShowModal(true);
+									}}
 								>
 									Log In
 								</a>
@@ -82,11 +85,12 @@ function Nav({ user, agency, dispatch }) {
 			</div>
 		</nav>
 	);
-}
+};
 
 Nav.propTypes = {
 	user: PropTypes.object,
 	agency: PropTypes.object,
 	dispatch: PropTypes.func,
+	setShowModal: PropTypes.func,
 };
 export default Nav;

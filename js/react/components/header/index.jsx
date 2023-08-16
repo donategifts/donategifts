@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 
 import Auth from '../auth/Auth.jsx';
 import Nav from '../nav/index.jsx';
@@ -36,11 +36,26 @@ const reducer = (state, action) => {
 
 function Header(props) {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const [showModal, setShowModal] = useState(false);
+	const modalRef = useRef(null);
+
+	const handleClickOutside = (event) => {
+		//if modal is open and click is outside modal, close it
+		if (modalRef.current && !modalRef.current.contains(event.target)) {
+			return setShowModal(false);
+		}
+	};
+	useEffect(() => {
+		document.addEventListener('click', handleClickOutside, true);
+		return () => {
+			document.removeEventListener('click', handleClickOutside, true);
+		};
+	});
 
 	return (
 		<header>
-			<Nav {...props} dispatch={dispatch} />
-			<Auth dispatch={dispatch} state={state} />
+			<Nav {...props} dispatch={dispatch} setShowModal={setShowModal} />
+			{showModal ? <Auth dispatch={dispatch} state={state} modalRef={modalRef} /> : null}
 		</header>
 	);
 }
