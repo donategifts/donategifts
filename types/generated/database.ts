@@ -63,6 +63,7 @@ export interface Images {
   id: Generated<string>;
   url: string;
   meta_data: Json | null;
+  created_by: string;
   created_at: Generated<Timestamp>;
 }
 

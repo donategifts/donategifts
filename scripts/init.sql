@@ -48,7 +48,7 @@ CREATE TABLE "images" (
 CREATE TABLE "items" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "name" varchar(255) NOT NULL,
-    "price" "numeric(10, 2)" NOT NULL,
+    "price" numeric(10, 2) NOT NULL,
     "link" varchar(2000) NOT NULL,
     "retailer" varchar(255) NOT NULL,
     "retailer_product_id" varchar(255) NOT NULL,
