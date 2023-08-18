@@ -14,10 +14,10 @@ html( lang="en" )
         block styles
 
     body
-        header
-            block header
+        //- header
+        //-     block header
                 //- include partials/header.pug
-            #header-root
+        #header-root
 
         main
             block content
@@ -32,17 +32,17 @@ html( lang="en" )
 
         include partials/js.pug
         block scripts
-        append script
+        append scripts
             script.
                 $(document).ready(function () {
                     const root = ReactRoot(document.querySelector('#header-root'));
                     root.render(
                         React.createElement(
-                            Nav,
+                            Header,
                             {
                                 user: !{JSON.stringify(user || null)},
-                                agency: !{JSON.stringify(agency || null)}
+                                agency: !{JSON.stringify(agency || null)},
                             }
-                        )
+                        ),
                     );
                 })
