@@ -68,6 +68,7 @@ router.put(
 	'/agency',
 	Permissions.redirectLogin,
 	Validator.updateAgencyDetailsRules(),
+	Validator.validate,
 	profileController.handlePutAgency,
 );
 

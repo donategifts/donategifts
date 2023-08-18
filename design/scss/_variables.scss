@@ -35,35 +35,33 @@ $light: #e9ecef !default;
 $dark: #313131 !default;
 $gray: #6c757d !default;
 
-$primary-light: tint-color($primary, 50) !default;
-$primary-dark: shade-color($primary, 50) !default;
-$primary-highlight: tint-color($primary, 75) !default;
+$primary-light: tint-color($primary, 50%) !default;
+$primary-dark: shade-color($primary, 50%) !default;
+$primary-highlight: tint-color($primary, 75%) !default;
 
-$secondary-light: tint-color($secondary, 50) !default;
-$secondary-dark: shade-color($secondary, 50) !default;
-$secondary-highlight: tint-color($secondary, 75) !default;
+$secondary-light: tint-color($secondary, 50%) !default;
+$secondary-dark: shade-color($secondary, 50%) !default;
+$secondary-highlight: tint-color($secondary, 75%) !default;
 
-$success-light: tint-color($success, 50) !default;
-$success-dark: shade-color($success, 50) !default;
-$success-highlight: tint-color($success, 75) !default;
+$success-light: tint-color($success, 50%) !default;
+$success-dark: shade-color($success, 50%) !default;
+$success-highlight: tint-color($success, 75%) !default;
 
-$warning-light: tint-color($warning, 50) !default;
-$warning-dark: shade-color($warning, 50) !default;
-$warning-highlight: tint-color($warning, 75) !default;
+$warning-light: tint-color($warning, 50%) !default;
+$warning-dark: shade-color($warning, 50%) !default;
+$warning-highlight: tint-color($warning, 75%) !default;
 
-$danger-light: tint-color($danger, 50) !default;
-$danger-dark: shade-color($danger, 50) !default;
-$danger-highlight: tint-color($danger, 75) !default;
+$danger-light: tint-color($danger, 50%) !default;
+$danger-dark: shade-color($danger, 50%) !default;
+$danger-highlight: tint-color($danger, 75%) !default;
 
-$light-light: tint-color($light, 50) !default;
-$light-dark: shade-color($light, 50) !default;
-$light-highlight: tint-color($light, 75) !default;
+$light-light: tint-color($light, 50%) !default;
+$light-dark: shade-color($light, 50%) !default;
+$light-highlight: tint-color($light, 75%) !default;
 
-// SORRY ¯\_( ͡° ͜ʖ ͡°)_/¯
-// but we need to stick to the naming convention
-$dark-light: tint-color($dark, 50) !default;
-$dark-dark: shade-color($dark, 50) !default;
-$dark-highlight: tint-color($dark, 75) !default;
+$dark-light: tint-color($dark, 50%) !default;
+$dark-dark: shade-color($dark, 50%) !default;
+$dark-highlight: tint-color($dark, 75%) !default;
 
 $baseFontSize: 16;
 
