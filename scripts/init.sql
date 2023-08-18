@@ -3,7 +3,7 @@ CREATE TABLE "agencies" (
     "name" varchar(255) NOT NULL,
     "website" varchar(255) NOT NULL,
     "phone" varchar(100) NOT NULL,
-    "bio" varchar(500),
+    "bio" text,
     "address_line_1" varchar(255) NOT NULL,
     "address_line_2" varchar(255),
     "city" varchar(100) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "agencies" (
     "country" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
     "verified" boolean NOT NULL DEFAULT false,
-    "employer_identification_number" varchar(255) UNIQUE,
+    "employer_identification_number" varchar(100) UNIQUE,
     "account_manager_id" uuid NOT NULL,
     "image_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
@@ -23,15 +23,15 @@ CREATE TABLE "children" (
     "first_name" varchar(255) NOT NULL,
     "last_name" varchar(255) NOT NULL,
     "birth_year" integer NOT NULL,
-    "interest" varchar(255) NOT NULL,
-    "story" varchar(255) NOT NULL,
+    "interest" text NOT NULL,
+    "story" text NOT NULL,
     "image_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "community_posts" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "message" varchar(255) NOT NULL,
+    "message" text NOT NULL,
     "agency_id" uuid NOT NULL,
     "image_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
@@ -59,7 +59,7 @@ CREATE TABLE "items" (
 
 CREATE TABLE "messages" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "content" varchar(500) NOT NULL,
+    "content" text NOT NULL,
     "sender_id" uuid NOT NULL,
     "wishcard_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
