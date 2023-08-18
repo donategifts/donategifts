@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../../utils/constants.jsx';
 import Auth from '../auth/Auth.jsx';
-import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../constants.jsx';
 import Nav from '../nav/index.jsx';
 
 const initialState = {

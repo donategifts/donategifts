@@ -1,15 +1,41 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
-import { LOGIN_WITH_EMAIL, SIGNUP } from '../../constants.jsx';
+import { GOOGLE_CLIENT_LIBRARY_URL, LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
+import { loadlGoogleClientLibraryScript } from '../../../utils/helpers.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {
+	useEffect(() => {
+		if (window && document) {
+			loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
+		}
+	}, []);
+
 	return (
 		<Modal
 			ref={modalRef}
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
 			body={
 				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
+					<div id="buttonDiv"></div>
+					{/* <div
+						id="g_id_onload"
+						data-client_id="GOOGLE_CLIENT_ID"
+						data-context="signin"
+						data-ux_mode="popup"
+						data-login_uri="https://your.domain/your_login_endpoint"
+						data-auto_prompt="false"
+					></div>
+					<div
+						className="g_id_signin"
+						data-type="standard"
+						data-shape="pill"
+						data-theme="outline"
+						data-text="signin_with"
+						data-size="large"
+						data-logo_alignment="left"
+					></div> */}
 					<button className="w-100 d-flex justify-content-around align-items-center">
 						Log in with Google
 					</button>

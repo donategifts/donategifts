@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { SIGNUP } from '../../constants.jsx';
+import { SIGNUP } from '../../../utils/constants.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function LoginWithEmail({ modalRef, dispatch }) {

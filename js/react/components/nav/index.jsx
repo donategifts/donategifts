@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { LOGIN } from '../constants.jsx';
+import { LOGIN } from '../../utils/constants.jsx';
 
 const Nav = ({ user, agency, dispatch, setShowModal }) => {
 	return (
