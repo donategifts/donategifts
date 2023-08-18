@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+import { LOGIN } from '../constants.jsx';
+
 const Nav = ({ user, agency, dispatch, setShowModal }) => {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
@@ -52,7 +54,7 @@ const Nav = ({ user, agency, dispatch, setShowModal }) => {
 									// data-bs-toggle="modal"
 									// data-bs-target="#authModal"
 									onClick={() => {
-										dispatch({ type: 'LOGIN' });
+										dispatch({ type: LOGIN });
 										setShowModal(true);
 									}}
 								>

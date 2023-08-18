@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { LOGIN_WITH_EMAIL, SIGNUP } from '../../constants.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {
@@ -17,7 +18,7 @@ function Login({ modalRef, dispatch }) {
 					</button>
 					<button
 						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
-						onClick={() => dispatch({ type: 'LOGIN_WITH_EMAIL' })}
+						onClick={() => dispatch({ type: LOGIN_WITH_EMAIL })}
 					>
 						<span className="fa fa-envelope-o fs-3" />
 						<p className="m-0 fs-5 fw-bold">Log in with Email</p>
@@ -33,7 +34,7 @@ function Login({ modalRef, dispatch }) {
 					</div>
 					<button
 						className="w-100 button-modal-fill fs-5 fw-bold"
-						onClick={() => dispatch({ type: 'SIGN_UP' })}
+						onClick={() => dispatch({ type: SIGNUP })}
 					>
 						Sign up
 					</button>

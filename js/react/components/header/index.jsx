@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import Auth from '../auth/Auth.jsx';
+import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../constants.jsx';
 import Nav from '../nav/index.jsx';
 
 const initialState = {
@@ -11,19 +12,19 @@ const initialState = {
 
 const reducer = (state, action) => {
 	switch (action.type) {
-		case 'LOGIN':
+		case LOGIN:
 			return {
 				showLogin: true,
 				showLoginWithEmail: false,
 				showSignUp: false,
 			};
-		case 'LOGIN_WITH_EMAIL':
+		case LOGIN_WITH_EMAIL:
 			return {
 				showLogin: false,
 				showLoginWithEmail: true,
 				showSignUp: false,
 			};
-		case 'SIGN_UP':
+		case SIGNUP:
 			return {
 				showLogin: false,
 				showLoginWithEmail: false,

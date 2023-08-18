@@ -6,13 +6,18 @@ import SignUp from './signup/SignUp.jsx';
 
 const Auth = ({ state, dispatch, modalRef }) => {
 	const { showLogin, showLoginWithEmail, showSignUp } = state;
-	return showLogin ? (
-		<Login modalRef={modalRef} dispatch={dispatch} />
-	) : showSignUp ? (
-		<SignUp modalRef={modalRef} dispatch={dispatch} />
-	) : showLoginWithEmail ? (
-		<LoginWithEmail modalRef={modalRef} dispatch={dispatch} />
-	) : null;
+
+	if (showLogin) {
+		return <Login modalRef={modalRef} dispatch={dispatch} />;
+	}
+
+	if (showLoginWithEmail) {
+		return <LoginWithEmail modalRef={modalRef} dispatch={dispatch} />;
+	}
+
+	if (showSignUp) {
+		return <SignUp modalRef={modalRef} dispatch={dispatch} />;
+	}
 };
 
 Auth.propTypes = {

@@ -1,0 +1,5 @@
+const LOGIN = 'LOGIN';
+const LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL';
+const SIGNUP = 'SIGNUP';
+
+export { LOGIN, LOGIN_WITH_EMAIL, SIGNUP };
