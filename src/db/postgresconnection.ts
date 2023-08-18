@@ -1,9 +1,10 @@
 import { Kysely, KyselyConfig, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
-import { DB } from '../../types/generated/database';
 import config from '../helper/config';
 import logger from '../helper/logger';
+
+import { DB } from './types/generated/database';
 
 const databaseConfig: KyselyConfig = {
 	log(event): void {
