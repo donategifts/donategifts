@@ -1,16 +1,19 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 
-import BaseController from '../controller/basecontroller';
 import config from '../helper/config';
+import logger from '../helper/logger';
 
-export default class MongooseConnection extends BaseController {
+export default class MongooseConnection {
 	private mongoose: typeof mongoose;
 
 	private options: ConnectOptions;
 
+	private log: typeof logger;
+
 	constructor(options = {}) {
-		super();
 		this.mongoose = mongoose;
+
+		this.log = logger;
 
 		this.options = {
 			...options,

@@ -23,11 +23,11 @@ This web app offers users to send holiday gifts and school supplies to the child
 
 - [Ivan Repusic](https://github.com/Tokikko) 
 - [Jacob Jeevan](https://github.com/Jacobjeevan)
-- @nguyenit67
-- @NMilivojevic
-- @nick-w-nick
-- @Zinminhtet21801
-- @Calvinsd
+- [nguyenit67](https://github.com/nguyenit67)
+- [NMilivojevic](https://github.com/NMilivojevic)
+- [nick-w-nick](https://github.com/nick-w-nick)
+- [Zinminhtet21801](https://github.com/Zinminhtet21801)
+- [Calvinsd](https://github.com/Calvinsd)
 
 ## Past Contributors
 

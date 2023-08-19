@@ -42,6 +42,7 @@ const envVariables = [
 
 interface EnvVars {
 	PORT: number;
+	DATABASE_URL: string;
 	MONGO_URI: string;
 	NODE_ENV: string;
 	SESS_NAME: string;
@@ -94,6 +95,8 @@ for (const variable of envVariables) {
 
 export default {
 	PORT: envVars.PORT,
+
+	DATABASE_URL: envVars.DATABASE_URL,
 
 	MONGO_URI: envVars.MONGO_URI,
 
