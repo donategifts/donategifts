@@ -6,9 +6,46 @@ import { loadlGoogleClientLibraryScript } from '../../../utils/helpers.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {
+	// google login setup
+	const handleCredentialResponse = (response) => {
+		console.log('Encoded JWT ID token: ' + response.credential);
+	};
+
 	useEffect(() => {
-		if (window && document) {
+		if (window?.google) {
+			window?.google.accounts.id.initialize({
+				// TBD should import client id from local env
+				client_id: 'GOOGLE_CLIENT_ID',
+				callback: handleCredentialResponse,
+			});
+			window?.google.accounts.id.renderButton(document.getElementById('google-signin-btn'), {
+				theme: 'outline',
+				size: 'large',
+				shape: 'pill',
+			});
+			window?.google.accounts.id.prompt();
+		}
+		if (window && document && !window.google) {
 			loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
+			const googleClientLibraryScript = document.getElementById(
+				'google-client-library-script',
+			);
+			googleClientLibraryScript.addEventListener('load', () => {
+				window?.google.accounts.id.initialize({
+					// TBD should import client id from local env
+					client_id: 'GOOGLE_CLIENT_ID',
+					callback: handleCredentialResponse,
+				});
+				window?.google.accounts.id.renderButton(
+					document.getElementById('google-signin-btn'),
+					{
+						theme: 'outline',
+						size: 'large',
+						shape: 'pill',
+					},
+				);
+				window?.google.accounts.id.prompt();
+			});
 		}
 	}, []);
 
@@ -18,30 +55,20 @@ function Login({ modalRef, dispatch }) {
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
 			body={
 				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
-					<div id="buttonDiv"></div>
+					<div id="google-signin-btn"></div>
+
 					{/* <div
-						id="g_id_onload"
-						data-client_id="GOOGLE_CLIENT_ID"
-						data-context="signin"
-						data-ux_mode="popup"
-						data-login_uri="https://your.domain/your_login_endpoint"
-						data-auto_prompt="false"
-					></div>
-					<div
-						className="g_id_signin"
-						data-type="standard"
-						data-shape="pill"
-						data-theme="outline"
-						data-text="signin_with"
+						className="fb-login-button"
 						data-size="large"
-						data-logo_alignment="left"
+						data-button-type="login_with"
+						data-layout="default"
+						data-auto-logout-link="false"
+						data-use-continue-as="false"
+						data-scope="public_profile,email"
+						data-onlogin="facebookLogin"
+						onClick={login}
 					></div> */}
-					<button className="w-100 d-flex justify-content-around align-items-center">
-						Log in with Google
-					</button>
-					<button className="w-100 d-flex justify-content-around align-items-center">
-						Log in with Facebook
-					</button>
+
 					<button
 						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
 						onClick={() => dispatch({ type: LOGIN_WITH_EMAIL })}
