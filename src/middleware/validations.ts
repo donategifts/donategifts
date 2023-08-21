@@ -1,10 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult, param, Result, ValidationError } from 'express-validator';
+import {
+	body,
+	validationResult,
+	param,
+	Result,
+	ValidationError,
+	ExpressValidator,
+} from 'express-validator';
 
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
+
+const amazonValidator = new ExpressValidator({
+	/**
+	 * Check if url is an valid amazon link
+	 * @param value
+	 * @returns {boolean}
+	 */
+	isValidLink: (value: string) => {
+		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
+		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
+		return (
+			typeof value === 'string' &&
+			amazonUrlRegex.test(value) &&
+			amazonProductRegex.test(value)
+		);
+	},
+});
 
 export default class Validations {
 	private static handleError(
@@ -41,7 +65,7 @@ export default class Validations {
 			});
 		}
 
-		res.status(statusCode).send({
+		return res.status(statusCode).send({
 			statusCode,
 			error,
 		});
@@ -83,27 +107,58 @@ export default class Validations {
 	}
 
 	static updateProfileValidationRules() {
-		return [body('aboutMe', 'About me text is required!').exists()];
+		return [body('aboutMe', 'About me text is required!').trim()];
 	}
 
 	static updateAccountDetailsRules() {
 		return [
-			body('fName', 'First name is required!').exists(),
-			body('lName', 'Last name is required!').exists(),
+			body('fName', 'First name is required!').trim().isLength({ min: 1 }).isString(),
+			body('lName', 'Last name is required!').trim().isLength({ min: 1 }).isString(),
 		];
 	}
+
+	private static readonly AGENCY_PHONE_NUMBER_REGEX =
+		/^(\([2-9][0-9]{2}\)[-\s]|[2-9][0-9]{2}[-\s])?[0-9]{3}[-\s]?[0-9]{4}$/;
 
 	static updateAgencyDetailsRules() {
 		return [
 			body('agencyBio').optional(),
-			body('agencyWebsite').optional(),
-			body('agencyPhone', 'Agency Phone is required!').exists(),
-			body('address1', 'Agency Address is required!').exists(),
-			body('address2', 'Agency Address is required!').exists(),
-			body('city', 'City is required!').exists(),
-			body('state', 'State is required!').exists(),
-			body('country', 'Country is required!').exists(),
-			body('zipcode', 'zipcode is required!').exists(),
+			body('agencyWebsite')
+				.trim()
+				.isURL()
+				.withMessage('Agency website must be a valid URL')
+				.optional({ values: 'falsy' }),
+			body('agencyPhone')
+				.trim()
+				.notEmpty()
+				.withMessage('Agency phone number is required')
+				.isLength({ min: 7 })
+				.withMessage('Phone number must be at least 7 characters long')
+				.matches(Validations.AGENCY_PHONE_NUMBER_REGEX)
+				.withMessage('Phone number must match format XXX-XXX-XXXX'),
+			body('address1')
+				.trim()
+				.notEmpty()
+				.withMessage('Agency primary address is required!')
+				.isLength({ min: 5 })
+				.withMessage('Address must contain at least 5 characters'),
+			body('address2').optional(),
+			body('city', 'City is required')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('City must contain at least 2 characters'),
+			body('state', 'State is required!')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('State must contain at least 2 characters'),
+			body('country', 'Country is required')
+				.trim()
+				.isLength({ min: 2 })
+				.withMessage('Country must contain at least 2 characters'),
+			body('zipcode', 'zipcode is required!')
+				.trim()
+				.isLength({ min: 5 })
+				.withMessage('Zipcode must contain at least 5 characters'),
 		];
 	}
 
@@ -136,7 +191,7 @@ export default class Validations {
 				.notEmpty()
 				.isLength({ min: 7 })
 				.withMessage('Phone number must be at least 7 characters long')
-				.matches(/^\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
+				.matches(Validations.AGENCY_PHONE_NUMBER_REGEX)
 				.withMessage('Phone number must match format XXX-XXX-XXXX'),
 			body('agencyBio').optional(),
 		];
@@ -196,13 +251,12 @@ export default class Validations {
 			body('childInterest').isString(),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
-			body('wishItemURL')
-				.notEmpty()
-				.withMessage('Wish item url is required')
-				.isString()
-				// https://regex101.com/r/yM5lU0/13 if you want to see it in action
-				.matches(/^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/)
-				.withMessage('Wish item url has to be a valid amazon link!'),
+			amazonValidator
+				.body('wishItemURL')
+				.isValidLink()
+				.withMessage(
+					'Item URL must start with https://www.amazon.com/ and contain a product ID to be valid.',
+				),
 			body('childStory').notEmpty().withMessage("Child's story is required").isString(),
 			body('address1')
 				.notEmpty()
@@ -360,6 +414,7 @@ export default class Validations {
 		if (!errors.isEmpty()) {
 			return Validations.handleError(res, 400, errors);
 		}
-		next();
+
+		return next();
 	}
 }

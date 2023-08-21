@@ -5,10 +5,10 @@ block title
 
 block meta
     meta( name="description"
-        content="How to help children in foster care | Send holiday birthday gifts to foster kids easily by using embedded Amazon delivery"
+        content="Donate Gifts | Help children in foster care | Send supplies to kids"
     )
     meta( name="robots" content="index, follow" )
-    meta( name="keywords" content="children, gift, wish, foster, donate" )
+    meta( name="keywords" content="children, gift, wish, foster, donate, school supplies, back to school, holiday, donation" )
 
 block external
     include ../mixins/googlefacebookscripts.pug
@@ -16,15 +16,18 @@ block external
 block content
     #home
         #fb-root
-        #hero.container-fluid.d-flex.justify-content-center.align-items-center.text-center.text-white
+        #hero.container-fluid.d-flex.justify-content-center.align-items-center
             .row
-                .col-12
-                    h1.display-4.cool-font.text-uppercase
-                        | Send Gifts to
+                .col-12.text-center
+                    h1
+                        | Send gifts to
                         |
-                        span.typing( data-wait='2000' data-words='["Foster Children", "Homeless Youth", "Kids in Emergency Shelters"]' )
-                    a.btn.btn-lg.btn-light.mx-1.px-4.mb-3.mb-md-0( href='/howto' ) How It Works
-                    a.btn.btn-lg.btn-secondary.mx-1( href='/wishcards' ) See Wish Cards
+                        span.typing( data-wait='2000' data-words='["foster children", "homeless youth", "kids in emergency shelters"]' )
+                    p.py-1.mb-0.d-none.d-md-block Every child should feel valued and loved
+                    p.py-1.d-none.d-md-block Donate holiday gifts and school supplies to the kids in need
+                    .d-flex.justify-content-center.align-items-center.actions.mt-4
+                        a.button-outline.button-width.m-2( href='/howto' ) How It Works
+                        a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
 
         include ../components/homeSampleCards.pug
 
@@ -70,9 +73,9 @@ block content
                             br
                             | with DonateGifts
 
-        .my-5
-            .cool-font.text-primary.display-5.text-center.mb-3 Our Partner Agencies
-            .container-fluid.pb-4
+        .my-5.py-3
+            .heading-primary.text-center.mb-3.py-2 Our Partner Agencies
+            .container-fluid.pb-5
                 #partner-carousel
                     ul.small-ul.px-0( data-partner-carousel='' )
                         li
@@ -125,15 +128,15 @@ block content
 
         .my-4
             .container
-                .cool-font.text-primary.display-5.mb-3.text-center We Need Your Help
+                .heading-primary.mb-3.text-center We Need Your Help
                 .d-md-flex
                     .col-md-6.p-3.p-md-5
                         img.img-fluid.rounded.rounded-3( src='/img/happy-kids-playing-image.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
                     .col-md-6.p-3.p-md-5
                         p.lh-lg Over 500,000 kids spend time in foster care each year and over 4.2 million youth are homeless in the United States. For many of them, Holiday seasons can be sad and lonely because they are undergoing stressful situations. With your generosity and kindness, we are able to provide a moment of happiness to the kids who are in crisis. By creating this platform, we wish to provide effortless and convenient ways to share the joy of the holidays.
                         p.lh-lg Your gifts make it possible to bring happiness to the kids.
-                        .col-md-6.text-center.text-md-start
-                            a.btn.btn-lg.btn-primary( href='/contact' ) Contact DonateGifts
+                        .col-md-6.text-center.text-md-start.py-3
+                            a.button-primary( href='/contact' ) Contact DonateGifts
 
 block modal
     include ../components/modal/wishcardDonationModal.pug

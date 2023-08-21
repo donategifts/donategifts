@@ -15,22 +15,17 @@
 
                 if !user
                     .nav-item
-                        a.nav-link( href='/signup' ) Sign Up
-                    .nav-item
                         a.nav-link( href='/login' ) Log In
                 else
+                    .nav-item
+                        a.nav-link( href='/profile' ) Profile
                     if user.userRole == 'partner'
                         if agency && agency.isVerified
                             .nav-item
-                                a.nav-link( href='/wishcards/me' ) My Wishes
-                            .nav-item
                                 a.nav-link( href='/wishcards/create' ) Create a Wish Card
                     if user.userRole == 'admin'
-                        li.nav-item
+                        .nav-item
                             a.nav-link( href='/admin/' ) Admin Panel
-                    li.nav-item
-                        a.nav-link( href='/profile' ) Profile
-
         .justify-content-end.d-lg-none
             button.navbar-toggler( type='button'
                 data-bs-toggle='collapse'

@@ -10,16 +10,28 @@ This web app offers users to send holiday gifts and school supplies to the child
 
 [https://donate-gifts.(com|org)](https://donate-gifts.com)
 
+## Dev Server:
+
+[https://donate-gifts-test.fly.dev/](https://donate-gifts-test.fly.dev/)
+
 ## Admin
 
 - [Stacy Sealky Lee](https://github.com/stacysealky)
 - [Marco Schuster](https://github.com/Enubia)
 
+## Current Contributors
+
+- [Ivan Repusic](https://github.com/Tokikko) 
+- [Jacob Jeevan](https://github.com/Jacobjeevan)
+- [nguyenit67](https://github.com/nguyenit67)
+- [NMilivojevic](https://github.com/NMilivojevic)
+- [nick-w-nick](https://github.com/nick-w-nick)
+- [Zinminhtet21801](https://github.com/Zinminhtet21801)
+- [Calvinsd](https://github.com/Calvinsd)
+
 ## Past Contributors
 
 - Patric Hoffmann
-- Ivan Repusic
-- Jacob Jeevan
 - Markell Richards
 - Maria Nguyen
 - Deep Patel
@@ -32,9 +44,8 @@ support@donate-gifts.com
 
 Checkout our contributing [guidelines](/Contributing.md)
 
-## Demo
-
-https://youtu.be/KhgQV0MTxlA
+## Social Media
+[Follow DonateGifts on Instagram](https://www.instagram.com/donategifts/)
 
 ---
 

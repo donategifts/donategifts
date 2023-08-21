@@ -1,34 +1,31 @@
 version: '3.8'
 services:
-    mongo:
-        image: mongo
-        container_name: dg-mongo
-        restart: unless-stopped
-        ports:
-            - 27017:27017
-        volumes:
-            - mongo:/data/db
-
-    # postgres:
-    #     image: postgres:14.1-alpine
-    #     container_name: dg-postgres
+    # mongo:
+    #     image: mongo
+    #     container_name: dg-mongo
     #     restart: unless-stopped
-    #     environment:
-    #         - POSTGRES_USER=postgres
-    #         - POSTGRES_PASSWORD=postgres
     #     ports:
-    #         - '5432:5432'
+    #         - 27017:27017
     #     volumes:
-    #         - postgres:/var/lib/postgresql/data
+    #         - mongo:/data/db
 
-    # redis:
-    #     image: eqalpha/keydb
-    #     container_name: dg-redis
-    #     ports:
-    #         - '6379:6379'
+    postgres:
+        image: postgres:14.1-alpine
+        container_name: dg-postgres
+        restart: unless-stopped
+        environment:
+            - POSTGRES_DB=donategifts
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - PGDATA=/data/postgres-donategifts
+        ports:
+            - 5432:5432
+        volumes:
+            - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - donategifts:/data/postgres-donategifts
 
 volumes:
-    mongo:
-        driver: local
-    # postgres:
+    # mongo:
     #     driver: local
+    donategifts:
+        driver: local

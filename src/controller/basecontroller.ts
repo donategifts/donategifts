@@ -27,6 +27,12 @@ export default class BaseController {
 		return res.status(status).render(templateString, templateVars);
 	}
 
+	sendResponse(res: Response, data: any, status = 200) {
+		return res.status(status).send({
+			data,
+		});
+	}
+
 	handleError(res: Response, error: any, code = 400, renderErrorPage = false) {
 		let statusCode: number;
 
@@ -39,13 +45,12 @@ export default class BaseController {
 		this.log.error(error);
 
 		if (renderErrorPage) {
-			res.status(statusCode).render(code === 400 ? '404' : code.toString(), {
+			return res.status(statusCode).render(code === 400 ? '404' : code.toString(), {
 				statusCode,
 				error,
 			});
 		} else {
-			res.status(statusCode).send({
-				statusCode,
+			return res.status(statusCode).send({
 				error,
 			});
 		}

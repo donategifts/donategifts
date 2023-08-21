@@ -12,6 +12,7 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "noImplicitAny": false,
+        "noImplicitReturns": true,
         "allowSyntheticDefaultImports": true,
     },
     "files": [

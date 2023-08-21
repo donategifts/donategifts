@@ -140,8 +140,8 @@ export default class WishCardController extends BaseController {
 			);
 		} else {
 			try {
-				const { childBirthday, wishItemPrice } = req.body;
-
+				const { childBirthday, wishItemPrice, wishItemURL } = req.body;
+				const productID = Utils.extractProductIDFromLink(wishItemURL);
 				const filePath =
 					config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
@@ -152,6 +152,7 @@ export default class WishCardController extends BaseController {
 				const newWishCard = await this.wishCardRepository.createNewWishCard({
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
+					productID,
 					wishCardImage: config.AWS.USE ? req.file.location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
@@ -172,9 +173,9 @@ export default class WishCardController extends BaseController {
 					wishCardId: newWishCard._id,
 				});
 
-				res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
-				this.handleError(res, error);
+				return this.handleError(res, error);
 			}
 		}
 	}
@@ -234,9 +235,9 @@ export default class WishCardController extends BaseController {
 					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
-				res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/me' });
 			} catch (error) {
-				this.handleError(res, error);
+				return this.handleError(res, error);
 			}
 		}
 	}
@@ -259,9 +260,13 @@ export default class WishCardController extends BaseController {
 			const { agencyAddress } = agency;
 			const childBirthday = moment(wishcard?.childBirthday).format('YYYY-MM-DD');
 
-			this.renderView(res, 'wishcard/edit', { wishcard, agencyAddress, childBirthday });
+			return this.renderView(res, 'wishcard/edit', {
+				wishcard,
+				agencyAddress,
+				childBirthday,
+			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -298,9 +303,9 @@ export default class WishCardController extends BaseController {
 				wishCardId: wishcard?._id,
 			});
 
-			res.status(200).send({ success: true, url });
+			return res.status(200).send({ success: true, url });
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -327,9 +332,10 @@ export default class WishCardController extends BaseController {
 				mgs: 'Wishcard Deleted',
 				wishCardId: wishcard?._id,
 			});
-			res.status(200).send({ success: true, url });
+
+			return res.status(200).send({ success: true, url });
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -389,12 +395,12 @@ export default class WishCardController extends BaseController {
 				recentlyAdded,
 			);
 
-			res.status(200).send({
+			return res.status(200).send({
 				user: res.locals.user,
 				wishcards: results,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -469,7 +475,7 @@ export default class WishCardController extends BaseController {
 				if (error) {
 					throw error;
 				} else {
-					res.status(200).send(html);
+					return res.status(200).send(html);
 				}
 			});
 		} catch (error) {
@@ -486,11 +492,11 @@ export default class WishCardController extends BaseController {
 				message,
 			});
 
-			res.status(200).send({
+			return res.status(200).send({
 				data: newMessage,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
 		}
 	}
 
@@ -527,10 +533,10 @@ export default class WishCardController extends BaseController {
 
 		res.render('partials/itemChoices', { itemChoices }, (error, html) => {
 			if (error) {
-				this.handleError(res, error);
-			} else {
-				res.status(200).send({ success: true, html });
+				return this.handleError(res, error);
 			}
+
+			return res.status(200).send({ success: true, html });
 		});
 	}
 }

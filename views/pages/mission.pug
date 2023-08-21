@@ -4,54 +4,61 @@ block title
     title Donate Gifts
 
 block content
-    #mission
-        #header
-            .center-elements.py-5
-                .col-md-8.text-center
-                    h1.text-primary.cool-font Our Mission
-                    .fs-4.fw-light Learn about our commitment to making foster children happy
+    #mission.pb-5
+        .container
+            .header.d-flex.justify-content-center.align-items-center.flex-column.pt-4.pb-2
+                h1 Our Mission
+                h3.text-center.fs-5 Learn about our commitment to making foster children happy
+            section.info-section.py-4.mb-4.mt-2.info-text
+                .row.align-items-center
+                    .col-lg-6.col-12.p-5.d-flex.justify-content-center
+                        img.img-fluid( src='/img/kids-happy-outside.jpg' alt='gift-donation-for-children' loading='lazy' )
+                    .col-lg-6.col-12.p-5.d-flex.flex-column
+                        .info-list
+                            p
+                                | The DonateGifts project was founded and established in Chicago in August, 2020.
+                                | We partner with over 35 certified foster care agencies all around the United States.
+                            p
+                                span DonateGifts is a
+                                    a.mx-1( href="/proof" ) 501(c)(3) Non Profit Organization
+                                span that collects your donations and sends holiday gifts and school supplies to foster children and youth at emergency shelters.
+                            p
+                                | Our verified partner agencies create and manage wish cards for the kids under their care.
+                                | Each wish card is unique and personal and linked with the gift item the child asked for.
+                                | Upon receiving your donation, we order and ship the gift item to each care agency.
+                                | The agency staffs or social workers collect and distribute the delivered items to each child.
+                .row.align-items-center
+                    .col-lg-6.col-12.px-5.d-flex.flex-column.justify-content-center.align-items-end
+                        .info-list
+                            h4 1. Transparent &amp; Efficient
+                            p
+                                | In-kind material donation process is more complicated than expected and often requires you to physically visit the drop-off site.
+                                | We want to simplify your donation experience and make everything transparent.
+                                | When you donate a gift, you will receive the donation shipping details and a delivery proof, as well as a tax-exempt receipt.
+                            p
+                                span We ask our agency partners to post photo proofs of the received wish items. You can check out the past deliveries at our
+                                    a.mx-1( href="/community" ) Community
+                                span page.
+                            h4.mt-5 2. Specific Wish Items
+                            p
+                                | Unlike other donation programs and toy drives, our foster child can wish for a specific gift,
+                                | such as a basketball or new shoes, rather than getting random gifts delivered to them.
+                    .col-lg-6.col-12.p-5.d-flex.justify-content-center
+                        img.img-fluid.img-mid( src='/img/wish-item-received.jpeg' alt='help-children-receive-toys-and-supplies' loading='lazy' )
 
-        .container.py-4
-            section.mb-3
-                .row
-                    .col-md-6.order-2.center-elements
-                        img.img-fluid( src='/img/kids-smile.gif' alt='donate-school-supplies-to-children-image' )
-                    .col-md-6.text-start
-                        h3.text-primary.text-center Bringing smiles to kids
-                        p.fw-bold.text-center Mission: Every child should feel valued, remembered, and loved.
-                        p
-                            | The DonateGifts project was founded and established in Chicago in August, 2020.
-                            | We partner with over 35 certified foster care agencies all around the United States.
-                            | And with your help, we collectively send holiday and birthday gifts to foster children and homeless youth.
-                            | Our verified partner agencies create and manage wish cards for the kids under their care.
-                            | Each wish card is unique and personal and linked with the gift item they want to receive.
-                            | Donation is directly linked to the product sold on Amazon, and after your confirmed payment,
-                            | we ship the gift to each managing foster agency.
-                            | The agency staffs or social workers collect and distribute the delivered items to each kid.
-            section.mb-3
-                .row
-                    .col-md-6.order-lg-2.order-md-1.text-start
-                        h3.text-primary.font-lg.text-center What's special about DonateGifts
-                        p.fw-bold.text-center
-                            | 1. Easy, efficient, and transparent gift donation
-                        p
-                            | Often, the in-kind material donation process is more complicated than expected.
-                            | We want to simplify your donation experience. With one button click, it will automatically send the
-                            | child's wish item to their address. You will receive a tax-exempt receipt, shipping details,
-                            | and delivery proof, as well as photos and messages from the child if our partner agency permits.
-                            | No need to shop at the store or drive to the drop-off site. No unnecessary hassle for doing good.
-                        p.fw-bold.text-center
-                            | 2. No random gifts, they get what they wished for
-                        p
-                            | Unlike other donation programs and toy drives, our foster child can wish for a specific gift,
-                            | such as a basketball or new shoes, rather than getting random gifts delivered to them.
-                        p.fw-bold.text-center
-                            | 3. Perfect solution for COVID-19
-                        p
-                            | Minimal handling, no contact delivery, &amp; no drop-off site with our secure payment and automated delivery system.
-                        p.fw-bold.text-center
-                            | 4. Building personal connections and a loving community
-                        p
-                            | It's more than just a simple donation. We are building a supportive community for the foster kids. Because they belong and they matter. Stay tuned for our new cool features in 2021.
-                    .col-md-6.order-lg-1.order-md-2.center-elements
-                        img.img-fluid( src='/img/three-kids-bg.jpg' alt='support the kids, foster love' )
+                .row.align-items-center
+                    .col-lg-6.col-12.p-5.d-flex.justify-content-center
+                        img.img-fluid( src='/img/donate-school-supplies.jpg' alt='donate-school-supplies-to-children' loading='lazy' )
+
+                    .col-lg-6.col-12.p-5.d-flex.flex-column
+                        .info-list
+                            h4 3. Support Education
+                            p
+                                | Not only we donate holiday gifts, but we also host school supply donations.
+                                | Support the equality of educational opportunities by donating school supplies that the children need.
+
+                            h4.mt-5 4. Safe &amp; Secure
+                            p
+                                | Minimal handling and no-contact delivery make DonateGifts great for COVID-19 and other public health concerns.
+                                | We only donate new items and do not handle used items to ensure safety.
+                                | Your donation transactions are securely encrypted and powered by Stripe and Paypal.

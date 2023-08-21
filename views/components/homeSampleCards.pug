@@ -23,7 +23,7 @@ mixin carouselInnerPart(increment)
                                                 ? currentCard.childInterest.substring(0, 23) + "..."
                                                 : currentCard.childInterest);
 
-                                        h3.text-center.text-primary= title
+                                        h3.text-center= title
                                         p
                                             span.font-weight-bold= wish
                                         p.wish-price
@@ -45,8 +45,8 @@ mixin carouselInnerPart(increment)
                         - j++;
             - i += increment;
 
-.container.my-3
-    .display-5.cool-font.text-center.text-primary Become Our Secret Santa
+.container.my-5
+    //- .heading-primary.text-center.my-5.py-3 Become Our Secret Santa
 
     .d-block.d-lg-none
         .carousel.slide( data-bs-ride='carousel' )

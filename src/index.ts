@@ -15,7 +15,7 @@ import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
 import DGBot from './discord/bot';
 import config from './helper/config';
-import log from './helper/logger';
+import logger from './helper/logger';
 import { routes } from './routes';
 
 const limiter = new BaseController().limiter;
@@ -47,7 +47,7 @@ const app = express();
 				res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
 			}) path: ${req.originalUrl}`;
 
-			log.info(logString);
+			logger.info(logString);
 		}
 
 		next();
@@ -155,22 +155,22 @@ const app = express();
 
 	app.use('/robots.txt', limiter, (_req, res, _next) => {
 		res.type('text/plain');
-		res.sendFile(path.join(__dirname, '../public/robots.txt'));
+		return res.sendFile(path.join(__dirname, '../public/robots.txt'));
 	});
 
 	app.use('/health', (_req, res, _next) => {
-		res.status(200).json({ status: 'ok' });
+		return res.status(200).json({ status: 'ok' });
 	});
 
 	if (config.MAINTENANCE_ENABLED) {
 		app.get('*', (_req, res) => {
-			res.status(200).render('maintenance');
+			return res.status(200).render('maintenance');
 		});
 	}
 
 	// ERROR PAGE
 	app.get('*', (_req, res) => {
-		res.status(404).render('error/404');
+		return res.status(404).render('error/404');
 	});
 
 	// error handler
@@ -179,18 +179,18 @@ const app = express();
 		res.locals.message = err.message;
 		res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-		log.error(err);
+		logger.error(err);
 
-		res.status(500).render('error/500');
+		return res.status(500).render('error/500');
 	});
 
 	app.listen(config.PORT, () => {
-		log.info(`App listening on port ${config.PORT}`);
+		logger.info(`App listening on port ${config.PORT}`);
 	});
 })();
 
 process.on('uncaughtException', (err) => {
-	log.error(err);
+	logger.error(err);
 });
 
 export default app;

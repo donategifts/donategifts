@@ -11,117 +11,105 @@ $gray-900: #313131 !default;
 $black: #262626 !default;
 
 $grays: (
-	'100': $gray-100,
-	'200': $gray-200,
-	'300': $gray-300,
-	'400': $gray-400,
-	'500': $gray-500,
-	'600': $gray-600,
-	'700': $gray-700,
-	'800': $gray-800,
-	'900': $gray-900,
+	"100": $gray-100,
+	"200": $gray-200,
+	"300": $gray-300,
+	"400": $gray-400,
+	"500": $gray-500,
+	"600": $gray-600,
+	"700": $gray-700,
+	"800": $gray-800,
+	"900": $gray-900,
 ) !default;
 
 $navy: #333a64 !default;
 $navy-dark: #414254 !default;
-$cream: #f8e4c9 !default;
+$cream: #f8e4c9 !default; // do not use unless discussed first
 
 $primary: #333a64 !default;
 $secondary: #ff826b !default;
-$success: #00a19a !default;
-$warning: #ffbb59 !default;
+$success: #00a19a !default; // do not use unless discussed first
+$warning: #ffbb59 !default; 
 $danger: #ff5c6f !default;
-$info: #0dcaf0 !default;
 $light: #e9ecef !default;
 $dark: #313131 !default;
 $gray: #6c757d !default;
 
-$primary-light: tint-color($primary, 50) !default;
-$primary-dark: shade-color($primary, 50) !default;
-$primary-highlight: tint-color($primary, 75) !default;
+$primary-light: tint-color($primary, 50%) !default;
+$primary-dark: shade-color($primary, 50%) !default;
+$primary-highlight: tint-color($primary, 75%) !default;
 
-$secondary-light: tint-color($secondary, 50) !default;
-$secondary-dark: shade-color($secondary, 50) !default;
-$secondary-highlight: tint-color($secondary, 75) !default;
+$secondary-light: tint-color($secondary, 50%) !default;
+$secondary-dark: shade-color($secondary, 50%) !default;
+$secondary-highlight: tint-color($secondary, 75%) !default;
 
-$success-light: tint-color($success, 50) !default;
-$success-dark: shade-color($success, 50) !default;
-$success-highlight: tint-color($success, 75) !default;
+$success-light: tint-color($success, 50%) !default;
+$success-dark: shade-color($success, 50%) !default;
+$success-highlight: tint-color($success, 75%) !default;
 
-$info-light: tint-color($info, 50) !default;
-$info-dark: shade-color($info, 50) !default;
-$info-highlight: tint-color($info, 75) !default;
+$warning-light: tint-color($warning, 50%) !default;
+$warning-dark: shade-color($warning, 50%) !default;
+$warning-highlight: tint-color($warning, 75%) !default;
 
-$warning-light: tint-color($warning, 50) !default;
-$warning-dark: shade-color($warning, 50) !default;
-$warning-highlight: tint-color($warning, 75) !default;
+$danger-light: tint-color($danger, 50%) !default;
+$danger-dark: shade-color($danger, 50%) !default;
+$danger-highlight: tint-color($danger, 75%) !default;
 
-$danger-light: tint-color($danger, 50) !default;
-$danger-dark: shade-color($danger, 50) !default;
-$danger-highlight: tint-color($danger, 75) !default;
+$light-light: tint-color($light, 50%) !default;
+$light-dark: shade-color($light, 50%) !default;
+$light-highlight: tint-color($light, 75%) !default;
 
-$light-light: tint-color($light, 50) !default;
-$light-dark: shade-color($light, 50) !default;
-$light-highlight: tint-color($light, 75) !default;
-
-// SORRY ¯\_( ͡° ͜ʖ ͡°)_/¯
-// but we need to stick to the naming convention
-$dark-light: tint-color($dark, 50) !default;
-$dark-dark: shade-color($dark, 50) !default;
-$dark-highlight: tint-color($dark, 75) !default;
+$dark-light: tint-color($dark, 50%) !default;
+$dark-dark: shade-color($dark, 50%) !default;
+$dark-highlight: tint-color($dark, 75%) !default;
 
 $baseFontSize: 16;
 
 //define custom color variables for the theme
 $utility-colors: (
-	'primary-light': $primary-light,
-	'primary-dark': $primary-dark,
-	'primary-highlight': $primary-highlight,
-	'secondary-light': $secondary-light,
-	'secondary-dark': $secondary-dark,
-	'secondary-highlight': $secondary-highlight,
-	'success-light': $success-light,
-	'success-dark': $success-dark,
-	'success-highlight': $success-highlight,
-	'info-light': $info-light,
-	'info-dark': $info-dark,
-	'info-highlight': $info-highlight,
-	'warning-light': $warning-light,
-	'warning-dark': $warning-dark,
-	'warning-highlight': $warning-highlight,
-	'danger-light': $danger-light,
-	'danger-dark': $danger-dark,
-	'danger-highlight': $danger-highlight,
-	'dark-light': $dark-light,
-	'dark-dark': $dark-dark,
-	'dark-highlight': $dark-highlight,
-	'light-light': $light-light,
-	'light-dark': $light-dark,
-	'light-highlight': $light-highlight,
+	"primary-light": $primary-light,
+	"primary-dark": $primary-dark,
+	"primary-highlight": $primary-highlight,
+	"secondary-light": $secondary-light,
+	"secondary-dark": $secondary-dark,
+	"secondary-highlight": $secondary-highlight,
+	"success-light": $success-light,
+	"success-dark": $success-dark,
+	"success-highlight": $success-highlight,
+	"warning-light": $warning-light,
+	"warning-dark": $warning-dark,
+	"warning-highlight": $warning-highlight,
+	"danger-light": $danger-light,
+	"danger-dark": $danger-dark,
+	"danger-highlight": $danger-highlight,
+	"dark-light": $dark-light,
+	"dark-dark": $dark-dark,
+	"dark-highlight": $dark-highlight,
+	"light-light": $light-light,
+	"light-dark": $light-dark,
+	"light-highlight": $light-highlight,
 ) !default;
 
 $checkbox-colors: (
-	'success': $success,
-	'info': $info,
-	'warning': $warning,
+	"success": $success,
+	"warning": $warning,
 ) !default;
 
 $custom-colors: (
-	'navy': #333a64,
-	'navy-dark': #414254,
-	'cream': #f8e4c9,
+	"navy": #333a64,
+	"navy-dark": #414254,
+	"cream": #f8e4c9,
 );
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-	'primary': $primary,
-	'secondary': $secondary,
-	'success': $success,
-	'info': $info,
-	'warning': $warning,
-	'danger': $danger,
-	'light': $light,
-	'dark': $dark,
+	"primary": $primary,
+	"secondary": $secondary,
+	"success": $success,
+	"warning": $warning,
+	"danger": $danger,
+	"light": $light,
+	"dark": $dark,
 ) !default;
 // scss-docs-end theme-colors-map
 
@@ -132,16 +120,17 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 $min-contrast-ratio: 2 !default;
 
 @font-face {
-	font-family: 'DkCoolCrayon';
-	src: url('/fonts/dkcoolcrayon-webfont.woff') format('woff');
+	font-family: "DkCoolCrayon";
+	src: url("/fonts/dkcoolcrayon-webfont.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'DK-Crayon-Crumble';
-	src: url('../fonts/dk-crayon-crumble-webfont.woff') format('woff');
+	font-family: "DK-Crayon-Crumble";
+	src: url("../fonts/dk-crayon-crumble-webfont.woff") format("woff");
 }
 
 $font-heading: DkCoolCrayon, Helvetica, sans-serif;
+$font-heading-alt: DK-Crayon-Crumble, Helvetica, sans-serif;
 $font-body: Quicksand, sans-serif;
 
 $serif: Georgia, serif;
@@ -152,14 +141,7 @@ $fw-medium: 500;
 $fw-semi-bold: 600;
 $fw-bold: 700;
 
-@mixin font-styling(
-	$family: null,
-	$size: null,
-	$color: null,
-	$weight: null,
-	$height: null,
-	$spacing: null
-) {
+@mixin font-styling($family: null, $size: null, $color: null, $weight: null, $height: null, $spacing: null) {
 	@if $family {
 		font-family: $family;
 	} @else {

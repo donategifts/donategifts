@@ -3,14 +3,14 @@ if locals.env.google
     meta( name="google-signin-client_id" content=locals.env.google )
 
 if locals.env.facebook
-    script( async defer src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0' nonce='XBZR4Yw2' crossorigin='anonymous' )
+    script( async defer src='https://connect.facebook.net/en_US/sdk.js' nonce='XBZR4Yw2' crossorigin='anonymous' )
     script.
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '#{locals.env.facebook}',
                 cookie: true,
                 xfbml: true,
-                version: 'v8.0',
+                version: 'v17.0',
             });
             FB.AppEvents.logPageView();
         };

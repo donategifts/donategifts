@@ -51,10 +51,7 @@
 // scss-docs-end import-stack
 
 @import "custom/basecontact";
-// ----------------------------
-// TODO: check if we really need custom buttons
 @import "custom/buttons";
-// ----------------------------
 @import "custom/community";
 @import "custom/donate";
 @import "custom/faq";
@@ -64,3 +61,5 @@
 @import "custom/passwordreset";
 @import "custom/profile";
 @import "custom/wishcards";
+@import "custom/mission";
+@import "custom/modal"

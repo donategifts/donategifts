@@ -1,132 +1,133 @@
 %btn {
 	appearance: none;
 	outline: none;
-	padding: 1rem 1.75rem;
-	width: 100%;
-	border: 0.5px solid transparent;
-	transition: all 0.2s ease-in-out;
-	text-decoration: none;
+	text-align: center;
+    text-decoration: none;
+	display: inline-block;
 }
 
-%btn-lg {
-	padding: 1rem 2rem;
-	font-size: 1.3rem;
-	margin: 10px;
-	line-height: 1.2em;
-	transition: all 0.2s ease-in-out;
-	border: 0.15rem solid transparent;
-	display: inline-flex;
-	border-radius: 1rem;
-	outline: none;
-}
-
-%hover-navy {
-	background-color: $primary;
-	color: $white !important;
-	border: 0.15rem solid $white;
-	text-decoration: none;
-}
-
-%btn-long {
-	padding: 1rem 3rem;
-	appearance: none;
-	outline: none;
-	opacity: 1;
-	border: 0.15rem solid transparent;
-	border-radius: 1rem;
-	width: 40vw !important;
-	height: 8vh !important;
-	font-size: 1.3rem;
-	margin: 10px;
-	line-height: 1.2em;
-	text-align: center !important;
-	align-items: center;
-	justify-content: center;
-}
-
-%btn-updated {
-	border-radius: 0.5rem;
+%btn-main {
+	padding: 1rem 1.5rem;
+	border-radius: 0.55rem;
 	font-size: 1.25rem;
-	border: none;
 	font-weight: $fw-semi-bold;
 }
 
-.btn-orange-navy-lg {
-	@extend %btn-lg;
+// rounded, pill 
 
-	background-color: $secondary;
-	color: $white !important;
-	
-	&:hover {
-		@extend %hover-navy;
+.button {
+	&-width {
+		width: 250px;
 	}
-}
 
-.btn-white-navy-lg {
-	@extend %btn-lg;
-
-	background-color: $white;
-	color: $primary !important;
+	&-primary {
+		@extend %btn;
+		@extend %btn-main;
 	
-	&:hover {
-		@extend %hover-navy;
+		background-color: lighten($primary, 5);
+		color: $white;
+		border: 1.5px solid lighten($primary, 5);
+	
+		&:hover {
+			background-color: darken($primary, 10);
+			border: 1.5px solid darken($primary, 10);
+		}
 	}
-}
 
-.btn-orange-navy-lg-long {
-	@extend %btn-long;
+	&-secondary {
+		@extend %btn;
+		@extend %btn-main;
 	
-	background-color: $secondary;
-	color: $white !important;
+		background-color: $gray-200;
+		color: $primary;
+		border: 1.5px solid $gray-200;
 	
-	&:hover {
-		@extend %hover-navy;
+		&:hover {
+			background-color: $gray-400;
+			color: darken($primary, 10);
+			border: 1.5px solid $gray-400;
+		}
 	}
-}
 
-
-.button-accent {
-	@extend %btn;
-	@extend %btn-updated;
+	&-accent {
+		@extend %btn;
+		@extend %btn-main;
 	
-	background-color: $secondary;
-	color: $white;
+		background-color: $secondary;
+		color: $white;
+		border: 1.5px solid $secondary;
 	
-	&:hover {
-		background-color: darken($secondary, 10);
+		&:hover {
+			background-color: darken($secondary, 10);
+			border: 1.5px solid darken($secondary, 10);
+		}
 	}
-}
 
-.button-primary {
-	@extend %btn;
-	@extend %btn-updated;
+	&-disabled {
+		@extend %btn;
+		@extend %btn-main;
 	
-	background-color: lighten($primary, 5);
-	color: $white;
-	
-	&:hover {
-		background-color: darken($primary, 10);
+		background-color: $gray-500;
+		color: $white;
+		cursor: not-allowed;
+		border: 1.5px solid $gray-500;
 	}
-}
 
-.button-secondary {
-	@extend %btn;
-	@extend %btn-updated;
+	&-outline {
+		@extend %btn;
+		@extend %btn-main;
 	
-	background-color: $gray-200;
-	color: $primary;
+		border: 1.5px solid $white !important;
+		color: $white;
 	
-	&:hover {
-		background-color: $gray-400;
-		color: darken($primary, 10);
+		&:hover {
+			background-color: $white;
+			color: $primary;
+		}
 	}
-}
 
-.button-disabled {
-	@extend %btn;
-	@extend %btn-updated;
-	
-	background-color: $gray-500;
-	color: $white;
-	cursor: not-allowed;
+	&-modal-outline {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: 1.5px solid $primary;
+		background-color: $white;
+		color: $primary;
+		
+		&:hover {
+			background-color: $primary;
+			color: $white;
+		}
+	}
+
+	&-modal-secondary {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: none;
+		background-color: $secondary;
+		color: $white;
+
+		&:hover {
+			background-color: darken($secondary, 10);
+		}
+	}
+
+	&-modal-fill {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: none;
+		background-color: $white;
+		color: $primary;
+
+		&:hover {
+			background-color: darken($white, 10);
+		}
+	}
+
+
 }
