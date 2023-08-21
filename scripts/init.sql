@@ -26,6 +26,7 @@ CREATE TABLE "children" (
     "interest" text NOT NULL,
     "story" text NOT NULL,
     "image_id" uuid NOT NULL,
+    "agency_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
@@ -153,6 +154,8 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_wishcard_id_fkey" FOREIGN KEY ("
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
 
 ALTER TABLE "children" ADD CONSTRAINT "children_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+
+ALTER TABLE "children" ADD CONSTRAINT "children_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
 
 ALTER TABLE "items" ADD CONSTRAINT "items_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
 
