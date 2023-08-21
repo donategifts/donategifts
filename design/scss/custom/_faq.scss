@@ -1,6 +1,21 @@
 #faq {
+    .accordion-body {
+        font-weight: bold;
+    }
+
+    .accordion-button {
+        background-color: $primary;
+        color:$white;
+    }
+
+    .accordion-button:focus{
+        border-color: inherit;
+        box-shadow: none;
+    }
+    
 	.collapsed {
 		color: $white;
-		background-color: $primary;
+		background-color: rgb(52 78 103);
 	}
+
 }
