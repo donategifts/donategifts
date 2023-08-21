@@ -8,6 +8,7 @@ dotenv.config({
 
 const envVariables = [
 	'PORT',
+	'DATABASE_URL',
 	'MONGO_URI',
 	'NODE_ENV',
 	'SESS_NAME',
