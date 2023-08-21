@@ -89,7 +89,7 @@ CREATE TABLE "users" (
     "login_mode" integer NOT NULL,
     "bio" varchar(500),
     "is_verified" boolean NOT NULL DEFAULT false,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "updated_at" timestamp,
     "deleted_at" timestamp
