@@ -1,53 +1,51 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 
-import { GOOGLE_CLIENT_LIBRARY_URL, LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
-import { loadlGoogleClientLibraryScript } from '../../../utils/helpers.jsx';
+import { LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {
 	// google login setup
-	const handleCredentialResponse = (response) => {
-		console.log('Encoded JWT ID token: ' + response.credential);
-	};
+	// const handleCredentialResponse = (response) => {
+	// 	console.log('Encoded JWT ID token: ' + response.credential);
+	// };
 
-	useEffect(() => {
-		if (window?.google) {
-			window?.google.accounts.id.initialize({
-				// TBD should import client id from local env
-				client_id: 'GOOGLE_CLIENT_ID',
-				callback: handleCredentialResponse,
-			});
-			window?.google.accounts.id.renderButton(document.getElementById('google-signin-btn'), {
-				theme: 'outline',
-				size: 'large',
-				shape: 'pill',
-			});
-			window?.google.accounts.id.prompt();
-		}
-		if (window && document && !window.google) {
-			loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
-			const googleClientLibraryScript = document.getElementById(
-				'google-client-library-script',
-			);
-			googleClientLibraryScript.addEventListener('load', () => {
-				window?.google.accounts.id.initialize({
-					// TBD should import client id from local env
-					client_id: 'GOOGLE_CLIENT_ID',
-					callback: handleCredentialResponse,
-				});
-				window?.google.accounts.id.renderButton(
-					document.getElementById('google-signin-btn'),
-					{
-						theme: 'outline',
-						size: 'large',
-						shape: 'pill',
-					},
-				);
-				window?.google.accounts.id.prompt();
-			});
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (window?.google) {
+	// 		window?.google.accounts.id.initialize({
+	// 			// TBD should import client id from local env
+	// 			client_id: 'GOOGLE_CLIENT_ID',
+	// 			callback: handleCredentialResponse,
+	// 		});
+	// 		window?.google.accounts.id.renderButton(document.getElementById('google-signin-btn'), {
+	// 			theme: 'outline',
+	// 			size: 'large',
+	// 			shape: 'pill',
+	// 		});
+	// 		window?.google.accounts.id.prompt();
+	// 	}
+	// 	if (window && document && !window.google) {
+	// 		loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
+	// 		const googleClientLibraryScript = document.getElementById(
+	// 			'google-client-library-script',
+	// 		);
+	// 		googleClientLibraryScript.addEventListener('load', () => {
+	// 			window?.google.accounts.id.initialize({
+	// 				// TBD should import client id from local env
+	// 				client_id: 'GOOGLE_CLIENT_ID',
+	// 				callback: handleCredentialResponse,
+	// 			});
+	// 			window?.google.accounts.id.renderButton(
+	// 				document.getElementById('google-signin-btn'),
+	// 				{
+	// 					theme: 'outline',
+	// 					size: 'large',
+	// 					shape: 'pill',
+	// 				},
+	// 			);
+	// 			window?.google.accounts.id.prompt();
+	// 		});
+	// 	}
+	// }, []);
 
 	return (
 		<Modal
@@ -55,7 +53,7 @@ function Login({ modalRef, dispatch }) {
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
 			body={
 				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
-					<div id="google-signin-btn"></div>
+					{/* <div id="google-signin-btn"></div> */}
 
 					{/* <div
 						className="fb-login-button"
