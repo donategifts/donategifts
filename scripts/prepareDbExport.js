@@ -59,27 +59,27 @@ const wishCards = require('./seeder-data/wishcards.json');
 		const prepareUsers = async () => {
 			const salt = await bcrypt.genSalt(10);
 			const password = await bcrypt.hash('Hello1234!', salt);
-            
-            const loginModeEnum = {
-                'Default': 0,
-                'Google': 1,
-                'Facebook': 2,
-            };
-            
-            const userRoleEnum = {
-                admin: 0,
-                partner: 1,
-                donor: 2,
-            };
-            
+			
+			const loginModeEnum = {
+				'Default': 0,
+				'Google': 1,
+				'Facebook': 2,
+			};
+			
+			const userRoleEnum = {
+				admin: 0,
+				partner: 1,
+				donor: 2,
+			};
+			
 			const usersData = users.map((user) => ({
 				...user,
 				fName: faker.name.firstName(),
 				lName: faker.name.lastName(),
 				email: faker.internet.email(),
-                bio: faker.lorem.paragraph(),
-                loginMode: loginModeEnum[user.loginMode] || loginModeEnum.Default,
-                userRole: userRoleEnum[user.userRole] || userRoleEnum.donor,
+				bio: faker.lorem.paragraph(),
+				loginMode: loginModeEnum[user.loginMode] || loginModeEnum.Default,
+				userRole: userRoleEnum[user.userRole] || userRoleEnum.donor,
 				password,
 			}));
 
