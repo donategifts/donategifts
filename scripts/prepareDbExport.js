@@ -77,6 +77,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 				fName: faker.name.firstName(),
 				lName: faker.name.lastName(),
 				email: faker.internet.email(),
+                bio: faker.lorem.paragraph(),
                 loginMode: loginModeEnum[user.loginMode] || loginModeEnum.Default,
                 userRole: userRoleEnum[user.userRole] || userRoleEnum.donor,
 				password,
