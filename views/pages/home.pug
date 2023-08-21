@@ -40,13 +40,13 @@ block content
                         .display-3.text-danger= undonatedCards
                         if undonatedCards < 2
                             .fs-6.text-primary
-                                = undonatedCards > 0 ? 'child' : 'children '
+                                = undonatedCards > 0 ? 'Child' : 'Children '
                                 | awaiting
                                 br
                                 | your donation
                         else
                             .fs-6.text-primary
-                                | children
+                                | Children
                                 | awaiting
                                 br
                                 | your donation
@@ -57,7 +57,7 @@ block content
                             img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
                         .display-2.text-danger= donatedCards
                         .fs-6.text-primary
-                            | children
+                            | Children
                             | received
                             br
                             | their gifts!
@@ -68,7 +68,7 @@ block content
                             img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
                         .display-2.text-danger= verifiedAgencies
                         .fs-6.text-primary
-                            | agencies
+                            | Agencies
                             | partnered
                             br
                             | with DonateGifts
