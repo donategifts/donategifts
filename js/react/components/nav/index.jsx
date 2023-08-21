@@ -64,7 +64,7 @@ const Nav = ({ user, agency, dispatch, setShowModal }) => {
 						) : (
 							<li className="nav-item">
 								<a className="nav-link" href="/profile">
-									Profile
+									My Account
 								</a>
 							</li>
 						)}
