@@ -32,7 +32,7 @@ function SignUp({ modalRef, dispatch }) {
 						<h2 className="cool-font">Already have an account?</h2>
 					</div>
 					<button
-						className="w-100 button-modal-outline fs-5 fw-bold"
+						className="w-100 button-modal-fill fs-5 fw-bold"
 						onClick={() => dispatch({ type: LOGIN })}
 					>
 						Log in

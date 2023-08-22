@@ -59,7 +59,7 @@ function Login({ modalRef, dispatch }) {
 						<p className="fs-5 mt-1">Join our great movement</p>
 					</div>
 					<button
-						className="w-100 button-modal-outline fs-5 fw-bold"
+						className="w-100 button-modal-fill fs-5 fw-bold"
 						onClick={() => dispatch({ type: SIGNUP })}
 					>
 						Sign up
