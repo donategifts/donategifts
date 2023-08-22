@@ -18,10 +18,16 @@ function LoginWithEmail({ modalRef, dispatch }) {
 		e.preventDefault();
 		if (email === '' || password === '') {
 			setError('Please fill out email and password');
+			setTimeout(() => {
+				setError('');
+			}, 5000);
 			return;
 		}
 		if (!email.split('').includes('@')) {
 			setError('Please provide valid email');
+			setTimeout(() => {
+				setError('');
+			}, 5000);
 			return;
 		}
 		// TBD get base url from env local
@@ -38,9 +44,9 @@ function LoginWithEmail({ modalRef, dispatch }) {
 			return data;
 		}
 		console.log(response);
-		setError('Username and/or password incorrect');
 		setEmail('');
 		setPassword('');
+		setError('Email and/or password incorrect');
 		setTimeout(() => {
 			setError('');
 		}, 5000);
