@@ -1,51 +1,16 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
-import { LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
+import { GOOGLE_CLIENT_LIBRARY_URL, LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
+import { loadlGoogleClientLibraryScript } from '../../../utils/helpers.jsx';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {
-	// google login setup
-	// const handleCredentialResponse = (response) => {
-	// 	console.log('Encoded JWT ID token: ' + response.credential);
-	// };
-
-	// useEffect(() => {
-	// 	if (window?.google) {
-	// 		window?.google.accounts.id.initialize({
-	// 			// TBD should import client id from local env
-	// 			client_id: 'GOOGLE_CLIENT_ID',
-	// 			callback: handleCredentialResponse,
-	// 		});
-	// 		window?.google.accounts.id.renderButton(document.getElementById('google-signin-btn'), {
-	// 			theme: 'outline',
-	// 			size: 'large',
-	// 			shape: 'pill',
-	// 		});
-	// 		window?.google.accounts.id.prompt();
-	// 	}
-	// 	if (window && document && !window.google) {
-	// 		loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
-	// 		const googleClientLibraryScript = document.getElementById(
-	// 			'google-client-library-script',
-	// 		);
-	// 		googleClientLibraryScript.addEventListener('load', () => {
-	// 			window?.google.accounts.id.initialize({
-	// 				// TBD should import client id from local env
-	// 				client_id: 'GOOGLE_CLIENT_ID',
-	// 				callback: handleCredentialResponse,
-	// 			});
-	// 			window?.google.accounts.id.renderButton(
-	// 				document.getElementById('google-signin-btn'),
-	// 				{
-	// 					theme: 'outline',
-	// 					size: 'large',
-	// 					shape: 'pill',
-	// 				},
-	// 			);
-	// 			window?.google.accounts.id.prompt();
-	// 		});
-	// 	}
-	// }, []);
+	useEffect(() => {
+		if (window && document) {
+			loadlGoogleClientLibraryScript(GOOGLE_CLIENT_LIBRARY_URL);
+		}
+	}, []);
 
 	return (
 		<Modal
@@ -53,20 +18,30 @@ function Login({ modalRef, dispatch }) {
 			title={<h1 className="cool-font text-secondary">Welcome back</h1>}
 			body={
 				<div className="d-flex flex-column align-items-center justify-content-center gap-5">
-					{/* <div id="google-signin-btn"></div> */}
-
+					<div id="buttonDiv"></div>
 					{/* <div
-						className="fb-login-button"
+						id="g_id_onload"
+						data-client_id="GOOGLE_CLIENT_ID"
+						data-context="signin"
+						data-ux_mode="popup"
+						data-login_uri="https://your.domain/your_login_endpoint"
+						data-auto_prompt="false"
+					></div>
+					<div
+						className="g_id_signin"
+						data-type="standard"
+						data-shape="pill"
+						data-theme="outline"
+						data-text="signin_with"
 						data-size="large"
-						data-button-type="login_with"
-						data-layout="default"
-						data-auto-logout-link="false"
-						data-use-continue-as="false"
-						data-scope="public_profile,email"
-						data-onlogin="facebookLogin"
-						onClick={login}
+						data-logo_alignment="left"
 					></div> */}
-
+					<button className="w-100 d-flex justify-content-around align-items-center">
+						Log in with Google
+					</button>
+					<button className="w-100 d-flex justify-content-around align-items-center">
+						Log in with Facebook
+					</button>
 					<button
 						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
 						onClick={() => dispatch({ type: LOGIN_WITH_EMAIL })}
@@ -76,7 +51,7 @@ function Login({ modalRef, dispatch }) {
 					</button>
 				</div>
 			}
-			footer={<p>Agency partner users must sign in with work email</p>}
+			footer={<p>Agency partner users must log in with work email</p>}
 			sideContent={
 				<div className="d-flex flex-column align-items-center justify-content-around text-center gap-4">
 					<div className="d-flex flex-column align-items-center justify-content-center text-white">
@@ -84,7 +59,7 @@ function Login({ modalRef, dispatch }) {
 						<p className="fs-5 mt-1">Join our great movement</p>
 					</div>
 					<button
-						className="w-100 button-modal-fill fs-5 fw-bold"
+						className="w-100 button-modal-outline fs-5 fw-bold"
 						onClick={() => dispatch({ type: SIGNUP })}
 					>
 						Sign up
