@@ -27,8 +27,9 @@ const wishCards = require('./seeder-data/wishcards.json');
 					zipcode: faker.address.zipCode(),
 				},
 				agencyPhone: faker.phone.phoneNumber(),
+				agencyEmail: faker.internet.email(),
 			}));
-
+			
 			fs.writeFileSync(
 				path.join(__dirname, './seeder-data/agencies.json'),
 				JSON.stringify(agenciesData, null, 4),
