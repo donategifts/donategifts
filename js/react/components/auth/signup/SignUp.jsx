@@ -16,13 +16,13 @@ function SignUp({ modalRef, dispatch }) {
 					<button className="w-100 d-flex justify-content-around align-items-center">
 						Sign up with Facebook
 					</button>
-					<button
-						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4"
-						// onClick={() => console.log('sign up with email')}
+					<a
+						className="button-modal-outline w-100 d-flex justify-content-center align-items-center gap-1 gap-md-4 m-0 fs-5 fw-bold"
+						href="/signup"
 					>
 						<span className="fa fa-envelope-o fs-3" />
-						<p className="m-0 fs-5 fw-bold">Sign up with Email</p>
-					</button>
+						Sign up with Email
+					</a>
 				</div>
 			}
 			footer={<p>Agency partner users must sign up with work email</p>}
