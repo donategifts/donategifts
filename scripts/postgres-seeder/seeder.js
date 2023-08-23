@@ -31,7 +31,24 @@ const { db } = require('../../dist/db/postgresconnection');
                 image_id: null,
             }));
             
-            await db.insertInto('users').values(formattedData).execute();
+            const result = await db
+                .insertInto('users')
+                .values(formattedData)
+                .returning(['id', 'role'])
+                .execute();
+            
+            const users = result.map((row) => {
+                const { id, role } = row;
+                
+                return {
+                    id,
+                    role,
+                };
+            });
+            
+            return users;
+        };
+        
         };
         
         
