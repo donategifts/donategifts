@@ -46,7 +46,7 @@ const { db } = require('../../dist/db/postgresconnection');
         // console.log(result);
         
         const deleteDataAndImport = async () => {
-            db.transaction().execute(async (trx) => {
+            await db.transaction().execute(async (trx) => {
                 // must be deleted in this order to prevent foreign key constraint errors
                 await trx.deleteFrom('wishcards').execute();
                 await trx.deleteFrom('verification_tokens').execute();
