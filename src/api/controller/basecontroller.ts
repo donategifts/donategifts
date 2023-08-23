@@ -33,7 +33,6 @@ export default class BaseController {
 		}
 
 		this.log.error(error);
-
 		return res.status(statusCode).send({
 			error,
 		});

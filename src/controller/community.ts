@@ -20,7 +20,7 @@ export default class CommunityController extends BaseController {
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			const posts = (await this.postRepository.getAllPosts()).sort(
+			const posts = (await this.postRepository.getAllPostsByVerifiedAgencies()).sort(
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
 			this.renderView(res, 'pages/community', { posts });
