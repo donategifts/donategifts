@@ -125,7 +125,7 @@ CREATE TABLE "wishcards" (
     "agency_id" uuid NOT NULL,
     "child_id" uuid NOT NULL,
     "item_id" uuid NOT NULL,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "order_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "updated_at" timestamp
