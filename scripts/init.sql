@@ -10,7 +10,7 @@ CREATE TABLE "agencies" (
     "state" varchar(100) NOT NULL,
     "country" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
-    "verified" boolean NOT NULL DEFAULT false,
+    "is_verified" boolean NOT NULL DEFAULT false,
     "employer_identification_number" varchar(100) UNIQUE,
     "account_manager_id" uuid NOT NULL,
     "image_id" uuid NOT NULL,
