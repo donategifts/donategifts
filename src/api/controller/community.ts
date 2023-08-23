@@ -29,6 +29,13 @@ export default class CommunityController extends BaseController {
 
 			const agency = await this.agencyRepository.getAgencyByUserId(user._id);
 
+			if (!agency?.isVerified) {
+				return this.handleError(
+					res,
+					"We'd love to help you share your post! To ensure a smooth experience for everyone, kindly make sure your agency is verified before submitting your post. Thank you for understanding!",
+				);
+			}
+
 			let profileImage: string | null = null;
 
 			if (req.file) {
@@ -48,7 +55,7 @@ export default class CommunityController extends BaseController {
 
 			await this.postRepository.createNewPost(newPost);
 
-			const posts = (await this.postRepository.getAllPosts()).sort(
+			const posts = (await this.postRepository.getAllPostsByVerifiedAgencies()).sort(
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
 
