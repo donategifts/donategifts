@@ -20,7 +20,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 				...agency,
 				agencyAddress: {
 					address1: faker.address.streetAddress(),
-					address2: faker.address.streetAddress(),
+					address2: faker.address.secondaryAddress(),
 					city: faker.address.city(),
 					state: faker.address.state(),
 					country: faker.address.country(),
