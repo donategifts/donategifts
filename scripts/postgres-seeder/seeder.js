@@ -49,6 +49,47 @@ const { db } = require('../../dist/db/postgresconnection');
             return users;
         };
         
+        const addAgencies = async (users) => {
+            const data = require('../seeder-data/agencies.json');
+            const adminUsers = users.filter((user) => user.role === 1);
+            
+            const [{
+                id: adminUserId,
+            }] = adminUsers;
+            
+            const formattedData = data.map((agency) => ({
+                name: agency.agencyName,
+                website: agency.agencyWebsite,
+                bio: agency.agencyBio,
+                email: agency.agencyEmail,
+                phone: agency.agencyPhone,
+                bio: agency.agencyBio,
+                address_line_1: agency.agencyAddress.address1,
+                address_line_2: agency.agencyAddress.address2,
+                city: agency.agencyAddress.city,
+                state: agency.agencyAddress.state,
+                country: agency.agencyAddress.country,
+                zip_code: agency.agencyAddress.zipcode,
+                is_verified: agency.isVerified,
+                account_manager_id: adminUserId,
+                image_id: null,
+            }));
+            
+            const result = await db
+                .insertInto('agencies')
+                .values(formattedData)
+                .returning(['id'])
+                .execute();
+            
+            const agencies = result.rows.map((row) => {
+                const { id } = row;
+                
+                return {
+                    id,
+                };
+            });
+            
+            return agencies;
         };
         
         
@@ -78,7 +119,8 @@ const { db } = require('../../dist/db/postgresconnection');
                 await trx.deleteFrom('images').execute();
             });
             
-            await addUsers();
+            const users = await addUsers();
+            await addAgencies(users);
         };
         
         await deleteDataAndImport();
