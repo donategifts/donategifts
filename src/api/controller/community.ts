@@ -32,7 +32,7 @@ export default class CommunityController extends BaseController {
 			if (!agency?.isVerified) {
 				return this.handleError(
 					res,
-					"We'd love to help you share your post! To ensure a smooth experience for everyone, kindly make sure your agency is verified before submitting your post. Thank you for understanding!",
+					'Please make sure your agency is verified before submitting your post.',
 				);
 			}
 
