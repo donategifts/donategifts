@@ -13,7 +13,7 @@ CREATE TABLE "agencies" (
     "is_verified" boolean NOT NULL DEFAULT false,
     "employer_identification_number" varchar(100) UNIQUE,
     "account_manager_id" uuid NOT NULL,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "updated_at" timestamp
 );
