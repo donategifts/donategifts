@@ -118,13 +118,16 @@ block scripts
             $('form').submit(function (event) {
                 event.preventDefault();
 
+                const messageFrom = !{JSON.stringify(user)};
+                const messageTo = !{JSON.stringify(wishcard)};
+
                 $.ajax({
                     type: 'POST',
                     url: '/wishcards/message',
                     data: {
-                        messageFrom: '#{user ? user._id : ''}',
-                        messageTo: '#{wishcard._id}',
-                        message: $('.custom-select option:selected').text(),
+                        messageFrom,
+                        messageTo,
+                        message: $('.form-select-lg option:selected').text(),
                     },
                     statusCode: {
                         400: function (response) {

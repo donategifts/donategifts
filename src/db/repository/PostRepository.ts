@@ -15,6 +15,41 @@ export default class PostRepository {
 		}
 	}
 
+	/**
+	 * Returns all posts for verified agencies
+	 * @returns {any}
+	 * @throws {Error}
+	 */
+	async getAllPostsByVerifiedAgencies() {
+		try {
+			return await this.postModel.aggregate([
+				{
+					$lookup: {
+						from: 'agencies',
+						localField: 'belongsTo',
+						foreignField: '_id',
+						as: 'agencyData',
+					},
+				},
+				{
+					$match: {
+						'agencyData.isVerified': true,
+					},
+				},
+				{
+					$addFields: {
+						belongsTo: { $arrayElemAt: ['$agencyData', 0] },
+					},
+				},
+				{
+					$unset: 'agencyData',
+				},
+			]);
+		} catch (error) {
+			throw new Error(`Failed to get posts for verified agencies: ${error}`);
+		}
+	}
+
 	async createNewPost(postParams: Partial<Post>) {
 		try {
 			await this.postModel.create(postParams);
