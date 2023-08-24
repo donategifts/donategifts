@@ -16,19 +16,38 @@ const wishCards = require('./seeder-data/wishcards.json');
 (async () => {
 	try {
 		const prepareAgencies = () => {
-			const agenciesData = agencies.map((agency) => ({
-				...agency,
-				agencyAddress: {
-					address1: faker.address.streetAddress(),
-					address2: faker.address.secondaryAddress(),
-					city: faker.address.city(),
-					state: faker.address.state(),
-					country: faker.address.country(),
-					zipcode: faker.address.zipCode(),
-				},
-				agencyPhone: faker.phone.phoneNumber(),
-				agencyEmail: faker.internet.email(),
-			}));
+			const agenciesData = agencies.map((agency) => {
+				const {
+					name = faker.company.name(),
+					address = {
+						line1: faker.location.streetAddress(),
+						line2: faker.location.secondaryAddress(),
+						city: faker.location.city(),
+						state: faker.location.state(),
+						country: 'US',
+						zipcode: faker.location.zipCode(),
+					},
+					phone = faker.phone.number(),
+					email = faker.internet.email(),
+					bio = faker.lorem.paragraph(),
+					isVerified = true,
+					website = faker.internet.url(),
+					imageId = null,
+					accountManagerId = null,
+				} = agency;
+				
+				return {
+					name,
+					address,
+					phone,
+					email,
+					bio,
+					isVerified,
+					website,
+					imageId,
+					accountManagerId,
+				};
+			});
 			
 			fs.writeFileSync(
 				path.join(__dirname, './seeder-data/agencies.json'),
@@ -36,7 +55,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 				'utf8',
 			);
 		};
-
+		
 		const prepareContacts = () => {
 			const contactsData = contacts.map((contact) => ({
 				...contact,
