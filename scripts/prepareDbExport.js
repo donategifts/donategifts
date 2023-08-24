@@ -59,38 +59,52 @@ const wishCards = require('./seeder-data/wishcards.json');
 
 		const prepareUsers = async () => {
 			const salt = await bcrypt.genSalt(10);
-			const password = await bcrypt.hash('Hello1234!', salt);
+			const saltedPassword = await bcrypt.hash('Hello1234!', salt);
 			
 			const loginModeEnum = {
-				'Default': 0,
-				'Google': 1,
-				'Facebook': 2,
+				Email: 'email',
+				Google: 'google',
+				Facebook: 'facebook',
 			};
 			
 			const userRoleEnum = {
-				admin: 0,
-				partner: 1,
-				donor: 2,
+				Admin: 'admin',
+				Donor: 'donor',
+				Partner: 'partner',
 			};
 			
-			const usersData = users.map((user) => ({
-				...user,
-				fName: faker.name.firstName(),
-				lName: faker.name.lastName(),
-				email: faker.internet.email(),
-				bio: faker.lorem.paragraph(),
-				loginMode: loginModeEnum[user.loginMode] || loginModeEnum.Default,
-				userRole: userRoleEnum[user.userRole] || userRoleEnum.donor,
-				password,
-			}));
-
+			const usersData = users.map((user) => {
+				const {
+					firstName = faker.name.firstName(),
+					lastName = faker.name.lastName(),
+					email = faker.internet.email(),
+					bio = faker.lorem.paragraph(),
+					loginMode = loginModeEnum.Email,
+					emailVerified = true,
+					role = userRoleEnum.Donor,
+					password = saltedPassword,
+					
+				} = user;
+				
+				return {
+					firstName,
+					lastName,
+					email,
+					bio,
+					loginMode,
+					emailVerified,
+					role,
+					password,
+				};
+			});
+			
 			fs.writeFileSync(
 				path.join(__dirname, './seeder-data/users.json'),
 				JSON.stringify(usersData, null, 4),
 				'utf8',
 			);
 		};
-
+		
 		const prepareWishCards = () => {
 			const wishCardsData = wishCards.map((wishCard) => ({
 				...wishCard,
