@@ -25,7 +25,7 @@ CREATE TABLE "children" (
     "birth_year" integer NOT NULL,
     "interest" text NOT NULL,
     "story" text NOT NULL,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "agency_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
@@ -34,7 +34,7 @@ CREATE TABLE "community_posts" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "message" text NOT NULL,
     "agency_id" uuid NOT NULL,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE "items" (
     "retailer" varchar(255) NOT NULL,
     "retailer_product_id" varchar(255) NOT NULL,
     "meta_data" json,
-    "image_id" uuid NOT NULL,
+    "image_id" uuid,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
