@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const bcrypt = require('bcrypt');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 const agencies = require('./seeder-data/agencies.json');
 const contacts = require('./seeder-data/contacts.json');
@@ -75,8 +75,8 @@ const wishCards = require('./seeder-data/wishcards.json');
 			
 			const usersData = users.map((user) => {
 				const {
-					firstName = faker.name.firstName(),
-					lastName = faker.name.lastName(),
+					firstName = faker.person.firstName(),
+					lastName = faker.person.lastName(),
 					email = faker.internet.email(),
 					bio = faker.lorem.paragraph(),
 					loginMode = loginModeEnum.Email,
