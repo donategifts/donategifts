@@ -10,7 +10,6 @@ const { db } = require('../../dist/db/postgresconnection');
 // const donationsData = require('./seeder-data/donations.json');
 // const messagesData = require('./seeder-data/messages.json');
 // const postsData = require('./seeder-data/posts.json');
-// const usersData = require('./seeder-data/users.json');
 // const wishCardsData = require('./seeder-data/wishcards.json');
 
 
@@ -19,17 +18,31 @@ const { db } = require('../../dist/db/postgresconnection');
         const addUsers = async () => {
             const data = require('../seeder-data/users.json');
             
-            const formattedData = data.map((user) => ({
-                first_name: user.fName,
-                last_name: user.lName,
-                email: user.email,
-                password: user.password,
-                role: user.userRole,
-                login_mode: user.loginMode,
-                bio: user.bio,
-                is_verified: user.emailVerified,
-                image_id: null,
-            }));
+            const formattedData = data.map((user) => {
+                const {
+                    firstName,
+                    lastName,
+                    email,
+                    bio,
+                    loginMode,
+                    emailVerified,
+                    role,
+                    password,
+                    imageId,
+                } = user;
+                
+                return {
+                    first_name: firstName,
+                    last_name: lastName,
+                    email,
+                    password,
+                    role,
+                    login_mode: loginMode,
+                    bio,
+                    is_verified: emailVerified,
+                    image_id: imageId,
+                }
+            });
             
             const result = await db
                 .insertInto('users')
