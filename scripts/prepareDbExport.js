@@ -102,6 +102,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 					emailVerified = true,
 					role = userRoleEnum.Donor,
 					password = saltedPassword,
+					imageId = null,
 				} = user;
 				
 				return {
@@ -113,6 +114,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 					emailVerified,
 					role,
 					password,
+					imageId,
 				};
 			});
 			
