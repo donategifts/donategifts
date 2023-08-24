@@ -119,7 +119,7 @@ function LoginWithEmail({ modalRef, dispatch }) {
 						</form>
 					</div>
 				}
-				footer={<p>Agency partner users must sign in with work email</p>}
+				footer={<p>Agency partner users must log in with work email.</p>}
 				sideContent={
 					<div className="d-flex flex-column align-items-center justify-content-around text-center gap-4">
 						<div className="d-flex flex-column align-items-center justify-content-center text-white">
@@ -127,7 +127,7 @@ function LoginWithEmail({ modalRef, dispatch }) {
 							<p className="fs-5 mt-1">Join our great movement</p>
 						</div>
 						<button
-							className="w-100 button-modal-fill fs-5 fw-bold"
+							className="w-100 button-modal-outline fs-5 fw-bold"
 							onClick={() => dispatch({ type: SIGNUP })}
 						>
 							Sign up
