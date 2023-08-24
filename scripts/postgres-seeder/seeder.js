@@ -119,17 +119,6 @@ const { db } = require('../../dist/db/postgresconnection');
             return agencies;
         };
         
-        
-        // const addAgencies = async () => {
-        //     const agenciesData = require('./seeder-data/agencies.json');
-        //     const formattedData = agenciesData.map((agency) => ({
-                
-        //     }));
-        // };
-        // const result = await db.selectFrom('agencies').where('name', '=', 'test').selectAll().execute();
-        
-        // console.log(result);
-        
         const deleteDataAndImport = async () => {
             await db.transaction().execute(async (trx) => {
                 // must be deleted in this order to prevent foreign key constraint errors
