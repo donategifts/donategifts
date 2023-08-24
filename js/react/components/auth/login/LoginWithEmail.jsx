@@ -43,7 +43,7 @@ function LoginWithEmail({ modalRef, dispatch }) {
 			const data = await response.json();
 			return data;
 		}
-		console.log(response);
+		// console.log(response);
 		setEmail('');
 		setPassword('');
 		setError('Email and/or password incorrect');
