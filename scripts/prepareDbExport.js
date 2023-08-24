@@ -56,6 +56,37 @@ const wishCards = require('./seeder-data/wishcards.json');
 			);
 		};
 		
+		const prepareChildren = () => {
+			const children = require('./seeder-data/children.json');
+			const childrenData = children.map((child) => {
+				const {
+					firstName = faker.person.firstName(),
+					lastName = faker.person.lastName(),
+					birthYear = faker.date.past({ years: 10 }).getFullYear(),
+					interest = faker.lorem.sentence(),
+					story = faker.lorem.paragraph(),
+					imageId = null,
+					agencyId = null,
+				} = child;
+				
+				return {
+					firstName,
+					lastName,
+					birthYear,
+					interest,
+					story,
+					imageId,
+					agencyId,
+				};
+			});
+			
+			fs.writeFileSync(
+				path.join(__dirname, './seeder-data/children.json'),
+				JSON.stringify(childrenData, null, 4),
+				'utf8',
+			);
+		};
+		
 		const prepareContacts = () => {
 			const contactsData = contacts.map((contact) => ({
 				...contact,
@@ -142,12 +173,13 @@ const wishCards = require('./seeder-data/wishcards.json');
 
 		const run = () => {
 			prepareAgencies();
-			prepareContacts();
-			prepareDonations();
-			prepareMessages();
-			preparePosts();
+			prepareChildren();
+			// prepareContacts();
+			// prepareDonations();
+			// prepareMessages();
+			// preparePosts();
 			prepareUsers();
-			prepareWishCards();
+			// prepareWishCards();
 		};
 
 		run();
