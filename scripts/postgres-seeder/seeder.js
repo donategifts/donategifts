@@ -70,23 +70,37 @@ const { db } = require('../../dist/db/postgresconnection');
                 id: adminUserId,
             }] = adminUsers;
             
-            const formattedData = data.map((agency) => ({
-                name: agency.agencyName,
-                website: agency.agencyWebsite,
-                bio: agency.agencyBio,
-                email: agency.agencyEmail,
-                phone: agency.agencyPhone,
-                bio: agency.agencyBio,
-                address_line_1: agency.agencyAddress.address1,
-                address_line_2: agency.agencyAddress.address2,
-                city: agency.agencyAddress.city,
-                state: agency.agencyAddress.state,
-                country: agency.agencyAddress.country,
-                zip_code: agency.agencyAddress.zipcode,
-                is_verified: agency.isVerified,
-                account_manager_id: adminUserId,
-                image_id: null,
-            }));
+            const formattedData = data.map((agency) => {
+                const {
+                    name,
+                    address,
+                    phone,
+                    email,
+                    bio,
+                    isVerified,
+                    website,
+                    imageId,
+                    accountManagerId = adminUserId,
+                } = agency;
+                
+                return {
+                    name,
+                    website,
+                    bio,
+                    email,
+                    phone,
+                    bio,
+                    address_line_1: address.line1,
+                    address_line_2: address.line2,
+                    city: address.city,
+                    state: address.state,
+                    country: address.country,
+                    zip_code: address.zipcode,
+                    is_verified: isVerified,
+                    account_manager_id: accountManagerId,
+                    image_id: imageId,
+                }
+            });
             
             const result = await db
                 .insertInto('agencies')
