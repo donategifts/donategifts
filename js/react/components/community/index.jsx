@@ -35,14 +35,17 @@ function Community(props) {
 			},
 			body: formData,
 		})
-			.then((res) => res.json())
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(`Response is not valid: ${res.status}`);
+				}
+				return res.json();
+			})
 			.then((data) => {
 				document.querySelector('#communityPost').reset();
 				document.querySelector('#imagePreview').innerHTML = '';
-
 				window.showToast('Post published');
-
-				setPosts(data.posts);
+				setPosts(data.data);
 			})
 			.catch((err) => {
 				console.error(err);
