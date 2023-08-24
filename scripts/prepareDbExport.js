@@ -5,7 +5,6 @@ const path = require('node:path');
 const bcrypt = require('bcrypt');
 const { faker } = require('@faker-js/faker');
 
-const agencies = require('./seeder-data/agencies.json');
 const contacts = require('./seeder-data/contacts.json');
 // const donations = require('./seeder-data/donations.json');
 // const messages = require('./seeder-data/messages.json');
@@ -16,6 +15,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 (async () => {
 	try {
 		const prepareAgencies = () => {
+			const agencies = require('./seeder-data/agencies.json');
 			const agenciesData = agencies.map((agency) => {
 				const {
 					name = faker.company.name(),
