@@ -51,7 +51,7 @@ function Login({ modalRef, dispatch }) {
 					</button>
 				</div>
 			}
-			footer={<p>Agency partner users must log in with work email</p>}
+			footer={<p>Agency partner users must log in with work email.</p>}
 			sideContent={
 				<div className="d-flex flex-column align-items-center justify-content-around text-center gap-4">
 					<div className="d-flex flex-column align-items-center justify-content-center text-white">

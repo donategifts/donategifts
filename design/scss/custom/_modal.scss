@@ -18,6 +18,13 @@
 	}
 }
 
+.show-password {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
 @media (width <= 768px) {
 	.auth-modal {
 		> div:first-of-type, .background-gradient {
