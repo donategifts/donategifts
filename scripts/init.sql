@@ -8,7 +8,7 @@ CREATE TABLE "agencies" (
     "address_line_2" varchar(255),
     "city" varchar(100) NOT NULL,
     "state" varchar(100) NOT NULL,
-    "country" varchar(100) NOT NULL,
+    "country_code" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
     "is_verified" boolean NOT NULL DEFAULT false,
     "employer_identification_number" varchar(100) UNIQUE,
