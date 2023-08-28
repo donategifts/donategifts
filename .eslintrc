@@ -9,8 +9,5 @@
     "react": {
       "version": "detect"
     }
-  },
-  "rules": {
-    "no-return-await": "error"
   }
 }
