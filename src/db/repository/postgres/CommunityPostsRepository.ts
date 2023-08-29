@@ -2,7 +2,7 @@ import { Kysely } from 'kysely';
 
 import { DB, CommunityPosts } from '../../types/generated/database';
 
-export default class PostRepository {
+export default class CommunityPostsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	async getAllPosts() {
