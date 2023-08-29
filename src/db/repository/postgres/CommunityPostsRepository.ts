@@ -5,16 +5,16 @@ import { DB, CommunityPosts } from '../../types/generated/database';
 export default class CommunityPostsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
-	async getAllPosts() {
-		return await this.database
+	getAllPosts() {
+		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
 			.selectAll()
 			.execute();
 	}
 
-	async getAllPostsByVerifiedAgencies() {
-		return await this.database
+	getAllPostsByVerifiedAgencies() {
+		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
 			.where('agencies.verified', '=', true)
@@ -23,6 +23,6 @@ export default class CommunityPostsRepository {
 	}
 
 	async createNewPost(postParams: Omit<CommunityPosts, 'id' | 'created_at'>) {
-		return await this.database.insertInto('community_posts').values(postParams).execute();
+		await this.database.insertInto('community_posts').values(postParams).execute();
 	}
 }
