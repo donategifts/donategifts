@@ -12,7 +12,7 @@ export default class UsersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getUserById(id: string) {
-		return this.database.selectFrom('users').where('id', '=', id).execute();
+		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
 	updateUser(id: string, updateParams: UpdateParams) {
@@ -21,11 +21,14 @@ export default class UsersRepository {
 			.set(updateParams)
 			.where('id', '=', id)
 			.returningAll()
-			.execute();
+			.executeTakeFirstOrThrow();
 	}
 
 	getUserByEmail(email: string) {
-		return this.database.selectFrom('users').where('email', '=', email).execute();
+		return this.database
+			.selectFrom('users')
+			.where('email', '=', email)
+			.executeTakeFirstOrThrow();
 	}
 
 	getUserByVerificationToken(verificationToken: string) {
@@ -34,15 +37,15 @@ export default class UsersRepository {
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
 			.where('verification_tokens.token', '=', verificationToken)
 			.selectAll('users')
-			.execute();
+			.executeTakeFirstOrThrow();
 	}
 
-	async createNewUser(userParams: CreateParams) {
-		const [result] = await this.database
+	async createNewUser(createParams: CreateParams) {
+		const result = await this.database
 			.insertInto('users')
-			.values(userParams)
+			.values(createParams)
 			.returningAll()
-			.execute();
+			.executeTakeFirstOrThrow();
 
 		await this.database
 			.insertInto('verifications')
@@ -58,16 +61,16 @@ export default class UsersRepository {
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
 			.where('verification_tokens.token', '=', resetToken)
 			.selectAll('users')
-			.execute();
+			.executeTakeFirstOrThrow();
 	}
 
 	async setUserEmailVerification(userId: string, verified: boolean) {
-		const [result] = await this.database
+		const result = await this.database
 			.updateTable('users')
 			.set({ is_verified: verified })
 			.where('id', '=', userId)
 			.returningAll()
-			.execute();
+			.executeTakeFirstOrThrow();
 
 		await this.database
 			.updateTable('verifications')

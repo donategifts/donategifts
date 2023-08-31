@@ -6,7 +6,7 @@ export default class MessagesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getMessageById(id: string) {
-		return this.database.selectFrom('messages').where('id', '=', id).execute();
+		return this.database.selectFrom('messages').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
 	async createNewMessage(messageParams: Omit<Messages, 'id' | 'created_at'>) {
@@ -14,6 +14,9 @@ export default class MessagesRepository {
 	}
 
 	getMessagesByWishCardId(id: string) {
-		return this.database.selectFrom('messages').where('wishcard_id', '=', id).execute();
+		return this.database
+			.selectFrom('messages')
+			.where('wishcard_id', '=', id)
+			.executeTakeFirstOrThrow();
 	}
 }
