@@ -1,4 +1,4 @@
-@import "includes";
+@import 'includes';
 
 body {
 	font-family: $font-body;
@@ -28,7 +28,9 @@ body {
 }
 
 .gradient-form {
-	background: linear-gradient(#ff5f6d00, #ffc37100), url("/img/gift-white-bg.jpeg") center center;
+	background:
+		linear-gradient(#ff5f6d00, #ffc37100),
+		url('/img/gift-white-bg.jpeg') center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -40,6 +42,13 @@ body {
 			color: $white;
 		}
 	}
+}
+
+.truncate-ellipsis {
+	@include text-truncate;
+
+	display: inline-block;
+	width: 100%;
 }
 
 @media (width <= 768px) {

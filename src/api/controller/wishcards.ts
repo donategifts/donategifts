@@ -17,6 +17,7 @@ export default class WishCardApiController extends BaseApiController {
 		this.agencyRepository = new AgencyRepository();
 
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
+		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
 	}
 
 	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
@@ -28,13 +29,42 @@ export default class WishCardApiController extends BaseApiController {
 			const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
 			const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
 
-			this.sendResponse(res, {
+			return this.sendResponse(res, {
 				draftWishcards,
 				activeWishcards,
 				inactiveWishcards,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async putAgencyWishCardById(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const {
+				wishCardId,
+				childFirstName,
+				childLastName,
+				wishItemName,
+				wishItemPrice,
+				childInterest,
+				childStory,
+			} = req.body;
+
+			const updateParams = {
+				childFirstName,
+				childLastName,
+				wishItemName,
+				wishItemPrice,
+				childInterest,
+				childStory,
+			};
+
+			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, updateParams);
+
+			return this.sendResponse(res, updateParams);
+		} catch (error) {
+			return this.handleError(res, error);
 		}
 	}
 }

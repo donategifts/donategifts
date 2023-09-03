@@ -275,7 +275,7 @@ export default class WishCardController extends BaseController {
 			const { childBirthday, wishItemPrice } = req.body;
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
-			await this.wishCardRepository.updateWishCard(wishcard!._id, {
+			await this.wishCardRepository.updateWishCardByObjectId(wishcard!._id, {
 				...req.body,
 				childBirthday: childBirthday ? new Date(childBirthday) : wishcard?.childBirthday,
 				wishItemPrice: wishItemPrice ? Number(wishItemPrice) : wishcard?.wishItemPrice,

@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
 
-function SimpleModal({ title, body, footer, open = true, onClose }) {
+function SimpleModal({ title, body, footer, onClose, open = true, hideOnClickOutside = true }) {
 	const modalRef = useRef(null);
+	const modalProps = {};
+
+	if (!hideOnClickOutside) {
+		modalProps['data-bs-backdrop'] = 'static';
+	}
 
 	useEffect(() => {
 		const hiddenEventHandler = () => {
@@ -26,7 +31,7 @@ function SimpleModal({ title, body, footer, open = true, onClose }) {
 	}, [open]);
 
 	return (
-		<div className="modal fade" ref={modalRef} tabIndex="-1">
+		<div className="modal fade" ref={modalRef} tabIndex={-1} {...modalProps}>
 			<div className="modal-dialog modal-dialog-centered">
 				<div className="modal-content">
 					<div className="modal-header">
@@ -57,6 +62,7 @@ SimpleModal.propTypes = {
 	]),
 	open: PropTypes.bool,
 	onClose: PropTypes.func,
+	hideOnClickOutside: PropTypes.bool,
 };
 
 export default SimpleModal;

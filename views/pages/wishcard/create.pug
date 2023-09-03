@@ -136,7 +136,7 @@ append scripts
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            showToast(response.responseJSON.error.msg);
+                            showToast(response.responseJSON.error.msg || response.responseJSON.error);
                         },
                         403: function (responseObject) {
                             $('#submitInput').attr('disabled', false);

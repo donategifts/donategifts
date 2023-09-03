@@ -1,21 +1,27 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import SimpleModal from '../components/shared/SimpleModal.jsx';
 import AgencyCardEditForm from '../forms/AgencyCardEditForm.jsx';
 
 export default function AgencyCardsPage() {
+	const editFormRef = useRef();
 	const [agencyCards, setAgencyCards] = useState({});
 	const [cardOnEdit, setCardOnEdit] = useState(null);
 	const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+	const [refetchWishCards, setRefetchWishCards] = useState(false);
 
 	useEffect(() => {
-		axios('/api/wishcards/agency_me')
-			.then((res) => setAgencyCards(res.data.data))
-			.catch(() => window.showToast('Could not fetch wishcards.'));
-	}, []);
+		const fetchWishCards = () => {
+			axios
+				.get('/api/wishcards/agency_me')
+				.then((res) => setAgencyCards(res.data.data))
+				.catch(() => window.showToast('Could not fetch wishcards.'));
+		};
+		fetchWishCards();
+	}, [refetchWishCards]);
 
-	const handleClickEditCard = (card) => {
+	const handleClickEditOnCard = (card) => {
 		setCardOnEdit(card);
 		setIsOpenEditModal(true);
 	};
@@ -25,12 +31,31 @@ export default function AgencyCardsPage() {
 		setIsOpenEditModal(false);
 	};
 
-	const handleClickSave = () => {
-		// TODO: save wishcard with new data
-		setIsOpenEditModal(false);
+	const handleAgencyCardEditFormSubmit = async (submitData) => {
+		try {
+			await axios.put('/api/wishcards/agency_me', {
+				wishCardId: cardOnEdit?._id,
+				childFirstName: submitData.childFirstName,
+				childLastName: submitData.childLastName,
+				wishItemName: submitData.wishItemName,
+				wishItemPrice: submitData.wishItemPrice,
+				childInterest: submitData.childInterest,
+				childStory: submitData.childStory,
+			});
+			``;
+
+			setIsOpenEditModal(false);
+			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
+		} catch (error) {
+			window.showToast(
+				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
+			);
+		}
 	};
 
-	// console.log({ isOpenEditModal, cardOnEdit });
+	const handleClickSave = () => {
+		editFormRef.current?.submit();
+	};
 
 	return (
 		<div className="wishcards">
@@ -44,30 +69,38 @@ export default function AgencyCardsPage() {
 				{renderAgencyWishCards({
 					emptyMessage: 'No draft wishcards',
 					wishCards: agencyCards.draftWishcards,
-					onClickEditWishcard: handleClickEditCard,
+					onClickEditWishcard: handleClickEditOnCard,
 				})}
 
 				<h3 className="cool-font">Active Wishcards</h3>
 				{renderAgencyWishCards({
 					emptyMessage: 'You have 0 active wishcards',
 					wishCards: agencyCards.activeWishcards,
-					onClickEditWishcard: handleClickEditCard,
+					onClickEditWishcard: handleClickEditOnCard,
 				})}
 
 				<h3 className="cool-font">Inactive Wishcards</h3>
 				{renderAgencyWishCards({
 					emptyMessage: 'You have 0 inactive wishcards',
 					wishCards: agencyCards.inactiveWishcards,
-					onClickEditWishcard: handleClickEditCard,
+					onClickEditWishcard: handleClickEditOnCard,
 				})}
 			</div>
 			<SimpleModal
 				// modalId="wishcard-edit-modal"
 				// ref={modalRef}
-				open={isOpenEditModal}
-				onClose={handleCloseEditModal}
 				title="Edit Wishcard"
-				body={<AgencyCardEditForm key={cardOnEdit?._id} card={cardOnEdit} />}
+				open={isOpenEditModal}
+				hideOnClickOutside={false}
+				onClose={handleCloseEditModal}
+				body={
+					<AgencyCardEditForm
+						ref={editFormRef}
+						key={cardOnEdit?._id}
+						card={cardOnEdit}
+						onSubmit={handleAgencyCardEditFormSubmit}
+					/>
+				}
 				footer={
 					<div className="col-12 col-md-4 my-2">
 						<button className="btn btn-lg btn-primary w-100" onClick={handleClickSave}>
@@ -88,18 +121,16 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 			{wishCards.map((card) => {
 				const title = 'My name is ' + card.childFirstName;
 				const status = 'Status: ' + card.status;
-				const wish =
-					'Wish: ' +
-					(card.wishItemName.length > 25
-						? card.wishItemName.substring(0, 25) + '...'
-						: card.wishItemName);
+				const wishItemName = 'Wish: ' + card.wishItemName;
+				// (card.wishItemName.length > 25
+				// 	? card.wishItemName.substring(0, 25) + '...'
+				// 	: card.wishItemName);
 
 				const price = 'Price: $' + card.wishItemPrice;
-				const interest =
-					'Interest: ' +
-					(card.childInterest.length > 30
-						? card.childInterest.substring(0, 30) + '...'
-						: card.childInterest);
+				const interest = 'Interest: ' + card.childInterest;
+				// (card.childInterest.length > 30
+				// 	? card.childInterest.substring(0, 30) + '...'
+				// 	: card.childInterest);
 
 				const handleClickEditIcon = () => {
 					onClickEditWishcard(card);
@@ -134,7 +165,9 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 									</div>
 									<div className="quick-font mb-3">
 										<p className="card-text">
-											<span className="font-weight-bold">{wish}</span>
+											<span className="font-weight-bold truncate-ellipsis">
+												{wishItemName}
+											</span>
 										</p>
 									</div>
 									<div className="quick-font mb-3">
@@ -144,7 +177,9 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 									</div>
 									<div className="quick-font mb-3">
 										<p className="card-text">
-											<span className="font-weight-bold">{interest}</span>
+											<span className="font-weight-bold truncate-ellipsis">
+												{interest}
+											</span>
 										</p>
 									</div>
 								</div>
