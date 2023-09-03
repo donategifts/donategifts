@@ -1,81 +1,117 @@
 %btn {
 	appearance: none;
 	outline: none;
-	padding: 1rem 1.75rem;
-	width: 100%;
-	transition: all 0.2s ease-in-out;
-	text-decoration: none;
+	text-align: center;
+    text-decoration: none;
+	display: inline-block;
 }
 
 %btn-main {
+	padding: 1rem 1.5rem;
 	border-radius: 0.55rem;
 	font-size: 1.25rem;
 	font-weight: $fw-semi-bold;
-	max-width: 215px;
 }
 
-.button-primary {
-	@extend %btn;
-	@extend %btn-main;
+// rounded, pill 
 
-	background-color: lighten($primary, 5);
-	color: $white;
-	border: 1.5px solid lighten($primary, 5);
-
-	&:hover {
-		background-color: darken($primary, 10);
-		border: 1.5px solid darken($primary, 10);
+.button {
+	&-width {
+		width: 250px;
 	}
-}
 
-.button-secondary {
-	@extend %btn;
-	@extend %btn-main;
-
-	background-color: $gray-200;
-	color: $primary;
-	border: 1.5px solid $gray-200;
-
-	&:hover {
-		background-color: $gray-400;
-		color: darken($primary, 10);
-		border: 1.5px solid $gray-400;
+	&-primary {
+		@extend %btn;
+		@extend %btn-main;
+	
+		background-color: lighten($primary, 5);
+		color: $white;
+		border: 1.5px solid lighten($primary, 5);
+	
+		&:hover {
+			background-color: darken($primary, 10);
+			border: 1.5px solid darken($primary, 10);
+		}
 	}
-}
 
-.button-accent {
-	@extend %btn;
-	@extend %btn-main;
-
-	background-color: $secondary;
-	color: $white;
-	border: 1.5px solid $secondary;
-
-	&:hover {
-		background-color: darken($secondary, 10);
-		border: 1.5px solid darken($secondary, 10);
+	&-secondary {
+		@extend %btn;
+		@extend %btn-main;
+	
+		background-color: $gray-200;
+		color: $primary;
+		border: 1.5px solid $gray-200;
+	
+		&:hover {
+			background-color: $gray-400;
+			color: darken($primary, 10);
+			border: 1.5px solid $gray-400;
+		}
 	}
-}
 
-.button-disabled {
-	@extend %btn;
-	@extend %btn-main;
+	&-accent {
+		@extend %btn;
+		@extend %btn-main;
+	
+		background-color: $secondary;
+		color: $white;
+		border: 1.5px solid $secondary;
+	
+		&:hover {
+			background-color: darken($secondary, 10);
+			border: 1.5px solid darken($secondary, 10);
+		}
+	}
 
-	background-color: $gray-500;
-	color: $white;
-	cursor: not-allowed;
-	border: 1.5px solid $gray-500;
-}
+	&-disabled {
+		@extend %btn;
+		@extend %btn-main;
+	
+		background-color: $gray-500;
+		color: $white;
+		cursor: not-allowed;
+		border: 1.5px solid $gray-500;
+	}
 
-.button-outline {
-	@extend %btn;
-	@extend %btn-main;
+	&-outline {
+		@extend %btn;
+		@extend %btn-main;
+	
+		border: 1.5px solid $white !important;
+		color: $white;
+	
+		&:hover {
+			background-color: $white;
+			color: $primary;
+		}
+	}
 
-	border: 1.5px solid $white !important;
-	color: $white;
+	&-modal-outline {
+		@extend %btn;
+		@extend %btn-main;
 
-	&:hover {
+		border-radius: 3rem;
+		border: 1.5px solid $primary;
 		background-color: $white;
 		color: $primary;
+		
+		&:hover {
+			background-color: $primary;
+			color: $white;
+		}
+	}
+
+	&-modal-secondary {
+		@extend %btn;
+		@extend %btn-main;
+
+		border-radius: 3rem;
+		border: none;
+		background-color: $secondary;
+		color: $white;
+
+		&:hover {
+			background-color: darken($secondary, 10);
+		}
 	}
 }

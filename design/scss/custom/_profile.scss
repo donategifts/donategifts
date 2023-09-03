@@ -6,4 +6,16 @@
 		background-size: cover;
 		min-height: 33vh;
 	}
+
+	.fa-edit {
+		font-size: 1.25rem;
+		color: $gray;
+		cursor: pointer;
+	}
+
+	.display-6 {
+		font-size: 1.3rem;
+		font-weight: $fw-semi-bold;
+		color: $primary;
+	}
 }

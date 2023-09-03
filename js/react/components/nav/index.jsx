@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 
-function Nav(props) {
-	const { user, agency } = props;
+import { LOGIN } from '../../utils/constants.jsx';
 
-	console.log('render nav', user, agency);
-
+const Nav = ({ user, agency, dispatch, setShowModal }) => {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
 			<div className="container">
@@ -47,54 +45,54 @@ function Nav(props) {
 								Community
 							</a>
 						</li>
-						{/* No user */}
-						{!user && (
+						{!user ? (
 							<li className="nav-item">
-								<a className="nav-link" href="/login">
+								<a
+									className="nav-link"
+									style={{ cursor: 'pointer' }}
+									// href="/login"
+									// data-bs-toggle="modal"
+									// data-bs-target="#authModal"
+									onClick={() => {
+										dispatch({ type: LOGIN });
+										setShowModal(true);
+									}}
+								>
 									Log In
 								</a>
 							</li>
-						)}
-						{/* User gift sender */}
-						{!user?.isAdmin && !user?.userRole === 'partner' && (
+						) : (
 							<li className="nav-item">
 								<a className="nav-link" href="/profile">
-									Profile
+									My Account
 								</a>
 							</li>
 						)}
-						{/* User is admin */}
-						{user?.isAdmin && (
+						{user?.userRole === 'partner' && agency?.isVerified ? (
+							<li className="nav-item">
+								<a className="nav-link" href="/wishcards/create">
+									Create Wish Cards
+								</a>
+							</li>
+						) : null}
+						{user?.userRole === 'admin' ? (
 							<li className="nav-item">
 								<a className="nav-link" href="/admin/">
 									Admin Panel
 								</a>
 							</li>
-						)}
-						{/* User partner and agency is verified */}
-						{user?.userRole === 'partner' && agency?.isVerified && (
-							<>
-								<li className="nav-item">
-									<a className="nav-link" href="/wishcards/me">
-										My Wishes
-									</a>
-								</li>
-								<li className="nav-item">
-									<a className="nav-link" href="/wishcards/create">
-										Create a Wish Card
-									</a>
-								</li>
-							</>
-						)}
+						) : null}
 					</ul>
 				</div>
 			</div>
 		</nav>
 	);
-}
+};
 
 Nav.propTypes = {
 	user: PropTypes.object,
 	agency: PropTypes.object,
+	dispatch: PropTypes.func,
+	setShowModal: PropTypes.func,
 };
 export default Nav;

@@ -20,26 +20,26 @@ block content
                         span Wish card creation feature is disabled for your account.
                         span It will be enabled after agency verification. This usually takes 1-2 business days. For a faster verification, <a class="text-secondary" href="/contact">contact us</a>.
                 else
-                    .card.shadow.mb-5.border-0.p-3
-                        .card-body.row.justify-content-center.align-content-center.text-center
-                            .col-12.col-md-3
+                    .card.shadow.mb-5.border-0.p-3.my-5
+                        .card-body.row.justify-content-between.align-content-center.text-center
+                            .col-12.col-md-12.col-lg-4.p-2
                                 .mb-3
                                     span Ask for a specific wish item
-                                a.btn.btn-secondary.btn-lg.w-100( href='/wishcards/create' )  Create Wish Cards
-                            .col-12.col-md-3
+                                a.button-accent.button-width( href='/wishcards/create' )  Create Wish Cards
+                            .col-12.col-md-12.col-lg-4.p-2
                                 .mb-3.mt-3.mt-md-0
                                     span Review your existing wish cards
-                                a.btn.btn-primary.btn-lg.w-100( href='/wishcards/me' ) Manage Wish Cards
-                            .col-12.col-md-3
+                                a.button-primary.button-width( href='/wishcards/me' ) Manage Wish Cards
+                            .col-12.col-md-12.col-lg-4.p-2
                                 .mb-3.mt-3.mt-md-0
                                     span Got any questions?
-                                a.btn.btn-light.btn-lg.w-100( href='/contact' ) Contact For Help
+                                a.button-secondary.button-width( href='/contact' ) Contact For Help
 
             if user.userRole == 'partner'
                 #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
                         .display-6 Agency Details
-                        .fas.fa-edit.pointer( data-bs-toggle='modal' data-bs-target='#agency-details-modal' )
+                        .fas.fa-edit( data-bs-toggle='modal' data-bs-target='#agency-details-modal' )
 
                     .card-body
                         .row.justify-content-center
@@ -50,9 +50,9 @@ block content
                                     text += '<span class="mx-1">' + agency.agencyName + '</span>';
 
                                     if (agency.isVerified) {
-                                        text += '<div class="text-secondary">Verified <div class="fas fa-check-circle text-secondary"></div></div>';
+                                        text += '<div class="text-secondary fw-bold">Verified <div class="fas fa-check-circle text-secondary"></div></div>';
                                     } else {
-                                        text += '<div class="text-secondary">Not Verified</div>';
+                                        text += '<div class="text-secondary fw-bold">Not Verified</div>';
                                     }
 
                                 != text
@@ -99,10 +99,10 @@ block content
                                     span.text-muted Zipcode:
                                     span#zipcode.mx-2= agency.agencyAddress.zipcode
 
-            .card.shadow.mb-5.border-0.p-3
-                .card-title.d-flex.justify-content-between.p-3
+            .card.shadow.mb-5.border-0.p-4
+                .card-title.d-flex.justify-content-between.p-3.pb-0
                     .display-6 Account Details
-                    .fas.fa-edit.pointer( data-bs-toggle='modal' data-bs-target='#account-details-modal' )
+                    .fas.fa-edit( data-bs-toggle='modal' data-bs-target='#account-details-modal' )
 
                 .card-body
                     .row.justify-content-center.my-4
@@ -124,10 +124,10 @@ block content
                 .col-md-6.mb-5.mb-md-0
                     .card.h-100.shadow.border-0.p-3
                         .card-title.d-flex.justify-content-between.p-3
-                            .fs-6
-                                .fa.fa-user.text-secondary.me-1
+                            .display-6
+                                .fa.fa-user.mx-2
                                 span About Me
-                            .fas.fa-edit.pointer( data-bs-toggle='modal' data-bs-target='#about-me-modal' )
+                            .fas.fa-edit( data-bs-toggle='modal' data-bs-target='#about-me-modal' )
 
                         if user.aboutMe
                             .y-scroll
@@ -138,33 +138,33 @@ block content
                 .col-md-6
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
-                            .fs-6
-                                .fa.fa-gift.text-secondary.me-1
+                            .display-6
+                                .fa.fa-gift.mx-2
                                 span My Donations
 
-                        .row.justify-content-center
-                            .col-auto
-                                a.btn.btn-lg.btn-light( href='/profile/donations' ) See My Donation History
+                        .row.justify-content-center.text-center
+                            .col-12
+                                a.button-secondary( href='/profile/donations' ) My Donation History
 
             .row.mb-5
                 .col-md-6.mb-5.mb-md-0
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
-                            .fs-6
-                                .fa.fa-cogs.text-secondary.me-1
+                            .display-6
+                                .fa.fa-cogs.mx-2
                                 span Settings
 
-                        .row.p-3
-                            .col-12.col-md-6
-                                a.btn.btn-lg.btn-primary.w-100( href='/profile/password/reset/' ) Reset Password
-                            .col-12.col-md-6.mt-3.mt-md-0
-                                a.btn.btn-lg.btn-light.w-100( href='/profile/logout' ) Log Out
+                        .row.justify-content-center.text-center
+                            .col-12.col-xl-6
+                                a.button-primary( href='/profile/password/reset/' ) Reset Password
+                            .col-12.col-xl-6.mt-3.mt-xl-0
+                                a.button-secondary( href='/profile/logout' ) Log Out
 
                 .col-md-6
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
-                            .fs-6
-                                .fa.fa-users.text-secondary.me-1
+                            .display-6
+                                .fa.fa-users.mx-2
                                 span Friends
 
                         .p-4 You have invited 0 friends.

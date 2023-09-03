@@ -1,3 +1,45 @@
-.background-gradient {
+.auth-modal {
+	> div:first-of-type {
+		width: 65%;
+
+		> div {
+			min-width: 70%;
+		}
+	}
+
+	.background-gradient {
 		background: linear-gradient(45deg, $danger, $warning);
+		width: 35%;
+
+		> div {
+			min-width: 70%;
+			max-width: 80%;
+		}
+	}
+}
+
+.show-password {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+@media (width <= 768px) {
+	.auth-modal {
+		> div:first-of-type, .background-gradient {
+			width: 100%;
+		}
+
+		> div:first-of-type {
+			padding: 2rem;
+			gap: 2rem;
+		}
+
+		.background-gradient {
+			border-top-right-radius: 0 !important;
+			border-bottom-left-radius: 0.375rem;
+			padding: 2rem;
+		}
+	}
 }
