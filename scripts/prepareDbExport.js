@@ -127,6 +127,36 @@ const wishCards = require('./seeder-data/wishcards.json');
 				Donor: 'donor',
 				Partner: 'partner',
 			};
+            
+            const staticUsers = [
+                {
+                    first_name: 'Admin',
+                    last_name: 'User',
+                    email: 'admin@donate-gifts.com',
+                    password: saltedPassword,
+                    role: userRoleEnum.Admin,
+                    login_mode: loginModeEnum.Email,
+                },
+                {
+                    first_name: 'Donor',
+                    last_name: 'User',
+                    email: 'donor@donate-gifts.com',
+                    password: saltedPassword,
+                    role: userRoleEnum.Donor,
+                    login_mode: loginModeEnum.Email,
+                },
+                {
+                    first_name: 'Partner',
+                    last_name: 'User',
+                    email: 'partner@donate-gifts.com',
+                    password: saltedPassword,
+                    role: userRoleEnum.Partner,
+                    login_mode: loginModeEnum.Email,
+                }
+            ];
+            
+            // add admin user before fake data is generated
+            users.push(...staticUsers);
 			
 			const usersData = users.map((user) => {
 				const {

@@ -273,5 +273,38 @@
         "role": "donor",
         "password": "$2b$10$5r2fYZU3CKBtju/5.E.zTOU2eC.Fl3wzJdaJRzKUu7jvRzba6jIYu",
         "image_id": null
+    },
+    {
+        "first_name": "Admin",
+        "last_name": "User",
+        "email": "admin@donategifts.com",
+        "bio": "Tempore odio commodi consequatur minus accusamus. Animi earum alias blanditiis repudiandae quasi saepe. Itaque numquam vero ab eum sunt ipsum voluptatum temporibus ex.",
+        "login_mode": "email",
+        "is_verified": true,
+        "role": "admin",
+        "password": "$2b$10$yXNUAeVaVL.Q9FSoI5gS3OObQLp7eYb.K7iT97UA0WKEfc1X6revi",
+        "image_id": null
+    },
+    {
+        "first_name": "Donor",
+        "last_name": "User",
+        "email": "donor@donate-gifts.com",
+        "bio": "Nostrum sapiente voluptas voluptatibus doloribus eligendi dolorem amet. Eligendi culpa architecto culpa animi excepturi. Labore ipsa dolor cupiditate.",
+        "login_mode": "email",
+        "is_verified": true,
+        "role": "donor",
+        "password": "$2b$10$lVUKqVp4Sziv3bz8JazxseE/Eagi1kdPgMbgM/EY2biSWPwZulnkq",
+        "image_id": null
+    },
+    {
+        "first_name": "Partner",
+        "last_name": "User",
+        "email": "partner@donate-gifts.com",
+        "bio": "Facilis at dolorem. Esse doloribus dolorum eum nihil dolore temporibus accusamus sint soluta. Accusantium iusto explicabo neque repudiandae porro.",
+        "login_mode": "email",
+        "is_verified": true,
+        "role": "partner",
+        "password": "$2b$10$lVUKqVp4Sziv3bz8JazxseE/Eagi1kdPgMbgM/EY2biSWPwZulnkq",
+        "image_id": null
     }
 ]
