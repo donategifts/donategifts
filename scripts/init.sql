@@ -84,7 +84,7 @@ CREATE TABLE "users" (
     "first_name" varchar(255) NOT NULL,
     "last_name" varchar(255) NOT NULL,
     "email" varchar(255) NOT NULL,
-    "password" varchar(100) NOT NULL,
+    "password" varchar(255) NOT NULL,
     "role" integer NOT NULL,
     "login_mode" integer NOT NULL,
     "bio" varchar(500),
