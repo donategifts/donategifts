@@ -73,33 +73,37 @@ const { db } = require('../../dist/db/postgresconnection');
             const formattedData = data.map((agency) => {
                 const {
                     name,
-                    address,
-                    phone,
-                    email,
-                    bio,
-                    isVerified,
                     website,
-                    imageId,
-                    accountManagerId = adminUserId,
+                    phone,
+                    bio,
+                    address_line_1,
+                    address_line_2,
+                    city,
+                    state,
+                    country_code,
+                    zip_code,
+                    is_verified,
+                    employer_identification_number,
+                    account_manager_id = adminUserId, // set the account manager to the first admin user
+                    image_id,
                 } = agency;
                 
                 return {
                     name,
                     website,
-                    bio,
-                    email,
                     phone,
                     bio,
-                    address_line_1: address.line1,
-                    address_line_2: address.line2,
-                    city: address.city,
-                    state: address.state,
-                    country: address.country,
-                    zip_code: address.zipcode,
-                    is_verified: isVerified,
-                    account_manager_id: accountManagerId,
-                    image_id: imageId,
-                }
+                    address_line_1,
+                    address_line_2,
+                    city,
+                    state,
+                    country_code,
+                    zip_code,
+                    is_verified,
+                    employer_identification_number,
+                    account_manager_id,
+                    image_id,
+                };
             });
             
             const result = await db

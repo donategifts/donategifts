@@ -19,33 +19,38 @@ const wishCards = require('./seeder-data/wishcards.json');
 			const agenciesData = agencies.map((agency) => {
 				const {
 					name = faker.company.name(),
-					address = {
-						line1: faker.location.streetAddress(),
-						line2: faker.location.secondaryAddress(),
-						city: faker.location.city(),
-						state: faker.location.state(),
-						country: 'US',
-						zipcode: faker.location.zipCode(),
-					},
+					address_line_1 = faker.location.streetAddress(),
+					address_line_2 = faker.location.secondaryAddress(),
+					city = faker.location.city(),
+					state = faker.location.state(),
+					country_code = 'US',
+					zip_code = faker.location.zipCode(),
 					phone = faker.phone.number(),
 					email = faker.internet.email(),
 					bio = faker.lorem.paragraph(),
-					isVerified = true,
+					is_verified = true,
+					employer_identification_number = faker.number.int(),
 					website = faker.internet.url(),
-					imageId = null,
-					accountManagerId = null,
+					account_manager_id = null,
+					image_id = null,
 				} = agency;
 				
 				return {
 					name,
-					address,
+					address_line_1,
+					address_line_2,
+					city,
+					state,
+					country_code,
+					zip_code,
 					phone,
 					email,
 					bio,
-					isVerified,
+					is_verified,
+					employer_identification_number,
 					website,
-					imageId,
-					accountManagerId,
+					account_manager_id,
+					image_id,
 				};
 			});
 			
