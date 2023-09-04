@@ -91,8 +91,7 @@ CREATE TABLE "users" (
     "is_verified" boolean NOT NULL DEFAULT false,
     "image_id" uuid,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp,
-    "deleted_at" timestamp
+    "updated_at" timestamp
 );
 
 CREATE TABLE "verification_tokens" (
