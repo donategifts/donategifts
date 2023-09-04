@@ -1,3 +1,9 @@
+CREATE TYPE UserRole AS ENUM ('admin', 'donor', 'partner');
+CREATE TYPE LoginMode AS ENUM ('email', 'facebook', 'google');
+CREATE TYPE OrderStatus AS ENUM ('pending', 'ordered', 'delivered', 'cancelled');
+CREATE TYPE WishcardStatus AS ENUM ('draft', 'published', 'donated');
+CREATE TYPE VerificationType AS ENUM ('email', 'phone');
+
 CREATE TABLE "agencies" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "name" varchar(255) NOT NULL,
@@ -68,7 +74,7 @@ CREATE TABLE "messages" (
 
 CREATE TABLE "orders" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "status" integer NOT NULL DEFAULT 0,
+    "status" OrderStatus NOT NULL DEFAULT OrderStatus.pending,
     "delivery_date" timestamp,
     "tracking_info" varchar(500),
     "donor_id" uuid NOT NULL,
@@ -85,8 +91,8 @@ CREATE TABLE "users" (
     "last_name" varchar(255) NOT NULL,
     "email" varchar(255) NOT NULL,
     "password" varchar(255) NOT NULL,
-    "role" integer NOT NULL,
-    "login_mode" integer NOT NULL,
+    "role" UserRole NOT NULL,
+    "login_mode" LoginMode NOT NULL,
     "bio" varchar(500),
     "is_verified" boolean NOT NULL DEFAULT false,
     "is_disabled" boolean NOT NULL DEFAULT false,
@@ -98,7 +104,7 @@ CREATE TABLE "users" (
 CREATE TABLE "verification_tokens" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "token" varchar(255) NOT NULL,
-    "type" integer NOT NULL,
+    "type" VerificationType NOT NULL,
     "expiration" timestamp NOT NULL,
     "user_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
@@ -120,7 +126,7 @@ CREATE TABLE "wishcards" (
     "state" varchar(100) NOT NULL,
     "country" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
-    "status" integer NOT NULL DEFAULT 0,
+    "status" WishcardStatus NOT NULL DEFAULT WishcardStatus.draft,
     "created_by" uuid NOT NULL,
     "agency_id" uuid NOT NULL,
     "child_id" uuid NOT NULL,
