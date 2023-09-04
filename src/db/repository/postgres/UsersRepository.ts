@@ -11,11 +11,11 @@ export type CreateParams = Omit<
 export default class UsersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
-	getUserById(id: string) {
+	getById(id: string) {
 		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
-	updateUser(id: string, updateParams: UpdateParams) {
+	update(id: string, updateParams: UpdateParams) {
 		return this.database
 			.updateTable('users')
 			.set(updateParams)
@@ -24,14 +24,14 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	getUserByEmail(email: string) {
+	getByEmail(email: string) {
 		return this.database
 			.selectFrom('users')
 			.where('email', '=', email)
 			.executeTakeFirstOrThrow();
 	}
 
-	getUserByVerificationToken(verificationToken: string) {
+	getByVerificationToken(verificationToken: string) {
 		return this.database
 			.selectFrom('users')
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
@@ -40,7 +40,7 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async createNewUser(createParams: CreateParams) {
+	async create(createParams: CreateParams) {
 		const result = await this.database
 			.insertInto('users')
 			.values(createParams)
@@ -55,7 +55,7 @@ export default class UsersRepository {
 		return result;
 	}
 
-	getUserByPasswordResetToken(resetToken: string) {
+	getByPasswordResetToken(resetToken: string) {
 		return this.database
 			.selectFrom('users')
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
@@ -64,7 +64,7 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async setUserEmailVerification(userId: string, verified: boolean) {
+	async setEmailVerification(userId: string, verified: boolean) {
 		const result = await this.database
 			.updateTable('users')
 			.set({ is_verified: verified })

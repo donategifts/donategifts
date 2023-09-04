@@ -5,7 +5,7 @@ import { DB, CommunityPosts } from '../../types/generated/database';
 export default class CommunityPostsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
-	getAllPosts() {
+	getAll() {
 		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
@@ -13,7 +13,7 @@ export default class CommunityPostsRepository {
 			.execute();
 	}
 
-	getAllPostsByVerifiedAgencies() {
+	getAllByVerifiedAgencies() {
 		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
@@ -22,7 +22,7 @@ export default class CommunityPostsRepository {
 			.execute();
 	}
 
-	async createNewPost(postParams: Omit<CommunityPosts, 'id' | 'created_at'>) {
+	async create(postParams: Omit<CommunityPosts, 'id' | 'created_at'>) {
 		await this.database.insertInto('community_posts').values(postParams).execute();
 	}
 }

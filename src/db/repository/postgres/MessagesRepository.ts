@@ -5,18 +5,15 @@ import { DB, Messages } from '../../types/generated/database';
 export default class MessagesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
-	getMessageById(id: string) {
+	getById(id: string) {
 		return this.database.selectFrom('messages').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
-	async createNewMessage(messageParams: Omit<Messages, 'id' | 'created_at'>) {
+	async create(messageParams: Omit<Messages, 'id' | 'created_at'>) {
 		await this.database.insertInto('messages').values(messageParams).execute();
 	}
 
-	getMessagesByWishCardId(id: string) {
-		return this.database
-			.selectFrom('messages')
-			.where('wishcard_id', '=', id)
-			.executeTakeFirstOrThrow();
+	getByWishCardId(id: string) {
+		return this.database.selectFrom('messages').where('wishcard_id', '=', id).execute();
 	}
 }
