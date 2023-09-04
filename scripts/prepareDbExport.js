@@ -130,27 +130,27 @@ const wishCards = require('./seeder-data/wishcards.json');
 			
 			const usersData = users.map((user) => {
 				const {
-					firstName = faker.person.firstName(),
-					lastName = faker.person.lastName(),
+					first_name = faker.person.firstName(),
+					last_name = faker.person.lastName(),
 					email = faker.internet.email(),
-					bio = faker.lorem.paragraph(),
-					loginMode = loginModeEnum.Email,
-					emailVerified = true,
-					role = userRoleEnum.Donor,
 					password = saltedPassword,
-					imageId = null,
+					role = userRoleEnum.Donor,
+					login_mode = loginModeEnum.Email,
+					bio = faker.lorem.paragraph(),
+					is_verified = true,
+					image_id = null,
 				} = user;
 				
 				return {
-					firstName,
-					lastName,
+					first_name,
+					last_name,
 					email,
 					bio,
-					loginMode,
-					emailVerified,
+					login_mode,
+					is_verified,
 					role,
 					password,
-					imageId,
+					image_id,
 				};
 			});
 			

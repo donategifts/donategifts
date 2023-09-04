@@ -20,28 +20,30 @@ const { db } = require('../../dist/db/postgresconnection');
             
             const formattedData = data.map((user) => {
                 const {
-                    firstName,
-                    lastName,
+                    first_name,
+                    last_name,
                     email,
-                    bio,
-                    loginMode,
-                    emailVerified,
-                    role,
                     password,
-                    imageId,
+                    role,
+                    login_mode,
+                    bio,
+                    is_verified,
+                    is_disabled,
+                    image_id,
                 } = user;
                 
                 return {
-                    first_name: firstName,
-                    last_name: lastName,
+                    first_name,
+                    last_name,
                     email,
                     password,
                     role,
-                    login_mode: loginMode,
+                    login_mode,
                     bio,
-                    is_verified: emailVerified,
-                    image_id: imageId,
-                }
+                    is_verified,
+                    is_disabled,
+                    image_id,
+                };
             });
             
             const result = await db
