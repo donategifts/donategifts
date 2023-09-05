@@ -2,6 +2,8 @@ import { Kysely } from 'kysely';
 
 import { DB, CommunityPosts } from '../../types/generated/database';
 
+export type CommunityPostsCreateParams = Omit<CommunityPosts, 'id' | 'created_at'>;
+
 export default class CommunityPostsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
@@ -22,7 +24,11 @@ export default class CommunityPostsRepository {
 			.execute();
 	}
 
-	async create(postParams: Omit<CommunityPosts, 'id' | 'created_at'>) {
-		await this.database.insertInto('community_posts').values(postParams).execute();
+	create(postParams: CommunityPostsCreateParams) {
+		return this.database
+			.insertInto('community_posts')
+			.values(postParams)
+			.returningAll()
+			.executeTakeFirstOrThrow();
 	}
 }

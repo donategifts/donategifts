@@ -1,9 +1,10 @@
 import { Kysely, UpdateObject } from 'kysely';
 
+import Utils from '../../../helper/utils';
 import { DB, Users } from '../../types/generated/database';
 
-export type UpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
-export type CreateParams = Omit<
+export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
+export type UsersCreateParams = Omit<
 	Users,
 	'id' | 'is_verified' | 'created_at' | 'updated_at' | 'deleted_at'
 >;
@@ -15,7 +16,7 @@ export default class UsersRepository {
 		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
-	update(id: string, updateParams: UpdateParams) {
+	update(id: string, updateParams: UsersUpdateParams) {
 		return this.database
 			.updateTable('users')
 			.set(updateParams)
@@ -40,8 +41,8 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async create(createParams: CreateParams) {
-		const result = await this.database
+	async create(createParams: UsersCreateParams) {
+		const user = await this.database
 			.insertInto('users')
 			.values(createParams)
 			.returningAll()
@@ -49,10 +50,21 @@ export default class UsersRepository {
 
 		await this.database
 			.insertInto('verifications')
-			.values({ user_id: result.id, email_verified: false })
+			.values({ user_id: user.id, email_verified: false })
 			.execute();
 
-		return result;
+		const { token } = await this.database
+			.insertInto('verification_tokens')
+			.values({
+				user_id: user.id,
+				token: Utils.createEmailVerificationHash(),
+				type: 0,
+				expiration: new Date(),
+			})
+			.returning('token')
+			.executeTakeFirstOrThrow();
+
+		return { user, emailVerificationHash: token };
 	}
 
 	getByPasswordResetToken(resetToken: string) {

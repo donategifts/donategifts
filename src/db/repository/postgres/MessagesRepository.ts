@@ -2,6 +2,8 @@ import { Kysely } from 'kysely';
 
 import { DB, Messages } from '../../types/generated/database';
 
+export type MessagesCreateParams = Omit<Messages, 'id' | 'created_at'>;
+
 export default class MessagesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
@@ -9,8 +11,12 @@ export default class MessagesRepository {
 		return this.database.selectFrom('messages').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
-	async create(messageParams: Omit<Messages, 'id' | 'created_at'>) {
-		await this.database.insertInto('messages').values(messageParams).execute();
+	create(messageParams: MessagesCreateParams) {
+		return this.database
+			.insertInto('messages')
+			.values(messageParams)
+			.returningAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	getByWishCardId(id: string) {
