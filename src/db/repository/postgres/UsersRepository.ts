@@ -58,6 +58,7 @@ export default class UsersRepository {
 			.values({
 				user_id: user.id,
 				token: Utils.createEmailVerificationHash(),
+				// TODO: change to enum value once @nick-w-nick is done with the migration scripts
 				type: 0,
 				expiration: new Date(),
 			})
