@@ -10,16 +10,30 @@ const databaseConfig: KyselyConfig = {
 	log(event): void {
 		if (event.level === 'query') {
 			logger.debug(event.query.sql);
-			logger.debug(event.query.parameters);
+			logger.debug(JSON.stringify(event.query.parameters));
 		} else if (event.level === 'error') {
 			logger.error(event);
 		}
 	},
 	dialect: new PostgresDialect({
 		pool: new Pool({
-			connectionString: config.DATABASE_URL,
+			host: config.PG_HOST,
+			port: config.PG_PORT,
+			user: config.PG_USER,
+			password: config.PG_PASSWORD,
+			database: config.PG_DATABASE,
 		}),
 	}),
 };
 
 export const db = new Kysely<DB>(databaseConfig);
+
+export const connectPostgres = async () => {
+	const tables = await db.introspection.getTables({ withInternalKyselyTables: false });
+
+	if (tables.length !== 0) {
+		logger.info(`Database initialized with ${tables.length} tables`);
+	} else {
+		logger.error('Database initialized with 0 tables, check your database connection!');
+	}
+};
