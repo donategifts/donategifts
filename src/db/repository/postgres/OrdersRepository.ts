@@ -7,7 +7,7 @@ export type CreateParams = Omit<
 	'id' | 'status' | 'delivery_date' | 'created_at' | 'updated_at'
 >;
 
-export class OrdersRepository {
+export default class OrdersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	create(createParams: CreateParams) {
