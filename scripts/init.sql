@@ -74,7 +74,7 @@ CREATE TABLE "messages" (
 
 CREATE TABLE "orders" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "status" OrderStatus NOT NULL DEFAULT OrderStatus.pending,
+    "status" OrderStatus NOT NULL DEFAULT ('pending'::OrderStatus),
     "delivery_date" timestamp,
     "tracking_info" varchar(500),
     "donor_id" uuid NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE "wishcards" (
     "state" varchar(100) NOT NULL,
     "country" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
-    "status" WishcardStatus NOT NULL DEFAULT WishcardStatus.draft,
+    "status" WishcardStatus NOT NULL DEFAULT ('draft'::WishcardStatus),
     "created_by" uuid NOT NULL,
     "agency_id" uuid NOT NULL,
     "child_id" uuid NOT NULL,
