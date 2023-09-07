@@ -67,23 +67,25 @@ const randomNumber = (min = 0, max = 100) => {
 			const children = require('./seeder-data/children.json');
 			const childrenData = children.map((child) => {
 				const {
-					firstName = faker.person.firstName(),
-					lastName = faker.person.lastName(),
-					birthYear = faker.date.past({ years: 10 }).getFullYear(),
+                    id = randomUUID(),
+					first_name = faker.person.firstName(),
+					last_name = faker.person.lastName(),
+					birth_year = faker.date.past({ years: 15 }).getFullYear(),
 					interest = faker.lorem.sentence(),
 					story = faker.lorem.paragraph(),
-					imageId = null,
-					agencyId = null,
+					image_id = null,
+					agency_id = null,
 				} = child;
 				
 				return {
-					firstName,
-					lastName,
-					birthYear,
+                    id,
+					first_name,
+					last_name,
+					birth_year,
 					interest,
 					story,
-					imageId,
-					agencyId,
+					image_id,
+					agency_id,
 				};
 			});
 			
@@ -92,6 +94,8 @@ const randomNumber = (min = 0, max = 100) => {
 				JSON.stringify(childrenData, null, 4),
 				'utf8',
 			);
+            
+            return childrenData;
 		};
 		
 		const prepareContacts = () => {
