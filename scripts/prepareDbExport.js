@@ -124,13 +124,7 @@ const randomNumber = (min = 0, max = 100) => {
             
             return communityPostsData;
 		};
-
-		const prepareDonations = () => {};
-
-		const prepareMessages = () => {};
-
-		const preparePosts = () => {};
-
+		
 		const prepareUsers = async () => {
             const users = require('./seeder-data/users.json');
 			const salt = await bcrypt.genSalt(10);
