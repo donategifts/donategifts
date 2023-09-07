@@ -294,8 +294,29 @@ const saveSeederFile = async (name = '', data = []) => {
             );
         };
         
-        const processFiles = () => {
-            processAgencies();
+        const processChildren = async () => {
+            const children = await importSeederFile('children');
+            const agencies = await importSeederFile('agencies');
+            
+            const childrenWithAgencies = children.reduce((acc, child) => {
+                // ignore if child already has an agency
+                if (child.agency_id) {
+                    acc.push(child);
+                    return acc;
+                }
+                
+                const randomAgencyIndex = randomNumber(0, agencies.length - 1);
+                const randomAgencyId = agencies[randomAgencyIndex].id || null;
+                
+                acc.push({
+                    ...child,
+                    agency_id: randomAgencyId,
+                });
+                
+                return acc;
+            }, []);
+            
+            await saveSeederFile('children', childrenWithAgencies);
         };
         
 		const {
