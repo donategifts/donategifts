@@ -6,12 +6,9 @@ const { randomUUID } = require('node:crypto');
 const bcrypt = require('bcrypt');
 const { faker } = require('@faker-js/faker');
 
-const contacts = require('./seeder-data/contacts.json');
-// const donations = require('./seeder-data/donations.json');
-// const messages = require('./seeder-data/messages.json');
-// const posts = require('./seeder-data/posts.json');
-const users = require('./seeder-data/users.json');
-const wishCards = require('./seeder-data/wishcards.json');
+const randomNumber = (min = 0, max = 100) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+};
 
 (async () => {
 	try {
@@ -118,6 +115,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 		const preparePosts = () => {};
 
 		const prepareUsers = async () => {
+            const users = require('./seeder-data/users.json');
 			const salt = await bcrypt.genSalt(10);
 			const saltedPassword = await bcrypt.hash('Hello1234!', salt);
 			
@@ -160,8 +158,13 @@ const wishCards = require('./seeder-data/wishcards.json');
                 }
             ];
             
-            // add admin user before fake data is generated
-            users.push(...staticUsers);
+            const userExists = (email) => {
+                return users.some((user) => user.email === email);
+            };
+            
+            // only add static users if they don't already exist
+            const newStaticUsers = staticUsers.filter((staticUser) => !userExists(staticUser.email));
+            users.push(...newStaticUsers);
 			
 			const usersData = users.map((user) => {
 				const {
