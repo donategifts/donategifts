@@ -84,17 +84,12 @@ const saveSeederFile = async (name = '', data = []) => {
 				};
 			});
 			
-			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/agencies.json'),
-				JSON.stringify(agenciesData, null, 4),
-				'utf8',
-			);
-            
+			await saveSeederFile('agencies', agenciesData);
             return agenciesData;
 		};
 		
-		const prepareChildren = () => {
-			const children = require('./seeder-data/children.json');
+		const prepareChildren = async () => {
+			const children = await importSeederFile('children');
 			const childrenData = children.map((child) => {
 				const {
                     id = randomUUID(),
@@ -119,17 +114,12 @@ const saveSeederFile = async (name = '', data = []) => {
 				};
 			});
 			
-			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/children.json'),
-				JSON.stringify(childrenData, null, 4),
-				'utf8',
-			);
-            
+            await saveSeederFile('children', childrenData);
             return childrenData;
 		};
 		
-		const prepareCommunityPosts = () => {
-			const communityPosts = require('./seeder-data/community_posts.json');
+		const prepareCommunityPosts = async () => {
+			const communityPosts = await importSeederFile('community_posts');
 			const communityPostsData = communityPosts.map((communityPost) => {
 				const {
                     id = randomUUID(),
@@ -146,17 +136,12 @@ const saveSeederFile = async (name = '', data = []) => {
 				};
 			});
 			
-			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/community_posts.json'),
-				JSON.stringify(communityPostsData, null, 4),
-				'utf8',
-			);
-            
+            await saveSeederFile('community_posts', communityPostsData);
             return communityPostsData;
 		};
 		
 		const prepareUsers = async () => {
-            const users = require('./seeder-data/users.json');
+            const users = await importSeederFile('users');
 			const salt = await bcrypt.genSalt(10);
 			const saltedPassword = await bcrypt.hash('Hello1234!', salt);
 			
@@ -235,21 +220,16 @@ const saveSeederFile = async (name = '', data = []) => {
 				};
 			});
 			
-			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/users.json'),
-				JSON.stringify(usersData, null, 4),
-				'utf8',
-			);
-            
+            await saveSeederFile('users', usersData);
             return usersData;
 		};
 		
         
-		const createFiles = () => {
-			const users = prepareUsers();
-			const agencies = prepareAgencies();
-			const children = prepareChildren();
-			const communityPosts = prepareCommunityPosts();
+		const createFiles = async () => {
+			const users = await prepareUsers();
+			const agencies = await prepareAgencies();
+			const children = await prepareChildren();
+			const communityPosts = await prepareCommunityPosts();
 			// prepareContacts();
 			// prepareDonations();
 			// prepareMessages();
@@ -263,9 +243,9 @@ const saveSeederFile = async (name = '', data = []) => {
             };
 		};
         
-        const processAgencies = () => {
-            const agencies = require('./seeder-data/agencies.json');
-            const users = require('./seeder-data/users.json');
+        const processAgencies = async () => {
+            const agencies = await importSeederFile('agencies');
+            const users = await importSeederFile('users');
             
             const adminUsers = users.filter((user) => user.role === 'admin');
             
@@ -287,11 +267,7 @@ const saveSeederFile = async (name = '', data = []) => {
                 return acc;
             }, []);
             
-            fs.writeFileSync(
-                path.join(__dirname, './seeder-data/agencies.json'),
-                JSON.stringify(agenciesWithAccountManagers, null, 4),
-                'utf8',
-            );
+            await saveSeederFile('agencies', agenciesWithAccountManagers);
         };
         
         const processChildren = async () => {
@@ -319,6 +295,7 @@ const saveSeederFile = async (name = '', data = []) => {
             await saveSeederFile('children', childrenWithAgencies);
         };
         
+        
 		const {
             users,
             agencies,
@@ -326,7 +303,12 @@ const saveSeederFile = async (name = '', data = []) => {
             communityPosts,
         } = createFiles();
         
-        processFiles();
+        const processFiles = async () => {
+            await processAgencies();
+            await processChildren();
+        };
+        
+        await processFiles();
 	} catch (error) {
 		console.error(error);
 	}
