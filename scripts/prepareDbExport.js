@@ -214,33 +214,30 @@ const randomNumber = (min = 0, max = 100) => {
             return usersData;
 		};
 		
-		const prepareWishCards = () => {
-			const wishCardsData = wishCards.map((wishCard) => ({
-				...wishCard,
-				childFirstName: faker.name.firstName(),
-				childLastName: faker.name.lastName(),
-				childStory: faker.lorem.paragraph(),
-			}));
-
-			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/wishcards.json'),
-				JSON.stringify(wishCardsData, null, 4),
-				'utf8',
-			);
-		};
-
-		const run = () => {
-			prepareAgencies();
-			prepareChildren();
+        
+		const createFiles = () => {
+			const users = prepareUsers();
+			const agencies = prepareAgencies();
+			const children = prepareChildren();
+			const communityPosts = prepareCommunityPosts();
 			// prepareContacts();
 			// prepareDonations();
 			// prepareMessages();
-			// preparePosts();
-			prepareUsers();
 			// prepareWishCards();
+            
+            return {
+                users,
+                agencies,
+                children,
+                communityPosts,
+            };
 		};
-
-		run();
+		const {
+            users,
+            agencies,
+            children,
+            communityPosts,
+        } = createFiles();
 	} catch (error) {
 		console.error(error);
 	}
