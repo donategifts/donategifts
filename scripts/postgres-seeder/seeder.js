@@ -20,6 +20,7 @@ const { db } = require('../../dist/db/postgresconnection');
             
             const formattedData = data.map((user) => {
                 const {
+                    id,
                     first_name,
                     last_name,
                     email,
@@ -33,6 +34,7 @@ const { db } = require('../../dist/db/postgresconnection');
                 } = user;
                 
                 return {
+                    id,
                     first_name,
                     last_name,
                     email,

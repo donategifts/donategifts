@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const fs = require('node:fs');
 const path = require('node:path');
+const { randomUUID } = require('node:crypto');
 
 const bcrypt = require('bcrypt');
 const { faker } = require('@faker-js/faker');
@@ -18,6 +19,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 			const agencies = require('./seeder-data/agencies.json');
 			const agenciesData = agencies.map((agency) => {
 				const {
+                    id = randomUUID(),
 					name = faker.company.name(),
 					address_line_1 = faker.location.streetAddress(),
 					address_line_2 = faker.location.secondaryAddress(),
@@ -36,6 +38,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 				} = agency;
 				
 				return {
+                    id,
 					name,
 					address_line_1,
 					address_line_2,
@@ -59,6 +62,8 @@ const wishCards = require('./seeder-data/wishcards.json');
 				JSON.stringify(agenciesData, null, 4),
 				'utf8',
 			);
+            
+            return agenciesData;
 		};
 		
 		const prepareChildren = () => {
@@ -160,6 +165,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 			
 			const usersData = users.map((user) => {
 				const {
+                    id = randomUUID(),
 					first_name = faker.person.firstName(),
 					last_name = faker.person.lastName(),
 					email = faker.internet.email(),
@@ -172,6 +178,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 				} = user;
 				
 				return {
+                    id,
 					first_name,
 					last_name,
 					email,
@@ -189,6 +196,8 @@ const wishCards = require('./seeder-data/wishcards.json');
 				JSON.stringify(usersData, null, 4),
 				'utf8',
 			);
+            
+            return usersData;
 		};
 		
 		const prepareWishCards = () => {
