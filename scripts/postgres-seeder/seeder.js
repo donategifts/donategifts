@@ -66,16 +66,12 @@ const { db } = require('../../dist/db/postgresconnection');
             return users;
         };
         
-        const addAgencies = async (users) => {
+        const addAgencies = async () => {
             const data = require('../seeder-data/agencies.json');
-            const adminUsers = users.filter((user) => user.role === 1);
-            
-            const [{
-                id: adminUserId,
-            }] = adminUsers;
             
             const formattedData = data.map((agency) => {
                 const {
+                    id,
                     name,
                     website,
                     phone,
@@ -88,11 +84,12 @@ const { db } = require('../../dist/db/postgresconnection');
                     zip_code,
                     is_verified,
                     employer_identification_number,
-                    account_manager_id = adminUserId, // set the account manager to the first admin user
+                    account_manager_id,
                     image_id,
                 } = agency;
                 
                 return {
+                    id,
                     name,
                     website,
                     phone,
@@ -144,7 +141,7 @@ const { db } = require('../../dist/db/postgresconnection');
             });
             
             const users = await addUsers();
-            await addAgencies(users);
+            const agencies = await addAgencies();
         };
         
         await deleteDataAndImport();
