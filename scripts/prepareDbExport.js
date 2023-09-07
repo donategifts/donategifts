@@ -98,18 +98,31 @@ const randomNumber = (min = 0, max = 100) => {
             return childrenData;
 		};
 		
-		const prepareContacts = () => {
-			const contactsData = contacts.map((contact) => ({
-				...contact,
-				name: faker.name.findName(),
-				email: faker.internet.email(),
-			}));
-
+		const prepareCommunityPosts = () => {
+			const communityPosts = require('./seeder-data/community_posts.json');
+			const communityPostsData = communityPosts.map((communityPost) => {
+				const {
+                    id = randomUUID(),
+					message = faker.lorem.sentence(),
+					agency_id = null,
+					image_id = null,
+				} = communityPost;
+				
+				return {
+                    id,
+					message,
+					agency_id,
+					image_id,
+				};
+			});
+			
 			fs.writeFileSync(
-				path.join(__dirname, './seeder-data/contacts.json'),
-				JSON.stringify(contactsData, null, 4),
+				path.join(__dirname, './seeder-data/community_posts.json'),
+				JSON.stringify(communityPostsData, null, 4),
 				'utf8',
 			);
+            
+            return communityPostsData;
 		};
 
 		const prepareDonations = () => {};
