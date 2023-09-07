@@ -124,6 +124,50 @@ const { db } = require('../../dist/db/postgresconnection');
             return agencies;
         };
         
+        const addChildren = async (agencies) => {
+            const data = require('../seeder-data/children.json');
+            
+            const formattedData = data.map((child) => {
+                const {
+                    id,
+                    first_name,
+                    last_name,
+                    birth_year,
+                    interest,
+                    story,
+                    image_id,
+                    agency_id,
+                } = child;
+                
+                return {
+                    id,
+                    first_name,
+                    last_name,
+                    birth_year,
+                    interest,
+                    story,
+                    image_id,
+                    agency_id,
+                };
+            });
+            
+            const result = await db
+                .insertInto('children')
+                .values(formattedData)
+                .returning(['id'])
+                .execute();
+            
+            const children = result.rows.map((row) => {
+                const { id } = row;
+                
+                return {
+                    id,
+                };
+            });
+            
+            return children;
+        };
+        
         const deleteDataAndImport = async () => {
             await db.transaction().execute(async (trx) => {
                 // must be deleted in this order to prevent foreign key constraint errors
