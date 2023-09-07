@@ -275,8 +275,8 @@ const saveSeederFile = async (name = '', data = []) => {
             const agencies = await importSeederFile('agencies');
             
             const childrenWithAgencies = children.reduce((acc, child) => {
-                // ignore if child already has an agency
-                if (child.agency_id) {
+                // ignore if child already has a valid agency
+                if (child.agency_id && agencies.find((agency) => agency.id === child.agency_id)) {
                     acc.push(child);
                     return acc;
                 }
