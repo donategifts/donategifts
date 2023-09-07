@@ -295,6 +295,30 @@ const saveSeederFile = async (name = '', data = []) => {
             await saveSeederFile('children', childrenWithAgencies);
         };
         
+        const processCommunityPosts = async () => {
+            const communityPosts = await importSeederFile('community_posts');
+            const agencies = await importSeederFile('agencies');
+            
+            const communityPostsWithAgencies = communityPosts.reduce((acc, communityPost) => {
+                // ignore if community post already has a valid agency
+                if (communityPost.agency_id && agencies.find((agency) => agency.id === communityPost.agency_id)) {
+                    acc.push(communityPost);
+                    return acc;
+                }
+                
+                const randomAgencyIndex = randomNumber(0, agencies.length - 1);
+                const randomAgencyId = agencies[randomAgencyIndex].id || null;
+                
+                acc.push({
+                    ...communityPost,
+                    agency_id: randomAgencyId,
+                });
+                
+                return acc;
+            }, []);
+            
+            await saveSeederFile('community_posts', communityPostsWithAgencies);
+        };
         
 		const {
             users,
@@ -306,6 +330,7 @@ const saveSeederFile = async (name = '', data = []) => {
         const processFiles = async () => {
             await processAgencies();
             await processChildren();
+            await processCommunityPosts();
         };
         
         await processFiles();
