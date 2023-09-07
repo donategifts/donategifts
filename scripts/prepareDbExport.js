@@ -232,12 +232,50 @@ const randomNumber = (min = 0, max = 100) => {
                 communityPosts,
             };
 		};
+        
+        const processAgencies = () => {
+            const agencies = require('./seeder-data/agencies.json');
+            const users = require('./seeder-data/users.json');
+            
+            const adminUsers = users.filter((user) => user.role === 'admin');
+            
+            const agenciesWithAccountManagers = agencies.reduce((acc, agency) => {
+                // ignore if agency already has an account manager
+                if (agency.account_manager_id) {
+                    acc.push(agency);
+                    return acc;
+                }
+                
+                const randomAdminUserIndex = randomNumber(0, adminUsers.length - 1);
+                const randomAdminUserId = adminUsers[randomAdminUserIndex].id || null;
+                
+                acc.push({
+                    ...agency,
+                    account_manager_id: randomAdminUserId,
+                });
+                
+                return acc;
+            }, []);
+            
+            fs.writeFileSync(
+                path.join(__dirname, './seeder-data/agencies.json'),
+                JSON.stringify(agenciesWithAccountManagers, null, 4),
+                'utf8',
+            );
+        };
+        
+        const processFiles = () => {
+            processAgencies();
+        };
+        
 		const {
             users,
             agencies,
             children,
             communityPosts,
         } = createFiles();
+        
+        processFiles();
 	} catch (error) {
 		console.error(error);
 	}
