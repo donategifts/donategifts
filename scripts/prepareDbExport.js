@@ -250,8 +250,8 @@ const saveSeederFile = async (name = '', data = []) => {
             const adminUsers = users.filter((user) => user.role === 'admin');
             
             const agenciesWithAccountManagers = agencies.reduce((acc, agency) => {
-                // ignore if agency already has an account manager
-                if (agency.account_manager_id) {
+                // ignore if agency already has a valid account manager
+                if (agency.account_manager_id && users.find((user) => user.id === agency.account_manager_id)) {
                     acc.push(agency);
                     return acc;
                 }
