@@ -44,7 +44,7 @@ export default class CommunityController extends BaseController {
 					// locally when using multer images are saved inside this folder
 					filePath = `/uploads/${req.file.filename}`;
 				}
-				profileImage = config.AWS.USE ? req.file.location : filePath;
+				profileImage = config.AWS.USE ? req.file.Location : filePath;
 			}
 
 			const newPost = {
