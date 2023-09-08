@@ -1,2 +1,2 @@
 *.json
-!seeder-data/*.json
+!postgres-seeder/data/*.json
