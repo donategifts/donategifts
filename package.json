@@ -23,7 +23,8 @@
 		"prepare": "husky install | chmod ug+x .husky/*",
 		"start": "node dist/index.js",
 		"webpack:build": "webpack --mode=production",
-		"webpack:watch": "webpack --mode=development --watch"
+		"webpack:watch": "webpack --mode=development --watch",
+        "seed:postgres": "node ./scripts/postgres-seeder/index.js"
 	},
 	"repository": {
 		"type": "git",
