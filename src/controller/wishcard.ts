@@ -153,7 +153,7 @@ export default class WishCardController extends BaseController {
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
 					productID,
-					wishCardImage: config.AWS.USE ? req.file.location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {
@@ -215,7 +215,7 @@ export default class WishCardController extends BaseController {
 					wishItemName: itemChoice.Name,
 					wishItemPrice: Number(itemChoice.Price),
 					wishItemURL: itemChoice.ItemURL,
-					wishCardImage: config.AWS.USE ? req.file.location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {
