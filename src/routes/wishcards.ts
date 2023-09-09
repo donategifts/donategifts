@@ -68,7 +68,7 @@ router.post(
 
 router.delete('/delete/:id', Permissions.isAdminOrAgency, wishCardController.handleDeleteSingle);
 
-router.get('/me', Permissions.isAdminOrAgency, wishCardController.handleGetMe);
+router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetAgency);
 
 router.get('/create', Permissions.isAdminOrAgency, wishCardController.handleGetCreate);
 

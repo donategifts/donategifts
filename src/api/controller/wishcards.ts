@@ -51,18 +51,24 @@ export default class WishCardApiController extends BaseApiController {
 				childStory,
 			} = req.body;
 
-			const updateParams = {
+			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, {
 				childFirstName,
 				childLastName,
 				wishItemName,
 				wishItemPrice,
 				childInterest,
 				childStory,
-			};
+			});
 
-			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, updateParams);
-
-			return this.sendResponse(res, updateParams);
+			return this.sendResponse(res, {
+				wishCardId,
+				childFirstName,
+				childLastName,
+				wishItemName,
+				wishItemPrice,
+				childInterest,
+				childStory,
+			});
 		} catch (error) {
 			return this.handleError(res, error);
 		}

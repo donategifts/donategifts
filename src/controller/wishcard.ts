@@ -35,7 +35,7 @@ export default class WishCardController extends BaseController {
 		this.handleGetEdit = this.handleGetEdit.bind(this);
 		this.handlePostEdit = this.handlePostEdit.bind(this);
 		this.handleDeleteSingle = this.handleDeleteSingle.bind(this);
-		this.handleGetMe = this.handleGetMe.bind(this);
+		this.handleGetAgency = this.handleGetAgency.bind(this);
 		this.handleGetCreate = this.handleGetCreate.bind(this);
 		this.handlePostSearch = this.handlePostSearch.bind(this);
 		this.handleGetSingle = this.handleGetSingle.bind(this);
@@ -173,7 +173,7 @@ export default class WishCardController extends BaseController {
 					wishCardId: newWishCard._id,
 				});
 
-				return res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/manage' });
 			} catch (error) {
 				return this.handleError(res, error);
 			}
@@ -235,7 +235,7 @@ export default class WishCardController extends BaseController {
 					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
-				return res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/manage' });
 			} catch (error) {
 				return this.handleError(res, error);
 			}
@@ -293,7 +293,7 @@ export default class WishCardController extends BaseController {
 				},
 			});
 
-			let url = '/wishcards/me';
+			let url = '/wishcards/manage';
 			if (res.locals.user.userRole === 'admin') {
 				url = '/wishcards/';
 			}
@@ -339,7 +339,7 @@ export default class WishCardController extends BaseController {
 		}
 	}
 
-	async handleGetMe(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 			const wishCards = await this.wishCardRepository.getWishCardByAgencyId(userAgency!._id);

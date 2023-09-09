@@ -8,10 +8,10 @@ import WishCardApiController from './controller/wishcards';
 const router = express.Router();
 const wishCardController = new WishCardApiController();
 
-router.get('/agency_me', Permissions.isAdminOrAgency, wishCardController.getAgencyWishcards);
+router.get('/agency', Permissions.isAdminOrAgency, wishCardController.getAgencyWishcards);
 
 router.put(
-	'/agency_me',
+	'/agency',
 	Permissions.isAdminOrAgency,
 	Validations.updateAgencyWishcardValidationRules(),
 	Validations.validate,

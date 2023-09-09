@@ -14,7 +14,7 @@ export default function AgencyCardsPage() {
 	useEffect(() => {
 		const fetchWishCards = () => {
 			axios
-				.get('/api/wishcards/agency_me')
+				.get('/api/wishcards/agency')
 				.then((res) => setAgencyCards(res.data.data))
 				.catch(() => window.showToast('Could not fetch wishcards.'));
 		};
@@ -33,7 +33,7 @@ export default function AgencyCardsPage() {
 
 	const handleAgencyCardEditFormSubmit = async (submitData) => {
 		try {
-			await axios.put('/api/wishcards/agency_me', {
+			await axios.put('/api/wishcards/agency', {
 				wishCardId: cardOnEdit?._id,
 				childFirstName: submitData.childFirstName,
 				childLastName: submitData.childLastName,
