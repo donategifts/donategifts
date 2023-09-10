@@ -292,8 +292,8 @@ export default class WishCardRepository {
 				agencyEmail: accountManager?.email,
 				agencyName: agency.agencyName,
 				childName: wishCard.childFirstName,
-				itemName: wishCard.wishItemName,
-				itemPrice: wishCard.wishItemPrice,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
 				donationDate: moment(new Date(donation!.donationDate)).format('MMM Do, YYYY'),
 				address: `${agency.agencyAddress.address1} ${agency.agencyAddress.city} ${agency.agencyAddress.zipcode} ${agency.agencyAddress.state}`,
 			});
