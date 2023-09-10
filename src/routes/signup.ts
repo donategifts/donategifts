@@ -24,6 +24,11 @@ router.post(
 	signupController.handlePostAgency,
 );
 
-router.get('/agency', Permissions.redirectLogin, signupController.handleGetAgency);
+router.get(
+	'/agency',
+	Permissions.redirectLogin,
+	Permissions.redirectProfile,
+	signupController.handleGetAgency,
+);
 
 export default router;

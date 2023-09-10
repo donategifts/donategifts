@@ -80,7 +80,9 @@ export default class PaymentProviderController extends BaseController {
 				donationPrice: amount,
 			});
 
-			await this.wishCardRepository.updateWishCard(wishCard!._id, { status: 'donated' });
+			await this.wishCardRepository.updateWishCardByObjectId(wishCard!._id, {
+				status: 'donated',
+			});
 
 			await Messaging.sendAgencyDonationAlert({
 				firstName: user.fName,

@@ -1,8 +1,21 @@
 import express from 'express';
 
-// import WishCardController from '../controller/wishcard';
+import Permissions from '../middleware/permissions';
+import Validations from '../middleware/validations';
+
+import WishCardApiController from './controller/wishcards';
 
 const router = express.Router();
-// const wishCardController = new WishCardController();
+const wishCardController = new WishCardApiController();
+
+router.get('/agency', Permissions.isAdminOrAgency, wishCardController.getAgencyWishcards);
+
+router.put(
+	'/agency',
+	Permissions.isAdminOrAgency,
+	Validations.updateAgencyWishcardValidationRules(),
+	Validations.validate,
+	wishCardController.putAgencyWishCardById,
+);
 
 export default router;

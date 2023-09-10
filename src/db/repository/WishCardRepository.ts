@@ -186,10 +186,10 @@ export default class WishCardRepository {
 		}
 	}
 
-	async updateWishCard(id: string, wishCardFields: Partial<WishCard>) {
+	async updateWishCardByObjectId(id: string, updateParams: Partial<WishCard>) {
 		try {
 			return await this.wishCardModel
-				.updateOne({ _id: id }, { $set: { ...wishCardFields } })
+				.findOneAndUpdate({ _id: id }, { $set: updateParams }, { new: true })
 				.lean()
 				.exec();
 		} catch (error) {
