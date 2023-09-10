@@ -6,7 +6,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import LoadingCard from '../shared/LoadingCard.jsx';
 
 function Community(props) {
-	const { user, _csrf } = props;
+	const { user, agency, _csrf } = props;
 	const [isLoading, setIsLoading] = useState(true);
 
 	const [posts, setPosts] = useState(props.posts);
@@ -130,7 +130,7 @@ function Community(props) {
 	return (
 		<div className="bg-light">
 			<div id="community" className="container py-3">
-				{user?.userRole === 'partner' && createPost()}
+				{user?.userRole === 'partner' && agency?.isVerified && createPost()}
 				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 					<Masonry gutter="1rem">
 						{posts.map((post) =>
@@ -180,6 +180,7 @@ function Community(props) {
 
 Community.propTypes = {
 	user: PropTypes.object,
+	agency: PropTypes.object,
 	_csrf: PropTypes.string,
 	posts: PropTypes.arrayOf(
 		PropTypes.shape({
