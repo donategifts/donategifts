@@ -58,7 +58,7 @@ export default class PaymentProviderController extends BaseController {
 		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
-			const emailResponse = await Messaging.sendDonationConfirmationMail({
+			const emailResponse = await Messaging.sendDonationConfirmationEmail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,

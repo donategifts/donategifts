@@ -288,7 +288,7 @@ export default class WishCardRepository {
 			);
 
 			await this.donationRepository.updateDonationStatus(String(donation?._id), 'ordered');
-			await Messaging.sendDonationOrderedEmail({
+			await Messaging.sendAgencyDonationEmail({
 				agencyEmail: accountManager?.email,
 				agencyName: agency.agencyName,
 				childName: wishCard.childFirstName,
@@ -300,18 +300,27 @@ export default class WishCardRepository {
 		}
 	}
 
-	private async handleWishcardPublished() {
-		// TODO
-		return undefined;
+	private async handleWishcardPublished(change) {
+		const wishCard = await this.getWishCardByObjectId(change.documentKey._id);
+
+		if (wishCard) {
+			const agency = wishCard.belongsTo;
+			const accountManager = await this.userRepository.getUserByObjectId(
+				agency.accountManager,
+			);
+			await Messaging.sendWishPublishedEmail({
+				agencyEmail: accountManager?.email,
+				childName: wishCard.childFirstName,
+			});
+		}
 	}
 
-	// TODO: check if this is still needed
 	watch() {
 		this.wishCardChangeListener.on('change', async (change: Record<string, any>) => {
 			if (this.wishCardIsOrdered(change)) {
 				await this.handleDonationOrdered(change);
 			} else if (this.wishCardIsPublished(change)) {
-				await this.handleWishcardPublished();
+				await this.handleWishcardPublished(change);
 			}
 		});
 	}
