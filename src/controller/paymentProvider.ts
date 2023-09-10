@@ -84,14 +84,14 @@ export default class PaymentProviderController extends BaseController {
 				status: 'donated',
 			});
 
-			await Messaging.sendAgencyDonationAlert({
-				firstName: user.fName,
-				lastName: user.lName,
-				email: agency?.accountManager.email,
+			await Messaging.sendAgencyDonationEmail({
+				agencyName: agency?.agencyName,
+				agencyEmail: agency?.accountManager.email,
+				childName: wishCard?.childFirstName,
 				item: wishCard?.wishItemName,
 				price: wishCard?.wishItemPrice,
-				childName: wishCard?.childFirstName,
-				agency: agencyName,
+				donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
+				address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
 			});
 
 			await Messaging.sendDiscordDonationNotification({

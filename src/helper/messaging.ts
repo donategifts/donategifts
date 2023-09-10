@@ -240,16 +240,16 @@ export default class Messaging {
 		agencyEmail,
 		agencyName,
 		childName,
-		itemName,
-		itemPrice,
+		item,
+		price,
 		donationDate,
 		address,
 	}) {
 		const body = this.templates.agencyDonationAlert
 			.replace('%agencyName%', agencyName)
 			.replace(/%childName%/g, childName)
-			.replace('%item%', itemName)
-			.replace('%price%', itemPrice)
+			.replace('%item%', item)
+			.replace('%price%', price)
 			.replace('%date%', donationDate)
 			.replace('%address%', address)
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString());
