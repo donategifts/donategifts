@@ -10,6 +10,13 @@ export default class Permissions {
 
 		next();
 	}
+	static redirectSignup(_req: Request, res: Response, next: NextFunction) {
+		if (!res.locals.user) {
+			return res.redirect('/signup');
+		}
+
+		next();
+	}
 
 	static redirectProfile(_req: Request, res: Response, next: NextFunction) {
 		if (res.locals.user) {

@@ -26,7 +26,7 @@ router.post(
 
 router.get(
 	'/agency',
-	Permissions.redirectLogin,
+	Permissions.redirectSignup,
 	Permissions.redirectProfile,
 	signupController.handleGetAgency,
 );
