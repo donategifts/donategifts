@@ -15,8 +15,12 @@ jobs:
       - name: Create env file
         run: |
           touch config-test.env
-          echo API_KEY=${{ secrets.API_KEY }} >> config-test.env
           echo PORT=${{ secrets.PORT }} >> config-test.env
+          echo PG_HOST=${{ secrets.PG_HOST }} >> config-test.env
+          echo PG_PORT=${{ secrets.PG_PORT }} >> config-test.env
+          echo PG_USER=${{ secrets.PG_USER }} >> config-test.env
+          echo PG_PASSWORD=${{ secrets.PG_PASSWORD }} >> config-test.env
+          echo PG_DATABASE=${{ secrets.PG_DATABASE }} >> config-test.env
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> config-test.env
           echo NODE_ENV=${{ secrets.NODE_ENV }} >> config-test.env
           echo SESS_NAME=${{ secrets.SESS_NAME }} >> config-test.env
@@ -34,6 +38,7 @@ jobs:
           echo GOOGLE_CAPTCHA_KEY=${{ secrets.GOOGLE_CAPTCHA_KEY }} >> config-test.env
           echo G_CLIENT_ID=${{ secrets.G_CLIENT_ID }} >> config-test.env
           echo FB_APP_ID=${{ secrets.FB_APP_ID }} >> config-test.env
+          echo SCRAPINGBEE_APIKEY=${{ secrets.SCRAPINGBEE_APIKEY }} >> config-test.env
           echo STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} >> config-test.env
           echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> config-test.env
           echo WISHCARD_LOCK_IN_MINUTES=${{ secrets.WISHCARD_LOCK_IN_MINUTES }} >> config-test.env
