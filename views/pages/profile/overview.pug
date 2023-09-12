@@ -34,7 +34,6 @@ block content
                                 .mb-3.mt-3.mt-md-0
                                     span Got any questions?
                                 a.button-secondary.button-width( href='/contact' ) Contact For Help
-
             if user.userRole == 'partner'
                 #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
@@ -76,7 +75,7 @@ block content
                                 span.text-muted Website:
                                 span#agencyWebsite.mx-2.text-wrap= agency.agencyWebsite || 'Not provided'
 
-                        if agency.agencyAddress.address1
+                        if agency.agencyAddress
                             .row.justify-content-center.my-4
                                 .col-12.col-lg-6.mb-4.mb-md-0
                                     span.text-muted Address line 1:
@@ -250,6 +249,14 @@ block modal
 
 block scripts
     script( src='https://unpkg.com/imask@6.0.5/dist/imask.js' )
+    script.
+        $(document).ready(() => {
+            const successNotification = !{JSON.stringify(successNotification || null)};
+
+            if (successNotification?.msg) {
+                showToast(successNotification.msg, true);
+            }
+        });
     script.
         $(document).ready(() => {
             //- $('[placeholder]').focus(function() {
