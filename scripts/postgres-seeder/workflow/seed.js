@@ -255,6 +255,43 @@ const seedItems = async (trx) => {
     
     return items;
 };
+
+const seedMessages = async (trx) => {
+    const data = await importSeederFile('messages');
+    
+    const formattedData = data.map((message) => {
+        const {
+            id,
+            content,
+            sender_id,
+            wishcard_id,
+        } = message;
+        
+        return {
+            id,
+            content,
+            sender_id,
+            wishcard_id,
+        };
+    });
+    
+    const result = await trx
+        .insertInto('messages')
+        .values(formattedData)
+        .returning(['id'])
+        .execute();
+    
+    const messages = result.map((row) => {
+        const { id } = row;
+        
+        return {
+            id,
+        };
+    });
+    
+    return messages;
+};
+
 const seedWishcards = async (trx) => {
     const data = await importSeederFile('wishcards');
     
@@ -315,6 +352,7 @@ const seedDatabase = async () => {
         communityPosts,
         items,
         wishcards,
+        messages,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
@@ -322,6 +360,7 @@ const seedDatabase = async () => {
         const communityPosts = await seedCommunityPosts(trx);
         const items = await seedItems(trx);
         const wishcards = await seedWishcards(trx);
+        const messages = await seedMessages(trx);
         
         return {
             users,
@@ -330,6 +369,7 @@ const seedDatabase = async () => {
             communityPosts,
             items,
             wishcards,
+            messages,
         };
     });
     
@@ -340,6 +380,7 @@ const seedDatabase = async () => {
         communityPosts,
         items,
         wishcards,
+        messages,
     };
 };
 
