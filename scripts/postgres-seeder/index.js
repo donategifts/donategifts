@@ -12,10 +12,9 @@ const {
 } = require('./workflow/process');
 
 const {
-    seedAgencies,
-    seedChildren,
-    seedUsers,
-} = require('./workflow/seed');
+    purgeDatabase,
+    seedDatabase,
+} = require('./workflow/seed')
 
 const workflowDefinitions = {
     generate: {
@@ -32,7 +31,7 @@ const workflowDefinitions = {
         },
     },
     process: {
-        enabled: false,
+        enabled: true,
         tables: {
             agencies: processAgencies,
             children: processChildren,
@@ -43,42 +42,10 @@ const workflowDefinitions = {
             users: null,
             wishcards: null,
         },
-    },
-    seed: {
-        enabled: false,
-        tables: {
-            agencies: seedAgencies,
-            children: seedChildren,
-            community_posts: null,
-            contacts: null,
-            donations: null,
-            messages: null,
-            users: seedUsers,
-            wishcards: null,
-        },
-    },
-};
-
-const runWorkflowDefinition = (workflow, table) => {
-    try {
-        const workflowDefinition = workflowDefinitions[workflow].tables[table];
-        
-        if (!workflowDefinition) {
-            console.log(`Skipping workflow '${workflow}' definition for table '${table}' because it is not defined`);
-            return;
-        }
-        
-        return workflowDefinition();
-    } catch (error) {
-        console.log('Error running workflow definition', {
-            error,
-            workflow,
-            table,
-        });
     }
 };
 
-const runWorkflows = (definitions) => {
+const generateWorkflowRuns = async (definitions) => {
     try {
         console.log('Running workflows');
         const workflows = Object.entries(definitions);
@@ -92,12 +59,20 @@ const runWorkflows = (definitions) => {
             const tables = Object.keys(workflowDefinition.tables);
             
             tables.forEach((table) => {
-                const run = runWorkflowDefinition(workflow, table);
-                run && runs.push({
+                const workflowDefinition = workflowDefinitions[workflow].tables[table];
+                
+                if (!workflowDefinition) {
+                    console.log(`Skipping workflow '${workflow}' definition for table '${table}' because it is not defined`);
+                    return;
+                }
+                
+                runs.push({
                     workflow,
                     table,
-                    run,
+                    run: workflowDefinition,
                 });
+                
+                return;
             });
             
             return runs;
@@ -109,19 +84,20 @@ const runWorkflows = (definitions) => {
     }
 };
 
-const workflowRuns = runWorkflows(workflowDefinitions);
-
-console.log('workflowRuns', workflowRuns);
-
+// TODO: Ensure that the workflows run in the correct order
 (async () => {
-    for (const workflowRun of workflowRuns) {
-        // wait 5 seconds before running next workflow
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+    const workflowRuns = await generateWorkflowRuns(workflowDefinitions);
+    for ([index, workflowRun] of Object.entries(workflowRuns)) {
         const { workflow, table, run } = workflowRun;
+        const runIndicator = `(${parseInt(index) + 1}/${workflowRuns.length})`;
+        console.log(`${runIndicator} Running workflow '${workflow}' for table '${table}'`);
         
-        console.log(`Running workflow '${workflow}' for table '${table}'`);
-        
-        await run;
-        console.log(`Finished running workflow '${workflow}' for table '${table}'`);
+        await run();
     }
+    
+    console.log('Finished running workflows');
+    
+    console.log('Seeding database');
+    await purgeDatabase();
+    await seedDatabase();
 })();

@@ -4,6 +4,8 @@ require('dotenv').config({ path: path.join(path.resolve(), '../../config.env') }
 
 const { db } = require('../../../dist/db/postgresconnection');
 
+const { importSeederFile } = require('../utils');
+
 const purgeDatabase = async () => {
     await db.transaction().execute(async (trx) => {
         // must be deleted in this order to prevent foreign key constraint errors
@@ -21,8 +23,8 @@ const purgeDatabase = async () => {
     });
 };
 
-const seedUsers = async () => {
-    const data = require('../../seeder-data/users.json');
+const seedUsers = async (trx) => {
+    const data = await importSeederFile('users');
     
     const formattedData = data.map((user) => {
         const {
@@ -54,7 +56,7 @@ const seedUsers = async () => {
         };
     });
     
-    const result = await db
+    const result = await trx
         .insertInto('users')
         .values(formattedData)
         .returning(['id', 'role'])
@@ -72,8 +74,8 @@ const seedUsers = async () => {
     return users;
 };
 
-const seedAgencies = async () => {
-    const data = require('../../seeder-data/agencies.json');
+const seedAgencies = async (trx) => {
+    const data = await importSeederFile('agencies');
     
     const formattedData = data.map((agency) => {
         const {
@@ -113,13 +115,13 @@ const seedAgencies = async () => {
         };
     });
     
-    const result = await db
+    const result = await trx
         .insertInto('agencies')
         .values(formattedData)
         .returning(['id'])
         .execute();
     
-    const agencies = result.rows.map((row) => {
+    const agencies = result.map((row) => {
         const { id } = row;
         
         return {
@@ -130,8 +132,8 @@ const seedAgencies = async () => {
     return agencies;
 };
 
-const seedChildren = async () => {
-    const data = require('../../seeder-data/children.json');
+const seedChildren = async (trx) => {
+    const data = await importSeederFile('children');
     
     const formattedData = data.map((child) => {
         const {
@@ -157,13 +159,13 @@ const seedChildren = async () => {
         };
     });
     
-    const result = await db
+    const result = await trx
         .insertInto('children')
         .values(formattedData)
         .returning(['id'])
         .execute();
     
-    const children = result.rows.map((row) => {
+    const children = result.map((row) => {
         const { id } = row;
         
         return {
@@ -174,9 +176,31 @@ const seedChildren = async () => {
     return children;
 };
 
+const seedDatabase = async () => {
+    const {
+        agencies,
+        children,
+        users,
+    } = await db.transaction().execute(async (trx) => {
+        const users = await seedUsers(trx);
+        const agencies = await seedAgencies(trx);
+        const children = await seedChildren(trx);
+        
+        return {
+            users,
+            agencies,
+            children,
+        };
+    });
+    
+    return {
+        agencies,
+        children,
+        users,
+    };
+};
+
 module.exports = {
     purgeDatabase,
-    seedUsers,
-    seedAgencies,
-    seedChildren,
+    seedDatabase,
 };
