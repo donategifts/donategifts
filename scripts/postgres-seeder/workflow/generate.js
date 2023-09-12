@@ -239,6 +239,33 @@ const generateMessages = async () => {
     return messagesData;
 };
 
+const generateOrders = async () => {
+    const orders = await importSeederFile('orders');
+    const ordersData = orders.map((order) => {
+        const {
+            id = randomUUID(),
+            status = 'pending',
+            delivery_date = null,
+            tracking_info = null,
+            donor_id = null,
+            wishcard_id = null,
+        } = order;
+        
+        return {
+            id,
+            status,
+            delivery_date,
+            tracking_info,
+            donor_id,
+            wishcard_id,
+        };
+    });
+    
+    await saveSeederFile('orders', ordersData);
+    return ordersData;
+};
+
+const generateWishcards = async () => {
 
 module.exports = {
     generateAgencies,
