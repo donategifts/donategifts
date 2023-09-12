@@ -187,6 +187,37 @@ const generateUsers = async () => {
     return usersData;
 };
 
+const generateItems = async () => {
+    const items = await importSeederFile('items');
+    const itemsData = items.map((item) => {
+        const {
+            id = randomUUID(),
+            name = faker.commerce.productName(),
+            price = faker.commerce.price(),
+            link = faker.internet.url(),
+            retailer = 'Amazon',
+            retailer_product_id = faker.number.int({ min: 10, max: 10 }),
+            meta_data = {},
+            image_id = null,
+        } = item;
+        
+        return {
+            id,
+            name,
+            price,
+            link,
+            retailer,
+            retailer_product_id,
+            meta_data,
+            image_id,
+        };
+    });
+    
+    await saveSeederFile('items', itemsData);
+    return itemsData;
+};
+
+
 module.exports = {
     generateAgencies,
     generateChildren,
