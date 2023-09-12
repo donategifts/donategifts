@@ -236,7 +236,6 @@ export default class ProfileController extends BaseController {
 
 				return this.renderView(res, 'profile/overview', {
 					user,
-					agency,
 					wishCards,
 					wishCardsLength,
 					draftWishcards,
