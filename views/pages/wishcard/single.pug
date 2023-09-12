@@ -85,11 +85,10 @@ block content
                                 if user
                                     .display-6.text-primary.my-4 Send Message
                                     form.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
-                                        select.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
-                                            option( selected ) Select a message to send
+                                        select#messageSelect.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
                                             each message, index in defaultMessages
                                                 option( value=index )= message
-                                        textarea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." )
+                                        textarea#customMessageArea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." aria-hidden='true' style={display: "none"} )
                                         button.btn.btn-lg.btn-primary.mt-4.d-flex.justify-content-center( type='submit' )= messageChildName
 
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
@@ -115,11 +114,18 @@ block modal
 block scripts
     script.
         $(document).ready(function () {
+            $('.form-select-lg').change(function () {
+                const selectedValue = $('.form-select-lg option:selected').text();
+                const displayAttribute = selectedValue == 'Custom Message' ? 'block' : 'none';
+                $('#customMessageArea').css('display', displayAttribute);
+            });
             $('form').submit(function (event) {
                 event.preventDefault();
 
                 const messageFrom = !{JSON.stringify(user)};
                 const messageTo = !{JSON.stringify(wishcard)};
+                const messageText = $('.form-select-lg option:selected').text();
+                const message = messageText === 'Custom Message' ? $('#customMessageArea').val() : messageText;
 
                 $.ajax({
                     type: 'POST',
@@ -127,7 +133,7 @@ block scripts
                     data: {
                         messageFrom,
                         messageTo,
-                        message: $('.form-select-lg option:selected').text(),
+                        message,
                     },
                     statusCode: {
                         400: function (response) {
@@ -135,6 +141,7 @@ block scripts
                         },
                         200: function (response) {
                             window.location.reload();
+                            document.getElementById('messageSelect').selectedIndex = 0;
                         },
                         403: function (response) {
                             showToast('Access Forbidden: Your account lacks sufficient permissions');

@@ -69,6 +69,7 @@ export default class Utils {
 			'Happy birthday to the sweetest kid in the entire world.',
 			`Happy birthday, ${childFirstName}`,
 			`Congratulations, ${childFirstName}`,
+			`Custom Message`,
 		];
 	}
 

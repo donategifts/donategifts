@@ -11,7 +11,6 @@ import {
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
-import Utils from '../helper/utils';
 
 const amazonValidator = new ExpressValidator({
 	/**
@@ -430,20 +429,7 @@ export default class Validations {
 						throw new Error('Wishcard Error - Wishcard not found');
 					}
 				}),
-			body('message')
-				.notEmpty()
-				.withMessage('Message is required')
-				.custom((value, { req }) => {
-					const { messageFrom: user, messageTo: wishcard } = req.body;
-					const allMessages = Utils.getMessageChoices(
-						user.fName,
-						wishcard.childFirstName,
-					);
-					if (!allMessages.includes(value)) {
-						throw new Error('Message Error - Message Choice not found');
-					}
-					return true;
-				}),
+			body('message').notEmpty().withMessage('Message is required'),
 		];
 	}
 
