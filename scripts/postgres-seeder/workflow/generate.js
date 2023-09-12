@@ -147,13 +147,10 @@ const generateUsers = async () => {
         }
     ];
     
-    const userExists = (email) => {
-        return users.some((user) => user.email === email);
-    };
-    
     // only add static users if they don't already exist
-    const newStaticUsers = staticUsers.filter((staticUser) => !userExists(staticUser.email));
-    users.push(...newStaticUsers);
+    const newStaticUsers = staticUsers.filter((staticUser) => !users.some((user) => user.email === staticUser.email));
+    
+    users.push(...newStaticUsers)
     
     const usersData = users.map((user) => {
         const {
