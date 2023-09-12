@@ -13,6 +13,7 @@ const {
     processAgencies,
     processCommunityPosts,
     processChildren,
+    processMessages,
 } = require('./workflow/process');
 
 const {
@@ -45,7 +46,7 @@ const workflowDefinitions = {
             community_posts: processCommunityPosts,
             images: null,
             items: null,
-            messages: null,
+            messages: processMessages,
             orders: null,
             users: null,
             verification_tokens: null,
