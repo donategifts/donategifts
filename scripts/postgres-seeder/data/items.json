@@ -4,7 +4,7 @@
         "name": "Handmade Metal Cheese",
         "price": "410.00",
         "link": "https://amazing-octagon.com/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -14,7 +14,7 @@
         "name": "Practical Steel Shirt",
         "price": "547.00",
         "link": "https://tinted-aunt.biz/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -24,7 +24,7 @@
         "name": "Intelligent Bronze Towels",
         "price": "916.00",
         "link": "https://belated-win.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -34,7 +34,7 @@
         "name": "Refined Plastic Keyboard",
         "price": "321.00",
         "link": "https://angelic-drain.biz/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -44,7 +44,7 @@
         "name": "Ergonomic Metal Pizza",
         "price": "229.00",
         "link": "https://cheerful-iron.biz/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -54,7 +54,7 @@
         "name": "Modern Cotton Shoes",
         "price": "380.00",
         "link": "https://informal-seashore.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -64,7 +64,7 @@
         "name": "Modern Wooden Gloves",
         "price": "191.00",
         "link": "https://costly-fritter.net",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -74,7 +74,7 @@
         "name": "Electronic Rubber Table",
         "price": "57.00",
         "link": "https://flippant-grandpa.net",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -84,7 +84,7 @@
         "name": "Licensed Rubber Hat",
         "price": "125.00",
         "link": "https://easy-going-extremist.org",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -94,7 +94,7 @@
         "name": "Gorgeous Frozen Gloves",
         "price": "669.00",
         "link": "https://warped-ascot.org/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -104,7 +104,7 @@
         "name": "Small Metal Soap",
         "price": "601.00",
         "link": "https://powerful-act.info",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -114,7 +114,7 @@
         "name": "Sleek Rubber Shirt",
         "price": "394.00",
         "link": "https://negligible-bite.biz",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -124,7 +124,7 @@
         "name": "Tasty Rubber Car",
         "price": "222.00",
         "link": "https://damp-seizure.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -134,7 +134,7 @@
         "name": "Bespoke Wooden Bike",
         "price": "652.00",
         "link": "https://meek-contingency.name/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -144,7 +144,7 @@
         "name": "Elegant Wooden Chips",
         "price": "792.00",
         "link": "https://entire-chino.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -154,7 +154,7 @@
         "name": "Bespoke Steel Gloves",
         "price": "660.00",
         "link": "https://torn-conditioner.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -164,7 +164,7 @@
         "name": "Recycled Bronze Hat",
         "price": "302.00",
         "link": "https://slow-dashboard.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -174,7 +174,7 @@
         "name": "Licensed Cotton Mouse",
         "price": "276.00",
         "link": "https://clumsy-encounter.com/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -184,7 +184,7 @@
         "name": "Refined Plastic Cheese",
         "price": "127.00",
         "link": "https://memorable-sponge.org/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -194,7 +194,7 @@
         "name": "Small Wooden Fish",
         "price": "80.00",
         "link": "https://distant-scrambled.info",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -204,7 +204,7 @@
         "name": "Generic Steel Gloves",
         "price": "266.00",
         "link": "https://light-gaffer.info/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -214,7 +214,7 @@
         "name": "Licensed Soft Pizza",
         "price": "19.00",
         "link": "https://frightening-thongs.name",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -224,7 +224,7 @@
         "name": "Elegant Cotton Shirt",
         "price": "515.00",
         "link": "https://rapid-measles.name/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -234,7 +234,7 @@
         "name": "Luxurious Rubber Bacon",
         "price": "368.00",
         "link": "https://lively-childhood.com",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
@@ -244,7 +244,7 @@
         "name": "Oriental Wooden Car",
         "price": "151.00",
         "link": "https://eager-fillet.biz/",
-        "retailer": "Amazon",
+        "retailer_name": "Amazon",
         "retailer_product_id": 10,
         "meta_data": {},
         "image_id": null
