@@ -83,7 +83,7 @@ export interface Items {
   name: string;
   price: Numeric;
   link: string;
-  retailer: string;
+  retailer_name: string;
   retailer_product_id: string;
   meta_data: Json | null;
   image_id: string | null;
@@ -104,9 +104,7 @@ export interface Orders {
   delivery_date: Timestamp | null;
   tracking_info: string | null;
   donor_id: string;
-  child_id: string;
-  item_id: string;
-  agency_id: string;
+  wishcard_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
@@ -153,12 +151,10 @@ export interface Wishcards {
   country: string;
   zip_code: string;
   status: Generated<Wishcardstatus>;
-  created_by: string;
-  agency_id: string;
   child_id: string;
   item_id: string;
   image_id: string | null;
-  order_id: string;
+  created_by: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
