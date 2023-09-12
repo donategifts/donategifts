@@ -133,43 +133,35 @@ CREATE TABLE "wishcards" (
     "updated_at" timestamp
 );
 
+ALTER TABLE "agencies" ADD CONSTRAINT "agencies_account_manager_id_fkey" FOREIGN KEY ("account_manager_id") REFERENCES "users" ("id");
+ALTER TABLE "agencies" ADD CONSTRAINT "agencies_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+
+ALTER TABLE "children" ADD CONSTRAINT "children_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+ALTER TABLE "children" ADD CONSTRAINT "children_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
+
+ALTER TABLE "community_posts" ADD CONSTRAINT "community_posts_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id") ON DELETE RESTRICT;
+ALTER TABLE "community_posts" ADD CONSTRAINT "community_posts_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+
+ALTER TABLE "images" ADD CONSTRAINT "images_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users" ("id");
+
+ALTER TABLE "items" ADD CONSTRAINT "items_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+
+ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "users" ("id");
+ALTER TABLE "messages" ADD CONSTRAINT "messages_wishcard_id_fkey" FOREIGN KEY ("wishcard_id") REFERENCES "wishcards" ("id");
+
+ALTER TABLE "orders" ADD CONSTRAINT "orders_donor_id_fkey" FOREIGN KEY ("donor_id") REFERENCES "users" ("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_wishcard_id_fkey" FOREIGN KEY ("wishcard_id") REFERENCES "wishcards" ("id");
+
+ALTER TABLE "users" ADD CONSTRAINT "users_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
+
 ALTER TABLE "verifications" ADD CONSTRAINT "verifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT;
 
 ALTER TABLE "verification_tokens" ADD CONSTRAINT "verification_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT;
 
-ALTER TABLE "agencies" ADD CONSTRAINT "agencies_account_manager_id_fkey" FOREIGN KEY ("account_manager_id") REFERENCES "users" ("id");
-
-ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "users" ("id");
-
-ALTER TABLE "community_posts" ADD CONSTRAINT "community_posts_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id") ON DELETE RESTRICT;
-
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_child_id_fkey" FOREIGN KEY ("child_id") REFERENCES "children" ("id");
-
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users" ("id");
-
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "items" ("id");
-
-ALTER TABLE "messages" ADD CONSTRAINT "messages_wishcard_id_fkey" FOREIGN KEY ("wishcard_id") REFERENCES "wishcards" ("id");
-
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "children" ADD CONSTRAINT "children_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "children" ADD CONSTRAINT "children_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
-
-ALTER TABLE "items" ADD CONSTRAINT "items_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "agencies" ADD CONSTRAINT "agencies_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "community_posts" ADD CONSTRAINT "community_posts_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "users" ADD CONSTRAINT "users_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
-
-ALTER TABLE "images" ADD CONSTRAINT "images_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users" ("id");
-
-ALTER TABLE "orders" ADD CONSTRAINT "orders_donor_id_fkey" FOREIGN KEY ("donor_id") REFERENCES "users" ("id");
-
-ALTER TABLE "orders" ADD CONSTRAINT "orders_wishcard_id_fkey" FOREIGN KEY ("wishcard_id") REFERENCES "wishcards" ("id");
 
 CREATE OR REPLACE FUNCTION TRIGGER_SET_UPDATED_DATE()
     RETURNS trigger
