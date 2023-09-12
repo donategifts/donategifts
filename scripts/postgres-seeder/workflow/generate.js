@@ -266,10 +266,50 @@ const generateOrders = async () => {
 };
 
 const generateWishcards = async () => {
+    const wishcards = await importSeederFile('wishcards');
+    const wishcardsData = wishcards.map((wishcard) => {
+        const {
+            id = randomUUID(),
+            address_line_1 = faker.location.streetAddress(),
+            address_line_2 = faker.location.secondaryAddress(),
+            city = faker.location.city(),
+            state = faker.location.state(),
+            country_code = 'US',
+            zip_code = faker.location.zipCode(),
+            status = 'draft',
+            child_id = null,
+            item_id = null,
+            image_id = null,
+            created_by = null,
+        } = wishcard;
+        
+        return {
+            id,
+            address_line_1,
+            address_line_2,
+            city,
+            state,
+            country_code,
+            zip_code,
+            status,
+            child_id,
+            item_id,
+            image_id,
+            created_by,
+        };
+    });
+    
+    await saveSeederFile('wishcards', wishcardsData);
+    return wishcardsData;
+};
 
 module.exports = {
     generateAgencies,
     generateChildren,
     generateCommunityPosts,
     generateUsers,
+    generateItems,
+    generateMessages,
+    generateOrders,
+    generateWishcards,
 };
