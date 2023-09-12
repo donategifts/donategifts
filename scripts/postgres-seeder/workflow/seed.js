@@ -292,6 +292,47 @@ const seedMessages = async (trx) => {
     return messages;
 };
 
+const seedOrders = async (trx) => {
+    const data = await importSeederFile('orders');
+    
+    const formattedData = data.map((order) => {
+        const {
+            id,
+            status,
+            delivery_date,
+            tracking_info,
+            donor_id,
+            wishcard_id,
+        } = order;
+        
+        return {
+            id,
+            status,
+            delivery_date,
+            tracking_info,
+            donor_id,
+            wishcard_id,
+        };
+    });
+    
+    const result = await trx
+        .insertInto('orders')
+        .values(formattedData)
+        .returning(['id'])
+        .execute();
+    
+    const orders = result.map((row) => {
+        const { id } = row;
+        
+        return {
+            id,
+        };
+    });
+    
+    return orders;
+};
+
+
 const seedWishcards = async (trx) => {
     const data = await importSeederFile('wishcards');
     
@@ -353,6 +394,7 @@ const seedDatabase = async () => {
         items,
         wishcards,
         messages,
+        orders,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
@@ -361,6 +403,7 @@ const seedDatabase = async () => {
         const items = await seedItems(trx);
         const wishcards = await seedWishcards(trx);
         const messages = await seedMessages(trx);
+        const orders = await seedOrders(trx);
         
         return {
             users,
@@ -370,6 +413,7 @@ const seedDatabase = async () => {
             items,
             wishcards,
             messages,
+            orders,
         };
     });
     
@@ -381,6 +425,7 @@ const seedDatabase = async () => {
         items,
         wishcards,
         messages,
+        orders,
     };
 };
 
