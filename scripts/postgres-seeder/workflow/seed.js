@@ -212,23 +212,70 @@ const seedCommunityPosts = async (trx) => {
     return communityPosts;
 };
 
+const seedItems = async (trx) => {
+    const data = await importSeederFile('items');
+    
+    const formattedData = data.map((item) => {
+        const {
+            id,
+            name,
+            price,
+            link,
+            retailer_name,
+            retailer_product_id,
+            meta_data,
+            image_id,
+        } = item;
+        
+        return {
+            id,
+            name,
+            price,
+            link,
+            retailer_name,
+            retailer_product_id,
+            meta_data,
+            image_id,
+        };
+    });
+    
+    const result = await trx
+        .insertInto('items')
+        .values(formattedData)
+        .returning(['id'])
+        .execute();
+    
+    const items = result.map((row) => {
+        const { id } = row;
+        
+        return {
+            id,
+        };
+    });
+    
+    return items;
+};
+
 const seedDatabase = async () => {
     const {
         agencies,
         children,
         users,
         communityPosts,
+        items,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
         const children = await seedChildren(trx);
         const communityPosts = await seedCommunityPosts(trx);
+        const items = await seedItems(trx);
         
         return {
             users,
             agencies,
             children,
             communityPosts,
+            items,
         };
     });
     
@@ -237,6 +284,7 @@ const seedDatabase = async () => {
         children,
         users,
         communityPosts,
+        items,
     };
 };
 
