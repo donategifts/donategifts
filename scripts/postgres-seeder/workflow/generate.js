@@ -217,6 +217,28 @@ const generateItems = async () => {
     return itemsData;
 };
 
+const generateMessages = async () => {
+    const messages = await importSeederFile('messages');
+    const messagesData = messages.map((message) => {
+        const {
+            id = randomUUID(),
+            content = faker.lorem.sentence(),
+            sender_id = null,
+            wishcard_id = null,
+        } = message;
+        
+        return {
+            id,
+            content,
+            sender_id,
+            wishcard_id,
+        };
+    });
+    
+    await saveSeederFile('messages', messagesData);
+    return messagesData;
+};
+
 
 module.exports = {
     generateAgencies,
