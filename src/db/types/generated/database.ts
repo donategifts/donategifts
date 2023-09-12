@@ -148,7 +148,7 @@ export interface Wishcards {
   address_line_2: string | null;
   city: string;
   state: string;
-  country: string;
+  country_code: string;
   zip_code: string;
   status: Generated<Wishcardstatus>;
   child_id: string;
