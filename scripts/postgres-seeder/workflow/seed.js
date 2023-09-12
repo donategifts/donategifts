@@ -9,15 +9,15 @@ const { importSeederFile } = require('../utils');
 const purgeDatabase = async () => {
     await db.transaction().execute(async (trx) => {
         // must be deleted in this order to prevent foreign key constraint errors
-        await trx.deleteFrom('wishcards').execute();
         await trx.deleteFrom('verification_tokens').execute();
         await trx.deleteFrom('verifications').execute();
+        await trx.deleteFrom('community_posts').execute();
+        await trx.deleteFrom('messages').execute();
         await trx.deleteFrom('orders').execute();
+        await trx.deleteFrom('wishcards').execute();
         await trx.deleteFrom('items').execute();
         await trx.deleteFrom('children').execute();
-        await trx.deleteFrom('community_posts').execute();
         await trx.deleteFrom('agencies').execute();
-        await trx.deleteFrom('messages').execute();
         await trx.deleteFrom('users').execute();
         await trx.deleteFrom('images').execute();
     });
