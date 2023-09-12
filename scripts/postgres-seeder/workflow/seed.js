@@ -332,6 +332,40 @@ const seedOrders = async (trx) => {
     return orders;
 };
 
+const seedVerificationTokens = async (trx) => {
+    const data = await importSeederFile('verification_tokens');
+    
+    const formattedData = data.map((verificationToken) => {
+        const {
+            id,
+            token,
+            user_id,
+        } = verificationToken;
+        
+        return {
+            id,
+            token,
+            user_id,
+        };
+    });
+    
+    const result = await trx
+        .insertInto('verification_tokens')
+        .values(formattedData)
+        .returning(['id'])
+        .execute();
+    
+    const verificationTokens = result.map((row) => {
+        const { id } = row;
+        
+        return {
+            id,
+        };
+    });
+    
+    return verificationTokens;
+};
+
 
 const seedWishcards = async (trx) => {
     const data = await importSeederFile('wishcards');
@@ -395,6 +429,7 @@ const seedDatabase = async () => {
         wishcards,
         messages,
         orders,
+        // verificationTokens,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
@@ -404,6 +439,8 @@ const seedDatabase = async () => {
         const wishcards = await seedWishcards(trx);
         const messages = await seedMessages(trx);
         const orders = await seedOrders(trx);
+        // TODO: uncomment when verification seeding is implemented
+        // const verificationTokens = await seedVerificationTokens(trx);
         
         return {
             users,
@@ -414,6 +451,7 @@ const seedDatabase = async () => {
             wishcards,
             messages,
             orders,
+            // verificationTokens,
         };
     });
     
@@ -426,6 +464,7 @@ const seedDatabase = async () => {
         wishcards,
         messages,
         orders,
+        // verificationTokens,
     };
 };
 
