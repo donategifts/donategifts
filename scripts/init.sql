@@ -78,9 +78,7 @@ CREATE TABLE "orders" (
     "delivery_date" timestamp,
     "tracking_info" varchar(500),
     "donor_id" uuid NOT NULL,
-    "child_id" uuid NOT NULL,
-    "item_id" uuid NOT NULL,
-    "agency_id" uuid NOT NULL,
+    "wishcard_id" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "updated_at" timestamp
 );
@@ -127,12 +125,10 @@ CREATE TABLE "wishcards" (
     "country" varchar(100) NOT NULL,
     "zip_code" varchar(50) NOT NULL,
     "status" WishcardStatus NOT NULL DEFAULT ('draft'::WishcardStatus),
-    "created_by" uuid NOT NULL,
-    "agency_id" uuid NOT NULL,
     "child_id" uuid NOT NULL,
     "item_id" uuid NOT NULL,
     "image_id" uuid,
-    "order_id" uuid NOT NULL,
+    "created_by" uuid NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "updated_at" timestamp
 );
@@ -148,8 +144,6 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("se
 ALTER TABLE "community_posts" ADD CONSTRAINT "community_posts_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id") ON DELETE RESTRICT;
 
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_child_id_fkey" FOREIGN KEY ("child_id") REFERENCES "children" ("id");
-
-ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id") ON DELETE RESTRICT;
 
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users" ("id");
 
@@ -175,13 +169,7 @@ ALTER TABLE "images" ADD CONSTRAINT "images_created_by_fkey" FOREIGN KEY ("creat
 
 ALTER TABLE "orders" ADD CONSTRAINT "orders_donor_id_fkey" FOREIGN KEY ("donor_id") REFERENCES "users" ("id");
 
-ALTER TABLE "orders" ADD CONSTRAINT "orders_child_id_fkey" FOREIGN KEY ("child_id") REFERENCES "children" ("id");
-
-ALTER TABLE "orders" ADD CONSTRAINT "orders_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "items" ("id");
-
-ALTER TABLE "orders" ADD CONSTRAINT "orders_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
-
-ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_wishcard_id_fkey" FOREIGN KEY ("wishcard_id") REFERENCES "wishcards" ("id");
 
 CREATE OR REPLACE FUNCTION TRIGGER_SET_UPDATED_DATE()
     RETURNS trigger
