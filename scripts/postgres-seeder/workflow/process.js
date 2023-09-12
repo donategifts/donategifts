@@ -141,6 +141,32 @@ const processOrders = async () => {
     await saveSeederFile('orders', processedOrders);
 };
 
+const processWishcards = async () => {
+    const wishcards = await importSeederFile('wishcards');
+    const children = await importSeederFile('children');
+    const items = await importSeederFile('items');
+    
+    const processedWishcards = wishcards.reduce((acc, wishcard) => {
+        const hasValidChild = wishcard.child_id && children.find((child) => child.id === wishcard.child_id);
+        const hasValidItem = wishcard.item_id && items.find((item) => item.id === wishcard.item_id);
+        
+        const randomChildIndex = randomNumber(0, children.length - 1);
+        const randomChildId = children[randomChildIndex].id || null;
+        
+        const randomItemIndex = randomNumber(0, items.length - 1);
+        const randomItemId = items[randomItemIndex].id || null;
+        
+        acc.push({
+            ...wishcard,
+            ...(!hasValidChild && { child_id: randomChildId }),
+            ...(!hasValidItem && { item_id: randomItemId }),
+        });
+        
+        return acc;
+    }, []);
+    
+    await saveSeederFile('wishcards', processedWishcards);
+};
 
 module.exports = {
     processAgencies,
@@ -148,4 +174,5 @@ module.exports = {
     processCommunityPosts,
     processMessages,
     processOrders,
+    processWishcards,
 };

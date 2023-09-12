@@ -15,6 +15,7 @@ const {
     processChildren,
     processMessages,
     processOrders,
+    processWishcards,
 } = require('./workflow/process');
 
 const {
@@ -52,7 +53,7 @@ const workflowDefinitions = {
             users: null,
             verification_tokens: null,
             verifications: null,
-            wishcards: null,
+            wishcards: processWishcards,
         },
     }
 };
