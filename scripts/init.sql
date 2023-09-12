@@ -57,7 +57,7 @@ CREATE TABLE "items" (
     "name" varchar(255) NOT NULL,
     "price" numeric(10, 2) NOT NULL,
     "link" varchar(2000) NOT NULL,
-    "retailer" varchar(255) NOT NULL,
+    "retailer_name" varchar(255) NOT NULL,
     "retailer_product_id" varchar(255) NOT NULL,
     "meta_data" json,
     "image_id" uuid,
