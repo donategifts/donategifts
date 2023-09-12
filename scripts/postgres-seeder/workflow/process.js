@@ -1,3 +1,9 @@
+const {
+    importSeederFile,
+    saveSeederFile,
+    randomNumber,
+} = require('../utils');
+
 const processAgencies = async () => {
     const agencies = await importSeederFile('agencies');
     const users = await importSeederFile('users');
