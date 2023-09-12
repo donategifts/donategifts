@@ -1,16 +1,17 @@
 extends ../master
 
 block title
-    title Donate Gifts
+    title Contact Donate Gifts
 
 block content
-    #contact.gradient-form
+    #contact.gradient-form.h-100
         .container
             .container.py-5
-                .text-center
-                    h1.text-center.text-primary.cool-font.mb-3 Get in Touch
-                    p Please fill out form and we will be in touch as soon as possible. Perhaps your question has been answered, see our
-                        a.text-secondary.ms-1.text-decoration-none( href='/faq' ) FAQs.
+                .d-flex.flex-column.justify-content-center.align-items-center
+                    h1.text-center.text-primary.cool-font.mb-3 Get In Touch
+                    p.mb-2 Please fill out the contact form and we will be in touch with you as soon as possible.
+                    p In the meantime, please check if your question has been answered in our
+                        a.text-secondary.ms-1.text-underline( href='/faq' ) FAQs page.
                 form#sign-up-form.p-5.rounded-4
                     .col-md-8.mx-auto.text-white
                         .py-2
@@ -39,7 +40,7 @@ block content
                             )
 
                         .row.py-2.justify-content-center
-                            .col-md-4
+                            .col-md-6
                                 button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Contact Us
 
 block scripts
