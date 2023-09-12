@@ -3,6 +3,10 @@ const {
     generateChildren,
     generateCommunityPosts,
     generateUsers,
+    generateItems,
+    generateMessages,
+    generateOrders,
+    generateWishcards,
 } = require('./workflow/generate');
 
 const {
@@ -24,13 +28,13 @@ const workflowDefinitions = {
             children: generateChildren,
             community_posts: generateCommunityPosts,
             images: null,
-            items: null,
-            messages: null,
-            orders: null,
+            items: generateItems,
+            messages: generateMessages,
+            orders: generateOrders,
             users: generateUsers,
             verification_tokens: null,
             verifications: null,
-            wishcards: null,
+            wishcards: generateWishcards,
         },
     },
     process: {
