@@ -82,7 +82,7 @@ block content
                                     span.fw-bold Item Price:
                                     span.mx-2= wishItemPrice
                             .col-md-6.col-lg-6.col-12
-                                if user
+                                if user && user.emailVerified
                                     .display-6.text-primary.my-4 Send Message
                                     form.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
                                         select#messageSelect.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
