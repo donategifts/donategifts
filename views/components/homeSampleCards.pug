@@ -24,12 +24,9 @@ mixin carouselInnerPart(increment)
                                                 : currentCard.childInterest);
 
                                         h3.text-center= title
-                                        p
-                                            span.font-weight-bold= wish
-                                        p.wish-price
-                                            span.font-weight-bold= itemPrice
-                                        p
-                                            span.font-weight-bold= interest
+                                        p.pb-0.mb-2= wish
+                                        p.wish-price.pb-0.mb-2= itemPrice
+                                        p.pb-0= interest
                                         .d-lg-flex.justify-content-center
                                             .col-12.col-lg-6.mb-2.mb-lg-0.me-lg-1
                                                 a.btn.btn-lg.btn-primary.w-100( href='/wishcards/single/' + currentCard._id ) View More
@@ -53,7 +50,7 @@ mixin carouselInnerPart(increment)
             +carouselInnerPart(1)
 
     .d-none.d-lg-flex
-        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-4( type='button'
             data-bs-target='#sample-cards-carousel'
             data-bs-slide='prev'
         )
@@ -62,7 +59,7 @@ mixin carouselInnerPart(increment)
         #sample-cards-carousel.carousel.slide( data-bs-ride='carousel' )
             +carouselInnerPart(3)
 
-        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-2( type='button'
+        button.btn.btn-sm.btn-light.bg-transparent.border-0.p-4( type='button'
             data-bs-target='#sample-cards-carousel'
             data-bs-slide='next'
         )

@@ -4,6 +4,10 @@ body {
 	font-family: $font-body;
 }
 
+main {
+	min-height: 80vh;
+}
+
 .heading-primary {
 	@include font-styling($font-heading, 2.35em, $primary, $fw-medium);
 }
@@ -29,8 +33,7 @@ body {
 
 .gradient-form {
 	background:
-		linear-gradient(#ff5f6d00, #ffc37100),
-		url('/img/gift-white-bg.jpeg') center center;
+		linear-gradient(#ff5f6d00, #ffc37100), center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;

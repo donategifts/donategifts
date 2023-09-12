@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { LOGIN } from '../../utils/constants.jsx';
-
-const Nav = ({ user, agency, dispatch, setShowModal }) => {
+const Nav = ({ user, agency }) => {
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-white">
 			<div className="container">
@@ -46,21 +44,32 @@ const Nav = ({ user, agency, dispatch, setShowModal }) => {
 							</a>
 						</li>
 						{!user ? (
-							<li className="nav-item">
-								<a
-									className="nav-link"
-									style={{ cursor: 'pointer' }}
-									// href="/login"
-									// data-bs-toggle="modal"
-									// data-bs-target="#authModal"
-									onClick={() => {
-										dispatch({ type: LOGIN });
-										setShowModal(true);
-									}}
-								>
-									Log In
-								</a>
-							</li>
+							<>
+								<li className="nav-item">
+									<a
+										className="nav-link"
+										style={{ cursor: 'pointer' }}
+										href="/login"
+										// data-bs-toggle="modal"
+										// data-bs-target="#authModal"
+										// onClick={() => {
+										// 	dispatch({ type: LOGIN });
+										// 	setShowModal(true);
+										// }}
+									>
+										Log In
+									</a>
+								</li>
+								<li className="nav-item">
+									<a
+										className="nav-link"
+										style={{ cursor: 'pointer' }}
+										href="/signup"
+									>
+										Sign Up
+									</a>
+								</li>
+							</>
 						) : (
 							<li className="nav-item">
 								<a className="nav-link" href="/profile">
