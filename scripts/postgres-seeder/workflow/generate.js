@@ -192,8 +192,8 @@ const generateItems = async () => {
             name = faker.commerce.productName(),
             price = faker.commerce.price(),
             link = faker.internet.url(),
-            retailer_name = 'Amazon',
-            retailer_product_id = faker.number.int({ min: 10, max: 10 }),
+            retailer_name = faker.company.name(),
+            retailer_product_id = randomUUID().toString().split('-')[0],
             meta_data = {},
             image_id = null,
         } = item;
