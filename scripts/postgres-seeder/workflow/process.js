@@ -135,11 +135,12 @@ const processVerificationTokens = async () => {
     const processedVerificationTokens = verificationTokens.reduce((acc, verificationToken, index) => {
         const hasValidUser = verificationToken.user_id && users.some((user) => user.id === verificationToken.user_id);
         
-        const userId = users[index].id || null;
+        const randomUserIndex = randomNumber(0, users.length - 1);
+        const randomUserId = users[randomUserIndex].id || null;
         
         acc.push({
             ...verificationToken,
-            ...(!hasValidUser && { user_id: userId }),
+            ...(!hasValidUser && { user_id: randomUserId }),
         });
         
         return acc;
