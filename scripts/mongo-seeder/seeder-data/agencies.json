@@ -1,0 +1,1126 @@
+[
+    {
+        "_id": {
+            "$oid": "5f908f08987faa6593d8c060"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Blue Skies for Children",
+        "agencyWebsite": "blueskiesforchildren.org",
+        "agencyAddress": {
+            "address1": "333 Frami Shoal",
+            "address2": "310 Vincenzo Island",
+            "city": "Guaynabo",
+            "state": "Connecticut",
+            "country": "Germany",
+            "zipcode": "66091"
+        },
+        "agencyPhone": "844.398.9920 x93779",
+        "agencyBio": "We help support homeless, low-income, and foster families in Whatcom county to raise hope and self-esteem in children.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/3da81ef7bba0bc0edb20e3cefad54e67",
+        "accountManager": {
+            "$oid": "5f908ed5987faa6593d8c05f"
+        },
+        "joined": {
+            "$date": "2020-10-21T19:42:00.513Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f7e0f0ab09ed5121216bd0d"
+        },
+        "accountManager": {
+            "$oid": "5f7e0e9db09ed5121216bd0c"
+        },
+        "accountManagers": [
+            ""
+        ],
+        "wishCards": [],
+        "agencyAddress": {
+            "address1": "910 Lennie Gardens",
+            "address2": "614 Adrien Skyway",
+            "city": "Port Destinee",
+            "state": "Colorado",
+            "country": "Nicaragua",
+            "zipcode": "25720"
+        },
+        "isVerified": true,
+        "agencyName": "Central Texas Table of Grace",
+        "agencyWebsite": "https://centraltexastableofgrace.org/",
+        "agencyPhone": "721.336.1655",
+        "agencyBio": "Our mission is to create a loving, nurturing, home-like environment for displaced youth in the Central Texas area, providing shelter and healthy food as well as teaching healthy habits and life skills. Central Texas Table of Grace is a 501(c)(3) non-profit organization that exists to provide emergency shelter services to the children and youth in the foster care system. Their support contributes to an improved quality of life for youth and their families. The organization’s projects, implemented by an experienced staff, emphasize creating a caring climate for youth. Supporting the development of self-confidence, healthful living, and good judgment, Central Texas Table of Grace provides our children with a thorough foundation for success. ",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "joined": {
+            "$date": "2020-10-07T18:55:06.435Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f7f4abbb09ed5121216bd15"
+        },
+        "accountManager": {
+            "$oid": "5f7f4a72b09ed5121216bd14"
+        },
+        "accountManagers": [],
+        "wishCards": [],
+        "isVerified": true,
+        "agencyAddress": {
+            "address1": "81188 Nelle Mission",
+            "address2": "80047 Abagail Valley",
+            "city": "New Violetteboro",
+            "state": "Rhode Island",
+            "country": "Taiwan",
+            "zipcode": "85785-3251"
+        },
+        "agencyName": "Epworth Village",
+        "agencyWebsite": "www.epworthvillage.org",
+        "agencyPhone": "723-444-2525 x401",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyBio": "Non profit, foster care agency, in home and child care program",
+        "joined": {
+            "$date": "2020-10-08T17:22:03.841Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f99913be6734d5b89c2b6d7"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Private Group Home (verified by DonateGifts)",
+        "agencyWebsite": "donate-gifts.com",
+        "agencyPhone": "(215) 525-9524 x4181",
+        "agencyAddress": {
+            "address1": "48660 Peggie Highway",
+            "address2": "815 Deja Parkway",
+            "city": "Yostburgh",
+            "state": "Arizona",
+            "country": "Uzbekistan",
+            "zipcode": "53022-2714"
+        },
+        "agencyBio": "This account is for admins to help the partner agency workers",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f99912ee6734d5b89c2b6d6"
+        },
+        "joined": {
+            "$date": "2020-10-28T15:41:47.084Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fa43056987faa6593d8c090"
+        },
+        "wishCards": [
+            {
+                "$oid": "5fbf14f0495483e2e4e87427"
+            },
+            {
+                "$oid": "5fbf18f7495483e2e4e87428"
+            },
+            {
+                "$oid": "5fbf243c495483e2e4e87429"
+            },
+            {
+                "$oid": "5fbf28af495483e2e4e8742a"
+            },
+            {
+                "$oid": "5fbf2cbf495483e2e4e8742b"
+            },
+            {
+                "$oid": "5fbf3506495483e2e4e8742c"
+            },
+            {
+                "$oid": "5fbf385b495483e2e4e8742d"
+            },
+            {
+                "$oid": "5fbf3b9d495483e2e4e8742e"
+            },
+            {
+                "$oid": "5fbf5d49495483e2e4e8742f"
+            },
+            {
+                "$oid": "5fbfe992495483e2e4e87430"
+            },
+            {
+                "$oid": "5fbff29f495483e2e4e87431"
+            }
+        ],
+        "isVerified": true,
+        "agencyName": "You Gotta Believe",
+        "agencyWebsite": "https://www.yougottabelieve.org/",
+        "agencyAddress": {
+            "address1": "56816 Lebsack Fort",
+            "address2": "577 Kamron Shore",
+            "city": "Port Evie",
+            "state": "Kansas",
+            "country": "Mexico",
+            "zipcode": "01925"
+        },
+        "agencyPhone": "(931) 992-8572 x810",
+        "agencyBio": "Foster Care and Adoption services",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/1718cdf864038fd1cd43362e57dbc5ef",
+        "accountManager": {
+            "$oid": "5fa43038987faa6593d8c08f"
+        },
+        "joined": {
+            "$date": "2020-11-05T17:03:18.091Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fb857a3495483e2e4e87415"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "David & Margaret Youth and Family Services",
+        "agencyWebsite": "www.davidandmargaret.org",
+        "agencyPhone": "498.861.0612",
+        "agencyBio": "Provide foster care and adoption services as well as Transitional Housing Services for young adults still in or have exited foster care or juvenile justice systems.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "60765 Mertz Ranch",
+            "address2": "75068 Pouros Cliffs",
+            "city": "Gorczanyview",
+            "state": "North Dakota",
+            "country": "Argentina",
+            "zipcode": "69481"
+        },
+        "accountManager": {
+            "$oid": "5fb85752495483e2e4e87414"
+        },
+        "joined": {
+            "$date": "2020-11-20T23:56:19.369Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fbd5253495483e2e4e8741b"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "New Dawn (est 1988)",
+        "agencyWebsite": "https://www.newdawnlrc.com/",
+        "agencyPhone": "349-900-4062 x57617",
+        "agencyBio": "STRTP Treatment Facility",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "669 Franey Wall",
+            "address2": "216 Dietrich Falls",
+            "city": "New Lambert",
+            "state": "Ohio",
+            "country": "Monaco",
+            "zipcode": "39596"
+        },
+        "accountManager": {
+            "$oid": "5fbd51ea495483e2e4e8741a"
+        },
+        "joined": {
+            "$date": "2020-11-24T18:34:59.939Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fbd60a1495483e2e4e8741d"
+        },
+        "wishCards": [
+            {
+                "$oid": "5fc48548495483e2e4e87432"
+            },
+            {
+                "$oid": "5fc486a5495483e2e4e87433"
+            }
+        ],
+        "isVerified": true,
+        "agencyName": "Los Angeles Unified School District - Gage MS - Elizabeth Learning Center - Miles ELementary",
+        "agencyWebsite": "gagems.net",
+        "agencyPhone": "1-365-597-3239 x641",
+        "agencyBio": "My name is Jaime Urbina and I work as a Resource Coordinator supporting 6 different LAUSD schools - Gage Middle school - Elizabeth Leanring Center- Miles Elementy - Hope Elementary - and San Antonio Elementary.  I work with various students from differnent backgrounds and a good number of these students are Homeless and Foster care students.  I will be coordinating my annual Christmas event hoping to pass out over 800 toys this year.  Any amount of toys that you can donate will be highly APPRECIATED.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "917 Erdman Radial",
+            "address2": "99983 Bruen Harbors",
+            "city": "Chesapeake",
+            "state": "Nevada",
+            "country": "Azerbaijan",
+            "zipcode": "80928-1088"
+        },
+        "accountManager": {
+            "$oid": "5fbd5dec495483e2e4e8741c"
+        },
+        "joined": {
+            "$date": "2020-11-24T19:36:01.148Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f7f5fdfb09ed5121216bd18"
+        },
+        "accountManagers": [],
+        "wishCards": [],
+        "isVerified": false,
+        "agencyName": "Foster Home",
+        "agencyWebsite": "",
+        "agencyPhone": "213.566.5495",
+        "agencyBio": "We are a foster and foster to adopt home,",
+        "joined": {
+            "$date": "2020-10-08T18:52:15.295Z"
+        },
+        "__v": 0,
+        "agencyAddress": {
+            "address1": "626 Bernier Trafficway",
+            "address2": "383 Feil Wells",
+            "city": "Salt Lake City",
+            "state": "North Carolina",
+            "country": "Bosnia and Herzegovina",
+            "zipcode": "15181-0335"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "5f987952987faa6593d8c068"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "National Youth Advocate Program",
+        "agencyWebsite": "https://www.nyap.org/",
+        "agencyPhone": "1-512-562-8466 x059",
+        "agencyAddress": {
+            "address1": "6534 Jason Grove",
+            "address2": "65297 Kihn Pike",
+            "city": "Kelvinport",
+            "state": "Louisiana",
+            "country": "Venezuela",
+            "zipcode": "87767"
+        },
+        "agencyBio": "We are a 501(c) (3) private, not-for-profit youth advocacy organization with a mission of being an energetic instrument of compassion and change in the lives of children, youth, and families and the systems, structures, and practice that affect them. Our agency highlights several programs to assist youth and their families succeed in life. Our services range from Behavioral Health Services, Contracted Child Welfare Programming, Constant and Never Ending improvement Program, Foster to Adopt, Family Engagement Services, and so much more.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f98780f987faa6593d8c067"
+        },
+        "joined": {
+            "$date": "2020-10-27T19:47:30.697Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fa07e3d987faa6593d8c081"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Bloom Family Designs of Central NC",
+        "agencyWebsite": "www.bloomfamilydesigns.com",
+        "agencyAddress": {
+            "address1": "2960 Giovanna Harbor",
+            "address2": "9852 Blanda Brook",
+            "city": "Dockside",
+            "state": "Rhode Island",
+            "country": "Cambodia",
+            "zipcode": "98233"
+        },
+        "agencyPhone": "1-833-956-5250 x23108",
+        "agencyBio": "",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5fa07de5987faa6593d8c080"
+        },
+        "joined": {
+            "$date": "2020-11-02T21:46:37.161Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fb81ef0495483e2e4e87411"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Nuevo Amanecer Latino Children's Services",
+        "agencyWebsite": "Nuevo Amanecer Latino Children's Services",
+        "agencyPhone": "1-980-234-4240 x49778",
+        "agencyBio": "Nuevo Amanecer Latino Children’s Services (NALCS) was established in Los Angeles, California on December 12, 1994 as a Bilingual (English/Spanish). It was created to serve children with a full range of services and therapeutic family-based treatment, especially those Latino children in Southern California, who have developmental difficulties and/or who have been the victims of physical abuse, neglect, abandonment or sexual abuse. Since its inception, NALCS has been able to honor its non-profit status with management excellence, professional best practices and our ongoing resolution to keep building bridges to children and families’ success through a continuous quality improvement process. At NALCS, we believe that integrity, honesty, loyalty and respect are meant to guide and impel us to communicate, interact, and work in partnership with our foster/adoptive parents, our employees, those organizations that share our mission, and all any other involved parties. The Council on Accreditation, COA, fully accredited our foster care program on October 14, 2004 which makes NALCS an organization that validates its commitment to excellence with credibility, integrity and achievement. NALCS is a proud member of the Foster Family based Treatment Association, FFTA, CAAA, AdoptUsKids and California Alliance for children & Families. Our services include:  Foster Care, Adoptions, Mental Health, Unaccompanied Children, Intensive Services Foster Care, and Independent Living Program",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "14434 Effertz Plaza",
+            "address2": "79710 Rhiannon Park",
+            "city": "North Tierra",
+            "state": "Connecticut",
+            "country": "Andorra",
+            "zipcode": "48028"
+        },
+        "accountManager": {
+            "$oid": "5fb81e97495483e2e4e87410"
+        },
+        "joined": {
+            "$date": "2020-11-20T19:54:24.564Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fb8406e495483e2e4e87413"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Abrazo Foster Family Agency",
+        "agencyWebsite": "abrazoffa.net",
+        "agencyPhone": "1-590-319-4415 x13299",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyBio": "Foster Family Agency",
+        "agencyAddress": {
+            "address1": "97026 Duane Camp",
+            "address2": "252 Bryon Streets",
+            "city": "Richmond",
+            "state": "Colorado",
+            "country": "Fiji",
+            "zipcode": "05965"
+        },
+        "accountManager": {
+            "$oid": "5fb8352e495483e2e4e87412"
+        },
+        "joined": {
+            "$date": "2020-11-20T22:17:18.031Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fc86f16e7553d5923e6cdbd"
+        },
+        "isVerified": true,
+        "agencyName": "DonateGiftsAdmin",
+        "agencyWebsite": "DonateGiftsAdmin",
+        "agencyPhone": "884-995-6219 x35324",
+        "agencyBio": "DonateGiftsAdmin",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "47676 Abernathy Mall",
+            "address2": "661 Reilly Shoal",
+            "city": "Fort Aureliaburgh",
+            "state": "Rhode Island",
+            "country": "Malta",
+            "zipcode": "86146"
+        },
+        "accountManager": {
+            "$oid": "5fc86ed7e7553d5923e6cdbc"
+        },
+        "joined": {
+            "$date": "2020-12-03T04:52:38.8Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fd8cd4cc6c168e4c350652f"
+        },
+        "isVerified": true,
+        "agencyName": "Journey Home Foster Care & Adoption Agency",
+        "agencyWebsite": "journeyhomefc.com",
+        "agencyPhone": "968.917.5308 x0052",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyBio": "WE ARE A FOSTER CARE AGENCY IN OHIO.",
+        "agencyAddress": {
+            "address1": "1643 Beer Parkways",
+            "address2": "6714 Demario Route",
+            "city": "Immanuelworth",
+            "state": "Alaska",
+            "country": "Georgia",
+            "zipcode": "44187-5642"
+        },
+        "accountManager": {
+            "$oid": "5fd8cd0cc6c168e4c350652e"
+        },
+        "joined": {
+            "$date": "2020-12-15T14:50:52.932Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f7b86d3a2641d0bd1b9ee04"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyAddress": {
+            "address1": "7588 April Bridge",
+            "address2": "81199 Mitchell Shoals",
+            "city": "North Wendell",
+            "state": "Tennessee",
+            "country": "Martinique",
+            "zipcode": "22461"
+        },
+        "agencyName": "New Alternatives for Homeless LGBT Youth",
+        "agencyWebsite": "www.newalternativesnyc.org",
+        "agencyPhone": "1-951-207-3168",
+        "agencyBio": "Organization serving homeless LGBT youth and young adults",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/26c716cbcfaab3534d5e9fb55d30125f",
+        "accountManager": {
+            "$oid": "5f7b869ba2641d0bd1b9ee03"
+        },
+        "joined": {
+            "$date": "2020-10-05T20:49:23.113Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f7b412aa2641d0bd1b9edfe"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Coalition for Hispanic Family Services",
+        "agencyWebsite": "www.hispanicfamilyservicesny.org",
+        "agencyPhone": "(354) 420-8982 x788",
+        "agencyBio": "Coalition for Hispanic Family Services (CHFS) was founded in Bushwick, Brooklyn, a predominately Latino community, and continues to serve the most vulnerable and underserved families throughout the boroughs of Brooklyn and Queens. CHFS invests in children, youth, and families of color offering opportunities for growth, self-reliance and success while reinforcing their sense of culture and self-identity. This is achieved through a holistic, culturally competent, family focused, community-based approach to services. They serve over 7,000 children and families annually and offer foster care and adoption, mental health services, after school & summer programs, child abuse prevention, parenting support, and a community residence. For more information, you can visit their website: www.hispanicfamilyservicesny.org or call 718-497-6090.     ",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f7b3e38a2641d0bd1b9edfd"
+        },
+        "joined": {
+            "$date": "2020-10-05T15:52:10.427Z"
+        },
+        "__v": 0,
+        "agencyAddress": {
+            "address1": "27981 Mertz Corner",
+            "address2": "97822 Cronin Green",
+            "city": "Taylorsville",
+            "state": "New Mexico",
+            "country": "Kiribati",
+            "zipcode": "10498-0743"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "5f8f4575987faa6593d8c05d"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Finally Family Homes",
+        "agencyWebsite": "https://finallyfamilyhomes.org",
+        "agencyAddress": {
+            "address1": "58285 Hayden Harbors",
+            "address2": "91798 Alta Meadow",
+            "city": "Canton",
+            "state": "Minnesota",
+            "country": "Maldives",
+            "zipcode": "94652-1857"
+        },
+        "agencyPhone": "1-559-297-1394",
+        "agencyBio": "Finally Family Homes serves youth 18-24 years old who've aged out of foster care by providing life skills, community connection, and housing. ",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f8f417f987faa6593d8c05c"
+        },
+        "joined": {
+            "$date": "2020-10-20T20:15:49.515Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f903693987faa6593d8c05e"
+        },
+        "wishCards": [
+            {
+                "$oid": "5fbc3fc0495483e2e4e87417"
+            },
+            {
+                "$oid": "5fbd65b4495483e2e4e8741e"
+            },
+            {
+                "$oid": "5fbd69fb495483e2e4e8741f"
+            },
+            {
+                "$oid": "5fbd6b86495483e2e4e87420"
+            },
+            {
+                "$oid": "5fbd6d9a495483e2e4e87421"
+            },
+            {
+                "$oid": "5fbd6f15495483e2e4e87422"
+            },
+            {
+                "$oid": "5fbd7184495483e2e4e87425"
+            }
+        ],
+        "isVerified": true,
+        "agencyName": "Fostering Hope Foundation",
+        "agencyWebsite": "https://www.fosteringhopefoundation.org/",
+        "agencyAddress": {
+            "address1": "33602 Brakus Summit",
+            "address2": "844 Willow Key",
+            "city": "Ziemannberg",
+            "state": "California",
+            "country": "Czechia",
+            "zipcode": "12930-2041"
+        },
+        "agencyPhone": "205-260-8518 x622",
+        "agencyBio": "We provide an \"extended family\" of practical and emotional support to foster families and youth aging out of foster care.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/fce9e856ccaecc9136e688de5716cdde",
+        "accountManager": {
+            "$oid": "5f8da87e987faa6593d8c057"
+        },
+        "joined": {
+            "$date": "2020-10-21T13:24:35.374Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f986bed987faa6593d8c066"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "William S. Hart Union High School District",
+        "agencyWebsite": "www.hartdistrict.org",
+        "agencyAddress": {
+            "address1": "7682 Juanita Forges",
+            "address2": "25472 Annamae Views",
+            "city": "Spring Hill",
+            "state": "Alaska",
+            "country": "Niue",
+            "zipcode": "88998"
+        },
+        "agencyPhone": "359-308-5166 x3390",
+        "agencyBio": "School",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/f4361e9907ee72cb4b4b4ea291091601",
+        "accountManager": {
+            "$oid": "5f986b17987faa6593d8c065"
+        },
+        "joined": {
+            "$date": "2020-10-27T18:50:21.276Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f9c8a15987faa6593d8c07c"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Arden Shore Child and Family Services ",
+        "agencyWebsite": "www.Ardenshore.com",
+        "agencyPhone": "(849) 538-0012 x09331",
+        "agencyBio": "Non-Profit Child Welfare Agency",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f9c89a1987faa6593d8c07b"
+        },
+        "joined": {
+            "$date": "2020-10-30T21:48:05.967Z"
+        },
+        "__v": 0,
+        "agencyAddress": {
+            "address1": "195 Huels Flat",
+            "address2": "73501 Lesch Hill",
+            "city": "Lake Maiyacester",
+            "state": "Rhode Island",
+            "country": "Belize",
+            "zipcode": "81382"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "5fa3094a987faa6593d8c08e"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "La Casa Norte",
+        "agencyWebsite": "http://www.lacasanorte.org/",
+        "agencyPhone": "755-853-8841 x8848",
+        "agencyAddress": {
+            "address1": "6381 Dickens View",
+            "address2": "33365 Devonte Island",
+            "city": "Madera",
+            "state": "Nevada",
+            "country": "Paraguay",
+            "zipcode": "54527"
+        },
+        "agencyBio": " La Casa Norte's mission is to serve youth and families confronting homelessness. We provide access to stable housing and deliver comprehensive services that act as a catalyst to transform lives and communities.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5fa30923987faa6593d8c08d"
+        },
+        "joined": {
+            "$date": "2020-11-04T20:04:26.813Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fb3f00ed2eea1bb47592899"
+        },
+        "wishCards": [
+            {
+                "$oid": "5fb3f831d2eea1bb4759289a"
+            },
+            {
+                "$oid": "5fb3f8b2d2eea1bb4759289b"
+            },
+            {
+                "$oid": "5fb40a2ad2eea1bb4759289c"
+            },
+            {
+                "$oid": "5fb58da4319d06c93cd67768"
+            },
+            {
+                "$oid": "5fb6e8f2319d06c93cd6776e"
+            },
+            {
+                "$oid": "5fb80cb5495483e2e4e8740e"
+            },
+            {
+                "$oid": "5fb80d8b495483e2e4e8740f"
+            }
+        ],
+        "isVerified": true,
+        "agencyName": "DonateGifts Admin",
+        "agencyWebsite": "donate-gifts.com",
+        "agencyPhone": "211-700-0817 x797",
+        "agencyBio": "This is an official DonateGifts account to create wishcards on behalf of agency workers who specifically requested for help.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/1fa5f7d9011600663ad2bc7107d28ddd",
+        "agencyProfileImage2": "https://donategifts.s3.us-west-1.amazonaws.com/26c716cbcfaab3534d5e9fb55d30125f",
+        "agencyAddress": {
+            "address1": "507 Effie Parkways",
+            "address2": "411 Buckridge Tunnel",
+            "city": "Vincebury",
+            "state": "North Dakota",
+            "country": "Heard Island and McDonald Islands",
+            "zipcode": "51978"
+        },
+        "accountManager": {
+            "$oid": "5fb3efcad2eea1bb47592898"
+        },
+        "joined": {
+            "$date": "2020-11-17T15:45:18.694Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fa1c719987faa6593d8c08c"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Youth Outreach Services ",
+        "agencyWebsite": "https://www.yos.org/",
+        "agencyPhone": "1-514-312-0607",
+        "agencyAddress": {
+            "address1": "734 D'Amore Hill",
+            "address2": "3503 Emmet Divide",
+            "city": "Lake Mariostad",
+            "state": "Tennessee",
+            "country": "Haiti",
+            "zipcode": "72858-0669"
+        },
+        "agencyBio": "Youth Outreach Services (YOS) is a Chicago-based non-profit organization that partners with at-risk youth and their families to help them discover what they are capable of achieving. We inspire positive development through a variety of child welfare, counseling, juvenile justice and prevention services to help overcome challenges such as abuse, substance use and homelessness.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/3c7e6a28dcdc07529b4bdd9ef0f6bd8e",
+        "accountManager": {
+            "$oid": "5fa1c6c1987faa6593d8c08b"
+        },
+        "joined": {
+            "$date": "2020-11-03T21:09:45.924Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fbd1e81495483e2e4e87419"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Penny Lane Centers",
+        "agencyWebsite": "Www.penny lane.org",
+        "agencyPhone": "286.941.7379 x5810",
+        "agencyBio": "Non-profit foster care and adoption agency",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "3693 Kohler Avenue",
+            "address2": "765 Hilll Greens",
+            "city": "Edisonbury",
+            "state": "Colorado",
+            "country": "Nepal",
+            "zipcode": "64780-7775"
+        },
+        "accountManager": {
+            "$oid": "5fbd1de0495483e2e4e87418"
+        },
+        "joined": {
+            "$date": "2020-11-24T14:53:53.56Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fc5cf63495483e2e4e87435"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Koinonia Family Services- Temecula office",
+        "agencyWebsite": "https://www.kfh.org/",
+        "agencyPhone": "(498) 616-6540 x49635",
+        "agencyBio": "Foster care and Adoption agency",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "6103 Nicolas Key",
+            "address2": "650 Lowe Manor",
+            "city": "Lake Gunner",
+            "state": "New Jersey",
+            "country": "Venezuela",
+            "zipcode": "24857"
+        },
+        "accountManager": {
+            "$oid": "5fc5ceab495483e2e4e87434"
+        },
+        "joined": {
+            "$date": "2020-12-01T05:06:43.133Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f8a4719987faa6593d8c054"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "One Hope United",
+        "agencyWebsite": "www.onehopeunited.org",
+        "agencyAddress": {
+            "address1": "288 White Streets",
+            "address2": "9572 Cummerata Avenue",
+            "city": "Hughborough",
+            "state": "Georgia",
+            "country": "Cayman Islands",
+            "zipcode": "66949-0742"
+        },
+        "agencyPhone": "625.712.8736 x43603",
+        "agencyBio": "Human Service Non Profit",
+        "accountManager": {
+            "$oid": "5f8a4689987faa6593d8c053"
+        },
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "joined": {
+            "$date": "2020-10-17T01:21:29.997Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f8a194f987faa6593d8c050"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Echoes of Hope",
+        "agencyAddress": {
+            "address1": "9476 Brennan Rapids",
+            "address2": "76384 Serenity Walk",
+            "city": "Lake Araceli",
+            "state": "South Dakota",
+            "country": "Costa Rica",
+            "zipcode": "60629-4492"
+        },
+        "agencyWebsite": "https://www.echoesofhope.org",
+        "agencyPhone": "732-855-6676 x21169",
+        "agencyBio": "Echoes of Hope strives to awaken the spirit of hope in the lives of children, youth, and young adults in need by alleviating barriers and helping them reach their full potential.   Founded in 2007 by Stacia and Luc Robitaille, the nonprofit has helped thousands of at-risk and emancipated foster youth succeed by providing the resources, love, and support they so richly deserve.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5f8a185b987faa6593d8c04f"
+        },
+        "joined": {
+            "$date": "2020-10-16T22:06:07.198Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5f971b39987faa6593d8c064"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "CASA of Los Angeles ",
+        "agencyWebsite": "www.casala.org",
+        "agencyAddress": {
+            "address1": "844 Leda Falls",
+            "address2": "144 Ward Court",
+            "city": "East Herbertstad",
+            "state": "Georgia",
+            "country": "Turkey",
+            "zipcode": "62565"
+        },
+        "agencyPhone": "(416) 383-3958 x40285",
+        "agencyBio": "CASA/LA’s vision is a Los Angeles in which every child in the child welfare system has an advocate and the opportunity to thrive.",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/b96640acb4f06ce6a1aac654d52c4789",
+        "accountManager": {
+            "$oid": "5f971ae2987faa6593d8c063"
+        },
+        "joined": {
+            "$date": "2020-10-26T18:53:45.909Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fb2c4de7a41bda8ce441907"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Childrens Aid ",
+        "agencyWebsite": "https://www.childrensaidnyc.org/",
+        "agencyPhone": "1-771-867-6125 x50926",
+        "agencyBio": "",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "27222 Hoppe Path",
+            "address2": "340 Von Forges",
+            "city": "Willardland",
+            "state": "Wyoming",
+            "country": "Estonia",
+            "zipcode": "36748"
+        },
+        "accountManager": {
+            "$oid": "5fb2b8fe7a41bda8ce441906"
+        },
+        "joined": {
+            "$date": "2020-11-16T18:28:46.491Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fbd6fd1495483e2e4e87424"
+        },
+        "wishCards": [],
+        "isVerified": true,
+        "agencyName": "Families Uniting Families",
+        "agencyWebsite": "https://familiesunitingfamilies.org/",
+        "agencyPhone": "742-882-9478 x142",
+        "agencyBio": "Foster Care Agency",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyAddress": {
+            "address1": "36888 Heller Harbor",
+            "address2": "50531 Emiliano Courts",
+            "city": "Bridgetside",
+            "state": "Oregon",
+            "country": "Kazakhstan",
+            "zipcode": "74671-3439"
+        },
+        "accountManager": {
+            "$oid": "5fbd6f84495483e2e4e87423"
+        },
+        "joined": {
+            "$date": "2020-11-24T20:40:49.328Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fd8fa7fc6c168e4c350653f"
+        },
+        "isVerified": true,
+        "agencyName": "TRAC Services for Families",
+        "agencyWebsite": "www.tracpgh.org",
+        "agencyPhone": "368-732-4284 x320",
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "agencyBio": "TRAC is a full service agency that serves as the central resources for permanency information, adoption and foster family recruitment, placement of special needs children, post-permanency support, education, and referral services throughout Allegheny and its contiguous counties",
+        "agencyAddress": {
+            "address1": "21521 Sunny Spurs",
+            "address2": "782 Rau Centers",
+            "city": "Timmyborough",
+            "state": "South Dakota",
+            "country": "Thailand",
+            "zipcode": "58301"
+        },
+        "accountManager": {
+            "$oid": "5fd8f92ec6c168e4c350653e"
+        },
+        "joined": {
+            "$date": "2020-12-15T18:03:43.446Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5fc671b35639ee3641af2ace"
+        },
+        "isVerified": true,
+        "agencyName": "The Academy Project",
+        "agencyWebsite": "www.theacademyproject.org",
+        "agencyPhone": "1-594-701-0479 x4840",
+        "agencyBio": "The Academy Project 501c3 provides support and advocacy to foster and homeless youth in South Los Angeles through community, empowerment, and education.  ",
+        "agencyAddress": {
+            "address1": "70738 Moen Trace",
+            "address2": "26370 Howe Field",
+            "city": "Lake Clair",
+            "state": "Alaska",
+            "country": "Zimbabwe",
+            "zipcode": "39119"
+        },
+        "agencyProfileImage": "https://donategifts.s3.us-east-2.amazonaws.com/18ab50665b7b8b37c8e8953ff96c7c0e",
+        "accountManager": {
+            "$oid": "5fc6715e5639ee3641af2acd"
+        },
+        "joined": {
+            "$date": "2020-12-01T16:39:15.808Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6387ea3acc105336ac88cb06"
+        },
+        "agencyName": "Human Services Consultants ",
+        "agencyWebsite": "https://hscaz.com",
+        "agencyPhone": "831-269-6201 x72445",
+        "accountManager": {
+            "$oid": "6387e8edcc105336ac88cada"
+        },
+        "agencyBio": "Since 2000 HSC has been training and licensing Therapeutic Foster Families to provide a comprehensive, community based, and culturally sensitive approach for children, adolescents, and their families.",
+        "agencyAddress": {
+            "address1": "43247 Herman Passage",
+            "address2": "1649 Jerad Divide",
+            "city": "Chelseaboro",
+            "state": "Virginia",
+            "country": "Thailand",
+            "zipcode": "99561-1627"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-11-30T23:41:46.262Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6388384bcc105336ac88cd53"
+        },
+        "agencyName": "Eagle Quest",
+        "agencyWebsite": "eaglequestservices.org",
+        "agencyPhone": "1-203-784-8342 x04655",
+        "accountManager": {
+            "$oid": "638837d5cc105336ac88cd20"
+        },
+        "agencyBio": "Foster Care Agency",
+        "agencyAddress": {
+            "address1": "8831 Rippin Forest",
+            "address2": "93047 Brant Court",
+            "city": "West Rossie",
+            "state": "Utah",
+            "country": "Honduras",
+            "zipcode": "21657"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-12-01T05:14:51.466Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6388dd91cc105336ac88d15c"
+        },
+        "agencyName": "Isaih and Freddy's Helping Hands",
+        "agencyWebsite": "",
+        "agencyPhone": "1-265-444-1734 x779",
+        "accountManager": {
+            "$oid": "6388d9a4cc105336ac88d10f"
+        },
+        "agencyBio": "Hello my name is Jaime Urbina and I am the founder of Isaiah and Freddy's Helping Hands.  I started this Non-Profit Foundation in honor of my 8 year old son Isaiah who passed away in 2007.  My best friend Freddy past away in 2012.  To keep their memories and spirits alive, I coordinate several community events BLESSING families in need.  One of our goals is to enhance efforts to close the achievement gap by helping children gain access to an array of support for their social emotional, physical, and/or cognitive development.  The Families we work with is made up of a population living below the poverty threshold, which means all of\nour students qualify for free school lunch under the School Nutrition Program (SNP). Our\nfamilies face an array of daily adversities and life challenges. These include things like foster\ncare, homelessness, childhood trauma, broken home families, documentation status issues, and recent migration to the country; these are just to name a few. These challenges result in a variety of needs, including basic needs, for the students and families we work with.\n\nAnother one of our goals is to ensure that more families are served and not overlooked\nthroughout the remainder of the school year; not only during the holiday season.\nPlease be part of the change in the lives of our students. It is confounding how much a generous act of kindness can impact a child’s life. Working together, we can make a difference in the quality of life in our the children we work with. From our community to you and yours, we thank you for your consideration in this request.\n\nWith great appreciation,\n\nJaime Urbina\nFounder",
+        "agencyAddress": {
+            "address1": "1695 Felicity Row",
+            "address2": "744 Hollie Curve",
+            "city": "Novaberg",
+            "state": "Tennessee",
+            "country": "French Southern Territories",
+            "zipcode": "58392"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-12-01T17:00:01.396Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6388f8fecc105336ac88d3a5"
+        },
+        "agencyName": "LAUSD - Gage Middle School",
+        "agencyWebsite": "https://achieve.lausd.net/domain/4",
+        "agencyPhone": "(301) 328-5564 x7909",
+        "accountManager": {
+            "$oid": "6388f7fccc105336ac88d373"
+        },
+        "agencyBio": "Los Angeles Unified School District - Gage Middle School\n\nStaffs work with foster and homeless students.",
+        "agencyAddress": {
+            "address1": "73459 Willis Creek",
+            "address2": "91666 Greenfelder Orchard",
+            "city": "Indio",
+            "state": "Idaho",
+            "country": "Canada",
+            "zipcode": "30763-1675"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-12-01T18:57:02.801Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "638cda739807c3dcef5d0598"
+        },
+        "agencyName": "Super Agency from Marco",
+        "agencyWebsite": "https://donate-gifts.com",
+        "agencyPhone": "655-896-2427 x2043",
+        "accountManager": {
+            "$oid": "638cda489807c3dcef5d0560"
+        },
+        "agencyBio": "Id odit non est deb",
+        "agencyAddress": {
+            "address1": "311 Holly Forges",
+            "address2": "2688 Jacobs Pass",
+            "city": "Wilkinsonboro",
+            "state": "Maine",
+            "country": "Armenia",
+            "zipcode": "82002"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-12-04T17:35:47.065Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "638cdeb4c06d36eaeb9958a1"
+        },
+        "agencyName": "it'sStacerAgain",
+        "agencyWebsite": "",
+        "agencyPhone": "599-482-1854 x63400",
+        "accountManager": {
+            "$oid": "638cde96c06d36eaeb995879"
+        },
+        "agencyBio": "",
+        "agencyAddress": {
+            "address1": "4367 Green Extensions",
+            "address2": "931 Bosco Throughway",
+            "city": "West Isabelle",
+            "state": "Illinois",
+            "country": "Fiji",
+            "zipcode": "01909-8880"
+        },
+        "isVerified": true,
+        "joined": {
+            "$date": "2022-12-04T17:53:56.127Z"
+        },
+        "__v": 0
+    }
+]
