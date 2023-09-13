@@ -268,7 +268,7 @@ const generateVerificationTokens = async () => {
         const {
             id = randomUUID(),
             token = randomUUID().split('-').join(''),
-            type,
+            type = 'email',
             expiration_date = faker.date.future(),
             user_id = null,
         } = verificationToken;
