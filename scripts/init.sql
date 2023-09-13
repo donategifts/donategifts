@@ -103,8 +103,8 @@ CREATE TABLE "verification_tokens" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "token" varchar(255) NOT NULL,
     "type" VerificationType NOT NULL,
-    "expiration" timestamptz NOT NULL,
     "user_id" uuid NOT NULL,
+    "expires_at" timestamptz NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
