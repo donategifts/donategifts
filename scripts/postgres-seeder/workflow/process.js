@@ -63,16 +63,22 @@ const processChildren = async () => {
 const processCommunityPosts = async () => {
     const communityPosts = await importSeederFile('community_posts');
     const agencies = await importSeederFile('agencies');
+    const images = await importSeederFile('images');
     
     const communityPostsWithAgencies = communityPosts.reduce((acc, communityPost) => {
         const hasValidAgency = communityPost.agency_id && agencies.some((agency) => agency.id === communityPost.agency_id);
+        const hasValidImage = communityPost.image_id && images.some((image) => image.id === communityPost.image_id);
         
         const randomAgencyIndex = randomNumber(0, agencies.length - 1);
         const randomAgencyId = agencies[randomAgencyIndex].id || null;
         
+        const randomImageIndex = randomNumber(0, images.length - 1);
+        const randomImageId = images[randomImageIndex].id || null;
+        
         acc.push({
             ...communityPost,
             ...(!hasValidAgency && { agency_id: randomAgencyId }),
+            ...(!hasValidImage && { image_id: randomImageId }),
         });
         
         return acc;
