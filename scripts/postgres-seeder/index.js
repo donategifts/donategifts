@@ -36,7 +36,6 @@ const workflowDefinitions = {
             orders: generateOrders,
             users: generateUsers,
             verification_tokens: null,
-            verifications: null,
             wishcards: generateWishcards,
         },
     },
@@ -52,7 +51,6 @@ const workflowDefinitions = {
             orders: processOrders,
             users: null,
             verification_tokens: null,
-            verifications: null,
             wishcards: processWishcards,
         },
     }
