@@ -36,16 +36,22 @@ const processAgencies = async () => {
 const processChildren = async () => {
     const children = await importSeederFile('children');
     const agencies = await importSeederFile('agencies');
+    const images = await importSeederFile('images');
     
     const childrenWithAgencies = children.reduce((acc, child) => {
         const hasValidAgency = child.agency_id && agencies.some((agency) => agency.id === child.agency_id);
+        const hasValidImage = child.image_id && images.some((image) => image.id === child.image_id);
         
         const randomAgencyIndex = randomNumber(0, agencies.length - 1);
         const randomAgencyId = agencies[randomAgencyIndex].id || null;
         
+        const randomImageIndex = randomNumber(0, images.length - 1);
+        const randomImageId = images[randomImageIndex].id || null;
+        
         acc.push({
             ...child,
             ...(!hasValidAgency && { agency_id: randomAgencyId }),
+            ...(!hasValidImage && { image_id: randomImageId }),
         });
         
         return acc;
