@@ -20,8 +20,8 @@ CREATE TABLE "agencies" (
     "employer_identification_number" varchar(100) UNIQUE,
     "account_manager_id" uuid NOT NULL,
     "image_id" uuid,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE "children" (
@@ -33,7 +33,7 @@ CREATE TABLE "children" (
     "story" text NOT NULL,
     "image_id" uuid,
     "agency_id" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "community_posts" (
@@ -41,7 +41,7 @@ CREATE TABLE "community_posts" (
     "message" text NOT NULL,
     "agency_id" uuid NOT NULL,
     "image_id" uuid,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "images" (
@@ -49,7 +49,7 @@ CREATE TABLE "images" (
     "url" varchar(255) NOT NULL,
     "meta_data" json,
     "created_by" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "items" (
@@ -61,7 +61,7 @@ CREATE TABLE "items" (
     "retailer_product_id" varchar(255) NOT NULL,
     "meta_data" json,
     "image_id" uuid,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "messages" (
@@ -69,18 +69,18 @@ CREATE TABLE "messages" (
     "content" text NOT NULL,
     "sender_id" uuid NOT NULL,
     "wishcard_id" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "orders" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "status" OrderStatus NOT NULL DEFAULT ('pending'::OrderStatus),
-    "delivery_date" timestamp,
+    "delivery_date" timestamptz,
     "tracking_info" varchar(500),
     "donor_id" uuid NOT NULL,
     "wishcard_id" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE "users" (
@@ -95,17 +95,17 @@ CREATE TABLE "users" (
     "is_verified" boolean NOT NULL DEFAULT false,
     "is_disabled" boolean NOT NULL DEFAULT false,
     "image_id" uuid,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE "verification_tokens" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "token" varchar(255) NOT NULL,
     "type" VerificationType NOT NULL,
-    "expiration" timestamp NOT NULL,
+    "expiration" timestamptz NOT NULL,
     "user_id" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE "wishcards" (
@@ -121,8 +121,8 @@ CREATE TABLE "wishcards" (
     "item_id" uuid NOT NULL,
     "image_id" uuid,
     "created_by" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp
+    "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "updated_at" timestamptz
 );
 
 ALTER TABLE "agencies" ADD CONSTRAINT "agencies_account_manager_id_fkey" FOREIGN KEY ("account_manager_id") REFERENCES "users" ("id");
