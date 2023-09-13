@@ -108,14 +108,6 @@ CREATE TABLE "verification_tokens" (
     "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
-CREATE TABLE "verifications" (
-    "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "email_verified" boolean NOT NULL,
-    "user_id" uuid NOT NULL,
-    "created_at" timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    "updated_at" timestamp
-);
-
 CREATE TABLE "wishcards" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "address_line_1" varchar(255) NOT NULL,
@@ -154,8 +146,6 @@ ALTER TABLE "orders" ADD CONSTRAINT "orders_wishcard_id_fkey" FOREIGN KEY ("wish
 
 ALTER TABLE "users" ADD CONSTRAINT "users_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images" ("id");
 
-ALTER TABLE "verifications" ADD CONSTRAINT "verifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT;
-
 ALTER TABLE "verification_tokens" ADD CONSTRAINT "verification_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE RESTRICT;
 
 ALTER TABLE "wishcards" ADD CONSTRAINT "wishcards_child_id_fkey" FOREIGN KEY ("child_id") REFERENCES "children" ("id");
@@ -189,14 +179,6 @@ BEGIN
 END;
 $function$
 ;
-
-
-CREATE TRIGGER SET_UPDATED_AT
-    before update
-    on verifications
-    for each row
-	execute procedure TRIGGER_SET_UPDATED_DATE();
-
 
 CREATE TRIGGER SET_UPDATED_AT
     before update
