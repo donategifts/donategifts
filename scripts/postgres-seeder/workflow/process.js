@@ -193,6 +193,7 @@ const processWishcards = async () => {
     const children = await importSeederFile('children');
     const items = await importSeederFile('items');
     const users = await importSeederFile('users');
+    const images = await importSeederFile('images');
     
     const agencyUsers = users.filter((user) => user.role === 'partner');
     
@@ -200,6 +201,7 @@ const processWishcards = async () => {
         const hasValidChild = wishcard.child_id && children.some((child) => child.id === wishcard.child_id);
         const hasValidItem = wishcard.item_id && items.some((item) => item.id === wishcard.item_id);
         const hasValidUser = wishcard.created_by && agencyUsers.some((user) => user.id === wishcard.created_by);
+        const hasValidImage = wishcard.image_id && images.some((image) => image.id === wishcard.image_id);
         
         const randomChildIndex = randomNumber(0, children.length - 1);
         const randomChildId = children[randomChildIndex].id || null;
@@ -210,11 +212,15 @@ const processWishcards = async () => {
         const randomUserIndex = randomNumber(0, agencyUsers.length - 1);
         const randomUserId = agencyUsers[randomUserIndex].id || null;
         
+        const randomImageIndex = randomNumber(0, images.length - 1);
+        const randomImageId = images[randomImageIndex].id || null;
+        
         acc.push({
             ...wishcard,
             ...(!hasValidChild && { child_id: randomChildId }),
             ...(!hasValidItem && { item_id: randomItemId }),
             ...(!hasValidUser && { created_by: randomUserId }),
+            ...(!hasValidImage && { image_id: randomImageId }),
         });
         
         return acc;
