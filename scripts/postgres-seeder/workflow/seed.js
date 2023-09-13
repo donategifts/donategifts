@@ -10,7 +10,6 @@ const purgeDatabase = async () => {
     await db.transaction().execute(async (trx) => {
         // must be deleted in this order to prevent foreign key constraint errors
         await trx.deleteFrom('verification_tokens').execute();
-        await trx.deleteFrom('verifications').execute();
         await trx.deleteFrom('community_posts').execute();
         await trx.deleteFrom('messages').execute();
         await trx.deleteFrom('orders').execute();
@@ -366,38 +365,6 @@ const seedVerificationTokens = async (trx) => {
     return verificationTokens;
 };
 
-const seedVerifications = async (trx) => {
-    const data = await importSeederFile('verifications');
-    
-    const formattedData = data.map((verification) => {
-        const {
-            id,
-            user_id,
-        } = verification;
-        
-        return {
-            id,
-            user_id,
-        };
-    });
-    
-    const result = await trx
-        .insertInto('verifications')
-        .values(formattedData)
-        .returning(['id'])
-        .execute();
-    
-    const verifications = result.map((row) => {
-        const { id } = row;
-        
-        return {
-            id,
-        };
-    });
-    
-    return verifications;
-};
-
 const seedWishcards = async (trx) => {
     const data = await importSeederFile('wishcards');
     
@@ -461,7 +428,6 @@ const seedDatabase = async () => {
         messages,
         orders,
         // verificationTokens,
-        // verifications,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
@@ -473,7 +439,6 @@ const seedDatabase = async () => {
         const orders = await seedOrders(trx);
         // TODO: uncomment when verification seeding is implemented
         // const verificationTokens = await seedVerificationTokens(trx);
-        // const verifications = await seedVerifications(trx);
         
         return {
             users,
@@ -485,7 +450,6 @@ const seedDatabase = async () => {
             messages,
             orders,
             // verificationTokens,
-            // verifications,
         };
     });
     
@@ -499,7 +463,6 @@ const seedDatabase = async () => {
         messages,
         orders,
         // verificationTokens,
-        // verifications,
     };
 };
 
