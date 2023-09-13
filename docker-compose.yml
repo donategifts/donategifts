@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-    # mongo:
-    #     image: mongo
-    #     container_name: dg-mongo
-    #     restart: unless-stopped
-    #     ports:
-    #         - 27017:27017
-    #     volumes:
-    #         - mongo:/data/db
+    mongo:
+        image: mongo
+        container_name: dg-mongo
+        restart: unless-stopped
+        ports:
+            - 27017:27017
+        volumes:
+            - mongo:/data/db
 
     postgres:
         image: postgres:14.1-alpine
@@ -25,7 +25,7 @@ services:
             - donategifts:/data/postgres-donategifts
 
 volumes:
-    # mongo:
-    #     driver: local
+    mongo:
+        driver: local
     donategifts:
         driver: local
