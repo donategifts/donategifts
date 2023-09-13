@@ -186,7 +186,6 @@ CREATE TRIGGER SET_UPDATED_AT
     for each row
 	execute procedure TRIGGER_SET_UPDATED_DATE();
 
-
 CREATE TRIGGER SET_UPDATED_AT
     before update
     on messages
@@ -200,13 +199,11 @@ CREATE TRIGGER SET_UPDATED_AT
     for each row
 	execute procedure TRIGGER_SET_UPDATED_DATE();
 
-
 CREATE TRIGGER SET_UPDATED_AT
     before update
     on users
     for each row
 	execute procedure TRIGGER_SET_UPDATED_DATE();
-
 
 CREATE TRIGGER SET_UPDATED_AT
     before update
