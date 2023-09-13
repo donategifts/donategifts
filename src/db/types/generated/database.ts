@@ -125,20 +125,12 @@ export interface Users {
   updated_at: Timestamp | null;
 }
 
-export interface Verifications {
-  id: Generated<string>;
-  email_verified: boolean;
-  user_id: string;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp | null;
-}
-
 export interface VerificationTokens {
   id: Generated<string>;
   token: string;
   type: Verificationtype;
-  expiration: Timestamp;
   user_id: string;
+  expires_at: Timestamp;
   created_at: Generated<Timestamp>;
 }
 
@@ -169,6 +161,5 @@ export interface DB {
   orders: Orders;
   users: Users;
   verification_tokens: VerificationTokens;
-  verifications: Verifications;
   wishcards: Wishcards;
 }
