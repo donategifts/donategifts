@@ -113,4 +113,5 @@ const generateWorkflowRuns = async (definitions) => {
     console.log('Seeding database');
     await purgeDatabase();
     await seedDatabase();
+    console.log('Finished seeding database');
 })();
