@@ -17,12 +17,12 @@ const purgeDatabase = async () => {
         await trx.deleteFrom('items').execute();
         await trx.deleteFrom('children').execute();
         await trx.deleteFrom('agencies').execute();
-        await trx.deleteFrom('users').execute();
         await trx.deleteFrom('images').execute();
+        await trx.deleteFrom('users').execute();
     });
 };
 
-const seedUsers = async (trx) => {
+const seedUsers = async (trx, options = { withImages: false }) => {
     const data = await importSeederFile('users');
     
     const formattedData = data.map((user) => {
@@ -51,11 +51,37 @@ const seedUsers = async (trx) => {
             bio,
             is_verified,
             is_disabled,
-            image_id,
+            image_id: options.withImages ? image_id : null,
         };
     });
     
-    const result = await trx
+    if (options.withImages) {
+        const results = [];
+        formattedData.forEach(async (user, index) => {
+            const userWithImage = await trx
+                .updateTable('users')
+                .set({
+                    image_id: user.image_id,
+                })
+                .where('id', '=', user.id)
+                .execute();
+            
+            results.push(userWithImage);
+        });
+        
+        const usersWithImages = results.map((row) => {
+            const { id, role } = row;
+            
+            return {
+                id,
+                role,
+            };
+        });
+        
+        return usersWithImages;
+    }
+    
+    const result = !options.withImages && await trx
         .insertInto('users')
         .values(formattedData)
         .returning(['id', 'role'])
@@ -471,6 +497,8 @@ const seedDatabase = async () => {
         images,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
+        const images = await seedImages(trx);
+        const usersWithImages = await seedUsers(trx, { withImages: true });
         const agencies = await seedAgencies(trx);
         const children = await seedChildren(trx);
         const communityPosts = await seedCommunityPosts(trx);
@@ -479,7 +507,6 @@ const seedDatabase = async () => {
         const messages = await seedMessages(trx);
         const orders = await seedOrders(trx);
         const verificationTokens = await seedVerificationTokens(trx);
-        const images = await seedImages(trx);
         
         return {
             users,
