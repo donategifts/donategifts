@@ -1,18 +1,18 @@
 const path = require('node:path');
 
-require('dotenv').config({ path: path.resolve(__dirname, '../config.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../../config.env') });
 
 const mongoose = require('mongoose');
 
-const MongooseConnection = require('../dist/db/connection').default;
-const Agency = require('../dist/db/models/Agency').default;
-const Contact = require('../dist/db/models/Contact').default;
-const Donation = require('../dist/db/models/Donation').default;
-const Message = require('../dist/db/models/Message').default;
-const Post = require('../dist/db/models/Post').default;
-const User = require('../dist/db/models/User').default;
-const WishCard = require('../dist/db/models/WishCard').default;
-const log = require('../dist/helper/logger').default;
+const MongooseConnection = require('../../dist/db/connection').default;
+const Agency = require('../../dist/db/models/Agency').default;
+const Contact = require('../../dist/db/models/Contact').default;
+const Donation = require('../../dist/db/models/Donation').default;
+const Message = require('../../dist/db/models/Message').default;
+const Post = require('../../dist/db/models/Post').default;
+const User = require('../../dist/db/models/User').default;
+const WishCard = require('../../dist/db/models/WishCard').default;
+const log = require('../../dist/helper/logger').default;
 
 (async () => {
 	const mongooseConnection = new MongooseConnection();
