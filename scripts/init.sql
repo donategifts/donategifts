@@ -174,6 +174,22 @@ END;
 $function$
 ;
 
+CREATE OR REPLACE FUNCTION UPDATE_WISHCARD_STATUS()
+    RETURNS trigger
+    LANGUAGE plpgsql
+AS $function$
+BEGIN
+    CASE
+        WHEN (NEW.status = 'ordered'::OrderStatus) THEN 
+            UPDATE wishcards SET status = 'donated'::WishcardStatus WHERE id = NEW.wishcard_id;
+        WHEN (NEW.status = 'cancelled'::OrderStatus) THEN
+            UPDATE wishcards SET status = 'published'::WishcardStatus WHERE id = NEW.wishcard_id;
+    END CASE;
+    RETURN NEW;
+END;
+$function$
+;
+
 
 CREATE TRIGGER SET_UPDATED_AT
     before update
@@ -215,3 +231,9 @@ CREATE TRIGGER SET_UPDATED_AT
     on wishcards
     for each row
 	execute procedure TRIGGER_SET_UPDATED_DATE();
+
+CREATE TRIGGER UPDATE_WISHCARD_STATUS_ON_ORDER_CHANGE
+    after update
+    on orders
+    for each row
+    execute procedure UPDATE_WISHCARD_STATUS();
