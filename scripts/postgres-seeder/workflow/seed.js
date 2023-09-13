@@ -421,6 +421,42 @@ const seedWishcards = async (trx) => {
     return wishcards;
 };
 
+const seedImages = async (trx) => {
+    const data = await importSeederFile('images');
+    
+    const formattedData = data.map((image) => {
+        const {
+            id,
+            url,
+            meta_data,
+            created_by,
+        } = image;
+        
+        return {
+            id,
+            url,
+            meta_data,
+            created_by,
+        };
+    });
+    
+    const result = await trx
+        .insertInto('images')
+        .values(formattedData)
+        .returning(['id'])
+        .execute();
+    
+    const images = result.map((row) => {
+        const { id } = row;
+        
+        return {
+            id,
+        };
+    });
+    
+    return images;
+};
+
 const seedDatabase = async () => {
     const {
         agencies,
@@ -432,6 +468,7 @@ const seedDatabase = async () => {
         messages,
         orders,
         verificationTokens,
+        images,
     } = await db.transaction().execute(async (trx) => {
         const users = await seedUsers(trx);
         const agencies = await seedAgencies(trx);
@@ -442,6 +479,7 @@ const seedDatabase = async () => {
         const messages = await seedMessages(trx);
         const orders = await seedOrders(trx);
         const verificationTokens = await seedVerificationTokens(trx);
+        const images = await seedImages(trx);
         
         return {
             users,
@@ -453,6 +491,7 @@ const seedDatabase = async () => {
             messages,
             orders,
             verificationTokens,
+            images,
         };
     });
     
@@ -466,6 +505,7 @@ const seedDatabase = async () => {
         messages,
         orders,
         verificationTokens,
+        images,
     };
 };
 

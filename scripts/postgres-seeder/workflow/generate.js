@@ -324,6 +324,28 @@ const generateWishcards = async () => {
     return wishcardsData;
 };
 
+const generateImages = async () => {
+    const images = await importSeederFile('images');
+    const imagesData = images.map((image) => {
+        const {
+            id = randomUUID(),
+            url = faker.image.urlPicsumPhotos(),
+            meta_data = {},
+            created_by = null,
+        } = image;
+        
+        return {
+            id,
+            url,
+            meta_data,
+            created_by,
+        };
+    });
+    
+    await saveSeederFile('images', imagesData);
+    return imagesData;
+};
+
 module.exports = {
     generateAgencies,
     generateChildren,
@@ -334,4 +356,5 @@ module.exports = {
     generateOrders,
     generateVerificationTokens,
     generateWishcards,
+    generateImages,
 };

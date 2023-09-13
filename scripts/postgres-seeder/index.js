@@ -8,6 +8,7 @@ const {
     generateOrders,
     generateWishcards,
     generateVerificationTokens,
+    generateImages,
 } = require('./workflow/generate');
 
 const {
@@ -18,6 +19,7 @@ const {
     processOrders,
     processWishcards,
     processVerificationTokens,
+    processImages,
 } = require('./workflow/process');
 
 const {
@@ -32,7 +34,7 @@ const workflowDefinitions = {
             agencies: generateAgencies,
             children: generateChildren,
             community_posts: generateCommunityPosts,
-            images: null,
+            images: generateImages,
             items: generateItems,
             messages: generateMessages,
             orders: generateOrders,
@@ -47,7 +49,7 @@ const workflowDefinitions = {
             agencies: processAgencies,
             children: processChildren,
             community_posts: processCommunityPosts,
-            images: null,
+            images: processImages,
             items: null,
             messages: processMessages,
             orders: processOrders,

@@ -184,6 +184,27 @@ const processWishcards = async () => {
     await saveSeederFile('wishcards', processedWishcards);
 };
 
+const processImages = async () => {
+    const images = await importSeederFile('images');
+    const users = await importSeederFile('users');
+    
+    const processedImages = images.reduce((acc, image) => {
+        const hasValidUser = image.created_by && users.some((user) => user.id === image.created_by);
+        
+        const randomUserIndex = randomNumber(0, users.length - 1);
+        const randomUserId = users[randomUserIndex].id || null;
+        
+        acc.push({
+            ...image,
+            ...(!hasValidUser && { created_by: randomUserId }),
+        });
+        
+        return acc;
+    }, []);
+    
+    await saveSeederFile('images', processedImages);
+};
+
 module.exports = {
     processAgencies,
     processChildren,
@@ -192,4 +213,5 @@ module.exports = {
     processOrders,
     processVerificationTokens,
     processWishcards,
+    processImages,
 };
