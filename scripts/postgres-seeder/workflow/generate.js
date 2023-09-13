@@ -269,7 +269,7 @@ const generateVerificationTokens = async () => {
             id = randomUUID(),
             token = randomUUID().split('-').join(''),
             type = 'email',
-            expiration_date = faker.date.future(),
+            expires_at = faker.date.future().toISOString(),
             user_id = null,
         } = verificationToken;
         
@@ -277,7 +277,7 @@ const generateVerificationTokens = async () => {
             id,
             token,
             type,
-            expiration_date,
+            expires_at,
             user_id,
         };
     });
