@@ -41,11 +41,11 @@ Must do first:
 
 There are several scripts that can be executed to run/build the project/assets, the ones listed below are what you will be using most of the time.
 
-- `docker-compose up`: starts the mongo db container 
+  - `docker-compose up`: starts the Postgres container
 (leave it running and open a new terminal for npm commands)
 - `npm run dev`: this will start the server as well as the webpack watcher for react
 - `npm run build`: will cleanup all generated files and afterwards build all the assets/js into minified versions
-- To seed the database you can execute the seeder.js file like so `node scripts/seeder.js`
+- To seed the database you can run the seeder by running `npm run seed:postgres`
 
 If you need to run something specific checkout the package.json scripts section
 
