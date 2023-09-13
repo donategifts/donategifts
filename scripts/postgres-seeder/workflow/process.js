@@ -69,6 +69,27 @@ const processCommunityPosts = async () => {
     await saveSeederFile('community_posts', communityPostsWithAgencies);
 };
 
+const processUsers = async () => {
+    const users = await importSeederFile('users');
+    const images = await importSeederFile('images');
+    
+    const processedUsers = users.reduce((acc, user) => {
+        const hasValidImage = user.image_id && images.some((image) => image.id === user.image_id);
+        
+        const randomImageIndex = randomNumber(0, images.length - 1);
+        const randomImageId = images[randomImageIndex].id || null;
+        
+        acc.push({
+            ...user,
+            ...(!hasValidImage && { image_id: randomImageId }),
+        });
+        
+        return acc;
+    }, []);
+    
+    await saveSeederFile('users', processedUsers);
+};
+
 const processMessages = async () => {
     const messages = await importSeederFile('messages');
     const users = await importSeederFile('users');
@@ -209,6 +230,7 @@ module.exports = {
     processAgencies,
     processChildren,
     processCommunityPosts,
+    processUsers,
     processMessages,
     processOrders,
     processVerificationTokens,

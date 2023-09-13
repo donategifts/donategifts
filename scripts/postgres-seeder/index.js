@@ -20,6 +20,7 @@ const {
     processWishcards,
     processVerificationTokens,
     processImages,
+    processUsers,
 } = require('./workflow/process');
 
 const {
@@ -53,7 +54,7 @@ const workflowDefinitions = {
             items: null,
             messages: processMessages,
             orders: processOrders,
-            users: null,
+            users: processUsers,
             verification_tokens: processVerificationTokens,
             wishcards: processWishcards,
         },
@@ -115,5 +116,4 @@ const generateWorkflowRuns = async (definitions) => {
     console.log('Seeding database');
     await purgeDatabase();
     await seedDatabase();
-    console.log('Finished seeding database');
 })();
