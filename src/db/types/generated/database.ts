@@ -20,7 +20,7 @@ export type Loginmode = "email" | "facebook" | "google";
 
 export type Numeric = ColumnType<string, string | number, string | number>;
 
-export type Orderstatus = "cancelled" | "delivered" | "ordered" | "pending";
+export type Orderstatus = "cancelled" | "ordered" | "pending";
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 

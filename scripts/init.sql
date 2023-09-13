@@ -1,6 +1,6 @@
 CREATE TYPE UserRole AS ENUM ('admin', 'donor', 'partner');
 CREATE TYPE LoginMode AS ENUM ('email', 'facebook', 'google');
-CREATE TYPE OrderStatus AS ENUM ('pending', 'ordered', 'delivered', 'cancelled');
+CREATE TYPE OrderStatus AS ENUM ('pending', 'ordered', 'cancelled');
 CREATE TYPE WishcardStatus AS ENUM ('draft', 'published', 'donated');
 CREATE TYPE VerificationType AS ENUM ('email', 'phone');
 
