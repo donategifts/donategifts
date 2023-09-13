@@ -1,2 +1,0 @@
-*.json
-!postgres-seeder/data/*.json
