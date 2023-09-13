@@ -262,6 +262,30 @@ const generateOrders = async () => {
     return ordersData;
 };
 
+const generateVerificationTokens = async () => {
+    const verificationTokens = await importSeederFile('verification_tokens');
+    const verificationTokensData = verificationTokens.map((verificationToken) => {
+        const {
+            id = randomUUID(),
+            token = randomUUID().split('-').join(''),
+            type,
+            expiration_date = faker.date.future(),
+            user_id = null,
+        } = verificationToken;
+        
+        return {
+            id,
+            token,
+            type,
+            expiration_date,
+            user_id,
+        };
+    });
+    
+    await saveSeederFile('verification_tokens', verificationTokensData);
+    return verificationTokensData;
+};
+
 const generateWishcards = async () => {
     const wishcards = await importSeederFile('wishcards');
     const wishcardsData = wishcards.map((wishcard) => {
@@ -308,5 +332,6 @@ module.exports = {
     generateItems,
     generateMessages,
     generateOrders,
+    generateVerificationTokens,
     generateWishcards,
 };

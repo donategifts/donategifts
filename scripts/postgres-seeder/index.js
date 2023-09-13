@@ -7,6 +7,7 @@ const {
     generateMessages,
     generateOrders,
     generateWishcards,
+    generateVerificationTokens,
 } = require('./workflow/generate');
 
 const {
@@ -16,6 +17,7 @@ const {
     processMessages,
     processOrders,
     processWishcards,
+    processVerificationTokens,
 } = require('./workflow/process');
 
 const {
@@ -35,7 +37,7 @@ const workflowDefinitions = {
             messages: generateMessages,
             orders: generateOrders,
             users: generateUsers,
-            verification_tokens: null,
+            verification_tokens: generateVerificationTokens,
             wishcards: generateWishcards,
         },
     },
@@ -50,7 +52,7 @@ const workflowDefinitions = {
             messages: processMessages,
             orders: processOrders,
             users: null,
-            verification_tokens: null,
+            verification_tokens: processVerificationTokens,
             wishcards: processWishcards,
         },
     }

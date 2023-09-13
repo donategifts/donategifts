@@ -128,6 +128,26 @@ const processOrders = async () => {
     await saveSeederFile('orders', processedOrders);
 };
 
+const processVerificationTokens = async () => {
+    const verificationTokens = await importSeederFile('verification_tokens');
+    const users = await importSeederFile('users');
+    
+    const processedVerificationTokens = verificationTokens.reduce((acc, verificationToken, index) => {
+        const hasValidUser = verificationToken.user_id && users.some((user) => user.id === verificationToken.user_id);
+        
+        const userId = users[index].id || null;
+        
+        acc.push({
+            ...verificationToken,
+            ...(!hasValidUser && { user_id: userId }),
+        });
+        
+        return acc;
+    }, []);
+    
+    await saveSeederFile('verification_tokens', processedVerificationTokens);
+};
+
 const processWishcards = async () => {
     const wishcards = await importSeederFile('wishcards');
     const children = await importSeederFile('children');
@@ -169,5 +189,6 @@ module.exports = {
     processCommunityPosts,
     processMessages,
     processOrders,
+    processVerificationTokens,
     processWishcards,
 };
