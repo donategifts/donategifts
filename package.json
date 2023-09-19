@@ -23,7 +23,9 @@
 		"prepare": "husky install | chmod ug+x .husky/*",
 		"start": "node dist/index.js",
 		"webpack:build": "webpack --mode=production",
-		"webpack:watch": "webpack --mode=development --watch"
+		"webpack:watch": "webpack --mode=development --watch",
+		"seed:postgres": "node ./scripts/postgres-seeder/index.js",
+        "seed:mongo": "node ./scripts/mongo-seeder/prepareDbExport.js && node ./scripts/mongo-seeder/seeder.js"
 	},
 	"repository": {
 		"type": "git",
@@ -74,6 +76,7 @@
 		"@babel/plugin-transform-runtime": "7.22.10",
 		"@babel/preset-env": "7.22.10",
 		"@babel/preset-react": "7.22.5",
+		"@faker-js/faker": "^8.0.2",
 		"@types/express": "4.17.17",
 		"@types/express-session": "1.17.7",
 		"@types/lusca": "1.7.1",
@@ -87,7 +90,6 @@
 		"concurrently": "8.2.0",
 		"eslint-config-slurp-config": "1.1.2",
 		"eslint-plugin-react": "7.33.1",
-		"faker": "5.5.3",
 		"gulp": "4.0.2",
 		"gulp-autoprefixer": "8.0.0",
 		"gulp-concat": "2.6.1",

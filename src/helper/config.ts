@@ -52,7 +52,6 @@ interface EnvVars {
 	PG_USER: string;
 	PG_PASSWORD: string;
 	PG_DATABASE: string;
-	DATABASE_URL: string;
 	MONGO_URI: string;
 	NODE_ENV: string;
 	SESS_NAME: string;

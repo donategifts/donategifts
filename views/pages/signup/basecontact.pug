@@ -8,36 +8,54 @@ append head
         script( src='https://www.google.com/recaptcha/api.js' async defer )
 
 block content
-    #sign-up.gradient-form
-        .container.py-5
+    #sign-up.gradient-form.d-flex.justify-content-center.align-items-center.flex-column
+        h1.heading-primary.mt-5 Join DonateGifts!
+        .container.pt-4.pb-5
             form#sign-up-form.p-5.rounded-4
                 .col-md-8.mx-auto.text-white
                     .py-2
-                        label.form-label( for='fName' ) First Name
+                        label Signing up as:
+                        .row.px-2
+                            input#donor.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='donor'
+                                autocomplete='off'
+                                checked
+                            )
+                            label.fw-bold.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='donor' ) Gift Sender
+
+                            input#partner.btn-check.col-auto( type='radio'
+                                name='user-role'
+                                value='partner'
+                                autocomplete='off'
+                                data-bs-toggle='modal'
+                                data-bs-target='#signupModalCenter'
+                            )
+                            label.fw-bold.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='partner' ) Foster Care Partner
+
+                    .py-2
+                        label.form-label( for='fName' ) First Name:
                         input#fName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
                             type='text'
                             name='fName'
-                            placeholder='John'
                         )
 
                     .py-2
-                        label.form-label( for='lName' ) Last Name
+                        label.form-label( for='lName' ) Last Name:
                         input#lName.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
                             type='text'
                             name='lName'
-                            placeholder='Doe'
                         )
 
                     .py-2
-                        label.form-label( for='email' ) Email
+                        label.form-label( for='email' ) Email:
                         input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
                             type='email'
                             name='email'
-                            placeholder='username@xyz.com'
                         )
 
                     .py-2
-                        label.form-label( for='password' ) Password
+                        label.form-label( for='password' ) Password:
                         div
                             .input-group
                                 input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
@@ -49,39 +67,19 @@ block content
                             small#password-error.hidden.text-primary Passwords do not match
 
                     .py-2
-                        label.form-label( for='password-repeat' ) Confirm Password
+                        label.form-label( for='password-repeat' ) Confirm Password:
                         input#password-repeat.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
                             type='password'
                             name='password-repeat'
                         )
-
-                    .py-2
-                        label Signing up as:
-                        .row.px-2
-                            input#donor.btn-check.col-auto( type='radio'
-                                name='user-role'
-                                value='donor'
-                                autocomplete='off'
-                                checked
-                            )
-                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='donor' ) Gift Sender
-
-                            input#partner.btn-check.col-auto( type='radio'
-                                name='user-role'
-                                value='partner'
-                                autocomplete='off'
-                                data-bs-toggle='modal'
-                                data-bs-target='#signupModalCenter'
-                            )
-                            label.btn.btn-outline-light.col.m-1.py-3.d-flex.flex-column.justify-content-center( for='partner' ) Foster Care Partner
 
                     .g-recaptcha( data-sitekey='6LcaNtcZAAAAAJ4wxLdiUe4fc1sLhkILRs-DXnXe'
                         data-callback='confirmCaptchaSubmit'
                         data-size='invisible'
                     )
 
-                    .row.py-2.justify-content-end
-                        .col-md-4
+                    .row.pt-4.justify-content-center
+                        .col-md-6
                             button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Sign Up
 
 block modal

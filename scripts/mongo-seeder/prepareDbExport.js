@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const bcrypt = require('bcrypt');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 const agencies = require('./seeder-data/agencies.json');
 const contacts = require('./seeder-data/contacts.json');
@@ -19,14 +19,14 @@ const wishCards = require('./seeder-data/wishcards.json');
 			const agenciesData = agencies.map((agency) => ({
 				...agency,
 				agencyAddress: {
-					address1: faker.address.streetAddress(),
-					address2: faker.address.streetAddress(),
-					city: faker.address.city(),
-					state: faker.address.state(),
-					country: faker.address.country(),
-					zipcode: faker.address.zipCode(),
+					address1: faker.location.streetAddress(),
+					address2: faker.location.streetAddress(),
+					city: faker.location.city(),
+					state: faker.location.state(),
+					country: faker.location.country(),
+					zipcode: faker.location.zipCode(),
 				},
-				agencyPhone: faker.phone.phoneNumber(),
+				agencyPhone: faker.phone.number(),
 			}));
 
 			fs.writeFileSync(
@@ -39,7 +39,7 @@ const wishCards = require('./seeder-data/wishcards.json');
 		const prepareContacts = () => {
 			const contactsData = contacts.map((contact) => ({
 				...contact,
-				name: faker.name.findName(),
+				name: faker.person.fullName(),
 				email: faker.internet.email(),
 			}));
 
@@ -62,8 +62,8 @@ const wishCards = require('./seeder-data/wishcards.json');
 
 			const usersData = users.map((user) => ({
 				...user,
-				fName: faker.name.firstName(),
-				lName: faker.name.lastName(),
+				fName: faker.person.firstName(),
+				lName: faker.person.lastName(),
 				email: faker.internet.email(),
 				password,
 			}));
@@ -78,8 +78,8 @@ const wishCards = require('./seeder-data/wishcards.json');
 		const prepareWishCards = () => {
 			const wishCardsData = wishCards.map((wishCard) => ({
 				...wishCard,
-				childFirstName: faker.name.firstName(),
-				childLastName: faker.name.lastName(),
+				childFirstName: faker.person.firstName(),
+				childLastName: faker.person.lastName(),
 				childStory: faker.lorem.paragraph(),
 			}));
 

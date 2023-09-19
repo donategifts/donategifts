@@ -29,7 +29,9 @@ script.
             close,
             gravity: 'top',
             position: 'center',
-            backgroundColor: `linear-gradient(to right, ${color}, ${color})`,
+            style: {
+                background: `linear-gradient(to right, ${color}, ${color})`,
+            },
             stopOnFocus: true,
             className,
             offset,
