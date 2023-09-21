@@ -10,14 +10,12 @@ export default class DGBot {
 
 	private commandFiles: string[] = [];
 
+	private commands: string[] = [];
+
 	constructor(
 		private readonly token: string,
 		private readonly clientId: string,
 	) {
-		this.getCommands();
-	}
-
-	private getCommands() {
 		this.commandsPath = path.join(__dirname, 'commands');
 		this.commandFiles = fs.readdirSync(this.commandsPath);
 	}
@@ -29,9 +27,10 @@ export default class DGBot {
 
 		for (const file of this.commandFiles) {
 			const filePath = path.join(this.commandsPath, file);
-			const command = await import(`${filePath}`);
+			const command = await import(filePath);
 			if ('data' in command && 'execute' in command) {
 				client.commands.set(command.data.name, command);
+				this.commands.push(command.data.toJSON());
 			} else {
 				log.warn(
 					`The command at ${filePath} is missing a required "data" or "execute" property.`,
@@ -66,24 +65,17 @@ export default class DGBot {
 			}
 		});
 
-		client.login(this.token);
+		await client.login(this.token);
 	}
 
 	async refreshCommands() {
-		const commands: string[] = [];
-
-		for (const file of this.commandFiles) {
-			const command = await import(`./commands/${file}`);
-			commands.push(command.data.toJSON());
-		}
-
 		const rest = new REST({ version: '10' }).setToken(this.token);
 
 		try {
-			log.info(`Started refreshing ${commands.length} application (/) commands.`);
+			log.info(`Started refreshing ${this.commands.length} application (/) commands.`);
 
 			const data = await rest.put(Routes.applicationCommands(this.clientId), {
-				body: commands,
+				body: this.commands,
 			});
 
 			log.info(`Successfully reloaded ${(data as []).length} application (/) commands.`);
