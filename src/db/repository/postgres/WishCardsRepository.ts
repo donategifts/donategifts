@@ -24,12 +24,12 @@ export default class WishcardsRepository {
 		return wishcard;
 	}
 
-	async getAll() {
-		return await this.database.selectFrom('wishcards').selectAll().execute();
+	getAll() {
+		return this.database.selectFrom('wishcards').selectAll().execute();
 	}
 
-	async getByWishItemName(itemName: string) {
-		return await this.database
+	getByWishItemName(itemName: string) {
+		return this.database
 			.selectFrom('wishcards')
 			.innerJoin('items', 'wishcards.item_id', 'items.id')
 			.selectAll()
@@ -37,8 +37,8 @@ export default class WishcardsRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async getById(id: string) {
-		return await this.database
+	getById(id: string) {
+		return this.database
 			.selectFrom('wishcards')
 			.innerJoin('agencies', 'wishcards.agency_id', 'agencies.id')
 			.selectAll()
@@ -46,8 +46,8 @@ export default class WishcardsRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async update(id: string, updateParams: WishcardsUpdateParams) {
-		return await this.database
+	update(id: string, updateParams: WishcardsUpdateParams) {
+		return this.database
 			.updateTable('wishcards')
 			.set(updateParams)
 			.where('id', '=', id)
@@ -55,15 +55,12 @@ export default class WishcardsRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async delete(id: string) {
-		return await this.database
-			.deleteFrom('wishcards')
-			.where('id', '=', id)
-			.executeTakeFirstOrThrow();
+	delete(id: string) {
+		return this.database.deleteFrom('wishcards').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
-	async getByAgencyId(id: string) {
-		return await this.database
+	getByAgencyId(id: string) {
+		return this.database
 			.selectFrom('wishcards')
 			.innerJoin('agencies', 'wishcards.agency_id', 'agencies.id')
 			.selectAll()
