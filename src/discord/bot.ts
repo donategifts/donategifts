@@ -6,27 +6,23 @@ import { Client, Collection, Events, GatewayIntentBits, REST, Routes } from 'dis
 import log from '../helper/logger';
 
 export default class DGBot {
-	private commandsPath = '';
-
-	private commandFiles: string[] = [];
-
 	private commands: string[] = [];
 
 	constructor(
 		private readonly token: string,
 		private readonly clientId: string,
-	) {
-		this.commandsPath = path.join(__dirname, 'commands');
-		this.commandFiles = fs.readdirSync(this.commandsPath);
-	}
+	) {}
 
 	async initClient() {
 		const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+		const commandsPath = path.join(__dirname, 'commands');
+		const commandFiles = fs.readdirSync(commandsPath);
+
 		client.commands = new Collection();
 
-		for (const file of this.commandFiles) {
-			const filePath = path.join(this.commandsPath, file);
+		for (const file of commandFiles) {
+			const filePath = path.join(commandsPath, file);
 			const command = await import(filePath);
 			if ('data' in command && 'execute' in command) {
 				client.commands.set(command.data.name, command);
