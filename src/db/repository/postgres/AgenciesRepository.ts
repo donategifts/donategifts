@@ -8,7 +8,7 @@ export type AgenciesUpdateParams = Omit<
 >;
 export type AgenciesCreateParams = Omit<
 	Agencies,
-	'id' | 'verified' | 'created_at' | 'updated_at' | 'deleted_at'
+	'id' | 'is_verified' | 'created_at' | 'updated_at' | 'deleted_at'
 >;
 
 export default class AgenciesRepository {
@@ -39,18 +39,18 @@ export default class AgenciesRepository {
 	verify(id: string) {
 		return this.database
 			.updateTable('agencies')
-			.set({ verified: true })
+			.set({ is_verified: true })
 			.where('id', '=', id)
 			.returningAll()
 			.executeTakeFirstOrThrow();
 	}
 
 	getVerified() {
-		return this.database.selectFrom('agencies').where('verified', '=', true).execute();
+		return this.database.selectFrom('agencies').where('is_verified', '=', true).execute();
 	}
 
 	getUnverified() {
-		return this.database.selectFrom('agencies').where('verified', '=', false).execute();
+		return this.database.selectFrom('agencies').where('is_verified', '=', false).execute();
 	}
 
 	update(id: string, updateParams: AgenciesUpdateParams) {

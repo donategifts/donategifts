@@ -1,6 +1,6 @@
 import { Kysely } from 'kysely';
 
-import { DB, Orders } from '../../types/generated/database';
+import { DB, Orders, Orderstatus } from '../../types/generated/database';
 
 export type OrdersCreateParams = Omit<
 	Orders,
@@ -20,18 +20,23 @@ export default class OrdersRepository {
 	}
 
 	getByAgencyId(id: string) {
-		return this.database.selectFrom('orders').where('agency_id', '=', id).execute();
+		return this.database
+			.selectFrom('orders')
+			.innerJoin('wishcards', 'orders.wishcard_id', 'wishcards.id')
+			.innerJoin('agencies', 'wishcards.created_by', 'agencies.id')
+			.where('agencies.id', '=', id)
+			.selectAll('wishcards')
+			.execute();
 	}
 
 	getByWishCardId(id: string) {
 		return this.database
 			.selectFrom('orders')
-			.innerJoin('wishcards', 'orders.item_id', 'wishcards.id')
-			.where('wishcards.id', '=', id)
+			.where('wishcard_id', '=', id)
 			.executeTakeFirstOrThrow();
 	}
 
-	updateStatus(id: string, status: number) {
+	updateStatus(id: string, status: Orderstatus) {
 		return this.database
 			.updateTable('orders')
 			.set({ status })

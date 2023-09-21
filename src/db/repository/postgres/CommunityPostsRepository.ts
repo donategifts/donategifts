@@ -11,7 +11,7 @@ export default class CommunityPostsRepository {
 		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
-			.selectAll()
+			.selectAll('community_posts')
 			.execute();
 	}
 
@@ -19,8 +19,8 @@ export default class CommunityPostsRepository {
 		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
-			.where('agencies.verified', '=', true)
-			.selectAll()
+			.where('agencies.is_verified', '=', true)
+			.selectAll('community_posts')
 			.execute();
 	}
 

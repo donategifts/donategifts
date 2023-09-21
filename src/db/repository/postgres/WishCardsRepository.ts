@@ -32,7 +32,7 @@ export default class WishcardsRepository {
 		return this.database
 			.selectFrom('wishcards')
 			.innerJoin('items', 'wishcards.item_id', 'items.id')
-			.selectAll()
+			.selectAll('wishcards')
 			.where('items.name', 'ilike', itemName)
 			.executeTakeFirstOrThrow();
 	}
@@ -40,8 +40,6 @@ export default class WishcardsRepository {
 	getById(id: string) {
 		return this.database
 			.selectFrom('wishcards')
-			.innerJoin('agencies', 'wishcards.agency_id', 'agencies.id')
-			.selectAll()
 			.where('wishcards.id', '=', id)
 			.executeTakeFirstOrThrow();
 	}
@@ -62,8 +60,9 @@ export default class WishcardsRepository {
 	getByAgencyId(id: string) {
 		return this.database
 			.selectFrom('wishcards')
-			.innerJoin('agencies', 'wishcards.agency_id', 'agencies.id')
-			.selectAll()
+			.innerJoin('children', 'children.id', 'wishcards.child_id')
+			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
+			.selectAll('wishcards')
 			.where('agencies.id', '=', id)
 			.executeTakeFirstOrThrow();
 	}

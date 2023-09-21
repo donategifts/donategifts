@@ -1,12 +1,12 @@
 import { Kysely, UpdateObject } from 'kysely';
 
 import Utils from '../../../helper/utils';
-import { DB, Users } from '../../types/generated/database';
+import { DB, Users, Verificationtype } from '../../types/generated/database';
 
 export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
 export type UsersCreateParams = Omit<
 	Users,
-	'id' | 'is_verified' | 'created_at' | 'updated_at' | 'deleted_at'
+	'id' | 'is_verified' | 'is_disabled' | 'created_at' | 'updated_at' | 'deleted_at'
 >;
 
 export default class UsersRepository {
@@ -41,31 +41,25 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async create(createParams: UsersCreateParams) {
+	async create(createParams: UsersCreateParams, verificationType: Verificationtype) {
 		const user = await this.database
 			.insertInto('users')
 			.values(createParams)
 			.returningAll()
 			.executeTakeFirstOrThrow();
 
-		await this.database
-			.insertInto('verifications')
-			.values({ user_id: user.id, email_verified: false })
-			.execute();
-
-		const { token } = await this.database
+		const { token: emailVerificationToken } = await this.database
 			.insertInto('verification_tokens')
 			.values({
 				user_id: user.id,
 				token: Utils.createEmailVerificationHash(),
-				// TODO: change to enum value once @nick-w-nick is done with the migration scripts
-				type: 0,
-				expiration: new Date(),
+				type: verificationType,
+				expires_at: new Date(),
 			})
 			.returning('token')
 			.executeTakeFirstOrThrow();
 
-		return { user, emailVerificationHash: token };
+		return { user, emailVerificationToken };
 	}
 
 	getByPasswordResetToken(resetToken: string) {
@@ -77,20 +71,12 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	async setEmailVerification(userId: string, verified: boolean) {
-		const result = await this.database
+	setEmailVerification(userId: string, verified: boolean) {
+		return this.database
 			.updateTable('users')
 			.set({ is_verified: verified })
 			.where('id', '=', userId)
 			.returningAll()
 			.executeTakeFirstOrThrow();
-
-		await this.database
-			.updateTable('verifications')
-			.set({ email_verified: verified })
-			.where('user_id', '=', result.id)
-			.execute();
-
-		return result;
 	}
 }
