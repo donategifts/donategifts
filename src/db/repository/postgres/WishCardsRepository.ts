@@ -14,14 +14,12 @@ export type WishcardsCreateParams = Omit<
 export default class WishcardsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
-	async create(createParams: WishcardsCreateParams) {
-		const wishcard = await this.database
+	create(createParams: WishcardsCreateParams) {
+		return this.database
 			.insertInto('wishcards')
 			.values(createParams)
 			.returningAll()
 			.executeTakeFirstOrThrow();
-
-		return wishcard;
 	}
 
 	getAll() {
