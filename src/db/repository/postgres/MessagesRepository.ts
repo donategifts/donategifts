@@ -23,6 +23,9 @@ export default class MessagesRepository {
 	}
 
 	getByWishCardId(id: string) {
-		return this.database.selectFrom('messages').where('wishcard_id', '=', id).execute();
+		return this.database
+			.selectFrom('messages')
+			.where('wishcard_id', '=', id)
+			.execute();
 	}
 }
