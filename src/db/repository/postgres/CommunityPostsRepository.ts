@@ -15,10 +15,11 @@ export default class CommunityPostsRepository {
 	}
 
 	getAllByVerifiedAgencies() {
+	getByAgencyVerificationStatus(is_verified: boolean) {
 		return this.database
 			.selectFrom('community_posts')
-			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
-			.where('agencies.is_verified', '=', true)
+			.innerJoin('agencies', 'agencies.id', 'community_posts.agency_id')
+			.where('agencies.is_verified', '=', is_verified)
 			.selectAll('community_posts')
 			.execute();
 	}
