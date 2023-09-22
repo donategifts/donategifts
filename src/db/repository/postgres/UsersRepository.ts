@@ -6,7 +6,11 @@ import { DB, Users, Verificationtype } from '../../types/generated/database';
 export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
 export type UsersCreateParams = Omit<
 	Users,
-	'id' | 'is_verified' | 'is_disabled' | 'created_at' | 'updated_at' | 'deleted_at'
+	'id'
+	| 'is_verified'
+	| 'is_disabled'
+	| 'created_at'
+	| 'updated_at'
 >;
 
 export default class UsersRepository {
