@@ -19,6 +19,13 @@ export type AgenciesCreateParams = Omit<
 export default class AgenciesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
+	getById(id: string) {
+		return this.database
+			.selectFrom('agencies')
+			.where('id', '=', id)
+			.executeTakeFirstOrThrow();
+	}
+
 	getByAccountManagerId(id: string) {
 		return this.database
 			.selectFrom('agencies')
