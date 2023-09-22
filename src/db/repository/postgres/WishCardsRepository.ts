@@ -4,7 +4,11 @@ import { DB, Wishcards } from '../../types/generated/database';
 
 export type WishcardsUpdateParams = Omit<
 	UpdateObject<DB, 'wishcards'>,
-	'id' | 'created_at' | 'updated_at' | 'agency_id' | 'child_id'
+	'id'
+	| 'created_at'
+	| 'updated_at'
+	| 'agency_id'
+	| 'child_id'
 >;
 export type WishcardsCreateParams = Omit<
 	Wishcards,
