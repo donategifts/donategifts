@@ -3,7 +3,12 @@ import { Kysely, UpdateObject } from 'kysely';
 import Utils from '../../../helper/utils';
 import { DB, Users, Verificationtype } from '../../types/generated/database';
 
-export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
+export type UsersUpdateParams = Omit<
+	UpdateObject<DB, 'users'>,
+	'id'
+	| 'created_at'
+	| 'updated_at'
+>;
 export type UsersCreateParams = Omit<
 	Users,
 	'id'
