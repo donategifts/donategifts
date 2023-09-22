@@ -4,11 +4,16 @@ import { Agencies, DB } from '../../types/generated/database';
 
 export type AgenciesUpdateParams = Omit<
 	UpdateObject<DB, 'agencies'>,
-	'id' | 'created_at' | 'updated_at'
+	'id'
+	| 'created_at'
+	| 'updated_at'
 >;
 export type AgenciesCreateParams = Omit<
 	Agencies,
-	'id' | 'is_verified' | 'created_at' | 'updated_at' | 'deleted_at'
+	'id'
+	| 'is_verified'
+	| 'created_at'
+	| 'updated_at'
 >;
 
 export default class AgenciesRepository {
