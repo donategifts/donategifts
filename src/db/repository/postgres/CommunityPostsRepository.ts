@@ -10,7 +10,6 @@ export default class CommunityPostsRepository {
 	getAll() {
 		return this.database
 			.selectFrom('community_posts')
-			.innerJoin('agencies', 'community_posts.id', 'agencies.id')
 			.selectAll('community_posts')
 			.execute();
 	}
