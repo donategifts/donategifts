@@ -32,10 +32,11 @@ export default class OrdersRepository {
 	getByAgencyId(id: string) {
 		return this.database
 			.selectFrom('orders')
-			.innerJoin('wishcards', 'orders.wishcard_id', 'wishcards.id')
-			.innerJoin('agencies', 'wishcards.created_by', 'agencies.id')
+			.innerJoin('wishcards', 'wishcards.id', 'orders.wishcard_id')
+			.innerJoin('children', 'children.id', 'wishcards.child_id')
+			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
 			.where('agencies.id', '=', id)
-			.selectAll('wishcards')
+			.selectAll('orders')
 			.execute();
 	}
 
