@@ -24,6 +24,14 @@ export default class CommunityPostsRepository {
 			.execute();
 	}
 
+	getByAgencyId(id: string) {
+		return this.database
+			.selectFrom('community_posts')
+			.where('agency_id', '=', id)
+			.selectAll('community_posts')
+			.execute();
+	}
+
 	create(postParams: CommunityPostsCreateParams) {
 		return this.database
 			.insertInto('community_posts')
