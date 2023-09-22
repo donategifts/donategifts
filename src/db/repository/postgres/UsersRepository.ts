@@ -78,10 +78,10 @@ export default class UsersRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	setEmailVerification(userId: string, verified: boolean) {
+	updateVerificationStatus(userId: string, is_verified: boolean) {
 		return this.database
 			.updateTable('users')
-			.set({ is_verified: verified })
+			.set({ is_verified })
 			.where('id', '=', userId)
 			.returningAll()
 			.executeTakeFirstOrThrow();
