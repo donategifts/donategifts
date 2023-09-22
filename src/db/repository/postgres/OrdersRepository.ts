@@ -11,7 +11,10 @@ export default class OrdersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	create(createParams: OrdersCreateParams) {
-		return this.database.insertInto('orders').values(createParams).returningAll()
+		return this.database
+			.insertInto('orders')
+			.values(createParams)
+			.returningAll()
 			.executeTakeFirstOrThrow;
 	}
 
