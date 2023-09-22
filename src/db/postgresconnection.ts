@@ -29,7 +29,9 @@ const databaseConfig: KyselyConfig = {
 export const database = new Kysely<DB>(databaseConfig);
 
 export const connectPostgres = async () => {
-	const tables = await database.introspection.getTables({ withInternalKyselyTables: false });
+	const tables = await database.introspection.getTables({
+		withInternalKyselyTables: false,
+	});
 
 	if (tables.length === 0) {
 		logger.error('Database initialized with 0 tables, check your database connection!');
