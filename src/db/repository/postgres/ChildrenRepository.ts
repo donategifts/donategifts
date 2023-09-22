@@ -24,7 +24,10 @@ export default class ChildrenRepository {
 	}
 
 	getAll() {
-		return this.database.selectFrom('children').selectAll().execute();
+		return this.database
+			.selectFrom('children')
+			.selectAll()
+			.execute();
 	}
 
 	updateById(id: string, updateParams: ChildrenUpdateParams) {
