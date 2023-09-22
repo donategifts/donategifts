@@ -57,12 +57,11 @@ export default class AgenciesRepository {
 			.executeTakeFirstOrThrow();
 	}
 
-	getVerified() {
-		return this.database.selectFrom('agencies').where('is_verified', '=', true).execute();
-	}
-
-	getUnverified() {
-		return this.database.selectFrom('agencies').where('is_verified', '=', false).execute();
+	getByVerificationStatus(is_verified: boolean) {
+		return this.database
+			.selectFrom('agencies')
+			.where('is_verified', '=', is_verified)
+			.execute();
 	}
 
 	update(id: string, updateParams: AgenciesUpdateParams) {
