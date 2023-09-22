@@ -12,7 +12,10 @@ export type WishcardsUpdateParams = Omit<
 >;
 export type WishcardsCreateParams = Omit<
 	Wishcards,
-	'id' | 'created_at' | 'updated_at' | 'deleted_at' | 'status'
+	'id'
+	| 'created_at'
+	| 'updated_at'
+	| 'status'
 >;
 
 export default class WishcardsRepository {
