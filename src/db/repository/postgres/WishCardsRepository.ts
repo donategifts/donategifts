@@ -39,7 +39,7 @@ export default class WishcardsRepository {
 	getByWishItemName(itemName: string) {
 		return this.database
 			.selectFrom('wishcards')
-			.innerJoin('items', 'wishcards.item_id', 'items.id')
+			.innerJoin('items', 'items.id', 'wishcards.item_id')
 			.selectAll('wishcards')
 			.where('items.name', 'ilike', itemName)
 			.executeTakeFirstOrThrow();
