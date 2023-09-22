@@ -23,7 +23,10 @@ export default class WishcardsRepository {
 	}
 
 	getAll() {
-		return this.database.selectFrom('wishcards').selectAll().execute();
+		return this.database
+			.selectFrom('wishcards')
+			.selectAll()
+			.execute();
 	}
 
 	getByWishItemName(itemName: string) {
