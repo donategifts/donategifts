@@ -4,7 +4,11 @@ import { DB, Orders, Orderstatus } from '../../types/generated/database';
 
 export type OrdersCreateParams = Omit<
 	Orders,
-	'id' | 'status' | 'delivery_date' | 'created_at' | 'updated_at'
+	'id'
+	| 'status'
+	| 'delivery_date'
+	| 'created_at'
+	| 'updated_at'
 >;
 
 export default class OrdersRepository {
