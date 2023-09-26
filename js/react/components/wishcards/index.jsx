@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import LoadingCard from '../shared/LoadingCard.jsx';
+import WishCard from '../shared/WishCard.jsx';
 
 function WishCards({ wishCards, user }) {
 	const [isLoading, setIsLoading] = useState(true);
@@ -24,52 +25,8 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div
-						className="card border-0 shadow m-3 mt-0 col-12 col-lg-5 col-xl-3"
-						key={wishCard._id}
-					>
-						<img
-							className="card-img-top rounded-0 rounded-top-3"
-							src={wishCard.wishCardImage}
-							alt={wishCard.wishItemName}
-							loading="eager"
-						/>
-						<div className="card-body center-elements rounded-0 rounded-bottom-3">
-							<div className="w-100">
-								<h4 className="card-title text-center text-primary">
-									My name is {wishCard.childFirstName}
-								</h4>
-								<div className="card-text">
-									<p className="text-break">Wish: {wishCard.wishItemName}</p>
-									<p>Item Price: ${wishCard.wishItemPrice}</p>
-									<p className="text-break">Interest: {wishCard.childInterest}</p>
-								</div>
-								<div className="d-md-flex justify-content-center">
-									<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
-										<a
-											className="btn btn-lg btn-primary w-100"
-											href={`/wishcards/single/${wishCard._id}`}
-										>
-											View More
-										</a>
-									</div>
-									<div className="col-12 col-md-6 ms-0 ms-md-1">
-										{wishCard.status === 'donated' ? (
-											<button className="btn btn-lg btn-dark disabled w-100">
-												Donated
-											</button>
-										) : (
-											<a
-												className="btn btn-lg btn-dark w-100"
-												{...attributes}
-											>
-												Donate
-											</a>
-										)}
-									</div>
-								</div>
-							</div>
-						</div>
+					<div key={wishCard._id} className="m-3 mt-0 col-12 col-lg-5 col-xl-3">
+						<WishCard wishCard={wishCard} attributes={attributes} />;
 					</div>
 				);
 			}),
