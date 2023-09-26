@@ -12,7 +12,7 @@ function WishCards({ wishCards, user }) {
 			wishCards.map((wishCard) => {
 				let attributes = {};
 
-				if (!user._id) {
+				if (!user?._id) {
 					attributes = {
 						'data-bs-toggle': 'modal',
 						'data-bs-target': '#loginModalCenter',
