@@ -58,7 +58,7 @@ export default class PaymentProviderController extends BaseController {
 		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
-			const emailResponse = await Messaging.sendDonationConfirmationMail({
+			const emailResponse = await Messaging.sendDonationConfirmationEmail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,
@@ -80,16 +80,18 @@ export default class PaymentProviderController extends BaseController {
 				donationPrice: amount,
 			});
 
-			await this.wishCardRepository.updateWishCard(wishCard!._id, { status: 'donated' });
+			await this.wishCardRepository.updateWishCardByObjectId(wishCard!._id, {
+				status: 'donated',
+			});
 
-			await Messaging.sendAgencyDonationAlert({
-				firstName: user.fName,
-				lastName: user.lName,
-				email: agency?.accountManager.email,
+			await Messaging.sendAgencyDonationEmail({
+				agencyName: agency?.agencyName,
+				agencyEmail: agency?.accountManager.email,
+				childName: wishCard?.childFirstName,
 				item: wishCard?.wishItemName,
 				price: wishCard?.wishItemPrice,
-				childName: wishCard?.childFirstName,
-				agency: agencyName,
+				donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
+				address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
 			});
 
 			await Messaging.sendDiscordDonationNotification({

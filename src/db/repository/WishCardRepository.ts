@@ -186,10 +186,10 @@ export default class WishCardRepository {
 		}
 	}
 
-	async updateWishCard(id: string, wishCardFields: Partial<WishCard>) {
+	async updateWishCardByObjectId(id: string, updateParams: Partial<WishCard>) {
 		try {
 			return await this.wishCardModel
-				.updateOne({ _id: id }, { $set: { ...wishCardFields } })
+				.findOneAndUpdate({ _id: id }, { $set: updateParams }, { new: true })
 				.lean()
 				.exec();
 		} catch (error) {
@@ -288,30 +288,39 @@ export default class WishCardRepository {
 			);
 
 			await this.donationRepository.updateDonationStatus(String(donation?._id), 'ordered');
-			await Messaging.sendDonationOrderedEmail({
+			await Messaging.sendAgencyDonationEmail({
 				agencyEmail: accountManager?.email,
 				agencyName: agency.agencyName,
 				childName: wishCard.childFirstName,
-				itemName: wishCard.wishItemName,
-				itemPrice: wishCard.wishItemPrice,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
 				donationDate: moment(new Date(donation!.donationDate)).format('MMM Do, YYYY'),
 				address: `${agency.agencyAddress.address1} ${agency.agencyAddress.city} ${agency.agencyAddress.zipcode} ${agency.agencyAddress.state}`,
 			});
 		}
 	}
 
-	private async handleWishcardPublished() {
-		// TODO
-		return undefined;
+	private async handleWishcardPublished(change) {
+		const wishCard = await this.getWishCardByObjectId(change.documentKey._id);
+
+		if (wishCard) {
+			const agency = wishCard.belongsTo;
+			const accountManager = await this.userRepository.getUserByObjectId(
+				agency.accountManager,
+			);
+			await Messaging.sendWishPublishedEmail({
+				agencyEmail: accountManager?.email,
+				childName: wishCard.childFirstName,
+			});
+		}
 	}
 
-	// TODO: check if this is still needed
 	watch() {
 		this.wishCardChangeListener.on('change', async (change: Record<string, any>) => {
 			if (this.wishCardIsOrdered(change)) {
 				await this.handleDonationOrdered(change);
 			} else if (this.wishCardIsPublished(change)) {
-				await this.handleWishcardPublished();
+				await this.handleWishcardPublished(change);
 			}
 		});
 	}

@@ -245,7 +245,7 @@ export default class Validations {
 			body('childBirthday').isString(),
 			body('childFirstName')
 				.notEmpty()
-				.withMessage("Child's first Name is required")
+				.withMessage("Child's first name is required")
 				.isString(),
 			body('childLastName').isString(),
 			body('childInterest').isString(),
@@ -309,7 +309,7 @@ export default class Validations {
 			body('childBirthday').isString(),
 			body('childFirstName')
 				.notEmpty()
-				.withMessage("Child's first Name is required")
+				.withMessage("Child's first name is required")
 				.isString(),
 			body('childLastName').isString(),
 			body('childInterest').isString(),
@@ -353,6 +353,58 @@ export default class Validations {
 
 	static updateWishCardValidationRules() {
 		return [param('id').notEmpty().withMessage('Id parameter is required')];
+	}
+
+	static updateAgencyWishcardValidationRules() {
+		return [
+			body('childFirstName')
+				.notEmpty()
+				.withMessage("Child's first name is required")
+				.isLength({ max: 255 })
+				.withMessage("Child's first name is no longer than 255 characters"),
+
+			body('childLastName')
+				.notEmpty()
+				.withMessage("Child's last name is required")
+				.isLength({ max: 255 })
+				.withMessage("Child's last name is no longer than 255 characters"),
+
+			body('wishItemName')
+				.notEmpty()
+				.withMessage('Wish item name is required')
+				.isLength({ max: 255 })
+				.withMessage('Wish item name is no longer than 255 characters'),
+
+			// decimal(10, 2)
+			body('wishItemPrice')
+				.notEmpty()
+				.withMessage('Wish item price is required')
+				.isFloat({
+					min: 0.01,
+					max: 40,
+				})
+				.withMessage(
+					'Wish item price must be a valid number, must be at least $0.01 and must not exceed $40',
+				)
+				.isDecimal({ decimal_digits: '0,2', locale: 'en-US' })
+				.toFloat()
+				.withMessage(
+					'Wish item price cannot have more than 2 decimal places',
+					// 'Wish item price must be a valid 2 decimal places numeric value ($0.01 ≤ price ≤ $40.00)',
+				),
+
+			body('childInterest')
+				.notEmpty()
+				.withMessage("Child's interest is required")
+				.isLength({ max: 255 })
+				.withMessage("Child's interest is no longer than 255 characters"),
+
+			body('childStory')
+				.notEmpty()
+				.withMessage("Child's story is required")
+				.isLength({ max: 2000 })
+				.withMessage("Child's story is no longer than 2000 characters"),
+		];
 	}
 
 	static postMessageValidationRules() {

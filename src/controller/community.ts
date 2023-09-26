@@ -20,10 +20,17 @@ export default class CommunityController extends BaseController {
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
+			const { user } = res.locals;
 			const posts = (await this.postRepository.getAllPostsByVerifiedAgencies()).sort(
 				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
 			);
-			this.renderView(res, 'pages/community', { posts });
+
+			if (user?.userRole !== 'partner') {
+				return this.renderView(res, 'pages/community', { posts });
+			}
+
+			const agency = await this.agencyRepository.getAgencyByUserId(user._id);
+			return this.renderView(res, 'pages/community', { posts, agency });
 		} catch (error: any) {
 			return this.handleError(res, error);
 		}

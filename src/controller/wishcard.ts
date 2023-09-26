@@ -35,7 +35,7 @@ export default class WishCardController extends BaseController {
 		this.handleGetEdit = this.handleGetEdit.bind(this);
 		this.handlePostEdit = this.handlePostEdit.bind(this);
 		this.handleDeleteSingle = this.handleDeleteSingle.bind(this);
-		this.handleGetMe = this.handleGetMe.bind(this);
+		this.handleGetAgency = this.handleGetAgency.bind(this);
 		this.handleGetCreate = this.handleGetCreate.bind(this);
 		this.handlePostSearch = this.handlePostSearch.bind(this);
 		this.handleGetSingle = this.handleGetSingle.bind(this);
@@ -153,7 +153,7 @@ export default class WishCardController extends BaseController {
 					childBirthday: new Date(childBirthday),
 					wishItemPrice: Number(wishItemPrice),
 					productID,
-					wishCardImage: config.AWS.USE ? req.file.location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {
@@ -173,7 +173,7 @@ export default class WishCardController extends BaseController {
 					wishCardId: newWishCard._id,
 				});
 
-				return res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/manage' });
 			} catch (error) {
 				return this.handleError(res, error);
 			}
@@ -215,7 +215,7 @@ export default class WishCardController extends BaseController {
 					wishItemName: itemChoice.Name,
 					wishItemPrice: Number(itemChoice.Price),
 					wishItemURL: itemChoice.ItemURL,
-					wishCardImage: config.AWS.USE ? req.file.location : filePath,
+					wishCardImage: config.AWS.USE ? req.file.Location : filePath,
 					createdBy: res.locals.user._id,
 					belongsTo: userAgency?._id,
 					address: {
@@ -235,7 +235,7 @@ export default class WishCardController extends BaseController {
 					agency: userAgency?._id,
 					wishCardId: newWishCard._id,
 				});
-				return res.status(200).send({ success: true, url: '/wishcards/me' });
+				return res.status(200).send({ success: true, url: '/wishcards/manage' });
 			} catch (error) {
 				return this.handleError(res, error);
 			}
@@ -275,7 +275,7 @@ export default class WishCardController extends BaseController {
 			const { childBirthday, wishItemPrice } = req.body;
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
-			await this.wishCardRepository.updateWishCard(wishcard!._id, {
+			await this.wishCardRepository.updateWishCardByObjectId(wishcard!._id, {
 				...req.body,
 				childBirthday: childBirthday ? new Date(childBirthday) : wishcard?.childBirthday,
 				wishItemPrice: wishItemPrice ? Number(wishItemPrice) : wishcard?.wishItemPrice,
@@ -293,7 +293,7 @@ export default class WishCardController extends BaseController {
 				},
 			});
 
-			let url = '/wishcards/me';
+			let url = '/wishcards/manage';
 			if (res.locals.user.userRole === 'admin') {
 				url = '/wishcards/';
 			}
@@ -339,7 +339,7 @@ export default class WishCardController extends BaseController {
 		}
 	}
 
-	async handleGetMe(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 			const wishCards = await this.wishCardRepository.getWishCardByAgencyId(userAgency!._id);
