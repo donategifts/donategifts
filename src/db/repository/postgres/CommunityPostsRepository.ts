@@ -8,13 +8,10 @@ export default class CommunityPostsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getAll() {
-		return this.database
-			.selectFrom('community_posts')
-			.selectAll('community_posts')
-			.execute();
+		return this.database.selectFrom('community_posts').selectAll('community_posts').execute();
 	}
 
-	getAllByVerifiedAgencies() {
+	getAllByVerifiedAgencies() {}
 	getByAgencyVerificationStatus(is_verified: boolean) {
 		return this.database
 			.selectFrom('community_posts')
