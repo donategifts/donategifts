@@ -62,7 +62,11 @@ export default class WishcardsRepository {
 	}
 
 	delete(id: string) {
-		return this.database.deleteFrom('wishcards').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.updateTable('wishcards')
+            		.set({ status: 'draft' })
+			.where('id', '=', id)
+			.executeTakeFirstOrThrow();
 	}
 
 	getByAgencyId(id: string) {
