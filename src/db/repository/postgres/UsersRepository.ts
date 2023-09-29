@@ -3,29 +3,17 @@ import { Kysely, UpdateObject } from 'kysely';
 import Utils from '../../../helper/utils';
 import { DB, Users, Verificationtype } from '../../types/generated/database';
 
-export type UsersUpdateParams = Omit<
-	UpdateObject<DB, 'users'>,
-	'id'
-	| 'created_at'
-	| 'updated_at'
->;
+export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
 export type UsersCreateParams = Omit<
 	Users,
-	'id'
-	| 'is_verified'
-	| 'is_disabled'
-	| 'created_at'
-	| 'updated_at'
+	'id' | 'is_verified' | 'is_disabled' | 'created_at' | 'updated_at'
 >;
 
 export default class UsersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database
-			.selectFrom('users')
-			.where('id', '=', id)
-			.executeTakeFirstOrThrow();
+		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
 	update(id: string, updateParams: UsersUpdateParams) {

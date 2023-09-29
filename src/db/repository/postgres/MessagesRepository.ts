@@ -8,10 +8,7 @@ export default class MessagesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database
-			.selectFrom('messages')
-			.where('id', '=', id)
-			.executeTakeFirstOrThrow();
+		return this.database.selectFrom('messages').where('id', '=', id).executeTakeFirstOrThrow();
 	}
 
 	create(messageParams: MessagesCreateParams) {
@@ -23,9 +20,6 @@ export default class MessagesRepository {
 	}
 
 	getByWishCardId(id: string) {
-		return this.database
-			.selectFrom('messages')
-			.where('wishcard_id', '=', id)
-			.execute();
+		return this.database.selectFrom('messages').where('wishcard_id', '=', id).execute();
 	}
 }

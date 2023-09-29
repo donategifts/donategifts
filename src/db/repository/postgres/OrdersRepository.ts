@@ -4,29 +4,19 @@ import { DB, Orders, Orderstatus } from '../../types/generated/database';
 
 export type OrdersCreateParams = Omit<
 	Orders,
-	'id'
-	| 'status'
-	| 'delivery_date'
-	| 'created_at'
-	| 'updated_at'
+	'id' | 'status' | 'delivery_date' | 'created_at' | 'updated_at'
 >;
 
 export default class OrdersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	create(createParams: OrdersCreateParams) {
-		return this.database
-			.insertInto('orders')
-			.values(createParams)
-			.returningAll()
+		return this.database.insertInto('orders').values(createParams).returningAll()
 			.executeTakeFirstOrThrow;
 	}
 
 	getByDonorId(id: string) {
-		return this.database
-			.selectFrom('orders')
-			.where('donor_id', '=', id)
-			.execute();
+		return this.database.selectFrom('orders').where('donor_id', '=', id).execute();
 	}
 
 	getByAgencyId(id: string) {
