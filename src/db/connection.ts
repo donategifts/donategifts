@@ -28,7 +28,8 @@ export default class MongooseConnection {
 			const result = await this.mongoose.connect(String(config.MONGO_URI), this.options);
 
 			if (config.NODE_ENV === 'production') {
-				const WishCardRepository = require('./repository/WishCardRepository');
+				const WishCardRepository = (await import('./repository/WishCardRepository'))
+					.default;
 				new WishCardRepository().watch();
 			}
 

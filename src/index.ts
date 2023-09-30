@@ -14,7 +14,6 @@ import { routes as apiRoutes } from './api';
 import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
 import { connectPostgres } from './db/postgresconnection';
-import DGBot from './discord/bot';
 import config from './helper/config';
 import logger from './helper/logger';
 import { routes } from './routes';
@@ -57,12 +56,12 @@ const app = express();
 	await new MongooseConnection().connect();
 	await connectPostgres();
 
-	if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
-		const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
+	// if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
+	// 	const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
 
-		await bot.initClient();
-		await bot.refreshCommands();
-	}
+	// 	await bot.initClient();
+	// 	await bot.refreshCommands();
+	// }
 
 	app.use(cors());
 
