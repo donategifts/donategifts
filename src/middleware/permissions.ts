@@ -8,7 +8,7 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		next();
+		return next();
 	}
 
 	static redirectProfile(_req: Request, res: Response, next: NextFunction) {
@@ -16,7 +16,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
 	static async isAdminOrAgency(_req: Request, res: Response, next: NextFunction) {
@@ -40,7 +40,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
 	static checkUserVerification(_req: Request, res: Response, next: NextFunction) {
@@ -53,7 +53,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
 	static checkAdminPermission(req: Request, res: Response, next: NextFunction) {
@@ -67,6 +67,6 @@ export default class Permissions {
 			return res.status(404).render('error/404');
 		}
 
-		next();
+		return next();
 	}
 }

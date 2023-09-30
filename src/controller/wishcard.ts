@@ -415,7 +415,7 @@ export default class WishCardController extends BaseController {
 			if (res.locals.user) {
 				defaultMessages = Utils.getMessageChoices(
 					res.locals.user.fName,
-					wishcard?.childFirstName,
+					wishcard!.childFirstName,
 				);
 			}
 
