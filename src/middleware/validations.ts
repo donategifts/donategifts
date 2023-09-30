@@ -13,12 +13,7 @@ import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
 
-const amazonValidator = new ExpressValidator({
-	/**
-	 * Check if url is an valid amazon link
-	 * @param value
-	 * @returns {boolean}
-	 */
+const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
 		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
 		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
@@ -251,7 +246,7 @@ export default class Validations {
 			body('childInterest').isString(),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
-			amazonValidator
+			amazonLinkValidator
 				.body('wishItemURL')
 				.isValidLink()
 				.withMessage(

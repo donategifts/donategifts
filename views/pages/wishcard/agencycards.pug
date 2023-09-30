@@ -3,93 +3,9 @@ extends ../../master
 block title
     title See Wish Cards | Donate Gifts
 
-//- mixin details(cards)
-//-     .row.justify-content-center
-//-         each card in cards
-//-             -
-//-                 var title = 'My name is ' + card.childFirstName;
-//-                 var status = 'Status: ' + card.status;
-//-                 var wish = 'Wish: ' + card.wishItemName.length > 25
-//-                     ? card.wishItemName.substring(0, 25) + "..."
-//-                     : card.wishItemName;
-//-                 var price = 'Price: $' + card.wishItemPrice;
-//-                 var interest = 'Interest: ' + card.childInterest.length > 30
-//-                     ? card.childInterest.substring(0, 30) + "..."
-//-                     : card.childInterest;
-
-//-             .col-lg-4.col-xs-12.mb-5.mt-4
-//-                 .card.mb-3
-//-                     .view.overlay
-//-                         img#img-fix.card-img-top( src=card.wishCardImage alt='Card image' )
-//-                         a( href='#' )
-//-                             .mask.rgba-white-slight
-//-                     .card-body
-//-                         .card-text-container
-//-                             h3.card-title.text-center= title
-//-                             .quick-font.mb-3
-//-                                 p.card-text
-//-                                     span.font-weight-bold= status
-//-                                 p.card-text
-//-                                     span.font-weight-bold= wish
-//-                                 p.card-text
-//-                                     span.font-weight-bold= price
-//-                                 p.card-text
-//-                                     span.font-weight-bold= interest
-
-//- block content
-    //- .wishcards
-    //-     .margin-auto.d-flex.justify-content-center
-    //-         a.create-more( href='/wishcards/create' ) Create More Wish Cards
-    //-     .container
-    //-         h3.cool-font Draft Wishcards
-    //-         if draftWishcards.length === 0
-    //-             h6.cool-font No draft wishcards
-    //-         else
-    //-             +details(draftWishcards)
-
-    //-         h3.cool-font Active Wishcards
-    //-         if activeWishcards.length === 0
-    //-             h6.cool-font You have 0 active wishcards
-    //-         else
-    //-             +details(activeWishcards)
-
-    //-         h3.cool-font Inactive Wishcards
-    //-         if inactiveWishcards.length === 0
-    //-             h6.cool-font You have 0 inactive wishcards
-    //-         else
-    //-             +details(inactiveWishcards)
-
 block scripts
     script.
-        //- wishcard deletion not implemented yet for agencies
         $(document).ready(() => {
-            //- const deleteBtns = $('wishCardDeleteBtn');
-
-            //- for (let i = 0; i < deleteBtns.length; i++) {
-            //-     deleteBtns[i].click((e) => {
-            //-         e.preventDefault();
-
-            //-         $.ajax({
-            //-             type: 'DELETE',
-            //-             url: `/wishcards/delete/${e.target.value}`,
-            //-             timeout: 600000,
-            //-             statusCode: {
-            //-                 200: function (response) {
-            //-                     showToast('WishCard Deleted!');
-            //-                     setTimeout(() => location.assign(response.url), 2000);
-            //-                 },
-            //-                 400: function (response) {
-            //-                     showToast(response.responseJSON.error.msg);
-            //-                 },
-            //-                 403: function (responseObject) {
-            //-                     showToast('Access Forbidden: Your account lacks sufficient permissions');
-            //-                     let { url } = responseObject.responseJSON;
-            //-                     setTimeout(() => location.assign(url), 1200);
-            //-                 },
-            //-             },
-            //-         });
-            //-     });
-            //- }
             const root = ReactRoot(document.querySelector('#app-root'));
             root.render(
                 React.createElement(

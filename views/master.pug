@@ -14,14 +14,12 @@ html( lang="en" )
         block styles
 
     body
-        //- header
-        //-     block header
-                //- include partials/header.pug
         #header-root
 
         main
             block content
-            //- react components will be mounted here
+            //- react pages will be mounted here (see views/pages/wishcard/agencycards.pug)
+            //- single components should be mounted in their respective pages
             #app-root
 
         block modal
