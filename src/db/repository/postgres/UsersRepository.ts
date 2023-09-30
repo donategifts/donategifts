@@ -54,7 +54,8 @@ export default class UsersRepository {
 				user_id: user.id,
 				token: Utils.createEmailVerificationHash(),
 				type: verificationType,
-				expires_at: new Date(),
+				// 15 minutes from time of insertion
+				expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
 			})
 			.returning('token')
 			.executeTakeFirstOrThrow();
