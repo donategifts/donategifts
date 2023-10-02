@@ -55,7 +55,7 @@ export default class HomeController extends BaseController {
 			wishCards,
 			verifiedAgencies: agencies.length,
 			undonatedCards: undonatedWishcards.length,
-			donatedCards: donatedWishcards.length,
+			donatedCards: donatedWishcards.length + 200, //don't delete +200, as it's due to data loss from last year
 			christmasData: this.getChristmasString(),
 		});
 	}
