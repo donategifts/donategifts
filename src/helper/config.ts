@@ -8,7 +8,11 @@ dotenv.config({
 
 const envVariables = [
 	'PORT',
-	'DATABASE_URL',
+	'PG_HOST',
+	'PG_PORT',
+	'PG_USER',
+	'PG_PASSWORD',
+	'PG_DATABASE',
 	'MONGO_URI',
 	'NODE_ENV',
 	'SESS_NAME',
@@ -43,7 +47,11 @@ const envVariables = [
 
 interface EnvVars {
 	PORT: number;
-	DATABASE_URL: string;
+	PG_HOST: string;
+	PG_PORT: number;
+	PG_USER: string;
+	PG_PASSWORD: string;
+	PG_DATABASE: string;
 	MONGO_URI: string;
 	NODE_ENV: string;
 	SESS_NAME: string;
@@ -97,7 +105,11 @@ for (const variable of envVariables) {
 export default {
 	PORT: envVars.PORT,
 
-	DATABASE_URL: envVars.DATABASE_URL,
+	PG_HOST: envVars.PG_HOST,
+	PG_PORT: envVars.PG_PORT,
+	PG_USER: envVars.PG_USER,
+	PG_PASSWORD: envVars.PG_PASSWORD,
+	PG_DATABASE: envVars.PG_DATABASE,
 
 	MONGO_URI: envVars.MONGO_URI,
 
