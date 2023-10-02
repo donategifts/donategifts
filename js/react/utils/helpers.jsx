@@ -6,3 +6,13 @@ export const loadlGoogleClientLibraryScript = (src) => {
 	const body = document.getElementsByTagName('body')[0];
 	body.appendChild(tag);
 };
+
+export const chunkArray = (initialArray, chunkSize) => {
+	const chunks = [];
+	for (let index = 0; index < initialArray.length; index += chunkSize) {
+		const chunk = initialArray.slice(index, index + chunkSize);
+		chunks.push(chunk);
+	}
+	
+	return chunks;
+};

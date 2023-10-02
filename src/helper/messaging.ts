@@ -323,8 +323,8 @@ export default class Messaging {
 	}
 
 	//NOTE: Broken
-	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+	static async sendAgencyVerificationNotification({ name, website, bio }) {
+		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
 		}
 
@@ -334,12 +334,7 @@ export default class Messaging {
 
 			await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
-			});
-
-			await axios({
-				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -352,16 +347,13 @@ export default class Messaging {
 								url: website,
 							},
 							description: `
-                            ${bio}
+								${bio}
 
-                            [${website}](${website})
-                            
-                            Please check their website before verifying it!
-                        `,
+								${website}
+								
+								Please check their website before verifying it!
+                        	`,
 							color: Colors.Yellow,
-							footer: {
-								text: `Want to verify it? /verifyagency ${id}`,
-							},
 						},
 					],
 				},
@@ -373,7 +365,7 @@ export default class Messaging {
 
 	//NOTE: Broken
 	static async sendFeedbackMessage({ name, email, subject, message }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+		if (!config.DISCORD.CONTACT_WEBHOOK_URL) {
 			return;
 		}
 
@@ -383,7 +375,7 @@ export default class Messaging {
 
 			return await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.CONTACT_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},
