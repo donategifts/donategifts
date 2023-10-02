@@ -29,7 +29,8 @@ block content
                         a.button-outline.button-width.m-2( href='/howto' ) How It Works
                         a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
 
-        include ../components/homeSampleCards.pug
+        //- include ../components/homeSampleCards.pug
+        #carousel-root
 
         #status-section.container-fluid.d-md-flex.align-items-center
             .container.d-md-flex.justify-content-center.align-items-center
@@ -269,3 +270,16 @@ block scripts
                 touch: true,
             });
         });
+
+    script.
+        $(document).ready(function () {
+            const root = ReactRoot(document.querySelector('#carousel-root'));
+            root.render(
+                React.createElement(
+                    WishCardsCarousel,
+                    {
+                        wishCards: !{JSON.stringify(wishCards)},
+                    }
+                )
+            );
+        })
