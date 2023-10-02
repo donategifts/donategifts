@@ -56,7 +56,10 @@ export default class AdminController extends BaseController {
 				status: 'published',
 			};
 
-			await this.wishCardRepository.updateWishCard(wishCardId, wishCardModifiedFields);
+			await this.wishCardRepository.updateWishCardByObjectId(
+				wishCardId,
+				wishCardModifiedFields,
+			);
 
 			// @TODO: add agency notification email sending here after status was updated
 			return res.status(200).send({

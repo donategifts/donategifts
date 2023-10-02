@@ -7,7 +7,7 @@ block content
     .bg-light.py-3
         .container
             form#wishCardForm( method='POST' )
-                h1.text-primary.cool-font.my-3 Create a wish card
+                h1.text-primary.cool-font.my-3 Submit child's wish card
                 .card.shadow.p-3
                     .card-body
                         .row.py-2
@@ -32,7 +32,7 @@ block content
                                 label.form-label( for='wishItemName' ) Wish Item Name
                                 input#wishItemName.form-control( type='text' name='wishItemName' placeholder='' )
                             .col-md-6
-                                label.form-label( for='wishItemPrice' ) Wish Item Price (numeric only, round it up)
+                                label.form-label( for='wishItemPrice' ) Wish Item Price
                                     i.fa.fa-question-circle.ms-1( data-bs-toggle='modal' data-bs-target='#formQuestionHelper2' )
                                 input#wishItemPrice.form-control( type='number' name='wishItemPrice' placeholder='Price must be under $35' min='1' max='35' )
                         .row.py-2
@@ -51,7 +51,7 @@ block content
                             .col-md-6.mx-auto
                                 img#preview.img-fluid( src='/img/img-placeholder.png' alt='image-placeholder' )
                                 input#filetag.form-control.bg-secondary.mt-1( type='file' name='wishCardImage' )
-                            .mt-2 Required to use an image that is representative of the child. (Also allowed: masked faces, cropped or blurred features, art or something they made, their wish item)
+                            .mt-2 You must use an image that is representative of the child (Also allowed: masked faces, cropped or blurred features, art or something they made)
                                 .fa.fa-question-circle.ms-1( data-bs-toggle='modal' data-bs-target='#formQuestionHelper3' )
 
                 .card.shadow.p-3.mt-3
@@ -136,7 +136,7 @@ append scripts
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            showToast(response.responseJSON.error.msg);
+                            showToast(response.responseJSON.error.msg || response.responseJSON.error);
                         },
                         403: function (responseObject) {
                             $('#submitInput').attr('disabled', false);

@@ -125,7 +125,6 @@ export default class SignupController extends BaseController {
 
 			if (config.NODE_ENV !== 'test') {
 				await Messaging.sendAgencyVerificationNotification({
-					id: agency._id,
 					name: agency.agencyName,
 					website: agency.agencyWebsite,
 					bio: agency.agencyBio,

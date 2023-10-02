@@ -110,10 +110,6 @@
           width: 83.3% !important;
         }
 
-        .video-block {
-          max-width: none !important;
-        }
-
         .mobile_hide {
           min-height: 0px;
           max-height: 0px;
@@ -364,7 +360,7 @@
                             "
                           >
                             <span style="font-size: 26px; color: #2b303a"
-                              ><strong>Your agency received a donation!</strong></span
+                              ><strong>Thank you for your donation!</strong></span
                             >
                           </p>
                         </div>
@@ -493,7 +489,7 @@
                                 color: #2b303a;
                               "
                             >
-                            %childName%'s wish item was donated.
+                            %firstName%, thank you for donating to %childName%.
                             </p>
                           </div>
                         </div>
@@ -512,22 +508,26 @@
                         >
                             <ul>
                               <li>
-                                Donated item: %item%
-                              </li>
-                              <li>
-                                Item price : $%price%
-                              </li>
-                              <li>
                                 Donated to: %childName%
+                              </li>
+                              <li>
+                                Donated by: %fullName%
                               </li>
                               <li>
                                 Donated at: %date%
                               </li>
                               <li>
-                                Expected delivery date: within 2-8 business days from today
+                                Donated item: %item%
                               </li>
-                              <li>Shipped to: %agencyName%</li>
-                              <li>Shipping address: %address%</li>
+                              <li>
+                                Item price : $%price%
+                              </li>
+                              <li dir="ltr" style="text-align: left; line-height: 1.8; mso-line-height-alt: NaNpx">
+                                Shipping to: %agency%
+                              </li>
+                              <li>
+                                Expected delivery date: within 3-8 business days from today
+                              </li>
                             </ul>
                         </div>
                         <div
