@@ -7,10 +7,12 @@ export const loadlGoogleClientLibraryScript = (src) => {
 	body.appendChild(tag);
 };
 
-export const chunkArray = (arr, chunkSize) => {
-	const chunkedArray = [];
-	for (let i = 0; i < arr.length; i += chunkSize) {
-		chunkedArray.push(arr.slice(i, i + chunkSize));
+export const chunkArray = (initialArray, chunkSize) => {
+	const chunks = [];
+	for (let index = 0; index < initialArray.length; index += chunkSize) {
+		const chunk = initialArray.slice(index, index + chunkSize);
+		chunks.push(chunk);
 	}
-	return chunkedArray;
+	
+	return chunks;
 };
