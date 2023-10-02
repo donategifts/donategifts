@@ -64,7 +64,7 @@ block content
                                 )
                                 span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
                                     #showPassword.fas.fa-eye.text-white.pointer
-                            small#password-error.hidden.text-primary Passwords do not match
+                            small#password-error.d-none.text-primary Passwords do not match
 
                     .py-2
                         label.form-label( for='password-repeat' ) Confirm Password:
@@ -95,11 +95,11 @@ block scripts
                 const password = $('#password').val();
                 const passwordRepeat = $(e.currentTarget).val();
 
-                if (passwordRepeat !== '') {
+                if (passwordRepeat) {
                     if (password !== passwordRepeat) {
-                        $('#password-error').show();
+                        $('#password-error').removeClass('d-none');
                     } else {
-                        $('#password-error').hide();
+                        $('#password-error').addClass('d-none');
                     }
                 }
             });
