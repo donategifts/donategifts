@@ -22,7 +22,7 @@ const WishCard = ({ wishCard, attributes }) => {
 						<p>
 							{wishCard.childInterest?.length > 26
 								? `Interest: ${wishCard.childInterest.slice(0, 26)}...`
-								: `Interest: ${wishCard.childInterest}`}
+								: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
 						</p>
 					</div>
 					<div className="d-md-flex justify-content-center">
