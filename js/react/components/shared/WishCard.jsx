@@ -14,17 +14,15 @@ const WishCard = ({ wishCard, attributes }) => {
 					<h4 className="card-title text-center">My name is {wishCard.childFirstName}</h4>
 					<div className="card-text">
 						<p className="mb-1">
-							Wish:{' '}
 							{wishCard.wishItemName?.length > 26
-								? `${wishCard.wishItemName.slice(0, 26)}...`
-								: wishCard.wishItemName}
+								? `Wish: ${wishCard.wishItemName.slice(0, 26)}...`
+								: `Wish: ${wishCard.wishItemName}`}
 						</p>
 						<p className="mb-1">Item Price: ${wishCard.wishItemPrice}</p>
 						<p>
-							Interest:{' '}
 							{wishCard.childInterest?.length > 26
-								? `${wishCard.childInterest.slice(0, 26)}...`
-								: wishCard.childInterest}
+								? `Interest: ${wishCard.childInterest.slice(0, 26)}...`
+								: `Interest: ${wishCard.childInterest}`}
 						</p>
 					</div>
 					<div className="d-md-flex justify-content-center">
