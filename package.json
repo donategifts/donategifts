@@ -36,6 +36,9 @@
 	},
 	"homepage": "https://github.com/stacysealky/donategifts#readme",
 	"dependencies": {
+		"@mantine/core": "^7.1.2",
+		"@mantine/dropzone": "^7.1.2",
+		"@mantine/hooks": "^7.1.2",
 		"aws-sdk": "2.1435.0",
 		"axios": "1.4.0",
 		"bcrypt": "5.1.0",
@@ -104,6 +107,8 @@
 		"lint-staged": "13.2.3",
 		"nodemon": "3.0.1",
 		"postcss-cli": "10.1.0",
+		"postcss-preset-mantine": "^1.8.0",
+		"postcss-simple-vars": "^7.0.1",
 		"prop-types": "15.8.1",
 		"pug-lint": "2.7.0",
 		"react": "18.2.0",
