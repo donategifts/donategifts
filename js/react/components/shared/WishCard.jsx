@@ -2,25 +2,31 @@ import PropTypes from 'prop-types';
 
 const WishCard = ({ wishCard, attributes }) => {
 	return (
-		<div className="card border-0 shadow" key={wishCard._id}>
+		<div className="card border-0 shadow h-100" key={wishCard._id}>
 			<img
 				className="card-img-top rounded-0 rounded-top-3"
 				src={wishCard.wishCardImage}
 				alt={wishCard.wishItemName}
-				loading="eager"
+				loading="lazy"
 			/>
 			<div className="card-body center-elements rounded-0 rounded-bottom-3">
 				<div className="w-100">
-					<h4 className="card-title text-center text-primary">
-						My name is {wishCard.childFirstName}
-					</h4>
+					<h4 className="card-title text-center">My name is {wishCard.childFirstName}</h4>
 					<div className="card-text">
-						<p className="text-break">Wish: {wishCard.wishItemName}</p>
-						<p>Item Price: ${wishCard.wishItemPrice}</p>
-						<p className="text-break">Interest: {wishCard.childInterest}</p>
+						<p className="mb-1">
+							{wishCard.wishItemName?.length > 26
+								? `Wish: ${wishCard.wishItemName.slice(0, 26)}...`
+								: `Wish: ${wishCard.wishItemName}`}
+						</p>
+						<p className="mb-1">Item Price: ${wishCard.wishItemPrice}</p>
+						<p>
+							{wishCard.childInterest?.length > 26
+								? `Interest: ${wishCard.childInterest.slice(0, 26)}...`
+								: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
+						</p>
 					</div>
 					<div className="d-md-flex justify-content-center">
-						<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
+						<div className="col-12 mb-2 mb-md-0 col-md-6 col-lg-6 col-sm-12 col-xs-12 me-0 me-md-1">
 							<a
 								className="btn btn-lg btn-primary w-100"
 								href={`/wishcards/single/${wishCard._id}`}
@@ -28,7 +34,7 @@ const WishCard = ({ wishCard, attributes }) => {
 								View More
 							</a>
 						</div>
-						<div className="col-12 col-md-6 ms-0 ms-md-1">
+						<div className="col-12 col-md-6 col-lg-6 col-sm-12 col-xs-12 ms-0 ms-md-1">
 							{wishCard.status === 'donated' ? (
 								<button className="btn btn-lg btn-dark disabled w-100">
 									Donated

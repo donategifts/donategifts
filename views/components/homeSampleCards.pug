@@ -53,6 +53,7 @@ mixin carouselInnerPart(increment)
         button.btn.btn-sm.btn-light.bg-transparent.border-0.p-4( type='button'
             data-bs-target='#sample-cards-carousel'
             data-bs-slide='prev'
+            aria-label="left-arrow-button"
         )
             .fa-solid.fa-chevron-left.fa-2xl.text-dark
 
@@ -62,5 +63,6 @@ mixin carouselInnerPart(increment)
         button.btn.btn-sm.btn-light.bg-transparent.border-0.p-4( type='button'
             data-bs-target='#sample-cards-carousel'
             data-bs-slide='next'
+            aria-label="right-arrow-button"
         )
             .fa-solid.fa-chevron-right.fa-2xl.text-dark
