@@ -12,6 +12,10 @@ main {
 	@include font-styling($font-heading, 2.35em, $primary, $fw-medium);
 }
 
+.text-primary {
+	@include font-styling($font-body);
+}
+
 // Need to be reviewed first and removed after testing
 .cool-font {
 	font-family: DkCoolCrayon, sans-serif;

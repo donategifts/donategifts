@@ -140,7 +140,6 @@ const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubm
 							id="childStory"
 							className="form-control"
 							style={{ height: '200px' }}
-							placeholder="(e.g. what is their story? why do they want this item? what is their favorite subject?)"
 							maxLength={2000}
 							{...getInputProps('childStory')}
 						/>

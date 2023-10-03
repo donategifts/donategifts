@@ -1,8 +1,23 @@
-import { useState } from 'react';
+import { Switch } from '@mantine/core';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);
 	const [itemImage, setItemImage] = useState(null);
+	const [agencyAddress, setAgencyAddress] = useState({});
+	const [isShippingDefault, setIsShippingDefault] = useState(true);
+
+	useEffect(() => {
+		const fetchAgencyAddress = () => {
+			axios.get('/api/agency').then((res) => {
+				setAgencyAddress(res.data?.data?.agencyAddress);
+			});
+		};
+		fetchAgencyAddress();
+	}, []);
 
 	const handleChildImage = (e) => {
 		setChildImage(URL.createObjectURL(e.target.files[0]));
@@ -12,15 +27,21 @@ function WishCardCreate() {
 		setItemImage(URL.createObjectURL(e.target.files[0]));
 	};
 
+	const handleShippingAddress = (e) => {
+		e.target.checked ? setIsShippingDefault(true) : setIsShippingDefault(false);
+	};
+
 	return (
-		<>
-			<div id="wish-create-page">
+		<MantineProviderWrapper>
+			<div id="wish-create-page" className="py-5">
 				<div className="container">
-					<h1 className="heading-primary my-4 text-center">Create a wish card</h1>
-					<form action="">
-						<div className="card shadow-lg pt-4 px-4 pb-1">
+					<h1 className="heading-primary mb-4 text-center">Create a wish card</h1>
+					<form action="" className="text-primary">
+						<div className="card shadow-lg p-4">
 							<div className="card-body">
-								<div className="display-6 mb-4">Information about child</div>
+								<div className="display-6 mb-sm-4 mb-md-0 mb-lg-0">
+									Information about child
+								</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<label htmlFor="childFirstName" className="form-label">
@@ -50,11 +71,11 @@ function WishCardCreate() {
 											name="childBirthYear"
 											id="childBirthYear"
 											className="form-control"
-											min={1990}
-											max={2023}
+											min={1994}
+											max={2024}
 										/>
 									</div>
-									<div className="uploader form-group py-4 col-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
+									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
 										<div className="p-3">
 											<label
 												htmlFor="childImagePreview"
@@ -86,11 +107,20 @@ function WishCardCreate() {
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div className="card shadow-lg p-4 my-4">
-							<div className="card-body">
-								<div className="display-6 mb-4">Information about wish item</div>
+								<label htmlFor="wishItemURL" className="form-label">
+									Share the child&apos;s story
+									<i className="fa fa-question-circle ms-1"></i>
+								</label>
+								<textarea
+									name=""
+									id=""
+									rows={4}
+									className="form-control"
+									placeholder="(e.g. what is their story? why do they want this item?)"
+								/>
+								<div className="display-6 mt-5 mb-sm-4 mb-md-0 mb-lg-0">
+									Information about wish item
+								</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<label htmlFor="wishItemName" className="form-label">
@@ -127,8 +157,8 @@ function WishCardCreate() {
 											placeholder="share product details"
 										/>
 									</div>
-									<div className="uploader form-group py-4 col-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
-										<div className="p-3">
+									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
+										<div className="pt-3 px-3">
 											<label
 												htmlFor="wishItemImagePreview"
 												className="form-label"
@@ -144,7 +174,7 @@ function WishCardCreate() {
 												type="file"
 												name="wishItemImage"
 												id="wishItemImage"
-												className="form-control my-2"
+												className="form-control mt-4"
 												onChange={handleItemImage}
 											/>
 										</div>
@@ -173,19 +203,110 @@ function WishCardCreate() {
 										/>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div className="card shadow-lg p-4 mb-4">
-							<div className="card-body">
-								<div className="display-6 mb-4">
+								<div className="display-6 mt-5 mb-3">
 									Information about shipping address
 								</div>
+								<Switch
+									defaultChecked
+									size="md"
+									color="#ff826b"
+									label={`Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`}
+									onChange={handleShippingAddress}
+								/>
+								{!isShippingDefault && (
+									<>
+										<div className="row mt-3">
+											<div className="col-12 col-md-4">
+												<label htmlFor="address1" className="form-label">
+													Address Line 1
+												</label>
+												<input
+													type="text"
+													name="address1"
+													id="address1"
+													className="form-control"
+												/>
+											</div>
+											<div className="col-12 col-md-4">
+												<label htmlFor="address2" className="form-label">
+													Address Line 2
+												</label>
+												<input
+													type="text"
+													name="address2"
+													id="address2"
+													className="form-control"
+												/>
+											</div>
+											<div className="col-12 col-md-4">
+												<label htmlFor="city" className="form-label">
+													City
+												</label>
+												<input
+													type="text"
+													name="city"
+													id="city"
+													className="form-control"
+												/>
+											</div>
+										</div>
+										<div className="row mt-3">
+											<div className="col-12 col-md-4">
+												<label htmlFor="state" className="form-label">
+													State
+												</label>
+												<input
+													type="text"
+													name="state"
+													id="state"
+													className="form-control"
+												/>
+											</div>
+											<div className="col-12 col-md-4">
+												<label htmlFor="zipcode" className="form-label">
+													Zipcode
+												</label>
+												<input
+													type="text"
+													name="zipcode"
+													id="zipcode"
+													className="form-control"
+												/>
+											</div>
+											<div className="col-12 col-md-4">
+												<label htmlFor="country" className="form-label">
+													Country
+												</label>
+												<input
+													type="text"
+													name="country"
+													id="country"
+													className="form-control"
+												/>
+											</div>
+										</div>
+									</>
+								)}
 							</div>
+						</div>
+						<p className="mt-5 text-center">
+							Wish card will be published once reviewed and approved by DonateGifts.
+						</p>
+						<div className="d-flex justify-content-center mt-2">
+							<button id="submitInput" className="button-accent px-5">
+								<span>Submit</span>
+								<div
+									className="spinner-border spinner-border-sm text-white ms-1 d-none"
+									role="status"
+								>
+									<span className="visually-hidden">Loading...</span>
+								</div>
+							</button>
 						</div>
 					</form>
 				</div>
 			</div>
-		</>
+		</MantineProviderWrapper>
 	);
 }
 

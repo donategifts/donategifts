@@ -10,14 +10,20 @@
 }
 
 #wish-create-page {
-	.card {
-		img {
-			max-height: 200px;
-			width: auto;
-		}
+	background-color: lighten($cream, 8%);
+	margin-top: -5px;
 
+	.card {
 		.form-text {
 			width: 200px;
+		}
+
+		.form-control:not(input[type="file"]) {
+			border: 1px solid lighten($navy-dark, 25);
+		}
+
+		.form-label {
+			color: $navy-dark;
 		}
 
 		.display-6 {
@@ -43,36 +49,61 @@
 		position: relative;
 		outline: none;
 		width: 200px;
-	  
+
 		&::file-selector-button {
-		  width: 200px;
-		  color: transparent;
-		  border: 1px solid $secondary;
-		  background-color: $secondary;
+			width: 200px;
+			color: transparent;
+			border: 1px solid $secondary;
+			background-color: $secondary;
 
-		  @supports (-moz-appearance: none) {
-			color: $secondary;
-		  }
+			@supports (-moz-appearance: none) {
+				color: $secondary;
+			}
 		}
-	  
+
 		&::before {
-		  position: absolute;
-		  pointer-events: none;
-		  top: 0.5em;
-		  left: 1.5em;
-		  height: 25px;
-		  width: 25px;
-		  content: "";
-		  background-image: url('/svg/upload-icon.svg');
-		}
-		
-		&::after {
-		  position: absolute;
-		  top: 0.5em;
-		  left: 3.5em;
-		  color: $white;
-		  content: "Upload Image";
+			position: absolute;
+			pointer-events: none;
+			top: 0.5em;
+			left: 1.5em;
+			height: 25px;
+			width: 25px;
+			content: "";
+			background-image: url("/svg/upload-icon.svg");
 		}
 
-	  }
+		&::after {
+			position: absolute;
+			top: 0.5em;
+			left: 3.5em;
+			color: $white;
+			font-weight: $fw-semi-bold;
+			content: "Upload Image";
+		}
+	}
+}
+
+@media (width > 768px) {
+	#wish-create-page {
+		.card {
+			.uploader {
+				img {
+					max-height: 200px;
+					width: auto;
+				}
+			}
+		}
+	}
+}
+
+@media (width <= 768px) {
+	#wish-create-page {
+		.card {
+			.uploader {
+				.form-text {
+					width: 100%;
+				}
+			}
+		}
+	}
 }
