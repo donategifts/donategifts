@@ -9,7 +9,7 @@ const WishCardsCarousel = ({ wishCards }) => {
 	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(wishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
 
-	let resizeWidth = () => {
+	const resizeWidth = () => {
 		setWindowWidth(window.innerWidth);
 	};
 
@@ -24,7 +24,6 @@ const WishCardsCarousel = ({ wishCards }) => {
 			setChunkedWishCards(chunkArray(wishCards, 1));
 			setColStyle('col-12');
 		}
-		setWindowWidth(window.innerWidth);
 		window.addEventListener('resize', resizeWidth);
 		return () => window.removeEventListener('resize', resizeWidth);
 	}, [windowWidth]);
