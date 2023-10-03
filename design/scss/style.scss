@@ -54,6 +54,11 @@ main {
 	width: 100%;
 }
 
+.input-border-secondary {
+	border: 1px solid $secondary;
+	border-radius: 0.5rem;
+}
+
 @media (width <= 768px) {
 	.actions {
 		flex-flow: column;

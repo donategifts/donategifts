@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import SimpleModal from '../components/shared/SimpleModal.jsx';
 import AgencyCardEditForm from '../forms/AgencyCardEditForm.jsx';
 
-export default function AgencyCardsPage() {
+export default function WishCardManage() {
 	const editFormRef = useRef();
 	const [agencyCards, setAgencyCards] = useState({});
 	const [cardOnEdit, setCardOnEdit] = useState(null);
@@ -60,7 +60,7 @@ export default function AgencyCardsPage() {
 	return (
 		<div className="wishcards">
 			<div className="margin-auto d-flex justify-content-center">
-				<a href="/wishcards/create" className="create-more">
+				<a href="/wishcards/create" className="button-accent">
 					Create More Wish Cards
 				</a>
 			</div>
