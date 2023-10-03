@@ -13,6 +13,6 @@ export const chunkArray = (initialArray, chunkSize) => {
 		const chunk = initialArray.slice(index, index + chunkSize);
 		chunks.push(chunk);
 	}
-	
+
 	return chunks;
 };
