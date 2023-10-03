@@ -54,9 +54,16 @@ main {
 	width: 100%;
 }
 
-.input-border-secondary {
-	border: 1px solid $secondary;
+.input-border{
 	border-radius: 0.5rem;
+
+	&-primary{
+		border: 1px solid $primary;
+	}
+
+	&-secondary {
+		border: 1px solid $secondary;
+	}
 }
 
 @media (width <= 768px) {
