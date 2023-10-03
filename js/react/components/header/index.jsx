@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../../utils/constants.jsx';
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import Auth from '../auth/Auth.jsx';
 import Nav from '../nav/index.jsx';
 
@@ -54,10 +55,12 @@ function Header(props) {
 	});
 
 	return (
-		<header>
-			<Nav {...props} dispatch={dispatch} setShowModal={setShowModal} />
-			{showModal ? <Auth dispatch={dispatch} state={state} modalRef={modalRef} /> : null}
-		</header>
+		<MantineProviderWrapper>
+			<header>
+				<Nav {...props} dispatch={dispatch} setShowModal={setShowModal} />
+				{showModal ? <Auth dispatch={dispatch} state={state} modalRef={modalRef} /> : null}
+			</header>
+		</MantineProviderWrapper>
 	);
 }
 

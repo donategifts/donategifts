@@ -11,10 +11,10 @@ import AgencyCardsPage from './pages/agencycards.jsx';
 window.ReactRoot = createRoot;
 window.React = React;
 
+window.WishCardsCarousel = WishCardsCarousel;
 window.Header = Header;
 window.Community = Community;
 window.WishCards = WishCards;
-window.WishCardsCarousel = WishCardsCarousel;
 // window.Login = Login;
 window.Nav = Nav;
 window.AgencyCardsPage = AgencyCardsPage;

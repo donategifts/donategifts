@@ -3,115 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import SimpleModal from '../components/shared/SimpleModal.jsx';
 import AgencyCardEditForm from '../forms/AgencyCardEditForm.jsx';
-
-export default function AgencyCardsPage() {
-	const editFormRef = useRef();
-	const [agencyCards, setAgencyCards] = useState({});
-	const [cardOnEdit, setCardOnEdit] = useState(null);
-	const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-	const [refetchWishCards, setRefetchWishCards] = useState(false);
-
-	useEffect(() => {
-		const fetchWishCards = () => {
-			axios
-				.get('/api/wishcards/agency')
-				.then((res) => setAgencyCards(res.data.data))
-				.catch(() => window.showToast('Could not fetch wishcards.'));
-		};
-		fetchWishCards();
-	}, [refetchWishCards]);
-
-	const handleClickEditOnCard = (card) => {
-		setCardOnEdit(card);
-		setIsOpenEditModal(true);
-	};
-
-	const handleCloseEditModal = () => {
-		setCardOnEdit(null);
-		setIsOpenEditModal(false);
-	};
-
-	const handleAgencyCardEditFormSubmit = async (submitData) => {
-		try {
-			await axios.put('/api/wishcards/agency', {
-				wishCardId: cardOnEdit?._id,
-				childFirstName: submitData.childFirstName,
-				childLastName: submitData.childLastName,
-				wishItemName: submitData.wishItemName,
-				wishItemPrice: submitData.wishItemPrice,
-				childInterest: submitData.childInterest,
-				childStory: submitData.childStory,
-			});
-			``;
-
-			setIsOpenEditModal(false);
-			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
-		} catch (error) {
-			window.showToast(
-				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
-			);
-		}
-	};
-
-	const handleClickSave = () => {
-		editFormRef.current?.submit();
-	};
-
-	return (
-		<div className="wishcards">
-			<div className="margin-auto d-flex justify-content-center">
-				<a href="/wishcards/create" className="create-more">
-					Create More Wish Cards
-				</a>
-			</div>
-			<div className="container">
-				<h3 className="cool-font">Draft Wishcards</h3>
-				{renderAgencyWishCards({
-					emptyMessage: 'No draft wishcards',
-					wishCards: agencyCards.draftWishcards,
-					onClickEditWishcard: handleClickEditOnCard,
-				})}
-
-				<h3 className="cool-font">Active Wishcards</h3>
-				{renderAgencyWishCards({
-					emptyMessage: 'You have 0 active wishcards',
-					wishCards: agencyCards.activeWishcards,
-					onClickEditWishcard: handleClickEditOnCard,
-				})}
-
-				<h3 className="cool-font">Inactive Wishcards</h3>
-				{renderAgencyWishCards({
-					emptyMessage: 'You have 0 inactive wishcards',
-					wishCards: agencyCards.inactiveWishcards,
-					onClickEditWishcard: handleClickEditOnCard,
-				})}
-			</div>
-			<SimpleModal
-				// modalId="wishcard-edit-modal"
-				// ref={modalRef}
-				title="Edit Wishcard"
-				open={isOpenEditModal}
-				hideOnClickOutside={false}
-				onClose={handleCloseEditModal}
-				body={
-					<AgencyCardEditForm
-						ref={editFormRef}
-						key={cardOnEdit?._id}
-						card={cardOnEdit}
-						onSubmit={handleAgencyCardEditFormSubmit}
-					/>
-				}
-				footer={
-					<div className="col-12 col-md-4 my-2">
-						<button className="btn btn-lg btn-primary w-100" onClick={handleClickSave}>
-							Save
-						</button>
-					</div>
-				}
-			/>
-		</div>
-	);
-}
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard }) => {
 	return !wishCards || wishCards.length === 0 ? (
@@ -191,3 +83,117 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 		</div>
 	);
 };
+
+export default function AgencyCardsPage() {
+	const editFormRef = useRef();
+	const [agencyCards, setAgencyCards] = useState({});
+	const [cardOnEdit, setCardOnEdit] = useState(null);
+	const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+	const [refetchWishCards, setRefetchWishCards] = useState(false);
+
+	useEffect(() => {
+		const fetchWishCards = () => {
+			axios
+				.get('/api/wishcards/agency')
+				.then((res) => setAgencyCards(res.data.data))
+				.catch(() => window.showToast('Could not fetch wishcards.'));
+		};
+		fetchWishCards();
+	}, [refetchWishCards]);
+
+	const handleClickEditOnCard = (card) => {
+		setCardOnEdit(card);
+		setIsOpenEditModal(true);
+	};
+
+	const handleCloseEditModal = () => {
+		setCardOnEdit(null);
+		setIsOpenEditModal(false);
+	};
+
+	const handleAgencyCardEditFormSubmit = async (submitData) => {
+		try {
+			await axios.put('/api/wishcards/agency', {
+				wishCardId: cardOnEdit?._id,
+				childFirstName: submitData.childFirstName,
+				childLastName: submitData.childLastName,
+				wishItemName: submitData.wishItemName,
+				wishItemPrice: submitData.wishItemPrice,
+				childInterest: submitData.childInterest,
+				childStory: submitData.childStory,
+			});
+			``;
+
+			setIsOpenEditModal(false);
+			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
+		} catch (error) {
+			window.showToast(
+				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
+			);
+		}
+	};
+
+	const handleClickSave = () => {
+		editFormRef.current?.submit();
+	};
+
+	return (
+		<MantineProviderWrapper>
+			<div className="wishcards">
+				<div className="margin-auto d-flex justify-content-center">
+					<a href="/wishcards/create" className="create-more">
+						Create More Wish Cards
+					</a>
+				</div>
+				<div className="container">
+					<h3 className="cool-font">Draft Wishcards</h3>
+					{renderAgencyWishCards({
+						emptyMessage: 'No draft wishcards',
+						wishCards: agencyCards.draftWishcards,
+						onClickEditWishcard: handleClickEditOnCard,
+					})}
+
+					<h3 className="cool-font">Active Wishcards</h3>
+					{renderAgencyWishCards({
+						emptyMessage: 'You have 0 active wishcards',
+						wishCards: agencyCards.activeWishcards,
+						onClickEditWishcard: handleClickEditOnCard,
+					})}
+
+					<h3 className="cool-font">Inactive Wishcards</h3>
+					{renderAgencyWishCards({
+						emptyMessage: 'You have 0 inactive wishcards',
+						wishCards: agencyCards.inactiveWishcards,
+						onClickEditWishcard: handleClickEditOnCard,
+					})}
+				</div>
+				<SimpleModal
+					// modalId="wishcard-edit-modal"
+					// ref={modalRef}
+					title="Edit Wishcard"
+					open={isOpenEditModal}
+					hideOnClickOutside={false}
+					onClose={handleCloseEditModal}
+					body={
+						<AgencyCardEditForm
+							ref={editFormRef}
+							key={cardOnEdit?._id}
+							card={cardOnEdit}
+							onSubmit={handleAgencyCardEditFormSubmit}
+						/>
+					}
+					footer={
+						<div className="col-12 col-md-4 my-2">
+							<button
+								className="btn btn-lg btn-primary w-100"
+								onClick={handleClickSave}
+							>
+								Save
+							</button>
+						</div>
+					}
+				/>
+			</div>
+		</MantineProviderWrapper>
+	);
+}
