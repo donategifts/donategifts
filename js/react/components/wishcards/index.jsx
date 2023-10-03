@@ -40,7 +40,7 @@ function WishCards({ wishCards, user }) {
 	return (
 		<div id="wishcards" className="bg-light p-4">
 			<div className="container">
-				<div className="d-flex flex-wrap justify-content-center align-items-stretch">
+				<div className="d-flex flex-wrap justify-content-center align-items-center">
 					{isLoading
 						? new Array(6)
 								.fill(0)
