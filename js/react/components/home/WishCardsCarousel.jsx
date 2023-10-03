@@ -44,7 +44,7 @@ const WishCardsCarousel = ({ wishCards }) => {
 				)}
 				<div className="carousel slide" id="sample-cards-carousel" data-bs-ride="carousel">
 					<div className="carousel-inner">
-						{chunkedWishCards.map((chunk, index) => (
+						{chunkedWishCards?.map((chunk, index) => (
 							<div
 								key={index}
 								className={`carousel-item ${index === 0 ? 'active' : ''}`}
