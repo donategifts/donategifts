@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import LoadingCard from '../shared/LoadingCard.jsx';
 
 function Community(props) {
@@ -128,53 +129,55 @@ function Community(props) {
 	);
 
 	return (
-		<div className="bg-light">
-			<div id="community" className="container py-3">
-				{user?.userRole === 'partner' && agency?.isVerified && createPost()}
-				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
-					<Masonry gutter="1rem">
-						{posts.map((post) =>
-							isLoading ? (
-								<LoadingCard key={post._id} enableButtons={false} />
-							) : (
-								<div className="card shadow rounded-3 border-0" key={post._id}>
-									<div className="card-header p-4 bg-white border-0">
-										<div className="text-center">
-											{post.belongsTo?.agencyProfileImage && (
-												<img
-													className="img-fluid me-2 post-logo"
-													src={post.belongsTo?.agencyProfileImage}
-													alt="partner agency logo"
-												/>
-											)}
-											<div className="mt-3 display-6 text-primary cool-font">
-												{post.belongsTo?.agencyName}
+		<MantineProviderWrapper>
+			<div className="bg-light">
+				<div id="community" className="container py-3">
+					{user?.userRole === 'partner' && agency?.isVerified && createPost()}
+					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
+						<Masonry gutter="1rem">
+							{posts.map((post) =>
+								isLoading ? (
+									<LoadingCard key={post._id} enableButtons={false} />
+								) : (
+									<div className="card shadow rounded-3 border-0" key={post._id}>
+										<div className="card-header p-4 bg-white border-0">
+											<div className="text-center">
+												{post.belongsTo?.agencyProfileImage && (
+													<img
+														className="img-fluid me-2 post-logo"
+														src={post.belongsTo?.agencyProfileImage}
+														alt="partner agency logo"
+													/>
+												)}
+												<div className="mt-3 display-6 text-primary cool-font">
+													{post.belongsTo?.agencyName}
+												</div>
 											</div>
 										</div>
+										<div className="card-body mx-1">
+											<small className="text-muted">
+												Posted on{' '}
+												{moment(post.createdAt).format('MMM DD, YYYY')}
+											</small>
+											<div className="my-2">{post.message}</div>
+											{post.image && (
+												<div className="d-flex justify-content-center">
+													<img
+														className="img-fluid rounded mt-3"
+														src={post.image}
+														alt="post image"
+													/>
+												</div>
+											)}
+										</div>
 									</div>
-									<div className="card-body mx-1">
-										<small className="text-muted">
-											Posted on{' '}
-											{moment(post.createdAt).format('MMM DD, YYYY')}
-										</small>
-										<div className="my-2">{post.message}</div>
-										{post.image && (
-											<div className="d-flex justify-content-center">
-												<img
-													className="img-fluid rounded mt-3"
-													src={post.image}
-													alt="post image"
-												/>
-											</div>
-										)}
-									</div>
-								</div>
-							),
-						)}
-					</Masonry>
-				</ResponsiveMasonry>
+								),
+							)}
+						</Masonry>
+					</ResponsiveMasonry>
+				</div>
 			</div>
-		</div>
+		</MantineProviderWrapper>
 	);
 }
 
