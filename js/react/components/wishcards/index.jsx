@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import LoadingCard from '../shared/LoadingCard.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
@@ -38,17 +39,21 @@ function WishCards({ wishCards, user }) {
 	}, []);
 
 	return (
-		<div id="wishcards" className="bg-light p-4">
-			<div className="container">
-				<div className="d-flex flex-wrap justify-content-center align-items-center">
-					{isLoading
-						? new Array(6)
-								.fill(0)
-								.map((_, index) => <LoadingCard key={index} enableButtons={true} />)
-						: cards.map((card) => card)}
+		<MantineProviderWrapper>
+			<div id="wishcards" className="bg-light p-4">
+				<div className="container">
+					<div className="d-flex flex-wrap justify-content-center align-items-center">
+						{isLoading
+							? new Array(6)
+									.fill(0)
+									.map((_, index) => (
+										<LoadingCard key={index} enableButtons={true} />
+									))
+							: cards.map((card) => card)}
+					</div>
 				</div>
 			</div>
-		</div>
+		</MantineProviderWrapper>
 	);
 }
 

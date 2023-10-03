@@ -1,9 +1,4 @@
-import { MantineProvider, createTheme } from '@mantine/core';
 import { useState } from 'react';
-
-const theme = createTheme({
-	/** Put your mantine theme override here */
-});
 
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);
@@ -18,7 +13,7 @@ function WishCardCreate() {
 	};
 
 	return (
-		<MantineProvider theme={theme}>
+		<>
 			<div id="wish-create-page">
 				<div className="container">
 					<h1 className="heading-primary my-4 text-center">Create a wish card</h1>
@@ -190,7 +185,7 @@ function WishCardCreate() {
 					</form>
 				</div>
 			</div>
-		</MantineProvider>
+		</>
 	);
 }
 
