@@ -5,7 +5,7 @@ import { chunkArray } from '../../utils/helpers.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
 const WishCardsCarousel = ({ wishCards }) => {
-	const [windowWidth, setWindowWidth] = useState(0);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(wishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
 
@@ -14,12 +14,15 @@ const WishCardsCarousel = ({ wishCards }) => {
 	};
 
 	useEffect(() => {
-		if (window.innerWidth > 1170) {
+		if (windowWidth > 1170) {
 			setChunkedWishCards(chunkArray(wishCards, 3));
 			setColStyle('col-4');
-		} else {
+		} else if (windowWidth < 1170 && windowWidth > 820) {
 			setChunkedWishCards(chunkArray(wishCards, 2));
 			setColStyle('col-6');
+		} else {
+			setChunkedWishCards(chunkArray(wishCards, 1));
+			setColStyle('col-12');
 		}
 		setWindowWidth(window.innerWidth);
 		window.addEventListener('resize', resizeWidth);
@@ -28,16 +31,18 @@ const WishCardsCarousel = ({ wishCards }) => {
 
 	return (
 		<div className="container-fluid my-5">
-			<div className="d-none d-lg-flex d-md-flex m-0 justify-content-center">
-				<button
-					className="btn btn-sm btn-light bg-transparent border-0 p-4"
-					type="button"
-					data-bs-target="#sample-cards-carousel"
-					data-bs-slide="prev"
-					aria-label="left-arrow-button"
-				>
-					<div className="fa-solid fa-chevron-left fa-2xl text-dark"></div>
-				</button>
+			<div className="d-flex m-0 justify-content-center">
+				{windowWidth > 560 && (
+					<button
+						className="btn btn-sm btn-light bg-transparent border-0 p-4"
+						type="button"
+						data-bs-target="#sample-cards-carousel"
+						data-bs-slide="prev"
+						aria-label="left-arrow-button"
+					>
+						<div className="fa-solid fa-chevron-left fa-2xl text-dark"></div>
+					</button>
+				)}
 				<div className="carousel slide" id="sample-cards-carousel" data-bs-ride="carousel">
 					<div className="carousel-inner">
 						{chunkedWishCards.map((chunk, index) => (
@@ -62,35 +67,17 @@ const WishCardsCarousel = ({ wishCards }) => {
 						))}
 					</div>
 				</div>
-				<button
-					className="btn btn-sm btn-light bg-transparent border-0 p-4"
-					type="button"
-					data-bs-target="#sample-cards-carousel"
-					data-bs-slide="next"
-					aria-label="right-arrow-button"
-				>
-					<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>
-				</button>
-			</div>
-
-			<div className="d-block d-lg-none d-md-none">
-				<div className="carousel slide" id="sample-cards-carousel" data-bs-ride="carousel">
-					<div className="carousel-inner">
-						{wishCards?.map((currentCard, index) => (
-							<div
-								key={currentCard._id}
-								className={`carousel-item ${index === 0 ? 'active' : ''}`}
-								data-bs-interval="20000"
-							>
-								<div className="row justify-content-center">
-									<div key={currentCard._id} className="col-12">
-										<WishCard wishCard={currentCard} />
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
+				{windowWidth > 560 && (
+					<button
+						className="btn btn-sm btn-light bg-transparent border-0 p-4"
+						type="button"
+						data-bs-target="#sample-cards-carousel"
+						data-bs-slide="next"
+						aria-label="right-arrow-button"
+					>
+						<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>
+					</button>
+				)}
 			</div>
 		</div>
 	);

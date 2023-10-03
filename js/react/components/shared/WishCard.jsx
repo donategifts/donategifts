@@ -13,14 +13,14 @@ const WishCard = ({ wishCard, attributes }) => {
 				<div className="w-100">
 					<h4 className="card-title text-center">My name is {wishCard.childFirstName}</h4>
 					<div className="card-text">
-						<p className="text-break">
+						<p className="mb-1">
 							Wish:{' '}
 							{wishCard.wishItemName?.length > 26
 								? `${wishCard.wishItemName.slice(0, 26)}...`
 								: wishCard.wishItemName}
 						</p>
-						<p>Item Price: ${wishCard.wishItemPrice}</p>
-						<p className="text-break">
+						<p className="mb-1">Item Price: ${wishCard.wishItemPrice}</p>
+						<p>
 							Interest:{' '}
 							{wishCard.childInterest?.length > 26
 								? `${wishCard.childInterest.slice(0, 26)}...`

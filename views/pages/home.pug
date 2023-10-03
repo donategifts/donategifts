@@ -34,10 +34,10 @@ block content
 
         #status-section.container-fluid.d-md-flex.align-items-center
             .container.d-md-flex.justify-content-center.align-items-center
-                .col-md.mb-3.mb-md-0
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
+                            img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
                         .display-3.text-danger= undonatedCards
                         if undonatedCards < 2
                             .fs-6.text-primary
@@ -52,10 +52,10 @@ block content
                                 br
                                 | your donation
 
-                .col-md.mb-3.mb-md-0
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
+                            img( src='/svg/wreath-2.svg' alt='wreath-illustration' loading='lazy' )
                         .display-2.text-danger= donatedCards
                         .fs-6.text-primary
                             | Children
@@ -63,10 +63,10 @@ block content
                             br
                             | their gifts!
 
-                .col-md
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
+                            img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
                         .display-2.text-danger= verifiedAgencies
                         .fs-6.text-primary
                             | Agencies

@@ -17,7 +17,7 @@
 
 	#sample-cards-carousel {
 		img {
-			height: 250px;
+			height: 240px;
 			width: auto;
 			min-width: 300px;
 			object-fit: cover;
@@ -101,6 +101,15 @@
 
 		100% {
 			opacity: 1;
+		}
+	}
+}
+
+@media (width <= 768px) {
+	#home {
+		#status-section {
+			background: url("/svg/paper-bg-mobile-2.svg") no-repeat center center;
+			background-size: cover;
 		}
 	}
 }
