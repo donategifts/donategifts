@@ -1,11 +1,8 @@
 @import 'includes';
 
-body {
-	font-family: $font-body;
-}
-
 main {
 	min-height: 80vh;
+	font-family: $font-body;
 }
 
 .heading-primary {
@@ -13,7 +10,7 @@ main {
 }
 
 .text-primary {
-	@include font-styling($font-body);
+	font-family: $font-body;
 }
 
 // Need to be reviewed first and removed after testing

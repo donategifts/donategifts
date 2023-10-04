@@ -2,6 +2,7 @@ import { Switch } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
+import AddressForm from '../forms/AddressForm.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function WishCardCreate() {
@@ -213,80 +214,7 @@ function WishCardCreate() {
 									label={`Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`}
 									onChange={handleShippingAddress}
 								/>
-								{!isShippingDefault && (
-									<>
-										<div className="row mt-3">
-											<div className="col-12 col-md-4">
-												<label htmlFor="address1" className="form-label">
-													Address Line 1
-												</label>
-												<input
-													type="text"
-													name="address1"
-													id="address1"
-													className="form-control"
-												/>
-											</div>
-											<div className="col-12 col-md-4">
-												<label htmlFor="address2" className="form-label">
-													Address Line 2
-												</label>
-												<input
-													type="text"
-													name="address2"
-													id="address2"
-													className="form-control"
-												/>
-											</div>
-											<div className="col-12 col-md-4">
-												<label htmlFor="city" className="form-label">
-													City
-												</label>
-												<input
-													type="text"
-													name="city"
-													id="city"
-													className="form-control"
-												/>
-											</div>
-										</div>
-										<div className="row mt-3">
-											<div className="col-12 col-md-4">
-												<label htmlFor="state" className="form-label">
-													State
-												</label>
-												<input
-													type="text"
-													name="state"
-													id="state"
-													className="form-control"
-												/>
-											</div>
-											<div className="col-12 col-md-4">
-												<label htmlFor="zipcode" className="form-label">
-													Zipcode
-												</label>
-												<input
-													type="text"
-													name="zipcode"
-													id="zipcode"
-													className="form-control"
-												/>
-											</div>
-											<div className="col-12 col-md-4">
-												<label htmlFor="country" className="form-label">
-													Country
-												</label>
-												<input
-													type="text"
-													name="country"
-													id="country"
-													className="form-control"
-												/>
-											</div>
-										</div>
-									</>
-								)}
+								{!isShippingDefault && <AddressForm />}
 							</div>
 						</div>
 						<p className="mt-5 text-center">
