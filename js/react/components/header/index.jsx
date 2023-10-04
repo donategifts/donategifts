@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../../utils/constants.jsx';
+import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import Auth from '../auth/Auth.jsx';
 import Nav from '../nav/index.jsx';

@@ -1,6 +1,6 @@
 import { Select, TextInput } from '@mantine/core';
 
-import { STATE_NAMES } from '../utils/constants.jsx';
+import { STATE_NAMES } from '../utils/constants';
 
 function AddressForm() {
 	return (
