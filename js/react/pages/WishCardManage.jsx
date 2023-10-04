@@ -121,8 +121,6 @@ export default function WishCardManage() {
 				childInterest: submitData.childInterest,
 				childStory: submitData.childStory,
 			});
-			``;
-
 			setIsOpenEditModal(false);
 			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
 		} catch (error) {
@@ -173,8 +171,6 @@ export default function WishCardManage() {
 					</Tabs>
 				</div>
 				<SimpleModal
-					// modalId="wishcard-edit-modal"
-					// ref={modalRef}
 					title="Edit Wishcard"
 					open={isOpenEditModal}
 					hideOnClickOutside={false}

@@ -42,6 +42,8 @@
 		.uploader {
 			background-color: lighten($cream, 8%);
 			border: 1.5em solid $white;
+			border-bottom: none;
+			border-top: 2.5em;
 		}
 	}
 

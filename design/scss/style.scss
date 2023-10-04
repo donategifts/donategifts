@@ -65,6 +65,10 @@ main {
 	&-secondary {
 		border: 1px solid $secondary;
 	}
+
+	&-danger {
+		border: 1px solid $danger;
+	}
 }
 
 @media (width <= 768px) {
