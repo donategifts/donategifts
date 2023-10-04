@@ -21,7 +21,7 @@ const execute = async (interaction) => {
 
 	try {
 		const result = await new AgencyRepository().verifyAgency(String(id));
-		await Messaging.sendAgencyVerifiedMail(result?.accountManager.email);
+		await Messaging.sendAgencyVerifiedMail(result!.accountManager.email);
 		await interaction.editReply(`Agency ${result?.agencyName} verified and email is sent!`);
 	} catch (error) {
 		log.error(error);

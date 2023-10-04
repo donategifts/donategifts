@@ -327,7 +327,7 @@ export default class Messaging {
 	}
 
 	//NOTE: Broken
-	static async sendAgencyVerificationNotification({ name, website, bio }) {
+	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
 		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
 		}
@@ -356,6 +356,8 @@ export default class Messaging {
 								${website}
 								
 								Please check their website before verifying it!
+
+								https://donate-gifts.com/admin/agencyDetail/${id}
                         	`,
 							color: Colors.Yellow,
 						},
