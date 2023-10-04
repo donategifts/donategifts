@@ -12,6 +12,10 @@ export default class AgencyRepository {
 		return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
 	}
 
+	async getAgencyById(agencyId: string) {
+		return await this.agencyModel.findById(agencyId).lean().exec();
+	}
+
 	async getAgencyByName(agencyName: string) {
 		try {
 			return await this.agencyModel
@@ -44,20 +48,12 @@ export default class AgencyRepository {
 		}
 	}
 
-	async getVerifiedAgencies() {
-		try {
-			return await this.agencyModel.find({ isVerified: true }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get verified Agencies: ${error}`);
-		}
+	getVerifiedAgencies() {
+		return this.agencyModel.find({ isVerified: true }).lean().exec();
 	}
 
-	async getUnverifiedAgencies() {
-		try {
-			return await this.agencyModel.find({ isVerified: false }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get unverified Agencies: ${error}`);
-		}
+	getUnverifiedAgencies() {
+		return this.agencyModel.find({ isVerified: false }).lean().exec();
 	}
 
 	async updateAgency(id: string, agencyFields: Partial<Agency>) {

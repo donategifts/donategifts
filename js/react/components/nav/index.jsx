@@ -88,11 +88,18 @@ const Nav = ({ user, agency }) => {
 								</li>
 							) : null}
 							{user?.userRole === 'admin' ? (
-								<li className="nav-item">
-									<a className="nav-link" href="/admin/">
-										Admin Panel
-									</a>
-								</li>
+								<div id="admin" className="center-elements bg-cream rounded">
+									<li className="nav-item">
+										<a className="nav-link" href="/admin/wishcards">
+											Admin Wishcards
+										</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/admin/agencyOverview">
+											Admin Agencies
+										</a>
+									</li>
+								</div>
 							) : null}
 						</ul>
 					</div>
