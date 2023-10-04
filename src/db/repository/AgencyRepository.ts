@@ -8,12 +8,12 @@ export default class AgencyRepository {
 		this.agencyModel = Agency;
 	}
 
-	async getAgencyByUserId(userId: string) {
-		return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
+	getAgencyByUserId(userId: string) {
+		return this.agencyModel.findOne({ accountManager: userId }).lean().exec();
 	}
 
-	async getAgencyById(agencyId: string) {
-		return await this.agencyModel.findById(agencyId).lean().exec();
+	getAgencyById(agencyId: string) {
+		return this.agencyModel.findById(agencyId).lean().exec();
 	}
 
 	async getAgencyByName(agencyName: string) {
@@ -67,7 +67,7 @@ export default class AgencyRepository {
 		}
 	}
 
-	async updateAgencyById(id: string, agencyFields: Partial<Agency>) {
+	updateAgencyById(id: string, agencyFields: Partial<Agency>) {
 		return this.agencyModel
 			.updateOne({ _id: id }, { $set: { ...agencyFields } })
 			.lean()
