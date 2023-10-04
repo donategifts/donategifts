@@ -2,7 +2,15 @@ import { Switch } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
+import PopOver from '../components/shared/PopOver.jsx';
 import AddressForm from '../forms/AddressForm.jsx';
+import {
+	HELPER_TEXT_CHILD_IMG,
+	HELPER_TEXT_WISH_PRICE,
+	HELPER_TEXT_WISH_DESC,
+	HELPER_TEXT_WISH_IMG,
+	HELPER_TEXT_WISH_URL,
+} from '../utils/constants';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function WishCardCreate() {
@@ -83,7 +91,7 @@ function WishCardCreate() {
 												className="form-label"
 											>
 												Upload child&apos;s picture
-												<i className="fa fa-question-circle ms-1"></i>
+												<PopOver text={HELPER_TEXT_CHILD_IMG} />
 											</label>
 											<p className="form-text">
 												You must use an image that is representative of the
@@ -110,12 +118,11 @@ function WishCardCreate() {
 								</div>
 								<label htmlFor="wishItemURL" className="form-label">
 									Share the child&apos;s story
-									<i className="fa fa-question-circle ms-1"></i>
 								</label>
 								<textarea
 									name=""
 									id=""
-									rows={4}
+									rows={3}
 									className="form-control"
 									placeholder="(e.g. what is their story? why do they want this item?)"
 								/>
@@ -135,20 +142,20 @@ function WishCardCreate() {
 										/>
 										<label htmlFor="wishItemPrice" className="form-label">
 											Wish item price
-											<i className="fa fa-question-circle ms-1"></i>
+											<PopOver width={400} text={HELPER_TEXT_WISH_PRICE} />
 										</label>
 										<input
 											type="number"
 											name="wishItemPrice"
 											id="wishItemPrice"
-											placeholder="price must be under $40"
+											placeholder="price must be under $40 and rounded up"
 											className="form-control mb-4"
 											min={1}
 											max={40}
 										/>
 										<label htmlFor="wishItemDesc" className="form-label">
 											Wish item description
-											<i className="fa fa-question-circle ms-1"></i>
+											<PopOver text={HELPER_TEXT_WISH_DESC} />
 										</label>
 										<input
 											type="text"
@@ -165,7 +172,7 @@ function WishCardCreate() {
 												className="form-label"
 											>
 												Upload wish item picture
-												<i className="fa fa-question-circle ms-1"></i>
+												<PopOver text={HELPER_TEXT_WISH_IMG} />
 											</label>
 											<p className="form-text">
 												You must use an image that is representative of the
@@ -193,12 +200,18 @@ function WishCardCreate() {
 									<div className="col-12">
 										<label htmlFor="wishItemURL" className="form-label">
 											Wish item Amazon URL
-											<i className="fa fa-question-circle ms-1"></i>
+											<PopOver
+												width={420}
+												position="top"
+												text={HELPER_TEXT_WISH_URL}
+												isImgProvided={true}
+												imgSrc="/img/amazon-helper.png"
+											/>
 										</label>
 										<input
 											type="text"
-											name=""
-											id=""
+											name="wishItemURL"
+											id="wishItemURL"
 											className="form-control"
 											placeholder="product page link starting with https://www.amazon..."
 										/>
