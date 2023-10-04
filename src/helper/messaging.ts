@@ -312,14 +312,18 @@ export default class Messaging {
 		);
 	}
 
-	static async sendAgencyVerifiedMail(to) {
-		this.sendMail(
+	static async sendAgencyVerifiedMail(to: string) {
+		const result = await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
+
+		if (config.NODE_ENV === 'development') {
+			log.info(result.data);
+		}
 	}
 
 	//NOTE: Broken

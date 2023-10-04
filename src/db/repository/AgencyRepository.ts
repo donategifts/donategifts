@@ -66,4 +66,11 @@ export default class AgencyRepository {
 			throw new Error(`Failed to update agency details: ${error}`);
 		}
 	}
+
+	async updateAgencyById(id: string, agencyFields: Partial<Agency>) {
+		return this.agencyModel
+			.updateOne({ _id: id }, { $set: { ...agencyFields } })
+			.lean()
+			.exec();
+	}
 }

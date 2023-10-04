@@ -9,4 +9,8 @@ router.get('/agencyOverview', adminController.handleGetAgencyOverview);
 
 router.get('/agencyDetail/:agencyId', adminController.handleGetAgencyDetail);
 
+router.put('/verifyAgency/:agencyId', adminController.handleVerifyAgency);
+
+router.post('/updateAgencyData/:agencyId', adminController.handleUpdateAgencyData);
+
 export default router;

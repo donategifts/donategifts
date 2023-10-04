@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import Permissions from '../middleware/permissions';
+
 import admin from './admin';
 import agency from './agency';
 import community from './community';
@@ -8,7 +10,7 @@ import wishcards from './wishcards';
 
 export const routes = Router();
 
-routes.use('/admin', admin);
+routes.use('/admin', Permissions.checkAdminPermission, admin);
 routes.use('/agency', agency);
 routes.use('/community', community);
 routes.use('/wishcards', wishcards);
