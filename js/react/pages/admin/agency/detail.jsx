@@ -1,7 +1,7 @@
 import { Container, TextInput, Textarea } from '@mantine/core';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import MantineProviderWrapper from '../../../utils/mantineProviderWrapper.jsx';
 
@@ -23,12 +23,10 @@ export default function Detail({ agencyId }) {
 		},
 	});
 
-	const setData = (value) => {
-		setAgency({
-			...agency,
-			...value,
-		});
-	};
+	const name = useRef('');
+	const phone = useRef('');
+	const website = useRef('');
+	const bio = useRef('');
 
 	const verifyAgency = async () => {
 		const res = await fetch(`${basePath}/verifyAgency/${agency.id}`, {
@@ -50,10 +48,10 @@ export default function Detail({ agencyId }) {
 		const res = await fetch(`${basePath}/updateAgencyData/${agency.id}`, {
 			method: 'POST',
 			body: JSON.stringify({
-				name: agency.name,
-				phone: agency.phone,
-				website: agency.website,
-				bio: agency.bio,
+				name: name.current.value,
+				phone: phone.current.value,
+				website: website.current.value,
+				bio: bio.current.value,
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -98,13 +96,13 @@ export default function Detail({ agencyId }) {
 				</div>
 				<div className="row mb-3">
 					<TextInput
-						onChange={(event) => setData({ name: event.target.value })}
+						ref={name}
 						className="col-6"
 						label="Name"
 						defaultValue={agency.name}
 					/>
 					<TextInput
-						onChange={(event) => setData({ phone: event.target.value })}
+						ref={phone}
 						className="col-6"
 						label="Phone"
 						defaultValue={agency.phone}
@@ -112,7 +110,7 @@ export default function Detail({ agencyId }) {
 				</div>
 				<div className="row mb-3">
 					<TextInput
-						onChange={(event) => setData({ website: event.target.value })}
+						ref={website}
 						className="col-6"
 						label="Website"
 						defaultValue={agency.website}
@@ -125,12 +123,7 @@ export default function Detail({ agencyId }) {
 					/>
 				</div>
 				<div className="row mb-3 center-elements">
-					<Textarea
-						onChange={(event) => setData({ bio: event.target.value })}
-						className="col-6"
-						label="Bio"
-						defaultValue={agency.bio}
-					/>
+					<Textarea ref={bio} className="col-6" label="Bio" defaultValue={agency.bio} />
 				</div>
 				<div className="row center-elements">
 					<div className="col-4">

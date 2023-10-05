@@ -12,6 +12,7 @@ export default function Overview() {
 	const fetchAgencies = async (verified = false) => {
 		const res = await fetch(`${basePath}/agencyOverview?getVerified=${verified}`);
 		const { data } = await res.json();
+
 		setRows(
 			data.map((agency) => (
 				<Table.Tr key={agency.id}>
