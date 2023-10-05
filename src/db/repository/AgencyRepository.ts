@@ -8,11 +8,11 @@ export default class AgencyRepository {
 		this.agencyModel = Agency;
 	}
 
-	getAgencyByUserId(userId: string) {
+	getAgencyByUserId(userId: string): Promise<Agency | null> {
 		return this.agencyModel.findOne({ accountManager: userId }).lean().exec();
 	}
 
-	getAgencyById(agencyId: string) {
+	getAgencyById(agencyId: string): Promise<Agency | null> {
 		return this.agencyModel.findById(agencyId).lean().exec();
 	}
 
@@ -36,23 +36,18 @@ export default class AgencyRepository {
 		}
 	}
 
-	async verifyAgency(agencyId: string) {
-		try {
-			return await this.agencyModel
-				.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
-				.populate<{ accountManager: User }>('accountManager')
-				.lean()
-				.exec();
-		} catch (error) {
-			throw new Error(`Failed to verify Agency: ${error}`);
-		}
+	verifyAgency(agencyId: string): Promise<Agency | null> {
+		return this.agencyModel
+			.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
+			.lean()
+			.exec();
 	}
 
-	getVerifiedAgencies() {
+	getVerifiedAgencies(): Promise<Agency[] | null> {
 		return this.agencyModel.find({ isVerified: true }).lean().exec();
 	}
 
-	getUnverifiedAgencies() {
+	getUnverifiedAgencies(): Promise<Agency[] | null> {
 		return this.agencyModel.find({ isVerified: false }).lean().exec();
 	}
 

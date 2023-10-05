@@ -7,7 +7,7 @@ export default class UserRepository {
 		this.userModel = User;
 	}
 
-	async getUserByObjectId(id: string) {
+	async getUserByObjectId(id: string): Promise<User | null> {
 		try {
 			return await this.userModel.findOne({ _id: id }).lean().exec();
 		} catch (error) {

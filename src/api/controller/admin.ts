@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import moment from 'moment';
-import { LeanDocument } from 'mongoose';
 
 import Agency from '../../db/models/Agency';
+import User from '../../db/models/User';
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import UserRepository from '../../db/repository/UserRepository';
 import Messaging from '../../helper/messaging';
@@ -26,20 +26,38 @@ export default class AdminController extends BaseController {
 		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
 	}
 
+	private formatAgencyResponse(agency: Agency, manager: User) {
+		return {
+			id: agency._id,
+			name: agency.agencyName,
+			phone: agency.agencyPhone,
+			website: agency.agencyWebsite,
+			joined: moment(agency.joined).format('DD-MM-yyyy'),
+			bio: agency.agencyBio,
+			verified: agency.isVerified,
+			accountManager: {
+				firstName: manager.fName,
+				lastName: manager.lName,
+				email: manager.email,
+				joined: moment(manager.joined).format('DD-MM-yyyy'),
+				verified: manager.emailVerified,
+			},
+		};
+	}
+
 	async handleGetAgencyOverview(req: Request, res: Response, _next: NextFunction) {
 		const getVerified = req.query.getVerified;
 		try {
-			let agencies: LeanDocument<
-				Agency &
-					Required<{
-						_id: string;
-					}>
-			>[] = [];
+			let agencies: Agency[] | null = [];
 
 			if (getVerified === 'true') {
 				agencies = await this.agencyRepository.getVerifiedAgencies();
 			} else {
 				agencies = await this.agencyRepository.getUnverifiedAgencies();
+			}
+
+			if (!agencies) {
+				return this.handleError(res, 'No agencies found');
 			}
 
 			const mappedAgencies = agencies.map((agency) => {
@@ -69,26 +87,23 @@ export default class AdminController extends BaseController {
 				return this.handleError(res, 'Agency not found');
 			}
 
-			const accountManager = await this.userRepository.getUserByObjectId(
-				agency.accountManager,
-			);
+			let accountManager = await this.userRepository.getUserByObjectId(agency.accountManager);
 
-			return this.sendResponse(res, {
-				id: agency._id,
-				name: agency.agencyName,
-				phone: agency.agencyPhone,
-				website: agency.agencyWebsite,
-				joined: moment(agency.joined).format('DD-MM-yyyy'),
-				bio: agency.agencyBio,
-				verified: agency.isVerified,
-				accountManager: {
-					firstName: accountManager?.fName,
-					lastName: accountManager?.lName,
-					email: accountManager?.email,
-					joined: moment(accountManager?.joined).format('DD-MM-yyyy'),
-					verified: accountManager?.emailVerified,
-				},
-			});
+			if (!accountManager) {
+				this.log.error(
+					`[AdminController] handleGetAgencyDetail: Agency account manager not found`,
+				);
+
+				accountManager = {
+					fName: '',
+					lName: '',
+					email: '',
+					joined: new Date(),
+					emailVerified: false,
+				} as User;
+			}
+
+			return this.sendResponse(res, this.formatAgencyResponse(agency, accountManager));
 		} catch (error) {
 			return this.handleError(res, error);
 		}
@@ -103,26 +118,23 @@ export default class AdminController extends BaseController {
 				return this.handleError(res, 'Agency not found');
 			}
 
-			await Messaging.sendAgencyVerifiedMail(agency.accountManager.email);
+			const accountManager = await this.userRepository.getUserByObjectId(
+				agency.accountManager,
+			);
+
+			if (!accountManager) {
+				await this.agencyRepository.updateAgencyById(req.params.agencyId, {
+					isVerified: false,
+				});
+
+				return this.handleError(res, 'Agency account manager not found');
+			}
+
+			await Messaging.sendAgencyVerifiedMail(accountManager.email);
 
 			return this.sendResponse(res, {
 				message: 'Agency verified',
-				agency: {
-					id: agency._id,
-					name: agency.agencyName,
-					phone: agency.agencyPhone,
-					website: agency.agencyWebsite,
-					joined: moment(agency.joined).format('DD-MM-yyyy'),
-					bio: agency.agencyBio,
-					verified: agency.isVerified,
-					accountManager: {
-						firstName: agency.accountManager.fName,
-						lastName: agency.accountManager.lName,
-						email: agency.accountManager.email,
-						joined: moment(agency.accountManager.joined).format('DD-MM-yyyy'),
-						verified: agency.accountManager.emailVerified,
-					},
-				},
+				agency: this.formatAgencyResponse(agency, accountManager),
 			});
 		} catch (error) {
 			this.log.error('[AdminController] verifyAgency: ', error);
