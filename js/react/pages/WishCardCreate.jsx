@@ -10,9 +10,17 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);
 	const [itemImage, setItemImage] = useState(null);
-
 	const [agencyAddress, setAgencyAddress] = useState({});
 	const [isShippingDefault, setIsShippingDefault] = useState(true);
+
+	const childFirstNameRef = useRef();
+	const childInterestRef = useRef();
+	const childBirthYearRef = useRef();
+	const childStoryRef = useRef();
+	const wishItemNameRef = useRef();
+	const wishItemPriceRef = useRef();
+	const wishItemInfoRef = useRef();
+	const wishItemURLRef = useRef();
 
 	const [formData, setFormData] = useState({
 		childFirstName: '',
@@ -38,16 +46,6 @@ function WishCardCreate() {
 	const [wishItemInfoError, setWishItemInfoError] = useState('');
 	const [wishItemURLError, setWishItemURLError] = useState('');
 
-	const childFirstNameRef = useRef();
-	const childInterestRef = useRef();
-	const childBirthYearRef = useRef();
-	const childStoryRef = useRef();
-
-	const wishItemNameRef = useRef();
-	const wishItemPriceRef = useRef();
-	const wishItemInfoRef = useRef();
-	const wishItemURLRef = useRef();
-
 	useEffect(() => {
 		const fetchAgencyAddress = () => {
 			axios.get('/api/agency').then((res) => {
@@ -67,63 +65,33 @@ function WishCardCreate() {
 	};
 
 	const handleShippingAddress = (e) => {
-		e.target.checked ? setIsShippingDefault(true) : setIsShippingDefault(false);
+		setIsShippingDefault(e.target.checked);
 	};
 
-	const validateChildName = () => {
-		const childName = childFirstNameRef.current;
-		if (!childName?.value || !childName?.value.length) {
-			setChildFirstNameError(FORM_INPUT_MAP.childFirstName.defaultError);
-			childName.focus();
-		} else if (childName.value.length < 2 || childName.value.length >= 250) {
-			setChildFirstNameError(FORM_INPUT_MAP.childFirstName.sizeError);
-			childName.focus();
-		} else if (!childName.value.match("^[ A-Za-z-_']*$")) {
-			setChildFirstNameError(FORM_INPUT_MAP.childFirstName.validateError);
-			childName.focus();
-		} else {
-			setChildFirstNameError('');
-			setFormData((data) => ({
-				...data,
-				[childName.name]: childName.value,
-			}));
-		}
-	};
+	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
+		const fieldValue = ref.current?.value;
 
-	const validateChildInterest = () => {
-		const childInterest = childInterestRef.current;
-		if (!childInterest?.value || !childInterest?.value.length) {
-			setChildInterestError(FORM_INPUT_MAP.childInterest.defaultError);
-			childInterest.focus();
-		} else if (childInterest.value.length < 2 || childInterest.value.length >= 250) {
-			setChildInterestError(FORM_INPUT_MAP.childInterest.sizeError);
-			childInterest.focus();
+		if (!fieldValue || !fieldValue.length) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.default);
+			ref.current.focus();
+		} else if (sizeFn && sizeFn(fieldValue)) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.size);
+			ref.current.focus();
+		} else if (validationFn && !validationFn(fieldValue)) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.validate);
+			ref.current.focus();
 		} else {
-			setChildInterestError('');
+			setError('');
 			setFormData((data) => ({
 				...data,
-				[childInterest.name]: childInterest.value,
-			}));
-		}
-	};
-
-	const validateChildBirthYear = () => {
-		const childBirthYear = childBirthYearRef.current;
-		if (!childBirthYear?.value || !childBirthYear?.value.length) {
-			setChildBirthYearError(FORM_INPUT_MAP.childBirthYear.defaultError);
-			childBirthYear.focus();
-		} else {
-			setChildBirthYearError('');
-			setFormData((data) => ({
-				...data,
-				[childBirthYear.name]: childBirthYear.value,
+				[ref.current.name]: fieldValue,
 			}));
 		}
 	};
 
 	const validateChildImage = () => {
 		if (!childImage) {
-			setChildImageError(FORM_INPUT_MAP.childImage.defaultError);
+			setChildImageError(FORM_INPUT_MAP.childImage.errors?.default);
 		} else {
 			setChildImageError('');
 			setFormData((data) => ({
@@ -133,26 +101,27 @@ function WishCardCreate() {
 		}
 	};
 
-	const validateChildStory = () => {
-		const childStory = childStoryRef.current;
-		if (!childStory?.value || !childStory?.value.length) {
-			setChildStoryError(FORM_INPUT_MAP.childStory.defaultError);
-			childStory.focus();
-		} else {
-			setChildStoryError('');
-			setFormData((data) => ({
-				...data,
-				[childStory.name]: childStory.value,
-			}));
-		}
-	};
-
 	const validateFormData = () => {
-		validateChildName();
-		validateChildInterest();
-		validateChildBirthYear();
+		validateField(
+			childFirstNameRef,
+			setChildFirstNameError,
+			'childFirstName',
+			(value) => value.length < 2 || value.length > 250,
+			(value) => /^[ A-Za-z-_']*$/.test(value),
+		);
+		validateField(
+			childInterestRef,
+			setChildInterestError,
+			'childInterest',
+			(value) => value.length < 2 || value.length > 250,
+		);
+		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
+		validateField(childStoryRef, setChildStoryError, 'childStory');
+		validateField(wishItemNameRef, setWishItemNameError, 'wishItemName');
+		validateField(wishItemPriceRef, setWishItemPriceError, 'wishItemPrice');
+		validateField(wishItemInfoRef, setWishItemInfoError, 'wishItemInfo');
+		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
 		validateChildImage();
-		validateChildStory();
 	};
 
 	const handleSubmit = (e) => {

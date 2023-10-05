@@ -6,69 +6,85 @@ const GOOGLE_CLIENT_LIBRARY_URL = 'https://accounts.google.com/gsi/client';
 
 const FORM_INPUT_MAP = {
 	childFirstName: {
-		label: `Child's first name`,
-		defaultError: `Please enter child's first name.`,
-		sizeError: `Must be more than 1 character and less than 250 characters.`,
-		validateError: `Input is only allowed to have alphabets, space, underscore, and hyphen.`,
+		label: "Child's first name",
+		errors: {
+			default: "Child's first name is required.",
+			size: 'Must be 2 to 250 characters long.',
+			validate: 'Only alphabets, spaces, underscores, and hyphens are allowed.',
+		},
 	},
 	childInterest: {
-		label: `Child's interest`,
-		defaultError: `Please enter child's interest.`,
-		sizeError: `Must be more than 1 character and less than 250 characters.`,
-		placeholder: `(e.g. write something they like to do)`,
+		label: "Child's interest",
+		errors: {
+			default: "Child's interest is required.",
+			size: 'Must be 2 to 250 characters long.',
+		},
+		placeholder: '(e.g. hobbies, interests, etc.)',
 	},
 	childBirthYear: {
-		label: `Child's birth year`,
-		defaultError: `Please select child's birth year.`,
-		placeholder: `Select birth year`,
+		label: "Child's birth year",
+		errors: {
+			default: "Please select child's birth year.",
+		},
+		placeholder: 'Select birth year',
 	},
 	childImage: {
-		label: `Upload child's picture`,
-		defaultError: `Please upload child's image.`,
-		instruction: `You must use an image that is representative of the
-		child (Also allowed: masked faces, cropped or
-		blurred features, art or something they made)`,
-		popOverText: `Child's image is required because 
-		users are more encouraged to donate to the wish cards with children's photos. 
-		Please see FAQ for more help.`,
+		label: "Upload child's picture",
+		errors: {
+			default: "Child's image is required.",
+		},
+		instruction:
+			"You must use an image that represents the child (masked faces, blurred features, or child's artwork are allowed).",
+		popOverText:
+			"Including a child's image encourages more donations. Please refer to the FAQ for assistance.",
 	},
 	childStory: {
-		label: `Share the child's story`,
-		defaultError: `Please enter child's story.`,
-		sizeError: `Must be more than 5 characters and less than 600 characters.`,
-		placeholder: `(e.g. what is their story? why do they want this item?)`,
+		label: "Share the child's story",
+		errors: {
+			default: "Child's story is required.",
+			size: 'Must be 6 to 600 characters long.',
+		},
+		placeholder: "(e.g. child's background and why they want this item)",
 	},
 	wishItemName: {
-		label: `Wish item name`,
-		defaultError: `Please enter wish item name.`,
-		sizeError: `Must be more than 1 character and less than 150 characters.`,
+		label: 'Wish item name',
+		errors: {
+			default: 'Wish item name is required.',
+			size: 'Must be 2 to 150 characters long.',
+		},
 	},
 	wishItemPrice: {
-		label: `Wish item price`,
-		defaultError: `Please enter wish item price.`,
-		placeholder: `price must be rounded up and under $40`,
-		popOverText: `Item must be under $40. 
-		Accepted wish items include toys, games, school supplies, hobby supplies, and wearable items such as gloves, shoes, etc. 
-		However, they may NOT ask for gift cards.`,
+		label: 'Wish item price',
+		errors: {
+			default: 'Wish item price is required.',
+		},
+		placeholder: 'Price must be rounded up and under $40',
+		popOverText:
+			'Wish items must be under $40 and can include toys, games, school supplies, hobby supplies, and wearable items. Gift cards are not allowed.',
 	},
 	wishItemInfo: {
-		label: `Wish item description`,
-		defaultError: `Please enter wish item description.`,
-		placeholder: `share product details`,
-		popOverText: `Please provide specific details of the item, such as type, vendor, size, color, etc.`,
+		label: 'Wish item description',
+		errors: {
+			default: 'Wish item description is required.',
+		},
+		placeholder: 'Provide specific details of the item (type, vendor, size, color, etc.)',
+		popOverText: 'Please provide detailed information about the item.',
 	},
 	wishItemURL: {
-		label: `Wish item Amazon URL`,
-		defaultError: `Please enter wish item URL.`,
-		placeholder: `product page link starting with https://www.amazon...`,
-		popOverText: `Search for product link, then copy and paste the exact Amazon product link URL from the domain bar.`,
+		label: 'Wish item Amazon URL',
+		errors: {
+			default: 'Wish item URL is required.',
+		},
+		placeholder: 'Paste the Amazon product link (e.g., https://www.amazon...)',
+		popOverText: 'Copy and paste the exact Amazon product link URL from the address bar.',
 	},
 	wishItemImage: {
-		label: `Upload item picture`,
-		defaultError: `Please upload item image.`,
-		instruction: `You must use an image that is representative of the
-		wish item product.`,
-		popOverText: `Wish item image is required. Please upload a product photo.`,
+		label: 'Upload item picture',
+		errors: {
+			default: 'Item image is required.',
+		},
+		instruction: 'Please upload a product photo that represents the wish item.',
+		popOverText: 'A product photo is required for the wish item.',
 	},
 };
 
@@ -148,6 +164,8 @@ const BIRTH_YEAR = [
 	'2004',
 	'2003',
 	'2002',
+	'2001',
+	'2000',
 ];
 
 export {
