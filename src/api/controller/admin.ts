@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import moment from 'moment';
 import { LeanDocument } from 'mongoose';
 
 import Agency from '../../db/models/Agency';
@@ -47,7 +48,7 @@ export default class AdminController extends BaseController {
 					name: agency.agencyName,
 					phone: agency.agencyPhone,
 					website: agency.agencyWebsite,
-					joined: agency.joined,
+					joined: moment(agency.joined).format('DD-MM-yyyy'),
 					bio: agency.agencyBio,
 					accountManager: agency.accountManager,
 				};
@@ -77,14 +78,14 @@ export default class AdminController extends BaseController {
 				name: agency.agencyName,
 				phone: agency.agencyPhone,
 				website: agency.agencyWebsite,
-				joined: agency.joined,
+				joined: moment(agency.joined).format('DD-MM-yyyy'),
 				bio: agency.agencyBio,
 				verified: agency.isVerified,
 				accountManager: {
 					firstName: accountManager?.fName,
 					lastName: accountManager?.lName,
 					email: accountManager?.email,
-					joined: accountManager?.joined,
+					joined: moment(accountManager?.joined).format('DD-MM-yyyy'),
 					verified: accountManager?.emailVerified,
 				},
 			});
@@ -111,14 +112,14 @@ export default class AdminController extends BaseController {
 					name: agency.agencyName,
 					phone: agency.agencyPhone,
 					website: agency.agencyWebsite,
-					joined: agency.joined,
+					joined: moment(agency.joined).format('DD-MM-yyyy'),
 					bio: agency.agencyBio,
 					verified: agency.isVerified,
 					accountManager: {
 						firstName: agency.accountManager.fName,
 						lastName: agency.accountManager.lName,
 						email: agency.accountManager.email,
-						joined: agency.accountManager.joined,
+						joined: moment(agency.accountManager.joined).format('DD-MM-yyyy'),
 						verified: agency.accountManager.emailVerified,
 					},
 				},

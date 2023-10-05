@@ -1,5 +1,4 @@
 import { Container, TextInput, Textarea } from '@mantine/core';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 
@@ -71,14 +70,7 @@ export default function Detail({ agencyId }) {
 	const fetchAgency = async () => {
 		const res = await fetch(`${basePath}/agencyDetail/${agencyId}`);
 		const { data } = await res.json();
-		setAgency({
-			...data,
-			joined: moment(data.joined).format('DD-MM-yyyy').toString(),
-			accountManager: {
-				...data.accountManager,
-				joined: moment(data.accountManager.joined).format('DD-MM-yyyy').toString(),
-			},
-		});
+		setAgency(data);
 	};
 
 	useEffect(() => {

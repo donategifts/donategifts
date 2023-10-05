@@ -1,5 +1,4 @@
 import { Container, Table, Tabs } from '@mantine/core';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 import MantineProviderWrapper from '../../../utils/mantineProviderWrapper.jsx';
@@ -23,7 +22,7 @@ export default function Overview() {
 							{agency.website}
 						</a>
 					</Table.Td>
-					<Table.Td>{moment(agency.joined).format('DD-mm-yyyy')}</Table.Td>
+					<Table.Td>{agency.joined}</Table.Td>
 					<Table.Td>{agency.bio}</Table.Td>
 					<Table.Td>{agency.accountManager}</Table.Td>
 					<Table.Td>
