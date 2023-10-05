@@ -73,10 +73,10 @@ export default function Detail({ agencyId }) {
 		const { data } = await res.json();
 		setAgency({
 			...data,
-			joined: moment(data.joined).format('DD-mm-yyyy').toString(),
+			joined: moment(data.joined).format('DD-MM-yyyy').toString(),
 			accountManager: {
 				...data.accountManager,
-				joined: moment(data.accountManager.joined).format('DD-mm-yyyy').toString(),
+				joined: moment(data.accountManager.joined).format('DD-MM-yyyy').toString(),
 			},
 		});
 	};
@@ -123,7 +123,13 @@ export default function Detail({ agencyId }) {
 					/>
 				</div>
 				<div className="row mb-3 center-elements">
-					<Textarea ref={bio} className="col-6" label="Bio" defaultValue={agency.bio} />
+					<Textarea
+						ref={bio}
+						className="col-6"
+						label="Bio"
+						rows={5}
+						defaultValue={agency.bio}
+					/>
 				</div>
 				<div className="row center-elements">
 					<div className="col-4">
