@@ -15,38 +15,34 @@ const WishCardsCarousel = ({ wishCards }) => {
 	};
 
 	useEffect(() => {
-		if (windowWidth > 1170) {
+		if (windowWidth > 1400) {
 			setChunkedWishCards(chunkArray(wishCards, 3));
 			setColStyle('col-4');
-		} else if (windowWidth < 1170 && windowWidth > 820) {
+		} else if (windowWidth < 1400 && windowWidth > 992) {
 			setChunkedWishCards(chunkArray(wishCards, 2));
 			setColStyle('col-6');
-		} else {
-			setChunkedWishCards(chunkArray(wishCards, 1));
-			setColStyle('col-12');
 		}
+
 		window.addEventListener('resize', resizeWidth);
 		return () => window.removeEventListener('resize', resizeWidth);
 	}, [windowWidth]);
 
 	return (
 		<MantineProviderWrapper>
-			<div className="container-fluid my-5">
-				<div className="d-flex m-0 justify-content-center">
-					{windowWidth > 560 && (
-						<button
-							className="btn btn-sm btn-light bg-transparent border-0 p-4"
-							type="button"
-							data-bs-target="#sample-cards-carousel"
-							data-bs-slide="prev"
-							aria-label="left-arrow-button"
-						>
-							<div className="fa-solid fa-chevron-left fa-2xl text-dark"></div>
-						</button>
-					)}
+			<div className="container my-5">
+				<div className="d-none d-lg-flex justify-content-center">
+					<button
+						title="previous"
+						className="btn btn-sm btn-light bg-transparent border-0 p-4"
+						type="button"
+						data-bs-target="#desktop-cards-carousel"
+						data-bs-slide="prev"
+					>
+						<div className="fa-solid fa-chevron-left fa-2xl text-dark"></div>
+					</button>
 					<div
 						className="carousel slide"
-						id="sample-cards-carousel"
+						id="desktop-cards-carousel"
 						data-bs-ride="carousel"
 					>
 						<div className="carousel-inner">
@@ -56,12 +52,12 @@ const WishCardsCarousel = ({ wishCards }) => {
 									className={`carousel-item ${index === 0 ? 'active' : ''}`}
 									data-bs-interval="20000"
 								>
-									<div className="row justify-content-center align-items-stretch">
+									<div className="row justify-content-center">
 										{chunk.map((currentCard) => {
 											return (
 												<div
 													key={currentCard._id}
-													className={`${colStyle} px-4`}
+													className={`${colStyle} p-4`}
 												>
 													<WishCard wishCard={currentCard} />
 												</div>
@@ -72,17 +68,38 @@ const WishCardsCarousel = ({ wishCards }) => {
 							))}
 						</div>
 					</div>
-					{windowWidth > 560 && (
-						<button
-							className="btn btn-sm btn-light bg-transparent border-0 p-4"
-							type="button"
-							data-bs-target="#sample-cards-carousel"
-							data-bs-slide="next"
-							aria-label="right-arrow-button"
-						>
-							<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>
-						</button>
-					)}
+					<button
+						title="next"
+						className="btn btn-sm btn-light bg-transparent border-0 p-4"
+						type="button"
+						data-bs-target="#mobile-cards-carousel"
+						data-bs-slide="next"
+					>
+						<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>
+					</button>
+				</div>
+				<div className="d-flex justify-content-center d-lg-none">
+					<div
+						className="carousel slide"
+						id="mobile-cards-carousel"
+						data-bs-ride="carousel"
+					>
+						<div className="carousel-inner p-4">
+							{wishCards?.map((currentCard, index) => (
+								<div
+									key={currentCard._id}
+									className={`carousel-item ${index === 0 ? 'active' : ''}`}
+									data-bs-interval="200000"
+								>
+									<div className="row justify-content-center">
+										<div key={currentCard._id} className="col-12">
+											<WishCard wishCard={currentCard} />
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
 				</div>
 			</div>
 		</MantineProviderWrapper>
@@ -90,37 +107,8 @@ const WishCardsCarousel = ({ wishCards }) => {
 };
 
 WishCardsCarousel.propTypes = {
-	wishCards: PropTypes.arrayOf(
-		PropTypes.shape({
-			_id: PropTypes.string.isRequired,
-			childFirstName: PropTypes.string.isRequired,
-			childLastName: PropTypes.string.isRequired,
-			childBirthday: PropTypes.string,
-			childInterest: PropTypes.string.isRequired,
-			wishItemName: PropTypes.string.isRequired,
-			wishItemPrice: PropTypes.number.isRequired,
-			wishItemURL: PropTypes.string.isRequired,
-			childStory: PropTypes.string.isRequired,
-			wishCardImage: PropTypes.string.isRequired,
-			createdBy: PropTypes.string.isRequired,
-			createdAt: PropTypes.string.isRequired,
-			deliveryDate: PropTypes.string.isRequired,
-			occasion: PropTypes.string.isRequired,
-			address: PropTypes.shape({
-				address1: PropTypes.string.isRequired,
-				address2: PropTypes.string.isRequired,
-				city: PropTypes.string.isRequired,
-				state: PropTypes.string.isRequired,
-				country: PropTypes.string.isRequired,
-				zipcode: PropTypes.string.isRequired,
-			}),
-			isLockedBy: PropTypes.string,
-			isLockedUntil: PropTypes.string,
-			approvedByAdmin: PropTypes.bool,
-			status: PropTypes.string.isRequired,
-			belongsTo: PropTypes.string.isRequired,
-		}),
-	),
+	// we'll make this more specific once the db migration is complete
+	wishCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCardsCarousel;

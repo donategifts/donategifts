@@ -26,7 +26,7 @@ const WishCard = ({ wishCard, attributes }) => {
 						</p>
 					</div>
 					<div className="d-md-flex justify-content-center">
-						<div className="col-12 mb-2 mb-md-0 col-md-6 col-lg-6 col-sm-12 col-xs-12 me-0 me-md-1">
+						<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
 							<a
 								className="btn btn-lg btn-primary w-100"
 								href={`/wishcards/single/${wishCard._id}`}
@@ -34,7 +34,7 @@ const WishCard = ({ wishCard, attributes }) => {
 								View More
 							</a>
 						</div>
-						<div className="col-12 col-md-6 col-lg-6 col-sm-12 col-xs-12 ms-0 ms-md-1">
+						<div className="col-12 col-md-6 ms-0 ms-md-1">
 							{wishCard.status === 'donated' ? (
 								<button className="btn btn-lg btn-dark disabled w-100">
 									Donated
@@ -53,36 +53,9 @@ const WishCard = ({ wishCard, attributes }) => {
 };
 
 WishCard.propTypes = {
-	attributes: PropTypes.shape({}),
-	wishCard: PropTypes.shape({
-		_id: PropTypes.string.isRequired,
-		childFirstName: PropTypes.string.isRequired,
-		childLastName: PropTypes.string.isRequired,
-		childBirthday: PropTypes.string,
-		childInterest: PropTypes.string.isRequired,
-		wishItemName: PropTypes.string.isRequired,
-		wishItemPrice: PropTypes.number.isRequired,
-		wishItemURL: PropTypes.string.isRequired,
-		childStory: PropTypes.string.isRequired,
-		wishCardImage: PropTypes.string.isRequired,
-		createdBy: PropTypes.string.isRequired,
-		createdAt: PropTypes.string.isRequired,
-		deliveryDate: PropTypes.string.isRequired,
-		occasion: PropTypes.string.isRequired,
-		address: PropTypes.shape({
-			address1: PropTypes.string.isRequired,
-			address2: PropTypes.string.isRequired,
-			city: PropTypes.string.isRequired,
-			state: PropTypes.string.isRequired,
-			country: PropTypes.string.isRequired,
-			zipcode: PropTypes.string.isRequired,
-		}),
-		isLockedBy: PropTypes.string,
-		isLockedUntil: PropTypes.string,
-		approvedByAdmin: PropTypes.bool,
-		status: PropTypes.string.isRequired,
-		belongsTo: PropTypes.string.isRequired,
-	}),
+	attributes: PropTypes.object,
+	// we'll make this more specific once the db migration is complete
+	wishCard: PropTypes.object,
 };
 
 export default WishCard;
