@@ -26,7 +26,7 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div key={wishCard._id} className="m-3 mt-0 col-12 col-lg-5 col-xl-3">
+					<div key={wishCard._id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
 						<WishCard wishCard={wishCard} attributes={attributes} />
 					</div>
 				);

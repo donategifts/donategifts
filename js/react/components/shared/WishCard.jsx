@@ -25,8 +25,8 @@ const WishCard = ({ wishCard, attributes }) => {
 								: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
 						</p>
 					</div>
-					<div className="d-md-flex justify-content-center">
-						<div className="col-12 mb-2 mb-md-0 col-md-6 me-0 me-md-1">
+					<div className="d-block d-xxl-flex justify-content-center">
+						<div className="col-12 col-xxl-6 mb-2 mb-xxl-0">
 							<a
 								className="btn btn-lg btn-primary w-100"
 								href={`/wishcards/single/${wishCard._id}`}
@@ -34,7 +34,7 @@ const WishCard = ({ wishCard, attributes }) => {
 								View More
 							</a>
 						</div>
-						<div className="col-12 col-md-6 ms-0 ms-md-1">
+						<div className="col-12 col-xxl-6 ms-0 ms-xxl-1">
 							{wishCard.status === 'donated' ? (
 								<button className="btn btn-lg btn-dark disabled w-100">
 									Donated

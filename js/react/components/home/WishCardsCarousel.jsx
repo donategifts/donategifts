@@ -89,7 +89,7 @@ const WishCardsCarousel = ({ wishCards }) => {
 								<div
 									key={currentCard._id}
 									className={`carousel-item ${index === 0 ? 'active' : ''}`}
-									data-bs-interval="200000"
+									data-bs-interval="20000"
 								>
 									<div className="row justify-content-center">
 										<div key={currentCard._id} className="col-12">
