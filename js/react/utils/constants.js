@@ -68,7 +68,6 @@ const FORM_INPUT_MAP = {
 			default: 'Wish item description is required.',
 		},
 		placeholder: 'Provide specific details of the item (type, vendor, size, color, etc.)',
-		popOverText: 'Please provide detailed information about the item.',
 	},
 	wishItemURL: {
 		label: 'Wish item Amazon URL',
@@ -84,7 +83,6 @@ const FORM_INPUT_MAP = {
 			default: 'Item image is required.',
 		},
 		instruction: 'Please upload a product photo that represents the wish item.',
-		popOverText: 'A product photo is required for the wish item.',
 	},
 };
 

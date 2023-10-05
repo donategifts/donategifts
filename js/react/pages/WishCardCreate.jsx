@@ -182,6 +182,23 @@ function WishCardCreate() {
 										/>
 									</div>
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
+										<div className="px-3 pt-3 pb-0">
+											<img
+												src={childImage || `/img/img-placeholder.png`}
+												alt="image-placeholder"
+												className={
+													childImageError
+														? 'img-fluid input-border-danger rounded'
+														: 'img-fluid rounded'
+												}
+												id="childImagePreview"
+											/>
+											{childImageError && (
+												<p className="text-danger font-weight-bold">
+													{childImageError}
+												</p>
+											)}
+										</div>
 										<div className="p-3">
 											<label htmlFor="childImage" className="form-label">
 												{FORM_INPUT_MAP.childImage?.label}
@@ -200,23 +217,6 @@ function WishCardCreate() {
 												onChange={handleChildImage}
 												required
 											/>
-										</div>
-										<div className="p-3">
-											<img
-												src={childImage || `/img/img-placeholder.png`}
-												alt="image-placeholder"
-												className={
-													childImageError
-														? 'img-fluid input-border-danger'
-														: 'img-fluid'
-												}
-												id="childImagePreview"
-											/>
-											{childImageError && (
-												<p className="text-danger font-weight-bold">
-													{childImageError}
-												</p>
-											)}
 										</div>
 									</div>
 								</div>
@@ -277,20 +277,19 @@ function WishCardCreate() {
 											required
 											placeholder={FORM_INPUT_MAP.wishItemInfo?.placeholder}
 											onChange={() => setWishItemInfoError('')}
-											rightSection={
-												<PopOver
-													text={FORM_INPUT_MAP.wishItemInfo?.popOverText}
-												/>
-											}
 										/>
 									</div>
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
+										<div className="px-3 pt-3 pb-0">
+											<img
+												src={itemImage || `/img/img-placeholder.png`}
+												alt="wish-item-image"
+												className="img-fluid rounded"
+											/>
+										</div>
 										<div className="pt-3 px-3 d-flex flex-column justify-content-center align-items-stretch">
 											<label htmlFor="wishItemImage" className="form-label">
 												{FORM_INPUT_MAP.wishItemImage?.label}
-												<PopOver
-													text={FORM_INPUT_MAP.wishItemImage?.popOverText}
-												/>
 											</label>
 											<p className="form-text">
 												{FORM_INPUT_MAP.wishItemImage?.instruction}
@@ -301,13 +300,6 @@ function WishCardCreate() {
 												id="wishItemImage"
 												className="form-control mt-4"
 												onChange={handleItemImage}
-											/>
-										</div>
-										<div className="p-3">
-											<img
-												src={itemImage || `/img/img-placeholder.png`}
-												alt="wish-item-image"
-												className="img-fluid"
 											/>
 										</div>
 									</div>
