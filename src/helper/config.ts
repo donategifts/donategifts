@@ -25,7 +25,6 @@ const envVariables = [
 	'GOOGLE_CAPTCHA_KEY',
 	'G_CLIENT_ID',
 	'FB_APP_ID',
-	'SCRAPINGBEE_APIKEY',
 	'STRIPE_PUBLISHABLE_KEY',
 	'STRIPE_SECRET_KEY',
 	'WISHCARD_LOCK_IN_MINUTES',
@@ -61,7 +60,6 @@ interface EnvVars {
 	GOOGLE_CAPTCHA_KEY: string | null;
 	G_CLIENT_ID: string | null;
 	FB_APP_ID: string | null;
-	SCRAPINGBEE_APIKEY: string | null;
 	STRIPE_PUBLISHABLE_KEY: string;
 	STRIPE_SECRET_KEY: string;
 	WISHCARD_LOCK_IN_MINUTES: number;
@@ -134,8 +132,6 @@ export default {
 	G_CLIENT_ID: envVars.G_CLIENT_ID,
 
 	FB_APP_ID: envVars.FB_APP_ID,
-
-	SCRAPINGBEE_APIKEY: envVars.SCRAPINGBEE_APIKEY,
 
 	STRIPE: {
 		PUBLISHABLE_KEY: envVars.STRIPE_PUBLISHABLE_KEY,
