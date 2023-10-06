@@ -1,9 +1,11 @@
 import express from 'express';
 
+import { database } from '../db/postgresconnection';
+
 import AdminController from './controller/admin';
 
 const router = express.Router();
-const adminController = new AdminController();
+const adminController = new AdminController(database);
 
 router.get('/agencyOverview', adminController.handleGetAgencyOverview);
 

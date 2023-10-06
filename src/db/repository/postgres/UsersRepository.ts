@@ -13,7 +13,11 @@ export default class UsersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('users')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirst();
 	}
 
 	update(id: string, updateParams: UsersUpdateParams) {
@@ -29,6 +33,7 @@ export default class UsersRepository {
 		return this.database
 			.selectFrom('users')
 			.where('email', '=', email)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 

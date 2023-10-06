@@ -169,13 +169,6 @@ export default class Messaging {
 		message: string,
 		attachments?: { filename: string; path: string; cid: string }[],
 	) {
-	static async sendMail(
-		from: string | null,
-		to: string,
-		subject: string,
-		message: string,
-		attachments?: { filename: string; path: string; cid: string }[],
-	) {
 		try {
 			if (!from) {
 				throw new Error('No default email set in .env!!!');
