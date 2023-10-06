@@ -26,7 +26,7 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div key={wishCard._id} className="m-3 mt-0 col-12 col-lg-5 col-xl-3">
+					<div key={wishCard._id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
 						<WishCard wishCard={wishCard} attributes={attributes} />
 					</div>
 				);
@@ -42,7 +42,7 @@ function WishCards({ wishCards, user }) {
 		<MantineProviderWrapper>
 			<div id="wishcards" className="bg-light p-4">
 				<div className="container">
-					<div className="d-flex flex-wrap justify-content-center align-items-center">
+					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
 						{isLoading
 							? new Array(6)
 									.fill(0)
@@ -61,37 +61,7 @@ WishCards.propTypes = {
 	user: PropTypes.shape({
 		_id: PropTypes.string,
 	}),
-	wishCards: PropTypes.arrayOf(
-		PropTypes.shape({
-			_id: PropTypes.string.isRequired,
-			childFirstName: PropTypes.string.isRequired,
-			childLastName: PropTypes.string.isRequired,
-			childBirthday: PropTypes.string,
-			childInterest: PropTypes.string.isRequired,
-			wishItemName: PropTypes.string.isRequired,
-			wishItemPrice: PropTypes.number.isRequired,
-			wishItemURL: PropTypes.string.isRequired,
-			childStory: PropTypes.string.isRequired,
-			wishCardImage: PropTypes.string.isRequired,
-			createdBy: PropTypes.string.isRequired,
-			createdAt: PropTypes.string.isRequired,
-			deliveryDate: PropTypes.string.isRequired,
-			occasion: PropTypes.string.isRequired,
-			address: PropTypes.shape({
-				address1: PropTypes.string.isRequired,
-				address2: PropTypes.string.isRequired,
-				city: PropTypes.string.isRequired,
-				state: PropTypes.string.isRequired,
-				country: PropTypes.string.isRequired,
-				zipcode: PropTypes.string.isRequired,
-			}),
-			isLockedBy: PropTypes.string,
-			isLockedUntil: PropTypes.string,
-			approvedByAdmin: PropTypes.bool,
-			status: PropTypes.string.isRequired,
-			belongsTo: PropTypes.string.isRequired,
-		}),
-	),
+	wishCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCards;
