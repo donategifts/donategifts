@@ -17,13 +17,13 @@ export default class BaseController {
 		});
 	}
 
-	sendResponse(res: Response, data: any, status = 200) {
-		return res.status(status).send({
+	sendResponse(response: Response, data: any, status = 200) {
+		return response.status(status).send({
 			data,
 		});
 	}
 
-	handleError(res: Response, error: any, code = 400) {
+	handleError(response: Response, error: any, code = 400) {
 		let statusCode: number;
 
 		if (typeof error === 'object' && error.statusCode) {
@@ -32,8 +32,7 @@ export default class BaseController {
 			statusCode = code;
 		}
 
-		this.log.error(error);
-		return res.status(statusCode).send({
+		return response.status(statusCode).send({
 			error,
 		});
 	}

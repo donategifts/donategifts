@@ -10,8 +10,11 @@ import wishcards from './wishcards';
 
 export const routes = Router();
 
+// we should consider making a new set of permission for the api routes
+// the current permissions do not handle json responses
+
 routes.use('/admin', Permissions.checkAdminPermission, admin);
-routes.use('/agency', agency);
+routes.use('/agency', Permissions.isAdminOrAgency, agency);
 routes.use('/community', community);
 routes.use('/wishcards', wishcards);
-routes.use('/profile', profile);
+routes.use('/profile', Permissions.redirectLogin, profile);

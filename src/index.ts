@@ -104,7 +104,6 @@ const app = express();
 	};
 
 	app.use((req, res, next) => {
-		// TODO: assign agency to locals if there's one present in the request
 		if (req.session.user) {
 			res.locals.user = req.session.user;
 		}

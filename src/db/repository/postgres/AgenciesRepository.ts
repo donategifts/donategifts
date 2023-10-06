@@ -26,6 +26,7 @@ export default class AgenciesRepository {
 		return this.database
 			.selectFrom('agencies')
 			.where('account_manager_id', '=', id)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 

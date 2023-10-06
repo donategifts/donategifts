@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 
-import AgencyRepository from '../db/repository/AgencyRepository';
+import { database } from '../db/postgresconnection';
+import AgenciesRepository from '../db/repository/postgres/AgenciesRepository';
+import logger from '../helper/logger';
 
 export default class Permissions {
 	static redirectLogin(req: Request, res: Response, next: NextFunction) {
@@ -26,14 +28,22 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		if (user.userRole === 'admin') {
+		if (user.role === 'admin') {
 			return next();
 		}
 
-		if (user.userRole === 'partner') {
-			const agency = await new AgencyRepository().getAgencyByUserId(user._id);
+		if (user.role === 'partner') {
+			try {
+				const agency = await new AgenciesRepository(database).getByAccountManagerId(
+					user.id,
+				);
 
-			if (!agency?.isVerified) {
+				if (!agency.is_verified) {
+					return res.redirect('/profile');
+				}
+			} catch (error) {
+				logger.error('[Permissions] isAdminOrAgency: ', error);
+
 				return res.redirect('/profile');
 			}
 		} else {
@@ -50,7 +60,7 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		if (!user.emailVerified) {
+		if (!user.is_verified) {
 			return res.redirect('/profile');
 		}
 
@@ -64,7 +74,7 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		if (user.userRole !== 'admin') {
+		if (user.role !== 'admin') {
 			return res.status(404).render('error/404');
 		}
 
