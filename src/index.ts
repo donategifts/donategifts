@@ -54,13 +54,6 @@ const app = express();
 
 	await new MongooseConnection().connect();
 
-	// if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
-	// 	const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
-
-	// 	await bot.initClient();
-	// 	await bot.refreshCommands();
-	// }
-
 	app.use(cors());
 
 	app.set('views', path.join(__dirname, '../views'));
@@ -87,7 +80,7 @@ const app = express();
 			cookie: {
 				maxAge: config.SESSION.LIFE,
 				sameSite: true,
-				secure: false,
+				secure: config.NODE_ENV === 'production' ? true : false,
 			},
 		}),
 	);

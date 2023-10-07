@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
-import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import LoadingCard from '../shared/LoadingCard.jsx';
+import LoadingCard from '../components/shared/LoadingCard.jsx';
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-function Community(props) {
+function CommunityPosts(props) {
 	const { user, agency, _csrf } = props;
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -181,7 +181,7 @@ function Community(props) {
 	);
 }
 
-Community.propTypes = {
+CommunityPosts.propTypes = {
 	user: PropTypes.object,
 	agency: PropTypes.object,
 	_csrf: PropTypes.string,
@@ -198,4 +198,4 @@ Community.propTypes = {
 	),
 };
 
-export default Community;
+export default CommunityPosts;

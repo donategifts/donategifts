@@ -3,7 +3,7 @@ import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 const noScroll = (event) => event.target.blur();
 
-const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubmit }, ref) {
+const AgencyCardEditForm = forwardRef(({ card, onSubmit }, ref) => {
 	const formRef = useRef();
 	const [formFields, setFormFields] = useState({
 		childFirstName: card?.childFirstName ?? '',
@@ -136,9 +136,11 @@ const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubm
 	);
 });
 
-export default AgencyCardEditForm;
+AgencyCardEditForm.displayName = 'AgencyCardEditForm';
 
 AgencyCardEditForm.propTypes = {
 	card: PropTypes.object,
 	onSubmit: PropTypes.func,
 };
+
+export default AgencyCardEditForm;
