@@ -2,6 +2,8 @@ mixin agencyFetchingJS()
     script.
         $(document).ready(function () {
             const fetchAgencyData = function () {
+                const toast = new DG.Toast();
+
                 $.ajax({
                     type: 'GET',
                     url: '/api/agency',
@@ -16,11 +18,11 @@ mixin agencyFetchingJS()
                             $('#address_country').val(agency.agencyAddress.country);
                             $('#address_state').val(agency.agencyAddress.state);
                         } else {
-                            showToast('Agency address not present. Most likely that information is missing, contact the administrator.');
+                            toast.show('Agency address not present. Most likely that information is missing, contact the administrator.', true);
                         }
                     },
                     error: (response) => {
-                        showToast('Could not get agency address.');
+                        toast.show('Could not get agency address.', true);
                     }
                 });
             }

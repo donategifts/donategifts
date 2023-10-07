@@ -46,8 +46,11 @@ mixin donateModalJS()
                 modalBody.html(modalWarningMessage);
                 const reserveBtn = modalBody.find('#modal-donate-btn');
                 reserveBtn.on('click', (event) => {
-                $(document).off('click', '#modal-donate-btn');
-                event.preventDefault();
+                    $(document).off('click', '#modal-donate-btn');
+                    event.preventDefault();
+
+                    const toast = new DG.Toast();
+
                     $.ajax({
                         type: 'POST',
                         url: '/wishcards/lock/' + wishCardId,
@@ -87,7 +90,7 @@ mixin donateModalJS()
                                         $('#wishCardDonateModal').modal('hide');
                                     },
                                     error: (response, textStatus, errorThrown) => {
-                                        showToast(response.responseJSON.error.msg);
+                                        toast.show(response.responseJSON.error.msg, true);
                                     },
                                 });
                             });
@@ -114,7 +117,7 @@ mixin donateModalJS()
                                     url: '/wishcards/status/' + wishCardId,
                                     data: {},
                                     error: (response, textStatus, errorThrown) => {
-                                        showToast(response.responseJSON.error.msg);
+                                        toast.show(response.responseJSON.error.msg, true);
                                     },
                                 });
                             });
@@ -135,7 +138,7 @@ mixin donateModalJS()
                             }
                         },
                         error: (response, textStatus, errorThrown) => {
-                            showToast(response.responseJSON.error.msg);
+                            toast.show(response.responseJSON.error.msg, true);
                             $('#modal-donate-btn').prop('disabled', false);
                         },
                     });

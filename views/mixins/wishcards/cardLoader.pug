@@ -93,6 +93,8 @@ mixin cardLoaderJS()
 
             const cardIds = [];
 
+            const toast = new DG.Toast();
+
             $.ajax({
                 method: 'POST',
                 url: '/wishcards/search/1',
@@ -103,7 +105,7 @@ mixin cardLoaderJS()
                     $('#wishcard-container').show();
                 },
                 error: (response) => {
-                    showToast('Server Error!');
+                    toast.show('Server Error!', true);
                 },
             });
 
@@ -124,7 +126,7 @@ mixin cardLoaderJS()
                         appendWishCards(response, null, true);
                     },
                     error: (response) => {
-                        showToast(response.responseJSON.error.msg);
+                        toast.show(response.responseJSON.error.msg, true);
                     },
                 });
             });
@@ -149,7 +151,7 @@ mixin cardLoaderJS()
                         appendWishCards(response, true);
                     },
                     error: (response) => {
-                        showToast('Server Error!');
+                        toast.show('Server Error!', true);
                     },
                 });
             });

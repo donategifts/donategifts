@@ -35,12 +35,12 @@ export default function Detail({ agencyId }) {
 		const { error, data } = await res.json();
 
 		if (error) {
-			window.showToast(error);
+			new window.DG.Toast.show(error, true);
 			return;
 		}
 
 		setAgency(data.agency);
-		window.showToast(data.message, true);
+		new window.DG.Toast.show(data.message);
 	};
 
 	const updateAgencyData = async () => {
@@ -60,11 +60,11 @@ export default function Detail({ agencyId }) {
 		const { error, data } = await res.json();
 
 		if (error) {
-			window.showToast(error);
+			new window.DG.Toast.show(error, true);
 			return;
 		}
 
-		window.showToast(data.message, true);
+		new window.DG.Toast.show(data.message);
 	};
 
 	const fetchAgency = async () => {

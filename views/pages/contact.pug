@@ -12,7 +12,7 @@ block content
                     p.mb-2 Please fill out the contact form and we will be in touch with you as soon as possible.
                     p In the meantime, please check if your question has been answered in our
                         a.text-secondary.ms-1.text-underline( href='/faq' ) FAQs page.
-                form#sign-up-form.p-5.rounded-4
+                form.p-5.rounded-4
                     .col-md-8.mx-auto.text-white
                         .py-2
                             label.form-label( for='name' ) Name
@@ -46,24 +46,31 @@ block content
 block scripts
     script.
         $(document).ready(() => {
+            const toast = new DG.Toast();
+
             $('form').submit(function (e) {
                 e.preventDefault();
+
+                const name = $('#name').val();
+                const email = $('#email').val();
+                const subject = $('#subject').val();
+                const message = $('#contact-message').val();
 
                 $.ajax({
                     type: 'POST',
                     url: '/contact/customer-service',
-                    data: $(this)
-                        .serializeArray()
-                        .reduce((obj, item) => {
-                            obj[item.name] = item.value;
-                            return obj;
-                        }, {}),
+                    data: {
+                        name,
+                        email,
+                        subject,
+                        message,
+                    },
                     success: () => {
-                        showToast('Message sent, thank you for your feedback!', true);
-                        $('#emailForm').trigger('reset');
+                        toast.show('Message sent, thank you for your feedback!');
+                        $('form').trigger('reset');
                     },
                     error: (response) => {
-                        showToast(response.responseJSON.error.msg);
+                        toast.show(response.responseJSON.error.msg, true);
                     }
                 });
             });

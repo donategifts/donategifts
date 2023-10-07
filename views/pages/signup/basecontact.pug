@@ -140,7 +140,7 @@ block scripts
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
-                            showToast(response.responseJSON.error.msg);
+                            new DG.Toast().show(response.responseJSON.error.msg, true);
                             grecaptcha.reset();
                         },
                     });
@@ -181,7 +181,7 @@ block scripts
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
-                            showToast(response.responseJSON.error.msg);
+                            new DG.Toast().show(response.responseJSON.error.msg, true);
                         },
                     });
                 });

@@ -121,6 +121,8 @@ block scripts
                 const messageFrom = !{JSON.stringify(user)};
                 const messageTo = !{JSON.stringify(wishcard)};
 
+                const toast = new DG.Toast();
+
                 $.ajax({
                     type: 'POST',
                     url: '/wishcards/message',
@@ -131,13 +133,13 @@ block scripts
                     },
                     statusCode: {
                         400: function (response) {
-                            showToast(response.responseJSON.error.msg);
+                            toast.show(response.responseJSON.error.msg, true);
                         },
                         200: function (response) {
                             window.location.reload();
                         },
                         403: function (response) {
-                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', true);
                             setTimeout(() => location.assign(response.responseJSON.url), 1200);
                         },
                     },

@@ -45,12 +45,12 @@ function Community(props) {
 			.then((data) => {
 				document.querySelector('#communityPost').reset();
 				document.querySelector('#imagePreview').innerHTML = '';
-				window.showToast('Post published');
+				new window.DG.Toast().show('Post published');
 				setPosts(data.data);
 			})
 			.catch((err) => {
 				console.error(err);
-				window.showToast('Post could not be saved');
+				new window.DG.Toast().show('Post could not be saved');
 			});
 	};
 

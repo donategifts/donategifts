@@ -145,6 +145,8 @@ block scripts
             $('#wishCardForm').on('submit', function (e) {
                 e.preventDefault();
 
+                const toast = new DG.Toast();
+
                 $.ajax({
                     type: 'POST',
                     url: `/wishcards/edit/#{wishcard._id}`,
@@ -153,14 +155,14 @@ block scripts
                         200: function (response) {
                             $('#wishCardForm')[0].reset();
 
-                            showToast('WishCard Updated!');
+                            toast.show('WishCard Updated!');
                             setTimeout(() => location.assign(response.url), 2000);
                         },
                         400: function (response) {
-                            showToast(response.responseJSON.error.msg);
+                            toast.show(response.responseJSON.error.msg, true);
                         },
                         403: function (response) {
-                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', true);
                             setTimeout(() => location.assign(response.responseJSON.url), 1200);
                         },
                     },
