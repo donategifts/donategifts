@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const WishCard = ({ wishCard, attributes }) => {
+function WishCard({ wishCard, attributes }) {
 	return (
 		<div className="card border-0 shadow h-100" key={wishCard._id}>
 			<img
@@ -40,7 +40,7 @@ const WishCard = ({ wishCard, attributes }) => {
 									Donated
 								</button>
 							) : (
-								<a className="btn btn-lg btn-dark w-100" {...attributes}>
+								<a className="btn btn-lg btn-secondary w-100" {...attributes}>
 									Donate
 								</a>
 							)}
@@ -50,12 +50,12 @@ const WishCard = ({ wishCard, attributes }) => {
 			</div>
 		</div>
 	);
-};
+}
 
 WishCard.propTypes = {
-	attributes: PropTypes.object,
 	// we'll make this more specific once the db migration is complete
 	wishCard: PropTypes.object,
+	attributes: PropTypes.object,
 };
 
 export default WishCard;

@@ -14,7 +14,8 @@ html( lang="en" )
         block styles
 
     body
-        #header-root
+        //- #header-root
+        include partials/navbar.pug
 
         main
             block toast
@@ -33,18 +34,20 @@ html( lang="en" )
                 include partials/footer.pug
 
         include partials/js.pug
+
         block scripts
-        append scripts
-            script.
-                $(document).ready(function () {
-                    const root = ReactRoot(document.querySelector('#header-root'));
-                    root.render(
-                        React.createElement(
-                            Header,
-                            {
-                                user: !{JSON.stringify(user || null)},
-                                agency: !{JSON.stringify(agency || null)},
-                            }
-                        ),
-                    );
-                })
+
+        //- append scripts
+        //-     script.
+        //-         $(document).ready(function () {
+        //-             const root = ReactRoot(document.querySelector('#header-root'));
+        //-             root.render(
+        //-                 React.createElement(
+        //-                     Header,
+        //-                     {
+        //-                         user: !{JSON.stringify(user || null)},
+        //-                         agency: !{JSON.stringify(agency || null)},
+        //-                     }
+        //-                 ),
+        //-             );
+        //-         })
