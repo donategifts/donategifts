@@ -1,9 +1,10 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../../utils/constants.jsx';
-import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import Auth from '../auth/Auth.jsx';
-import Nav from '../nav/index.jsx';
+import { LOGIN, LOGIN_WITH_EMAIL, SIGNUP } from '../utils/constants.jsx';
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
+
+import Auth from './auth/Auth.jsx';
+import NavBar from './NavBar.jsx';
 
 const initialState = {
 	showLogin: true,
@@ -57,7 +58,7 @@ function Header(props) {
 	return (
 		<MantineProviderWrapper>
 			<header>
-				<Nav {...props} dispatch={dispatch} setShowModal={setShowModal} />
+				<NavBar {...props} dispatch={dispatch} setShowModal={setShowModal} />
 				{showModal ? <Auth dispatch={dispatch} state={state} modalRef={modalRef} /> : null}
 			</header>
 		</MantineProviderWrapper>

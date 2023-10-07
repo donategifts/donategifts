@@ -1,13 +1,7 @@
-extends ../master
+extends wrapper
 
 block title
     title ERROR | 500
 
-block content
-    .err-banner
-        .d-flex.mb-2.flex-column.container.align-items-center
-            .m-1
-                img.img-fluid.pt-5( src='/img/500-internal-server-error.png' alt='500-internal-server-error.png' )
-            .mt-5
-                p.quick-font.font-md Should we check out some wish cards in the meantime until our developers fixed this?
-            a.px-5.quick-font.wishcard-btn.grn-btn.text-decoration-none( href='/wishcards' ) Browse Wish Cards
+block error
+    img.img-fluid( src='/img/500-internal-server-error.png' alt='500-internal-server-error.png' )

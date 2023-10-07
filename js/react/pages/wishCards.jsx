@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import LoadingCard from '../shared/LoadingCard.jsx';
-import WishCard from '../shared/WishCard.jsx';
+import LoadingCard from '../components/shared/LoadingCard.jsx';
+import WishCard from '../components/shared/WishCard.jsx';
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function WishCards({ wishCards, user }) {
 	const [isLoading, setIsLoading] = useState(true);
