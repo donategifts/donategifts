@@ -8,3 +8,84 @@
 		background-color: lighten($cream, 8%);
 	}
 }
+
+#wishpage {
+	@include font-styling($font-body);
+
+	background-color: lighten($light, 5);
+
+	h1 {
+		@include font-styling($font-heading, 2.5rem, $navy);
+	}
+
+	h2 {
+		@include font-styling($font-body, 1.5rem, $navy, $fw-semi-bold);
+
+		text-transform: uppercase;
+	}
+
+	.card-body {
+		background-color: #fff !important;
+		border: 1px solid #ced4da;
+		border-radius: 0.5rem;
+		padding: 1.1rem !important;
+
+		img {
+			max-width: 95%;
+			max-height: 70%;
+			border-radius: 0.5em !important;
+		}
+	}
+
+	.wish-box {
+		max-height: 70%;
+	}
+
+	.msg-each {
+		border-bottom: 1px solid #dee2e6;
+	}
+
+	#donate-btn {
+		width: 95%;
+		margin: 1rem 1.5rem 0.5rem;
+	}
+
+	.custom-select,
+	#custom-message-textbox,
+	#submit-message {
+		width: 95%;
+		outline: none;
+	}
+
+	.custom-select {
+		appearance: none;
+		background: #0000;
+
+		// prettier-ignore
+		background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+		background-repeat: no-repeat;
+		background-position-x: 97%;
+		background-position-y: 50%;
+		border: 1px solid #adb5bd;
+		border-radius: 0.25rem;
+		padding: 1rem;
+		cursor: pointer;
+	}
+
+	#custom-message-textbox {
+		border: 1px solid #adb5bd;
+		border-radius: 0.25rem;
+	}
+
+	#submit-message {
+		font-weight: $fw-semi-bold;
+		appearance: none;
+		padding: 1rem 1.75rem;
+		background-color: lighten($navy, 5);
+		color: #fff;
+
+		&:hover {
+			background-color: darken($navy, 5);
+		}
+	}
+}
