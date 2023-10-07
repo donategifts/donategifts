@@ -17,6 +17,10 @@ html( lang="en" )
         #header-root
 
         main
+            block toast
+                include mixins/toast.pug
+                +toast
+
             block content
             //- react pages will be mounted here (see views/pages/wishcard/agencycards.pug)
             //- single components should be mounted in their respective pages

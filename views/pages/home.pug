@@ -29,7 +29,6 @@ block content
                         a.button-outline.button-width.m-2( href='/howto' ) How It Works
                         a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
 
-        //- include ../components/homeSampleCards.pug
         #carousel-root
 
         #status-section.container-fluid.d-md-flex.align-items-center
@@ -270,6 +269,7 @@ block scripts
                     WishCardsCarousel,
                     {
                         wishCards: !{JSON.stringify(wishCards)},
+                        user: !{JSON.stringify(user || {})},
                     }
                 )
             );

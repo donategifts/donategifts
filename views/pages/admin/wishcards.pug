@@ -79,6 +79,8 @@ append scripts
 
                 console.log(wishItemUrl);
 
+                const toast = new DG.Toast();
+
                 $.ajax({
                     type: 'PUT',
                     url: '/admin/wishcards',
@@ -87,11 +89,11 @@ append scripts
                         wishItemUrl,
                     },
                     success: (_) => {
-                        showToast('Card status updated');
+                        toast.show('Card status updated');
                         removeWishCardFromDOM(elementRef);
                     },
                     error: (response) => {
-                        showToast(response.error.msg);
+                        toast.show(response.error.msg, true);
                     },
                 });
             }

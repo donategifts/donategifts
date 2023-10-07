@@ -115,6 +115,7 @@ append scripts
                 $('#submitInput .spinner-border').toggleClass('d-none');
 
                 const formdata = new FormData($(this)[0]);
+                const toast = new DG.Toast();
 
                 $.ajax({
                     type: 'POST',
@@ -129,20 +130,20 @@ append scripts
                         200: function (response) {
                             $('#wishCardForm')[0].reset();
 
-                            showToast('WishCard Created!', true);
+                            toast.show('WishCard Created!');
                             setTimeout(() => location.assign(response.url), 2000);
                         },
                         400: function (response) {
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            showToast(response.responseJSON.error.msg || response.responseJSON.error);
+                            toast.show(response.responseJSON.error.msg || response.responseJSON.error, toast.styleMap.danger);
                         },
                         403: function (responseObject) {
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', toast.styleMap.warning);
                             setTimeout(() => location.assign(responseObject.responseJSON.url), 1200);
                         },
                     },

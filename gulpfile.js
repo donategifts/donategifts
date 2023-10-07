@@ -70,7 +70,7 @@ const css = (done) =>
 		.on('end', onSuccess('css', done));
 
 const js = (done) =>
-	src(['./js/app/**/*.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.js'])
+	src('./js/app/**/*.js')
 		.pipe(plumber(onError('js', done)))
 		.pipe(gulpif(isDev, sourcemaps.init()))
 		.pipe(concat('app.min.js'))
@@ -80,6 +80,19 @@ const js = (done) =>
 		.pipe(dest(path.join(__dirname, './public/js')))
 		.on('end', onSuccess('js', done));
 
-task('watch', () => watch(['./design/scss/**/*.scss', './js/**/*.js'], series(scss, js, css)));
+const bootstrap = (done) =>
+	src('node_modules/bootstrap/dist/js/bootstrap.bundle.js')
+		.pipe(plumber(onError('bootstrap', done)))
+		.pipe(gulpif(isDev, sourcemaps.init()))
+		.pipe(concat('bootstrap.min.js'))
+		.pipe(gulpif(!isDev, stripDebug()))
+		.pipe(gulpif(!isDev, uglify()))
+		.pipe(gulpif(isDev, sourcemaps.write()))
+		.pipe(dest(path.join(__dirname, './public/js')))
+		.on('end', onSuccess('bootstrap', done));
 
-exports.default = series(scss, js, css);
+task('watch', () =>
+	watch(['./design/scss/**/*.scss', './js/**/*.js'], series(scss, css, js, bootstrap)),
+);
+
+exports.default = series(scss, css, js, bootstrap);
