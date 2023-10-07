@@ -204,7 +204,7 @@ block scripts
                             },
                             error: () => {
                                 console.error('Error:', error);
-                                showToast('An error has occured while processing payment');
+                                new DG.Toast().show('An error has occured while processing payment', DG.Toast.styleMap.danger);
                                 loading(false);
                             },
                         });

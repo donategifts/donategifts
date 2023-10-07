@@ -27,6 +27,8 @@ export default function Detail({ agencyId }) {
 	const website = useRef('');
 	const bio = useRef('');
 
+	const toast = new window.DG.Toast();
+
 	const verifyAgency = async () => {
 		const res = await fetch(`${basePath}/verifyAgency/${agency.id}`, {
 			method: 'PUT',
@@ -35,12 +37,12 @@ export default function Detail({ agencyId }) {
 		const { error, data } = await res.json();
 
 		if (error) {
-			window.showToast(error);
+			toast.show(error, toast.styleMap.danger);
 			return;
 		}
 
 		setAgency(data.agency);
-		window.showToast(data.message, true);
+		toast.show(data.message);
 	};
 
 	const updateAgencyData = async () => {
@@ -60,11 +62,11 @@ export default function Detail({ agencyId }) {
 		const { error, data } = await res.json();
 
 		if (error) {
-			window.showToast(error);
+			toast.show(error, toast.styleMap.danger);
 			return;
 		}
 
-		window.showToast(data.message, true);
+		toast.show(data.message);
 	};
 
 	const fetchAgency = async () => {

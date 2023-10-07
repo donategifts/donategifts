@@ -95,7 +95,12 @@ export default function WishCardManage() {
 			axios
 				.get('/api/wishcards/agency')
 				.then((res) => setAgencyCards(res.data.data))
-				.catch(() => window.showToast('Could not fetch wishcards.'));
+				.catch(() =>
+					new window.DG.Toast().show(
+						'Could not fetch wishcards.',
+						window.DG.Toast().styleMap.danger,
+					),
+				);
 		};
 		fetchWishCards();
 	}, [refetchWishCards]);
@@ -123,8 +128,9 @@ export default function WishCardManage() {
 			setIsOpenEditModal(false);
 			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
 		} catch (error) {
-			window.showToast(
+			new window.DG.Toast().show(
 				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
+				window.DG.Toast.styleMap.danger,
 			);
 		}
 	};
