@@ -5,7 +5,7 @@ import { chunkArray } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
-const WishCardsCarousel = ({ wishCards }) => {
+function WishCardsCarousel({ wishCards, user }) {
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(wishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
@@ -59,7 +59,14 @@ const WishCardsCarousel = ({ wishCards }) => {
 													key={currentCard._id}
 													className={`${colStyle} p-4`}
 												>
-													<WishCard wishCard={currentCard} />
+													<WishCard
+														wishCard={currentCard}
+														attributes={{
+															href: user?._id
+																? `/wishcards/donate/${currentCard._id}`
+																: '/login',
+														}}
+													/>
 												</div>
 											);
 										})}
@@ -93,7 +100,14 @@ const WishCardsCarousel = ({ wishCards }) => {
 								>
 									<div className="row justify-content-center">
 										<div key={currentCard._id} className="col-12">
-											<WishCard wishCard={currentCard} />
+											<WishCard
+												wishCard={currentCard}
+												attributes={{
+													href: user?._id
+														? `/wishcards/donate/${currentCard._id}`
+														: '/login',
+												}}
+											/>
 										</div>
 									</div>
 								</div>
@@ -104,11 +118,12 @@ const WishCardsCarousel = ({ wishCards }) => {
 			</div>
 		</MantineProviderWrapper>
 	);
-};
+}
 
 WishCardsCarousel.propTypes = {
 	// we'll make this more specific once the db migration is complete
 	wishCards: PropTypes.arrayOf(PropTypes.object),
+	user: PropTypes.object,
 };
 
 export default WishCardsCarousel;
