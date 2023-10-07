@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { chunkArray } from '../../utils/helpers.jsx';
+import { chunkArray } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import WishCard from '../shared/WishCard.jsx';
 

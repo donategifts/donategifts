@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-import { SIGNUP } from '../../../utils/constants.jsx';
+import { SIGNUP } from '../../../utils/constants';
 import CustomToast from '../../shared/CustomToast.jsx';
 import Modal from '../../shared/Modal.jsx';
 

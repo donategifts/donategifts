@@ -11,18 +11,22 @@ export type STATUS = keyof typeof Status;
 interface WishCard {
 	_id: string;
 	childFirstName: string;
-	childLastName: string;
-	childBirthday: Date;
+	childLastName: string; //deprecated
+	childBirthday: Date; //deprecated
+	childBirthYear: string;
 	childInterest: string;
+	childImage: string;
+	childStory: string;
 	wishItemName: string;
 	wishItemPrice: number;
 	wishItemURL: string;
-	childStory: string;
-	wishCardImage: string;
+	wishItemInfo: string;
+	wishItemImage: string;
+	productID: string;
 	createdBy: string;
 	createdAt: Date;
-	deliveryDate: Date;
-	occasion: string;
+	deliveryDate: Date; //deprecated
+	occasion: string; //deprecated
 	address: {
 		address1: string;
 		address2: string;
@@ -31,12 +35,11 @@ interface WishCard {
 		country: string;
 		zipcode: string;
 	};
-	isLockedBy: string | null;
-	isLockedUntil: Date | null;
-	approvedByAdmin: boolean;
+	isLockedBy: string | null; //deprecated
+	isLockedUntil: Date | null; //deprecated
+	approvedByAdmin: boolean; //deprecated
 	status: string;
 	belongsTo: string;
-	productID: string;
 }
 
 const { Schema } = mongoose;
@@ -51,7 +54,16 @@ const WishCardSchema = new Schema(
 		childBirthday: {
 			type: Date,
 		},
+		childBirthYear: {
+			type: String,
+		},
 		childInterest: {
+			type: String,
+		},
+		childImage: {
+			type: String,
+		},
+		childStory: {
 			type: String,
 		},
 		wishItemName: {
@@ -63,13 +75,13 @@ const WishCardSchema = new Schema(
 		wishItemURL: {
 			type: String,
 		},
+		wishItemInfo: {
+			type: String,
+		},
+		wishItemImage: {
+			type: String,
+		},
 		productID: {
-			type: String,
-		},
-		childStory: {
-			type: String,
-		},
-		wishCardImage: {
 			type: String,
 		},
 		createdBy: {

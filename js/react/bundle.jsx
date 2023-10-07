@@ -29,5 +29,8 @@ window.AdminAgencyDetail = Detail;
 import Overview from './pages/admin/agency/overview.jsx';
 window.AdminAgencyOverview = Overview;
 
-import AgencyCardsPage from './pages/agencycards.jsx';
-window.AgencyCardsPage = AgencyCardsPage;
+import WishCardCreate from './pages/wishcard/WishCardCreate.jsx';
+window.WishCardCreate = WishCardCreate;
+
+import WishCardManage from './pages/wishcard/WishCardManage.jsx';
+window.WishCardManage = WishCardManage;
