@@ -234,7 +234,7 @@ function WishCardCreate() {
 						'content-type': 'multipart/form-data',
 					},
 				})
-				.then(toast.show('Submission was successful!'));
+			toast.show('Submission was successful!');
 			// TODO: need to change the toast color to $success, also need to change mantine color scheme to match ours
 		} catch (error) {
 			toast.show(
