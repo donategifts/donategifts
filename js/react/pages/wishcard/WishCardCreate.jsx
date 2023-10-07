@@ -228,12 +228,11 @@ function WishCardCreate() {
 		const toast = new window.DG.Toast();
 
 		try {
-			await axios
-				.post('/api/wishcards', data, {
-					headers: {
-						'content-type': 'multipart/form-data',
-					},
-				})
+			await axios.post('/api/wishcards', data, {
+				headers: {
+					'content-type': 'multipart/form-data',
+				},
+			});
 			toast.show('Submission was successful!');
 			// TODO: need to change the toast color to $success, also need to change mantine color scheme to match ours
 		} catch (error) {
