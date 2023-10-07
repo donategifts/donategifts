@@ -80,7 +80,7 @@ const app = express();
 			cookie: {
 				maxAge: config.SESSION.LIFE,
 				sameSite: true,
-				secure: config.NODE_ENV === 'production' ? true : false,
+				secure: false,
 			},
 		}),
 	);
