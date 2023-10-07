@@ -13,14 +13,12 @@
 			this._toastInstance = this.setToastInstance();
 		}
 
-		show(message, isError = false) {
+		show(message, style) {
 			if (message) {
 				$(this._toast).find('.toast-body').text(message);
 			}
 
-			if (isError) {
-				$(this._toast).addClass('bg-danger');
-			}
+			$(this._toast).addClass(style || Toast.styleMap.success);
 
 			if (this._toastInstance) {
 				this._toastInstance.show();
@@ -36,6 +34,21 @@
 		set toast(value) {
 			this._toast = value;
 			this._toastInstance = this.setToastInstance();
+		}
+
+		get styleMap() {
+			return Toast.styleMap;
+		}
+
+		static get styleMap() {
+			return {
+				primary: 'bg-primary',
+				secondary: 'bg-secondary',
+				success: 'bg-success',
+				danger: 'bg-danger',
+				warning: 'bg-warning',
+				info: 'bg-info',
+			};
 		}
 	};
 })((window.DG = window.DG || {}));

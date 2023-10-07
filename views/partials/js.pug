@@ -56,7 +56,8 @@ script.
                     setTimeout(() => location.assign(response.url), 2000);
                 },
                 error: (response) => {
-                    showToast(response.responseJSON.error.msg);
+                    const toast = new DG.Toast();
+                    toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                 },
             });
         })

@@ -70,7 +70,7 @@ block scripts
                         $('form').trigger('reset');
                     },
                     error: (response) => {
-                        toast.show(response.responseJSON.error.msg, true);
+                        toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                     }
                 });
             });

@@ -29,6 +29,8 @@ function Community(props) {
 		formData.append('message', message);
 		formData.append('image', image);
 
+		const toast = new window.DG.Toast();
+
 		fetch('/api/community', {
 			method: 'POST',
 			headers: {
@@ -45,12 +47,12 @@ function Community(props) {
 			.then((data) => {
 				document.querySelector('#communityPost').reset();
 				document.querySelector('#imagePreview').innerHTML = '';
-				new window.DG.Toast().show('Post published');
+				toast.show('Post published');
 				setPosts(data.data);
 			})
 			.catch((err) => {
 				console.error(err);
-				new window.DG.Toast().show('Post could not be saved');
+				toast.show('Post could not be saved', toast.styleMap.danger);
 			});
 	};
 

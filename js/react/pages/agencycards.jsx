@@ -96,7 +96,12 @@ export default function AgencyCardsPage() {
 			axios
 				.get('/api/wishcards/agency')
 				.then((res) => setAgencyCards(res.data.data))
-				.catch(() => new window.DG.Toast.show('Could not fetch wishcards.', true));
+				.catch(() =>
+					new window.DG.Toast().show(
+						'Could not fetch wishcards.',
+						window.DG.Toast().styleMap.danger,
+					),
+				);
 		};
 		fetchWishCards();
 	}, [refetchWishCards]);
