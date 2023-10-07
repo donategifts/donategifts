@@ -1,15 +1,16 @@
-extends ../master
+extends wrapper
 
 block title
     title Error | 404 PAGE NOT FOUND
 
-block content
-    .err-banner
-        .d-flex.mb-2.flex-column.container.align-items-center
-            .m-1
-                img.img-fluid.pt-5( src='/img/404-illustration.png' alt='404-illustration.png' )
-            .mt-5
-                p.quick-font.font-md Sorry, looks like this page does not exist.
-            div
-                p.quick-font.font-md Should we check out some wish cards instead?
-            a.px-5.quick-font.wishcard-btn.grn-btn.text-decoration-none( href='/wishcards' ) Browse Wish Cards
+block error
+    .container
+        .center-elements
+            .col-12.col-md-10.col-lg-6
+                img.img-fluid( src='/img/404-illustration.png' alt='404-illustration.png' )
+        .text-center
+            .my-4
+                | The page you are looking for does not exist.
+                br
+                | Should we checkout some wishcards instead?
+            a.btn.btn-lg.btn-secondary( href='/wishcards' ) Browse Wish Cards

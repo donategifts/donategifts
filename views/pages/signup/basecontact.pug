@@ -80,7 +80,11 @@ block content
 
                     .row.pt-4.justify-content-center
                         .col-md-6
-                            button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Sign Up
+                            button#submit-btn.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' )
+                                | Sign Up
+                                #loading-spinner.ms-2.d-none
+                                    .spinner-border( role='status' )
+                                        span.visually-hidden Loading...
 
 block modal
     include ../../components/modal/signupModal.pug
@@ -111,6 +115,7 @@ block scripts
                 $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', true);
+                    $('#loading-spinner').removeClass('d-none');
                     grecaptcha.execute();
                 });
 
@@ -122,6 +127,7 @@ block scripts
                     const password = $('#password').val();
                     const passwordConfirm = $('#password-repeat').val();
                     const userRole = $("input[type='radio']:checked").val();
+
                     $.ajax({
                         type: 'POST',
                         url: '/signup',
@@ -135,11 +141,11 @@ block scripts
                             captchaToken,
                         },
                         success: function (response, textStatus, xhr) {
-                            $('#submit-btn').prop('disabled', false);
                             location.assign(response.url);
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
+                            $('#loading-spinner').removeClass('d-none');
                             new DG.Toast().show(response.responseJSON.error.msg, true);
                             grecaptcha.reset();
                         },
@@ -153,7 +159,8 @@ block scripts
             $(document).ready(() => {
                 $('#sign-up-form').submit((event) => {
                     event.preventDefault();
-                    $('#submit-btn').prop('disabled', false);
+                    $('#submit-btn').prop('disabled', true);
+                    $('#loading-spinner').removeClass('d-none');
 
                     const captchaToken = '';
                     const fName = $('#fName').val();
@@ -176,11 +183,11 @@ block scripts
                             captchaToken,
                         },
                         success: function (response, textStatus, xhr) {
-                            $('#submit-btn').prop('disabled', false);
                             location.assign(response.url);
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
+                            $('#loading-spinner').addClass('d-none');
                             new DG.Toast().show(response.responseJSON.error.msg, true);
                         },
                     });
