@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-const Nav = ({ user, agency }) => {
+function NavBar({ user, agency }) {
 	return (
 		<MantineProviderWrapper>
 			<nav className="navbar navbar-expand-lg bg-body-white">
@@ -107,12 +107,13 @@ const Nav = ({ user, agency }) => {
 			</nav>
 		</MantineProviderWrapper>
 	);
-};
+}
 
-Nav.propTypes = {
+NavBar.propTypes = {
 	user: PropTypes.object,
 	agency: PropTypes.object,
 	dispatch: PropTypes.func,
 	setShowModal: PropTypes.func,
 };
-export default Nav;
+
+export default NavBar;

@@ -72,7 +72,7 @@ const WishCardsCarousel = ({ wishCards }) => {
 						title="next"
 						className="btn btn-sm btn-light bg-transparent border-0 p-4"
 						type="button"
-						data-bs-target="#mobile-cards-carousel"
+						data-bs-target="#desktop-cards-carousel"
 						data-bs-slide="next"
 					>
 						<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>

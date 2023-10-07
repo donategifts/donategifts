@@ -4,7 +4,7 @@ import Login from './login/Login.jsx';
 import LoginWithEmail from './login/LoginWithEmail.jsx';
 import SignUp from './signup/SignUp.jsx';
 
-const Auth = ({ state, dispatch, modalRef }) => {
+function Auth({ state, dispatch, modalRef }) {
 	const { showLogin, showLoginWithEmail, showSignUp } = state;
 
 	if (showLogin) {
@@ -18,7 +18,7 @@ const Auth = ({ state, dispatch, modalRef }) => {
 	if (showSignUp) {
 		return <SignUp modalRef={modalRef} dispatch={dispatch} />;
 	}
-};
+}
 
 Auth.propTypes = {
 	state: PropTypes.object,
