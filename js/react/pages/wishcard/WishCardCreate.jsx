@@ -225,6 +225,8 @@ function WishCardCreate() {
 		data.append('wishItemImage', formData.wishItemImage);
 		data.append('address', formData.address);
 
+		const toast = new window.DG.Toast();
+
 		try {
 			await axios
 				.post('/api/wishcards', data, {
@@ -232,13 +234,14 @@ function WishCardCreate() {
 						'content-type': 'multipart/form-data',
 					},
 				})
-				.then(window.showToast('Submission was successful!'));
+				.then(toast.show('Submission was successful!'));
 			// TODO: need to change the toast color to $success, also need to change mantine color scheme to match ours
 		} catch (error) {
-			window.showToast(
+			toast.show(
 				error?.response?.data?.error?.msg ||
 					error?.message ||
 					'Submission was unsuccessful. Please try again or contact us.',
+				toast.styleMap.danger,
 			);
 		}
 		//TODO: need to redirect to manage page

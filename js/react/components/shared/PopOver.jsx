@@ -30,8 +30,8 @@ PopOver.propTypes = {
 	position: PropTypes.string,
 	text: PropTypes.string.isRequired,
 	textSize: PropTypes.string,
-	isBtnQuestion: PropTypes.boolean,
-	isImgProvided: PropTypes.boolean,
+	isBtnQuestion: PropTypes.bool,
+	isImgProvided: PropTypes.bool,
 	imgSrc: PropTypes.string,
 };
 

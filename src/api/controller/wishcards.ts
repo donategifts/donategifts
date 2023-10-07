@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
+import config from '../../helper/config';
 
 import BaseApiController from './basecontroller';
 
@@ -78,25 +79,17 @@ export default class WishCardApiController extends BaseApiController {
 				childFirstName,
 				childInterest,
 				childBirthYear,
-				// childImage, //it returns undefined BE but contains correct value in FE
 				childStory,
 				wishItemName,
 				wishItemPrice,
 				wishItemInfo,
 				wishItemURL,
-				// wishItemImage,
 				address,
 			} = req.body;
 
-			//TODO: const productID = Utils.extractProductIDFromLink(wishItemURL);
+			const { childImage, wishItemImage } = req.files;
 
-			// config.NODE_ENV === 'development'
-			// 	? `/uploads/${req.files?.childImage[0].filename}`
-			// 	: '';
-			// const itemImageFilePath =
-			// 	config.NODE_ENV === 'development'
-			// 		? `/uploads/${req.files?.wishItemImage[0].filename}`
-			// 		: '';
+			//TODO: const productID = Utils.extractProductIDFromLink(wishItemURL);
 
 			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 
@@ -104,15 +97,17 @@ export default class WishCardApiController extends BaseApiController {
 				childFirstName,
 				childInterest,
 				childBirthYear,
-				// childImage: config.AWS.USE ? req.files?.childImage[0].path : childImageFilePath,
+				childImage: config.AWS.USE
+					? req.files?.childImage[0].path
+					: `/uploads/${childImage[0].filename}`,
 				childStory,
 				wishItemName,
 				wishItemPrice,
 				wishItemInfo,
 				wishItemURL,
-				// wishItemImage: config.AWS.USE
-				// 	? req.files?.wishItemImage[0].path
-				// 	: itemImageFilePath,
+				wishItemImage: config.AWS.USE
+					? req.files?.wishItemImage[0].path
+					: `/uploads/${wishItemImage[0].filename}`,
 				createdBy: res.locals.user._id,
 				belongsTo: userAgency?._id,
 				address: {
