@@ -63,8 +63,9 @@ main {
 
 #toast {
 	&.toast {
-		bottom: 3%;
-		right: 2%;
+		top: 10%;
+		transform: translate(-50%,-50%);
+		left: 50%;
 		z-index: 1000;
 	}
 }
