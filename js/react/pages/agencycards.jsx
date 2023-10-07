@@ -132,9 +132,9 @@ export default function AgencyCardsPage() {
 			setIsOpenEditModal(false);
 			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
 		} catch (error) {
-			new window.DG.Toast.show(
+			new window.DG.Toast().show(
 				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
-				true,
+				window.DG.Toast.styleMap.danger,
 			);
 		}
 	};

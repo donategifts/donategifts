@@ -18,11 +18,14 @@ mixin agencyFetchingJS()
                             $('#address_country').val(agency.agencyAddress.country);
                             $('#address_state').val(agency.agencyAddress.state);
                         } else {
-                            toast.show('Agency address not present. Most likely that information is missing, contact the administrator.', true);
+                            toast.show(
+                                'Agency address not present. Most likely that information is missing, contact the administrator.',
+                                toast.styleMap.warning
+                            );
                         }
                     },
                     error: (response) => {
-                        toast.show('Could not get agency address.', true);
+                        toast.show('Could not get agency address.', toast.styleMap.danger);
                     }
                 });
             }

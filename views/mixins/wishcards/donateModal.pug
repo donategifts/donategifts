@@ -90,7 +90,7 @@ mixin donateModalJS()
                                         $('#wishCardDonateModal').modal('hide');
                                     },
                                     error: (response, textStatus, errorThrown) => {
-                                        toast.show(response.responseJSON.error.msg, true);
+                                        toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                                     },
                                 });
                             });
@@ -117,7 +117,7 @@ mixin donateModalJS()
                                     url: '/wishcards/status/' + wishCardId,
                                     data: {},
                                     error: (response, textStatus, errorThrown) => {
-                                        toast.show(response.responseJSON.error.msg, true);
+                                        toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                                     },
                                 });
                             });
@@ -138,7 +138,7 @@ mixin donateModalJS()
                             }
                         },
                         error: (response, textStatus, errorThrown) => {
-                            toast.show(response.responseJSON.error.msg, true);
+                            toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                             $('#modal-donate-btn').prop('disabled', false);
                         },
                     });

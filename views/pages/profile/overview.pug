@@ -296,7 +296,7 @@ block scripts
                         toast.show('Resent verification link!');
                     },
                     error: (_) => {
-                        toast.show('Could not resend verification link.', true);
+                        toast.show('Could not resend verification link.', toast.styleMap.danger);
                     }
                 });
             });
@@ -318,7 +318,7 @@ block scripts
                         $('#about-me').text(response.data || 'You have no description saved.');
                     },
                     error: (_) => {
-                        toast.show('Could not update about me info.', true);
+                        toast.show('Could not update about me info.', toast.styleMap.danger);
                     }
                 });
             });
@@ -340,7 +340,7 @@ block scripts
                         $('#welcome-title').text(`Welcome ${fName}`);
                     },
                     error: (response) => {
-                        toast.show(response.responseJSON.error.msg || 'Could not update account details', true);
+                        toast.show(response.responseJSON.error.msg || 'Could not update account details', toast.styleMap.danger);
                     }
                 });
             });
@@ -383,7 +383,7 @@ block scripts
                         $('#zipcode-edit', agencyCard).text(response.data.zipcode);
                     },
                     error: (response) => {
-                        toast.show(response.responseJSON.error.msg || 'Could not update agency details', true);
+                        toast.show(response.responseJSON.error.msg || 'Could not update agency details', toast.styleMap.danger);
                     }
                 });
             });
@@ -417,7 +417,7 @@ block scripts
                             replaceImage(response.data);
                         },
                         error: (_) => {
-                            toast.show("Could not update profile picture", true);
+                            toast.show("Could not update profile picture", toast.styleMap.danger);
                         }
                     });
                 }
@@ -434,7 +434,7 @@ block scripts
                         replaceImage(response.data);
                     },
                     error: (_) => {
-                        toast.show("Could not remove profile picture", true);
+                        toast.show("Could not remove profile picture", toast.styleMap.danger);
                     }
                 });
             });

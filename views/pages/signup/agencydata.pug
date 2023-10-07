@@ -116,7 +116,7 @@ block scripts
                         location.assign(response.url);
                     },
                     error: function (response) {
-                        new DG.Toast().show(response.responseJSON.error.msg, true);
+                        new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                         $('#submit-btn').prop('disabled', false);
                     },
                 });

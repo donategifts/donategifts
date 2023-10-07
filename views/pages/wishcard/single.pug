@@ -133,13 +133,13 @@ block scripts
                     },
                     statusCode: {
                         400: function (response) {
-                            toast.show(response.responseJSON.error.msg, true);
+                            toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                         },
                         200: function (response) {
                             window.location.reload();
                         },
                         403: function (response) {
-                            toast.show('Access Forbidden: Your account lacks sufficient permissions', true);
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', toast.styleMap.danger);
                             setTimeout(() => location.assign(response.responseJSON.url), 1200);
                         },
                     },

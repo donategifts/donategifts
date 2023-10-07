@@ -137,13 +137,13 @@ append scripts
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            toast.show(response.responseJSON.error.msg || response.responseJSON.error, true);
+                            toast.show(response.responseJSON.error.msg || response.responseJSON.error, toast.styleMap.danger);
                         },
                         403: function (responseObject) {
                             $('#submitInput').attr('disabled', false);
                             $('#submitInput .spinner-border').toggleClass('d-none');
 
-                            toast.show('Access Forbidden: Your account lacks sufficient permissions', true);
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', toast.styleMap.warning);
                             setTimeout(() => location.assign(responseObject.responseJSON.url), 1200);
                         },
                     },
