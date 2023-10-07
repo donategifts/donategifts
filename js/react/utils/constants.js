@@ -81,6 +81,8 @@ const FORM_INPUT_MAP = {
 		label: 'Upload item picture',
 		errors: {
 			default: 'Item image is required.',
+			size: 'File must be less than 5 megabytes.',
+			validate: 'File must be in jpeg, jpg, gif, or png format.',
 		},
 		instruction: 'Please upload a product photo that represents the wish item.',
 	},

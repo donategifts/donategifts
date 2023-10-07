@@ -1,17 +1,18 @@
 import { Switch, TextInput, Select, Textarea } from '@mantine/core';
 import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
-import PopOver from '../components/shared/PopOver.jsx';
-import AddressForm from '../forms/AddressForm.jsx';
-import { FORM_INPUT_MAP, BIRTH_YEAR } from '../utils/constants';
-import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
+import PopOver from '../../components/shared/PopOver.jsx';
+import AddressForm from '../../forms/AddressForm.jsx';
+import { FORM_INPUT_MAP, BIRTH_YEAR } from '../../utils/constants';
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);
 	const [itemImage, setItemImage] = useState(null);
 	const [agencyAddress, setAgencyAddress] = useState({});
 	const [isShippingDefault, setIsShippingDefault] = useState(true);
+	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
 	const childFirstNameRef = useRef();
 	const childInterestRef = useRef();
@@ -26,13 +27,14 @@ function WishCardCreate() {
 		childFirstName: '',
 		childInterest: '',
 		childBirthYear: '',
-		childImage: '',
+		childImage: null,
 		childStory: '',
 		wishItemName: '',
-		wishItemPrice: '',
+		wishItemPrice: 0,
 		wishItemInfo: '',
 		wishItemURL: '',
-		wishItemImage: '',
+		wishItemImage: null,
+		address: {},
 	});
 
 	const [childFirstNameError, setChildFirstNameError] = useState('');
@@ -45,6 +47,7 @@ function WishCardCreate() {
 	const [wishItemPriceError, setWishItemPriceError] = useState('');
 	const [wishItemInfoError, setWishItemInfoError] = useState('');
 	const [wishItemURLError, setWishItemURLError] = useState('');
+	const [wishItemImageError, setWishItemImageError] = useState('');
 
 	useEffect(() => {
 		const fetchAgencyAddress = () => {
@@ -55,21 +58,16 @@ function WishCardCreate() {
 		fetchAgencyAddress();
 	}, []);
 
-	const handleChildImage = (e) => {
-		setChildImage(URL.createObjectURL(e.target.files[0]));
-		setChildImageError('');
-	};
-
-	const handleItemImage = (e) => {
-		setItemImage(URL.createObjectURL(e.target.files[0]));
-	};
-
-	const handleShippingAddress = (e) => {
-		setIsShippingDefault(e.target.checked);
+	const validateImage = (img, setError, fieldName) => {
+		if (!img) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.default);
+		}
 	};
 
 	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
 		const fieldValue = ref.current?.value;
+		const formDataKey = fieldName === 'childBirthYear' ? 'childBirthYear' : ref.current?.name;
+		const formDataVal = fieldName === 'wishItemPrice' ? +fieldValue : fieldValue;
 
 		if (!fieldValue || !fieldValue.length) {
 			setError(FORM_INPUT_MAP[fieldName].errors?.default);
@@ -84,19 +82,7 @@ function WishCardCreate() {
 			setError('');
 			setFormData((data) => ({
 				...data,
-				[ref.current.name]: fieldValue,
-			}));
-		}
-	};
-
-	const validateChildImage = () => {
-		if (!childImage) {
-			setChildImageError(FORM_INPUT_MAP.childImage.errors?.default);
-		} else {
-			setChildImageError('');
-			setFormData((data) => ({
-				...data,
-				['childImage']: childImage,
+				[formDataKey]: formDataVal,
 			}));
 		}
 	};
@@ -121,17 +107,132 @@ function WishCardCreate() {
 		validateField(wishItemPriceRef, setWishItemPriceError, 'wishItemPrice');
 		validateField(wishItemInfoRef, setWishItemInfoError, 'wishItemInfo');
 		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
-		validateChildImage();
+		validateImage(childImage, setChildImageError, 'childImage');
+		validateImage(itemImage, setWishItemImageError, 'wishItemImage');
+	};
+
+	const validationState = useMemo(
+		() => ({
+			childFirstNameError,
+			childInterestError,
+			childBirthYearError,
+			childStoryError,
+			wishItemNameError,
+			wishItemPriceError,
+			wishItemInfoError,
+			wishItemURLError,
+			childImageError,
+			wishItemImageError,
+		}),
+		[
+			childFirstNameError,
+			childInterestError,
+			childBirthYearError,
+			childStoryError,
+			wishItemNameError,
+			wishItemPriceError,
+			wishItemInfoError,
+			wishItemURLError,
+			childImageError,
+			wishItemImageError,
+		],
+	);
+
+	const handleImage = (e, setImage, setError, fieldName) => {
+		const file = e.target.files[0];
+		if (file) {
+			setImage(URL.createObjectURL(file));
+			setError('');
+			setFormData((data) => ({
+				...data,
+				[fieldName]: file,
+			}));
+		}
+	};
+
+	const handleChildImage = (e) => {
+		handleImage(e, setChildImage, setChildImageError, 'childImage');
+	};
+
+	const handleItemImage = (e) => {
+		handleImage(e, setItemImage, setWishItemImageError, 'wishItemImage');
+	};
+
+	const handleOnChange = (setError) => {
+		setError('');
+		if (isFormSubmitted) {
+			setIsFormSubmitted(false);
+		}
+	};
+
+	const handleShippingAddress = (e) => {
+		setIsShippingDefault(e.target.checked);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		validateFormData();
-		console.log(formData);
-		// try {
-		// 	await axios.post('/api/wishcards')
-		// }
+		setIsFormSubmitted(true);
+		if (isShippingDefault) {
+			setFormData((data) => ({
+				...data,
+				['address']: agencyAddress,
+			}));
+		}
 	};
+
+	const handlePost = async () => {
+		const data = new FormData();
+		//need to append to FormData() because of the image file transfer
+		data.append('childFirstName', formData.childFirstName);
+		data.append('childInterest', formData.childInterest);
+		data.append('childBirthYear', formData.childBirthYear);
+		data.append('childImage', formData.childImage);
+		data.append('childStory', formData.childStory);
+		data.append('wishItemName', formData.wishItemName);
+		data.append('wishItemPrice', formData.wishItemPrice);
+		data.append('wishItemInfo', formData.wishItemInfo);
+		data.append('wishItemURL', formData.wishItemURL);
+		data.append('wishItemImage', formData.wishItemImage);
+		data.append('wishItemImage', formData.address);
+
+		try {
+			await axios
+				.post('/api/wishcards', data, {
+					headers: {
+						'content-type': 'multipart/form-data',
+					},
+				})
+				.then(window.showToast('Submission was successful!'));
+		} catch (error) {
+			window.showToast(
+				error?.response?.data?.error?.msg ||
+					error?.message ||
+					'Submission was unsuccessful. Please try again or contact us.',
+			);
+		}
+	};
+
+	const clearForm = () => {
+		childFirstNameRef.current.value = '';
+		childInterestRef.current.value = '';
+		childBirthYearRef.current.value = '';
+		childStoryRef.current.value = '';
+		wishItemNameRef.current.value = '';
+		wishItemPriceRef.current.value = '';
+		wishItemInfoRef.current.value = '';
+		wishItemURLRef.current.value = '';
+	};
+
+	useEffect(() => {
+		// Checking if all error state variables are empty using the validationState object
+		const isValid = Object.values(validationState).every((error) => !error);
+
+		if (isValid && isFormSubmitted) {
+			handlePost();
+			clearForm();
+		}
+	}, [validationState, isFormSubmitted]);
 
 	return (
 		<MantineProviderWrapper>
@@ -153,7 +254,7 @@ function WishCardCreate() {
 											label={FORM_INPUT_MAP.childFirstName?.label}
 											error={childFirstNameError}
 											required
-											onChange={() => setChildFirstNameError('')}
+											onChange={() => handleOnChange(setChildFirstNameError)}
 										/>
 										<TextInput
 											ref={childInterestRef}
@@ -164,7 +265,7 @@ function WishCardCreate() {
 											error={childInterestError}
 											required
 											placeholder={FORM_INPUT_MAP.childInterest?.placeholder}
-											onChange={() => setChildInterestError('')}
+											onChange={() => handleOnChange(setChildInterestError)}
 										/>
 										<Select
 											ref={childBirthYearRef}
@@ -178,7 +279,7 @@ function WishCardCreate() {
 											placeholder={FORM_INPUT_MAP.childBirthYear?.placeholder}
 											data={BIRTH_YEAR}
 											required
-											onChange={() => setChildBirthYearError('')}
+											onChange={() => handleOnChange(setChildBirthYearError)}
 										/>
 									</div>
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
@@ -231,7 +332,7 @@ function WishCardCreate() {
 										error={childStoryError}
 										placeholder={FORM_INPUT_MAP.childStory.placeholder}
 										required
-										onChange={() => setChildStoryError('')}
+										onChange={() => handleOnChange(setChildStoryError)}
 									/>
 								</div>
 								<div className="display-6 mt-5 mb-sm-4 mb-md-0 mb-lg-0">
@@ -247,7 +348,7 @@ function WishCardCreate() {
 											label={FORM_INPUT_MAP.wishItemName?.label}
 											error={wishItemNameError}
 											required
-											onChange={() => setWishItemNameError('')}
+											onChange={() => handleOnChange(setWishItemNameError)}
 										/>
 										<TextInput
 											ref={wishItemPriceRef}
@@ -258,7 +359,7 @@ function WishCardCreate() {
 											error={wishItemPriceError}
 											required
 											placeholder={FORM_INPUT_MAP.wishItemPrice?.placeholder}
-											onChange={() => setWishItemPriceError('')}
+											onChange={() => handleOnChange(setWishItemPriceError)}
 											leftSection={<i className="fas fa-dollar-sign"></i>}
 											rightSection={
 												<PopOver
@@ -276,16 +377,26 @@ function WishCardCreate() {
 											error={wishItemInfoError}
 											required
 											placeholder={FORM_INPUT_MAP.wishItemInfo?.placeholder}
-											onChange={() => setWishItemInfoError('')}
+											onChange={() => handleOnChange(setWishItemInfoError)}
 										/>
 									</div>
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
 										<div className="px-3 pt-3 pb-0">
 											<img
 												src={itemImage || `/img/img-placeholder.png`}
-												alt="wish-item-image"
-												className="img-fluid rounded"
+												alt="wish-item-image-placeholder"
+												className={
+													wishItemImageError
+														? 'img-fluid input-border-danger rounded'
+														: 'img-fluid rounded'
+												}
+												id="wishImagePreview"
 											/>
+											{wishItemImageError && (
+												<p className="text-danger font-weight-bold">
+													{wishItemImageError}
+												</p>
+											)}
 										</div>
 										<div className="pt-3 px-3 d-flex flex-column justify-content-center align-items-stretch">
 											<label htmlFor="wishItemImage" className="form-label">
@@ -315,7 +426,7 @@ function WishCardCreate() {
 											error={wishItemURLError}
 											required
 											placeholder={FORM_INPUT_MAP.wishItemURL?.placeholder}
-											onChange={() => setWishItemURLError('')}
+											onChange={() => handleOnChange(setWishItemURLError)}
 											leftSection={<i className="fas fa-link"></i>}
 											rightSection={
 												<PopOver
@@ -349,6 +460,7 @@ function WishCardCreate() {
 							<button
 								id="submitInput"
 								className="button-accent px-5"
+								type="submit"
 								onClick={handleSubmit}
 							>
 								<span>Submit</span>

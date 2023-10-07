@@ -2,9 +2,9 @@ import { Tabs } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 
-import SimpleModal from '../components/shared/SimpleModal.jsx';
-import AgencyCardEditForm from '../forms/AgencyCardEditForm.jsx';
-import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
+import SimpleModal from '../../components/shared/SimpleModal.jsx';
+import AgencyCardEditForm from '../../forms/AgencyCardEditForm.jsx';
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard }) => {
 	return !wishCards || wishCards.length === 0 ? (
@@ -34,7 +34,7 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 						<div className="card border-0 shadow h-100 mb-1">
 							<div className="view overlay">
 								<img
-									src={card.wishCardImage}
+									src={card.wishCardImage || card.childImage}
 									alt="Card image"
 									id="img-fix"
 									className="card-img-top rounded-0 rounded-top-3"
@@ -115,7 +115,6 @@ export default function WishCardManage() {
 			await axios.put('/api/wishcards/agency', {
 				wishCardId: cardOnEdit?._id,
 				childFirstName: submitData.childFirstName,
-				childLastName: submitData.childLastName,
 				wishItemName: submitData.wishItemName,
 				wishItemPrice: submitData.wishItemPrice,
 				childInterest: submitData.childInterest,

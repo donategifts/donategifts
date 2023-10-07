@@ -7,7 +7,6 @@ const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubm
 	const formRef = useRef();
 	const [formFields, setFormFields] = useState({
 		childFirstName: card?.childFirstName ?? '',
-		childLastName: card?.childLastName ?? '',
 		wishItemName: card?.wishItemName ?? '',
 		wishItemPrice: card?.wishItemPrice ?? '',
 		childInterest: card?.childInterest ?? '',
@@ -78,32 +77,6 @@ const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubm
 						/>
 					</div>
 					<div className="col-12 col-lg-6 my-2">
-						<label htmlFor="childLastName" className="form-label">
-							Last Name:
-						</label>
-						<input
-							id="childLastName"
-							className="form-control"
-							type="text"
-							maxLength={255}
-							placeholder="Child's last name"
-							{...getInputProps('childLastName')}
-						/>
-					</div>
-					<div className="col-12 col-lg-6 my-2">
-						<label htmlFor="wishItemName" className="form-label">
-							Wish Item:
-						</label>
-						<input
-							id="wishItemName"
-							className="form-control"
-							type="text"
-							maxLength={255}
-							placeholder="Wish item"
-							{...getInputProps('wishItemName')}
-						/>
-					</div>
-					<div className="col-12 col-lg-6 my-2">
 						<label htmlFor="wishItemPrice" className="form-label">
 							Price:
 						</label>
@@ -115,8 +88,21 @@ const AgencyCardEditForm = forwardRef(function AgencyCardEditForm({ card, onSubm
 							max={40}
 							step={0.01}
 							onWheel={noScroll}
-							placeholder="Price must be under $40"
+							placeholder="Must be under $40"
 							{...getInputProps('wishItemPrice')}
+						/>
+					</div>
+					<div className="col-12 my-2">
+						<label htmlFor="wishItemName" className="form-label">
+							Wish Item:
+						</label>
+						<input
+							id="wishItemName"
+							className="form-control"
+							type="text"
+							maxLength={255}
+							placeholder="Wish item"
+							{...getInputProps('wishItemName')}
 						/>
 					</div>
 					<div className="col-12 my-2">

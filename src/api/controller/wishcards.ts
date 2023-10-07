@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
+import config from '../../helper/config';
 
 import BaseApiController from './basecontroller';
 
@@ -18,6 +19,7 @@ export default class WishCardApiController extends BaseApiController {
 
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
+		this.postWishCardAsDraft = this.postWishCardAsDraft.bind(this);
 	}
 
 	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
@@ -44,7 +46,6 @@ export default class WishCardApiController extends BaseApiController {
 			const {
 				wishCardId,
 				childFirstName,
-				childLastName,
 				wishItemName,
 				wishItemPrice,
 				childInterest,
@@ -53,7 +54,6 @@ export default class WishCardApiController extends BaseApiController {
 
 			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, {
 				childFirstName,
-				childLastName,
 				wishItemName,
 				wishItemPrice,
 				childInterest,
@@ -63,7 +63,6 @@ export default class WishCardApiController extends BaseApiController {
 			return this.sendResponse(res, {
 				wishCardId,
 				childFirstName,
-				childLastName,
 				wishItemName,
 				wishItemPrice,
 				childInterest,
@@ -74,51 +73,83 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	// async postAgencyWishCard(req: Request, res: Response, _next: NextFunction) {
-	// 	try {
-	// 		const {
-	// 			childFirstName,
-	// 			childLastName,
-	// 			wishItemName,
-	// 			wishItemPrice,
-	// 			childInterest,
-	// 			childStory,
-	// 		} = req.body;
+	async postWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
+		try {
+			console.log('----req', req);
+			console.log('reqfile------', req.files.childImage[0]);
+			console.log('reqfile------', req.files.wishItemImage[0]);
+			const {
+				childFirstName,
+				childInterest,
+				childBirthYear,
+				childImage,
+				childStory,
+				wishItemName,
+				wishItemPrice,
+				wishItemInfo,
+				wishItemURL,
+				wishItemImage,
+				address,
+			} = req.body;
+			// const productID = Utils.extractProductIDFromLink(wishItemURL);
 
-	// 		const { childBirthday, wishItemPrice, wishItemURL } = req.body;
-	// 		const productID = Utils.extractProductIDFromLink(wishItemURL);
-	// 		const filePath =
-	// 			config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
+			console.log(
+				childFirstName,
+				childInterest,
+				childBirthYear,
+				childImage,
+				childStory,
+				wishItemName,
+				wishItemPrice,
+				wishItemInfo,
+				wishItemURL,
+				wishItemImage,
+				address,
+			);
 
-	// 		const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
+			const childImageFilePath =
+				config.NODE_ENV === 'development'
+					? `/uploads/${req.files?.childImage[0].filename}`
+					: '';
+			const itemImageFilePath =
+				config.NODE_ENV === 'development'
+					? `/uploads/${req.files?.wishItemImage[0].filename}`
+					: '';
 
-	// 		const newWishCard = await this.wishCardRepository.createNewWishCard({
-	// 			childBirthday: new Date(childBirthday),
-	// 			wishItemPrice: Number(wishItemPrice),
-	// 			productID,
-	// 			wishCardImage: config.AWS.USE ? req.file.Location : filePath,
-	// 			createdBy: res.locals.user._id,
-	// 			belongsTo: userAgency?._id,
-	// 			address: {
-	// 				address1: req.body.address1,
-	// 				address2: req.body.address2,
-	// 				city: req.body.address_city,
-	// 				state: req.body.address_state,
-	// 				zip: req.body.address_zip,
-	// 				country: req.body.address_country,
-	// 			},
-	// 			...req.body,
-	// 		});
+			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 
-	// 		this.log.info({
-	// 			msg: 'Wishcard created',
-	// 			agency: userAgency?._id,
-	// 			wishCardId: newWishCard._id,
-	// 		});
+			const newWishCard = await this.wishCardRepository.createNewWishCard({
+				childFirstName,
+				childInterest,
+				childBirthYear,
+				childImage: config.AWS.USE ? req.files?.childImage[0].path : childImageFilePath,
+				childStory,
+				wishItemName,
+				wishItemPrice,
+				wishItemInfo,
+				wishItemURL,
+				wishItemImage: config.AWS.USE
+					? req.files?.wishItemImage[0].path
+					: itemImageFilePath,
+				createdBy: res.locals.user._id,
+				belongsTo: userAgency?._id,
+				address: {
+					address1: address?.address1,
+					address2: address?.address2,
+					city: address?.city,
+					state: address?.state,
+					country: address?.country,
+					zipcode: address?.zipcode,
+				},
+				...req.body,
+			});
 
-	// 		return res.status(200).send({ success: true, url: '/wishcards/manage' });
-	// 	} catch (error) {
-	// 		return this.handleError(res, error);
-	// 	}
-	// }
+			return this.sendResponse(res, {
+				message: `New wishcard was created: ${newWishCard._id}`,
+				card: newWishCard,
+			});
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
 }
