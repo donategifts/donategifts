@@ -62,6 +62,8 @@ function WishCardCreate() {
 		if (!img) {
 			setError(FORM_INPUT_MAP[fieldName].errors?.default);
 		}
+		//TODO: file type check
+		//TODO: file size check
 	};
 
 	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
@@ -101,12 +103,26 @@ function WishCardCreate() {
 			'childInterest',
 			(value) => value.length < 2 || value.length > 250,
 		);
+
 		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
+		//TODO: isNaN check
+
 		validateField(childStoryRef, setChildStoryError, 'childStory');
+		//TODO: size check
+
 		validateField(wishItemNameRef, setWishItemNameError, 'wishItemName');
+		//TODO: size check
+
 		validateField(wishItemPriceRef, setWishItemPriceError, 'wishItemPrice');
+		//TODO: over 1 and under 40 check
+
 		validateField(wishItemInfoRef, setWishItemInfoError, 'wishItemInfo');
+		//TODO: size check
+
 		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
+		//TODO: amazon check
+		//TODO: product id check
+
 		validateImage(childImage, setChildImageError, 'childImage');
 		validateImage(itemImage, setWishItemImageError, 'wishItemImage');
 	};
@@ -178,6 +194,7 @@ function WishCardCreate() {
 				...data,
 				['address']: agencyAddress,
 			}));
+			//TODO: address not sending properly
 		}
 	};
 
@@ -194,7 +211,7 @@ function WishCardCreate() {
 		data.append('wishItemInfo', formData.wishItemInfo);
 		data.append('wishItemURL', formData.wishItemURL);
 		data.append('wishItemImage', formData.wishItemImage);
-		data.append('wishItemImage', formData.address);
+		data.append('address', formData.address);
 
 		try {
 			await axios
@@ -204,6 +221,7 @@ function WishCardCreate() {
 					},
 				})
 				.then(window.showToast('Submission was successful!'));
+			// TODO: need to change the toast color to $success, also need to change mantine color scheme to match ours
 		} catch (error) {
 			window.showToast(
 				error?.response?.data?.error?.msg ||
@@ -211,9 +229,11 @@ function WishCardCreate() {
 					'Submission was unsuccessful. Please try again or contact us.',
 			);
 		}
+		//TODO: need to redirect to manage page
 	};
 
 	const clearForm = () => {
+		//TODO: imgs not clearing
 		childFirstNameRef.current.value = '';
 		childInterestRef.current.value = '';
 		childBirthYearRef.current.value = '';
@@ -447,10 +467,15 @@ function WishCardCreate() {
 									defaultChecked
 									size="md"
 									color="#ff826b"
-									label={`Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`}
+									label={
+										!isShippingDefault
+											? 'Ship this wish item to the below address'
+											: `Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`
+									}
 									onChange={handleShippingAddress}
 								/>
 								{!isShippingDefault && <AddressForm />}
+								{/* TODO: need to collect address state after user fills out address form*/}
 							</div>
 						</div>
 						<p className="mt-5 text-center">

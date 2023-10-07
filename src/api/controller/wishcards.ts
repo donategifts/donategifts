@@ -75,37 +75,21 @@ export default class WishCardApiController extends BaseApiController {
 
 	async postWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
 		try {
-			console.log('----req', req);
-			console.log('reqfile------', req.files.childImage[0]);
-			console.log('reqfile------', req.files.wishItemImage[0]);
 			const {
 				childFirstName,
 				childInterest,
 				childBirthYear,
-				childImage,
+				// childImage, //it returns undefined BE but contains correct value in FE
 				childStory,
 				wishItemName,
 				wishItemPrice,
 				wishItemInfo,
 				wishItemURL,
-				wishItemImage,
+				// wishItemImage,
 				address,
 			} = req.body;
-			// const productID = Utils.extractProductIDFromLink(wishItemURL);
 
-			console.log(
-				childFirstName,
-				childInterest,
-				childBirthYear,
-				childImage,
-				childStory,
-				wishItemName,
-				wishItemPrice,
-				wishItemInfo,
-				wishItemURL,
-				wishItemImage,
-				address,
-			);
+			//TODO: const productID = Utils.extractProductIDFromLink(wishItemURL);
 
 			const childImageFilePath =
 				config.NODE_ENV === 'development'
