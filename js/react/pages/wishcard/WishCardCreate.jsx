@@ -105,19 +105,31 @@ function WishCardCreate() {
 		);
 
 		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
-		//TODO: isNaN check
-
-		validateField(childStoryRef, setChildStoryError, 'childStory');
-		//TODO: size check
-
-		validateField(wishItemNameRef, setWishItemNameError, 'wishItemName');
-		//TODO: size check
-
-		validateField(wishItemPriceRef, setWishItemPriceError, 'wishItemPrice');
-		//TODO: over 1 and under 40 check
-
-		validateField(wishItemInfoRef, setWishItemInfoError, 'wishItemInfo');
-		//TODO: size check
+		validateField(
+			childStoryRef,
+			setChildStoryError,
+			'childStory',
+			(value) => value.length < 5 || value.length > 500,
+		);
+		validateField(
+			wishItemNameRef,
+			setWishItemNameError,
+			'wishItemName',
+			(value) => value.length < 2 || value.length > 150,
+		);
+		validateField(
+			wishItemPriceRef,
+			setWishItemPriceError,
+			'wishItemPrice',
+			(value) => +value < 1 || +value > 40,
+			(value) => !isNaN(value),
+		);
+		validateField(
+			wishItemInfoRef,
+			setWishItemInfoError,
+			'wishItemInfo',
+			(value) => value.length < 2 || value.length > 250,
+		);
 
 		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
 		//TODO: amazon check
@@ -234,6 +246,8 @@ function WishCardCreate() {
 
 	const clearForm = () => {
 		//TODO: imgs not clearing
+		setChildImage(null);
+		setItemImage(null);
 		childFirstNameRef.current.value = '';
 		childInterestRef.current.value = '';
 		childBirthYearRef.current.value = '';

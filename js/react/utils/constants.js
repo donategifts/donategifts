@@ -42,7 +42,7 @@ const FORM_INPUT_MAP = {
 		label: "Share the child's story",
 		errors: {
 			default: "Child's story is required.",
-			size: 'Must be 6 to 600 characters long.',
+			size: 'Must be 5 to 500 characters long.',
 		},
 		placeholder: "(e.g. child's background and why they want this item)",
 	},
@@ -57,6 +57,8 @@ const FORM_INPUT_MAP = {
 		label: 'Wish item price',
 		errors: {
 			default: 'Wish item price is required.',
+			size: 'Must be over 1 and under 40.',
+			validate: 'Price must be a number.',
 		},
 		placeholder: 'Price must be rounded up and under $40',
 		popOverText:
@@ -66,6 +68,7 @@ const FORM_INPUT_MAP = {
 		label: 'Wish item description',
 		errors: {
 			default: 'Wish item description is required.',
+			size: 'Must be 2 to 250 characters long.',
 		},
 		placeholder: 'Provide specific details of the item (type, vendor, size, color, etc.)',
 	},
