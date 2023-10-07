@@ -51,7 +51,7 @@ append scripts
 
     if error
         script.
-            new DG.Toast.show('#{error}', DG.Toast.styleMap.danger);
+            new DG.Toast().show('#{error}', DG.Toast.styleMap.danger);
 
     script.
         const facebookLogin = (fbUser) => {
@@ -70,7 +70,7 @@ append scripts
                             },
                             error: (response) => {
                                 const txtToJson = JSON.parse(response.responseText);
-                                new DG.Toast.show(txtToJson.error.msg, DG.Toast.styleMap.danger);
+                                new DG.Toast().show(txtToJson.error.msg, DG.Toast.styleMap.danger);
                             },
                         });
                     }
@@ -92,7 +92,7 @@ append scripts
                     location.reload();
                 },
                 error: (response) => {
-                    new DG.Toast.show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
+                    new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                 },
             });
         }

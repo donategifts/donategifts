@@ -277,7 +277,7 @@ block scripts
             const successNotification = !{JSON.stringify(successNotification || null)};
 
             if (successNotification?.msg) {
-                new DG.Toast.show(successNotification.msg);
+                new DG.Toast().show(successNotification.msg);
             }
         });
 
