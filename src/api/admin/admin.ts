@@ -3,9 +3,18 @@ import express from 'express';
 import AdminController from './controller/admin';
 
 const router = express.Router();
-const agencyController = new AdminController();
+const adminController = new AdminController();
 
-router.get('/', agencyController.handleGetDraftWishcards);
-router.put('/', agencyController.handlePutDraftWishcard);
+router.get('/', adminController.handleGetDraftWishcards);
+
+router.put('/', adminController.handlePutDraftWishcard);
+
+router.get('/agencyOverview', adminController.handleGetAgencyOverview);
+
+router.get('/agencyDetail/:agencyId', adminController.handleGetAgencyDetail);
+
+router.put('/verifyAgency/:agencyId', adminController.handleVerifyAgency);
+
+router.post('/updateAgencyData/:agencyId', adminController.handleUpdateAgencyData);
 
 export default router;

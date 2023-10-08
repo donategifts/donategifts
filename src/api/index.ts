@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import Permissions from '../middleware/permissions';
 
-import admin from './admin';
+import admin from './admin/admin';
 import agency from './agency';
 import community from './community';
 import profile from './profile';

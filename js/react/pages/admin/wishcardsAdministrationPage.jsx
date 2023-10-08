@@ -1,5 +1,4 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 const fetcAgencyWithhWishCardsData = (setData) => {
@@ -34,44 +33,6 @@ export default function WishcardsAdministrationPage() {
 				);
 			});
 	};
-
-	WishcardsAdministrationPage.propTypes = {
-		agenciesWithWishCards: PropTypes.instanceOf(Object).isRequired,
-	};
-
-	/*WishcardsAdministrationPage.propTypes = {
-		wishCards: PropTypes.arrayOf(
-			PropTypes.shape({
-				_id: PropTypes.string.isRequired,
-				childFirstName: PropTypes.string.isRequired,
-				childLastName: PropTypes.string.isRequired,
-				childBirthday: PropTypes.string,
-				childInterest: PropTypes.string.isRequired,
-				wishItemName: PropTypes.string.isRequired,
-				wishItemPrice: PropTypes.number.isRequired,
-				wishItemURL: PropTypes.string.isRequired,
-				childStory: PropTypes.string.isRequired,
-				wishCardImage: PropTypes.string.isRequired,
-				createdBy: PropTypes.string.isRequired,
-				createdAt: PropTypes.string.isRequired,
-				deliveryDate: PropTypes.string.isRequired,
-				occasion: PropTypes.string.isRequired,
-				address: PropTypes.shape({
-					address1: PropTypes.string.isRequired,
-					address2: PropTypes.string.isRequired,
-					city: PropTypes.string.isRequired,
-					state: PropTypes.string.isRequired,
-					country: PropTypes.string.isRequired,
-					zipcode: PropTypes.string.isRequired,
-				}),
-				isLockedBy: PropTypes.string,
-				isLockedUntil: PropTypes.string,
-				approvedByAdmin: PropTypes.bool,
-				status: PropTypes.string.isRequired,
-				belongsTo: PropTypes.string.isRequired,
-			}),
-		),
-	}*/
 	return (
 		<div>
 			<div id="profile-bg" className="background-color">
