@@ -1,37 +1,22 @@
 #signupModalCenter.modal.fade( tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true' )
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-        .modal-content
-            .modal-header
-                .d-flex.align-items-center
-                    i.pl-1.pr-4.fa.fa-handshake-o( aria-hidden='true' )
-                    h1.mt-1.modalTitle.quick-font Signing up as a Foster Care Partner?
-                button.btn-close( type='button' data-bs-dismiss='modal' aria-label='Close' )
+        .modal-content.py-2
+            .modal-header.center-elements.border-0
+                h1.cool-font.text-warning Before we start our partnership
             .modal-body.quick-font
                 .container-fluid
-                    .text-center
-                        h5 Before we proceed, let's go over a few important things.
-                        h5 Verification process is fast and easy!
-                    .row.text-dark.pt-4
-                        .col.m-3
-                        p
-                            i.pr-2.fa.fa-ban( aria-hidden='true' )
-                            span.text-danger No minor or non-certified caregiver
-                            |  can register as a foster care partner to create wish cards on their own, in order to prevent any potential misuse of our site.
-                        .col.m-3
-                        p
-                            i.pr-2.fa.fa-envelope-o( aria-hidden='true' )
-                            | If you are a foster careparent or an agency staff,
-                            span.text-danger
-                                |  please use your work email
-                            |  to sign up. We will send a verification link to your work email (email address that is associated with your organization).
-                    .row.text-dark
-                        .col.mx-3
-                        p
-                            i.pr-1.fa.fa-check-square-o( aria-hidden='true' )
-                            |  Once you are verified as a foster care partner, you can manage the account and create wish cards for the children under your care. You may not have immediate permission to create the wish cards until your account is reviewed and verified.
-                        .col.mx-3
-                        p
-                            i.pr-2.fa.fa-exclamation-triangle( aria-hidden='true' )
-                            | Currently, DonateGifts only accepts partnership with non-profit foster care organizations, licensed adoption/ family care agencies, and state-certified domestic foster homes. Please contact us if you have any questions.
-            .modal-footer
-                button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
+                    .row.text-dark.px-4
+                        .center-elements.py-2
+                            i.pr-2.fas.fa-ban.text-danger.display-2
+                            .ms-3.fs-5 Minors or non-certified caregivers cannot register as an agency partner. You must be an authorized representative of an eligible organization.
+                        .center-elements.py-2
+                            i.pr-2.fas.fa-exclamation-triangle.text-danger.display-2
+                            .ms-3.fs-5 You may not misuse our services for personal gains as written in our <a class="text-danger" href="/terms" target="_blank">Terms of Service Agreement</a>.
+                        .center-elements.py-2
+                            i.pr-2.far.fa-envelope.text-danger.display-2
+                            .ms-3.fs-5 Please use your work email to sign up. We will send the verification code to an email associated with your non-profit organization. (e.g. name@your-organization.com)
+                        .center-elements.py-2
+                            i.pr-2.far.fa-check-circle.text-danger.display-2
+                            .ms-3.fs-5 You may not have an immediate access to all features until your agency is reviewed and verified.
+            .modal-footer.border-0.center-elements
+                button.button-accent( type='button' data-bs-dismiss='modal' ) I agree and understand
