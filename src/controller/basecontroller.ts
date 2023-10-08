@@ -14,6 +14,9 @@ export default class BaseController {
 		this.limiter = rateLimit({
 			windowMs: limitTime * 60 * 1000,
 			max: 100,
+			validate: {
+				xForwardedForHeader: true,
+			} as any,
 		});
 	}
 

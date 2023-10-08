@@ -124,7 +124,7 @@ export default class WishCardController extends BaseController {
 				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
 			}
 
-			this.renderView(res, 'wishcard/search', {
+			this.renderView(res, 'wishcards', {
 				wishcards: data,
 			});
 		} catch (error) {

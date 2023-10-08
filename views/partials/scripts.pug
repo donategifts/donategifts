@@ -1,0 +1,28 @@
+script( src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous" )
+
+script( src='/js/bootstrap.min.js' )
+script( src='/js/app.min.js' )
+script( src='/js/react-bundle.js' )
+
+script.
+    $(document).ready(function () {
+        $('#login-modal-form').submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                method: 'POST',
+                url: '/login',
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
+                success: (response) => {
+                    setTimeout(() => location.assign(response.url), 2000);
+                },
+                error: (response) => {
+                    const toast = new DG.Toast();
+                    toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
+                },
+            });
+        })
+    });

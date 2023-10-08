@@ -42,7 +42,7 @@ export default class FileUpload {
 					cb(null, `${uuidv4()}.jpeg`);
 				},
 				resize: {
-					height: 640,
+					height: 420,
 				},
 				toFormat: 'jpeg',
 			});

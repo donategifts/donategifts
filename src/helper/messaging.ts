@@ -312,18 +312,22 @@ export default class Messaging {
 		);
 	}
 
-	static async sendAgencyVerifiedMail(to) {
-		this.sendMail(
+	static async sendAgencyVerifiedMail(to: string) {
+		const result = await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
+
+		if (config.NODE_ENV === 'development') {
+			log.info(result.data);
+		}
 	}
 
 	//NOTE: Broken
-	static async sendAgencyVerificationNotification({ name, website, bio }) {
+	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
 		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
 		}
@@ -352,6 +356,8 @@ export default class Messaging {
 								${website}
 								
 								Please check their website before verifying it!
+
+								https://donate-gifts.com/admin/agencyDetail/${id}
                         	`,
 							color: Colors.Yellow,
 						},

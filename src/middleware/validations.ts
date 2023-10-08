@@ -358,12 +358,6 @@ export default class Validations {
 				.isLength({ max: 255 })
 				.withMessage("Child's first name is no longer than 255 characters"),
 
-			body('childLastName')
-				.notEmpty()
-				.withMessage("Child's last name is required")
-				.isLength({ max: 255 })
-				.withMessage("Child's last name is no longer than 255 characters"),
-
 			body('wishItemName')
 				.notEmpty()
 				.withMessage('Wish item name is required')

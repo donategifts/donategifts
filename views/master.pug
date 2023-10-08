@@ -14,9 +14,14 @@ html( lang="en" )
         block styles
 
     body
-        #header-root
+        //- #header-root
+        include partials/navbar.pug
 
         main
+            block toast
+                include mixins/toast.pug
+                +toast
+
             block content
             //- react pages will be mounted here (see views/pages/wishcard/agencycards.pug)
             //- single components should be mounted in their respective pages
@@ -28,19 +33,21 @@ html( lang="en" )
             block footer
                 include partials/footer.pug
 
-        include partials/js.pug
+        include partials/scripts.pug
+
         block scripts
-        append scripts
-            script.
-                $(document).ready(function () {
-                    const root = ReactRoot(document.querySelector('#header-root'));
-                    root.render(
-                        React.createElement(
-                            Header,
-                            {
-                                user: !{JSON.stringify(user || null)},
-                                agency: !{JSON.stringify(agency || null)},
-                            }
-                        ),
-                    );
-                })
+
+        //- append scripts
+        //-     script.
+        //-         $(document).ready(function () {
+        //-             const root = ReactRoot(document.querySelector('#header-root'));
+        //-             root.render(
+        //-                 React.createElement(
+        //-                     Header,
+        //-                     {
+        //-                         user: !{JSON.stringify(user || null)},
+        //-                         agency: !{JSON.stringify(agency || null)},
+        //-                     }
+        //-                 ),
+        //-             );
+        //-         })
