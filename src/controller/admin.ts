@@ -20,12 +20,14 @@ export default class AdminController extends BaseController {
 		this.donationsRepository = new DonationRepository();
 		this.userRepository = new UserRepository();
 
-		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handlePutIndex = this.handlePutIndex.bind(this);
+		this.handleGetWishcards = this.handleGetWishcards.bind(this);
+		this.handlePutWishcards = this.handlePutWishcards.bind(this);
 		this.handleGetWishCard = this.handleGetWishCard.bind(this);
+		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
+		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
 	}
 
-	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetWishcards(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
 			const wishCardsWithAgencyDetails: any[] = [];
@@ -47,7 +49,7 @@ export default class AdminController extends BaseController {
 		}
 	}
 
-	async handlePutIndex(req: Request, res: Response, _next: NextFunction) {
+	async handlePutWishcards(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { wishCardId, wishItemUrl } = req.body;
 
@@ -94,5 +96,13 @@ export default class AdminController extends BaseController {
 			donor: donation.donationFrom,
 			accountManager,
 		});
+	}
+
+	async handleGetAgencyOverview(_req: Request, res: Response, _next: NextFunction) {
+		this.renderView(res, 'admin/agency/overview');
+	}
+
+	async handleGetAgencyDetail(req: Request, res: Response, _next: NextFunction) {
+		this.renderView(res, 'admin/agency/detail', { agencyId: req.params.agencyId });
 	}
 }

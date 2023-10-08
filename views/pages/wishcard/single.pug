@@ -20,18 +20,19 @@ block content
 
             .row.justify-content-center.align-items-start
                 .col-md-4.col-lg-3.col-12.mt-4
-                    .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1.d-flex.flex-column.align-items-center
+                    .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1.text-center.d-flex.flex-column.align-items-center
                         img.img-fluid.mt-2.rounded-3( src= wishcard.wishCardImage alt= wishcard.wishItemName loading='lazy' )
-                        h1.cool-font.text-primary.text-center.my-3= header
-                        if wishcard.status !== 'donated'
-                            button#donate-btn.button-disabled.text-center( type='button' disabled='' aria-disabled='true' ) Gift Donated
+                        h1.cool-font.text-primary.my-3= header
+                        if wishcard.status === 'donated'
+                            button#donate-btn.button-disabled.w-100( type='button' disabled='' aria-disabled='true' ) Gift Donated
                         else if user
-                            a#donate-btn.button-accent.text-center( type='button' href='/wishcards/donate/' + wishcard._id ) Donate Gift
+                            a#donate-btn.button-accent.w-100( type='button' href='/wishcards/donate/' + wishcard._id ) Donate Gift
                         else
-                            button#donate-btn.button-accent.text-center( type='button'
-                                data-bs-toggle='modal'
-                                data-bs-target='#loginModalCenter'
-                            ) Donate Gift
+                            //- button#donate-btn.button-accent.w-100( type='button'
+                            //-     data-bs-toggle='modal'
+                            //-     data-bs-target='#loginModalCenter'
+                            //- ) Donate Gift
+                            a#donate-btn.button-accent.w-100( type='button' href='/login' ) Donate Gift
 
                 .col-md-8.col-12.mt-4
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
@@ -120,8 +121,10 @@ block scripts
             $('form').submit(function (event) {
                 event.preventDefault();
 
-                const messageFrom = !{JSON.stringify(user)};
+                const messageFrom = !{JSON.stringify(user || {})};
                 const messageTo = !{JSON.stringify(wishcard)};
+
+                const toast = new DG.Toast();
 
                 $.ajax({
                     type: 'POST',
@@ -133,13 +136,13 @@ block scripts
                     },
                     statusCode: {
                         400: function (response) {
-                            showToast(response.responseJSON.error.msg);
+                            toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                         },
                         200: function (response) {
                             window.location.reload();
                         },
                         403: function (response) {
-                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', toast.styleMap.danger);
                             setTimeout(() => location.assign(response.responseJSON.url), 1200);
                         },
                     },

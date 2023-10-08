@@ -8,8 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import config from '../helper/config';
 
 export default class FileUpload {
-	private s3: AWS.S3 | undefined;
-
 	private storage: multer.StorageEngine;
 
 	public upload: multer.Multer;
@@ -32,13 +30,11 @@ export default class FileUpload {
 				);
 			}
 
-			this.s3 = new S3({
-				accessKeyId: config.AWS.KEY,
-				secretAccessKey: config.AWS.SECRET,
-			});
-
 			this.storage = multerS3({
-				s3: this.s3,
+				s3: new S3({
+					accessKeyId: config.AWS.KEY,
+					secretAccessKey: config.AWS.SECRET,
+				}),
 				Bucket: config.AWS.S3BUCKET,
 				ACL: 'public-read',
 				CacheControl: 'max-age=31536000',
@@ -46,7 +42,7 @@ export default class FileUpload {
 					cb(null, `${uuidv4()}.jpeg`);
 				},
 				resize: {
-					height: 640,
+					height: 420,
 				},
 				toFormat: 'jpeg',
 			});

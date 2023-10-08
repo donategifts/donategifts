@@ -12,42 +12,41 @@ import log from './logger';
 export default class Messaging {
 	static get templates() {
 		return {
+			//general
 			emailTemplate: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/emailTemplate.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
-
-			donorDonationReceipt: fs.readFileSync(
-				path.resolve(__dirname, '../../resources/email/donorDonationReceipt.html'),
+			verifyEmail: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/verifyEmail.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
-
+			//agency-only
+			agencyWishPublished: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/agencyWishPublished.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
 			agencyDonationAlert: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/agencyDonationAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
-
-			partnerDonationAlert: fs.readFileSync(
-				path.resolve(__dirname, '../../resources/email/partnerDonationAlert.html'),
-				{
-					encoding: 'utf-8',
-				},
-			),
-
 			agencyVerified: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/agencyVerified.html'),
 				{
 					encoding: 'utf-8',
 				},
 			),
-			verifyEmail: fs.readFileSync(
-				path.resolve(__dirname, '../../resources/email/verifyEmail.html'),
+			//donor-only
+			donorDonationAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/donorDonationAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
@@ -100,7 +99,7 @@ export default class Messaging {
 				{
 					filename: 'instagram2x.png',
 					path: path.resolve(__dirname, '../../resources/email/instagram2x.png'),
-					cid: 'instagram2x.png', // same cid value as in the html img src
+					cid: 'instagram2x.png',
 				},
 				{
 					filename: 'telegram2x.png',
@@ -110,12 +109,12 @@ export default class Messaging {
 				{
 					filename: 'website2x.png',
 					path: path.resolve(__dirname, '../../resources/email/website2x.png'),
-					cid: 'website2x.png', // same cid value as in the html img src
+					cid: 'website2x.png',
 				},
 				{
 					filename: 'mail2x.png',
 					path: path.resolve(__dirname, '../../resources/email/mail2x.png'),
-					cid: 'mail2x.png', // same cid value as in the html img src
+					cid: 'mail2x.png',
 				},
 				{
 					filename: 'new-donate-gifts-logo-2.png',
@@ -123,12 +122,12 @@ export default class Messaging {
 						__dirname,
 						'../../resources/email/new-donate-gifts-logo-2.png',
 					),
-					cid: 'new-donate-gifts-logo-2.png', // same cid value as in the html img src
+					cid: 'new-donate-gifts-logo-2.png',
 				},
 				{
 					filename: 'Img1_2x.jpg',
 					path: path.resolve(__dirname, '../../resources/email/Img1_2x.jpg'),
-					cid: 'Img1_2x.jpg', // same cid value as in the html img src
+					cid: 'Img1_2x.jpg',
 				},
 			],
 		};
@@ -162,10 +161,19 @@ export default class Messaging {
 		}
 	}
 
-	// cb is callback, cb(err, null) means if err, get err, else null
 	// IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
-	static async sendMail(from, to, subject, message, attachments?) {
+	static async sendMail(
+		from: string | null,
+		to: string,
+		subject: string,
+		message: string,
+		attachments?: { filename: string; path: string; cid: string }[],
+	) {
 		try {
+			if (!from) {
+				throw new Error('No default email set in .env!!!');
+			}
+
 			const transporter = await this.getTransport();
 
 			if (transporter) {
@@ -196,7 +204,7 @@ export default class Messaging {
 		}
 	}
 
-	static sendDonationConfirmationMail({
+	static sendDonationConfirmationEmail({
 		email,
 		firstName,
 		lastName,
@@ -205,48 +213,61 @@ export default class Messaging {
 		price,
 		agency,
 	}) {
-		const body = this.templates.donorDonationReceipt
+		const body = this.templates.donorDonationAlert
 			.replace('%firstName%', firstName)
 			.replace(/%childName%/g, childName)
 			.replace('%fullName%', `${firstName} ${lastName}`)
 			.replace('%item%', item)
 			.replace('%price%', price)
 			.replace('%agency%', agency)
-			// Jan 1st, 2020 <- date formatting
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString().toString())
 			.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			email,
-			'Donate-gifts.com Donation Receipt',
+			`${firstName}, you made a donation to ${childName}`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
 	}
 
-	static sendDonationOrderedEmail({
+	static sendWishPublishedEmail({ agencyEmail, childName }) {
+		const body = this.templates.agencyWishPublished
+			.replace(/%childName%/g, childName)
+			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString());
+
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			agencyEmail,
+			`Wish card is published for ${childName}`,
+			body,
+			this.attachments.templateAttachments,
+		);
+	}
+
+	static sendAgencyDonationEmail({
 		agencyEmail,
 		agencyName,
 		childName,
-		itemName,
-		itemPrice,
+		item,
+		price,
 		donationDate,
 		address,
 	}) {
-		const body = this.templates.partnerDonationAlert
+		const body = this.templates.agencyDonationAlert
 			.replace('%agencyName%', agencyName)
 			.replace(/%childName%/g, childName)
-			.replace('%itemName%', itemName)
-			.replace('%itemPrice%', itemPrice)
-			.replace('%donationDate%', donationDate)
+			.replace('%item%', item)
+			.replace('%price%', price)
+			.replace('%date%', donationDate)
 			.replace('%address%', address)
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString());
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			agencyEmail,
-			'Donate-gifts.com Donation Item Ordered',
+			`New donation alert for ${childName}'s wish item`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
@@ -267,7 +288,7 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'Donate-gifts.com Email verification',
+			'Verify email for DonateGifts',
 			body,
 			this.attachments.templateAttachments,
 		);
@@ -285,24 +306,29 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'Donate-gifts.com Password Reset',
+			'Reset password for DonateGifts',
 			body,
 			this.attachments.templateAttachments,
 		);
 	}
 
-	static async sendAgencyVerifiedMail(to) {
-		this.sendMail(
+	static async sendAgencyVerifiedMail(to: string) {
+		const result = await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'Donate-gifts.com Agency Account Verified',
+			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
+
+		if (config.NODE_ENV === 'development') {
+			log.info(result.data);
+		}
 	}
 
+	//NOTE: Broken
 	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
 		}
 
@@ -312,12 +338,7 @@ export default class Messaging {
 
 			await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
-			});
-
-			await axios({
-				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -330,16 +351,15 @@ export default class Messaging {
 								url: website,
 							},
 							description: `
-                            ${bio}
+								${bio}
 
-                            [${website}](${website})
-                            
-                            Please check their website before verifying it!
-                        `,
+								${website}
+								
+								Please check their website before verifying it!
+
+								https://donate-gifts.com/admin/agencyDetail/${id}
+                        	`,
 							color: Colors.Yellow,
-							footer: {
-								text: `Want to verify it? /verifyagency ${id}`,
-							},
 						},
 					],
 				},
@@ -349,28 +369,9 @@ export default class Messaging {
 		}
 	}
 
-	static sendAgencyDonationAlert({ email, firstName, lastName, childName, item, price, agency }) {
-		const body = this.templates.agencyDonationAlert
-			.replace(/%childName%/g, childName)
-			.replace('%fullName%', `${firstName} ${lastName}`)
-			.replace('%item%', item)
-			.replace('%price%', price)
-			.replace('%agency%', agency)
-			// Jan 1st, 2020 <- date formatting
-			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString())
-			.replace('%date%', moment(new Date()).format('MMM Do, YYYY'));
-
-		return this.sendMail(
-			config.EMAIL.ADDRESS,
-			email,
-			'Donate-gifts.com Donation Receipt',
-			body,
-			this.attachments.donationTemplateAttachments,
-		);
-	}
-
+	//NOTE: Broken
 	static async sendFeedbackMessage({ name, email, subject, message }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+		if (!config.DISCORD.CONTACT_WEBHOOK_URL) {
 			return;
 		}
 
@@ -380,7 +381,7 @@ export default class Messaging {
 
 			return await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.CONTACT_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},

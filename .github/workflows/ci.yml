@@ -1,11 +1,6 @@
 name: "Linter and CodeQL"
 
 on:
-  pull_request:
-    branches:
-      - master
-    types: [opened]
-
   push:
     branches:
       - "**"

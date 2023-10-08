@@ -1,0 +1,10 @@
+extends ../../../master
+
+append scripts
+    script.
+        const root = ReactRoot(document.querySelector('#app-root'));
+        root.render(
+            React.createElement(
+                AdminAgencyOverview
+            )
+        );
