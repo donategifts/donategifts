@@ -4,110 +4,17 @@ block title
     title See Wish Cards | Donate Gifts
 
 block content
-    #profile-bg.bg
-        .profile-title
-            h1#cray-font Wishcard unlock
-    .wishcards
-        .container
-            if wishCardsWithAgencyDetails.length === 0
-                h1 No wishcards
-            else
-                .row.justify-content-center
-                    each card in wishCardsWithAgencyDetails
-                        .col-lg-4.col-xs-12.mb-5.mt-4
-                            .card.mb-3
-                                .view.overlay
-                                    img#img-fix.card-img-top( src=card.wishCardImage alt='Card image' )
-                                    a( href='#' )
-                                        .mask.rgba-white-slight
-                                .card-body
-                                    .card-text-container
-                                        h3.card-title.text-center My name is
-                                            |
-                                            |
-                                            = card.childFirstName
+    #wishcard-admin-root
 
-                                        .quick-font
-                                            p.card-text
-                                                span.font-weight-bold Status:
-                                                    |
-                                                    |
-                                                    = card.status
-                                            p.card-text
-                                                span.font-weight-bold Age:
-                                                    |
-                                                    |
-                                                    = card.age
-                                            p.card-text
-                                                - var wishItemName = card.wishItemName.length > 25 ? card.wishItemName.substring(0, 25) + '...' : card.wishItemName
-
-                                                span.font-weight-bold Wish:
-                                                    |
-                                                    |
-                                                    = wishItemName
-                                            p.card-text
-                                                - var wishItemPrice = '$ ' + card.wishItemPrice
-
-                                                span.font-weight-bold Item Price:
-                                                    |
-                                                    |
-                                                    = wishItemPrice
-                                            p
-                                                span Item Url:
-                                                    |
-                                                    |
-                                                    a( id='oldWishItemUrl' + card._id href=card.wishItemURL ) Link
-
-                                            input.input1( id='newWishItemUrl' + card._id
-                                                type='text'
-                                                name='newWishItemUrl'
-                                                placeholder='Url for wish item...'
-                                            )
-                                            button.col.wishcard-btn.btn-navy-bg( type='button'
-                                                id='donate-btn-' + card._id data-value-id=card._id
-                                            ) Publish WishCard
-
-append scripts
+block scripts
     script.
         $(document).ready(() => {
-            const unlockCardButtonClick = (e) => {
-                const elementRef = e.target;
-                const wishCardId = elementRef.dataset.valueId;
-                const $oldItemUrl = $('#oldWishItemUrl' + wishCardId);
-                const $newItemUrl = $('#newWishItemUrl' + wishCardId);
-                const wishItemUrl = $newItemUrl.val() !== '' ? $newItemUrl.val() : $oldItemUrl.attr('href');
-
-                console.log(wishItemUrl);
-
-                $.ajax({
-                    type: 'PUT',
-                    url: '/admin',
-                    data: {
-                        wishCardId,
-                        wishItemUrl,
-                    },
-                    success: (_) => {
-                        showToast('Card status updated');
-                        removeWishCardFromDOM(elementRef);
-                    },
-                    error: (response) => {
-                        showToast(response.error.msg);
-                    },
-                });
-            }
-
-            const removeWishCardFromDOM = (node) => {
-                const divName = 'row justify-content-center';
-                if (node.parentNode.className !== divName) {
-                    removeWishCardFromDOM(node.parentNode);
-                } else {
-                    while (node.firstChild) {
-                        node.removeChild(node.lastChild);
-                    }
-                }
-            }
-
-            $('.col.wishcard-btn.btn-navy-bg').each(function () {
-                $(this).click(unlockCardButtonClick);
-            })
+            console.log("DO I HIT THIS")
+            console.log(WishcardsAdministrationPage)
+            const root = ReactRoot(document.querySelector('#wishcard-admin-root'));
+            root.render(
+                React.createElement(
+                    WishcardsAdministrationPage
+                )
+            );
         });

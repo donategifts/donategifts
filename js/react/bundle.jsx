@@ -6,6 +6,7 @@ import Header from './components/header/index.jsx';
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 import Nav from './components/nav/index.jsx';
 import WishCards from './components/wishcards/index.jsx';
+import WishcardsAdministrationPage from './pages/admin/wishcardsAdministrationPage.jsx';
 import AgencyCardsPage from './pages/agencycards.jsx';
 
 window.ReactRoot = createRoot;
@@ -18,3 +19,4 @@ window.WishCardsCarousel = WishCardsCarousel;
 // window.Login = Login;
 window.Nav = Nav;
 window.AgencyCardsPage = AgencyCardsPage;
+window.WishcardsAdministrationPage = WishcardsAdministrationPage;

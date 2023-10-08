@@ -28,20 +28,18 @@ export default class AdminController extends BaseController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
-			const wishCardsWithAgencyDetails: any[] = [];
+			const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
 
 			for (const wishCard of wishcards) {
-				const agencySimple = {
-					agencyName: wishCard.belongsTo.agencyName,
-					agencyPhone: wishCard.belongsTo.agencyPhone,
-				};
-
-				const mergedObj = { ...wishCard, ...agencySimple };
-
-				wishCardsWithAgencyDetails.push(mergedObj);
+				const agencyName = wishCard.belongsTo.agencyName;
+				if (!agenciesWithWishCardsMap.has(agencyName)) {
+					agenciesWithWishCardsMap.set(agencyName, []);
+				}
+				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
 			}
-
-			this.renderView(res, 'admin/wishcards', { wishCardsWithAgencyDetails });
+			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
+			console.log('??');
+			this.renderView(res, 'admin/wishcards', { agenciesWithWishCards });
 		} catch (error) {
 			this.handleError(res, error);
 		}

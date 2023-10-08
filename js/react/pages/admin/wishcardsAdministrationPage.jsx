@@ -1,0 +1,181 @@
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+
+const fetcAgencyWithhWishCardsData = (setData) => {
+	axios
+		.get('/api/admin/')
+		.then((response) => {
+			setData(response.data.data);
+		})
+		.catch((error) => {
+			console.error('Error fetching data:', error);
+		});
+};
+
+export default function WishcardsAdministrationPage() {
+	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState(new Object());
+
+	useEffect(() => {
+		fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
+	}, []);
+
+	const handleUpdateWishcard = (wishCardId, wishItemUrl) => {
+		axios
+			.put(`/api/admin/`, { wishCardId, wishItemUrl })
+			.then(() => {
+				fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
+			})
+			.catch((error) => {
+				window.showToast(
+					error?.response?.data?.error?.msg ||
+						error?.message ||
+						'Unable to publish wishcard',
+				);
+			});
+	};
+
+	WishcardsAdministrationPage.propTypes = {
+		agenciesWithWishCards: PropTypes.instanceOf(Object).isRequired,
+	};
+
+	/*WishcardsAdministrationPage.propTypes = {
+		wishCards: PropTypes.arrayOf(
+			PropTypes.shape({
+				_id: PropTypes.string.isRequired,
+				childFirstName: PropTypes.string.isRequired,
+				childLastName: PropTypes.string.isRequired,
+				childBirthday: PropTypes.string,
+				childInterest: PropTypes.string.isRequired,
+				wishItemName: PropTypes.string.isRequired,
+				wishItemPrice: PropTypes.number.isRequired,
+				wishItemURL: PropTypes.string.isRequired,
+				childStory: PropTypes.string.isRequired,
+				wishCardImage: PropTypes.string.isRequired,
+				createdBy: PropTypes.string.isRequired,
+				createdAt: PropTypes.string.isRequired,
+				deliveryDate: PropTypes.string.isRequired,
+				occasion: PropTypes.string.isRequired,
+				address: PropTypes.shape({
+					address1: PropTypes.string.isRequired,
+					address2: PropTypes.string.isRequired,
+					city: PropTypes.string.isRequired,
+					state: PropTypes.string.isRequired,
+					country: PropTypes.string.isRequired,
+					zipcode: PropTypes.string.isRequired,
+				}),
+				isLockedBy: PropTypes.string,
+				isLockedUntil: PropTypes.string,
+				approvedByAdmin: PropTypes.bool,
+				status: PropTypes.string.isRequired,
+				belongsTo: PropTypes.string.isRequired,
+			}),
+		),
+	}*/
+	return (
+		<div>
+			<div id="profile-bg" className="background-color">
+				<div className="profile-title">
+					<div className="text-center fs-1">Wishcard admin panel11</div>
+				</div>
+			</div>
+			<div className="wishcards background-color">
+				<div className="container">
+					{Object.keys(agenciesWithWishCards).map((key) => (
+						<div key={key}>
+							<h2 className="cray-font">Agency name: {key}</h2>
+							<div className="row justify-content-center agency-card-container">
+								{agenciesWithWishCards[key].map((card) => (
+									<div key={card._id} className="col-lg-4 col-xs-12 mb-5 mt-4">
+										<div className="card mb-3">
+											<div className="view overlay">
+												<img
+													id="img-fix"
+													className="card-img-top"
+													src={card.wishCardImage}
+													alt="Card image"
+												/>
+												<a href="#" className="mask rgba-white-slight"></a>
+											</div>
+											<div className="card-body card-details">
+												<div className="card-text-container">
+													<h3 className="card-title text-center">
+														My name is
+													</h3>
+													<div className="quick-font">
+														<p className="card-text">
+															<span className="font-weight-bold">
+																Status:
+															</span>{' '}
+															{card.status}
+														</p>
+														<p className="card-text">
+															<span className="font-weight-bold">
+																Age:
+															</span>{' '}
+															{card.age}
+														</p>
+														<p className="card-text">
+															<span className="font-weight-bold">
+																Wish:
+															</span>{' '}
+															{card.wishItemName.length > 25
+																? card.wishItemName.substring(
+																		0,
+																		25,
+																  ) + '...'
+																: card.wishItemName}
+														</p>
+														<p className="card-text">
+															<span className="font-weight-bold">
+																Item Price:
+															</span>{' '}
+															${card.wishItemPrice}
+														</p>
+														<p>
+															<span>Item Url:</span>{' '}
+															<a
+																id={'oldWishItemUrl' + card._id}
+																href={card.wishItemURL}
+															>
+																Link
+															</a>
+														</p>
+														<input
+															id={'newWishItemUrl' + card._id}
+															type="text"
+															name="newWishItemUrl"
+															placeholder="Url for wish item..."
+														/>
+														<button
+															className="card-details-publish-button"
+															type="button"
+															id={'donate-btn-' + card._id}
+															data-value-id={card._id}
+															onClick={() => {
+																const newWishItemUrl =
+																	document.getElementById(
+																		'newWishItemUrl' + card._id,
+																	).value;
+																handleUpdateWishcard(
+																	card._id,
+																	newWishItemUrl,
+																);
+															}}
+														>
+															Publish WishCard
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
