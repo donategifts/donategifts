@@ -1,17 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-const fetcAgencyWithhWishCardsData = (setData) => {
-	axios
-		.get('/api/admin/')
-		.then((response) => {
-			setData(response.data.data);
-		})
-		.catch((error) => {
-			console.error('Error fetching data:', error);
-		});
-};
-
 export default function WishcardsAdministrationPage() {
 	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState(new Object());
 
@@ -31,6 +20,17 @@ export default function WishcardsAdministrationPage() {
 						error?.message ||
 						'Unable to publish wishcard',
 				);
+			});
+	};
+
+	const fetcAgencyWithhWishCardsData = (setData) => {
+		axios
+			.get('/api/admin/')
+			.then((response) => {
+				setData(response.data.data);
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
 			});
 	};
 	return (
