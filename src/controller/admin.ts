@@ -40,7 +40,6 @@ export default class AdminController extends BaseController {
 				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
 			}
 			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
-			console.log('??');
 			this.renderView(res, 'admin/wishcards', { agenciesWithWishCards });
 		} catch (error) {
 			this.handleError(res, error);
