@@ -34,7 +34,12 @@ function WishCardCreate() {
 		wishItemInfo: '',
 		wishItemURL: '',
 		wishItemImage: null,
-		address: {},
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		country: '',
+		zipcode: '',
 	});
 
 	const [childFirstNameError, setChildFirstNameError] = useState('');
@@ -103,7 +108,6 @@ function WishCardCreate() {
 			'childInterest',
 			(value) => value.length < 2 || value.length > 250,
 		);
-
 		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
 		validateField(
 			childStoryRef,
@@ -130,7 +134,6 @@ function WishCardCreate() {
 			'wishItemInfo',
 			(value) => value.length < 2 || value.length > 250,
 		);
-
 		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
 		//TODO: amazon check
 		//TODO: product id check
@@ -204,8 +207,9 @@ function WishCardCreate() {
 		if (isShippingDefault) {
 			setFormData((data) => ({
 				...data,
-				['address']: agencyAddress,
+				...agencyAddress,
 			}));
+			console.log(agencyAddress);
 			//TODO: address not sending properly
 		}
 	};
@@ -234,7 +238,6 @@ function WishCardCreate() {
 				},
 			});
 			toast.show('Submission was successful!');
-			// TODO: need to change the toast color to $success, also need to change mantine color scheme to match ours
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -247,7 +250,6 @@ function WishCardCreate() {
 	};
 
 	const clearForm = () => {
-		//TODO: imgs not clearing
 		setChildImage(null);
 		setItemImage(null);
 		childFirstNameRef.current.value = '';

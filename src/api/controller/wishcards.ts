@@ -84,8 +84,15 @@ export default class WishCardApiController extends BaseApiController {
 				wishItemPrice,
 				wishItemInfo,
 				wishItemURL,
-				address,
+				address1,
+				address2,
+				city,
+				state,
+				country,
+				zipcode,
 			} = req.body;
+
+			console.log('--------------req body: ', req.body);
 
 			const { childImage, wishItemImage } = req.files;
 
@@ -111,19 +118,19 @@ export default class WishCardApiController extends BaseApiController {
 				createdBy: res.locals.user._id,
 				belongsTo: userAgency?._id,
 				address: {
-					address1: address?.address1,
-					address2: address?.address2,
-					city: address?.city,
-					state: address?.state,
-					country: address?.country,
-					zipcode: address?.zipcode,
+					address1,
+					address2,
+					city,
+					state,
+					country,
+					zipcode,
 				},
 				...req.body,
 			});
 
-			return this.sendResponse(res, {
-				message: `New wishcard was created: ${newWishCard._id}`,
-				card: newWishCard,
+			return res.status(200).send({
+				newWishCard,
+				url: '/wishcards/manage', //TODO: this doesn't work
 			});
 		} catch (error) {
 			return this.handleError(res, error);
