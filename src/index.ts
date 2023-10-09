@@ -108,7 +108,7 @@ const app = express();
 			verify(req: Request, _res: Response, buffer: Buffer) {
 				const url = req.originalUrl;
 				if (url.startsWith('/payment')) {
-					req.rawBody = buffer.toString();
+					req.rawBody = buffer;
 				}
 			},
 		}),
