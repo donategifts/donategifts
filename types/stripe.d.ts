@@ -9,6 +9,7 @@ declare module 'stripe' {
 						userId: string;
 						userDonation: string;
 						agencyName: string;
+						amount: string;
 					};
 				}
 			}

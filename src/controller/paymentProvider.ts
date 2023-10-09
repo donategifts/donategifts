@@ -153,11 +153,17 @@ export default class PaymentProviderController extends BaseController {
 
 		// STRIPE WEBHOOK
 		if (signature) {
+			let secret = config.STRIPE.SECRET_KEY;
+
+			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_TEST) {
+				secret = config.STRIPE.SECRET_KEY_TEST;
+			}
+
 			try {
 				const event = this.stripeClient.webhooks.constructEvent(
 					req.rawBody,
 					signature,
-					config.STRIPE.SECRET_KEY,
+					secret,
 				);
 
 				if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
@@ -167,7 +173,7 @@ export default class PaymentProviderController extends BaseController {
 						service: 'Stripe',
 						userId: event.data.object.metadata.userId,
 						wishCardId: event.data.object.metadata.wishCardId,
-						amount: event.data.object.amount,
+						amount: event.data.object.metadata.amount,
 						userDonation: event.data.object.metadata.userDonation,
 						agencyName: event.data.object.metadata.agencyName,
 					});

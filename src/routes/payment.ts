@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import express from 'express';
 
 import PaymentProviderController from '../controller/paymentProvider';
@@ -7,11 +6,7 @@ import Permissions from '../middleware/permissions';
 const router = express.Router();
 const paymentProviderController = new PaymentProviderController();
 
-router.post(
-	'/webhook',
-	bodyParser.raw({ type: 'application/json' }),
-	paymentProviderController.handlePostWebhook,
-);
+router.post('/webhook', paymentProviderController.handlePostWebhook);
 
 router.post(
 	'/createIntent',
