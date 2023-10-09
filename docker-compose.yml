@@ -9,6 +9,13 @@ services:
         volumes:
             - mongo:/data/db
 
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to localhost:3000/payment/webhook/
+        env_file:
+            - config_stripe_cli.env
+
     # postgres:
     #     image: postgres:14.1-alpine
     #     container_name: dg-postgres

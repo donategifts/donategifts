@@ -160,8 +160,8 @@ export default class PaymentProviderController extends BaseController {
 		if (signature) {
 			let secret = config.STRIPE.SECRET_KEY;
 
-			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_TEST) {
-				secret = config.STRIPE.SECRET_KEY_TEST;
+			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_LOCAL_TEST) {
+				secret = config.STRIPE.SECRET_KEY_LOCAL_TEST;
 			}
 
 			try {
