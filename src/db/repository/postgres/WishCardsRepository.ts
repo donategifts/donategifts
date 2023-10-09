@@ -37,6 +37,7 @@ export default class WishcardsRepository {
 		return this.database
 			.selectFrom('wishcards')
 			.where('wishcards.id', '=', id)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 
@@ -64,7 +65,7 @@ export default class WishcardsRepository {
 			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
 			.selectAll('wishcards')
 			.where('agencies.id', '=', id)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getByStatus(status: Wishcardstatus) {
@@ -80,10 +81,11 @@ export default class WishcardsRepository {
 	getRandom(status: Wishcardstatus, sampleSize: number) {
 		return this.database
 			.selectFrom('wishcards')
+			.innerJoin('children', 'children.id', 'wishcards.child_id')
 			.selectAll()
 			.limit(sampleSize)
 			.where('status', '=', status)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getViewable(showDonated: boolean) {
@@ -99,7 +101,7 @@ export default class WishcardsRepository {
 				}
 				return eb.and(filters);
 			})
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getFuzzy(searchQuery: string, showDonated: boolean, reverseSort: boolean, cardsIds?: string[]) {
@@ -109,7 +111,7 @@ export default class WishcardsRepository {
 			.selectFrom('wishcards')
 			.innerJoin('children', 'children.id', 'wishcards.child_id')
 			.innerJoin('items', 'items.id', 'wishcards.item_id')
-			.selectAll()
+			.selectAll(['wishcards', 'children', 'items'])
 			.where((eb) => {
 				const filters: Expression<SqlBool>[] = [];
 				filters.push(eb('status', '=', 'published'));
@@ -130,7 +132,7 @@ export default class WishcardsRepository {
 			})
 			.orderBy('wishcards.status', 'desc')
 			.orderBy('wishcards.created_at', sortOrder)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	// Following two may need to be modified/moved elsewhere depending on how wishcard locking/polling is handled

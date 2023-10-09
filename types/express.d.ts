@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import { Express } from 'express-serve-static-core';
+import { Selectable } from 'kysely';
 
-import User from '../src/db/models/User';
+import { Users } from '../src/db/types/generated/database';
 
 declare module 'express-serve-static-core' {
 	interface Request {
@@ -13,7 +14,7 @@ declare module 'express-serve-static-core' {
 	}
 
 	interface Locals {
-		user: User;
+		user: Selectable<Users>;
 	}
 
 	interface Response {
