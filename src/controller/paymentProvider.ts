@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
-import PayPal from 'paypal-rest-sdk';
+import PayPal, { notification } from 'paypal-rest-sdk';
 import Stripe from 'stripe';
 
 import AgencyRepository from '../db/repository/AgencyRepository';
@@ -159,9 +159,13 @@ export default class PaymentProviderController extends BaseController {
 				secret = config.STRIPE.SECRET_KEY_TEST;
 			}
 
+			if (config.NODE_ENV !== 'production') {
+				this.log.info(secret);
+			}
+
 			try {
 				const event = this.stripeClient.webhooks.constructEvent(
-					req.body,
+					req.rawBody,
 					signature,
 					secret,
 				);
@@ -186,28 +190,31 @@ export default class PaymentProviderController extends BaseController {
 
 		// PAYPAL WEBHOOK
 		if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
-			PayPal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, _response) => {
-				if (error) {
-					this.log.info(error);
-					throw error;
-				} else {
-					const data = req.body.resource.purchase_units[0].reference_id.split('%');
-					const userId = data[0];
-					const wishCardId = data[1];
-					const userDonation = data[2];
-					const agencyName = data[3];
-					const amount = req.body.resource.purchase_units[0].amount.value;
+			PayPal.notification.webhookEvent.getAndVerify(
+				req.rawBody as notification.webhookEvent.WebhookEvent,
+				async (error, _response) => {
+					if (error) {
+						this.log.info(error);
+						throw error;
+					} else {
+						const data = req.body.resource.purchase_units[0].reference_id.split('%');
+						const userId = data[0];
+						const wishCardId = data[1];
+						const userDonation = data[2];
+						const agencyName = data[3];
+						const amount = req.body.resource.purchase_units[0].amount.value;
 
-					await this.handleDonation({
-						service: 'Paypal',
-						userId,
-						wishCardId,
-						amount,
-						userDonation,
-						agencyName,
-					});
-				}
-			});
+						await this.handleDonation({
+							service: 'Paypal',
+							userId,
+							wishCardId,
+							amount,
+							userDonation,
+							agencyName,
+						});
+					}
+				},
+			);
 		}
 
 		return res.json({ received: true });
