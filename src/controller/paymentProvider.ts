@@ -151,22 +151,17 @@ export default class PaymentProviderController extends BaseController {
 	async handlePostWebhook(req: Request, res: Response, _next: NextFunction) {
 		const signature = req.headers['stripe-signature'];
 
-		if (config.NODE_ENV !== 'production') {
-			this.log.info('Webhook received, signature: ', signature);
-			this.log.info('Webhook received, rawBody: ', req.rawBody);
-		}
-
 		// STRIPE WEBHOOK
 		if (signature) {
 			let secret = config.STRIPE.SECRET_KEY;
 
-			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_LOCAL_TEST) {
-				secret = config.STRIPE.SECRET_KEY_LOCAL_TEST;
+			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_TEST) {
+				secret = config.STRIPE.SECRET_KEY_TEST;
 			}
 
 			try {
 				const event = this.stripeClient.webhooks.constructEvent(
-					req.rawBody,
+					req.body,
 					signature,
 					secret,
 				);

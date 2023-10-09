@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import session from 'express-session';
 // import { csrf } from 'lusca';
@@ -103,16 +103,13 @@ const app = express();
 		next();
 	});
 
-	app.use(
-		express.json({
-			verify(req: Request, _res: Response, buffer: Buffer) {
-				const url = req.originalUrl;
-				if (url.startsWith('/payment')) {
-					req.rawBody = buffer;
-				}
-			},
-		}),
-	);
+	app.use((req: Request, _res: Response, next: NextFunction) => {
+		if (req.originalUrl === '/payment/webhook') {
+			next();
+		} else {
+			express.json()(req, _res, next);
+		}
+	});
 
 	app.use(
 		bodyParser.urlencoded({
