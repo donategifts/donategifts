@@ -151,6 +151,11 @@ export default class PaymentProviderController extends BaseController {
 	async handlePostWebhook(req: Request, res: Response, _next: NextFunction) {
 		const signature = req.headers['stripe-signature'];
 
+		if (config.NODE_ENV !== 'production') {
+			this.log.info('Webhook received, signature: ', signature);
+			this.log.info('Webhook received, rawBody: ', req.rawBody);
+		}
+
 		// STRIPE WEBHOOK
 		if (signature) {
 			let secret = config.STRIPE.SECRET_KEY;
@@ -179,6 +184,7 @@ export default class PaymentProviderController extends BaseController {
 					});
 				}
 			} catch (error) {
+				this.log.error('Webhook Error:', error);
 				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
