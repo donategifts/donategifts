@@ -1,13 +1,17 @@
 import { TextInput, Textarea } from '@mantine/core';
+import { useRef } from 'react';
 
+import AddressForm from '../../forms/AddressForm.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import { AGENCY_SIGNUP_FORM_INPUTS } from '../../utils/translations';
-// const [agencyNameError, setAgencyNameError] = useState('');
-
-// const agencyNameRef = useRef();
-// const agencyWebsiteRef = useRef();
 
 function AgencyRegister() {
+	const agencyNameRef = useRef();
+	// const agencyWebsiteRef = useRef();
+	// const agencyPhoneRef = useRef();
+	// const agencyEINRef = useRef();
+	// const [agencyNameError, setAgencyNameError] = useState('');
+
 	return (
 		<MantineProviderWrapper>
 			<div id="agency-register-page" className="py-5">
@@ -16,13 +20,13 @@ function AgencyRegister() {
 					<form className="text-primary pt-2">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
-								<div className="display-6 my-3">
+								<h2 className="display-6 my-3">
 									Information about your non-profit agency
-								</div>
+								</h2>
 								<div className="row d-flex align-items-center">
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyNameRef}
+											ref={agencyNameRef}
 											size="md"
 											name="agencyName"
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyName?.label}
@@ -43,7 +47,7 @@ function AgencyRegister() {
 								<div className="row d-flex align-items-center">
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyNameRef}
+											// ref={agencyPhoneRef}
 											size="md"
 											mt="md"
 											name="agencyPhone"
@@ -55,7 +59,7 @@ function AgencyRegister() {
 									</div>
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyWebsiteRef}
+											// ref={agencyEINRef}
 											size="md"
 											mt="md"
 											name="agencyEIN"
@@ -107,6 +111,13 @@ function AgencyRegister() {
 										</div>
 									</div>
 								</div>
+								<h2 className="display-6 mb-3 mt-4">
+									Information about your agency address
+								</h2>
+								<p className="form-text">
+									{AGENCY_SIGNUP_FORM_INPUTS.agencyAddress.instruction}
+								</p>
+								<AddressForm />
 							</div>
 						</div>
 						<div className="d-flex justify-content-center mt-5">

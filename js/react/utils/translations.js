@@ -19,12 +19,14 @@ const ADDRESS_FORM_INPUTS = {
 		errors: {
 			default: 'State is required.',
 		},
+		placeholder: 'Select option',
 	},
 	country: {
 		label: 'Country',
 		errors: {
 			default: 'Country is required.',
 		},
+		placeholder: 'Select option',
 	},
 	zipcode: {
 		label: 'Zipcode',
@@ -64,6 +66,10 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 	},
 	agencyImage: {
 		label: 'Agency Logo',
+	},
+	agencyAddress: {
+		instruction:
+			'Donated wish items will be delivered to this default address. You may change the shipping address for each wish item later.',
 	},
 };
 
