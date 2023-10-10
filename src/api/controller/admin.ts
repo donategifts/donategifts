@@ -30,44 +30,6 @@ export default class AdminController extends BaseController {
 		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
 	}
 
-	async handleGetDraftWishcards(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
-			const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
-
-			for (const wishCard of wishcards) {
-				const agencyName = wishCard.belongsTo.agencyName;
-				if (!agenciesWithWishCardsMap.has(agencyName)) {
-					agenciesWithWishCardsMap.set(agencyName, []);
-				}
-				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
-			}
-			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
-			return this.sendResponse(res, agenciesWithWishCards);
-		} catch (error) {
-			return this.handleError(res, error);
-		}
-	}
-
-	async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
-		try {
-			const { wishCardId, wishItemUrl } = req.body;
-			const wishCardModifiedFields = {
-				wishItemUrl,
-				status: 'published',
-			};
-
-			await this.wishCardRepository.updateWishCardByObjectId(
-				wishCardId,
-				wishCardModifiedFields,
-			);
-
-			return this.sendResponse(res, wishCardId);
-		} catch (error) {
-			return this.handleError(res, error);
-		}
-	}
-
 	private formatAgencyResponse(agency: Agency, manager: User) {
 		return {
 			id: agency._id,
@@ -205,6 +167,44 @@ export default class AdminController extends BaseController {
 		} catch (error) {
 			this.log.error('[AdminController] updateAgencyData: ', error);
 			return this.handleError(res, 'Failed to update agency');
+		}
+	}
+
+	async handleGetDraftWishcards(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
+			const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
+
+			for (const wishCard of wishcards) {
+				const agencyName = wishCard.belongsTo.agencyName;
+				if (!agenciesWithWishCardsMap.has(agencyName)) {
+					agenciesWithWishCardsMap.set(agencyName, []);
+				}
+				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
+			}
+			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
+			return this.sendResponse(res, agenciesWithWishCards);
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { wishCardId, wishItemUrl } = req.body;
+			const wishCardModifiedFields = {
+				wishItemUrl,
+				status: 'published',
+			};
+
+			await this.wishCardRepository.updateWishCardByObjectId(
+				wishCardId,
+				wishCardModifiedFields,
+			);
+
+			return this.sendResponse(res, wishCardId);
+		} catch (error) {
+			return this.handleError(res, error);
 		}
 	}
 }

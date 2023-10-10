@@ -3,34 +3,36 @@ import React, { useState, useEffect } from 'react';
 
 import CustomToast from '../../components/shared/CustomToast.jsx';
 
-export default function WishcardsAdministrationPage() {
-	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState(new Object());
+export default function WishcardsAdministration() {
+	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState({});
 	const [error, setError] = useState('');
+
+	axios.defaults.baseURL = '/api/admin';
+
+	const handleUpdateWishcard = async (wishCardId, wishItemUrl) => {
+		try {
+			await axios.put('/publishWishcards', { wishCardId, wishItemUrl });
+
+			fetchAgencyWithWishCardsData();
+		} catch (error) {
+			setError(error?.message || 'Unable to publish wishcard');
+		}
+	};
+
+	const fetchAgencyWithWishCardsData = async () => {
+		try {
+			const { data } = await axios.get('/publishWishcards');
+
+			setAgenciesWithWishCards(data.data);
+		} catch (error) {
+			setError(error?.message || 'Could not fetch wishcards');
+		}
+	};
+
 	useEffect(() => {
-		fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
+		fetchAgencyWithWishCardsData();
 	}, []);
 
-	const handleUpdateWishcard = (wishCardId, wishItemUrl) => {
-		axios
-			.put(`/api/admin/publishWishcards`, { wishCardId, wishItemUrl })
-			.then(() => {
-				fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
-			})
-			.catch((error) => {
-				setError(error?.message || 'Unable to publish wishcard');
-			});
-	};
-
-	const fetcAgencyWithhWishCardsData = (setData) => {
-		axios
-			.get('/api/admin/publishWishcards')
-			.then((response) => {
-				setData(response.data.data);
-			})
-			.catch((error) => {
-				setError(error?.message || 'Could not fetch wishcards');
-			});
-	};
 	return (
 		<div>
 			{error !== '' ? <CustomToast type="error" title={error} /> : null}
