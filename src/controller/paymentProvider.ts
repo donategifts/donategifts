@@ -58,19 +58,24 @@ export default class PaymentProviderController extends BaseController {
 		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
 		if (user) {
-			const emailResponse = await Messaging.sendDonationConfirmationEmail({
-				email: user.email,
-				firstName: user.fName,
-				lastName: user.lName,
-				childName: wishCard?.childFirstName,
-				item: wishCard?.wishItemName,
-				price: wishCard?.wishItemPrice,
-				agency: agencyName,
-			});
+			try {
+				this.log.info('Sending donation confirmation email');
+				const emailResponse = await Messaging.sendDonationConfirmationEmail({
+					email: user.email,
+					firstName: user.fName,
+					lastName: user.lName,
+					childName: wishCard?.childFirstName,
+					item: wishCard?.wishItemName,
+					price: wishCard?.wishItemPrice,
+					agency: agencyName,
+				});
 
-			if (config.NODE_ENV === 'development') {
-				const response = emailResponse ? emailResponse.data : '';
-				this.log.info(response);
+				if (config.NODE_ENV === 'development') {
+					const response = emailResponse ? emailResponse.data : '';
+					this.log.info(response);
+				}
+			} catch (error) {
+				this.log.error(error);
 			}
 
 			await this.donationRepository.createNewDonation({
@@ -84,29 +89,39 @@ export default class PaymentProviderController extends BaseController {
 				status: 'donated',
 			});
 
-			await Messaging.sendAgencyDonationEmail({
-				agencyName: agency?.agencyName,
-				agencyEmail: agency?.accountManager.email,
-				childName: wishCard?.childFirstName,
-				item: wishCard?.wishItemName,
-				price: wishCard?.wishItemPrice,
-				donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
-				address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
-			});
-
-			await Messaging.sendDiscordDonationNotification({
-				user: user.fName,
-				service,
-				wishCard: {
+			try {
+				this.log.info('Sending agency donation email');
+				await Messaging.sendAgencyDonationEmail({
+					agencyName: agency?.agencyName,
+					agencyEmail: agency?.accountManager.email,
+					childName: wishCard?.childFirstName,
 					item: wishCard?.wishItemName,
-					url: wishCard?.wishItemURL,
-					child: wishCard?.childFirstName,
-				},
-				donation: {
-					amount,
-					userDonation,
-				},
-			});
+					price: wishCard?.wishItemPrice,
+					donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
+					address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
+				});
+			} catch (error) {
+				this.log.error(error);
+			}
+
+			try {
+				this.log.info('Sending discord donation notification');
+				await Messaging.sendDiscordDonationNotification({
+					user: user.fName,
+					service,
+					wishCard: {
+						item: wishCard?.wishItemName,
+						url: wishCard?.wishItemURL,
+						child: wishCard?.childFirstName,
+					},
+					donation: {
+						amount,
+						userDonation,
+					},
+				});
+			} catch (error) {
+				this.log.error(error);
+			}
 		}
 	}
 
