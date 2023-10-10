@@ -4,8 +4,9 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 import PopOver from '../../components/shared/PopOver.jsx';
 import AddressForm from '../../forms/AddressForm.jsx';
-import { FORM_INPUT_MAP, BIRTH_YEAR } from '../../utils/constants';
+import { BIRTH_YEAR } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
+import { WISHCARD_FORM_INPUTS } from '../../utils/translations';
 
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);
@@ -60,7 +61,7 @@ function WishCardCreate() {
 
 	const validateImage = (img, setError, fieldName) => {
 		if (!img) {
-			setError(FORM_INPUT_MAP[fieldName].errors?.default);
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.default);
 		}
 		//TODO: file type check
 		//TODO: file size check
@@ -72,13 +73,13 @@ function WishCardCreate() {
 		const formDataVal = fieldName === 'wishItemPrice' ? +fieldValue : fieldValue;
 
 		if (!fieldValue || !fieldValue.length) {
-			setError(FORM_INPUT_MAP[fieldName].errors?.default);
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.default);
 			ref.current.focus();
 		} else if (sizeFn && sizeFn(fieldValue)) {
-			setError(FORM_INPUT_MAP[fieldName].errors?.size);
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.size);
 			ref.current.focus();
 		} else if (validationFn && !validationFn(fieldValue)) {
-			setError(FORM_INPUT_MAP[fieldName].errors?.validate);
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.validate);
 			ref.current.focus();
 		} else {
 			setError('');
@@ -287,7 +288,7 @@ function WishCardCreate() {
 											ref={childFirstNameRef}
 											size="md"
 											name="childFirstName"
-											label={FORM_INPUT_MAP.childFirstName?.label}
+											label={WISHCARD_FORM_INPUTS.childFirstName?.label}
 											error={childFirstNameError}
 											required
 											onChange={() => handleOnChange(setChildFirstNameError)}
@@ -297,10 +298,12 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="childInterest"
-											label={FORM_INPUT_MAP.childInterest?.label}
+											label={WISHCARD_FORM_INPUTS.childInterest?.label}
 											error={childInterestError}
 											required
-											placeholder={FORM_INPUT_MAP.childInterest?.placeholder}
+											placeholder={
+												WISHCARD_FORM_INPUTS.childInterest?.placeholder
+											}
 											onChange={() => handleOnChange(setChildInterestError)}
 										/>
 										<Select
@@ -308,11 +311,13 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="childBirthYear"
-											label={FORM_INPUT_MAP.childBirthYear?.label}
+											label={WISHCARD_FORM_INPUTS.childBirthYear?.label}
 											error={childBirthYearError}
 											aria-required
 											searchable
-											placeholder={FORM_INPUT_MAP.childBirthYear?.placeholder}
+											placeholder={
+												WISHCARD_FORM_INPUTS.childBirthYear?.placeholder
+											}
 											data={BIRTH_YEAR}
 											required
 											onChange={() => handleOnChange(setChildBirthYearError)}
@@ -338,13 +343,15 @@ function WishCardCreate() {
 										</div>
 										<div className="p-3">
 											<label htmlFor="childImage" className="form-label">
-												{FORM_INPUT_MAP.childImage?.label}
+												{WISHCARD_FORM_INPUTS.childImage?.label}
 												<PopOver
-													text={FORM_INPUT_MAP.childImage?.popOverText}
+													text={
+														WISHCARD_FORM_INPUTS.childImage?.popOverText
+													}
 												/>
 											</label>
 											<p className="form-text">
-												{FORM_INPUT_MAP.childImage.instruction}
+												{WISHCARD_FORM_INPUTS.childImage.instruction}
 											</p>
 											<input
 												type="file"
@@ -364,9 +371,9 @@ function WishCardCreate() {
 										mt="md"
 										name="childStory"
 										ref={childStoryRef}
-										label={FORM_INPUT_MAP.childStory.label}
+										label={WISHCARD_FORM_INPUTS.childStory.label}
 										error={childStoryError}
-										placeholder={FORM_INPUT_MAP.childStory.placeholder}
+										placeholder={WISHCARD_FORM_INPUTS.childStory.placeholder}
 										required
 										onChange={() => handleOnChange(setChildStoryError)}
 									/>
@@ -381,7 +388,7 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="wishItemName"
-											label={FORM_INPUT_MAP.wishItemName?.label}
+											label={WISHCARD_FORM_INPUTS.wishItemName?.label}
 											error={wishItemNameError}
 											required
 											onChange={() => handleOnChange(setWishItemNameError)}
@@ -391,16 +398,21 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="wishItemPrice"
-											label={FORM_INPUT_MAP.wishItemPrice?.label}
+											label={WISHCARD_FORM_INPUTS.wishItemPrice?.label}
 											error={wishItemPriceError}
 											required
-											placeholder={FORM_INPUT_MAP.wishItemPrice?.placeholder}
+											placeholder={
+												WISHCARD_FORM_INPUTS.wishItemPrice?.placeholder
+											}
 											onChange={() => handleOnChange(setWishItemPriceError)}
 											leftSection={<i className="fas fa-dollar-sign"></i>}
 											rightSection={
 												<PopOver
 													width={400}
-													text={FORM_INPUT_MAP.wishItemPrice?.popOverText}
+													text={
+														WISHCARD_FORM_INPUTS.wishItemPrice
+															?.popOverText
+													}
 												/>
 											}
 										/>
@@ -409,10 +421,12 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="wishItemInfo"
-											label={FORM_INPUT_MAP.wishItemInfo?.label}
+											label={WISHCARD_FORM_INPUTS.wishItemInfo?.label}
 											error={wishItemInfoError}
 											required
-											placeholder={FORM_INPUT_MAP.wishItemInfo?.placeholder}
+											placeholder={
+												WISHCARD_FORM_INPUTS.wishItemInfo?.placeholder
+											}
 											onChange={() => handleOnChange(setWishItemInfoError)}
 										/>
 									</div>
@@ -436,10 +450,10 @@ function WishCardCreate() {
 										</div>
 										<div className="pt-3 px-3 d-flex flex-column justify-content-center align-items-stretch">
 											<label htmlFor="wishItemImage" className="form-label">
-												{FORM_INPUT_MAP.wishItemImage?.label}
+												{WISHCARD_FORM_INPUTS.wishItemImage?.label}
 											</label>
 											<p className="form-text">
-												{FORM_INPUT_MAP.wishItemImage?.instruction}
+												{WISHCARD_FORM_INPUTS.wishItemImage?.instruction}
 											</p>
 											<input
 												type="file"
@@ -458,17 +472,22 @@ function WishCardCreate() {
 											size="md"
 											mt="md"
 											name="wishItemURL"
-											label={FORM_INPUT_MAP.wishItemURL?.label}
+											label={WISHCARD_FORM_INPUTS.wishItemURL?.label}
 											error={wishItemURLError}
 											required
-											placeholder={FORM_INPUT_MAP.wishItemURL?.placeholder}
+											placeholder={
+												WISHCARD_FORM_INPUTS.wishItemURL?.placeholder
+											}
 											onChange={() => handleOnChange(setWishItemURLError)}
 											leftSection={<i className="fas fa-link"></i>}
 											rightSection={
 												<PopOver
 													width={400}
 													position="top"
-													text={FORM_INPUT_MAP.wishItemURL?.popOverText}
+													text={
+														WISHCARD_FORM_INPUTS.wishItemURL
+															?.popOverText
+													}
 													isImgProvided={true}
 													imgSrc="/img/amazon-helper.png"
 												/>

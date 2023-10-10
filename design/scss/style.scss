@@ -86,3 +86,69 @@ main {
 		z-index: 1000;
 	}
 }
+
+.uploader {
+	background-color: lighten($cream, 8%);
+	border: 1.5em solid $white;
+	border-bottom: none;
+	border-top: 2.5em;
+	
+	input[type="file"] {
+		color: transparent;
+		position: relative;
+		outline: none;
+		width: 200px;
+
+		&::file-selector-button {
+			width: 200px;
+			color: transparent;
+			border: 1px solid $secondary;
+			background-color: $secondary;
+
+			@supports (-moz-appearance: none) {
+				color: $secondary;
+			}
+		}
+
+		&::before {
+			position: absolute;
+			pointer-events: none;
+			top: 0.5em;
+			left: 1.5em;
+			height: 25px;
+			width: 25px;
+			content: "";
+			background-image: url("/svg/upload-icon.svg");
+		}
+
+		&::after {
+			position: absolute;
+			top: 0.5em;
+			left: 3.5em;
+			color: $white;
+			font-weight: $fw-semi-bold;
+			content: "Upload Image";
+		}
+	}
+}
+
+@media (width > 768px) {
+	.card {
+		.uploader {
+			img {
+				max-height: 200px;
+				width: auto;
+			}
+		}
+	}
+}
+
+@media (width <= 768px) {
+	.card {
+		.uploader {
+			.form-text {
+				width: 100%;
+			}
+		}
+	}
+}
