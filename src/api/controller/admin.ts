@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import moment from 'moment';
 
-import Agency from '../../../db/models/Agency';
-import User from '../../../db/models/User';
-import AgencyRepository from '../../../db/repository/AgencyRepository';
-import UserRepository from '../../../db/repository/UserRepository';
-import WishCardRepository from '../../../db/repository/WishCardRepository';
-import Messaging from '../../../helper/messaging';
-import BaseController from '../../controller/basecontroller';
+import Agency from '../../db/models/Agency';
+import User from '../../db/models/User';
+import AgencyRepository from '../../db/repository/AgencyRepository';
+import UserRepository from '../../db/repository/UserRepository';
+import WishCardRepository from '../../db/repository/WishCardRepository';
+import Messaging from '../../helper/messaging';
+
+import BaseController from './basecontroller';
 
 export default class AdminController extends BaseController {
 	private agencyRepository: AgencyRepository;
@@ -42,9 +43,9 @@ export default class AdminController extends BaseController {
 				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
 			}
 			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
-			return res.status(200).send({ success: true, data: agenciesWithWishCards });
+			return this.sendResponse(res, agenciesWithWishCards);
 		} catch (error) {
-			return res.status(200).send({ success: false, data: 'agenciesWithWishCards' });
+			return this.handleError(res, error);
 		}
 	}
 
@@ -61,10 +62,7 @@ export default class AdminController extends BaseController {
 				wishCardModifiedFields,
 			);
 
-			// @TODO: add agency notification email sending here after status was updated
-			return res.status(200).send({
-				success: true,
-			});
+			return this.sendResponse(res, wishCardId);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

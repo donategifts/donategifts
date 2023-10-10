@@ -1,40 +1,39 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
+import CustomToast from '../../components/shared/CustomToast.jsx';
+
 export default function WishcardsAdministrationPage() {
 	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState(new Object());
-
+	const [error, setError] = useState('');
 	useEffect(() => {
 		fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
 	}, []);
 
 	const handleUpdateWishcard = (wishCardId, wishItemUrl) => {
 		axios
-			.put(`/api/admin/`, { wishCardId, wishItemUrl })
+			.put(`/api/admin/publishWishcards`, { wishCardId, wishItemUrl })
 			.then(() => {
 				fetcAgencyWithhWishCardsData(setAgenciesWithWishCards);
 			})
 			.catch((error) => {
-				window.showToast(
-					error?.response?.data?.error?.msg ||
-						error?.message ||
-						'Unable to publish wishcard',
-				);
+				setError(error?.message || 'Unable to publish wishcard');
 			});
 	};
 
 	const fetcAgencyWithhWishCardsData = (setData) => {
 		axios
-			.get('/api/admin/')
+			.get('/api/admin/publishWishcards')
 			.then((response) => {
 				setData(response.data.data);
 			})
 			.catch((error) => {
-				console.error('Error fetching data:', error);
+				setError(error?.message || 'Could not fetch wishcards');
 			});
 	};
 	return (
 		<div>
+			{error !== '' ? <CustomToast type="error" title={error} /> : null}
 			<div id="profile-bg" className="background-color">
 				<div className="profile-title">
 					<div className="text-center fs-1">Wishcard admin panel11</div>

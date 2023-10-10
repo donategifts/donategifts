@@ -3,13 +3,10 @@ extends ../../master
 block title
     title See Wish Cards | Donate Gifts
 
-block content
-    #wishcard-admin-root
-
 block scripts
     script.
         $(document).ready(() => {
-            const root = ReactRoot(document.querySelector('#wishcard-admin-root'));
+            const root = ReactRoot(document.querySelector('#app-root'));
             root.render(
                 React.createElement(
                     WishcardsAdministrationPage

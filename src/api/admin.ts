@@ -5,9 +5,9 @@ import AdminController from './controller/admin';
 const router = express.Router();
 const adminController = new AdminController();
 
-router.get('/', adminController.handleGetDraftWishcards);
+router.get('/publishWishcards', adminController.handleGetDraftWishcards);
 
-router.put('/', adminController.handlePutDraftWishcard);
+router.put('/publishWishcards', adminController.handlePutDraftWishcard);
 
 router.get('/agencyOverview', adminController.handleGetAgencyOverview);
 
