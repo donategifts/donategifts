@@ -179,7 +179,7 @@ export default class PaymentProviderController extends BaseController {
 					});
 				}
 			} catch (error) {
-				this.log.error('Webhook Error:', (error as any).err.message);
+				this.log.error('Webhook Error:', error);
 				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
