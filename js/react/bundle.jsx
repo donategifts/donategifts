@@ -34,3 +34,6 @@ window.WishCardCreate = WishCardCreate;
 
 import WishCardManage from './pages/wishcard/WishCardManage.jsx';
 window.WishCardManage = WishCardManage;
+
+import WishcardsAdministrationPage from './pages/admin/WishcardsAdministrationPage.jsx';
+window.WishcardsAdministrationPage = WishcardsAdministrationPage;
