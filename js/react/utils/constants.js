@@ -4,6 +4,9 @@ const SIGNUP = 'SIGNUP';
 
 const GOOGLE_CLIENT_LIBRARY_URL = 'https://accounts.google.com/gsi/client';
 
+const AMAZON_URL_REGEX = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
+const AMAZON_PRODUCT_REGEX = /\/dp\/([A-Z0-9]{10})/;
+
 const FORM_INPUT_MAP = {
 	childFirstName: {
 		label: "Child's first name",
@@ -32,6 +35,8 @@ const FORM_INPUT_MAP = {
 		label: "Upload child's picture",
 		errors: {
 			default: "Child's image is required.",
+			size: 'File must be less than 5 megabytes.',
+			validate: 'File must be in jpeg, jpg, gif, or png format.',
 		},
 		instruction:
 			"You must use an image that represents the child (masked faces, blurred features, or child's artwork are allowed).",
@@ -76,6 +81,8 @@ const FORM_INPUT_MAP = {
 		label: 'Wish item Amazon URL',
 		errors: {
 			default: 'Wish item URL is required.',
+			validate:
+				'Item URL must start with https://www.amazon.com/ and contain a product ID to be valid.',
 		},
 		placeholder: 'Paste the Amazon product link (e.g., https://www.amazon...)',
 		popOverText: 'Copy and paste the exact Amazon product link URL from the address bar.',
@@ -176,6 +183,8 @@ export {
 	LOGIN_WITH_EMAIL,
 	SIGNUP,
 	GOOGLE_CLIENT_LIBRARY_URL,
+	AMAZON_URL_REGEX,
+	AMAZON_PRODUCT_REGEX,
 	FORM_INPUT_MAP,
 	STATE_NAMES,
 	BIRTH_YEAR,

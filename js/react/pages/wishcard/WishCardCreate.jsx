@@ -4,7 +4,12 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 import PopOver from '../../components/shared/PopOver.jsx';
 import AddressForm from '../../forms/AddressForm.jsx';
-import { FORM_INPUT_MAP, BIRTH_YEAR } from '../../utils/constants';
+import {
+	FORM_INPUT_MAP,
+	BIRTH_YEAR,
+	AMAZON_URL_REGEX,
+	AMAZON_PRODUCT_REGEX,
+} from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 function WishCardCreate() {
@@ -63,12 +68,23 @@ function WishCardCreate() {
 		fetchAgencyAddress();
 	}, []);
 
-	const validateImage = (img, setError, fieldName) => {
-		if (!img) {
-			setError(FORM_INPUT_MAP[fieldName].errors?.default);
+	const validateImage = (setError, fieldName) => {
+		if (!formData[fieldName]) {
+			return setError(FORM_INPUT_MAP[fieldName].errors?.default);
 		}
-		//TODO: file type check
-		//TODO: file size check
+		const imgFile = formData[fieldName];
+		const isImgTypeValid =
+			imgFile.type == 'image/png' ||
+			imgFile.type == 'image/jpeg' ||
+			imgFile.type == 'image/jpg' ||
+			imgFile.type == 'image/gif';
+		if (!isImgTypeValid) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.validate);
+		} else if (imgFile.size > 5000000) {
+			setError(FORM_INPUT_MAP[fieldName].errors?.size);
+		} else {
+			setError('');
+		}
 	};
 
 	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
@@ -134,12 +150,15 @@ function WishCardCreate() {
 			'wishItemInfo',
 			(value) => value.length < 2 || value.length > 250,
 		);
-		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
-		//TODO: amazon check
-		//TODO: product id check
-
-		validateImage(childImage, setChildImageError, 'childImage');
-		validateImage(itemImage, setWishItemImageError, 'wishItemImage');
+		validateField(
+			wishItemURLRef,
+			setWishItemURLError,
+			'wishItemURL',
+			null,
+			(value) => AMAZON_URL_REGEX.test(value) && AMAZON_PRODUCT_REGEX.test(value),
+		);
+		validateImage(setChildImageError, 'childImage');
+		validateImage(setWishItemImageError, 'wishItemImage');
 	};
 
 	const validationState = useMemo(
@@ -209,8 +228,7 @@ function WishCardCreate() {
 				...data,
 				...agencyAddress,
 			}));
-			console.log(agencyAddress);
-			//TODO: address not sending properly
+			//TODO: need to add logic for manually typed address
 		}
 	};
 
@@ -227,7 +245,12 @@ function WishCardCreate() {
 		data.append('wishItemInfo', formData.wishItemInfo);
 		data.append('wishItemURL', formData.wishItemURL);
 		data.append('wishItemImage', formData.wishItemImage);
-		data.append('address', formData.address);
+		data.append('address1', formData.address1);
+		data.append('address2', formData.address2);
+		data.append('city', formData.city);
+		data.append('state', formData.state);
+		data.append('country', formData.country);
+		data.append('zipcode', formData.zipcode);
 
 		const toast = new window.DG.Toast();
 
@@ -238,6 +261,7 @@ function WishCardCreate() {
 				},
 			});
 			toast.show('Submission was successful!');
+			setTimeout(() => window.location.replace('/wishcards/manage'), 2000);
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -246,7 +270,6 @@ function WishCardCreate() {
 				toast.styleMap.danger,
 			);
 		}
-		//TODO: need to redirect to manage page
 	};
 
 	const clearForm = () => {

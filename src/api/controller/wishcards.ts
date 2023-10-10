@@ -92,8 +92,6 @@ export default class WishCardApiController extends BaseApiController {
 				zipcode,
 			} = req.body;
 
-			console.log('--------------req body: ', req.body);
-
 			const { childImage, wishItemImage } = req.files;
 
 			//TODO: const productID = Utils.extractProductIDFromLink(wishItemURL);
@@ -128,10 +126,7 @@ export default class WishCardApiController extends BaseApiController {
 				...req.body,
 			});
 
-			return res.status(200).send({
-				newWishCard,
-				url: '/wishcards/manage', //TODO: this doesn't work
-			});
+			return this.sendResponse(res, newWishCard);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

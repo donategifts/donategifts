@@ -13,6 +13,8 @@ import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
 
+//This is probably not needed anymore.
+//Need to check impact and remove deprecated code.
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
 		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
@@ -237,7 +239,6 @@ export default class Validations {
 
 	static createWishcardValidationRules() {
 		return [
-			body('childBirthday').isString(),
 			body('childFirstName')
 				.notEmpty()
 				.withMessage("Child's first name is required")
