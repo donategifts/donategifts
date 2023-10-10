@@ -153,14 +153,10 @@ export default class PaymentProviderController extends BaseController {
 
 		// STRIPE WEBHOOK
 		if (signature) {
-			let secret = config.STRIPE.SECRET_KEY;
+			let secret = config.STRIPE.SIGNING_SECRET;
 
-			if (config.NODE_ENV === 'development' && config.STRIPE.SECRET_KEY_TEST) {
-				secret = config.STRIPE.SECRET_KEY_TEST;
-			}
-
-			if (config.NODE_ENV !== 'production') {
-				this.log.info(secret);
+			if (config.NODE_ENV === 'development' && config.STRIPE.SIGNING_SECRET_LOCAL) {
+				secret = config.STRIPE.SIGNING_SECRET_LOCAL;
 			}
 
 			try {
@@ -183,7 +179,7 @@ export default class PaymentProviderController extends BaseController {
 					});
 				}
 			} catch (error) {
-				this.log.error('Webhook Error:', error);
+				this.log.error('Webhook Error:', (error as any).err.message);
 				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}

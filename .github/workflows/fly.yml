@@ -41,6 +41,7 @@ jobs:
           echo FB_APP_ID=${{ secrets.FB_APP_ID }} >> config.env
           echo STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} >> config.env
           echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> config.env
+          echo STRIPE_SIGNING_SECRET=${{ secrets.STRIPE_SIGNING_SECRET }} >> config.env
           echo WISHCARD_LOCK_IN_MINUTES=${{ secrets.WISHCARD_LOCK_IN_MINUTES }} >> config.env
           echo PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }} >> config.env
           echo PAYPAL_SECRET=${{ secrets.PAYPAL_SECRET }} >> config.env

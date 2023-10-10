@@ -1,3 +1,5 @@
+import 'stripe';
+
 declare module 'stripe' {
 	namespace Stripe {
 		namespace Event {
