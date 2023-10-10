@@ -13,10 +13,9 @@ import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
 
-//This is probably not needed anymore.
-//Need to check impact and remove deprecated code.
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
+		//eventually add these to global constants (it's used by FE already in react/utils/constants)
 		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
 		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
 		return (
@@ -237,14 +236,15 @@ export default class Validations {
 		];
 	}
 
+	//TODO: we need to pull all error messages from translations.js in the future
 	static createWishcardValidationRules() {
 		return [
 			body('childFirstName')
 				.notEmpty()
 				.withMessage("Child's first name is required")
 				.isString(),
-			body('childInterest').isString(),
-			body('childBirthYear').notEmpty(),
+			body('childInterest').notEmpty().withMessage('Child interest is required.').isString(),
+			body('childBirthYear').notEmpty().withMessage('Child birth year is required.'),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
 			amazonLinkValidator
