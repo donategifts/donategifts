@@ -33,6 +33,7 @@ router.post(
 			maxCount: 1,
 		},
 	]),
+	Validator.createWishcardValidationRules(),
 	Validator.validate,
 	wishCardController.postWishCardAsDraft,
 );

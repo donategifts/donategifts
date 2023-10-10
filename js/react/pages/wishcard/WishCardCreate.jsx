@@ -68,7 +68,7 @@ function WishCardCreate() {
 		fetchAgencyAddress();
 	}, []);
 
-	const validateImage = (setError, fieldName) => {
+	const validateImage = (ref, setError, fieldName) => {
 		if (!formData[fieldName]) {
 			return setError(FORM_INPUT_MAP[fieldName].errors?.default);
 		}
@@ -94,13 +94,13 @@ function WishCardCreate() {
 
 		if (!fieldValue || !fieldValue.length) {
 			setError(FORM_INPUT_MAP[fieldName].errors?.default);
-			ref.current.focus();
+			handleScroll(ref);
 		} else if (sizeFn && sizeFn(fieldValue)) {
 			setError(FORM_INPUT_MAP[fieldName].errors?.size);
-			ref.current.focus();
+			handleScroll(ref);
 		} else if (validationFn && !validationFn(fieldValue)) {
 			setError(FORM_INPUT_MAP[fieldName].errors?.validate);
-			ref.current.focus();
+			handleScroll(ref);
 		} else {
 			setError('');
 			setFormData((data) => ({
@@ -111,31 +111,20 @@ function WishCardCreate() {
 	};
 
 	const validateFormData = () => {
+		//bottom to top order due to auto scroll/focus in case of multiple errors
+		validateImage(setWishItemImageError, 'wishItemImage');
 		validateField(
-			childFirstNameRef,
-			setChildFirstNameError,
-			'childFirstName',
+			wishItemURLRef,
+			setWishItemURLError,
+			'wishItemURL',
+			null,
+			(value) => AMAZON_URL_REGEX.test(value) && AMAZON_PRODUCT_REGEX.test(value),
+		);
+		validateField(
+			wishItemInfoRef,
+			setWishItemInfoError,
+			'wishItemInfo',
 			(value) => value.length < 2 || value.length > 250,
-			(value) => /^[ A-Za-z-_']*$/.test(value),
-		);
-		validateField(
-			childInterestRef,
-			setChildInterestError,
-			'childInterest',
-			(value) => value.length < 2 || value.length > 250,
-		);
-		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
-		validateField(
-			childStoryRef,
-			setChildStoryError,
-			'childStory',
-			(value) => value.length < 5 || value.length > 500,
-		);
-		validateField(
-			wishItemNameRef,
-			setWishItemNameError,
-			'wishItemName',
-			(value) => value.length < 2 || value.length > 150,
 		);
 		validateField(
 			wishItemPriceRef,
@@ -145,20 +134,32 @@ function WishCardCreate() {
 			(value) => !isNaN(value),
 		);
 		validateField(
-			wishItemInfoRef,
-			setWishItemInfoError,
-			'wishItemInfo',
+			wishItemNameRef,
+			setWishItemNameError,
+			'wishItemName',
+			(value) => value.length < 2 || value.length > 150,
+		);
+		validateImage(setChildImageError, 'childImage');
+		validateField(
+			childStoryRef,
+			setChildStoryError,
+			'childStory',
+			(value) => value.length < 5 || value.length > 500,
+		);
+		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
+		validateField(
+			childInterestRef,
+			setChildInterestError,
+			'childInterest',
 			(value) => value.length < 2 || value.length > 250,
 		);
 		validateField(
-			wishItemURLRef,
-			setWishItemURLError,
-			'wishItemURL',
-			null,
-			(value) => AMAZON_URL_REGEX.test(value) && AMAZON_PRODUCT_REGEX.test(value),
+			childFirstNameRef,
+			setChildFirstNameError,
+			'childFirstName',
+			(value) => value.length < 2 || value.length > 250,
+			(value) => /^[ A-Za-z-_']*$/.test(value),
 		);
-		validateImage(setChildImageError, 'childImage');
-		validateImage(setWishItemImageError, 'wishItemImage');
 	};
 
 	const validationState = useMemo(
@@ -215,6 +216,15 @@ function WishCardCreate() {
 		}
 	};
 
+	const handleScroll = (ref) => {
+		window?.scrollTo({
+			top: ref.offsetTop,
+			left: 0,
+			behavior: 'smooth',
+		});
+		ref.current.focus();
+	};
+
 	const handleShippingAddress = (e) => {
 		setIsShippingDefault(e.target.checked);
 	};
@@ -230,6 +240,19 @@ function WishCardCreate() {
 			}));
 			//TODO: need to add logic for manually typed address
 		}
+	};
+
+	const clearForm = () => {
+		setChildImage(null);
+		setItemImage(null);
+		childFirstNameRef.current.value = '';
+		childInterestRef.current.value = '';
+		childBirthYearRef.current.value = '';
+		childStoryRef.current.value = '';
+		wishItemNameRef.current.value = '';
+		wishItemPriceRef.current.value = '';
+		wishItemInfoRef.current.value = '';
+		wishItemURLRef.current.value = '';
 	};
 
 	const handlePost = async () => {
@@ -261,7 +284,8 @@ function WishCardCreate() {
 				},
 			});
 			toast.show('Submission was successful!');
-			setTimeout(() => window.location.replace('/wishcards/manage'), 2000);
+			clearForm();
+			setTimeout(() => window.location.replace('/wishcards/manage'), 1000);
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -272,26 +296,12 @@ function WishCardCreate() {
 		}
 	};
 
-	const clearForm = () => {
-		setChildImage(null);
-		setItemImage(null);
-		childFirstNameRef.current.value = '';
-		childInterestRef.current.value = '';
-		childBirthYearRef.current.value = '';
-		childStoryRef.current.value = '';
-		wishItemNameRef.current.value = '';
-		wishItemPriceRef.current.value = '';
-		wishItemInfoRef.current.value = '';
-		wishItemURLRef.current.value = '';
-	};
-
 	useEffect(() => {
 		// Checking if all error state variables are empty using the validationState object
 		const isValid = Object.values(validationState).every((error) => !error);
 
 		if (isValid && isFormSubmitted) {
 			handlePost();
-			clearForm();
 		}
 	}, [validationState, isFormSubmitted]);
 
@@ -303,9 +313,7 @@ function WishCardCreate() {
 					<form className="text-primary">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
-								<div className="display-6 mt-3 mb-sm-4 mb-md-0 mb-lg-0">
-									Information about child
-								</div>
+								<div className="display-6 mt-3 mb-3">Information about child</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<TextInput
@@ -353,7 +361,6 @@ function WishCardCreate() {
 														? 'img-fluid input-border-danger rounded'
 														: 'img-fluid rounded'
 												}
-												id="childImagePreview"
 											/>
 											{childImageError && (
 												<p className="text-danger font-weight-bold">
@@ -396,7 +403,7 @@ function WishCardCreate() {
 										onChange={() => handleOnChange(setChildStoryError)}
 									/>
 								</div>
-								<div className="display-6 mt-5 mb-sm-4 mb-md-0 mb-lg-0">
+								<div className="display-6 mt-5 mb-4">
 									Information about wish item
 								</div>
 								<div className="row d-flex align-items-center">
@@ -451,7 +458,6 @@ function WishCardCreate() {
 														? 'img-fluid input-border-danger rounded'
 														: 'img-fluid rounded'
 												}
-												id="wishImagePreview"
 											/>
 											{wishItemImageError && (
 												<p className="text-danger font-weight-bold">
@@ -501,7 +507,7 @@ function WishCardCreate() {
 										/>
 									</div>
 								</div>
-								<div className="display-6 mt-5 mb-3">
+								<div className="display-6 mt-5 mb-4">
 									Information about shipping address
 								</div>
 								<Switch

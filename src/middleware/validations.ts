@@ -243,8 +243,8 @@ export default class Validations {
 				.notEmpty()
 				.withMessage("Child's first name is required")
 				.isString(),
-			body('childLastName').isString(),
 			body('childInterest').isString(),
+			body('childBirthYear').notEmpty(),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
 			amazonLinkValidator
@@ -260,24 +260,24 @@ export default class Validations {
 				.isLength({ min: 5 })
 				.withMessage('Address must contain at least 5 characters'),
 			body('address2').optional(),
-			body('address_city')
+			body('city')
 				.notEmpty()
 				.withMessage('City cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('City must contain at least 2 characters'),
-			body('address_state')
+			body('state')
 				.notEmpty()
 				.withMessage('State cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('State must contain at least 2 characters'),
-			body('address_country')
+			body('country')
 				.notEmpty()
 				.withMessage('Country cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('Country must contain at least 2 characters'),
-			body('address_zip')
+			body('zipcode')
 				.notEmpty()
-				.withMessage('Zip cannot be empty')
+				.withMessage('Zipcode cannot be empty')
 				.isLength({ min: 5 })
 				.withMessage('Zipcode must contain at least 5 characters'),
 		];
