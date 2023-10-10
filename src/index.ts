@@ -21,6 +21,10 @@ const limiter = new BaseController().limiter;
 
 const app = express();
 
+if (config.NODE_ENV !== 'production') {
+	logger.info(config);
+}
+
 (async () => {
 	app.use((req, res, next) => {
 		const ignoredRequests = [
