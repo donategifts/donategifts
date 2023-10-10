@@ -1,3 +1,5 @@
+import 'stripe';
+
 declare module 'stripe' {
 	namespace Stripe {
 		namespace Event {
@@ -9,6 +11,7 @@ declare module 'stripe' {
 						userId: string;
 						userDonation: string;
 						agencyName: string;
+						amount: string;
 					};
 				}
 			}
