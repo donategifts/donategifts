@@ -111,7 +111,7 @@ function AgencyRegister() {
 										</div>
 									</div>
 								</div>
-								<h2 className="display-6 mb-3 mt-4">
+								<h2 className="display-6 mb-2 mt-5">
 									Information about your agency address
 								</h2>
 								<p className="form-text">

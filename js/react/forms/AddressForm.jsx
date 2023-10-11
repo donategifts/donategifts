@@ -1,12 +1,34 @@
 import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
-import { forwardRef, useRef, useImperativeHandle } from 'react';
+import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 
 import { STATE_NAMES } from '../utils/constants';
 import { ADDRESS_FORM_INPUTS } from '../utils/translations';
 
 const AddressForm = forwardRef(({ inputSize }, ref) => {
 	const addressFormRef = useRef();
+	const isDirty = useRef(false);
+
+	const [formData, setFormData] = useState({
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		country: '',
+		zipcode: '',
+	});
+
+	const handleInputChange = (event) => {
+		const target = event.target;
+		const { name, value } = target;
+
+		setFormData({
+			...formData,
+			[name]: value,
+		});
+		isDirty.current = true;
+	};
+
 	useImperativeHandle(ref, () => ({
 		//
 	}));
@@ -14,7 +36,11 @@ const AddressForm = forwardRef(({ inputSize }, ref) => {
 		<form ref={addressFormRef}>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
-					<TextInput size={inputSize} label={ADDRESS_FORM_INPUTS.address1.label} />
+					<TextInput
+						size={inputSize}
+						label={ADDRESS_FORM_INPUTS.address1.label}
+						onChange={handleInputChange}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<TextInput size={inputSize} label={ADDRESS_FORM_INPUTS.address2.label} />
