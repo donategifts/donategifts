@@ -15,3 +15,4 @@ routes.use('/agency', agency);
 routes.use('/community', community);
 routes.use('/wishcards', wishcards);
 routes.use('/profile', profile);
+routes.use('/admin', admin);

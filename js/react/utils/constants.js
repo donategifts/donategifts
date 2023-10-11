@@ -4,6 +4,9 @@ const SIGNUP = 'SIGNUP';
 
 const GOOGLE_CLIENT_LIBRARY_URL = 'https://accounts.google.com/gsi/client';
 
+const AMAZON_URL_REGEX = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
+const AMAZON_PRODUCT_REGEX = /\/dp\/([A-Z0-9]{10})/;
+
 const STATE_NAMES = [
 	'Alabama',
 	'Alaska',
@@ -84,4 +87,13 @@ const BIRTH_YEAR = [
 	'2000',
 ];
 
-export { LOGIN, LOGIN_WITH_EMAIL, SIGNUP, GOOGLE_CLIENT_LIBRARY_URL, STATE_NAMES, BIRTH_YEAR };
+export {
+	LOGIN,
+	LOGIN_WITH_EMAIL,
+	SIGNUP,
+	GOOGLE_CLIENT_LIBRARY_URL,
+	AMAZON_URL_REGEX,
+	AMAZON_PRODUCT_REGEX,
+	STATE_NAMES,
+	BIRTH_YEAR,
+};

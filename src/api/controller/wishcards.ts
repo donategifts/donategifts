@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
 import config from '../../helper/config';
+import Utils from '../../helper/utils';
 
 import BaseApiController from './basecontroller';
 
@@ -84,12 +85,17 @@ export default class WishCardApiController extends BaseApiController {
 				wishItemPrice,
 				wishItemInfo,
 				wishItemURL,
-				address,
+				address1,
+				address2,
+				city,
+				state,
+				country,
+				zipcode,
 			} = req.body;
 
 			const { childImage, wishItemImage } = req.files;
 
-			//TODO: const productID = Utils.extractProductIDFromLink(wishItemURL);
+			const productID = Utils.extractProductIDFromLink(wishItemURL);
 
 			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 
@@ -108,23 +114,21 @@ export default class WishCardApiController extends BaseApiController {
 				wishItemImage: config.AWS.USE
 					? req.files?.wishItemImage[0].path
 					: `/uploads/${wishItemImage[0].filename}`,
+				productID,
 				createdBy: res.locals.user._id,
 				belongsTo: userAgency?._id,
 				address: {
-					address1: address?.address1,
-					address2: address?.address2,
-					city: address?.city,
-					state: address?.state,
-					country: address?.country,
-					zipcode: address?.zipcode,
+					address1,
+					address2,
+					city,
+					state,
+					country,
+					zipcode,
 				},
 				...req.body,
 			});
 
-			return this.sendResponse(res, {
-				message: `New wishcard was created: ${newWishCard._id}`,
-				card: newWishCard,
-			});
+			return this.sendResponse(res, newWishCard);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

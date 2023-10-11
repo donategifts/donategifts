@@ -35,5 +35,8 @@ window.WishCardCreate = WishCardCreate;
 import WishCardManage from './pages/wishcard/WishCardManage.jsx';
 window.WishCardManage = WishCardManage;
 
+import WishcardsAdministration from './pages/admin/wishcardsAdministration.jsx';
+window.WishcardsAdministration = WishcardsAdministration;
+
 import AgencyRegister from './pages/signup/AgencyRegister.jsx';
 window.AgencyRegister = AgencyRegister;

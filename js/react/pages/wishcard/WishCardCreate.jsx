@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 import PopOver from '../../components/shared/PopOver.jsx';
 import AddressForm from '../../forms/AddressForm.jsx';
-import { BIRTH_YEAR } from '../../utils/constants';
+import { BIRTH_YEAR, AMAZON_URL_REGEX, AMAZON_PRODUCT_REGEX } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import { WISHCARD_FORM_INPUTS } from '../../utils/translations';
 
@@ -35,7 +35,12 @@ function WishCardCreate() {
 		wishItemInfo: '',
 		wishItemURL: '',
 		wishItemImage: null,
-		address: {},
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		country: '',
+		zipcode: '',
 	});
 
 	const [childFirstNameError, setChildFirstNameError] = useState('');
@@ -59,12 +64,23 @@ function WishCardCreate() {
 		fetchAgencyAddress();
 	}, []);
 
-	const validateImage = (img, setError, fieldName) => {
-		if (!img) {
-			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.default);
+	const validateImage = (setError, fieldName) => {
+		if (!formData[fieldName]) {
+			return setError(WISHCARD_FORM_INPUTS[fieldName].errors?.default);
 		}
-		//TODO: file type check
-		//TODO: file size check
+		const imgFile = formData[fieldName];
+		const isImgTypeValid =
+			imgFile.type == 'image/png' ||
+			imgFile.type == 'image/jpeg' ||
+			imgFile.type == 'image/jpg' ||
+			imgFile.type == 'image/gif';
+		if (!isImgTypeValid) {
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.validate);
+		} else if (imgFile.size > 5000000) {
+			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.size);
+		} else {
+			setError('');
+		}
 	};
 
 	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
@@ -74,13 +90,13 @@ function WishCardCreate() {
 
 		if (!fieldValue || !fieldValue.length) {
 			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.default);
-			ref.current.focus();
+			handleScroll(ref);
 		} else if (sizeFn && sizeFn(fieldValue)) {
 			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.size);
-			ref.current.focus();
+			handleScroll(ref);
 		} else if (validationFn && !validationFn(fieldValue)) {
 			setError(WISHCARD_FORM_INPUTS[fieldName].errors?.validate);
-			ref.current.focus();
+			handleScroll(ref);
 		} else {
 			setError('');
 			setFormData((data) => ({
@@ -91,32 +107,20 @@ function WishCardCreate() {
 	};
 
 	const validateFormData = () => {
+		//bottom to top order due to auto scroll/focus in case of multiple errors
+		validateImage(setWishItemImageError, 'wishItemImage');
 		validateField(
-			childFirstNameRef,
-			setChildFirstNameError,
-			'childFirstName',
+			wishItemURLRef,
+			setWishItemURLError,
+			'wishItemURL',
+			null,
+			(value) => AMAZON_URL_REGEX.test(value) && AMAZON_PRODUCT_REGEX.test(value),
+		);
+		validateField(
+			wishItemInfoRef,
+			setWishItemInfoError,
+			'wishItemInfo',
 			(value) => value.length < 2 || value.length > 250,
-			(value) => /^[ A-Za-z-_']*$/.test(value),
-		);
-		validateField(
-			childInterestRef,
-			setChildInterestError,
-			'childInterest',
-			(value) => value.length < 2 || value.length > 250,
-		);
-
-		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
-		validateField(
-			childStoryRef,
-			setChildStoryError,
-			'childStory',
-			(value) => value.length < 5 || value.length > 500,
-		);
-		validateField(
-			wishItemNameRef,
-			setWishItemNameError,
-			'wishItemName',
-			(value) => value.length < 2 || value.length > 150,
 		);
 		validateField(
 			wishItemPriceRef,
@@ -126,18 +130,32 @@ function WishCardCreate() {
 			(value) => !isNaN(value),
 		);
 		validateField(
-			wishItemInfoRef,
-			setWishItemInfoError,
-			'wishItemInfo',
+			wishItemNameRef,
+			setWishItemNameError,
+			'wishItemName',
+			(value) => value.length < 2 || value.length > 150,
+		);
+		validateImage(setChildImageError, 'childImage');
+		validateField(
+			childStoryRef,
+			setChildStoryError,
+			'childStory',
+			(value) => value.length < 5 || value.length > 500,
+		);
+		validateField(childBirthYearRef, setChildBirthYearError, 'childBirthYear');
+		validateField(
+			childInterestRef,
+			setChildInterestError,
+			'childInterest',
 			(value) => value.length < 2 || value.length > 250,
 		);
-
-		validateField(wishItemURLRef, setWishItemURLError, 'wishItemURL');
-		//TODO: amazon check
-		//TODO: product id check
-
-		validateImage(childImage, setChildImageError, 'childImage');
-		validateImage(itemImage, setWishItemImageError, 'wishItemImage');
+		validateField(
+			childFirstNameRef,
+			setChildFirstNameError,
+			'childFirstName',
+			(value) => value.length < 2 || value.length > 250,
+			(value) => /^[ A-Za-z-_']*$/.test(value),
+		);
 	};
 
 	const validationState = useMemo(
@@ -194,6 +212,15 @@ function WishCardCreate() {
 		}
 	};
 
+	const handleScroll = (ref) => {
+		window?.scrollTo({
+			top: ref.offsetTop,
+			left: 0,
+			behavior: 'smooth',
+		});
+		ref.current.focus();
+	};
+
 	const handleShippingAddress = (e) => {
 		setIsShippingDefault(e.target.checked);
 	};
@@ -205,10 +232,23 @@ function WishCardCreate() {
 		if (isShippingDefault) {
 			setFormData((data) => ({
 				...data,
-				['address']: agencyAddress,
+				...agencyAddress,
 			}));
-			//TODO: address not sending properly
+			//TODO: need to add logic for manually typed address
 		}
+	};
+
+	const clearForm = () => {
+		setChildImage(null);
+		setItemImage(null);
+		childFirstNameRef.current.value = '';
+		childInterestRef.current.value = '';
+		childBirthYearRef.current.value = '';
+		childStoryRef.current.value = '';
+		wishItemNameRef.current.value = '';
+		wishItemPriceRef.current.value = '';
+		wishItemInfoRef.current.value = '';
+		wishItemURLRef.current.value = '';
 	};
 
 	const handlePost = async () => {
@@ -224,7 +264,12 @@ function WishCardCreate() {
 		data.append('wishItemInfo', formData.wishItemInfo);
 		data.append('wishItemURL', formData.wishItemURL);
 		data.append('wishItemImage', formData.wishItemImage);
-		data.append('address', formData.address);
+		data.append('address1', formData.address1);
+		data.append('address2', formData.address2);
+		data.append('city', formData.city);
+		data.append('state', formData.state);
+		data.append('country', formData.country);
+		data.append('zipcode', formData.zipcode);
 
 		const toast = new window.DG.Toast();
 
@@ -235,6 +280,8 @@ function WishCardCreate() {
 				},
 			});
 			toast.show('Submission was successful!');
+			clearForm();
+			setTimeout(() => window.location.replace('/wishcards/manage'), 1000);
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -243,21 +290,6 @@ function WishCardCreate() {
 				toast.styleMap.danger,
 			);
 		}
-		//TODO: need to redirect to manage page
-	};
-
-	const clearForm = () => {
-		//TODO: imgs not clearing
-		setChildImage(null);
-		setItemImage(null);
-		childFirstNameRef.current.value = '';
-		childInterestRef.current.value = '';
-		childBirthYearRef.current.value = '';
-		childStoryRef.current.value = '';
-		wishItemNameRef.current.value = '';
-		wishItemPriceRef.current.value = '';
-		wishItemInfoRef.current.value = '';
-		wishItemURLRef.current.value = '';
 	};
 
 	useEffect(() => {
@@ -266,7 +298,6 @@ function WishCardCreate() {
 
 		if (isValid && isFormSubmitted) {
 			handlePost();
-			clearForm();
 		}
 	}, [validationState, isFormSubmitted]);
 
@@ -278,9 +309,7 @@ function WishCardCreate() {
 					<form className="text-primary">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
-								<div className="display-6 mt-3 mb-sm-4 mb-md-0 mb-lg-0">
-									Information about child
-								</div>
+								<div className="display-6 mt-3 mb-3">Information about child</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<TextInput
@@ -332,7 +361,6 @@ function WishCardCreate() {
 														? 'img-fluid input-border-danger rounded'
 														: 'img-fluid rounded'
 												}
-												id="childImagePreview"
 											/>
 											{childImageError && (
 												<p className="text-danger font-weight-bold">
@@ -377,7 +405,7 @@ function WishCardCreate() {
 										onChange={() => handleOnChange(setChildStoryError)}
 									/>
 								</div>
-								<div className="display-6 mt-5 mb-sm-4 mb-md-0 mb-lg-0">
+								<div className="display-6 mt-5 mb-4">
 									Information about wish item
 								</div>
 								<div className="row d-flex align-items-center">
@@ -439,7 +467,6 @@ function WishCardCreate() {
 														? 'img-fluid input-border-danger rounded'
 														: 'img-fluid rounded'
 												}
-												id="wishImagePreview"
 											/>
 											{wishItemImageError && (
 												<p className="text-danger font-weight-bold">
@@ -494,7 +521,7 @@ function WishCardCreate() {
 										/>
 									</div>
 								</div>
-								<div className="display-6 mt-5 mb-3">
+								<div className="display-6 mt-5 mb-4">
 									Information about shipping address
 								</div>
 								<Switch
