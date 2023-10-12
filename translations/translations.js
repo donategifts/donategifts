@@ -3,6 +3,7 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'Address Line 1',
 		errors: {
 			default: 'Address line 1 is required.',
+			size: 'Address line 1 must contain at least 2 characters.',
 		},
 	},
 	address2: {
@@ -12,6 +13,7 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'City',
 		errors: {
 			default: 'City is required.',
+			size: 'City must contain at least 2 characters.',
 		},
 	},
 	state: {
@@ -25,6 +27,7 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'Country',
 		errors: {
 			default: 'Country is required.',
+			size: 'Country must contain at least 2 characters.',
 		},
 		placeholder: 'Select option',
 	},
@@ -32,6 +35,7 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'Zipcode',
 		errors: {
 			default: 'Zipcode is required.',
+			size: 'Zipcode must contain at least 5 characters.',
 		},
 	},
 };
@@ -65,7 +69,12 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		},
 	},
 	agencyImage: {
-		label: 'Agency Logo',
+		label: 'Upload your agency logo',
+		errors: {
+			size: 'File must be less than 5 megabytes.',
+			validate: 'File must be in jpeg, jpg, gif, or png format.',
+		},
+		instruction: 'Please upload an agency logo or an image that represents your agency.',
 	},
 	agencyAddress: {
 		instruction:
@@ -164,4 +173,4 @@ const WISHCARD_FORM_INPUTS = {
 	},
 };
 
-export { WISHCARD_FORM_INPUTS, AGENCY_SIGNUP_FORM_INPUTS, ADDRESS_FORM_INPUTS };
+module.exports = { WISHCARD_FORM_INPUTS, AGENCY_SIGNUP_FORM_INPUTS, ADDRESS_FORM_INPUTS };

@@ -2,11 +2,11 @@ import { Switch, TextInput, Select, Textarea } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect, useRef, useMemo } from 'react';
 
+import { WISHCARD_FORM_INPUTS } from '../../../../translations/translations';
 import PopOver from '../../components/shared/PopOver.jsx';
 import AddressForm from '../../forms/AddressForm.jsx';
 import { BIRTH_YEAR, AMAZON_URL_REGEX, AMAZON_PRODUCT_REGEX } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import { WISHCARD_FORM_INPUTS } from '../../utils/translations';
 
 function WishCardCreate() {
 	const [childImage, setChildImage] = useState(null);

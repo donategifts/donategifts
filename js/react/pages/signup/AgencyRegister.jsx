@@ -1,23 +1,58 @@
 import { TextInput, Textarea } from '@mantine/core';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
+import { AGENCY_SIGNUP_FORM_INPUTS } from '../../../../translations/translations';
 import AddressForm from '../../forms/AddressForm.jsx';
+// import { PHONE_NUMBER_REGEX } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import { AGENCY_SIGNUP_FORM_INPUTS } from '../../utils/translations';
 
 function AgencyRegister() {
+	const addressFormRef = useRef();
 	const agencyNameRef = useRef();
+
+	const [agencyFormData, setAgencyFormData] = useState({
+		agencyName: '',
+		agencyWebsite: '',
+		agencyPhone: '',
+		agencyEIN: '',
+		agencyBio: '',
+		agencyImage: null,
+		agencyAddress: {},
+	});
+
 	// const agencyWebsiteRef = useRef();
 	// const agencyPhoneRef = useRef();
 	// const agencyEINRef = useRef();
 	// const [agencyNameError, setAgencyNameError] = useState('');
+
+	// const validateAgencyPhone = (value) => {
+	// 	return PHONE_NUMBER_REGEX.test(value);
+	// };
+
+	const handleInputs = (event) => {
+		const target = event.target;
+		const { name, value } = target;
+
+		setAgencyFormData({
+			...agencyFormData,
+			[name]: value,
+		});
+	};
+
+	const handleSubmit = () => {
+		addressFormRef.current?.submit();
+	};
+
+	const handleAddressFormSubmit = (addressFormData) => {
+		console.log(addressFormData);
+	};
 
 	return (
 		<MantineProviderWrapper>
 			<div id="agency-register-page" className="py-5">
 				<div className="container">
 					<h1 className="heading-primary mb-5 text-center">Register Your Agency</h1>
-					<form className="text-primary pt-2">
+					<section className="text-primary pt-2">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
 								<h2 className="display-6 my-3">
@@ -32,6 +67,7 @@ function AgencyRegister() {
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyName?.label}
 											// error={agencyNameError}
 											required
+											onBlur={handleInputs}
 											// onChange={() => handleOnChange(setChildFirstNameError)}
 										/>
 									</div>
@@ -40,6 +76,7 @@ function AgencyRegister() {
 											// ref={agencyWebsiteRef}
 											size="md"
 											name="agencyWebsite"
+											onBlur={handleInputs}
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyWebsite?.label}
 										/>
 									</div>
@@ -76,10 +113,10 @@ function AgencyRegister() {
 											mt="md"
 											name="agencyBio"
 											// ref={childStoryRef}
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyBio.label}
+											label={AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.label}
 											// error={childStoryError}
 											placeholder={
-												AGENCY_SIGNUP_FORM_INPUTS.agencyBio.placeholder
+												AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.placeholder
 											}
 											required
 											// onChange={() => handleOnChange(setChildStoryError)}
@@ -97,9 +134,9 @@ function AgencyRegister() {
 											<label htmlFor="agencyImage" className="form-label">
 												{AGENCY_SIGNUP_FORM_INPUTS.agencyImage?.label}
 											</label>
-											{/* <p className="form-text">
-												{WISHCARD_FORM_INPUTS.childImage.instruction}
-											</p> */}
+											<p className="form-text">
+												{AGENCY_SIGNUP_FORM_INPUTS.agencyImage?.instruction}
+											</p>
 											<input
 												type="file"
 												name="agencyImage"
@@ -115,9 +152,12 @@ function AgencyRegister() {
 									Information about your agency address
 								</h2>
 								<p className="form-text">
-									{AGENCY_SIGNUP_FORM_INPUTS.agencyAddress.instruction}
+									{AGENCY_SIGNUP_FORM_INPUTS.agencyAddress?.instruction}
 								</p>
-								<AddressForm />
+								<AddressForm
+									ref={addressFormRef}
+									onSubmit={handleAddressFormSubmit}
+								/>
 							</div>
 						</div>
 						<div className="d-flex justify-content-center mt-5">
@@ -125,7 +165,7 @@ function AgencyRegister() {
 								id="submitInput"
 								className="button-accent px-5"
 								type="submit"
-								// onClick={handleSubmit}
+								onClick={handleSubmit}
 							>
 								<span>Submit</span>
 								<div
@@ -136,7 +176,7 @@ function AgencyRegister() {
 								</div>
 							</button>
 						</div>
-					</form>
+					</section>
 				</div>
 			</div>
 		</MantineProviderWrapper>

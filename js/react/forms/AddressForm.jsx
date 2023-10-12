@@ -2,11 +2,13 @@ import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 
+import { ADDRESS_FORM_INPUTS } from '../../../translations/translations';
 import { STATE_NAMES } from '../utils/constants';
-import { ADDRESS_FORM_INPUTS } from '../utils/translations';
 
-const AddressForm = forwardRef(({ inputSize }, ref) => {
-	const addressFormRef = useRef();
+const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
+	const formRef = useRef();
+	const stateRef = useRef();
+	const countryRef = useRef();
 	const isDirty = useRef(false);
 
 	const [formData, setFormData] = useState({
@@ -18,7 +20,7 @@ const AddressForm = forwardRef(({ inputSize }, ref) => {
 		zipcode: '',
 	});
 
-	const handleInputChange = (event) => {
+	const handleInputs = (event) => {
 		const target = event.target;
 		const { name, value } = target;
 
@@ -29,24 +31,61 @@ const AddressForm = forwardRef(({ inputSize }, ref) => {
 		isDirty.current = true;
 	};
 
+	const handleDropDowns = (ref, name) => {
+		const value = ref.current?.value;
+		setFormData({
+			...formData,
+			[name]: value,
+		});
+		isDirty.current = true;
+	};
+
+	const handleFormSubmit = (event) => {
+		event.preventDefault();
+		if (onSubmit) {
+			onSubmit(formData);
+		}
+	};
+
 	useImperativeHandle(ref, () => ({
-		//
+		isDirty() {
+			return isDirty.current;
+		},
+		//TODO: need to submit formData
+		submit() {
+			const form = formRef.current;
+			if (form.reportValidity()) {
+				form.requestSubmit();
+			}
+		},
 	}));
+
 	return (
-		<form ref={addressFormRef}>
+		<form ref={formRef} onSubmit={handleFormSubmit}>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
 					<TextInput
 						size={inputSize}
 						label={ADDRESS_FORM_INPUTS.address1.label}
-						onChange={handleInputChange}
+						name="address1"
+						onBlur={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput size={inputSize} label={ADDRESS_FORM_INPUTS.address2.label} />
+					<TextInput
+						size={inputSize}
+						label={ADDRESS_FORM_INPUTS.address2.label}
+						name="address2"
+						onBlur={handleInputs}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput size={inputSize} label={ADDRESS_FORM_INPUTS.city.label} />
+					<TextInput
+						size={inputSize}
+						label={ADDRESS_FORM_INPUTS.city.label}
+						name="city"
+						onBlur={handleInputs}
+					/>
 				</div>
 			</div>
 			<div className="row mt-3">
@@ -57,10 +96,17 @@ const AddressForm = forwardRef(({ inputSize }, ref) => {
 						searchable
 						placeholder={ADDRESS_FORM_INPUTS.state.placeholder}
 						data={STATE_NAMES}
+						ref={stateRef}
+						onBlur={() => handleDropDowns(stateRef, 'state')}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput size={inputSize} label={ADDRESS_FORM_INPUTS.zipcode.label} />
+					<TextInput
+						size={inputSize}
+						label={ADDRESS_FORM_INPUTS.zipcode.label}
+						name="zipcode"
+						onBlur={handleInputs}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<Select
@@ -69,6 +115,8 @@ const AddressForm = forwardRef(({ inputSize }, ref) => {
 						searchable
 						placeholder={ADDRESS_FORM_INPUTS.country.placeholder}
 						data={['United States']}
+						ref={countryRef}
+						onBlur={() => handleDropDowns(countryRef, 'country')}
 					/>
 				</div>
 			</div>
@@ -84,6 +132,7 @@ AddressForm.defaultProps = {
 
 AddressForm.propTypes = {
 	inputSize: PropTypes.string,
+	onSubmit: PropTypes.func,
 };
 
 export default AddressForm;
