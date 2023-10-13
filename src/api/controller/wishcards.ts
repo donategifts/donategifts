@@ -9,6 +9,7 @@ import MessagesRepository from '../../db/repository/postgres/MessagesRepository'
 import WishCardRepository from '../../db/repository/postgres/WishCardsRepository';
 import { Children, DB, Items, Wishcards } from '../../db/types/generated/database';
 import config from '../../helper/config';
+import * as DefaultItems from '../../helper/defaultItems';
 import Utils from '../../helper/utils';
 
 import BaseApiController from './basecontroller';
@@ -35,6 +36,13 @@ export default class WishCardApiController extends BaseApiController {
 		this.handleGetEdit = this.handleGetEdit.bind(this);
 		this.handlePostEdit = this.handlePostEdit.bind(this);
 		this.handleDeleteSingle = this.handleDeleteSingle.bind(this);
+		this.handleGetAgency = this.handleGetAgency.bind(this);
+		this.handlePostSearch = this.handlePostSearch.bind(this);
+		this.handleGetSingle = this.handleGetSingle.bind(this);
+		this.handleGetDonate = this.handleGetDonate.bind(this);
+		this.handleGetRandom = this.handleGetRandom.bind(this);
+		this.handlePostMessage = this.handlePostMessage.bind(this);
+		this.handleGetDefaults = this.handleGetDefaults.bind(this);
 	}
 
 	async getWishCardSearchResult(
@@ -162,7 +170,6 @@ export default class WishCardApiController extends BaseApiController {
 					wishCardId: newWishCard.id,
 				});
 				return this.sendResponse(res, this.formatWishCard(newWishCard, newItem, newChild));
-				//return res.status(200).send({ success: true, url: '/wishcards/manage' });
 			} catch (error) {
 				this.log.error('[WishcardController] handlePostIndex: ', error);
 				return this.handleError(res, error);
@@ -214,7 +221,7 @@ export default class WishCardApiController extends BaseApiController {
 					agency_id: userAgency.id,
 				});
 
-				const newWishCard = await this.wishCardRepository.create({
+				const wishcard = await this.wishCardRepository.create({
 					address_line_1: req.body.address1,
 					address_line_2: req.body.address2,
 					city: req.body.address_city,
@@ -231,10 +238,9 @@ export default class WishCardApiController extends BaseApiController {
 					mgs: 'Wishcard created',
 					type: 'wishcard_created',
 					agency: userAgency.id,
-					wishCardId: newWishCard.id,
+					wishCardId: wishcard.id,
 				});
-				return this.sendResponse(res, newWishCard);
-				//return res.status(200).send({ success: true, url: '/wishcards/manage' });
+				return this.sendResponse(res, wishcard);
 			} catch (error) {
 				this.log.error('[WishcardController] handlePostGuided: ', error);
 				return this.handleError(res, error);
@@ -297,11 +303,6 @@ export default class WishCardApiController extends BaseApiController {
 			const childBirthday = moment(wishcard.childBirthday).format('YYYY');
 
 			return this.sendResponse(res, { wishcard, agencyAddress, childBirthday });
-			/* return this.renderView(res, 'wishcard/edit', {
-				wishcard,
-				agencyAddress,
-				childBirthday,
-			}); */
 		} catch (error) {
 			this.log.error('[WishcardController] handleGetEdit: ', error);
 			return this.handleError(res, error);
@@ -362,7 +363,6 @@ export default class WishCardApiController extends BaseApiController {
 			});
 
 			return this.sendResponse(res, { success: true, url });
-			//return res.status(200).send({ success: true, url });
 		} catch (error) {
 			this.log.error('[WishcardController] handlePostEdit: ', error);
 			return this.handleError(res, error);
@@ -393,9 +393,205 @@ export default class WishCardApiController extends BaseApiController {
 				wishCardId: wishcard?.id,
 			});
 			return this.sendResponse(res, { success: true, url });
-			//return res.status(200).send({ success: true, url });
 		} catch (error) {
 			this.log.error('[WishcardController] handleDeleteSingle: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const userAgency = await this.agencyRepository.getByAccountManagerId(
+				res.locals.user.id,
+			);
+			const wishCards = await this.wishCardRepository.getByAgencyId(userAgency.id);
+
+			const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
+			const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
+			const inactiveWishcards = wishCards.filter((wishcard) => wishcard.status === 'donated');
+
+			return this.sendResponse(res, { draftWishcards, activeWishcards, inactiveWishcards });
+		} catch (error) {
+			this.log.error('[WishcardController] handleGetAgency: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	// handleGetCreate(_req: Request, res: Response, _next: NextFunction) {
+	// 	this.renderView(res, 'wishcard/create');
+	// }
+
+	async handlePostSearch(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+
+			let childAge;
+			let showDonated = showDonatedCheck;
+
+			// only true on first visit of page
+			if (req.params.init) {
+				childAge = 0;
+				showDonated = true;
+			}
+
+			if (younger) {
+				childAge = 14;
+			}
+
+			if (older) {
+				childAge = 15;
+			}
+
+			if (younger && older) {
+				childAge = 0;
+			}
+
+			const wishcards = await this.getWishCardSearchResult(
+				wishitem,
+				childAge,
+				cardIds || [],
+				showDonated,
+				recentlyAdded,
+			);
+
+			return this.sendResponse(res, {
+				user: res.locals.user,
+				wishcards,
+			});
+		} catch (error) {
+			this.log.error('[WishcardController] handlePostSearch: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetSingle(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getById(req.params.id);
+
+			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
+			const messages = await this.messageRepository.getByWishCardId(wishcard.id);
+			const child = await this.childrenRepository.getById(wishcard.child_id);
+			let defaultMessages;
+			if (res.locals.user) {
+				defaultMessages = Utils.getMessageChoices(
+					res.locals.user.first_name,
+					child.first_name,
+				);
+			}
+
+			return this.sendResponse(res, {
+				wishcard: {
+					...wishcard,
+					age: child.birth_year
+						? moment(new Date()).diff(child.birth_year, 'years')
+						: 'Not Provided',
+				},
+				agency: agency || {},
+				messages,
+				defaultMessages: defaultMessages || [],
+			});
+		} catch (error) {
+			this.log.error('[WishcardController] handleGetSingle: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetDonate(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getById(req.params.id);
+
+			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
+			const wishItem = await this.itemsRepository.getById(wishcard.item_id);
+			const processingFee = 1.08;
+			const shipping = 'FREE';
+			const tax = 1.0712;
+
+			const totalItemCost = await Utils.calculateWishItemTotalPrice(wishItem.price);
+			const Itemprice = Number(wishItem.price);
+
+			const extendedPaymentInfo = {
+				processingFee: (Itemprice * processingFee - Itemprice).toFixed(2),
+				shipping,
+				tax: (Itemprice * tax - Itemprice).toFixed(2),
+				totalItemCost,
+				agency,
+			};
+
+			return this.sendResponse(res, {
+				wishcard: wishcard || [],
+				extendedPaymentInfo,
+				agency,
+			});
+		} catch (error) {
+			this.log.error('[WishcardController] handleGetDonate: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetRandom(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcards = await this.wishCardRepository.getRandom('published', 6);
+
+			return this.sendResponse(res, { wishcards });
+		} catch (error) {
+			this.log.error('[WishcardController] handleGetRandom: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePostMessage(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { messageFrom, messageTo, message } = req.body;
+			const newMessage = await this.messageRepository.create({
+				content: message,
+				sender_id: messageFrom,
+				wishcard_id: messageTo,
+			});
+
+			return this.sendResponse(res, {
+				data: newMessage,
+			});
+		} catch (error) {
+			this.log.error('[WishcardController] handlePostMessage: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetDefaults(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const ageCategory = Number(req.params.id);
+			let itemChoices;
+
+			switch (ageCategory) {
+				case 1:
+					itemChoices = DefaultItems.babies;
+					break;
+				case 2:
+					itemChoices = DefaultItems.preschoolers;
+					break;
+				case 3:
+					itemChoices = DefaultItems.kids6_8;
+					break;
+				case 4:
+					itemChoices = DefaultItems.kids9_11;
+					break;
+				case 5:
+					itemChoices = DefaultItems.teens;
+					break;
+				case 6:
+					itemChoices = DefaultItems.youth;
+					break;
+				case 7:
+					itemChoices = DefaultItems.allAgesA;
+					break;
+				default:
+					itemChoices = DefaultItems.allAgesB;
+					break;
+			}
+
+			return this.sendResponse(res, { itemChoices });
+		} catch (error) {
+			this.log.error('[WishcardController] handleGetDefaults: ', error);
 			return this.handleError(res, error);
 		}
 	}

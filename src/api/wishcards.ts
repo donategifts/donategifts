@@ -13,7 +13,7 @@ const wishCardController = new WishCardApiController(database);
 
 router.get('/', wishCardController.handleGetIndex);
 
-/* router.get(
+router.get(
 	'/single/:id',
 	Validations.getByIdValidationRules(),
 	Validations.validate,
@@ -35,7 +35,7 @@ router.post(
 	wishCardController.handlePostMessage,
 );
 
-router.post('/search/:init?', wishCardController.handlePostSearch); */
+router.post('/search/:init?', wishCardController.handlePostSearch);
 
 // ------------- only agencies and admins from here on -------------
 
@@ -69,9 +69,9 @@ router.post(
 
 router.delete('/delete/:id', Permissions.isAdminOrAgency, wishCardController.handleDeleteSingle);
 
-/* router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetAgency);
+router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetAgency);
 
-router.get('/create', Permissions.isAdminOrAgency, wishCardController.handleGetCreate);
+//router.get('/create', Permissions.isAdminOrAgency, wishCardController.handleGetCreate);
 
 router.get(
 	'/defaults/:id',
@@ -79,6 +79,6 @@ router.get(
 	Validations.getDefaultCardsValidationRules(),
 	Validations.validate,
 	wishCardController.handleGetDefaults,
-); */
+);
 
 export default router;
