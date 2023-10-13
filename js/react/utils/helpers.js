@@ -1,4 +1,4 @@
-export const loadlGoogleClientLibraryScript = (src) => {
+const loadlGoogleClientLibraryScript = (src) => {
 	const tag = document.createElement('script');
 	tag.async = true;
 	tag.defer = true;
@@ -7,7 +7,7 @@ export const loadlGoogleClientLibraryScript = (src) => {
 	body.appendChild(tag);
 };
 
-export const chunkArray = (initialArray, chunkSize) => {
+const chunkArray = (initialArray, chunkSize) => {
 	const chunks = [];
 	for (let index = 0; index < initialArray.length; index += chunkSize) {
 		const chunk = initialArray.slice(index, index + chunkSize);
@@ -15,3 +15,24 @@ export const chunkArray = (initialArray, chunkSize) => {
 	}
 	return chunks;
 };
+
+const validateImage = (setError, fieldName, formData, currFormMap) => {
+	if (!formData[fieldName]) {
+		return setError(currFormMap[fieldName].errors?.default);
+	}
+	const imgFile = formData[fieldName];
+	const isImgTypeValid =
+		imgFile.type == 'image/png' ||
+		imgFile.type == 'image/jpeg' ||
+		imgFile.type == 'image/jpg' ||
+		imgFile.type == 'image/gif';
+	if (!isImgTypeValid) {
+		setError(currFormMap[fieldName].errors?.validate);
+	} else if (imgFile.size > 5000000) {
+		setError(currFormMap[fieldName].errors?.size);
+	} else {
+		setError('');
+	}
+};
+
+export { loadlGoogleClientLibraryScript, chunkArray, validateImage };

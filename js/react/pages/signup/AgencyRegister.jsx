@@ -3,12 +3,16 @@ import { useRef, useState } from 'react';
 
 import { AGENCY_SIGNUP_FORM_INPUTS } from '../../../../translations/translations';
 import AddressForm from '../../forms/AddressForm.jsx';
-// import { PHONE_NUMBER_REGEX } from '../../utils/constants';
+import { PHONE_NUMBER_REGEX } from '../../utils/constants';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 function AgencyRegister() {
-	const addressFormRef = useRef();
 	const agencyNameRef = useRef();
+	const agencyWebsiteRef = useRef();
+	const agencyPhoneRef = useRef();
+	const agencyEINRef = useRef();
+	const agencyBioRef = useRef();
+	const addressFormRef = useRef();
 
 	const [agencyFormData, setAgencyFormData] = useState({
 		agencyName: '',
@@ -20,31 +24,74 @@ function AgencyRegister() {
 		agencyAddress: {},
 	});
 
-	// const agencyWebsiteRef = useRef();
-	// const agencyPhoneRef = useRef();
-	// const agencyEINRef = useRef();
-	// const [agencyNameError, setAgencyNameError] = useState('');
+	const [agencyNameError, setAgencyNameError] = useState('');
+	const [agencyWebsiteError, setAgencyWebsiteError] = useState('');
+	const [agencyPhoneError, setAgencyPhoneError] = useState('');
+	const [agencyEINError, setAgencyEINError] = useState('');
+	const [agencyBioError, setAgencyBioError] = useState('');
+	// const [agencyImageError, setAgencyImageError] = useState('');
 
-	// const validateAgencyPhone = (value) => {
-	// 	return PHONE_NUMBER_REGEX.test(value);
-	// };
+	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
+		const fieldValue = ref.current?.value;
+
+		if (!fieldValue || !fieldValue.length) {
+			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.default);
+			handleScroll(ref);
+		} else if (sizeFn && sizeFn(fieldValue)) {
+			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.size);
+			handleScroll(ref);
+		} else if (validationFn && !validationFn(fieldValue)) {
+			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.validate);
+			handleScroll(ref);
+		} else {
+			setError('');
+			setAgencyFormData((data) => ({
+				...data,
+				[fieldName]: fieldValue,
+			}));
+		}
+	};
+
+	const validateFormData = () => {
+		validateField(agencyNameRef, setAgencyNameError, 'agencyName');
+		validateField(agencyWebsiteRef, setAgencyWebsiteError, 'agencyWebsite');
+		validateField(agencyPhoneRef, setAgencyPhoneError, 'agencyPhone', null, (value) =>
+			PHONE_NUMBER_REGEX.test(value),
+		);
+		validateField(agencyEINRef, setAgencyEINError, 'agencyEIN');
+		validateField(agencyBioRef, setAgencyBioError, 'agencyBio');
+	};
 
 	const handleInputs = (event) => {
 		const target = event.target;
 		const { name, value } = target;
 
-		setAgencyFormData({
-			...agencyFormData,
+		setAgencyFormData((data) => ({
+			...data,
 			[name]: value,
-		});
+		}));
 	};
 
-	const handleSubmit = () => {
+	const handleScroll = (ref) => {
+		window?.scrollTo({
+			top: ref.offsetTop,
+			left: 0,
+			behavior: 'smooth',
+		});
+		ref.current.focus();
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		validateFormData();
 		addressFormRef.current?.submit();
 	};
 
 	const handleAddressFormSubmit = (addressFormData) => {
-		console.log(addressFormData);
+		setAgencyFormData({
+			...agencyFormData,
+			['agencyAddress']: addressFormData,
+		});
 	};
 
 	return (
@@ -65,7 +112,7 @@ function AgencyRegister() {
 											size="md"
 											name="agencyName"
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyName?.label}
-											// error={agencyNameError}
+											error={agencyNameError}
 											required
 											onBlur={handleInputs}
 											// onChange={() => handleOnChange(setChildFirstNameError)}
@@ -73,34 +120,36 @@ function AgencyRegister() {
 									</div>
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyWebsiteRef}
+											ref={agencyWebsiteRef}
 											size="md"
 											name="agencyWebsite"
 											onBlur={handleInputs}
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyWebsite?.label}
+											error={agencyWebsiteError}
 										/>
 									</div>
 								</div>
 								<div className="row d-flex align-items-center">
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyPhoneRef}
+											ref={agencyPhoneRef}
 											size="md"
 											mt="md"
 											name="agencyPhone"
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyPhone?.label}
-											// error={agencyNameError}
+											error={agencyPhoneError}
 											required
 											// onChange={() => handleOnChange(setChildFirstNameError)}
 										/>
 									</div>
 									<div className="col-sm-12 col-lg-6 col-md-6">
 										<TextInput
-											// ref={agencyEINRef}
+											ref={agencyEINRef}
 											size="md"
 											mt="md"
 											name="agencyEIN"
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyEIN?.label}
+											error={agencyEINError}
 											required
 										/>
 									</div>
@@ -108,13 +157,13 @@ function AgencyRegister() {
 								<div className="row mt-1 d-flex">
 									<div className="col-sm-12 col-md-6 col-lg-6">
 										<Textarea
+											ref={agencyBioRef}
 											size="md"
 											rows={3}
 											mt="md"
 											name="agencyBio"
-											// ref={childStoryRef}
 											label={AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.label}
-											// error={childStoryError}
+											error={agencyBioError}
 											placeholder={
 												AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.placeholder
 											}

@@ -68,7 +68,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						size={inputSize}
 						label={ADDRESS_FORM_INPUTS.address1.label}
 						name="address1"
-						onBlur={handleInputs}
+						onChange={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
@@ -76,7 +76,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						size={inputSize}
 						label={ADDRESS_FORM_INPUTS.address2.label}
 						name="address2"
-						onBlur={handleInputs}
+						onChange={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
@@ -84,7 +84,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						size={inputSize}
 						label={ADDRESS_FORM_INPUTS.city.label}
 						name="city"
-						onBlur={handleInputs}
+						onChange={handleInputs}
 					/>
 				</div>
 			</div>
@@ -97,7 +97,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						placeholder={ADDRESS_FORM_INPUTS.state.placeholder}
 						data={STATE_NAMES}
 						ref={stateRef}
-						onBlur={() => handleDropDowns(stateRef, 'state')}
+						onChange={() => handleDropDowns(stateRef, 'state')}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
@@ -105,7 +105,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						size={inputSize}
 						label={ADDRESS_FORM_INPUTS.zipcode.label}
 						name="zipcode"
-						onBlur={handleInputs}
+						onChange={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
@@ -116,7 +116,7 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 						placeholder={ADDRESS_FORM_INPUTS.country.placeholder}
 						data={['United States']}
 						ref={countryRef}
-						onBlur={() => handleDropDowns(countryRef, 'country')}
+						onChange={() => handleDropDowns(countryRef, 'country')}
 					/>
 				</div>
 			</div>
