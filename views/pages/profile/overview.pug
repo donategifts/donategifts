@@ -4,11 +4,11 @@ block title
     title Profile Page | Donate Gifts
 
 block content
-    .profile
+    #profile
         .profile-welcome.cool-font.center-elements.text-secondary
             h1#welcome-title Welcome #{user.fName}
 
-        .container
+        .container.pt-5
             if !user.emailVerified
                 .my-3
                     .fa.fa-exclamation-triangle.me-2.text-secondary( aria-hidden='true' )
@@ -34,7 +34,6 @@ block content
                                 .mb-3.mt-3.mt-md-0
                                     span Got any questions?
                                 a.button-secondary.button-width( href='/contact' ) Contact For Help
-
             if user.userRole == 'partner'
                 #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
@@ -76,7 +75,7 @@ block content
                                 span.text-muted Website:
                                 span#agencyWebsite.mx-2.text-wrap= agency.agencyWebsite || 'Not provided'
 
-                        if agency.agencyAddress.address1
+                        if agency.agencyAddress
                             .row.justify-content-center.my-4
                                 .col-12.col-lg-6.mb-4.mb-md-0
                                     span.text-muted Address line 1:
@@ -146,7 +145,7 @@ block content
                             .col-12
                                 a.button-secondary( href='/profile/donations' ) My Donation History
 
-            .row.mb-5
+            .row.pb-5
                 .col-md-6.mb-5.mb-md-0
                     .card.h-100.shadow.border-0.p-3
                         .card-title.p-3
@@ -155,10 +154,21 @@ block content
                                 span Settings
 
                         .row.justify-content-center.text-center
-                            .col-12.col-xl-6
-                                a.button-primary( href='/profile/password/reset/' ) Reset Password
-                            .col-12.col-xl-6.mt-3.mt-xl-0
-                                a.button-secondary( href='/profile/logout' ) Log Out
+                            if !user.emailVerified
+                                .row.justify-content-center
+                                    .col-12.col-lg-8
+                                        a.button-primary.w-100( href='/profile/password/reset/' ) Reset Password
+                                .row.justify-content-center.mt-2
+                                    .col-12.col-lg-8
+                                        a.button-secondary.w-100( href='/profile/logout' ) Log Out
+                                .row.justify-content-center.mt-2
+                                    .col-12.col-lg-8
+                                        button#resend-verification-link.button-primary.w-100( type='button' ) Resend Verification Link
+                            else
+                                .col-12.col-lg-6
+                                    a.button-primary.w-100( href='/profile/password/reset/' ) Reset Password
+                                .col-12.col-lg-6.mt-2.mt-lg-0
+                                    a.button-secondary.w-100( href='/profile/logout' ) Log Out
 
                 .col-md-6
                     .card.h-100.shadow.border-0.p-3
@@ -218,32 +228,32 @@ block modal
                         .container-fluid
                             #agencyDetailsForm
                                 .my-2
-                                    label.form-label( for='agencyBio' ) Agency Description:
-                                    textarea#agencyBio.form-control( name='agencyBio' rows='3' placeholder='Enter agency description' )= agency.agencyBio
+                                    label.form-label( for='agencyBio-edit' ) Agency Description:
+                                    textarea#agencyBio-edit.form-control( name='agencyBio' rows='3' placeholder='Enter agency description' )= agency.agencyBio
                                 .my-2
-                                    label.form-label( for='agencyPhone' ) Contact Number:
-                                    input#agencyPhone.form-control( type='text' name='agencyPhone' placeholder='000-000-0000' value=agency.agencyPhone )
+                                    label.form-label( for='agencyPhone-edit' ) Contact Number:
+                                    input#agencyPhone-edit.form-control( type='text' name='agencyPhone' placeholder='000-000-0000' value=agency.agencyPhone )
                                 .my-2
-                                    label.form-label( for='agencyWebsite' ) Website:
-                                    input#agencyWebsite.form-control( type='text' name='agencyWebsite' value=agency.agencyWebsite )
+                                    label.form-label( for='agencyWebsite-edit' ) Website:
+                                    input#agencyWebsite-edit.form-control( type='text' name='agencyWebsite' value=agency.agencyWebsite )
                                 .my-2
-                                    label.form-label( for='address1' ) Address Line 1:
-                                    input#address1.form-control( type='text' name='address1' value=agency.agencyAddress.address1 )
+                                    label.form-label( for='address1-edit' ) Address Line 1:
+                                    input#address1-edit.form-control( type='text' name='address1' value=agency.agencyAddress.address1 )
                                 .my-2
-                                    label.form-label( for='address2' ) Address Line 2:
-                                    input#address2.form-control( type='text' name='address2' value=agency.agencyAddress.address2 )
+                                    label.form-label( for='address2-edit' ) Address Line 2:
+                                    input#address2-edit.form-control( type='text' name='address2' value=agency.agencyAddress.address2 )
                                 .my-2
-                                    label.form-label( for='city' ) City:
-                                    input#city.form-control( type='text' name='city' value=agency.agencyAddress.city )
+                                    label.form-label( for='city-edit' ) City:
+                                    input#city-edit.form-control( type='text' name='city' value=agency.agencyAddress.city )
                                 .my-2
-                                    label.form-label( for='state' ) State:
-                                    input#state.form-control( type='text' name='state' value=agency.agencyAddress.state )
+                                    label.form-label( for='state-edit' ) State:
+                                    input#state-edit.form-control( type='text' name='state' value=agency.agencyAddress.state )
                                 .my-2
-                                    label.form-label( for='country' ) Country:
-                                    input#country.form-control( type='text' name='country' value=agency.agencyAddress.country )
+                                    label.form-label( for='country-edit' ) Country:
+                                    input#country-edit.form-control( type='text' name='country' value=agency.agencyAddress.country )
                                 .my-2
-                                    label.form-label( for='zipcode' ) Zipcode:
-                                    input#zipcode.form-control( type='text' name='zipcode' value=agency.agencyAddress.zipcode )
+                                    label.form-label( for='zipcode-edit' ) Zipcode:
+                                    input#zipcode-edit.form-control( type='text' name='zipcode' value=agency.agencyAddress.zipcode )
                     .modal-footer.d-flex.justify-content-end
                         .col-12.col-md-4
                             button#save-agency-details.btn.btn-lg.btn-primary.w-100( type='button' data-bs-dismiss='modal' ) Save
@@ -252,19 +262,49 @@ block scripts
     script( src='https://unpkg.com/imask@6.0.5/dist/imask.js' )
     script.
         $(document).ready(() => {
-            //- $('[placeholder]').focus(function() {
-            //-     const input = $(this);
-            //-     if (input.val() == input.attr('placeholder')) {
-            //-         input.val('');
-            //-         input.removeClass('placeholder');
-            //-     }
-            //- }).blur(function() {
-            //-     const input = $(this);
-            //-     if (input.val() == '' || input.val() == input.attr('placeholder')) {
-            //-         input.addClass('placeholder');
-            //-         input.val(input.attr('placeholder'));
-            //-     }
-            //- }).focus();
+            const element = document.getElementById('agencyPhone-edit');
+            const maskOptions = {
+                mask: '000-000-0000'
+            };
+
+            if (element) {
+                IMask(element, maskOptions);
+            }
+        });
+
+    script.
+        $(document).ready(() => {
+            const successNotification = !{JSON.stringify(successNotification || null)};
+
+            if (successNotification?.msg) {
+                new DG.Toast().show(successNotification.msg);
+            }
+        });
+
+    script.
+        $(document).ready(() => {
+            const toast = new DG.Toast();
+
+            $('#resend-verification-link').click(() => {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/profile/resend-verification-link',
+                    data: {
+                        userId: '#{user._id}',
+                    },
+                    success: (response) => {
+                        toast.show('Resent verification link!');
+                    },
+                    error: (_) => {
+                        toast.show('Could not resend verification link.', toast.styleMap.danger);
+                    }
+                });
+            });
+        });
+
+    script.
+        $(document).ready(() => {
+            const toast = new DG.Toast();
 
             $('#save-about-me').click(() => {
                 const aboutMe = $('#about-me-text').val();
@@ -274,14 +314,11 @@ block scripts
                     url: '/profile',
                     data: { aboutMe },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast('Could not update about me info.');
-                        }
-                        showToast('Updated your info!', true);
+                        toast.show('Updated your info!');
                         $('#about-me').text(response.data || 'You have no description saved.');
                     },
                     error: (_) => {
-                        showToast('Could not update about me info.');
+                        toast.show('Could not update about me info.', toast.styleMap.danger);
                     }
                 });
             });
@@ -296,56 +333,57 @@ block scripts
                     url: '/profile/account',
                     data: { fName, lName },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
-                        }
-                        showToast('Success: Updated your account details', true);
+                        toast.show('Updated your account details');
                         const {fName, lName} = response.data;
                         $('#fName').text(fName);
                         $('#lName').text(lName);
                         $('#welcome-title').text(`Welcome ${fName}`);
                     },
                     error: (response) => {
-                        showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
+                        toast.show(response.responseJSON.error.msg || 'Could not update account details', toast.styleMap.danger);
                     }
                 });
             });
 
             $('#save-agency-details').click(() => {
-                const agencyDetailsForm = $("#agencyDetailsForm");
-                const agencyBio = agencyDetailsForm.find('#agencyBio').val();
-                const agencyPhone = agencyDetailsForm.find('#agencyPhone').val();
-                const agencyWebsite = agencyDetailsForm.find('#agencyWebsite').val();
-                const address1 = agencyDetailsForm.find('#address1').val();
-                const address2 = agencyDetailsForm.find('#address2').val();
-                const city = agencyDetailsForm.find('#city').val();
-                const state = agencyDetailsForm.find('#state').val();
-                const country = agencyDetailsForm.find('#country').val();
-                const zipcode = agencyDetailsForm.find('#zipcode').val();
+                const agencyBio = $('#agencyBio-edit').val();
+                const agencyPhone = $('#agencyPhone-edit').val();
+                const agencyWebsite = $('#agencyWebsite-edit').val();
+                const address1 = $('#address1-edit').val();
+                const address2 = $('#address2-edit').val();
+                const city = $('#city-edit').val();
+                const state = $('#state-edit').val();
+                const country = $('#country-edit').val();
+                const zipcode = $('#zipcode-edit').val();
 
                 $.ajax({
                     type: 'PUT',
                     url: '/profile/agency',
                     data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
-                        }
-                        showToast('Success: Updated your agency details', true);
+                        toast.show('Updated your agency details');
                         const agencyCard = $('#agencyInfoCard');
                         $('#agencyBio', agencyCard).text(response.data.agencyBio || 'Not provided');
+                        $('#agencyBio-edit', agencyCard).text(response.data.agencyBio || 'Not provided');
                         $('#agencyPhone', agencyCard).text(response.data.agencyPhone);
+                        $('#agencyPhone-edit', agencyCard).text(response.data.agencyPhone);
                         $('#agencyWebsite', agencyCard).text(response.data.agencyWebsite || 'Not provided');
+                        $('#agencyWebsite-edit', agencyCard).text(response.data.agencyWebsite || 'Not provided');
                         $('#address1', agencyCard).text(response.data.address1);
+                        $('#address1-edit', agencyCard).text(response.data.address1);
                         $('#address2', agencyCard).text(response.data.address2 || 'Not provided');
+                        $('#address2-edit', agencyCard).text(response.data.address2 || 'Not provided');
                         $('#city', agencyCard).text(response.data.city);
+                        $('#city-edit', agencyCard).text(response.data.city);
                         $('#state', agencyCard).text(response.data.state);
+                        $('#state-edit', agencyCard).text(response.data.state);
                         $('#country', agencyCard).text(response.data.country);
+                        $('#country-edit', agencyCard).text(response.data.country);
                         $('#zipcode', agencyCard).text(response.data.zipcode);
+                        $('#zipcode-edit', agencyCard).text(response.data.zipcode);
                     },
                     error: (response) => {
-                        console.log(response);
-                        showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
+                        toast.show(response.responseJSON.error.msg || 'Could not update agency details', toast.styleMap.danger);
                     }
                 });
             });
@@ -379,7 +417,7 @@ block scripts
                             replaceImage(response.data);
                         },
                         error: (_) => {
-                            showToast("Could not update profile picture");
+                            toast.show("Could not update profile picture", toast.styleMap.danger);
                         }
                     });
                 }
@@ -396,12 +434,8 @@ block scripts
                         replaceImage(response.data);
                     },
                     error: (_) => {
-                        showToast("Could not remove profile picture");
+                        toast.show("Could not remove profile picture", toast.styleMap.danger);
                     }
                 });
-            });
-            const phoneMask = IMask(
-                document.querySelector('#agencyDetailsForm #agencyPhone.form-control'), {
-                mask: '000-000-0000'
             });
         });

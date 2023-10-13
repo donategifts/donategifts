@@ -1,5 +1,6 @@
 import axios from 'axios';
 import bcrypt from 'bcrypt';
+import { NextFunction, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from './config';
@@ -41,14 +42,16 @@ export default class Utils {
 		}
 	}
 
-	static logoutUser(req, res, _next) {
+	static logoutUser(req: Request, res: Response, _next: NextFunction) {
 		req.session.destroy(() => {
 			res.clearCookie(config.SESSION.NAME);
 			res.redirect('/');
 		});
+
+		return;
 	}
 
-	static getMessageChoices(userFirstName, childFirstName) {
+	static getMessageChoices(userFirstName: string, childFirstName: string) {
 		if (!userFirstName || !childFirstName) {
 			return [];
 		}
@@ -84,12 +87,6 @@ export default class Utils {
 		return result;
 	}
 
-	/**
-	 * Extract product id from an amazon url
-	 * @param url
-	 * @returns {string}
-	 * @throws {Error}
-	 */
 	static extractProductIDFromLink(url: string) {
 		const amazonProductIDRegex = /\/dp\/([A-Z0-9]{10})/;
 		const match = url.match(amazonProductIDRegex);

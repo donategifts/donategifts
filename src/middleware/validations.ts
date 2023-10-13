@@ -12,13 +12,9 @@ import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 
-const amazonValidator = new ExpressValidator({
-	/**
-	 * Check if url is an valid amazon link
-	 * @param value
-	 * @returns {boolean}
-	 */
+const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
+		//eventually add these to global constants (it's used by FE already in react/utils/constants)
 		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
 		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
 		return (
@@ -239,18 +235,18 @@ export default class Validations {
 		];
 	}
 
+	//TODO: we need to pull all error messages from translations.js in the future
 	static createWishcardValidationRules() {
 		return [
-			body('childBirthday').isString(),
 			body('childFirstName')
 				.notEmpty()
 				.withMessage("Child's first name is required")
 				.isString(),
-			body('childLastName').isString(),
-			body('childInterest').isString(),
+			body('childInterest').notEmpty().withMessage('Child interest is required.').isString(),
+			body('childBirthYear').notEmpty().withMessage('Child birth year is required.'),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
-			amazonValidator
+			amazonLinkValidator
 				.body('wishItemURL')
 				.isValidLink()
 				.withMessage(
@@ -263,24 +259,24 @@ export default class Validations {
 				.isLength({ min: 5 })
 				.withMessage('Address must contain at least 5 characters'),
 			body('address2').optional(),
-			body('address_city')
+			body('city')
 				.notEmpty()
 				.withMessage('City cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('City must contain at least 2 characters'),
-			body('address_state')
+			body('state')
 				.notEmpty()
 				.withMessage('State cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('State must contain at least 2 characters'),
-			body('address_country')
+			body('country')
 				.notEmpty()
 				.withMessage('Country cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('Country must contain at least 2 characters'),
-			body('address_zip')
+			body('zipcode')
 				.notEmpty()
-				.withMessage('Zip cannot be empty')
+				.withMessage('Zipcode cannot be empty')
 				.isLength({ min: 5 })
 				.withMessage('Zipcode must contain at least 5 characters'),
 		];
@@ -361,12 +357,6 @@ export default class Validations {
 				.withMessage("Child's first name is required")
 				.isLength({ max: 255 })
 				.withMessage("Child's first name is no longer than 255 characters"),
-
-			body('childLastName')
-				.notEmpty()
-				.withMessage("Child's last name is required")
-				.isLength({ max: 255 })
-				.withMessage("Child's last name is no longer than 255 characters"),
 
 			body('wishItemName')
 				.notEmpty()

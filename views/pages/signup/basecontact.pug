@@ -64,7 +64,7 @@ block content
                                 )
                                 span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
                                     #showPassword.fas.fa-eye.text-white.pointer
-                            small#password-error.hidden.text-primary Passwords do not match
+                            small#password-error.d-none.text-primary Passwords do not match
 
                     .py-2
                         label.form-label( for='password-repeat' ) Confirm Password:
@@ -80,7 +80,11 @@ block content
 
                     .row.pt-4.justify-content-center
                         .col-md-6
-                            button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Sign Up
+                            button#submit-btn.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' )
+                                | Sign Up
+                                #loading-spinner.ms-2.d-none
+                                    .spinner-border( role='status' )
+                                        span.visually-hidden Loading...
 
 block modal
     include ../../components/modal/signupModal.pug
@@ -95,11 +99,11 @@ block scripts
                 const password = $('#password').val();
                 const passwordRepeat = $(e.currentTarget).val();
 
-                if (passwordRepeat !== '') {
+                if (passwordRepeat) {
                     if (password !== passwordRepeat) {
-                        $('#password-error').show();
+                        $('#password-error').removeClass('d-none');
                     } else {
-                        $('#password-error').hide();
+                        $('#password-error').addClass('d-none');
                     }
                 }
             });
@@ -111,6 +115,7 @@ block scripts
                 $('#sign-up-form').submit((event) => {
                     event.preventDefault();
                     $('#submit-btn').prop('disabled', true);
+                    $('#loading-spinner').removeClass('d-none');
                     grecaptcha.execute();
                 });
 
@@ -122,6 +127,7 @@ block scripts
                     const password = $('#password').val();
                     const passwordConfirm = $('#password-repeat').val();
                     const userRole = $("input[type='radio']:checked").val();
+
                     $.ajax({
                         type: 'POST',
                         url: '/signup',
@@ -135,12 +141,12 @@ block scripts
                             captchaToken,
                         },
                         success: function (response, textStatus, xhr) {
-                            $('#submit-btn').prop('disabled', false);
                             location.assign(response.url);
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
-                            showToast(response.responseJSON.error.msg);
+                            $('#loading-spinner').removeClass('d-none');
+                            new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                             grecaptcha.reset();
                         },
                     });
@@ -153,7 +159,8 @@ block scripts
             $(document).ready(() => {
                 $('#sign-up-form').submit((event) => {
                     event.preventDefault();
-                    $('#submit-btn').prop('disabled', false);
+                    $('#submit-btn').prop('disabled', true);
+                    $('#loading-spinner').removeClass('d-none');
 
                     const captchaToken = '';
                     const fName = $('#fName').val();
@@ -176,12 +183,12 @@ block scripts
                             captchaToken,
                         },
                         success: function (response, textStatus, xhr) {
-                            $('#submit-btn').prop('disabled', false);
                             location.assign(response.url);
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
-                            showToast(response.responseJSON.error.msg);
+                            $('#loading-spinner').addClass('d-none');
+                            new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                         },
                     });
                 });

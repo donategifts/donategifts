@@ -29,18 +29,18 @@ block content
                         a.button-outline.button-width.m-2( href='/howto' ) How It Works
                         a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
 
-        include ../components/homeSampleCards.pug
+        #carousel-root
 
         #status-section.container-fluid.d-md-flex.align-items-center
             .container.d-md-flex.justify-content-center.align-items-center
-                .col-md.mb-3.mb-md-0
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-3.svg' alt='illustration of wreath decoration' loading='lazy' )
+                            img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
                         .display-3.text-danger= undonatedCards
                         if undonatedCards < 2
                             .fs-6.text-primary
-                                = undonatedCards > 0 ? 'Child' : 'Children '
+                                = undonatedCards > 0 ? 'Child ' : 'Children '
                                 | awaiting
                                 br
                                 | your donation
@@ -51,10 +51,10 @@ block content
                                 br
                                 | your donation
 
-                .col-md.mb-3.mb-md-0
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-2.svg' alt='wreathpic' loading='lazy' )
+                            img( src='/svg/wreath-2.svg' alt='wreath-illustration' loading='lazy' )
                         .display-2.text-danger= donatedCards
                         .fs-6.text-primary
                             | Children
@@ -62,10 +62,10 @@ block content
                             br
                             | their gifts!
 
-                .col-md
+                .col-md.py-5.py-md-0
                     .text-center
                         .status
-                            img( src='/svg/wreath-3.svg' alt='wreathpic' loading='lazy' )
+                            img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
                         .display-2.text-danger= verifiedAgencies
                         .fs-6.text-primary
                             | Agencies
@@ -77,7 +77,7 @@ block content
             .heading-primary.text-center.mb-3.py-2 Our Partner Agencies
             .container-fluid.pb-5
                 #partner-carousel
-                    ul.small-ul.px-0( data-partner-carousel='' )
+                    ul.align-items-center.small-ul.px-0( data-partner-carousel='' )
                         li
                             a( href='https://centraltexastableofgrace.org/' target='_blank' )
                                 img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
@@ -128,7 +128,7 @@ block content
 
         .my-4
             .container
-                .heading-primary.mb-3.text-center We Need Your Help
+                .heading-primary.mb-3.text-center Make a Tangible Impact
                 .d-md-flex
                     .col-md-6.pt-5.pb-4.px-3
                         img.img-fluid.rounded.rounded-3( src='/img/foster-children-back-facing-stock.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
@@ -262,10 +262,15 @@ block scripts
         });
 
     script.
-        $(document).ready(() => {
-            const sampleCardsCarousel = $('#sample-cards-carousel');
-            new bootstrap.Carousel(sampleCardsCarousel, {
-                interval: 1000,
-                touch: true,
-            });
-        });
+        $(document).ready(function () {
+            const root = ReactRoot(document.querySelector('#carousel-root'));
+            root.render(
+                React.createElement(
+                    WishCardsCarousel,
+                    {
+                        wishCards: !{JSON.stringify(wishCards)},
+                        user: !{JSON.stringify(user || {})},
+                    }
+                )
+            );
+        })

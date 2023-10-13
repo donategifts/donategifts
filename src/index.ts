@@ -13,7 +13,6 @@ import requestIp from 'request-ip';
 import { routes as apiRoutes } from './api';
 import BaseController from './controller/basecontroller';
 import MongooseConnection from './db/connection';
-import DGBot from './discord/bot';
 import config from './helper/config';
 import logger from './helper/logger';
 import { routes } from './routes';
@@ -54,13 +53,6 @@ const app = express();
 	});
 
 	await new MongooseConnection().connect();
-
-	if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
-		const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
-
-		await bot.refreshCommands();
-		await bot.initClient();
-	}
 
 	app.use(cors());
 

@@ -6,7 +6,7 @@ const pinoLogger = pino({
 	transport: {
 		target: 'pino-pretty',
 		options: {
-			colorize: true,
+			colorize: config.NODE_ENV === 'development',
 		},
 	},
 });

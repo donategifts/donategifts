@@ -3,24 +3,24 @@ import type { Request, Response, NextFunction } from 'express';
 import AgencyRepository from '../db/repository/AgencyRepository';
 
 export default class Permissions {
-	static redirectLogin(_req: Request, res: Response, next: NextFunction) {
-		if (!res.locals.user) {
+	static redirectLogin(req: Request, res: Response, next: NextFunction) {
+		if (!req.session.user) {
 			return res.redirect('/login');
 		}
 
-		next();
+		return next();
 	}
 
-	static redirectProfile(_req: Request, res: Response, next: NextFunction) {
-		if (res.locals.user) {
+	static redirectProfile(req: Request, res: Response, next: NextFunction) {
+		if (req.session.user) {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
-	static async isAdminOrAgency(_req: Request, res: Response, next: NextFunction) {
-		const { user } = res.locals;
+	static async isAdminOrAgency(req: Request, res: Response, next: NextFunction) {
+		const user = req.session.user;
 
 		if (!user) {
 			return res.redirect('/login');
@@ -40,11 +40,12 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
-	static checkUserVerification(_req: Request, res: Response, next: NextFunction) {
-		const { user } = res.locals;
+	static checkUserVerification(req: Request, res: Response, next: NextFunction) {
+		const user = req.session.user;
+
 		if (!user) {
 			return res.redirect('/login');
 		}
@@ -53,11 +54,11 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		next();
+		return next();
 	}
 
 	static checkAdminPermission(req: Request, res: Response, next: NextFunction) {
-		const { user } = res.locals;
+		const user = req.session.user;
 
 		if (!user) {
 			return res.redirect('/login');
@@ -67,6 +68,6 @@ export default class Permissions {
 			return res.status(404).render('error/404');
 		}
 
-		next();
+		return next();
 	}
 }

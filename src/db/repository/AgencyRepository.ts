@@ -8,8 +8,12 @@ export default class AgencyRepository {
 		this.agencyModel = Agency;
 	}
 
-	async getAgencyByUserId(userId: string) {
-		return await this.agencyModel.findOne({ accountManager: userId }).lean().exec();
+	getAgencyByUserId(userId: string): Promise<Agency | null> {
+		return this.agencyModel.findOne({ accountManager: userId }).lean().exec();
+	}
+
+	getAgencyById(agencyId: string): Promise<Agency | null> {
+		return this.agencyModel.findById(agencyId).lean().exec();
 	}
 
 	async getAgencyByName(agencyName: string) {
@@ -32,32 +36,19 @@ export default class AgencyRepository {
 		}
 	}
 
-	async verifyAgency(agencyId: string) {
-		try {
-			return await this.agencyModel
-				.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
-				.populate<{ accountManager: User }>('accountManager')
-				.lean()
-				.exec();
-		} catch (error) {
-			throw new Error(`Failed to verify Agency: ${error}`);
-		}
+	verifyAgency(agencyId: string): Promise<Agency | null> {
+		return this.agencyModel
+			.findOneAndUpdate({ _id: agencyId }, { $set: { isVerified: true } }, { new: true })
+			.lean()
+			.exec();
 	}
 
-	async getVerifiedAgencies() {
-		try {
-			return await this.agencyModel.find({ isVerified: true }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get verified Agencies: ${error}`);
-		}
+	getVerifiedAgencies(): Promise<Agency[] | null> {
+		return this.agencyModel.find({ isVerified: true }).lean().exec();
 	}
 
-	async getUnverifiedAgencies() {
-		try {
-			return await this.agencyModel.find({ isVerified: false }).lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get unverified Agencies: ${error}`);
-		}
+	getUnverifiedAgencies(): Promise<Agency[] | null> {
+		return this.agencyModel.find({ isVerified: false }).lean().exec();
 	}
 
 	async updateAgency(id: string, agencyFields: Partial<Agency>) {
@@ -69,5 +60,12 @@ export default class AgencyRepository {
 		} catch (error) {
 			throw new Error(`Failed to update agency details: ${error}`);
 		}
+	}
+
+	updateAgencyById(id: string, agencyFields: Partial<Agency>) {
+		return this.agencyModel
+			.updateOne({ _id: id }, { $set: { ...agencyFields } })
+			.lean()
+			.exec();
 	}
 }

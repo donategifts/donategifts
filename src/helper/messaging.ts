@@ -162,8 +162,18 @@ export default class Messaging {
 	}
 
 	// IF WE WANT TO CHANGE THE RECIPIENT ADDRESS LATER, MUST AUTHORIZE IN MAILGUN SYSTEM FIRST
-	static async sendMail(from, to, subject, message, attachments?) {
+	static async sendMail(
+		from: string | null,
+		to: string,
+		subject: string,
+		message: string,
+		attachments?: { filename: string; path: string; cid: string }[],
+	) {
 		try {
+			if (!from) {
+				throw new Error('No default email set in .env!!!');
+			}
+
 			const transporter = await this.getTransport();
 
 			if (transporter) {
@@ -302,19 +312,23 @@ export default class Messaging {
 		);
 	}
 
-	static async sendAgencyVerifiedMail(to) {
-		this.sendMail(
+	static async sendAgencyVerifiedMail(to: string) {
+		const result = await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
+
+		if (config.NODE_ENV === 'development') {
+			log.info(result.data);
+		}
 	}
 
 	//NOTE: Broken
 	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
 		}
 
@@ -324,12 +338,7 @@ export default class Messaging {
 
 			await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
-			});
-
-			await axios({
-				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -342,16 +351,15 @@ export default class Messaging {
 								url: website,
 							},
 							description: `
-                            ${bio}
+								${bio}
 
-                            [${website}](${website})
-                            
-                            Please check their website before verifying it!
-                        `,
+								${website}
+								
+								Please check their website before verifying it!
+
+								https://donate-gifts.com/admin/agencyDetail/${id}
+                        	`,
 							color: Colors.Yellow,
-							footer: {
-								text: `Want to verify it? /verifyagency ${id}`,
-							},
 						},
 					],
 				},
@@ -363,7 +371,7 @@ export default class Messaging {
 
 	//NOTE: Broken
 	static async sendFeedbackMessage({ name, email, subject, message }) {
-		if (!config.DISCORD.STATUS_WEBHOOK_URL) {
+		if (!config.DISCORD.CONTACT_WEBHOOK_URL) {
 			return;
 		}
 
@@ -373,7 +381,7 @@ export default class Messaging {
 
 			return await axios({
 				method: 'POST',
-				url: config.DISCORD.STATUS_WEBHOOK_URL,
+				url: config.DISCORD.CONTACT_WEBHOOK_URL,
 				headers: {
 					'Content-Type': 'application/json',
 				},

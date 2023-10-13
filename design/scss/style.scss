@@ -1,15 +1,16 @@
 @import 'includes';
 
-body {
-	font-family: $font-body;
-}
-
 main {
 	min-height: 80vh;
+	font-family: $font-body;
 }
 
 .heading-primary {
 	@include font-styling($font-heading, 2.35em, $primary, $fw-medium);
+}
+
+.text-primary {
+	font-family: $font-body;
 }
 
 // Need to be reviewed first and removed after testing
@@ -54,8 +55,34 @@ main {
 	width: 100%;
 }
 
+.input-border{
+	border-radius: 0.5rem;
+
+	&-primary{
+		border: 1px solid $primary;
+	}
+
+	&-secondary {
+		border: 1px solid $secondary;
+	}
+
+	&-danger {
+		border: 2px solid $danger;
+	}
+}
+
 @media (width <= 768px) {
 	.actions {
 		flex-flow: column;
+	}
+}
+
+
+#toast {
+	&.toast {
+		top: 10%;
+		transform: translate(-50%,-50%);
+		left: 50%;
+		z-index: 1000;
 	}
 }

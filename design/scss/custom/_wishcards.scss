@@ -8,3 +8,101 @@
 		background-color: lighten($cream, 8%);
 	}
 }
+
+
+#wish-create-page {
+	background-color: lighten($cream, 10%);
+	margin-top: -5px;
+
+	.card {
+		label {
+			color: $navy-dark;
+		}
+
+		.form-text {
+			width: 200px;
+		}
+
+		.display-6 {
+			font-size: 1.3rem;
+			font-weight: $fw-semi-bold;
+			color: $primary;
+		}
+
+		.fa-question-circle {
+			color: $secondary;
+			font-size: 1.15em;
+			cursor: pointer;
+		}
+
+		.uploader {
+			background-color: lighten($cream, 8%);
+			border: 1.5em solid $white;
+			border-bottom: none;
+			border-top: 2.5em;
+		}
+	}
+
+	input[type="file"] {
+		color: transparent;
+		position: relative;
+		outline: none;
+		width: 200px;
+
+		&::file-selector-button {
+			width: 200px;
+			color: transparent;
+			border: 1px solid $secondary;
+			background-color: $secondary;
+
+			@supports (-moz-appearance: none) {
+				color: $secondary;
+			}
+		}
+
+		&::before {
+			position: absolute;
+			pointer-events: none;
+			top: 0.5em;
+			left: 1.5em;
+			height: 25px;
+			width: 25px;
+			content: "";
+			background-image: url("/svg/upload-icon.svg");
+		}
+
+		&::after {
+			position: absolute;
+			top: 0.5em;
+			left: 3.5em;
+			color: $white;
+			font-weight: $fw-semi-bold;
+			content: "Upload Image";
+		}
+	}
+}
+
+@media (width > 768px) {
+	#wish-create-page {
+		.card {
+			.uploader {
+				img {
+					max-height: 200px;
+					width: auto;
+				}
+			}
+		}
+	}
+}
+
+@media (width <= 768px) {
+	#wish-create-page {
+		.card {
+			.uploader {
+				.form-text {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
