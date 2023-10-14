@@ -17,7 +17,6 @@ block content
                 var messageChildName = `Message ${wishcard.childFirstName}`;
                 var defaultText = `No one signed ${wishcard.childFirstName}'s card yet. Log in and send a message.`;
                 var options = { year: 'numeric', month: 'short', day: 'numeric' };
-
             .row.justify-content-center.align-items-start
                 .col-md-4.col-lg-3.col-12.mt-4
                     .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1.text-center
@@ -89,7 +88,7 @@ block content
                                         select#messageSelect.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
                                             each message, index in defaultMessages
                                                 option( value=index )= message
-                                        textarea#customMessageArea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." aria-hidden='true' style={display: "none"} )
+                                        //- textarea#customMessageArea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." aria-hidden='true' style={display: "none"} )
                                         button.btn.btn-lg.btn-primary.mt-4.d-flex.justify-content-center( type='submit' )= messageChildName
 
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
@@ -115,19 +114,19 @@ block modal
 block scripts
     script.
         $(document).ready(function () {
-            $('.form-select-lg').change(function () {
-                const selectedValue = $('.form-select-lg option:selected').text();
-                const displayAttribute = selectedValue == 'Custom Message' ? 'block' : 'none';
-                $('#customMessageArea').css('display', displayAttribute);
-            });
+            //- $('.form-select-lg').change(function () {
+            //-     const selectedValue = $('.form-select-lg option:selected').text();
+            //-     const displayAttribute = selectedValue == 'Custom Message' ? 'block' : 'none';
+            //-     $('#customMessageArea').css('display', displayAttribute);
+            //- });
             $('form').submit(function (event) {
                 event.preventDefault();
 
                 const messageFrom = !{JSON.stringify(user || {})};
                 const messageTo = !{JSON.stringify(wishcard)};
                 const messageText = $('.form-select-lg option:selected').text();
-                const message = messageText === 'Custom Message' ? $('#customMessageArea').val() : messageText;
-
+                //const message = messageText === 'Custom Message' ? $('#customMessageArea').val() : messageText;
+                const message = messageText;
                 const toast = new DG.Toast();
 
                 $.ajax({
