@@ -1,8 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import moment from 'moment';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
+import MessageRepository from '../../db/repository/MessageRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
 import config from '../../helper/config';
+import Utils from '../../helper/utils';
 
 import BaseApiController from './basecontroller';
 
@@ -11,15 +14,50 @@ export default class WishCardApiController extends BaseApiController {
 
 	private agencyRepository: AgencyRepository;
 
+	private messageRepository: WishCardRepository;
+
 	constructor() {
 		super();
 
 		this.wishCardRepository = new WishCardRepository();
 		this.agencyRepository = new AgencyRepository();
+		this.messageRepository = new MessageRepository();
 
+		this.getSingleWishcard = this.getSingleWishcard.bind(this);
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
 		this.postWishCardAsDraft = this.postWishCardAsDraft.bind(this);
+	}
+
+	async getSingleWishcard(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
+
+			// this agency object is returning undefined and breaking frontend
+			const agency = wishcard!.belongsTo;
+			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
+			let defaultMessages;
+			if (res.locals.user) {
+				defaultMessages = Utils.getMessageChoices(
+					res.locals.user.fName,
+					wishcard!.childFirstName,
+				);
+			}
+
+			this.sendResponse(res, {
+				wishcard: {
+					...wishcard,
+					age: wishcard?.childBirthday
+						? moment(new Date()).diff(wishcard?.childBirthday, 'years')
+						: 'Not Provided',
+				},
+				agency: agency || {},
+				messages,
+				defaultMessages: defaultMessages || [],
+			});
+		} catch (error) {
+			this.handleError(res, error);
+		}
 	}
 
 	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
