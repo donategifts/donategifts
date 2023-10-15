@@ -5,11 +5,11 @@ import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
 import Validations from '../middleware/validations';
 
-import WishCardApiController from './controller/wishcards';
+import WishCardController from './controller/wishcards';
 
 const router = express.Router();
-const wishCardController = new WishCardApiController(database);
 const fileUpload = new FileUpload();
+const wishCardController = new WishCardController(database);
 
 router.get('/', wishCardController.handleGetIndex);
 

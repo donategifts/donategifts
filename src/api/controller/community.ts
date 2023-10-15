@@ -72,6 +72,26 @@ export default class CommunityController extends BaseController {
 
 			return this.sendResponse(res, posts);
 		} catch (error: any) {
+			this.log.error('[CommunityController] addPost: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { user } = res.locals;
+			const posts = (await this.postRepository.getByAgencyVerificationStatus(true)).sort(
+				(a, b) => a.created_at.getTime() - b.created_at.getTime(),
+			);
+
+			if (user?.role !== 'partner') {
+				return this.sendResponse(res, { posts });
+			}
+
+			const agency = await this.agencyRepository.getByAccountManagerId(user.id);
+			return this.sendResponse(res, { posts, agency });
+		} catch (error: any) {
+			this.log.error('[CommunityController] handleGetIndex: ', error);
 			return this.handleError(res, error);
 		}
 	}

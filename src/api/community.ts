@@ -15,4 +15,6 @@ router.get('/', communityController.getPosts);
 
 router.post('/', fileUpload.upload.single('image'), communityController.addPost);
 
+router.get('/', communityController.handleGetIndex);
+
 export default router;

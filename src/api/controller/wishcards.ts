@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import ChildrenRepository from '../../db/repository/postgres/ChildrenRepository';
+import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
 import ItemsRepository from '../../db/repository/postgres/ItemsRepository';
 import MessagesRepository from '../../db/repository/postgres/MessagesRepository';
 import WishcardsRepository from '../../db/repository/postgres/WishCardsRepository';
@@ -12,14 +13,15 @@ import config from '../../helper/config';
 import * as DefaultItems from '../../helper/defaultItems';
 import Utils from '../../helper/utils';
 
-import BaseApiController from './basecontroller';
+import BaseController from './basecontroller';
 
-export default class WishCardApiController extends BaseApiController {
+export default class WishCardApiController extends BaseController {
 	private wishCardsRepository: WishcardsRepository;
 	private agenciesRepository: AgenciesRepository;
 	private itemsRepository: ItemsRepository;
 	private childrenRepository: ChildrenRepository;
 	private messagesRepository: MessagesRepository;
+	private imagesRepository: ImagesRepository;
 
 	constructor(private readonly database: Kysely<DB>) {
 		super();
@@ -29,6 +31,7 @@ export default class WishCardApiController extends BaseApiController {
 		this.itemsRepository = new ItemsRepository(this.database);
 		this.childrenRepository = new ChildrenRepository(this.database);
 		this.messagesRepository = new MessagesRepository(this.database);
+		this.imagesRepository = new ImagesRepository(this.database);
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
@@ -130,6 +133,12 @@ export default class WishCardApiController extends BaseApiController {
 					res.locals.user.id,
 				);
 
+				//To do: Have to create multiple images (item, child, wishcard)
+				const newImage = await this.imagesRepository.create({
+					url: config.AWS.USE ? req.file.Location : filePath,
+					created_by: res.locals.user.id,
+				});
+
 				//To Do: Retailer
 				const newItem = await this.itemsRepository.create({
 					name: req.body.wishItemName,
@@ -137,7 +146,7 @@ export default class WishCardApiController extends BaseApiController {
 					link: wishItemURL,
 					retailer_name: '',
 					retailer_product_id: productID,
-					image_id: config.AWS.USE ? req.file.Location : filePath,
+					image_id: '',
 				});
 
 				//To Do: Child Image
@@ -200,6 +209,12 @@ export default class WishCardApiController extends BaseApiController {
 
 				const productID = Utils.extractProductIDFromLink(itemChoice.ItemURL);
 
+				//To do: Have to create multiple images (item, child, wishcard)
+				const newImage = await this.imagesRepository.create({
+					url: config.AWS.USE ? req.file.Location : filePath,
+					created_by: res.locals.user.id,
+				});
+
 				//To Do: Retailer, could skip creating item for guided and reuse (pass in itemId in itemChoice)
 				const newItem = await this.itemsRepository.create({
 					name: itemChoice.Name,
@@ -207,7 +222,7 @@ export default class WishCardApiController extends BaseApiController {
 					link: itemChoice.ItemURL,
 					retailer_name: '',
 					retailer_product_id: productID,
-					image_id: config.AWS.USE ? req.file.Location : filePath,
+					image_id: '',
 				});
 
 				//To Do: Child Image
@@ -321,6 +336,12 @@ export default class WishCardApiController extends BaseApiController {
 				res.locals.user.id,
 			);
 
+			//To do: Have to create multiple images (item, child, wishcard)
+			const newImage = await this.imagesRepository.create({
+				url: config.AWS.USE ? req.file.Location : filePath,
+				created_by: res.locals.user.id,
+			});
+
 			//To Do: Retailer
 			await this.itemsRepository.update(card.item_id, {
 				name: req.body.wishItemName,
@@ -328,7 +349,7 @@ export default class WishCardApiController extends BaseApiController {
 				link: wishItemURL,
 				retailer_name: '',
 				retailer_product_id: productID,
-				image_id: config.AWS.USE ? req.file.Location : filePath,
+				image_id: '',
 			});
 
 			//To Do: Child Image
