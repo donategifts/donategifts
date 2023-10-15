@@ -205,40 +205,6 @@ export default class WishCardRepository {
 		}
 	}
 
-	async lockWishCard(wishCardId: string, userId: string) {
-		try {
-			const wishCard = await this.getWishCardById(wishCardId);
-
-			if (wishCard) {
-				wishCard.isLockedBy = userId;
-				wishCard.isLockedUntil = moment()
-					.add(config.WISHCARD_LOCK_IN_MINUTES, 'minutes')
-					.toDate();
-				wishCard.save();
-			}
-
-			return wishCard;
-		} catch (error) {
-			throw new Error(`Failed to update Wishcard messages: ${error}`);
-		}
-	}
-
-	async unLockWishCard(id: string) {
-		try {
-			const wishCard = await this.getWishCardById(id);
-
-			if (wishCard) {
-				wishCard.isLockedBy = null;
-				wishCard.isLockedUntil = null;
-				wishCard.save();
-			}
-
-			return wishCard;
-		} catch (error) {
-			throw new Error(`Failed to update Wishcard messages: ${error}`);
-		}
-	}
-
 	async getWishCardByAgencyId(agencyId: string) {
 		try {
 			return await this.wishCardModel.find({ belongsTo: agencyId }).lean().exec();
