@@ -104,7 +104,7 @@ export default class WishCardApiController extends BaseApiController {
 				childInterest,
 				childBirthYear,
 				childImage: config.AWS.USE
-					? req.files?.childImage[0].path
+					? req.files?.childImage[0].Location
 					: `/uploads/${childImage[0].filename}`,
 				childStory,
 				wishItemName,
@@ -112,7 +112,7 @@ export default class WishCardApiController extends BaseApiController {
 				wishItemInfo,
 				wishItemURL,
 				wishItemImage: config.AWS.USE
-					? req.files?.wishItemImage[0].path
+					? req.files?.wishItemImage[0].Location
 					: `/uploads/${wishItemImage[0].filename}`,
 				productID,
 				createdBy: res.locals.user._id,

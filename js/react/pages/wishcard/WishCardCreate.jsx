@@ -68,7 +68,7 @@ function WishCardCreate() {
 		fetchAgencyAddress();
 	}, []);
 
-	const validateImage = (ref, setError, fieldName) => {
+	const validateImage = (setError, fieldName) => {
 		if (!formData[fieldName]) {
 			return setError(FORM_INPUT_MAP[fieldName].errors?.default);
 		}
