@@ -67,7 +67,7 @@ export default class WishCardApiController extends BaseApiController {
 		const wishCardAges: { id: string; age: number }[] = [];
 
 		for (let i = 0; i < allWishCards.length; i++) {
-			let childBirthday;
+			let childBirthday: number | Date;
 
 			if (allWishCards[i].birth_year) {
 				childBirthday = allWishCards[i].birth_year;
@@ -417,15 +417,11 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	// handleGetCreate(_req: Request, res: Response, _next: NextFunction) {
-	// 	this.renderView(res, 'wishcard/create');
-	// }
-
 	async handlePostSearch(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
 
-			let childAge;
+			let childAge: number;
 			let showDonated = showDonatedCheck;
 
 			// only true on first visit of page
@@ -448,7 +444,8 @@ export default class WishCardApiController extends BaseApiController {
 
 			const wishcards = await this.getWishCardSearchResult(
 				wishitem,
-				childAge,
+				// childAge is set to 0 on initial visit
+				childAge!,
 				cardIds || [],
 				showDonated,
 				recentlyAdded,
@@ -471,7 +468,9 @@ export default class WishCardApiController extends BaseApiController {
 			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
 			const messages = await this.messageRepository.getByWishCardId(wishcard.id);
 			const child = await this.childrenRepository.getById(wishcard.child_id);
-			let defaultMessages;
+
+			let defaultMessages: string[] = [];
+
 			if (res.locals.user) {
 				defaultMessages = Utils.getMessageChoices(
 					res.locals.user.first_name,
@@ -488,7 +487,7 @@ export default class WishCardApiController extends BaseApiController {
 				},
 				agency: agency || {},
 				messages,
-				defaultMessages: defaultMessages || [],
+				defaultMessages,
 			});
 		} catch (error) {
 			this.log.error('[WishcardController] handleGetSingle: ', error);
@@ -560,7 +559,12 @@ export default class WishCardApiController extends BaseApiController {
 	async handleGetDefaults(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const ageCategory = Number(req.params.id);
-			let itemChoices;
+			let itemChoices: {
+				Image: string;
+				Name: string;
+				Price: number;
+				ItemURL: string;
+			}[];
 
 			switch (ageCategory) {
 				case 1:
@@ -589,7 +593,7 @@ export default class WishCardApiController extends BaseApiController {
 					break;
 			}
 
-			return this.sendResponse(res, { itemChoices });
+			return this.sendResponse(res, itemChoices);
 		} catch (error) {
 			this.log.error('[WishcardController] handleGetDefaults: ', error);
 			return this.handleError(res, error);

@@ -43,6 +43,7 @@ export default class VerificationTokensRepository {
 		return this.database
 			.selectFrom('verification_tokens')
 			.where('user_id', '=', userId)
-			.execute();
+			.select('token')
+			.executeTakeFirstOrThrow();
 	}
 }

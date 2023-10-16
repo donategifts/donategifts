@@ -11,7 +11,6 @@ export default class CommunityPostsRepository {
 		return this.database.selectFrom('community_posts').selectAll('community_posts').execute();
 	}
 
-	getAllByVerifiedAgencies() {}
 	getByAgencyVerificationStatus(is_verified: boolean) {
 		return this.database
 			.selectFrom('community_posts')

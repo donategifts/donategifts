@@ -1,18 +1,23 @@
 import { NextFunction, Request, Response } from 'express';
+import { Kysely } from 'kysely';
 
-import UserRepository from '../../db/repository/UserRepository';
+import UsersRepository from '../../db/repository/postgres/UsersRepository';
+import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
+import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
 
 export default class ProfileController extends BaseController {
-	private userRepository: UserRepository;
+	private usersRepository: UsersRepository;
+	private verificationTokensRepository: VerificationTokensRepository;
 
-	constructor() {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.userRepository = new UserRepository();
+		this.usersRepository = new UsersRepository(database);
+		this.verificationTokensRepository = new VerificationTokensRepository(database);
 
 		this.postResendVerificationLink = this.postResendVerificationLink.bind(this);
 	}
@@ -29,17 +34,19 @@ export default class ProfileController extends BaseController {
 		try {
 			const { userId } = req.body;
 
-			const user = await this.userRepository.getUserByObjectId(userId);
+			const user = await this.usersRepository.getById(userId);
 
 			if (!user) {
 				return this.handleError(res, 'User not found');
 			}
 
-			if (user.emailVerified) {
+			if (user.is_verified) {
 				return this.handleError(res, 'User is already verified');
 			}
 
-			await this.sendEmail(user.email, user.verificationHash);
+			const { token } = await this.verificationTokensRepository.getByUserId(userId);
+
+			await this.sendEmail(user.email, token);
 
 			return this.sendResponse(res, 'Verification email sent');
 		} catch (error) {
