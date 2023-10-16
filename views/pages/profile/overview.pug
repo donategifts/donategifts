@@ -34,7 +34,7 @@ block content
                                 .mb-3.mt-3.mt-md-0
                                     span Got any questions?
                                 a.button-secondary.button-width( href='/contact' ) Contact For Help
-            if user.userRole == 'partner'
+            if user.userRole == 'partner' && agency
                 #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
                         .display-6 Agency Details
