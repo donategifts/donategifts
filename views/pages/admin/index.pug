@@ -1,4 +1,4 @@
-extends ../../../master
+extends ../../master
 
 block title
     title Admin | Donate Gifts
@@ -9,14 +9,11 @@ block main
 
 block footer
 
-append scripts
+block scripts
     script.
         const root = ReactRoot(document.querySelector('#admin-root'));
         root.render(
             React.createElement(
-                AdminAgencyDetail,
-                {
-                    agencyId: '#{agencyId}',
-                }
+                Admin
             )
         );

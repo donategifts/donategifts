@@ -1,8 +1,9 @@
-import { Container, TextInput, Textarea } from '@mantine/core';
+import { TextInput, Textarea } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 
-import MantineProviderWrapper from '../../../utils/mantineProviderWrapper.jsx';
+import CustomButton from '../../../components/shared/CustomButton.jsx';
+import AdminLayout from '../../../layouts/admin.jsx';
 
 export default function Detail({ agencyId }) {
 	const basePath = '/api/admin';
@@ -22,6 +23,9 @@ export default function Detail({ agencyId }) {
 		},
 	});
 
+	const [showVerifyLoader, setShowVerifyLoader] = useState(false);
+	const [showUpdateLoader, setShowUpdateLoader] = useState(false);
+
 	const name = useRef('');
 	const phone = useRef('');
 	const website = useRef('');
@@ -30,11 +34,15 @@ export default function Detail({ agencyId }) {
 	const toast = new window.DG.Toast();
 
 	const verifyAgency = async () => {
+		setShowVerifyLoader(true);
+
 		const res = await fetch(`${basePath}/verifyAgency/${agency.id}`, {
 			method: 'PUT',
 		});
 
 		const { error, data } = await res.json();
+
+		setShowVerifyLoader(false);
 
 		if (error) {
 			toast.show(error, toast.styleMap.danger);
@@ -46,6 +54,7 @@ export default function Detail({ agencyId }) {
 	};
 
 	const updateAgencyData = async () => {
+		setShowUpdateLoader(true);
 		const res = await fetch(`${basePath}/updateAgencyData/${agency.id}`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -60,6 +69,8 @@ export default function Detail({ agencyId }) {
 		});
 
 		const { error, data } = await res.json();
+
+		setShowUpdateLoader(false);
 
 		if (error) {
 			toast.show(error, toast.styleMap.danger);
@@ -80,111 +91,99 @@ export default function Detail({ agencyId }) {
 	}, []);
 
 	return (
-		<MantineProviderWrapper>
-			<Container fluid className="col-8 mt-3 p-4 border rounded shadow">
-				<div className="d-flex align-items-baseline">
-					<h2 className="me-2">{agency.name}</h2>
-					<small className={agency.verified ? 'text-success' : 'text-warning'}>
-						{agency.verified ? 'Verified' : 'Not verified'}
-					</small>
-				</div>
-				<div className="row mb-3">
-					<TextInput
-						ref={name}
-						className="col-6"
-						label="Name"
-						defaultValue={agency.name}
-					/>
-					<TextInput
-						ref={phone}
-						className="col-6"
-						label="Phone"
-						defaultValue={agency.phone}
-					/>
-				</div>
-				<div className="row mb-3">
-					<TextInput
-						ref={website}
-						className="col-6"
-						label="Website"
-						defaultValue={agency.website}
-					/>
-					<TextInput
-						className="col-6"
-						label="Joined"
-						defaultValue={agency.joined}
-						disabled
-					/>
-				</div>
-				<div className="row mb-3 center-elements">
-					<Textarea
-						ref={bio}
-						className="col-6"
-						label="Bio"
-						rows={5}
-						defaultValue={agency.bio}
-					/>
-				</div>
-				<div className="row center-elements">
-					<div className="col-4">
-						<button
-							type="button"
-							className="btn btn-lg btn-primary w-100"
-							onClick={verifyAgency}
-							disabled={agency.verified}
-						>
-							Verify Agency
-						</button>
-					</div>
-					<div className="col-4">
-						<button
-							type="button"
-							className="btn btn-lg btn-secondary w-100"
-							onClick={updateAgencyData}
-						>
-							Update Agency Data
-						</button>
-					</div>
-				</div>
-				<hr />
-				<div className="d-flex align-items-baseline">
-					<h3 className="me-2">Account Manager</h3>
-					<small
-						className={agency.accountManager.verified ? 'text-success' : 'text-warning'}
-					>
-						{agency.accountManager.verified ? 'Verified' : 'Not verified'}
-					</small>
-				</div>
-				<div className="row mb-3">
-					<TextInput
-						className="col-6"
-						label="First name"
-						defaultValue={agency.accountManager.firstName}
-						disabled
-					/>
-					<TextInput
-						className="col-6"
-						label="Last name"
-						defaultValue={agency.accountManager.lastName}
-						disabled
+		<AdminLayout>
+			<div className="d-flex align-items-baseline">
+				<h2 className="me-2">{agency.name}</h2>
+				<small className={agency.verified ? 'text-success' : 'text-warning'}>
+					{agency.verified ? 'Verified' : 'Not verified'}
+				</small>
+			</div>
+			<div className="row mb-3">
+				<TextInput ref={name} className="col-6" label="Name" defaultValue={agency.name} />
+				<TextInput
+					ref={phone}
+					className="col-6"
+					label="Phone"
+					defaultValue={agency.phone}
+				/>
+			</div>
+			<div className="row mb-3">
+				<TextInput
+					ref={website}
+					className="col-6"
+					label="Website"
+					defaultValue={agency.website}
+				/>
+				<TextInput className="col-6" label="Joined" defaultValue={agency.joined} disabled />
+			</div>
+			<div className="row mb-3 center-elements">
+				<Textarea
+					ref={bio}
+					className="col-6"
+					label="Bio"
+					rows={5}
+					defaultValue={agency.bio}
+				/>
+			</div>
+			<div className="row center-elements">
+				<div className="col-4">
+					<CustomButton
+						size="lg"
+						fullWidth={true}
+						onClick={verifyAgency}
+						loading={showVerifyLoader}
+						disabled={agency.verified || showVerifyLoader}
+						text={agency.verified ? 'Verified' : 'Verify Agency'}
 					/>
 				</div>
-				<div className="row">
-					<TextInput
-						className="col-6"
-						label="Email"
-						defaultValue={agency.accountManager.email}
-						disabled
-					/>
-					<TextInput
-						className="col-6"
-						label="Joined"
-						defaultValue={agency.accountManager.joined}
-						disabled
+				<div className="col-4">
+					<CustomButton
+						size="lg"
+						color={'lime'}
+						fullWidth={true}
+						loading={showUpdateLoader}
+						onClick={updateAgencyData}
+						disabled={showUpdateLoader}
+						text={'Update Agency Data'}
 					/>
 				</div>
-			</Container>
-		</MantineProviderWrapper>
+			</div>
+			<hr />
+			<div className="d-flex align-items-baseline">
+				<h3 className="me-2">Account Manager</h3>
+				<small className={agency.accountManager.verified ? 'text-success' : 'text-warning'}>
+					{agency.accountManager.verified ? 'Verified' : 'Not verified'}
+				</small>
+			</div>
+			<div className="row mb-3">
+				<TextInput
+					className="col-6"
+					label="First name"
+					defaultValue={agency.accountManager.firstName}
+					disabled
+				/>
+				<TextInput
+					className="col-6"
+					label="Last name"
+					defaultValue={agency.accountManager.lastName}
+					disabled
+				/>
+			</div>
+			<div className="row">
+				<TextInput
+					className="col-6"
+					label="Email"
+					defaultValue={agency.accountManager.email}
+					disabled
+				/>
+				<TextInput
+					className="col-6"
+					label="Joined"
+					defaultValue={agency.accountManager.joined}
+					disabled
+				/>
+			</div>
+		</AdminLayout>
 	);
 }
 

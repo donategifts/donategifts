@@ -23,6 +23,9 @@ import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 window.WishCardsCarousel = WishCardsCarousel;
 
 // pages
+import Admin from './pages/admin/index.jsx';
+window.Admin = Admin;
+
 import Detail from './pages/admin/agency/detail.jsx';
 window.AdminAgencyDetail = Detail;
 
