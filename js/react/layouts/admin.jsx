@@ -1,8 +1,6 @@
-import { AppShell, Burger, Image } from '@mantine/core';
+import { AppShell, Burger, Image, Accordion } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, Outlet } from 'react-router-dom';
-
-import Navigation from '../components/admin/Navigation.jsx';
 
 const styles = {
 	position: 'absolute',
@@ -39,7 +37,31 @@ function AdminLayout() {
 				</a>
 			</AppShell.Header>
 
-			<Navigation />
+			<AppShell.Navbar p="md">
+				<Link className="btn btn-link text-decoration-none" to="/wishcards/administration">
+					Wishcards
+				</Link>
+				<hr />
+				<Accordion variant="filled" chevronPosition="right">
+					<Accordion.Item value="agencies">
+						<Accordion.Control className="text-center text-dark">
+							Agencies
+						</Accordion.Control>
+						<Accordion.Panel>
+							<Link
+								className="btn btn-link text-decoration-none w-100"
+								to="/agency/overview"
+							>
+								Overview
+							</Link>
+						</Accordion.Panel>
+					</Accordion.Item>
+				</Accordion>
+				<hr />
+				<Link className="btn btn-link text-decoration-none" to="/users/overview">
+					Users
+				</Link>
+			</AppShell.Navbar>
 
 			<AppShell.Main>
 				<Outlet />
