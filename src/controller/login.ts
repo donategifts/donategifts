@@ -36,11 +36,11 @@ export default class LoginController extends BaseController {
 					return this.handleError(res, 'request already ended', 500);
 				}
 
-				return res.status(200).redirect('/profile');
+				return this.sendResponse(res, { redirect: '/profile' });
 			}
 		}
 
-		this.renderView(res, 'login', { error: 'Username and/or password incorrect' }, 403);
+		this.sendResponse(res, { error: 'Username and/or password incorrect' }, 403);
 	}
 
 	async handlePostGoogleLogin(req: Request, res: Response, _next: NextFunction) {

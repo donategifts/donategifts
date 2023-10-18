@@ -145,7 +145,7 @@ block scripts
                         },
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
-                            $('#loading-spinner').removeClass('d-none');
+                            $('#loading-spinner').addClass('d-none');
                             new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                             grecaptcha.reset();
                         },
