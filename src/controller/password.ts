@@ -61,13 +61,17 @@ export default class PasswordController extends BaseController {
 						token: req.params.token,
 					});
 				} else {
-					return this.handleError(res, 'Password token expired');
+					this.log.warn(
+						'[PasswordController] handleGetResetToken: Password token expired',
+					);
+					return res.redirect('/password/reset');
 				}
-			} else {
-				return this.handleError(res, 'User not found');
 			}
+
+			this.log.error('[PasswordController] handleGetResetToken: User not found');
+			return res.redirect('/');
 		} catch (error) {
-			return this.handleError(res, error);
+			return this.handleError(res, error, 500, true);
 		}
 	}
 

@@ -12,33 +12,34 @@
         )
             span.navbar-toggler-icon
 
-        #navbar.collapse.navbar-collapse.justify-content-end
-            .navbar-nav.ml-auto.mb-2.mb-lg-0.align-items-center
-                .nav-item
-                    a.nav-link( href='/wishcards' ) Wish Cards
-                .nav-item
-                    a.nav-link( href='/mission' ) Mission
-                .nav-item
-                    a.nav-link( href='/howto' ) How To
-                .nav-item
-                    a.nav-link( href='/community' ) Community
+        block links
+            #navbar.collapse.navbar-collapse.justify-content-end
+                .navbar-nav.ml-auto.mb-2.mb-lg-0.align-items-center
+                    .nav-item
+                        a.nav-link( href='/wishcards' ) Wish Cards
+                    .nav-item
+                        a.nav-link( href='/mission' ) Mission
+                    .nav-item
+                        a.nav-link( href='/howto' ) How To
+                    .nav-item
+                        a.nav-link( href='/community' ) Community
 
-                if !user
-                    .nav-item
-                        a.nav-link( href='/login' ) Log In
-                    .nav-item
-                        a.nav-link( href='/signup' ) Sign Up
-                else
-                    .nav-item
-                        a.nav-link( href='/profile' ) My Account
-                    if user.userRole == 'partner'
-                        if agency && agency.isVerified
+                    if !user
+                        .nav-item
+                            a.nav-link( href='/login' ) Log In
+                        .nav-item
+                            a.nav-link( href='/signup' ) Sign Up
+                    else
+                        .nav-item
+                            a.nav-link( href='/profile' ) My Account
+                        if user.userRole == 'partner'
+                            if agency && agency.isVerified
+                                .nav-item
+                                    a.nav-link( href='/wishcards/create' ) Create Wish Cards
+                        if user.userRole == 'admin'
                             .nav-item
-                                a.nav-link( href='/wishcards/create' ) Create Wish Cards
-                    if user.userRole == 'admin'
-                        .nav-item
-                            a.nav-link( href='/admin/wishcards' ) Admin Wishcards
-                        .nav-item
-                            a.nav-link( href='/admin/agencyOverview' ) Admin Agencies
+                                a.nav-link( href='/admin/wishcards' ) Admin Wishcards
+                            .nav-item
+                                a.nav-link( href='/admin/agencyOverview' ) Admin Agencies
                         .nav-item
                             a.nav-link( href='/admin' ) Admin

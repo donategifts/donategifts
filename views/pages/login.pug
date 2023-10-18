@@ -51,7 +51,17 @@ append scripts
 
     if error
         script.
-            new DG.Toast().show('#{error}', DG.Toast.styleMap.danger);
+            $(document).ready(() => {
+                new DG.Toast().show('#{error}', DG.Toast.styleMap.danger);
+                window.history.pushState({}, null, '/login');
+            });
+
+    if message
+        script.
+            $(document).ready(() => {
+                new DG.Toast().show('#{message}', DG.Toast.styleMap.info);
+                window.history.pushState({}, null, '/login');
+            });
 
     script.
         const facebookLogin = (fbUser) => {
