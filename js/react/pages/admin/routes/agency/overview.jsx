@@ -1,7 +1,6 @@
 import { Table, Tabs } from '@mantine/core';
 import { useEffect, useState } from 'react';
-
-import AdminLayout from '../../../layouts/admin.jsx';
+import { Link } from 'react-router-dom';
 
 export default function Overview() {
 	const basePath = '/api/admin';
@@ -26,7 +25,7 @@ export default function Overview() {
 					<Table.Td>{agency.bio}</Table.Td>
 					<Table.Td>{agency.accountManager}</Table.Td>
 					<Table.Td>
-						<a href={`/admin/agencyDetail/${agency.id}`}>Detail</a>
+						<Link to={`/agency/${agency.id}`}>Detail</Link>
 					</Table.Td>
 				</Table.Tr>
 			)),
@@ -54,7 +53,7 @@ export default function Overview() {
 	);
 
 	return (
-		<AdminLayout>
+		<>
 			<Tabs value={value} onChange={setValue}>
 				<Tabs.List grow>
 					<Tabs.Tab value="unverified" color="blue">
@@ -81,6 +80,6 @@ export default function Overview() {
 					</Table>
 				</Tabs.Panel>
 			</Tabs>
-		</AdminLayout>
+		</>
 	);
 }

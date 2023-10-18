@@ -1,12 +1,15 @@
 import { TextInput, Textarea } from '@mantine/core';
-import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import CustomButton from '../../../components/shared/CustomButton.jsx';
-import AdminLayout from '../../../layouts/admin.jsx';
+import CustomButton from '../../../../components/shared/CustomButton.jsx';
 
-export default function Detail({ agencyId }) {
+export default function Detail() {
+	const { agencyId } = useParams();
+	const navigate = useNavigate();
+
 	const basePath = '/api/admin';
+
 	const [agency, setAgency] = useState({
 		name: '',
 		phone: '',
@@ -91,12 +94,17 @@ export default function Detail({ agencyId }) {
 	}, []);
 
 	return (
-		<AdminLayout>
-			<div className="d-flex align-items-baseline">
-				<h2 className="me-2">{agency.name}</h2>
-				<small className={agency.verified ? 'text-success' : 'text-warning'}>
-					{agency.verified ? 'Verified' : 'Not verified'}
-				</small>
+		<>
+			<div className="d-flex align-items-baseline justify-content-between">
+				<div className="d-flex align-items-baseline">
+					<h2 className="me-2">{agency.name}</h2>
+					<small className={agency.verified ? 'text-success' : 'text-warning'}>
+						{agency.verified ? 'Verified' : 'Not verified'}
+					</small>
+				</div>
+				<button onClick={() => navigate(-1)} className="btn btn-link">
+					Go back
+				</button>
 			</div>
 			<div className="row mb-3">
 				<TextInput ref={name} className="col-6" label="Name" defaultValue={agency.name} />
@@ -183,10 +191,6 @@ export default function Detail({ agencyId }) {
 					disabled
 				/>
 			</div>
-		</AdminLayout>
+		</>
 	);
 }
-
-Detail.propTypes = {
-	agencyId: PropTypes.string.isRequired,
-};

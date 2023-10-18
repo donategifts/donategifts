@@ -26,17 +26,8 @@ window.WishCardsCarousel = WishCardsCarousel;
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
 
-import Detail from './pages/admin/agency/detail.jsx';
-window.AdminAgencyDetail = Detail;
-
-import Overview from './pages/admin/agency/overview.jsx';
-window.AdminAgencyOverview = Overview;
-
 import WishCardCreate from './pages/wishcard/WishCardCreate.jsx';
 window.WishCardCreate = WishCardCreate;
 
 import WishCardManage from './pages/wishcard/WishCardManage.jsx';
 window.WishCardManage = WishCardManage;
-
-import WishcardsAdministration from './pages/admin/wishcardsAdministration.jsx';
-window.WishcardsAdministration = WishcardsAdministration;
