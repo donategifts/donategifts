@@ -1,7 +1,6 @@
-import { Container, Table, Tabs } from '@mantine/core';
+import { Table, Tabs } from '@mantine/core';
 import { useEffect, useState } from 'react';
-
-import MantineProviderWrapper from '../../../utils/mantineProviderWrapper.jsx';
+import { Link } from 'react-router-dom';
 
 export default function Overview() {
 	const basePath = '/api/admin';
@@ -26,7 +25,7 @@ export default function Overview() {
 					<Table.Td>{agency.bio}</Table.Td>
 					<Table.Td>{agency.accountManager}</Table.Td>
 					<Table.Td>
-						<a href={`/admin/agencyDetail/${agency.id}`}>Detail</a>
+						<Link to={`/agency/${agency.id}`}>Detail</Link>
 					</Table.Td>
 				</Table.Tr>
 			)),
@@ -54,35 +53,33 @@ export default function Overview() {
 	);
 
 	return (
-		<MantineProviderWrapper>
-			<Container fluid className="col-10 mt-3 p-4 border rounded-top shadow">
-				<Tabs value={value} onChange={setValue}>
-					<Tabs.List grow>
-						<Tabs.Tab value="unverified" color="blue">
-							To be verified Agencies
-						</Tabs.Tab>
-						<Tabs.Tab value="verified" color="teal">
-							Already verified Agencies
-						</Tabs.Tab>
-					</Tabs.List>
+		<>
+			<Tabs value={value} onChange={setValue}>
+				<Tabs.List grow>
+					<Tabs.Tab value="unverified" color="blue">
+						To be verified Agencies
+					</Tabs.Tab>
+					<Tabs.Tab value="verified" color="teal">
+						Already verified Agencies
+					</Tabs.Tab>
+				</Tabs.List>
 
-					<Tabs.Panel value={value}>
-						<Table
-							captionSide="top"
-							striped
-							highlightOnHover
-							withTableBorder
-							withColumnBorders
-						>
-							<Table.Caption className="text-center">
-								Please check their website and details before you verify them
-							</Table.Caption>
-							<Table.Thead>{ths}</Table.Thead>
-							<Table.Tbody>{rows}</Table.Tbody>
-						</Table>
-					</Tabs.Panel>
-				</Tabs>
-			</Container>
-		</MantineProviderWrapper>
+				<Tabs.Panel value={value}>
+					<Table
+						captionSide="top"
+						striped
+						highlightOnHover
+						withTableBorder
+						withColumnBorders
+					>
+						<Table.Caption className="text-center">
+							Please check their website and details before you verify them
+						</Table.Caption>
+						<Table.Thead>{ths}</Table.Thead>
+						<Table.Tbody>{rows}</Table.Tbody>
+					</Table>
+				</Tabs.Panel>
+			</Tabs>
+		</>
 	);
 }

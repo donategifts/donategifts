@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-import CustomToast from '../../components/shared/CustomToast.jsx';
+import CustomToast from '../../../../components/shared/CustomToast.jsx';
 
-export default function WishcardsAdministration() {
+export default function Administration() {
 	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState({});
 	const [error, setError] = useState('');
 
