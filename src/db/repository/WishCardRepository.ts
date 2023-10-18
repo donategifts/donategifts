@@ -39,12 +39,15 @@ export default class WishCardRepository {
 		}
 	}
 
-	async getAllWishCards() {
-		try {
-			return await this.wishCardModel.find().lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get Wishcards: ${error}`);
-		}
+	async getAll() {
+		const publisehd = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status: 'published' } }])
+			.exec();
+
+		const donated = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status: 'donated' } }])
+			.exec();
+		return [...publisehd, ...donated];
 	}
 
 	async getRandom(status: STATUS, sampleSize: number) {
