@@ -6,11 +6,19 @@ import { Users } from '../src/db/types/generated/database';
 
 declare module 'express-serve-static-core' {
 	interface Request {
-		rawBody: paypal.notification.webhookEvent.WebhookEvent;
+		rawBody: string;
 		file: Express.Multer.File &
 			Express.MulterS3.File & {
 				Location: string;
 			};
+		files: {
+			[fieldname: string]: [
+				Express.Multer.File[] & {
+					Location: string;
+					filename: string;
+				},
+			];
+		};
 	}
 
 	interface Locals {

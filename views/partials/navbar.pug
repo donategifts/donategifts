@@ -1,0 +1,41 @@
+.navbar.navbar-expand-lg.bg-body-white
+    .container
+        a.navbar-brand( href='/' rel='home' )
+            img( src='/img/new-donate-gifts-logo-2.png' alt='logo' )
+
+        button.navbar-toggler( type='button'
+            data-bs-toggle='collapse'
+            data-bs-target='#navbar'
+            aria-controls='navbar'
+            aria-expanded='false'
+            aria-label='Toggle navigation'
+        )
+            span.navbar-toggler-icon
+
+        block links
+            #navbar.collapse.navbar-collapse.justify-content-end
+                .navbar-nav.ml-auto.mb-2.mb-lg-0.align-items-center
+                    .nav-item
+                        a.nav-link( href='/wishcards' ) Wish Cards
+                    .nav-item
+                        a.nav-link( href='/mission' ) Mission
+                    .nav-item
+                        a.nav-link( href='/howto' ) How To
+                    .nav-item
+                        a.nav-link( href='/community' ) Community
+
+                    if !user
+                        .nav-item
+                            a.nav-link( href='/login' ) Log In
+                        .nav-item
+                            a.nav-link( href='/signup' ) Sign Up
+                    else
+                        .nav-item
+                            a.nav-link( href='/profile' ) My Account
+                        if user.userRole == 'partner'
+                            if agency && agency.isVerified
+                                .nav-item
+                                    a.nav-link( href='/wishcards/create' ) Create Wish Cards
+                        if user.userRole == 'admin'
+                            .nav-item
+                                a.nav-link( href='/admin' ) Admin

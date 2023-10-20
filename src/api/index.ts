@@ -18,3 +18,4 @@ routes.use('/agency', Permissions.isAdminOrAgency, agency);
 routes.use('/community', community);
 routes.use('/wishcards', wishcards);
 routes.use('/profile', Permissions.redirectLogin, profile);
+routes.use('/admin', admin);

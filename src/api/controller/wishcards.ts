@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { Kysely, Selectable } from 'kysely';
 import moment from 'moment';
 
-import AgencyRepository from '../../db/repository/postgres/AgenciesRepository';
+import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import ChildrenRepository from '../../db/repository/postgres/ChildrenRepository';
 import ItemsRepository from '../../db/repository/postgres/ItemsRepository';
 import MessagesRepository from '../../db/repository/postgres/MessagesRepository';
-import WishCardRepository from '../../db/repository/postgres/WishCardsRepository';
+import WishcardsRepository from '../../db/repository/postgres/WishCardsRepository';
 import { Children, DB, Items, Wishcards } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import * as DefaultItems from '../../helper/defaultItems';
@@ -15,20 +15,20 @@ import Utils from '../../helper/utils';
 import BaseApiController from './basecontroller';
 
 export default class WishCardApiController extends BaseApiController {
-	private wishCardRepository: WishCardRepository;
-	private agencyRepository: AgencyRepository;
+	private wishCardsRepository: WishcardsRepository;
+	private agenciesRepository: AgenciesRepository;
 	private itemsRepository: ItemsRepository;
 	private childrenRepository: ChildrenRepository;
-	private messageRepository: MessagesRepository;
+	private messagesRepository: MessagesRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();
 
-		this.wishCardRepository = new WishCardRepository(database);
-		this.agencyRepository = new AgencyRepository(database);
+		this.wishCardsRepository = new WishcardsRepository(database);
+		this.agenciesRepository = new AgenciesRepository(database);
 		this.itemsRepository = new ItemsRepository(database);
 		this.childrenRepository = new ChildrenRepository(database);
-		this.messageRepository = new MessagesRepository(database);
+		this.messagesRepository = new MessagesRepository(database);
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
@@ -52,7 +52,7 @@ export default class WishCardApiController extends BaseApiController {
 		showDonated = false,
 		reverseSort = false,
 	) {
-		const fuzzySearchResult = await this.wishCardRepository.getFuzzy(
+		const fuzzySearchResult = await this.wishCardsRepository.getFuzzy(
 			(itemName && itemName.trim()) || '',
 			showDonated,
 			reverseSort,
@@ -95,7 +95,7 @@ export default class WishCardApiController extends BaseApiController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			//To do: may need to modify this call to add item and child information
-			const wishcards = await this.wishCardRepository.getRandom('published', 20);
+			const wishcards = await this.wishCardsRepository.getRandom('published', 20);
 
 			const data = [] as unknown as Wishcards & { age: number }[];
 
@@ -126,7 +126,7 @@ export default class WishCardApiController extends BaseApiController {
 				const filePath =
 					config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
-				const userAgency = await this.agencyRepository.getByAccountManagerId(
+				const userAgency = await this.agenciesRepository.getByAccountManagerId(
 					res.locals.user.id,
 				);
 
@@ -151,7 +151,7 @@ export default class WishCardApiController extends BaseApiController {
 					agency_id: userAgency.id,
 				});
 
-				const newWishCard = await this.wishCardRepository.create({
+				const newWishCard = await this.wishCardsRepository.create({
 					address_line_1: req.body.address1,
 					address_line_2: req.body.address2,
 					city: req.body.address_city,
@@ -194,7 +194,7 @@ export default class WishCardApiController extends BaseApiController {
 				}
 
 				itemChoice = JSON.parse(itemChoice);
-				const userAgency = await this.agencyRepository.getByAccountManagerId(
+				const userAgency = await this.agenciesRepository.getByAccountManagerId(
 					res.locals.user.id,
 				);
 
@@ -221,7 +221,7 @@ export default class WishCardApiController extends BaseApiController {
 					agency_id: userAgency.id,
 				});
 
-				const wishcard = await this.wishCardRepository.create({
+				const wishcard = await this.wishCardsRepository.create({
 					address_line_1: req.body.address1,
 					address_line_2: req.body.address2,
 					city: req.body.address_city,
@@ -276,13 +276,13 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleGetEdit(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const card = await this.wishCardRepository.getById(req.params.id);
+			const card = await this.wishCardsRepository.getById(req.params.id);
 			const wishItem = await this.itemsRepository.getById(card.item_id);
 			const wishChild = await this.childrenRepository.getById(card.child_id);
-			const agency = await this.agencyRepository.getByAccountManagerId(card.created_by);
+			const agency = await this.agenciesRepository.getByAccountManagerId(card.created_by);
 
 			if (res.locals.user.role.toString() !== 'admin') {
-				const userAgency = await this.agencyRepository.getByAccountManagerId(
+				const userAgency = await this.agenciesRepository.getByAccountManagerId(
 					res.locals.user.id,
 				);
 
@@ -312,12 +312,12 @@ export default class WishCardApiController extends BaseApiController {
 	async handlePostEdit(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { wishItemURL } = req.body;
-			const card = await this.wishCardRepository.getById(req.params.id);
+			const card = await this.wishCardsRepository.getById(req.params.id);
 			const productID = Utils.extractProductIDFromLink(wishItemURL);
 			const filePath =
 				config.NODE_ENV === 'development' ? `/uploads/${req.file.filename}` : '';
 
-			const userAgency = await this.agencyRepository.getByAccountManagerId(
+			const userAgency = await this.agenciesRepository.getByAccountManagerId(
 				res.locals.user.id,
 			);
 
@@ -342,7 +342,7 @@ export default class WishCardApiController extends BaseApiController {
 				agency_id: userAgency.id,
 			});
 
-			await this.wishCardRepository.update(card.id, {
+			await this.wishCardsRepository.update(card.id, {
 				address_line_1: req.body.address1 ? req.body.address1 : card.address_line_1,
 				address_line_2: req.body.address2 ? req.body.address2 : card.address_line_2,
 				city: req.body.address_city ? req.body.address_city : card.city,
@@ -371,13 +371,13 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleDeleteSingle(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcard = await this.wishCardRepository.getById(req.params.id);
-			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
+			const wishcard = await this.wishCardsRepository.getById(req.params.id);
+			const agency = await this.agenciesRepository.getByAccountManagerId(wishcard.created_by);
 
 			let url = '/wishcards/';
 
 			if (res.locals.user.role !== 'admin') {
-				const userAgency = await this.agencyRepository.getByAccountManagerId(
+				const userAgency = await this.agenciesRepository.getByAccountManagerId(
 					res.locals.user.id,
 				);
 				if (String(agency.id) !== String(userAgency?.id)) {
@@ -386,7 +386,7 @@ export default class WishCardApiController extends BaseApiController {
 				url += 'me';
 			}
 
-			await this.wishCardRepository.delete(wishcard.id);
+			await this.wishCardsRepository.delete(wishcard.id);
 
 			this.log.info({
 				mgs: 'Wishcard Deleted',
@@ -401,10 +401,10 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			const userAgency = await this.agencyRepository.getByAccountManagerId(
+			const userAgency = await this.agenciesRepository.getByAccountManagerId(
 				res.locals.user.id,
 			);
-			const wishCards = await this.wishCardRepository.getByAgencyId(userAgency.id);
+			const wishCards = await this.wishCardsRepository.getByAgencyId(userAgency.id);
 
 			const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
 			const activeWishcards = wishCards.filter((wishcard) => wishcard.status === 'published');
@@ -463,10 +463,10 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleGetSingle(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcard = await this.wishCardRepository.getById(req.params.id);
+			const wishcard = await this.wishCardsRepository.getById(req.params.id);
 
-			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
-			const messages = await this.messageRepository.getByWishCardId(wishcard.id);
+			const agency = await this.agenciesRepository.getByAccountManagerId(wishcard.created_by);
+			const messages = await this.messagesRepository.getByWishCardId(wishcard.id);
 			const child = await this.childrenRepository.getById(wishcard.child_id);
 
 			let defaultMessages: string[] = [];
@@ -497,9 +497,9 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleGetDonate(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcard = await this.wishCardRepository.getById(req.params.id);
+			const wishcard = await this.wishCardsRepository.getById(req.params.id);
 
-			const agency = await this.agencyRepository.getByAccountManagerId(wishcard.created_by);
+			const agency = await this.agenciesRepository.getByAccountManagerId(wishcard.created_by);
 			const wishItem = await this.itemsRepository.getById(wishcard.item_id);
 			const processingFee = 1.08;
 			const shipping = 'FREE';
@@ -529,7 +529,7 @@ export default class WishCardApiController extends BaseApiController {
 
 	async handleGetRandom(_req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcards = await this.wishCardRepository.getRandom('published', 6);
+			const wishcards = await this.wishCardsRepository.getRandom('published', 6);
 
 			return this.sendResponse(res, { wishcards });
 		} catch (error) {
@@ -541,7 +541,7 @@ export default class WishCardApiController extends BaseApiController {
 	async handlePostMessage(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { messageFrom, messageTo, message } = req.body;
-			const newMessage = await this.messageRepository.create({
+			const newMessage = await this.messagesRepository.create({
 				content: message,
 				sender_id: messageFrom,
 				wishcard_id: messageTo,
@@ -596,6 +596,67 @@ export default class WishCardApiController extends BaseApiController {
 			return this.sendResponse(res, itemChoices);
 		} catch (error) {
 			this.log.error('[WishcardController] handleGetDefaults: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async postWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const {
+				childFirstName,
+				childInterest,
+				childBirthYear,
+				childStory,
+				wishItemName,
+				wishItemPrice,
+				wishItemInfo,
+				wishItemURL,
+				address1,
+				address2,
+				city,
+				state,
+				country,
+				zipcode,
+			} = req.body;
+
+			const { childImage, wishItemImage } = req.files;
+
+			const productID = Utils.extractProductIDFromLink(wishItemURL);
+
+			const agency = await this.agenciesRepository.getByAccountManagerId(res.locals.user.id);
+
+			const newWishCard = await this.wishCardsRepository.create({
+				childFirstName,
+				childInterest,
+				childBirthYear,
+				childImage: config.AWS.USE
+					? req.files?.childImage[0].Location
+					: `/uploads/${childImage[0].filename}`,
+				childStory,
+				wishItemName,
+				wishItemPrice,
+				wishItemInfo,
+				wishItemURL,
+				wishItemImage: config.AWS.USE
+					? req.files?.wishItemImage[0].Location
+					: `/uploads/${wishItemImage[0].filename}`,
+				productID,
+				createdBy: res.locals.user.id,
+				belongsTo: agency.id,
+				address: {
+					address1,
+					address2,
+					city,
+					state,
+					country,
+					zipcode,
+				},
+				...req.body,
+			});
+
+			return this.sendResponse(res, newWishCard);
+		} catch (error) {
+			this.log.error('[WishcardController] handlePostMessage: ', error);
 			return this.handleError(res, error);
 		}
 	}

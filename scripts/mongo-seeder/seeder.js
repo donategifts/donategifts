@@ -146,6 +146,7 @@ const log = require('../../dist/helper/logger').default;
 						isLockedUntil: wishCard.isLockedUntil
 							? new Date(wishCard.isLockedUntil.$date)
 							: null,
+						status: Math.random() >= 0.5 ? 'donated' : 'published',
 					})),
 				);
 			};

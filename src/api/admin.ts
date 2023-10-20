@@ -7,6 +7,10 @@ import AdminController from './controller/admin';
 const router = express.Router();
 const adminController = new AdminController(database);
 
+router.get('/publishWishcards', adminController.handleGetDraftWishcards);
+
+router.put('/publishWishcards', adminController.handlePutDraftWishcard);
+
 router.get('/agencyOverview', adminController.handleGetAgencyOverview);
 
 router.get('/agencyDetail/:agencyId', adminController.handleGetAgencyDetail);

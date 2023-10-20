@@ -2,14 +2,16 @@ import express from 'express';
 
 import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
+import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
-import Validations from '../middleware/validations';
+import Validator from '../middleware/validations';
 
 import WishCardApiController from './controller/wishcards';
 
 const router = express.Router();
 const fileUpload = new FileUpload();
 const wishCardController = new WishCardApiController(database);
+const fileUpload = new FileUpload();
 
 router.get('/', wishCardController.handleGetIndex);
 
@@ -76,9 +78,27 @@ router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetA
 router.get(
 	'/defaults/:id',
 	Permissions.isAdminOrAgency,
-	Validations.getDefaultCardsValidationRules(),
-	Validations.validate,
+	Validator.getDefaultCardsValidationRules(),
+	Validator.validate,
 	wishCardController.handleGetDefaults,
+);
+
+router.post(
+	'/',
+	Permissions.isAdminOrAgency,
+	fileUpload.upload.fields([
+		{
+			name: 'childImage',
+			maxCount: 1,
+		},
+		{
+			name: 'wishItemImage',
+			maxCount: 1,
+		},
+	]),
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
+	wishCardController.postWishCardAsDraft,
 );
 
 export default router;

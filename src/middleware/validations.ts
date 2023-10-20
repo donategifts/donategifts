@@ -1,12 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import {
-	body,
-	validationResult,
-	param,
-	Result,
-	ValidationError,
-	ExpressValidator,
-} from 'express-validator';
+import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
@@ -15,6 +8,7 @@ import Utils from '../helper/utils';
 
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
+		//eventually add these to global constants (it's used by FE already in react/utils/constants)
 		const amazonUrlRegex = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
 		const amazonProductRegex = /\/dp\/([A-Z0-9]{10})/;
 		return (
@@ -26,44 +20,17 @@ const amazonLinkValidator = new ExpressValidator({
 });
 
 export default class Validations {
-	private static handleError(
-		res: Response,
-		code: number,
-		errorMsg: { name: string; statusCode: number } | Result<ValidationError> | string,
-	) {
-		let statusCode = 400;
-		let name = 'Error handler';
-		let error;
+	static validate(req: Request, res: Response, next: NextFunction) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const [error] = errors.array({ onlyFirstError: true });
 
-		if (errorMsg instanceof Result) {
-			error = errorMsg.array({ onlyFirstError: true })[0];
-		} else if (typeof errorMsg === 'object') {
-			if (errorMsg.name) {
-				name = errorMsg.name;
-			}
+			log.error(`[Validations] ${error.msg}`);
 
-			statusCode = errorMsg.statusCode;
-			error = errorMsg;
-		} else if (typeof errorMsg === 'string') {
-			error = { msg: errorMsg };
+			return res.status(400).send({ error });
 		}
 
-		statusCode = code || statusCode;
-
-		if (errorMsg instanceof Error) {
-			log.error(errorMsg);
-		} else {
-			log.error({
-				msg: name,
-				statusCode,
-				error,
-			});
-		}
-
-		return res.status(statusCode).send({
-			statusCode,
-			error,
-		});
+		return next();
 	}
 
 	static signupValidationRules() {
@@ -218,32 +185,27 @@ export default class Validations {
 
 	static postPasswordResetValidationRules() {
 		return [
+			body('token').notEmpty().isString(),
 			body('password').notEmpty().isString().trim(),
 			body('passwordConfirm')
 				.notEmpty()
+				.isString()
 				.isLength({ min: 8 })
 				.withMessage('Password must be at least 8 characters long')
 				.matches(/^(?=.*\d.*)(?=.*[a-z].*)(?=.*[A-Z].*).{8,}$/)
-				.withMessage('Password must contain a number, one lower and one uppercase letter')
-				.isString(),
-			body('passwordConfirm').custom((value, { req }) => {
-				if (value !== req.body.password) {
-					throw new Error('Password confirmation does not match password');
-				}
-				return true;
-			}),
+				.withMessage('Password must contain a number, one lower and one uppercase letter'),
 		];
 	}
 
+	//TODO: we need to pull all error messages from translations.js in the future
 	static createWishcardValidationRules() {
 		return [
-			body('childBirthday').isString(),
 			body('childFirstName')
 				.notEmpty()
 				.withMessage("Child's first name is required")
 				.isString(),
-			body('childLastName').isString(),
-			body('childInterest').isString(),
+			body('childInterest').notEmpty().withMessage('Child interest is required.').isString(),
+			body('childBirthYear').notEmpty().withMessage('Child birth year is required.'),
 			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
 			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
 			amazonLinkValidator
@@ -259,24 +221,24 @@ export default class Validations {
 				.isLength({ min: 5 })
 				.withMessage('Address must contain at least 5 characters'),
 			body('address2').optional(),
-			body('address_city')
+			body('city')
 				.notEmpty()
 				.withMessage('City cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('City must contain at least 2 characters'),
-			body('address_state')
+			body('state')
 				.notEmpty()
 				.withMessage('State cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('State must contain at least 2 characters'),
-			body('address_country')
+			body('country')
 				.notEmpty()
 				.withMessage('Country cannot be empty')
 				.isLength({ min: 2 })
 				.withMessage('Country must contain at least 2 characters'),
-			body('address_zip')
+			body('zipcode')
 				.notEmpty()
-				.withMessage('Zip cannot be empty')
+				.withMessage('Zipcode cannot be empty')
 				.isLength({ min: 5 })
 				.withMessage('Zipcode must contain at least 5 characters'),
 		];
@@ -357,12 +319,6 @@ export default class Validations {
 				.withMessage("Child's first name is required")
 				.isLength({ max: 255 })
 				.withMessage("Child's first name is no longer than 255 characters"),
-
-			body('childLastName')
-				.notEmpty()
-				.withMessage("Child's last name is required")
-				.isLength({ max: 255 })
-				.withMessage("Child's last name is no longer than 255 characters"),
 
 			body('wishItemName')
 				.notEmpty()
@@ -454,14 +410,5 @@ export default class Validations {
 				.isLength({ min: 30 })
 				.withMessage('Message must contain at least 30 characters'),
 		];
-	}
-
-	static validate(req: Request, res: Response, next: NextFunction) {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return Validations.handleError(res, 400, errors);
-		}
-
-		return next();
 	}
 }

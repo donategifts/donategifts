@@ -34,7 +34,7 @@ block content
                                 .mb-3.mt-3.mt-md-0
                                     span Got any questions?
                                 a.button-secondary.button-width( href='/contact' ) Contact For Help
-            if user.userRole == 'partner'
+            if user.userRole == 'partner' && agency
                 #agencyInfoCard.card.shadow.mb-5.border-0.p-3
                     .card-title.d-flex.justify-content-between.p-3
                         .display-6 Agency Details
@@ -277,12 +277,14 @@ block scripts
             const successNotification = !{JSON.stringify(successNotification || null)};
 
             if (successNotification?.msg) {
-                showToast(successNotification.msg, true);
+                new DG.Toast().show(successNotification.msg);
             }
         });
 
     script.
         $(document).ready(() => {
+            const toast = new DG.Toast();
+
             $('#resend-verification-link').click(() => {
                 $.ajax({
                     type: 'POST',
@@ -291,14 +293,10 @@ block scripts
                         userId: '#{user._id}',
                     },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast('Could not resend verification link.');
-                        }
-
-                        showToast('Resent verification link!', true);
+                        toast.show('Resent verification link!');
                     },
                     error: (_) => {
-                        showToast('Could not resend verification link.');
+                        toast.show('Could not resend verification link.', toast.styleMap.danger);
                     }
                 });
             });
@@ -306,6 +304,8 @@ block scripts
 
     script.
         $(document).ready(() => {
+            const toast = new DG.Toast();
+
             $('#save-about-me').click(() => {
                 const aboutMe = $('#about-me-text').val();
 
@@ -314,14 +314,11 @@ block scripts
                     url: '/profile',
                     data: { aboutMe },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast('Could not update about me info.');
-                        }
-                        showToast('Updated your info!', true);
+                        toast.show('Updated your info!');
                         $('#about-me').text(response.data || 'You have no description saved.');
                     },
                     error: (_) => {
-                        showToast('Could not update about me info.');
+                        toast.show('Could not update about me info.', toast.styleMap.danger);
                     }
                 });
             });
@@ -336,17 +333,14 @@ block scripts
                     url: '/profile/account',
                     data: { fName, lName },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
-                        }
-                        showToast('Success: Updated your account details', true);
+                        toast.show('Updated your account details');
                         const {fName, lName} = response.data;
                         $('#fName').text(fName);
                         $('#lName').text(lName);
                         $('#welcome-title').text(`Welcome ${fName}`);
                     },
                     error: (response) => {
-                        showToast(response.responseJSON.error.msg || 'Error: Could not update account details');
+                        toast.show(response.responseJSON.error.msg || 'Could not update account details', toast.styleMap.danger);
                     }
                 });
             });
@@ -367,10 +361,7 @@ block scripts
                     url: '/profile/agency',
                     data: { agencyBio, agencyPhone, agencyWebsite, address1, address2, city, state, country, zipcode },
                     success: (response) => {
-                        if (response.error) {
-                            return showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
-                        }
-                        showToast('Success: Updated your agency details', true);
+                        toast.show('Updated your agency details');
                         const agencyCard = $('#agencyInfoCard');
                         $('#agencyBio', agencyCard).text(response.data.agencyBio || 'Not provided');
                         $('#agencyBio-edit', agencyCard).text(response.data.agencyBio || 'Not provided');
@@ -392,8 +383,7 @@ block scripts
                         $('#zipcode-edit', agencyCard).text(response.data.zipcode);
                     },
                     error: (response) => {
-                        console.log(response);
-                        showToast(response.responseJSON.error.msg || 'Error: Could not update agency details');
+                        toast.show(response.responseJSON.error.msg || 'Could not update agency details', toast.styleMap.danger);
                     }
                 });
             });
@@ -427,7 +417,7 @@ block scripts
                             replaceImage(response.data);
                         },
                         error: (_) => {
-                            showToast("Could not update profile picture");
+                            toast.show("Could not update profile picture", toast.styleMap.danger);
                         }
                     });
                 }
@@ -444,7 +434,7 @@ block scripts
                         replaceImage(response.data);
                     },
                     error: (_) => {
-                        showToast("Could not remove profile picture");
+                        toast.show("Could not remove profile picture", toast.styleMap.danger);
                     }
                 });
             });

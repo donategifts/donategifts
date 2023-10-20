@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 
 import axios from 'axios';
-import { Colors } from 'discord.js';
 import moment from 'moment';
 import nodemailer from 'nodemailer';
 
@@ -196,7 +195,7 @@ export default class Messaging {
 				}
 
 				if (config.NODE_ENV === 'development') {
-					return { success: true, data: nodemailer.getTestMessageUrl(data) };
+					log.info(nodemailer.getTestMessageUrl(data));
 				}
 
 				return { success: true, data: '' };
@@ -317,17 +316,13 @@ export default class Messaging {
 	}
 
 	static async sendAgencyVerifiedMail(to: string) {
-		const result = await this.sendMail(
+		await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
-
-		if (config.NODE_ENV === 'development') {
-			log.info(result.data);
-		}
 	}
 
 	//NOTE: Broken
@@ -361,9 +356,9 @@ export default class Messaging {
 								
 								Please check their website before verifying it!
 
-								https://donate-gifts.com/admin/agencyDetail/${id}
+								Agency Id: ${id}
                         	`,
-							color: Colors.Yellow,
+							color: '#FFFF00',
 						},
 					],
 				},
@@ -402,7 +397,7 @@ export default class Messaging {
 
                             ${message}
                         `,
-							color: Colors.Aqua,
+							color: '#1ABC9C',
 						},
 					],
 				},
@@ -449,7 +444,7 @@ export default class Messaging {
                             $${amount} was covered.
                             ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
                         `,
-							color: Colors.Blurple,
+							color: '#5865F2',
 						},
 					],
 				},

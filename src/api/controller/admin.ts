@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import UsersRepository from '../../db/repository/postgres/UsersRepository';
+import WishCardRepository from '../../db/repository/WishCardRepository';
 import { Agencies, DB, Users } from '../../db/types/generated/database';
 import Messaging from '../../helper/messaging';
 
@@ -11,19 +12,22 @@ import BaseController from './basecontroller';
 
 export default class AdminController extends BaseController {
 	private agenciesRepository: AgenciesRepository;
-
 	private usersRepository: UsersRepository;
+	private wishCardRepository: WishCardRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();
 
 		this.agenciesRepository = new AgenciesRepository(database);
 		this.usersRepository = new UsersRepository(database);
+		this.wishCardRepository = new WishCardRepository();
 
 		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
 		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
 		this.handleVerifyAgency = this.handleVerifyAgency.bind(this);
 		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
+		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
+		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
 	}
 
 	private formatAgencyResponse(agency: Selectable<Agencies>, manager: Selectable<Users>) {
@@ -156,6 +160,44 @@ export default class AdminController extends BaseController {
 			}
 
 			return this.handleError(res, 'Failed to update agency');
+		}
+	}
+
+	async handleGetDraftWishcards(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
+			const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
+
+			for (const wishCard of wishcards) {
+				const agencyName = wishCard.belongsTo.agencyName;
+				if (!agenciesWithWishCardsMap.has(agencyName)) {
+					agenciesWithWishCardsMap.set(agencyName, []);
+				}
+				agenciesWithWishCardsMap.get(agencyName)?.push(wishCard);
+			}
+			const agenciesWithWishCards = Object.fromEntries(agenciesWithWishCardsMap);
+			return this.sendResponse(res, agenciesWithWishCards);
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { wishCardId, wishItemUrl } = req.body;
+			const wishCardModifiedFields = {
+				wishItemUrl,
+				status: 'published',
+			};
+
+			await this.wishCardRepository.updateWishCardByObjectId(
+				wishCardId,
+				wishCardModifiedFields,
+			);
+
+			return this.sendResponse(res, wishCardId);
+		} catch (error) {
+			return this.handleError(res, error);
 		}
 	}
 }

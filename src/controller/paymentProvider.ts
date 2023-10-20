@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
-import PayPal from 'paypal-rest-sdk';
+import PayPal, { notification } from 'paypal-rest-sdk';
 import Stripe from 'stripe';
 
 import AgencyRepository from '../db/repository/AgencyRepository';
@@ -57,56 +57,82 @@ export default class PaymentProviderController extends BaseController {
 		const wishCard = await this.wishCardRepository.getWishCardByObjectId(wishCardId);
 		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
-		if (user) {
-			const emailResponse = await Messaging.sendDonationConfirmationEmail({
+		if (!wishCard) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] WishCard ${wishCardId} not found!`,
+			);
+		}
+
+		await this.wishCardRepository.updateWishCardByObjectId(wishCard._id, {
+			status: 'donated',
+		});
+
+		if (!user) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] User ${userId} not found!`,
+			);
+		}
+
+		if (!agency) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] Agency ${agencyName} not found!`,
+			);
+		}
+
+		await this.donationRepository.createNewDonation({
+			donationFrom: user._id.toString(),
+			donationTo: wishCard.belongsTo._id.toString(),
+			donationCard: wishCard._id.toString(),
+			donationPrice: amount,
+		});
+
+		try {
+			this.log.info('Sending donation confirmation email');
+			await Messaging.sendDonationConfirmationEmail({
 				email: user.email,
 				firstName: user.fName,
 				lastName: user.lName,
-				childName: wishCard?.childFirstName,
-				item: wishCard?.wishItemName,
-				price: wishCard?.wishItemPrice,
+				childName: wishCard.childFirstName,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
 				agency: agencyName,
 			});
+		} catch (error) {
+			this.log.error(error);
+		}
 
-			if (config.NODE_ENV === 'development') {
-				const response = emailResponse ? emailResponse.data : '';
-				this.log.info(response);
-			}
-
-			await this.donationRepository.createNewDonation({
-				donationFrom: user._id.toString(),
-				donationTo: wishCard!.belongsTo._id.toString(),
-				donationCard: wishCard!._id.toString(),
-				donationPrice: amount,
-			});
-
-			await this.wishCardRepository.updateWishCardByObjectId(wishCard!._id, {
-				status: 'donated',
-			});
-
+		try {
+			this.log.info('Sending agency donation email');
 			await Messaging.sendAgencyDonationEmail({
-				agencyName: agency?.agencyName,
-				agencyEmail: agency?.accountManager.email,
-				childName: wishCard?.childFirstName,
-				item: wishCard?.wishItemName,
-				price: wishCard?.wishItemPrice,
+				agencyName: agency.agencyName,
+				agencyEmail: agency.accountManager.email,
+				childName: wishCard.childFirstName,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
 				donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
-				address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
+				address: `${agency.agencyAddress.address1} ${agency.agencyAddress.address2}, ${agency.agencyAddress.city}, ${agency.agencyAddress.state} ${agency.agencyAddress.zipcode}`,
 			});
+		} catch (error) {
+			this.log.error(error);
+		}
 
+		try {
+			this.log.info('Sending discord donation notification');
 			await Messaging.sendDiscordDonationNotification({
 				user: user.fName,
 				service,
 				wishCard: {
-					item: wishCard?.wishItemName,
-					url: wishCard?.wishItemURL,
-					child: wishCard?.childFirstName,
+					item: wishCard.wishItemName,
+					url: wishCard.wishItemURL,
+					child: wishCard.childFirstName,
 				},
 				donation: {
 					amount,
 					userDonation,
 				},
 			});
+		} catch (error) {
+			this.log.error(error);
 		}
 	}
 
@@ -153,11 +179,17 @@ export default class PaymentProviderController extends BaseController {
 
 		// STRIPE WEBHOOK
 		if (signature) {
+			let secret = config.STRIPE.SIGNING_SECRET;
+
+			if (config.NODE_ENV === 'development' && config.STRIPE.SIGNING_SECRET_LOCAL) {
+				secret = config.STRIPE.SIGNING_SECRET_LOCAL;
+			}
+
 			try {
 				const event = this.stripeClient.webhooks.constructEvent(
 					req.rawBody,
 					signature,
-					config.STRIPE.SECRET_KEY,
+					secret,
 				);
 
 				if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
@@ -167,40 +199,44 @@ export default class PaymentProviderController extends BaseController {
 						service: 'Stripe',
 						userId: event.data.object.metadata.userId,
 						wishCardId: event.data.object.metadata.wishCardId,
-						amount: event.data.object.amount,
+						amount: event.data.object.metadata.amount,
 						userDonation: event.data.object.metadata.userDonation,
 						agencyName: event.data.object.metadata.agencyName,
 					});
 				}
 			} catch (error) {
+				this.log.error('Webhook Error:', error);
 				return res.status(400).send(`Webhook Error: ${error}`);
 			}
 		}
 
 		// PAYPAL WEBHOOK
 		if (req.body.event_type === 'CHECKOUT.ORDER.APPROVED') {
-			PayPal.notification.webhookEvent.getAndVerify(req.rawBody, async (error, _response) => {
-				if (error) {
-					this.log.info(error);
-					throw error;
-				} else {
-					const data = req.body.resource.purchase_units[0].reference_id.split('%');
-					const userId = data[0];
-					const wishCardId = data[1];
-					const userDonation = data[2];
-					const agencyName = data[3];
-					const amount = req.body.resource.purchase_units[0].amount.value;
+			PayPal.notification.webhookEvent.getAndVerify(
+				req.rawBody as notification.webhookEvent.WebhookEvent,
+				async (error, _response) => {
+					if (error) {
+						this.log.info(error);
+						throw error;
+					} else {
+						const data = req.body.resource.purchase_units[0].reference_id.split('%');
+						const userId = data[0];
+						const wishCardId = data[1];
+						const userDonation = data[2];
+						const agencyName = data[3];
+						const amount = req.body.resource.purchase_units[0].amount.value;
 
-					await this.handleDonation({
-						service: 'Paypal',
-						userId,
-						wishCardId,
-						amount,
-						userDonation,
-						agencyName,
-					});
-				}
-			});
+						await this.handleDonation({
+							service: 'Paypal',
+							userId,
+							wishCardId,
+							amount,
+							userDonation,
+							agencyName,
+						});
+					}
+				},
+			);
 		}
 
 		return res.json({ received: true });
