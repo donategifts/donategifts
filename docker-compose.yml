@@ -5,8 +5,6 @@ services:
         container_name: app
         working_dir: /app
         command: npm run dev
-        networks:
-            - donategifts
         ports:
             - 3000:3000
             - 9229:9229
@@ -18,10 +16,8 @@ services:
 
     mongo:
         image: mongo
-        container_name: dg-mongo
+        container_name: mongo
         command: mongod --quiet --logpath /dev/null
-        networks:
-            - donategifts
         ports:
             - 27017:27017
         volumes:
@@ -35,24 +31,19 @@ services:
     #         - POSTGRES_USER=postgres
     #         - POSTGRES_PASSWORD=postgres
     #         - PGDATA=/data/donategifts
-    #     networks:
-    #         - donategifts
     #     ports:
     #         - 5432:5432
     #     volumes:
     #         - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     #         - postgres:/data/db
 
-    # stripe-cli:
-    #     image: stripe/stripe-cli
-    #     container_name: stripe-cli
-    #     command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to localhost:3000/payment/webhook/
-    #     env_file:
-    #         - config_stripe_cli.env
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to host.docker.internal:3000/payment/webhook/
+        env_file:
+            - config_stripe_cli.env
 
 volumes:
     mongo:
     # postgres:
-
-networks:
-    donategifts:

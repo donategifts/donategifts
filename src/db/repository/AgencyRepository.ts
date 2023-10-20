@@ -16,16 +16,14 @@ export default class AgencyRepository {
 		return this.agencyModel.findById(agencyId).lean().exec();
 	}
 
-	async getAgencyByName(agencyName: string) {
-		try {
-			return await this.agencyModel
-				.findOne({ name: agencyName })
-				.populate<{ accountManager: User }>('accountManager')
-				.lean()
-				.exec();
-		} catch (error) {
-			throw new Error(`Failed to get Agency: ${error}`);
-		}
+	getAgencyByName(
+		agencyName: string,
+	): Promise<(Omit<Agency, 'accountManager'> & { accountManager: User }) | null> {
+		return this.agencyModel
+			.findOne({ agencyName })
+			.populate<{ accountManager: User }>('accountManager')
+			.lean()
+			.exec();
 	}
 
 	async createNewAgency(agencyParams: Agency) {
