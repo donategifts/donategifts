@@ -7,27 +7,27 @@ window.ReactRoot = createRoot;
 window.React = React;
 
 // components
-import Community from './components/community/index.jsx';
+import Community from './pages/community.jsx';
 window.Community = Community;
 
-import Header from './components/header/index.jsx';
+import Header from './components/Header.jsx';
 window.Header = Header;
 
-import Nav from './components/nav/index.jsx';
+import Nav from './components/NavBar.jsx';
 window.Nav = Nav;
 
-import WishCards from './components/wishcards/index.jsx';
+import WishCards from './pages/wishCards.jsx';
 window.WishCards = WishCards;
 
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 window.WishCardsCarousel = WishCardsCarousel;
 
 // pages
-import Detail from './pages/admin/agency/detail.jsx';
-window.AdminAgencyDetail = Detail;
+import Admin from './pages/admin/index.jsx';
+window.Admin = Admin;
 
-import Overview from './pages/admin/agency/overview.jsx';
-window.AdminAgencyOverview = Overview;
+import WishCardCreate from './pages/wishcard/WishCardCreate.jsx';
+window.WishCardCreate = WishCardCreate;
 
-import AgencyCardsPage from './pages/agencycards.jsx';
-window.AgencyCardsPage = AgencyCardsPage;
+import WishCardManage from './pages/wishcard/WishCardManage.jsx';
+window.WishCardManage = WishCardManage;

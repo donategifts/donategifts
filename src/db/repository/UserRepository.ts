@@ -58,12 +58,8 @@ export default class UserRepository {
 		}
 	}
 
-	async getUserByPasswordResetToken(tokenId: string) {
-		try {
-			return await this.userModel.findOne({ passwordResetToken: tokenId }).exec();
-		} catch (error) {
-			throw new Error(`Failed to get User: ${error}`);
-		}
+	getUserByPasswordResetToken(tokenId: string): Promise<User | null> {
+		return this.userModel.findOne({ passwordResetToken: tokenId }).lean().exec();
 	}
 
 	async setUserEmailVerification(userId: string, verified: boolean) {

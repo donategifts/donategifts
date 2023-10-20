@@ -56,13 +56,6 @@ const app = express();
 	await new MongooseConnection().connect();
 	await connectPostgres();
 
-	// if (config.DISCORD.TOKEN && config.DISCORD.CLIENT_ID) {
-	// 	const bot = new DGBot(config.DISCORD.TOKEN, config.DISCORD.CLIENT_ID);
-
-	// 	await bot.initClient();
-	// 	await bot.refreshCommands();
-	// }
-
 	app.use(cors());
 
 	app.set('views', path.join(__dirname, '../views'));

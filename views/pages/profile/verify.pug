@@ -1,0 +1,32 @@
+extends ../../master
+
+block title
+    title Verify Email | Donate Gifts
+
+//- empty the block so the user can't click on anything
+block links
+
+block content
+    #verify.center-elements
+        .container.text-center
+            h2.heading-primary Your email has been verified!
+            p.fs-3 You will be redirected to your profile in <span id="countdown"></span> seconds.
+            a( href='/profile' ) Click here if you are not redirected.
+
+append scripts
+    script.
+        $(document).ready(() => {
+            const $countDown = $('#countdown');
+            let secondsUntilRedirect = 4;
+
+            $countDown.text(secondsUntilRedirect);
+
+            setInterval(() => {
+                secondsUntilRedirect--;
+                $countDown.text(secondsUntilRedirect);
+
+                if (secondsUntilRedirect === 0) {
+                    window.location.replace('/profile')
+                };
+            }, 1000);
+        });

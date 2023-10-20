@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
-import { GOOGLE_CLIENT_LIBRARY_URL, LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants.jsx';
-import { loadlGoogleClientLibraryScript } from '../../../utils/helpers.jsx';
+import { GOOGLE_CLIENT_LIBRARY_URL, LOGIN_WITH_EMAIL, SIGNUP } from '../../../utils/constants';
+import { loadlGoogleClientLibraryScript } from '../../../utils/helpers';
 import Modal from '../../shared/Modal.jsx';
 
 function Login({ modalRef, dispatch }) {

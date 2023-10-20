@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import Agency from '../db/models/Agency';
-import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
 import DonationRepository from '../db/repository/DonationRepository';
 import UserRepository from '../db/repository/UserRepository';
@@ -181,84 +179,21 @@ export default class ProfileController extends BaseController {
 	}
 
 	async handleGetVerify(req: Request, res: Response, _next: NextFunction) {
-		try {
-			let user = await this.userRepository.getUserByVerificationHash(req.params.hash);
+		let user = await this.userRepository.getUserByVerificationHash(req.params.hash);
 
-			if (user) {
-				let agency = {} as Agency;
-				let wishCards: WishCard[] = [];
-				let wishCardsLength = 0;
-				let draftWishcards: WishCard[] = [];
-				let activeWishcards: WishCard[] = [];
-				let inactiveWishcards: WishCard[] = [];
+		if (user) {
+			await this.userRepository.setUserEmailVerification(user._id.toString(), true);
+			user = await this.userRepository.getUserByVerificationHash(req.params.hash);
 
-				if (user.userRole === 'partner') {
-					agency = <Agency>(
-						await this.agencyRepository.getAgencyByUserId(user._id.toString())
-					);
-					wishCards = <WishCard[]>(
-						await this.wishCardRepository.getWishCardByAgencyId(agency._id)
-					);
-					wishCardsLength = wishCards.length;
-					draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
-
-					activeWishcards = wishCards.filter(
-						(wishcard) => wishcard.status === 'published',
-					);
-
-					inactiveWishcards = wishCards.filter(
-						(wishcard) => wishcard.status === 'donated',
-					);
-				}
-
-				if (user.emailVerified) {
-					if (res.locals.user) {
-						return res.status(200).render('profile/overview', {
-							user: res.locals.user,
-							agency,
-							wishCards,
-							wishCardsLength,
-							draftWishcards,
-							activeWishcards,
-							inactiveWishcards,
-						});
-					}
-					return this.renderView(res, 'login', {
-						successNotification: {
-							msg: 'Your email is already verified.',
-						},
-						errorNotification: null,
-					});
-				}
-
-				await this.userRepository.setUserEmailVerification(user._id.toString(), true);
-				user = await this.userRepository.getUserByObjectId(user._id.toString());
-
-				return this.renderView(res, 'profile/overview', {
-					user,
-					wishCards,
-					wishCardsLength,
-					draftWishcards,
-					activeWishcards,
-					inactiveWishcards,
-					successNotification: {
-						msg: 'Email Verification successful',
-					},
-				});
+			if (req && user) {
+				req.session.user = user;
 			}
 
-			return this.handleError(res, 'Email Verification failed!');
-		} catch (error) {
-			this.log.error(error);
-			return this.renderView(
-				res,
-				'login',
-				{
-					errorNotification: { msg: 'Email Verification failed' },
-				},
-				400,
-			);
+			return this.renderView(res, 'profile/verify');
 		}
+
+		this.log.error(`Email verification failed for hash ${req.params.hash}!`);
+		return this.handleError(res, 'Email Verification failed!', 500);
 	}
 
 	async handlePutAccount(req: Request, res: Response, _next: NextFunction) {

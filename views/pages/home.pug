@@ -29,7 +29,6 @@ block content
                         a.button-outline.button-width.m-2( href='/howto' ) How It Works
                         a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
 
-        //- include ../components/homeSampleCards.pug
         #carousel-root
 
         #status-section.container-fluid.d-md-flex.align-items-center
@@ -129,7 +128,7 @@ block content
 
         .my-4
             .container
-                .heading-primary.mb-3.text-center We Need Your Help
+                .heading-primary.mb-3.text-center Make a Tangible Impact
                 .d-md-flex
                     .col-md-6.pt-5.pb-4.px-3
                         img.img-fluid.rounded.rounded-3( src='/img/foster-children-back-facing-stock.jpg' alt='happy-kids-playing-need-school-supply-donations' loading='lazy' )
@@ -263,15 +262,6 @@ block scripts
         });
 
     script.
-        $(document).ready(() => {
-            const sampleCardsCarousel = $('#sample-cards-carousel');
-            new bootstrap.Carousel(sampleCardsCarousel, {
-                interval: 1000,
-                touch: true,
-            });
-        });
-
-    script.
         $(document).ready(function () {
             const root = ReactRoot(document.querySelector('#carousel-root'));
             root.render(
@@ -279,6 +269,7 @@ block scripts
                     WishCardsCarousel,
                     {
                         wishCards: !{JSON.stringify(wishCards)},
+                        user: !{JSON.stringify(user || {})},
                     }
                 )
             );

@@ -17,21 +17,21 @@ block content
                 var messageChildName = `Message ${wishcard.childFirstName}`;
                 var defaultText = `No one signed ${wishcard.childFirstName}'s card yet. Log in and send a message.`;
                 var options = { year: 'numeric', month: 'short', day: 'numeric' };
-
             .row.justify-content-center.align-items-start
                 .col-md-4.col-lg-3.col-12.mt-4
-                    .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1
+                    .card-body.bg-white.shadow-lg.p-4.rounded-3.border.border-1.text-center
                         img.img-fluid.mt-2.rounded-3( src= wishcard.wishCardImage alt= wishcard.wishItemName loading='lazy' )
-                        h1.cool-font.text-primary.text-center.my-3= header
+                        h1.cool-font.text-primary.my-3= header
                         if wishcard.status === 'donated'
-                            button#donate-btn.button-disabled.text-center( type='button' disabled='' aria-disabled='true' ) Gift Donated
+                            button#donate-btn.button-disabled.w-100( type='button' disabled='' aria-disabled='true' ) Gift Donated
                         else if user
-                            a#donate-btn.button-accent.text-center( type='button' href='/wishcards/donate/' + wishcard._id ) Donate Gift
+                            a#donate-btn.button-accent.w-100( type='button' href='/wishcards/donate/' + wishcard._id ) Donate Gift
                         else
-                            button#donate-btn.button-accent.text-center( type='button'
-                                data-bs-toggle='modal'
-                                data-bs-target='#loginModalCenter'
-                            ) Donate Gift
+                            //- button#donate-btn.button-accent.w-100( type='button'
+                            //-     data-bs-toggle='modal'
+                            //-     data-bs-target='#loginModalCenter'
+                            //- ) Donate Gift
+                            a#donate-btn.button-accent.w-100( type='button' href='/login' ) Donate Gift
 
                 .col-md-8.col-12.mt-4
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
@@ -82,14 +82,13 @@ block content
                                     span.fw-bold Item Price:
                                     span.mx-2= wishItemPrice
                             .col-md-6.col-lg-6.col-12
-                                if user
+                                if user && user.emailVerified
                                     .display-6.text-primary.my-4 Send Message
                                     form.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
-                                        select.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
-                                            option( selected ) Select a message to send
+                                        select#messageSelect.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
                                             each message, index in defaultMessages
                                                 option( value=index )= message
-                                        textarea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." )
+                                        //- textarea#customMessageArea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." aria-hidden='true' style={display: "none"} )
                                         button.btn.btn-lg.btn-primary.mt-4.d-flex.justify-content-center( type='submit' )= messageChildName
 
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
@@ -115,11 +114,20 @@ block modal
 block scripts
     script.
         $(document).ready(function () {
+            //- $('.form-select-lg').change(function () {
+            //-     const selectedValue = $('.form-select-lg option:selected').text();
+            //-     const displayAttribute = selectedValue == 'Custom Message' ? 'block' : 'none';
+            //-     $('#customMessageArea').css('display', displayAttribute);
+            //- });
             $('form').submit(function (event) {
                 event.preventDefault();
 
-                const messageFrom = !{JSON.stringify(user)};
+                const messageFrom = !{JSON.stringify(user || {})};
                 const messageTo = !{JSON.stringify(wishcard)};
+                const messageText = $('.form-select-lg option:selected').text();
+                //const message = messageText === 'Custom Message' ? $('#customMessageArea').val() : messageText;
+                const message = messageText;
+                const toast = new DG.Toast();
 
                 $.ajax({
                     type: 'POST',
@@ -127,17 +135,18 @@ block scripts
                     data: {
                         messageFrom,
                         messageTo,
-                        message: $('.form-select-lg option:selected').text(),
+                        message,
                     },
                     statusCode: {
                         400: function (response) {
-                            showToast(response.responseJSON.error.msg);
+                            toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
                         },
                         200: function (response) {
                             window.location.reload();
+                            document.getElementById('messageSelect').selectedIndex = 0;
                         },
                         403: function (response) {
-                            showToast('Access Forbidden: Your account lacks sufficient permissions');
+                            toast.show('Access Forbidden: Your account lacks sufficient permissions', toast.styleMap.danger);
                             setTimeout(() => location.assign(response.responseJSON.url), 1200);
                         },
                     },

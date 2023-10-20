@@ -39,12 +39,15 @@ export default class WishCardRepository {
 		}
 	}
 
-	async getAllWishCards() {
-		try {
-			return await this.wishCardModel.find().lean().exec();
-		} catch (error) {
-			throw new Error(`Failed to get Wishcards: ${error}`);
-		}
+	async getAll() {
+		const publisehd = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status: 'published' } }])
+			.exec();
+
+		const donated = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status: 'donated' } }])
+			.exec();
+		return [...publisehd, ...donated];
 	}
 
 	async getRandom(status: STATUS, sampleSize: number) {
@@ -202,40 +205,6 @@ export default class WishCardRepository {
 			return await this.wishCardModel.deleteOne({ _id: wishCardId }).lean().exec();
 		} catch (error) {
 			throw new Error(`Failed to delete Wishcard message: ${error}`);
-		}
-	}
-
-	async lockWishCard(wishCardId: string, userId: string) {
-		try {
-			const wishCard = await this.getWishCardById(wishCardId);
-
-			if (wishCard) {
-				wishCard.isLockedBy = userId;
-				wishCard.isLockedUntil = moment()
-					.add(config.WISHCARD_LOCK_IN_MINUTES, 'minutes')
-					.toDate();
-				wishCard.save();
-			}
-
-			return wishCard;
-		} catch (error) {
-			throw new Error(`Failed to update Wishcard messages: ${error}`);
-		}
-	}
-
-	async unLockWishCard(id: string) {
-		try {
-			const wishCard = await this.getWishCardById(id);
-
-			if (wishCard) {
-				wishCard.isLockedBy = null;
-				wishCard.isLockedUntil = null;
-				wishCard.save();
-			}
-
-			return wishCard;
-		} catch (error) {
-			throw new Error(`Failed to update Wishcard messages: ${error}`);
 		}
 	}
 

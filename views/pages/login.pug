@@ -11,7 +11,7 @@ block content
     #login.gradient-form.d-flex.align-items-center.justify-content-center.flex-column
         h1.heading-primary.mt-5 Welcome Back!
         .container.pt-4.pb-5
-            form.p-5.rounded-4( method='post' )
+            form.p-5.rounded-4
                 .col-md-8.mx-auto.text-white
                     .py-2
                         label.form-label( for='email' ) Email
@@ -33,6 +33,9 @@ block content
                     .row.pt-5.pb-2.justify-content-center
                         .col-md-6
                             button.btn.btn-lg.btn-primary.w-100( type='submit' ) Login
+                                #loading-spinner.ms-2.d-none
+                                    .spinner-border( role='status' )
+                                        span.visually-hidden Loading...
 
                             //- #google-fb-login
                             //-     .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
@@ -49,9 +52,58 @@ append scripts
     include ../mixins/formvalidation
     +passwordToggleJS
 
+    script.
+        $(document).ready(() => {
+            $('form').submit((event) => {
+                event.preventDefault();
+
+                const email = $('#email').val();
+                const password = $('#password').val();
+
+                $('#loading-spinner').removeClass('d-none');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: {
+                        email,
+                        password,
+                    },
+                    success: (response) => {
+                        location.href = response.data.redirect;
+                    },
+                    error: (response) => {
+                        console.log(response);
+                        $('#loading-spinner').addClass('d-none');
+                        const txtToJson = JSON.parse(response.responseText);
+
+                        let message = '';
+
+                        if (txtToJson.error && txtToJson.error.msg) {
+                            message = txtToJson.error.msg;
+                        } else if (txtToJson.data && txtToJson.data.error) {
+                            message = txtToJson.data.error;
+                        }
+
+                        new DG.Toast().show(message, DG.Toast.styleMap.danger);
+                    },
+                });
+            });
+        });
+
     if error
         script.
-            showToast('#{error}');
+            $(document).ready(() => {
+                new DG.Toast().show('#{error}', DG.Toast.styleMap.danger);
+                window.history.pushState({}, null, '/login');
+            });
+
+    if message
+        script.
+            $(document).ready(() => {
+                new DG.Toast().show('#{message}', DG.Toast.styleMap.info);
+                window.history.pushState({}, null, '/login');
+            });
 
     script.
         const facebookLogin = (fbUser) => {
@@ -70,7 +122,7 @@ append scripts
                             },
                             error: (response) => {
                                 const txtToJson = JSON.parse(response.responseText);
-                                showToast(txtToJson.error.msg);
+                                new DG.Toast().show(txtToJson.error.msg, DG.Toast.styleMap.danger);
                             },
                         });
                     }
@@ -92,7 +144,7 @@ append scripts
                     location.reload();
                 },
                 error: (response) => {
-                    showToast(response.responseJSON.error.msg);
+                    new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                 },
             });
         }

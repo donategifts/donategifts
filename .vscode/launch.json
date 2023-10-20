@@ -4,14 +4,28 @@
     {
       "name": "Attach app",
       "port": 9229,
+      "type": "node",
+      "restart": true,
       "request": "attach",
+      "internalConsoleOptions": "neverOpen",
       "skipFiles": [
         "<node_internals>/**",
         "node_modules/**"
       ],
+    },
+    {
+      "name": "Attach Docker",
+      "port": 9229,
       "type": "node",
       "restart": true,
+      "request": "attach",
       "internalConsoleOptions": "neverOpen",
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/app",
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**"
+      ],
     },
   ]
 }
