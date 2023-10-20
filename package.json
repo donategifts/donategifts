@@ -41,7 +41,6 @@
 		"aws-sdk": "2.1435.0",
 		"axios": "1.4.0",
 		"bcrypt": "5.1.0",
-		"body-parser": "1.20.2",
 		"connect-mongo": "5.0.0",
 		"cookie-parser": "1.4.6",
 		"cors": "2.8.5",
@@ -65,7 +64,6 @@
 		"pino-pretty": "10.2.0",
 		"pug": "3.0.2",
 		"request-ip": "3.3.0",
-		"sharp": "0.32.4",
 		"stripe": "12.18.0",
 		"uuid": "9.0.0",
 		"xss": "1.0.14"
