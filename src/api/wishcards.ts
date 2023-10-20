@@ -2,14 +2,12 @@ import express from 'express';
 
 import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
-import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
 import Validator from '../middleware/validations';
 
 import WishCardApiController from './controller/wishcards';
 
 const router = express.Router();
-const fileUpload = new FileUpload();
 const wishCardController = new WishCardApiController(database);
 const fileUpload = new FileUpload();
 
@@ -17,23 +15,23 @@ router.get('/', wishCardController.handleGetIndex);
 
 router.get(
 	'/single/:id',
-	Validations.getByIdValidationRules(),
-	Validations.validate,
+	Validator.getByIdValidationRules(),
+	Validator.validate,
 	wishCardController.handleGetSingle,
 );
 
 router.get(
 	'/donate/:id',
 	Permissions.redirectLogin,
-	Validations.getByIdValidationRules(),
+	Validator.getByIdValidationRules(),
 	wishCardController.handleGetDonate,
 );
 
 router.post(
 	'/message',
 	Permissions.checkUserVerification,
-	Validations.postMessageValidationRules(),
-	Validations.validate,
+	Validator.postMessageValidationRules(),
+	Validator.validate,
 	wishCardController.handlePostMessage,
 );
 
@@ -45,8 +43,8 @@ router.post(
 	'/',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
-	Validations.createWishcardValidationRules(),
-	Validations.validate,
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
 	wishCardController.handlePostIndex,
 );
 
@@ -54,8 +52,8 @@ router.post(
 	'/guided/',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
-	Validations.createGuidedWishcardValidationRules(),
-	Validations.validate,
+	Validator.createGuidedWishcardValidationRules(),
+	Validator.validate,
 	wishCardController.handlePostGuided,
 );
 
@@ -64,8 +62,8 @@ router.get('/edit/:id', Permissions.isAdminOrAgency, wishCardController.handleGe
 router.post(
 	'/edit/:id',
 	Permissions.isAdminOrAgency,
-	Validations.createWishcardValidationRules(),
-	Validations.validate,
+	Validator.createWishcardValidationRules(),
+	Validator.validate,
 	wishCardController.handlePostEdit,
 );
 

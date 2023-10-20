@@ -11,10 +11,7 @@ append scripts
                 React.createElement(
                     Community,
                     {
-                        user: !{JSON.stringify(user || null)},
-                        agency: !{JSON.stringify(agency || null)},
-                        posts: !{JSON.stringify(posts.reverse())},
-                        _csrf: "#{_csrf}"
+                        user: !{JSON.stringify(user || null)}
                     }
                 )
             );

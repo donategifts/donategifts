@@ -21,7 +21,19 @@ export default class CommunityController extends BaseController {
 		this.postRepository = new CommunityPostsRepository(database);
 		this.imagesRepository = new ImagesRepository(database);
 
+		this.getPosts = this.getPosts.bind(this);
 		this.addPost = this.addPost.bind(this);
+	}
+
+	async getPosts(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const result = await this.postRepository.getByAgencyVerificationStatus();
+			const posts = result.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+
+			return this.sendResponse(res, { posts });
+		} catch (error) {
+			return this.handleError(res, error);
+		}
 	}
 
 	async addPost(req: Request, res: Response, _next: NextFunction) {
@@ -55,9 +67,8 @@ export default class CommunityController extends BaseController {
 				agency_id: agency.id,
 			});
 
-			const posts = (await this.postRepository.getByAgencyVerificationStatus(true)).sort(
-				(a, b) => a.created_at.getTime() - b.created_at.getTime(),
-			);
+			const result = await this.postRepository.getByAgencyVerificationStatus();
+			const posts = result.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
 			return this.sendResponse(res, posts);
 		} catch (error: any) {

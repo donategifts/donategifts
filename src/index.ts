@@ -44,7 +44,7 @@ const app = express();
 			const clientIp = requestIp.getClientIp(req);
 
 			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
-				res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
+				res.locals.user ? `USER ${res.locals.user.id}` : 'GUEST'
 			}) path: ${req.originalUrl}`;
 
 			logger.info(logString);

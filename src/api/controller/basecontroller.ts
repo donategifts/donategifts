@@ -18,9 +18,7 @@ export default class BaseController {
 	}
 
 	sendResponse(response: Response, data: any, status = 200) {
-		return response.status(status).send({
-			data,
-		});
+		return response.status(status).send(data);
 	}
 
 	handleError(response: Response, error: any, code = 400) {
@@ -32,8 +30,6 @@ export default class BaseController {
 			statusCode = code;
 		}
 
-		return response.status(statusCode).send({
-			error,
-		});
+		return response.status(statusCode).send(error);
 	}
 }
