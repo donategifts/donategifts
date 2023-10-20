@@ -1,11 +1,9 @@
-import express from 'express';
-
-import Community from '../controller/community';
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-const communityController = new Community();
-
-router.get('/', communityController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/community');
+});
 
 export default router;
