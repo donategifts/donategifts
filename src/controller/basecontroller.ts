@@ -48,7 +48,9 @@ export default class BaseController {
 		this.log.error(error);
 
 		if (renderErrorPage) {
-			return res.status(statusCode).render(code === 400 ? '404' : code.toString(), {
+			const template = `error/${code.toString()}`;
+
+			return res.status(statusCode).render(template, {
 				statusCode,
 				error,
 			});

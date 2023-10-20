@@ -1,12 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import {
-	body,
-	validationResult,
-	param,
-	Result,
-	ValidationError,
-	ExpressValidator,
-} from 'express-validator';
+import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
@@ -27,44 +20,17 @@ const amazonLinkValidator = new ExpressValidator({
 });
 
 export default class Validations {
-	private static handleError(
-		res: Response,
-		code: number,
-		errorMsg: { name: string; statusCode: number } | Result<ValidationError> | string,
-	) {
-		let statusCode = 400;
-		let name = 'Error handler';
-		let error;
+	static validate(req: Request, res: Response, next: NextFunction) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const [error] = errors.array({ onlyFirstError: true });
 
-		if (errorMsg instanceof Result) {
-			error = errorMsg.array({ onlyFirstError: true })[0];
-		} else if (typeof errorMsg === 'object') {
-			if (errorMsg.name) {
-				name = errorMsg.name;
-			}
+			log.error(`[Validations] ${error.msg}`);
 
-			statusCode = errorMsg.statusCode;
-			error = errorMsg;
-		} else if (typeof errorMsg === 'string') {
-			error = { msg: errorMsg };
+			return res.status(400).send({ error });
 		}
 
-		statusCode = code || statusCode;
-
-		if (errorMsg instanceof Error) {
-			log.error(errorMsg);
-		} else {
-			log.error({
-				msg: name,
-				statusCode,
-				error,
-			});
-		}
-
-		return res.status(statusCode).send({
-			statusCode,
-			error,
-		});
+		return next();
 	}
 
 	static signupValidationRules() {
@@ -219,20 +185,15 @@ export default class Validations {
 
 	static postPasswordResetValidationRules() {
 		return [
+			body('token').notEmpty().isString(),
 			body('password').notEmpty().isString().trim(),
 			body('passwordConfirm')
 				.notEmpty()
+				.isString()
 				.isLength({ min: 8 })
 				.withMessage('Password must be at least 8 characters long')
 				.matches(/^(?=.*\d.*)(?=.*[a-z].*)(?=.*[A-Z].*).{8,}$/)
-				.withMessage('Password must contain a number, one lower and one uppercase letter')
-				.isString(),
-			body('passwordConfirm').custom((value, { req }) => {
-				if (value !== req.body.password) {
-					throw new Error('Password confirmation does not match password');
-				}
-				return true;
-			}),
+				.withMessage('Password must contain a number, one lower and one uppercase letter'),
 		];
 	}
 
@@ -449,14 +410,5 @@ export default class Validations {
 				.isLength({ min: 30 })
 				.withMessage('Message must contain at least 30 characters'),
 		];
-	}
-
-	static validate(req: Request, res: Response, next: NextFunction) {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return Validations.handleError(res, 400, errors);
-		}
-
-		return next();
 	}
 }

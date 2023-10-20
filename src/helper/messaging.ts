@@ -191,7 +191,7 @@ export default class Messaging {
 				}
 
 				if (config.NODE_ENV === 'development') {
-					return { success: true, data: nodemailer.getTestMessageUrl(data) };
+					log.info(nodemailer.getTestMessageUrl(data));
 				}
 
 				return { success: true, data: '' };
@@ -312,17 +312,13 @@ export default class Messaging {
 	}
 
 	static async sendAgencyVerifiedMail(to: string) {
-		const result = await this.sendMail(
+		await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
 			this.attachments.templateAttachments,
 		);
-
-		if (config.NODE_ENV === 'development') {
-			log.info(result.data);
-		}
 	}
 
 	//NOTE: Broken
