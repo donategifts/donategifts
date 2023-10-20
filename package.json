@@ -12,7 +12,7 @@
 		"compile": "tsc",
 		"debug": "nodemon",
 		"dev": "concurrently \"npm run debug\" \"npm run webpack:watch\" \"npm run gulp:watch\"",
-		"docker:db": "docker-compose up mongo",
+		"docker:db": "docker-compose up mongo postgres",
 		"docker": "docker-compose up",
 		"gulp:build": "gulp",
 		"gulp:watch": "gulp watch",

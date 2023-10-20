@@ -358,7 +358,7 @@ export default class Messaging {
 
 								Agency Id: ${id}
                         	`,
-							color: '#FFFF00',
+							color: 16776960, // #FFFF00
 						},
 					],
 				},
@@ -397,7 +397,7 @@ export default class Messaging {
 
                             ${message}
                         `,
-							color: '#1ABC9C',
+							color: 1752220, // #1ABC9C
 						},
 					],
 				},
@@ -444,7 +444,7 @@ export default class Messaging {
                             $${amount} was covered.
                             ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
                         `,
-							color: '#5865F2',
+							color: 5793266, // #5865F2
 						},
 					],
 				},
