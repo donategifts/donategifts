@@ -20,14 +20,14 @@ export default class PasswordController extends BaseController {
 		this.handleGetReset = this.handleGetReset.bind(this);
 		this.handlePostReset = this.handlePostReset.bind(this);
 		this.handleGetResetToken = this.handleGetResetToken.bind(this);
-		this.handlePostResetToken = this.handlePostResetToken.bind(this);
+		this.handlePostNew = this.handlePostNew.bind(this);
 	}
 
 	handleGetReset(_req: Request, res: Response, _next: NextFunction) {
 		this.renderView(res, 'passwordreset');
 	}
 
-	async handlePostReset(req, res, _next) {
+	async handlePostReset(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const userObject = await this.userRepository.getUserByEmail(req.body.email);
 
@@ -48,16 +48,13 @@ export default class PasswordController extends BaseController {
 		}
 	}
 
-	// FIXED: redirects to wrong template
 	async handleGetResetToken(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const userObject = await this.userRepository.getUserByPasswordResetToken(
-				req.params.token,
-			);
+			const user = await this.userRepository.getUserByPasswordResetToken(req.params.token);
 
-			if (userObject) {
-				if (new Date(String(userObject.passwordResetTokenExpires)) > new Date()) {
-					this.renderView(res, 'passwordresetconfirmation', {
+			if (user) {
+				if (new Date(String(user.passwordResetTokenExpires)) > new Date()) {
+					return this.renderView(res, 'passwordresetconfirmation', {
 						token: req.params.token,
 					});
 				} else {
@@ -75,19 +72,18 @@ export default class PasswordController extends BaseController {
 		}
 	}
 
-	async handlePostResetToken(req: Request, res: Response, _next: NextFunction) {
+	async handlePostNew(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const userObject = await this.userRepository.getUserByPasswordResetToken(
-				req.params.token,
-			);
+			const user = await this.userRepository.getUserByPasswordResetToken(req.body.token);
 
-			if (userObject) {
-				if (moment(userObject.passwordResetTokenExpires) > moment()) {
+			if (user) {
+				if (moment(user.passwordResetTokenExpires) > moment()) {
 					const newPassword = await Utils.hashPassword(req.body.password);
-					userObject.password = newPassword;
-					userObject.passwordResetToken = null;
-					userObject.passwordResetTokenExpires = null;
-					userObject.save();
+					await this.userRepository.updateUserById(user._id, {
+						password: newPassword,
+						passwordResetToken: null,
+						passwordResetTokenExpires: null,
+					});
 
 					req.session.destroy(() => {
 						res.clearCookie(config.SESSION.NAME);
