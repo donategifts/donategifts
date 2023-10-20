@@ -57,71 +57,82 @@ export default class PaymentProviderController extends BaseController {
 		const wishCard = await this.wishCardRepository.getWishCardByObjectId(wishCardId);
 		const agency = await this.agencyRepository.getAgencyByName(agencyName);
 
-		if (user) {
-			try {
-				this.log.info('Sending donation confirmation email');
-				const emailResponse = await Messaging.sendDonationConfirmationEmail({
-					email: user.email,
-					firstName: user.fName,
-					lastName: user.lName,
-					childName: wishCard?.childFirstName,
-					item: wishCard?.wishItemName,
-					price: wishCard?.wishItemPrice,
-					agency: agencyName,
-				});
+		if (!wishCard) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] WishCard ${wishCardId} not found!`,
+			);
+		}
 
-				if (config.NODE_ENV === 'development') {
-					const response = emailResponse ? emailResponse.data : '';
-					this.log.info(response);
-				}
-			} catch (error) {
-				this.log.error(error);
-			}
+		await this.wishCardRepository.updateWishCardByObjectId(wishCard._id, {
+			status: 'donated',
+		});
 
-			await this.donationRepository.createNewDonation({
-				donationFrom: user._id.toString(),
-				donationTo: wishCard!.belongsTo._id.toString(),
-				donationCard: wishCard!._id.toString(),
-				donationPrice: amount,
+		if (!user) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] User ${userId} not found!`,
+			);
+		}
+
+		if (!agency) {
+			throw new Error(
+				`[PaymentProviderController][handleDonation] Agency ${agencyName} not found!`,
+			);
+		}
+
+		await this.donationRepository.createNewDonation({
+			donationFrom: user._id.toString(),
+			donationTo: wishCard.belongsTo._id.toString(),
+			donationCard: wishCard._id.toString(),
+			donationPrice: amount,
+		});
+
+		try {
+			this.log.info('Sending donation confirmation email');
+			await Messaging.sendDonationConfirmationEmail({
+				email: user.email,
+				firstName: user.fName,
+				lastName: user.lName,
+				childName: wishCard.childFirstName,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
+				agency: agencyName,
 			});
+		} catch (error) {
+			this.log.error(error);
+		}
 
-			await this.wishCardRepository.updateWishCardByObjectId(wishCard!._id, {
-				status: 'donated',
+		try {
+			this.log.info('Sending agency donation email');
+			await Messaging.sendAgencyDonationEmail({
+				agencyName: agency.agencyName,
+				agencyEmail: agency.accountManager.email,
+				childName: wishCard.childFirstName,
+				item: wishCard.wishItemName,
+				price: wishCard.wishItemPrice,
+				donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
+				address: `${agency.agencyAddress.address1} ${agency.agencyAddress.address2}, ${agency.agencyAddress.city}, ${agency.agencyAddress.state} ${agency.agencyAddress.zipcode}`,
 			});
+		} catch (error) {
+			this.log.error(error);
+		}
 
-			try {
-				this.log.info('Sending agency donation email');
-				await Messaging.sendAgencyDonationEmail({
-					agencyName: agency?.agencyName,
-					agencyEmail: agency?.accountManager.email,
-					childName: wishCard?.childFirstName,
-					item: wishCard?.wishItemName,
-					price: wishCard?.wishItemPrice,
-					donationDate: `${moment(new Date()).format('MMM Do, YYYY')}`,
-					address: `${agency?.agencyAddress.address1} ${agency?.agencyAddress.address2}, ${agency?.agencyAddress.city}, ${agency?.agencyAddress.state} ${agency?.agencyAddress.zipcode}`,
-				});
-			} catch (error) {
-				this.log.error(error);
-			}
-
-			try {
-				this.log.info('Sending discord donation notification');
-				await Messaging.sendDiscordDonationNotification({
-					user: user.fName,
-					service,
-					wishCard: {
-						item: wishCard?.wishItemName,
-						url: wishCard?.wishItemURL,
-						child: wishCard?.childFirstName,
-					},
-					donation: {
-						amount,
-						userDonation,
-					},
-				});
-			} catch (error) {
-				this.log.error(error);
-			}
+		try {
+			this.log.info('Sending discord donation notification');
+			await Messaging.sendDiscordDonationNotification({
+				user: user.fName,
+				service,
+				wishCard: {
+					item: wishCard.wishItemName,
+					url: wishCard.wishItemURL,
+					child: wishCard.childFirstName,
+				},
+				donation: {
+					amount,
+					userDonation,
+				},
+			});
+		} catch (error) {
+			this.log.error(error);
 		}
 	}
 
