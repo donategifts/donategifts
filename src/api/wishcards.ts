@@ -3,7 +3,7 @@ import express from 'express';
 import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
-import Validator from '../middleware/validations';
+import Validations from '../middleware/validations';
 
 import WishCardApiController from './controller/wishcards';
 
@@ -15,23 +15,23 @@ router.get('/', wishCardController.handleGetIndex);
 
 router.get(
 	'/single/:id',
-	Validator.getByIdValidationRules(),
-	Validator.validate,
+	Validations.getByIdValidationRules(),
+	Validations.validate,
 	wishCardController.handleGetSingle,
 );
 
 router.get(
 	'/donate/:id',
 	Permissions.redirectLogin,
-	Validator.getByIdValidationRules(),
+	Validations.getByIdValidationRules(),
 	wishCardController.handleGetDonate,
 );
 
 router.post(
 	'/message',
 	Permissions.checkUserVerification,
-	Validator.postMessageValidationRules(),
-	Validator.validate,
+	Validations.postMessageValidationRules(),
+	Validations.validate,
 	wishCardController.handlePostMessage,
 );
 
@@ -43,8 +43,8 @@ router.post(
 	'/',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
+	Validations.createWishcardValidationRules(),
+	Validations.validate,
 	wishCardController.handlePostIndex,
 );
 
@@ -52,8 +52,8 @@ router.post(
 	'/guided/',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
-	Validator.createGuidedWishcardValidationRules(),
-	Validator.validate,
+	Validations.createGuidedWishcardValidationRules(),
+	Validations.validate,
 	wishCardController.handlePostGuided,
 );
 
@@ -62,8 +62,8 @@ router.get('/edit/:id', Permissions.isAdminOrAgency, wishCardController.handleGe
 router.post(
 	'/edit/:id',
 	Permissions.isAdminOrAgency,
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
+	Validations.createWishcardValidationRules(),
+	Validations.validate,
 	wishCardController.handlePostEdit,
 );
 
@@ -76,8 +76,8 @@ router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetA
 router.get(
 	'/defaults/:id',
 	Permissions.isAdminOrAgency,
-	Validator.getDefaultCardsValidationRules(),
-	Validator.validate,
+	Validations.getDefaultCardsValidationRules(),
+	Validations.validate,
 	wishCardController.handleGetDefaults,
 );
 
@@ -94,8 +94,8 @@ router.post(
 			maxCount: 1,
 		},
 	]),
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
+	Validations.createWishcardValidationRules(),
+	Validations.validate,
 	wishCardController.postWishCardAsDraft,
 );
 

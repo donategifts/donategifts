@@ -7,6 +7,7 @@ import agency from './agency';
 import community from './community';
 import contact from './contact';
 import home from './home';
+import login from './login';
 import profile from './profile';
 import wishcards from './wishcards';
 
@@ -20,5 +21,6 @@ routes.use('/agency', Permissions.isAdminOrAgency, agency);
 routes.use('/community', community);
 routes.use('/contact', contact);
 routes.use('/home', home);
-routes.use('/profile', Permissions.redirectLogin, profile);
+routes.use('/login', login);
+routes.use('/profile', profile);
 routes.use('/wishcards', wishcards);
