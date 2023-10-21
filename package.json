@@ -2,10 +2,7 @@
 	"name": "donategifts",
 	"version": "1.0.0",
 	"description": "",
-	"main": "app.js",
-	"directories": {
-		"test": "test"
-	},
+	"main": "dist/index.js",
 	"scripts": {
 		"build": "npm run clean && npm run compile && npm run gulp:build && npm run webpack:build",
 		"clean": "rimraf uploads dist public/css/*.css public/js/*.js",
@@ -31,14 +28,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/stacysealky/donategifts.git"
+		"url": "git+https://github.com/donategifts/donategifts.git"
 	},
-	"author": "Stacy Sealky Lee",
-	"license": "ISC",
+	"author": "",
+	"license": "NPOSL-3.0",
 	"bugs": {
-		"url": "https://github.com/stacysealky/donategifts/issues"
+		"url": "https://github.com/donategifts/donategifts/issues"
 	},
-	"homepage": "https://github.com/stacysealky/donategifts#readme",
+	"homepage": "https://github.com/donategifts/donategifts#readme",
 	"dependencies": {
 		"aws-sdk": "2.1435.0",
 		"axios": "1.4.0",
