@@ -1,13 +1,10 @@
 import path from 'node:path';
 
-import bodyParser from 'body-parser';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
-import mongoSanitize from 'express-mongo-sanitize';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
-// import { csrf } from 'lusca';
 import requestIp from 'request-ip';
 
 import { routes as apiRoutes } from './api';
@@ -116,26 +113,12 @@ const app = express();
 	);
 
 	app.use(
-		bodyParser.urlencoded({
+		express.urlencoded({
 			extended: true,
 		}),
 	);
 
-	// sanitize input data for mongo
-	// replace with _ so that we cannot write it to db
-	app.use(
-		mongoSanitize({
-			replaceWith: '_',
-		}),
-	);
-
 	app.use(cookieParser());
-
-	// app.use(
-	// 	csrf({
-	// 		allowlist: ['/profile', '/community', '/signup'],
-	// 	}),
-	// );
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
@@ -167,7 +150,7 @@ const app = express();
 	});
 
 	// error handler
-	app.use((err, req, res, _next) => {
+	app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
 		// set locals, only providing error in development
 		res.locals.message = err.message;
 		res.locals.error = req.app.get('env') === 'development' ? err : {};
