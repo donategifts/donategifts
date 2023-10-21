@@ -1,6 +1,5 @@
 import path from 'node:path';
 
-import bodyParser from 'body-parser';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -23,36 +22,6 @@ const limiter = new BaseController().limiter;
 const app = express();
 
 (async () => {
-	app.use((req, res, next) => {
-		const ignoredRequests = [
-			'png',
-			'jpg',
-			'js',
-			'svg',
-			'jpeg',
-			'woff',
-			'ttf',
-			'css',
-			'ico',
-			'map',
-			'gif',
-		];
-
-		const parts = req.originalUrl.split('.');
-
-		if (req.originalUrl !== '/health' && !ignoredRequests.includes(parts[parts.length - 1])) {
-			const clientIp = requestIp.getClientIp(req);
-
-			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
-				res.locals.user ? `USER ${res.locals.user._id}` : 'GUEST'
-			}) path: ${req.originalUrl}`;
-
-			logger.info(logString);
-		}
-
-		next();
-	});
-
 	await new MongooseConnection().connect();
 	await connectPostgres();
 
@@ -105,6 +74,36 @@ const app = express();
 		next();
 	});
 
+	app.use((req, res, next) => {
+		const ignoredRequests = [
+			'png',
+			'jpg',
+			'js',
+			'svg',
+			'jpeg',
+			'woff',
+			'ttf',
+			'css',
+			'ico',
+			'map',
+			'gif',
+		];
+
+		const parts = req.originalUrl.split('.');
+
+		if (req.originalUrl !== '/health' && !ignoredRequests.includes(parts[parts.length - 1])) {
+			const clientIp = requestIp.getClientIp(req);
+
+			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
+				req.session?.user ? `USER ${req.session.user._id}` : 'GUEST'
+			}) path: ${req.originalUrl}`;
+
+			logger.info(logString);
+		}
+
+		next();
+	});
+
 	app.use(
 		express.json({
 			verify(req: Request, _res: Response, buffer: Buffer) {
@@ -117,7 +116,7 @@ const app = express();
 	);
 
 	app.use(
-		bodyParser.urlencoded({
+		express.urlencoded({
 			extended: true,
 		}),
 	);
