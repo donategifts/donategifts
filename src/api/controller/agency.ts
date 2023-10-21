@@ -9,10 +9,10 @@ import BaseController from './basecontroller';
 export default class AgencyController extends BaseController {
 	private agencyRepository: AgenciesRepository;
 
-	constructor(database: Kysely<DB>) {
+	constructor(private readonly database: Kysely<DB>) {
 		super();
 
-		this.agencyRepository = new AgenciesRepository(database);
+		this.agencyRepository = new AgenciesRepository(this.database);
 		this.handleGetDetails = this.handleGetDetails.bind(this);
 	}
 

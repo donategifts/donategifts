@@ -13,11 +13,11 @@ export default class ProfileController extends BaseController {
 	private usersRepository: UsersRepository;
 	private verificationTokensRepository: VerificationTokensRepository;
 
-	constructor(database: Kysely<DB>) {
+	constructor(private readonly database: Kysely<DB>) {
 		super();
 
-		this.usersRepository = new UsersRepository(database);
-		this.verificationTokensRepository = new VerificationTokensRepository(database);
+		this.usersRepository = new UsersRepository(this.database);
+		this.verificationTokensRepository = new VerificationTokensRepository(this.database);
 
 		this.postResendVerificationLink = this.postResendVerificationLink.bind(this);
 	}

@@ -21,14 +21,14 @@ export default class WishCardApiController extends BaseApiController {
 	private childrenRepository: ChildrenRepository;
 	private messagesRepository: MessagesRepository;
 
-	constructor(database: Kysely<DB>) {
+	constructor(private readonly database: Kysely<DB>) {
 		super();
 
-		this.wishCardsRepository = new WishcardsRepository(database);
-		this.agenciesRepository = new AgenciesRepository(database);
-		this.itemsRepository = new ItemsRepository(database);
-		this.childrenRepository = new ChildrenRepository(database);
-		this.messagesRepository = new MessagesRepository(database);
+		this.wishCardsRepository = new WishcardsRepository(this.database);
+		this.agenciesRepository = new AgenciesRepository(this.database);
+		this.itemsRepository = new ItemsRepository(this.database);
+		this.childrenRepository = new ChildrenRepository(this.database);
+		this.messagesRepository = new MessagesRepository(this.database);
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);

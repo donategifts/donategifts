@@ -13,10 +13,10 @@ import BaseController from './basecontroller';
 export default class LoginController extends BaseController {
 	private usersRepository: UsersRepository;
 
-	constructor(database: Kysely<DB>) {
+	constructor(private readonly database: Kysely<DB>) {
 		super();
 
-		this.usersRepository = new UsersRepository(database);
+		this.usersRepository = new UsersRepository(this.database);
 
 		this.handlePostIndex = this.handlePostIndex.bind(this);
 		this.handlePostGoogleLogin = this.handlePostGoogleLogin.bind(this);

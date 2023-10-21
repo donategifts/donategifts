@@ -14,12 +14,12 @@ export default class CommunityController extends BaseController {
 	private postRepository: CommunityPostsRepository;
 	private imagesRepository: ImagesRepository;
 
-	constructor(database: Kysely<DB>) {
+	constructor(private readonly database: Kysely<DB>) {
 		super();
 
-		this.agencyRepository = new AgenciesRepository(database);
-		this.postRepository = new CommunityPostsRepository(database);
-		this.imagesRepository = new ImagesRepository(database);
+		this.agencyRepository = new AgenciesRepository(this.database);
+		this.postRepository = new CommunityPostsRepository(this.database);
+		this.imagesRepository = new ImagesRepository(this.database);
 
 		this.getPosts = this.getPosts.bind(this);
 		this.addPost = this.addPost.bind(this);
