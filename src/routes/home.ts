@@ -1,11 +1,9 @@
-import express from 'express';
-
-import HomeController from '../controller/home';
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-const homeController = new HomeController();
-
-router.get('/', homeController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/home');
+});
 
 export default router;

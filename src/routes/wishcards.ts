@@ -1,83 +1,34 @@
 import express from 'express';
 
-import WishCardController from '../controller/wishcard';
-import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
-import Validator from '../middleware/validations';
-
-const fileUpload = new FileUpload();
-const wishCardController = new WishCardController();
 
 const router = express.Router();
 
-router.get('/', wishCardController.handleGetIndex);
+router.get('/', (_req, res, _next) => {
+	return res.render('pages/wishcards');
+});
 
-router.get(
-	'/single/:id',
-	Validator.getByIdValidationRules(),
-	Validator.validate,
-	wishCardController.handleGetSingle,
-);
+router.get('/single/:id', (_req, res, _next) => {
+	return res.render('pages/wishcard/single');
+});
 
-router.get(
-	'/donate/:id',
-	Permissions.redirectLogin,
-	Validator.getByIdValidationRules(),
-	wishCardController.handleGetDonate,
-);
-
-router.post(
-	'/message',
-	Permissions.checkUserVerification,
-	Validator.postMessageValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostMessage,
-);
-
-router.post('/search/:init?', wishCardController.handlePostSearch);
+router.get('/donate/:id', Permissions.redirectLogin, (_req, res, _next) => {
+	return res.render('pages/wishcard/donate');
+});
 
 // ------------- only agencies and admins from here on -------------
 
-router.post(
-	'/',
-	Permissions.isAdminOrAgency,
-	fileUpload.upload.single('wishCardImage'),
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostIndex,
-);
+router.get('/edit/:id', Permissions.isAdminOrAgency, (_req, res, _next) => {
+	return res.render('pages/wishcard/edit');
+});
 
-router.post(
-	'/guided/',
-	Permissions.isAdminOrAgency,
-	fileUpload.upload.single('wishCardImage'),
-	Validator.createGuidedWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostGuided,
-);
+router.get('/manage', Permissions.isAdminOrAgency, (_req, res, _next) => {
+	// TODO: rename this tempalte to manage
+	return res.render('pages/wishcard/agencycards');
+});
 
-router.get('/edit/:id', Permissions.isAdminOrAgency, wishCardController.handleGetEdit);
-
-router.post(
-	'/edit/:id',
-	Permissions.isAdminOrAgency,
-	Validator.createWishcardValidationRules(),
-	Validator.validate,
-	wishCardController.handlePostEdit,
-);
-
-router.delete('/delete/:id', Permissions.isAdminOrAgency, wishCardController.handleDeleteSingle);
-
-router.get('/manage', Permissions.isAdminOrAgency, wishCardController.handleGetAgency);
-
-router.get('/create', Permissions.isAdminOrAgency, wishCardController.handleGetCreate);
-
-router.get(
-	'/defaults/:id',
-	Permissions.isAdminOrAgency,
-	Validator.getDefaultCardsValidationRules(),
-	Validator.validate,
-	wishCardController.handleGetDefaults,
-);
+router.get('/create', Permissions.isAdminOrAgency, (_req, res, _next) => {
+	return res.render('pages/wishcard/create');
+});
 
 export default router;

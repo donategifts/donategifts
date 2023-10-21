@@ -1,11 +1,9 @@
-import express from 'express';
-
-import MissionController from '../controller/mission';
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-const missionController = new MissionController();
-
-router.get('/', missionController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/mission');
+});
 
 export default router;

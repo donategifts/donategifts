@@ -75,7 +75,7 @@ export default class WishcardsRepository {
 			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
 			.selectAll(['wishcards', 'agencies'])
 			.where('status', '=', status)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getRandom(status: Wishcardstatus, sampleSize: number) {

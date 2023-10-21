@@ -281,12 +281,12 @@ export default class WishCardApiController extends BaseApiController {
 			const wishChild = await this.childrenRepository.getById(card.child_id);
 			const agency = await this.agenciesRepository.getByAccountManagerId(card.created_by);
 
-			if (res.locals.user.role.toString() !== 'admin') {
+			if (res.locals.user.role !== 'admin') {
 				const userAgency = await this.agenciesRepository.getByAccountManagerId(
 					res.locals.user.id,
 				);
 
-				if (agency?.id.toString() !== userAgency?.id.toString()) {
+				if (agency.id !== userAgency.id) {
 					return res.status(403).send({ success: false, url: '/profile' });
 				}
 			}
@@ -381,7 +381,7 @@ export default class WishCardApiController extends BaseApiController {
 					res.locals.user.id,
 				);
 				if (String(agency.id) !== String(userAgency?.id)) {
-					return res.status(403).render('403');
+					return this.sendResponse(res, { success: false, url: '/profile' });
 				}
 				url += 'me';
 			}
@@ -505,7 +505,7 @@ export default class WishCardApiController extends BaseApiController {
 			const shipping = 'FREE';
 			const tax = 1.0712;
 
-			const totalItemCost = await Utils.calculateWishItemTotalPrice(wishItem.price);
+			const totalItemCost = Utils.calculateWishItemTotalPrice(wishItem.price);
 			const Itemprice = Number(wishItem.price);
 
 			const extendedPaymentInfo = {
@@ -517,7 +517,7 @@ export default class WishCardApiController extends BaseApiController {
 			};
 
 			return this.sendResponse(res, {
-				wishcard: wishcard || [],
+				wishcard,
 				extendedPaymentInfo,
 				agency,
 			});

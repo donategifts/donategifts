@@ -1,11 +1,9 @@
-import express from 'express';
-
-import TeamController from '../controller/team';
-
-const teamController = new TeamController();
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-router.get('/', teamController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/team');
+});
 
 export default router;

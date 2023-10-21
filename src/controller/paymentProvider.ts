@@ -159,7 +159,7 @@ export default class PaymentProviderController extends BaseController {
 				receipt_email: email,
 				metadata: {
 					wishCardId: wishCard._id.toString(),
-					userId: res.locals.user._id.toString(),
+					userId: res.locals.user.id.toString(),
 					agencyName,
 					userDonation,
 					amount: totalItemPrice,

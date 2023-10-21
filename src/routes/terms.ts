@@ -1,11 +1,9 @@
-import express from 'express';
-
-import TermsController from '../controller/terms';
-
-const termsController = new TermsController();
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-router.get('/', termsController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/terms');
+});
 
 export default router;

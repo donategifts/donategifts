@@ -1,11 +1,9 @@
-import express from 'express';
-
-import HowToController from '../controller/howto';
+import express, { NextFunction, Request, Response } from 'express';
 
 const router = express.Router();
 
-const howToController = new HowToController();
-
-router.get('/', howToController.handleGetIndex);
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+	return res.render('pages/howto');
+});
 
 export default router;

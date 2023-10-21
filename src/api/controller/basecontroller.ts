@@ -17,7 +17,7 @@ export default class BaseController {
 		});
 	}
 
-	sendResponse(response: Response, data: any, status = 200) {
+	sendResponse<T>(response: Response, data: T, status = 200) {
 		return response.status(status).send(data);
 	}
 
