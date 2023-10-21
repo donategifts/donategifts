@@ -4,7 +4,7 @@ import { RateLimitRequestHandler, rateLimit } from 'express-rate-limit';
 import logger from '../../helper/logger';
 
 export default class BaseController {
-	public log: typeof logger;
+	protected log: typeof logger;
 
 	public limiter: RateLimitRequestHandler;
 
@@ -17,11 +17,11 @@ export default class BaseController {
 		});
 	}
 
-	sendResponse<T>(response: Response, data: T, status = 200) {
+	protected sendResponse<T>(response: Response, data: T, status = 200) {
 		return response.status(status).send(data);
 	}
 
-	handleError(response: Response, error: any, code = 400) {
+	protected handleError(response: Response, error: any, code = 400) {
 		let statusCode: number;
 
 		if (typeof error === 'object' && error.statusCode) {

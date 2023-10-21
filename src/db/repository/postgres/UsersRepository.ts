@@ -82,7 +82,7 @@ export default class UsersRepository {
 			.selectFrom('users')
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
 			.where('verification_tokens.token', '=', resetToken)
-			.selectAll('users')
+			.selectAll('verification_tokens')
 			.executeTakeFirstOrThrow();
 	}
 

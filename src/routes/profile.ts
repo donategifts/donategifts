@@ -1,6 +1,5 @@
 import express from 'express';
 
-import PasswordController from '../controller/password';
 import ProfileController from '../controller/profile';
 import Utils from '../helper/utils';
 import FileUpload from '../middleware/fileupload';
@@ -9,33 +8,9 @@ import Validator from '../middleware/validations';
 
 const router = express.Router();
 
-const passwordController = new PasswordController();
 const profileController = new ProfileController();
 
 const fileUpload = new FileUpload();
-
-router.get('/password/reset', passwordController.handleGetReset);
-
-router.post(
-	'/password/reset',
-	Validator.passwordRequestValidationRules(),
-	Validator.validate,
-	passwordController.handlePostReset,
-);
-
-router.get(
-	'/password/reset/:token',
-	Validator.getPasswordResetValidationRules(),
-	Validator.validate,
-	passwordController.handleGetResetToken,
-);
-
-router.post(
-	'/password/new/',
-	Validator.postPasswordResetValidationRules(),
-	Validator.validate,
-	passwordController.handlePostNew,
-);
 
 router.get(
 	'/verify/:hash',

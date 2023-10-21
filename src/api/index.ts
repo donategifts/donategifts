@@ -8,6 +8,7 @@ import community from './community';
 import contact from './contact';
 import home from './home';
 import login from './login';
+import password from './password';
 import profile from './profile';
 import wishcards from './wishcards';
 
@@ -22,5 +23,6 @@ routes.use('/community', community);
 routes.use('/contact', contact);
 routes.use('/home', home);
 routes.use('/login', login);
+routes.use('/password', password);
 routes.use('/profile', profile);
 routes.use('/wishcards', wishcards);
