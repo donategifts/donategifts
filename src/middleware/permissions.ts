@@ -10,7 +10,7 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		return next();
+		next();
 	}
 
 	static redirectProfile(req: Request, res: Response, next: NextFunction) {
@@ -18,7 +18,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		return next();
+		next();
 	}
 
 	static async isAdminOrAgency(req: Request, res: Response, next: NextFunction) {
@@ -28,8 +28,8 @@ export default class Permissions {
 			return res.redirect('/login');
 		}
 
-		if (user.role === 'admin') {
-			return next();
+		if (user.role !== 'admin' && user.role !== 'partner') {
+			return res.redirect('/profile');
 		}
 
 		if (user.role === 'partner') {
@@ -50,7 +50,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		return next();
+		next();
 	}
 
 	static checkUserVerification(req: Request, res: Response, next: NextFunction) {
@@ -64,7 +64,7 @@ export default class Permissions {
 			return res.redirect('/profile');
 		}
 
-		return next();
+		next();
 	}
 
 	static checkAdminPermission(req: Request, res: Response, next: NextFunction) {
@@ -75,9 +75,9 @@ export default class Permissions {
 		}
 
 		if (user.role !== 'admin') {
-			return res.status(404).render('error/404');
+			return res.redirect('/');
 		}
 
-		return next();
+		next();
 	}
 }
