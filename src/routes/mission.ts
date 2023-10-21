@@ -1,8 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+router.get('/', (_req, res, _next) => {
 	return res.render('pages/mission');
 });
 

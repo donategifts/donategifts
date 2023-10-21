@@ -10,7 +10,7 @@ const router = express.Router();
 
 const verificationTokensRepository = new VerificationTokensRepository(database);
 
-router.get('/reset', (_req: Request, res: Response, _next: NextFunction) => {
+router.get('/reset', (_req, res, _next) => {
 	res.render('pages/passwordreset');
 });
 
