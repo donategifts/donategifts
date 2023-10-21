@@ -16,7 +16,7 @@ export default class OrdersRepository {
 	}
 
 	getByDonorId(id: string) {
-		return this.database.selectFrom('orders').where('donor_id', '=', id).execute();
+		return this.database.selectFrom('orders').where('donor_id', '=', id).selectAll().execute();
 	}
 
 	getByAgencyId(id: string) {

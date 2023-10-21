@@ -13,7 +13,11 @@ export default class ImagesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('images').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('images')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	update(id: string, updateParams: ImagesUpdateParams) {
