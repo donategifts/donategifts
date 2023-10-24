@@ -13,9 +13,8 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class PasswordController extends BaseController {
-	private usersRepository: UsersRepository;
-
-	private verificationTokensRepository: VerificationTokensRepository;
+	private readonly usersRepository: UsersRepository;
+	private readonly verificationTokensRepository: VerificationTokensRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

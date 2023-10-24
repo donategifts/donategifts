@@ -11,9 +11,9 @@ import Messaging from '../../helper/messaging';
 import BaseController from './basecontroller';
 
 export default class AdminController extends BaseController {
-	private agenciesRepository: AgenciesRepository;
-	private usersRepository: UsersRepository;
-	private wishCardRepository: WishCardRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly usersRepository: UsersRepository;
+	private readonly wishCardRepository: WishCardRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

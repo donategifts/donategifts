@@ -9,9 +9,8 @@ import { DB } from '../../db/types/generated/database';
 import BaseController from './basecontroller';
 
 export default class HomeController extends BaseController {
-	private agenciesRepository: AgenciesRepository;
-
-	private wishCardsRepository: WishCardsRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly wishCardsRepository: WishCardsRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

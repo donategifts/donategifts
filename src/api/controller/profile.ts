@@ -14,12 +14,12 @@ import Messaging from '../../helper/messaging';
 import BaseController from './basecontroller';
 
 export default class ProfileController extends BaseController {
-	private usersRepository: UsersRepository;
-	private agenciesRepository: AgenciesRepository;
-	private wishcardsRepository: WishCardsRepository;
-	private ordersRepository: OrdersRepository;
-	private imagesRepository: ImagesRepository;
-	private verificationTokensRepository: VerificationTokensRepository;
+	private readonly usersRepository: UsersRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly wishcardsRepository: WishCardsRepository;
+	private readonly ordersRepository: OrdersRepository;
+	private readonly imagesRepository: ImagesRepository;
+	private readonly verificationTokensRepository: VerificationTokensRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();
@@ -31,7 +31,15 @@ export default class ProfileController extends BaseController {
 		this.imagesRepository = new ImagesRepository(database);
 		this.verificationTokensRepository = new VerificationTokensRepository(database);
 
-		this.postResendVerificationLink = this.postResendVerificationLink.bind(this);
+		this.handlePostResendVerificationLink = this.handlePostResendVerificationLink.bind(this);
+		this.handleGetIndex = this.handleGetIndex.bind(this);
+		this.handlePutIndex = this.handlePutIndex.bind(this);
+		this.handlePostImage = this.handlePostImage.bind(this);
+		this.handleDeleteImage = this.handleDeleteImage.bind(this);
+		this.handleGetDonations = this.handleGetDonations.bind(this);
+		this.handleGetVerify = this.handleGetVerify.bind(this);
+		this.handlePutAccount = this.handlePutAccount.bind(this);
+		this.handlePutAgency = this.handlePutAgency.bind(this);
 	}
 
 	private async sendEmail(email: string, verificationHash: string) {
@@ -42,7 +50,7 @@ export default class ProfileController extends BaseController {
 		}
 	}
 
-	async postResendVerificationLink(req: Request, res: Response, _next: NextFunction) {
+	async handlePostResendVerificationLink(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { userId } = req.body;
 

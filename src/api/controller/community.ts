@@ -10,9 +10,9 @@ import config from '../../helper/config';
 import BaseController from './basecontroller';
 
 export default class CommunityController extends BaseController {
-	private agencyRepository: AgenciesRepository;
-	private postRepository: CommunityPostsRepository;
-	private imagesRepository: ImagesRepository;
+	private readonly agencyRepository: AgenciesRepository;
+	private readonly postRepository: CommunityPostsRepository;
+	private readonly imagesRepository: ImagesRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

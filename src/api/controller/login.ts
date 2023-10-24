@@ -11,7 +11,7 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class LoginController extends BaseController {
-	private usersRepository: UsersRepository;
+	private readonly usersRepository: UsersRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

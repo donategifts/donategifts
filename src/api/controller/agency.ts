@@ -7,7 +7,7 @@ import { DB, Agencies } from '../../db/types/generated/database';
 import BaseController from './basecontroller';
 
 export default class AgencyController extends BaseController {
-	private agencyRepository: AgenciesRepository;
+	private readonly agencyRepository: AgenciesRepository;
 
 	constructor(database: Kysely<DB>) {
 		super();

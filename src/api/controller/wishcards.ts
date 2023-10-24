@@ -16,12 +16,12 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class WishCardApiController extends BaseController {
-	private wishCardsRepository: WishcardsRepository;
-	private agenciesRepository: AgenciesRepository;
-	private itemsRepository: ItemsRepository;
-	private childrenRepository: ChildrenRepository;
-	private messagesRepository: MessagesRepository;
-	private imagesRepository: ImagesRepository;
+	private readonly wishCardsRepository: WishcardsRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly itemsRepository: ItemsRepository;
+	private readonly childrenRepository: ChildrenRepository;
+	private readonly messagesRepository: MessagesRepository;
+	private readonly imagesRepository: ImagesRepository;
 
 	constructor(private readonly database: Kysely<DB>) {
 		super();
