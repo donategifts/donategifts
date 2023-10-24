@@ -23,15 +23,15 @@ export default class WishCardApiController extends BaseController {
 	private readonly messagesRepository: MessagesRepository;
 	private readonly imagesRepository: ImagesRepository;
 
-	constructor(private readonly database: Kysely<DB>) {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.wishCardsRepository = new WishcardsRepository(this.database);
-		this.agenciesRepository = new AgenciesRepository(this.database);
-		this.itemsRepository = new ItemsRepository(this.database);
-		this.childrenRepository = new ChildrenRepository(this.database);
-		this.messagesRepository = new MessagesRepository(this.database);
-		this.imagesRepository = new ImagesRepository(this.database);
+		this.wishCardsRepository = new WishcardsRepository(database);
+		this.agenciesRepository = new AgenciesRepository(database);
+		this.itemsRepository = new ItemsRepository(database);
+		this.childrenRepository = new ChildrenRepository(database);
+		this.messagesRepository = new MessagesRepository(database);
+		this.imagesRepository = new ImagesRepository(database);
 	}
 
 	async getWishCardSearchResult(
