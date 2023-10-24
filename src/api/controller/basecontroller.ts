@@ -25,11 +25,7 @@ export default class BaseController {
 		methods.forEach((method) => {
 			const property = this[method];
 
-			if (
-				typeof property === 'function' &&
-				method !== 'constructor' &&
-				method.startsWith('handle')
-			) {
+			if (typeof property === 'function' && method.startsWith('handle')) {
 				this[method] = property.bind(this);
 			}
 		});
