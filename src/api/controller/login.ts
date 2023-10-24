@@ -17,10 +17,6 @@ export default class LoginController extends BaseController {
 		super();
 
 		this.usersRepository = new UsersRepository(database);
-
-		this.handlePostIndex = this.handlePostIndex.bind(this);
-		this.handlePostGoogleLogin = this.handlePostGoogleLogin.bind(this);
-		this.handlePostFacebookLogin = this.handlePostFacebookLogin.bind(this);
 	}
 
 	private async verifyGoogleToken(token: string) {

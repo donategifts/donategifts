@@ -15,6 +15,24 @@ export default class BaseController {
 			windowMs: limitTime * 60 * 1000,
 			max: 100,
 		});
+
+		this.bindMethods();
+	}
+
+	private bindMethods() {
+		const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+
+		methods.forEach((method) => {
+			const property = this[method];
+
+			if (
+				typeof property === 'function' &&
+				method !== 'constructor' &&
+				method.startsWith('handle')
+			) {
+				this[method] = property.bind(this);
+			}
+		});
 	}
 
 	protected sendResponse<T>(response: Response, data: T, status = 200) {

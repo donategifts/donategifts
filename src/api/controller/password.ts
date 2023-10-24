@@ -21,9 +21,6 @@ export default class PasswordController extends BaseController {
 
 		this.usersRepository = new UsersRepository(database);
 		this.verificationTokensRepository = new VerificationTokensRepository(database);
-
-		this.handlePostNew = this.handlePostNew.bind(this);
-		this.handlePostReset = this.handlePostReset.bind(this);
 	}
 
 	async handlePostNew(req: Request, res: Response, _next: NextFunction) {

@@ -52,8 +52,7 @@ export interface Agencies {
 
 export interface Children {
   id: Generated<string>;
-  first_name: string;
-  last_name: string;
+  name: string;
   birth_year: number;
   interest: string;
   story: string;

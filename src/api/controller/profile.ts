@@ -30,16 +30,6 @@ export default class ProfileController extends BaseController {
 		this.ordersRepository = new OrdersRepository(database);
 		this.imagesRepository = new ImagesRepository(database);
 		this.verificationTokensRepository = new VerificationTokensRepository(database);
-
-		this.handlePostResendVerificationLink = this.handlePostResendVerificationLink.bind(this);
-		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handlePutIndex = this.handlePutIndex.bind(this);
-		this.handlePostImage = this.handlePostImage.bind(this);
-		this.handleDeleteImage = this.handleDeleteImage.bind(this);
-		this.handleGetDonations = this.handleGetDonations.bind(this);
-		this.handleGetVerify = this.handleGetVerify.bind(this);
-		this.handlePutAccount = this.handlePutAccount.bind(this);
-		this.handlePutAgency = this.handlePutAgency.bind(this);
 	}
 
 	private async sendEmail(email: string, verificationHash: string) {

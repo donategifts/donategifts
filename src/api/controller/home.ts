@@ -16,8 +16,6 @@ export default class HomeController extends BaseController {
 		super();
 		this.agenciesRepository = new AgenciesRepository(database);
 		this.wishCardsRepository = new WishCardsRepository(database);
-
-		this.handleGetIndex = this.handleGetIndex.bind(this);
 	}
 
 	private getChristmasString() {

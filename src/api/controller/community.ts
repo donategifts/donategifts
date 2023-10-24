@@ -20,9 +20,6 @@ export default class CommunityController extends BaseController {
 		this.agencyRepository = new AgenciesRepository(database);
 		this.postRepository = new CommunityPostsRepository(database);
 		this.imagesRepository = new ImagesRepository(database);
-
-		this.getPosts = this.getPosts.bind(this);
-		this.addPost = this.addPost.bind(this);
 	}
 
 	async getPosts(_req: Request, res: Response, _next: NextFunction) {

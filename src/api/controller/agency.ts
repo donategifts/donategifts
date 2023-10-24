@@ -13,7 +13,6 @@ export default class AgencyController extends BaseController {
 		super();
 
 		this.agencyRepository = new AgenciesRepository(database);
-		this.handleGetDetails = this.handleGetDetails.bind(this);
 	}
 
 	async handleGetDetails(req: Request, res: Response, _next: NextFunction) {

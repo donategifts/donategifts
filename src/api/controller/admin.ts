@@ -21,13 +21,6 @@ export default class AdminController extends BaseController {
 		this.agenciesRepository = new AgenciesRepository(database);
 		this.usersRepository = new UsersRepository(database);
 		this.wishCardRepository = new WishCardRepository();
-
-		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
-		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
-		this.handlePutVerifyAgency = this.handlePutVerifyAgency.bind(this);
-		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
-		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
-		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
 	}
 
 	private formatAgencyResponse(agency: Selectable<Agencies>, manager: Selectable<Users>) {

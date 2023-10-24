@@ -32,21 +32,6 @@ export default class WishCardApiController extends BaseController {
 		this.childrenRepository = new ChildrenRepository(this.database);
 		this.messagesRepository = new MessagesRepository(this.database);
 		this.imagesRepository = new ImagesRepository(this.database);
-
-		this.handleGetAllCards = this.handleGetAllCards.bind(this);
-		this.handlePostIndex = this.handlePostIndex.bind(this);
-		this.handlePostGuided = this.handlePostGuided.bind(this);
-		this.handleGetEdit = this.handleGetEdit.bind(this);
-		this.handlePostEdit = this.handlePostEdit.bind(this);
-		this.handleDeleteSingle = this.handleDeleteSingle.bind(this);
-		this.handleGetAgency = this.handleGetAgency.bind(this);
-		this.handlePostSearch = this.handlePostSearch.bind(this);
-		this.handleGetSingle = this.handleGetSingle.bind(this);
-		this.handleGetDonate = this.handleGetDonate.bind(this);
-		this.handleGetRandom = this.handleGetRandom.bind(this);
-		this.handlePostMessage = this.handlePostMessage.bind(this);
-		this.handleGetDefaults = this.handleGetDefaults.bind(this);
-		this.handlePostWishCardAsDraft = this.handlePostWishCardAsDraft.bind(this);
 	}
 
 	async getWishCardSearchResult(
@@ -99,17 +84,39 @@ export default class WishCardApiController extends BaseController {
 	async handleGetAllCards(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			//To do: may need to modify this call to add item and child information
-			const wishcards = await this.wishCardsRepository.getAll();
+			const allCards = await this.wishCardsRepository.getAll();
 
-			const data = [] as unknown as Wishcards & { age: number }[];
+			const wishcards = [] as unknown as Wishcards &
+				{
+					child: Selectable<Children>;
+					age: number;
+					image: string;
+					item: Selectable<Items>;
+				}[];
 
-			for (let i = 0; i < wishcards.length; i++) {
-				const birthday = moment(wishcards[i].birth_year);
+			for (const card of allCards) {
+				const birthday = moment(card.birth_year);
 				const today = moment();
 
-				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
+				const cardData = {
+					...card,
+					child: {} as Selectable<Children>,
+					age: today.diff(birthday, 'years'),
+					image: '',
+					item: {} as Selectable<Items>,
+				};
+
+				cardData.child = await this.childrenRepository.getById(card.child_id);
+
+				cardData.item = await this.itemsRepository.getById(card.item_id);
+
+				if (card.image_id) {
+					cardData.image = (await this.imagesRepository.getById(card.image_id)).url;
+				}
+
+				wishcards.push(cardData);
 			}
-			return this.sendResponse(res, wishcards);
+			return this.sendResponse(res, { wishcards });
 		} catch (error) {
 			this.log.error('[WishcardController] handleGetIndex: ', error);
 			return this.handleError(res, error);
@@ -152,8 +159,7 @@ export default class WishCardApiController extends BaseController {
 
 				//To Do: Child Image
 				const newChild = await this.childrenRepository.create({
-					first_name: req.body.childFirstName,
-					last_name: req.body.childLastName,
+					name: req.body.childName,
 					birth_year: req.body.childBirthday,
 					interest: req.body.childInterest,
 					story: req.body.childStory,
@@ -228,8 +234,7 @@ export default class WishCardApiController extends BaseController {
 
 				//To Do: Child Image
 				const newChild = await this.childrenRepository.create({
-					first_name: req.body.childFirstName,
-					last_name: req.body.childLastName,
+					name: req.body.childName,
 					birth_year: req.body.childBirthday,
 					interest: req.body.childInterest,
 					story: req.body.childStory,
@@ -270,8 +275,7 @@ export default class WishCardApiController extends BaseController {
 		wishChild: Selectable<Children>,
 	) {
 		const wishcard = {
-			childFirstName: wishChild.first_name,
-			childLastName: wishChild.last_name,
+			childName: wishChild.name,
 			childBirthday: wishChild.birth_year,
 			childInterest: wishChild.interest,
 			wishItemName: wishItem.name,
@@ -355,8 +359,7 @@ export default class WishCardApiController extends BaseController {
 
 			//To Do: Child Image
 			await this.childrenRepository.updateById(card.child_id, {
-				first_name: req.body.childFirstName,
-				last_name: req.body.childLastName,
+				name: req.body.childName,
 				birth_year: req.body.childBirthday,
 				interest: req.body.childInterest,
 				story: req.body.childStory,
@@ -493,10 +496,7 @@ export default class WishCardApiController extends BaseController {
 			let defaultMessages: string[] = [];
 
 			if (res.locals.user) {
-				defaultMessages = Utils.getMessageChoices(
-					res.locals.user.first_name,
-					child.first_name,
-				);
+				defaultMessages = Utils.getMessageChoices(res.locals.user.first_name, child.name);
 			}
 
 			return this.sendResponse(res, {

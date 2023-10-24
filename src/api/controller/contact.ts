@@ -5,12 +5,6 @@ import Messaging from '../../helper/messaging';
 import BaseController from './basecontroller';
 
 export default class ContactController extends BaseController {
-	constructor() {
-		super();
-
-		this.handlePostContactForm = this.handlePostContactForm.bind(this);
-	}
-
 	async handlePostContactForm(req: Request, res: Response, _next: NextFunction) {
 		const { name, email, subject, message } = req.body;
 		const done = await Messaging.sendFeedbackMessage({ name, email, subject, message });
