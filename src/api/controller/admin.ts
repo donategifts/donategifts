@@ -15,11 +15,11 @@ export default class AdminController extends BaseController {
 	private usersRepository: UsersRepository;
 	private wishCardRepository: WishCardRepository;
 
-	constructor(private readonly database: Kysely<DB>) {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.agenciesRepository = new AgenciesRepository(this.database);
-		this.usersRepository = new UsersRepository(this.database);
+		this.agenciesRepository = new AgenciesRepository(database);
+		this.usersRepository = new UsersRepository(database);
 		this.wishCardRepository = new WishCardRepository();
 
 		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);

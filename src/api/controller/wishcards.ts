@@ -33,7 +33,7 @@ export default class WishCardApiController extends BaseController {
 		this.messagesRepository = new MessagesRepository(this.database);
 		this.imagesRepository = new ImagesRepository(this.database);
 
-		this.handleGetIndex = this.handleGetIndex.bind(this);
+		this.handleGetAllCards = this.handleGetAllCards.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
 		this.handlePostGuided = this.handlePostGuided.bind(this);
 		this.handleGetEdit = this.handleGetEdit.bind(this);
@@ -46,6 +46,7 @@ export default class WishCardApiController extends BaseController {
 		this.handleGetRandom = this.handleGetRandom.bind(this);
 		this.handlePostMessage = this.handlePostMessage.bind(this);
 		this.handleGetDefaults = this.handleGetDefaults.bind(this);
+		this.handlePostWishCardAsDraft = this.handlePostWishCardAsDraft.bind(this);
 	}
 
 	async getWishCardSearchResult(
@@ -95,16 +96,16 @@ export default class WishCardApiController extends BaseController {
 		);
 	}
 
-	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetAllCards(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			//To do: may need to modify this call to add item and child information
-			const wishcards = await this.wishCardsRepository.getRandom('published', 20);
+			const wishcards = await this.wishCardsRepository.getAll();
 
 			const data = [] as unknown as Wishcards & { age: number }[];
 
 			for (let i = 0; i < wishcards.length; i++) {
-				const birthday = moment(new Date(wishcards[i].birth_year));
-				const today = moment(new Date());
+				const birthday = moment(wishcards[i].birth_year);
+				const today = moment();
 
 				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
 			}
@@ -167,7 +168,7 @@ export default class WishCardApiController extends BaseController {
 					state: req.body.address_state,
 					zip_code: req.body.address_zip,
 					country_code: req.body.address_country,
-					image_id: '',
+					image_id: newImage.id,
 					child_id: newChild.id,
 					item_id: newItem.id,
 					created_by: res.locals.user.id,
@@ -243,7 +244,7 @@ export default class WishCardApiController extends BaseController {
 					state: req.body.address_state,
 					zip_code: req.body.address_zip,
 					country_code: req.body.address_country,
-					image_id: '',
+					image_id: newImage.id,
 					child_id: newChild.id,
 					item_id: newItem.id,
 					created_by: res.locals.user.id,
@@ -302,7 +303,7 @@ export default class WishCardApiController extends BaseController {
 				);
 
 				if (agency.id !== userAgency.id) {
-					return res.status(403).send({ success: false, url: '/profile' });
+					return res.status(403).send({ url: '/profile' });
 				}
 			}
 
@@ -370,7 +371,7 @@ export default class WishCardApiController extends BaseController {
 				state: req.body.address_state ? req.body.state : card.state,
 				zip_code: req.body.address_zip ? req.body.address_zip : card.zip_code,
 				country_code: req.body.address_country ? req.body.country : card.country_code,
-				image_id: '',
+				image_id: newImage.id,
 			});
 
 			let url = '/wishcards/manage';
@@ -383,7 +384,7 @@ export default class WishCardApiController extends BaseController {
 				wishCardId: card.id,
 			});
 
-			return this.sendResponse(res, { success: true, url });
+			return this.sendResponse(res, { url });
 		} catch (error) {
 			this.log.error('[WishcardController] handlePostEdit: ', error);
 			return this.handleError(res, error);
@@ -402,7 +403,7 @@ export default class WishCardApiController extends BaseController {
 					res.locals.user.id,
 				);
 				if (String(agency.id) !== String(userAgency?.id)) {
-					return this.sendResponse(res, { success: false, url: '/profile' });
+					return this.sendResponse(res, { url: '/profile' });
 				}
 				url += 'me';
 			}
@@ -413,7 +414,7 @@ export default class WishCardApiController extends BaseController {
 				mgs: 'Wishcard Deleted',
 				wishCardId: wishcard?.id,
 			});
-			return this.sendResponse(res, { success: true, url });
+			return this.sendResponse(res, { url });
 		} catch (error) {
 			this.log.error('[WishcardController] handleDeleteSingle: ', error);
 			return this.handleError(res, error);
@@ -473,7 +474,6 @@ export default class WishCardApiController extends BaseController {
 			);
 
 			return this.sendResponse(res, {
-				user: res.locals.user,
 				wishcards,
 			});
 		} catch (error) {
@@ -506,7 +506,7 @@ export default class WishCardApiController extends BaseController {
 						? moment(new Date()).diff(child.birth_year, 'years')
 						: 'Not Provided',
 				},
-				agency: agency || {},
+				agency,
 				messages,
 				defaultMessages,
 			});
@@ -621,7 +621,7 @@ export default class WishCardApiController extends BaseController {
 		}
 	}
 
-	async postWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
+	async handlePostWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const {
 				childFirstName,

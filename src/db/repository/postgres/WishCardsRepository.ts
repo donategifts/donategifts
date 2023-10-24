@@ -21,7 +21,12 @@ export default class WishcardsRepository {
 	}
 
 	getAll() {
-		return this.database.selectFrom('wishcards').selectAll().execute();
+		return this.database
+			.selectFrom('wishcards')
+			.innerJoin('children', 'children.id', 'wishcards.child_id')
+			.selectAll(['wishcards', 'children'])
+			.orderBy('wishcards.status', 'desc')
+			.execute();
 	}
 
 	getByWishItemName(itemName: string) {

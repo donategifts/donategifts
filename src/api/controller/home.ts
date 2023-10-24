@@ -13,10 +13,10 @@ export default class HomeController extends BaseController {
 
 	private wishCardsRepository: WishCardsRepository;
 
-	constructor(private readonly database: Kysely<DB>) {
+	constructor(database: Kysely<DB>) {
 		super();
-		this.agenciesRepository = new AgenciesRepository(this.database);
-		this.wishCardsRepository = new WishCardsRepository(this.database);
+		this.agenciesRepository = new AgenciesRepository(database);
+		this.wishCardsRepository = new WishCardsRepository(database);
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 	}

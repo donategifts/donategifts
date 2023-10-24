@@ -3,13 +3,13 @@ services:
     app:
         image: node:18
         container_name: app
-        working_dir: /app
+        working_dir: /data/app
         command: npm run dev
         ports:
             - 3000:3000
             - 9229:9229
         volumes:
-            - .:/app:z
+            - .:/data/app:z
         depends_on:
             - mongo
             - postgres

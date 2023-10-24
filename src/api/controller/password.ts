@@ -17,11 +17,11 @@ export default class PasswordController extends BaseController {
 
 	private verificationTokensRepository: VerificationTokensRepository;
 
-	constructor(private readonly database: Kysely<DB>) {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.usersRepository = new UsersRepository(this.database);
-		this.verificationTokensRepository = new VerificationTokensRepository(this.database);
+		this.usersRepository = new UsersRepository(database);
+		this.verificationTokensRepository = new VerificationTokensRepository(database);
 
 		this.handlePostNew = this.handlePostNew.bind(this);
 		this.handlePostReset = this.handlePostReset.bind(this);

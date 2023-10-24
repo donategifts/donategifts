@@ -11,7 +11,7 @@ const router = express.Router();
 const fileUpload = new FileUpload();
 const wishCardController = new WishCardController(database);
 
-router.get('/', wishCardController.handleGetIndex);
+router.get('/all', wishCardController.handleGetAllCards);
 
 router.get(
 	'/single/:id',
@@ -40,7 +40,7 @@ router.post('/search/:init?', wishCardController.handlePostSearch);
 // ------------- only agencies and admins from here on -------------
 
 router.post(
-	'/',
+	'/create',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.single('wishCardImage'),
 	Validations.createWishcardValidationRules(),
@@ -82,7 +82,7 @@ router.get(
 );
 
 router.post(
-	'/',
+	'/draft',
 	Permissions.isAdminOrAgency,
 	fileUpload.upload.fields([
 		{
@@ -96,7 +96,7 @@ router.post(
 	]),
 	Validations.createWishcardValidationRules(),
 	Validations.validate,
-	wishCardController.postWishCardAsDraft,
+	wishCardController.handlePostWishCardAsDraft,
 );
 
 export default router;
