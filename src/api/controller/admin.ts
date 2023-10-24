@@ -24,7 +24,7 @@ export default class AdminController extends BaseController {
 
 		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
 		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
-		this.handleVerifyAgency = this.handleVerifyAgency.bind(this);
+		this.handlePutVerifyAgency = this.handlePutVerifyAgency.bind(this);
 		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
 		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
 		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
@@ -107,7 +107,7 @@ export default class AdminController extends BaseController {
 		}
 	}
 
-	async handleVerifyAgency(req: Request, res: Response, _next: NextFunction) {
+	async handlePutVerifyAgency(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const agency = await this.agenciesRepository.verify(req.params.agencyId);
 

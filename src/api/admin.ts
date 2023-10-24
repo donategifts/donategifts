@@ -15,7 +15,7 @@ router.get('/agencyOverview', adminController.handleGetAgencyOverview);
 
 router.get('/agencyDetail/:agencyId', adminController.handleGetAgencyDetail);
 
-router.put('/verifyAgency/:agencyId', adminController.handleVerifyAgency);
+router.put('/verifyAgency/:agencyId', adminController.handlePutVerifyAgency);
 
 router.post('/updateAgencyData/:agencyId', adminController.handleUpdateAgencyData);
 

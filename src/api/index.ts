@@ -10,6 +10,7 @@ import home from './home';
 import login from './login';
 import password from './password';
 import profile from './profile';
+import signup from './signup';
 import wishcards from './wishcards';
 
 export const routes = Router();
@@ -25,4 +26,5 @@ routes.use('/home', home);
 routes.use('/login', login);
 routes.use('/password', password);
 routes.use('/profile', profile);
+routes.use('/signup', signup);
 routes.use('/wishcards', wishcards);

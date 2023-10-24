@@ -1,34 +1,25 @@
 import express from 'express';
 
-import SignupController from '../controller/signup';
-import Permissions from '../middleware/permissions';
-import Validations from '../middleware/validations';
+import { database } from '../db/postgresconnection';
+import AgenciesRepository from '../db/repository/postgres/AgenciesRepository';
 
 const router = express.Router();
 
-const signupController = new SignupController();
+router.get('/', async (req, res, _next) => {
+	if (req.session?.user) {
+		const { role, id } = req.session.user;
+		if (role === 'partner') {
+			const agency = await new AgenciesRepository(database).getByAccountManagerId(id);
 
-router.get('/', Permissions.redirectProfile, signupController.handleGetIndex);
+			if (!agency.is_verified) {
+				return res.render('pages/signup/agencydata');
+			}
+		}
 
-router.post(
-	'/',
-	Validations.signupValidationRules(),
-	Validations.validate,
-	signupController.handlePostSignup,
-);
-
-router.post(
-	'/agency',
-	Validations.createAgencyValidationRules(),
-	Validations.validate,
-	signupController.handlePostAgency,
-);
-
-router.get(
-	'/agency',
-	Permissions.redirectLogin,
-	Permissions.redirectProfile,
-	signupController.handleGetAgency,
-);
+		return res.redirect('pages/profile');
+	} else {
+		return res.render('pages/signup/basecontact');
+	}
+});
 
 export default router;
