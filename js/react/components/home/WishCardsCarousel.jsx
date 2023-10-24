@@ -16,27 +16,33 @@ function WishCardsCarousel({ user }) {
 		setWindowWidth(window.innerWidth);
 	};
 
+	const setChunksAndStyle = (cards) => {
+		if (windowWidth > 1400) {
+			setChunkedWishCards(chunkArray(cards || wishCards, 3));
+			setColStyle('col-4');
+		} else if (windowWidth < 1400 && windowWidth > 992) {
+			setChunkedWishCards(chunkArray(cards || wishCards, 2));
+			setColStyle('col-6');
+		} else {
+			setChunkedWishCards(chunkArray(cards || wishCards, 1));
+			setColStyle('col-12');
+		}
+	};
+
 	useEffect(() => {
 		axios('/api/wishcards/all')
 			.then(({ data: { wishcards } }) => {
-				setWishCards(wishcards);
-				setChunkedWishCards(chunkArray(wishcards, 3));
+				setWishCards(wishcards.slice(0, 9));
+				setChunksAndStyle(wishcards.slice(0, 9));
 			})
 			.catch((err) => {
 				console.error(err);
 			});
-	}, [setChunkedWishCards]);
+	}, []);
 
 	useEffect(() => {
-		if (windowWidth > 1400) {
-			setChunkedWishCards(chunkArray(wishCards, 3));
-			setColStyle('col-4');
-		} else if (windowWidth < 1400 && windowWidth > 992) {
-			setChunkedWishCards(chunkArray(wishCards, 2));
-			setColStyle('col-6');
-		} else {
-			setChunkedWishCards(chunkArray(wishCards, 1));
-			setColStyle('col-12');
+		if (wishCards.length) {
+			setChunksAndStyle();
 		}
 
 		window.addEventListener('resize', resizeWidth);
