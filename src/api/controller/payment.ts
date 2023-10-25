@@ -17,12 +17,12 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class PaymentProviderController extends BaseController {
-	private wishcardsRepository: WishCardsRepository;
-	private usersRepository: UsersRepository;
-	private agenciesRepository: AgenciesRepository;
-	private childrenRepository: ChildrenRepository;
-	private itemsRepository: ItemsRepository;
-	private stripeClient: Stripe;
+	private readonly wishcardsRepository: WishCardsRepository;
+	private readonly usersRepository: UsersRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly childrenRepository: ChildrenRepository;
+	private readonly itemsRepository: ItemsRepository;
+	private readonly stripeClient: Stripe;
 	private lastWishcardDonation: string;
 	constructor(database: Kysely<DB>) {
 		super();

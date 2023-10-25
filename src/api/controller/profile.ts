@@ -3,10 +3,8 @@ import { Kysely } from 'kysely';
 
 import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
-import OrdersRepository from '../../db/repository/postgres/OrdersRepository';
 import UsersRepository from '../../db/repository/postgres/UsersRepository';
 import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
-import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
 import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
@@ -16,8 +14,6 @@ import BaseController from './basecontroller';
 export default class ProfileController extends BaseController {
 	private readonly usersRepository: UsersRepository;
 	private readonly agenciesRepository: AgenciesRepository;
-	private readonly wishcardsRepository: WishCardsRepository;
-	private readonly ordersRepository: OrdersRepository;
 	private readonly imagesRepository: ImagesRepository;
 	private readonly verificationTokensRepository: VerificationTokensRepository;
 
@@ -26,8 +22,6 @@ export default class ProfileController extends BaseController {
 
 		this.usersRepository = new UsersRepository(database);
 		this.agenciesRepository = new AgenciesRepository(database);
-		this.wishcardsRepository = new WishCardsRepository(database);
-		this.ordersRepository = new OrdersRepository(database);
 		this.imagesRepository = new ImagesRepository(database);
 		this.verificationTokensRepository = new VerificationTokensRepository(database);
 	}
