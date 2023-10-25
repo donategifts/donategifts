@@ -19,20 +19,13 @@ This web app offers users to send holiday gifts and school supplies to the child
 - [Stacy Sealky Lee](https://github.com/stacysealky)
 - [Marco Schuster](https://github.com/Enubia)
 
-## Current Contributors
+## Contributors
 
-- [Ivan Repusic](https://github.com/Tokikko) 
-- [Jacob Jeevan](https://github.com/Jacobjeevan)
-- [nguyenit67](https://github.com/nguyenit67)
-- [NMilivojevic](https://github.com/NMilivojevic)
-- [nick-w-nick](https://github.com/nick-w-nick)
+<a href="https://github.com/donategifts/donategifts/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=donategifts/donategifts" />
+</a>
 
-## Past Contributors
-
-- Patric Hoffmann
-- Markell Richards
-- Maria Nguyen
-- Deep Patel
+Made with [contrib.rocks](https://contrib.rocks).
 
 ## Questions?
 

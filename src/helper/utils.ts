@@ -1,5 +1,5 @@
 import axios from 'axios';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,7 +7,7 @@ import config from './config';
 import log from './logger';
 
 export default class Utils {
-	static async hashPassword(password) {
+	static async hashPassword(password: string) {
 		const salt = await bcrypt.genSalt(10);
 		return bcrypt.hash(password, salt);
 	}

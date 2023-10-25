@@ -1,7 +1,9 @@
 version: '3.8'
 services:
     app:
-        image: node:18
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
         container_name: app
         working_dir: /data/app
         command: npm run dev
