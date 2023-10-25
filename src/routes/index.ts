@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import BaseController from '../controller/basecontroller';
+import BaseController from '../api/controller/basecontroller';
 
 import admin from './admin';
 import community from './community';

@@ -7,7 +7,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 
 import { routes as apiRoutes } from './api';
-import BaseController from './controller/basecontroller';
+import BaseController from './api/controller/basecontroller';
 import MongooseConnection from './db/connection';
 import { connectPostgres } from './db/postgresconnection';
 import config from './helper/config';
@@ -93,7 +93,7 @@ const app = express();
 			const clientIp = req.ip;
 
 			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
-				req.session?.user ? `USER ${req.session.user._id}` : 'GUEST'
+				req.session?.user ? `USER ${req.session.user.id}` : 'GUEST'
 			}) path: ${req.originalUrl}`;
 
 			logger.info(logString);
