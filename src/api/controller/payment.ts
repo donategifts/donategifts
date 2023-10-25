@@ -47,7 +47,14 @@ export default class PaymentProviderController extends BaseController {
 		this.lastWishcardDonation = '';
 	}
 
-	async finishDonation({ service, userId, wishCardId, amount, userDonation, agencyName }) {
+	private async finishDonation({
+		service,
+		userId,
+		wishCardId,
+		amount,
+		userDonation,
+		agencyName,
+	}) {
 		try {
 			const user = await this.usersRepository.getById(userId);
 			const wishCard = await this.wishcardsRepository.getById(wishCardId);

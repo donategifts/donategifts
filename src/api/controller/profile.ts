@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Kysely, Selectable } from 'kysely';
+import { Kysely } from 'kysely';
 
 import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
@@ -7,7 +7,7 @@ import OrdersRepository from '../../db/repository/postgres/OrdersRepository';
 import UsersRepository from '../../db/repository/postgres/UsersRepository';
 import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
 import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
-import { DB, Orders, Wishcards, Agencies } from '../../db/types/generated/database';
+import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
@@ -64,47 +64,6 @@ export default class ProfileController extends BaseController {
 			});
 		} catch (error) {
 			this.log.error('[ProfileController] postResendVerificationLink: ', error);
-			return this.handleError(res, error);
-		}
-	}
-
-	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const { user } = res.locals;
-			if (user?.role === 'partner') {
-				const agency = await this.agenciesRepository.getByAccountManagerId(user.id);
-
-				// If user hadn't filled out agency info, redirect them to form
-				// if (!agency) {
-				// 	return this.renderView(res, 'signup/agencydata');
-				// }
-
-				const wishCards = await this.wishcardsRepository.getByAgencyId(agency.id);
-				const wishCardsLength = wishCards.length;
-				const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
-				const activeWishcards = wishCards.filter(
-					(wishcard) => wishcard.status === 'published',
-				);
-				const inactiveWishcards = wishCards.filter(
-					(wishcard) => wishcard.status === 'donated',
-				);
-
-				return this.sendResponse(res, {
-					success: true,
-					message: null,
-					data: {
-						agency,
-						wishCardsLength,
-						draftWishcards,
-						activeWishcards,
-						inactiveWishcards,
-					},
-				});
-			} else {
-				return this.sendResponse(res, { success: false, error: null });
-			}
-		} catch (error) {
-			this.log.error('[ProfileController] handleGetIndex: ', error);
 			return this.handleError(res, error);
 		}
 	}
@@ -213,103 +172,6 @@ export default class ProfileController extends BaseController {
 		} catch (error) {
 			this.log.error('[ProfileController] handleDeleteImage: ', error);
 			return this.handleError(res, error);
-		}
-	}
-
-	async handleGetDonations(_req: Request, res: Response, _next: NextFunction) {
-		try {
-			const { user } = res.locals;
-
-			let donations: Selectable<Orders>[];
-
-			if (user.role === 'partner') {
-				const agency = await this.agenciesRepository.getByAccountManagerId(user.id);
-				donations = await this.ordersRepository.getByAgencyId(agency.id);
-			} else {
-				donations = await this.ordersRepository.getByDonorId(user.id);
-			}
-
-			return this.sendResponse(res, {
-				success: true,
-				message: null,
-				data: donations,
-			});
-		} catch (error) {
-			this.log.error('[ProfileController] handleGetDonations: ', error);
-			return this.handleError(res, error);
-		}
-	}
-
-	async handleGetVerify(req: Request, res: Response, _next: NextFunction) {
-		try {
-			const user = await this.usersRepository.getByVerificationToken(req.params.hash);
-
-			if (user) {
-				let agency = {} as Selectable<Agencies>;
-				let wishCards: Selectable<Wishcards>[] = [];
-				let wishCardsLength = 0;
-				let draftWishcards: Selectable<Wishcards>[] = [];
-				let activeWishcards: Selectable<Wishcards>[] = [];
-				let inactiveWishcards: Selectable<Wishcards>[] = [];
-
-				if (user.role === 'partner') {
-					agency = await this.agenciesRepository.getByAccountManagerId(user.id);
-					wishCards = await this.wishcardsRepository.getByAgencyId(agency.id);
-					wishCardsLength = wishCards.length;
-					draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
-					activeWishcards = wishCards.filter(
-						(wishcard) => wishcard.status === 'published',
-					);
-					inactiveWishcards = wishCards.filter(
-						(wishcard) => wishcard.status === 'donated',
-					);
-				}
-
-				if (user.is_verified) {
-					if (res.locals.user) {
-						return this.sendResponse(res, {
-							success: true,
-							message: null,
-							data: {
-								user: res.locals.user,
-								agency,
-								wishCards,
-								wishCardsLength,
-								draftWishcards,
-								activeWishcards,
-								inactiveWishcards,
-							},
-						});
-					}
-					return this.sendResponse(res, {
-						success: false,
-						message: 'Your email is already verified.',
-					});
-				}
-
-				await this.usersRepository.updateVerificationStatus(user.id, true);
-
-				return this.sendResponse(res, {
-					success: true,
-					message: 'Email Verification Successful',
-					data: {
-						user,
-						wishCards,
-						wishCardsLength,
-						draftWishcards,
-						activeWishcards,
-						inactiveWishcards,
-					},
-				});
-			}
-
-			return this.handleError(res, 'Email Verification failed!');
-		} catch (error) {
-			this.log.error('[ProfileController] handleGetVerify: ', error);
-			return this.sendResponse(res, {
-				success: false,
-				message: 'Email Verification failed',
-			});
 		}
 	}
 
