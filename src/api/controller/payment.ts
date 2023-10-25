@@ -47,7 +47,7 @@ export default class PaymentProviderController extends BaseController {
 		this.lastWishcardDonation = '';
 	}
 
-	async handleDonation({ service, userId, wishCardId, amount, userDonation, agencyName }) {
+	async finishDonation({ service, userId, wishCardId, amount, userDonation, agencyName }) {
 		try {
 			const user = await this.usersRepository.getById(userId);
 			const wishCard = await this.wishcardsRepository.getById(wishCardId);
@@ -162,7 +162,7 @@ export default class PaymentProviderController extends BaseController {
 				if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
 					this.lastWishcardDonation = event.data.object.metadata.wishCardId;
 
-					await this.handleDonation({
+					await this.finishDonation({
 						service: 'Stripe',
 						userId: event.data.object.metadata.userId,
 						wishCardId: event.data.object.metadata.wishCardId,
@@ -197,7 +197,7 @@ export default class PaymentProviderController extends BaseController {
 						const agencyName = data[3];
 						const amount = req.body.resource.purchase_units[0].amount.value;
 
-						await this.handleDonation({
+						await this.finishDonation({
 							service: 'Paypal',
 							userId,
 							wishCardId,
