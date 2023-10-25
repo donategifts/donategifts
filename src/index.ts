@@ -6,8 +6,6 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import session from 'express-session';
-// import { csrf } from 'lusca';
-import requestIp from 'request-ip';
 
 import { routes as apiRoutes } from './api';
 import BaseController from './controller/basecontroller';
@@ -24,6 +22,8 @@ const app = express();
 (async () => {
 	await new MongooseConnection().connect();
 	await connectPostgres();
+
+	app.set('trust proxy', 1);
 
 	app.use(cors());
 
@@ -92,7 +92,7 @@ const app = express();
 		const parts = req.originalUrl.split('.');
 
 		if (req.originalUrl !== '/health' && !ignoredRequests.includes(parts[parts.length - 1])) {
-			const clientIp = requestIp.getClientIp(req);
+			const clientIp = req.ip;
 
 			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
 				req.session?.user ? `USER ${req.session.user._id}` : 'GUEST'
@@ -130,12 +130,6 @@ const app = express();
 	);
 
 	app.use(cookieParser());
-
-	// app.use(
-	// 	csrf({
-	// 		allowlist: ['/profile', '/community', '/signup'],
-	// 	}),
-	// );
 
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
