@@ -34,6 +34,7 @@ export default class AgenciesRepository {
 		return this.database
 			.selectFrom('agencies')
 			.where('name', '=', name)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 

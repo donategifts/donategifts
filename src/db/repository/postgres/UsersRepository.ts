@@ -17,7 +17,7 @@ export default class UsersRepository {
 			.selectFrom('users')
 			.where('id', '=', id)
 			.selectAll()
-			.executeTakeFirst();
+			.executeTakeFirstOrThrow();
 	}
 
 	update(id: string, updateParams: UsersUpdateParams) {

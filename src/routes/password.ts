@@ -14,7 +14,6 @@ router.get('/reset', (_req, res, _next) => {
 	res.render('pages/passwordreset');
 });
 
-// TODO: is allowed to stay as is for now, handles the render logic for the password reset page
 router.get(
 	'/reset/:token',
 	Validations.getPasswordResetValidationRules(),

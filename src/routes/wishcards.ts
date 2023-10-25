@@ -23,8 +23,7 @@ router.get('/edit/:id', Permissions.isAdminOrAgency, (_req, res, _next) => {
 });
 
 router.get('/manage', Permissions.isAdminOrAgency, (_req, res, _next) => {
-	// TODO: rename this tempalte to manage
-	return res.render('pages/wishcard/agencycards');
+	return res.render('pages/wishcard/manage');
 });
 
 router.get('/create', Permissions.isAdminOrAgency, (_req, res, _next) => {

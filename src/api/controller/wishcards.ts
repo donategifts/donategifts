@@ -95,20 +95,18 @@ export default class WishCardApiController extends BaseController {
 				}[];
 
 			for (const card of allCards) {
-				const birthday = moment(card.birth_year);
-				const today = moment();
+				const child = await this.childrenRepository.getById(card.child_id);
+				const item = await this.itemsRepository.getById(card.item_id);
+
+				const age = moment().diff(moment(child.birth_year), 'years');
 
 				const cardData = {
 					...card,
-					child: {} as Selectable<Children>,
-					age: today.diff(birthday, 'years'),
+					child,
+					age,
 					image: '',
-					item: {} as Selectable<Items>,
+					item,
 				};
-
-				cardData.child = await this.childrenRepository.getById(card.child_id);
-
-				cardData.item = await this.itemsRepository.getById(card.item_id);
 
 				if (card.image_id) {
 					cardData.image = (await this.imagesRepository.getById(card.image_id)).url;
