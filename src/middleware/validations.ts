@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
+import Forms from '../../translations/en/forms.json';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
@@ -202,45 +203,53 @@ export default class Validations {
 		return [
 			body('childFirstName')
 				.notEmpty()
-				.withMessage("Child's first name is required")
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childFirstName.errors.default)
 				.isString(),
-			body('childInterest').notEmpty().withMessage('Child interest is required.').isString(),
-			body('childBirthYear').notEmpty().withMessage('Child birth year is required.'),
-			body('wishItemName').notEmpty().withMessage('Wish item name is required').isString(),
-			body('wishItemPrice').notEmpty().withMessage('Wish item price is required').isNumeric(),
+			body('childInterest')
+				.notEmpty()
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childInterest.errors.default)
+				.isString(),
+			body('childBirthYear')
+				.notEmpty()
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childBirthYear.errors.default),
+			body('wishItemName')
+				.notEmpty()
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemName.errors.default)
+				.isString(),
+			body('wishItemPrice')
+				.notEmpty()
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemPrice.errors.default)
+				.isNumeric(),
 			amazonLinkValidator
 				.body('wishItemURL')
 				.isValidLink()
-				.withMessage(
-					'Item URL must start with https://www.amazon.com/ and contain a product ID to be valid.',
-				),
-			body('childStory').notEmpty().withMessage("Child's story is required").isString(),
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemURL.errors.validate),
+			body('childStory')
+				.notEmpty()
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childStory.errors.default)
+				.isString(),
 			body('address1')
 				.notEmpty()
-				.withMessage('Address cannot be empty')
-				.isLength({ min: 5 })
-				.withMessage('Address must contain at least 5 characters'),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.address1.errors.default)
+				.isLength({ min: 2 })
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.address1.errors.size),
 			body('address2').optional(),
 			body('city')
 				.notEmpty()
-				.withMessage('City cannot be empty')
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.city.errors.default)
 				.isLength({ min: 2 })
-				.withMessage('City must contain at least 2 characters'),
-			body('state')
-				.notEmpty()
-				.withMessage('State cannot be empty')
-				.isLength({ min: 2 })
-				.withMessage('State must contain at least 2 characters'),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.city.errors.size),
+			body('state').notEmpty().withMessage(Forms.ADDRESS_FORM_INPUTS.state.errors.default),
 			body('country')
 				.notEmpty()
-				.withMessage('Country cannot be empty')
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.country.errors.default)
 				.isLength({ min: 2 })
-				.withMessage('Country must contain at least 2 characters'),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.country.errors.size),
 			body('zipcode')
 				.notEmpty()
-				.withMessage('Zipcode cannot be empty')
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.zipcode.errors.default)
 				.isLength({ min: 5 })
-				.withMessage('Zipcode must contain at least 5 characters'),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.zipcode.errors.size),
 		];
 	}
 
