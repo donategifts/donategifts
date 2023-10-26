@@ -1,7 +1,7 @@
 import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
 
-import Forms from '../../../translations/en/forms.json';
+import Forms from '../translations/en/forms.json';
 import { STATE_NAMES } from '../utils/constants';
 
 // TODO: @stacysealky - Add validation to address form

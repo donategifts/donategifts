@@ -2,11 +2,11 @@ import { Switch, TextInput, Select, Textarea } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-import Forms from '../../../../translations/en/forms.json';
 import CustomButton from '../../components/shared/CustomButton.jsx';
 import CustomToast from '../../components/shared/CustomToast.jsx';
 import PopOver from '../../components/shared/PopOver.jsx';
 import AddressForm from '../../forms/AddressForm.jsx';
+import Forms from '../../translations/en/forms.json';
 import { BIRTH_YEAR, AMAZON_URL_REGEX, AMAZON_PRODUCT_REGEX } from '../../utils/constants';
 import { validateImage } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';

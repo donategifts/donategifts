@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
-import Forms from '../../translations/en/forms.json';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
+import Forms from '../translations/en/forms.json';
 
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
