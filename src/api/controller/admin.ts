@@ -114,7 +114,6 @@ export default class AdminController extends BaseController {
 	}
 
 	async handleVerifyAgency(req: Request, res: Response, _next: NextFunction) {
-		this.log.info(req.params.agencyId);
 		try {
 			const agency = await this.agencyRepository.verifyAgency(req.params.agencyId);
 
