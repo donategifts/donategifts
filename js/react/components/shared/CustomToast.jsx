@@ -1,34 +1,43 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
-function CustomToast({ title, type, delayCloseForSeconds = 5 }) {
+function CustomToast({ message, type, delayCloseForSeconds }) {
 	const [visible, setVisible] = useState(true);
+
+	const getBackgroundType = () => {
+		switch (type) {
+			case 'error':
+				return 'bg-danger';
+			case 'success':
+				return 'bg-success';
+			case 'warning':
+				return 'bg-warning';
+			default:
+				return 'bg-primary';
+		}
+	};
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setVisible(false);
 		}, delayCloseForSeconds * 1000);
+
 		return () => clearTimeout(timer);
 	}, [delayCloseForSeconds]);
+
 	return (
 		<>
 			{visible && (
 				<div
-					className={
-						'toast align-items-center text-bg-primary border-0 fade show position-fixed start-50 translate-middle-x ' +
-						(type === 'error' ? 'bg-danger' : 'bg-primary')
-					}
-					style={{
-						zIndex: 10000,
-						top: '10px',
-						left: '50%',
-						transform: 'translateX(-50%)',
-						padding: '0.5rem',
-					}}
+					id="toast"
+					className={`toast position-fixed p-3 show ${getBackgroundType(type)}`}
 					role="alert"
 					aria-live="assertive"
 					aria-atomic="true"
 				>
-					<div className="toast-body text-center">{title}</div>
+					<div className="text-white text-center">
+						<div className="toast-body fs-5">{message}</div>
+					</div>
 				</div>
 			)}
 		</>
@@ -36,9 +45,13 @@ function CustomToast({ title, type, delayCloseForSeconds = 5 }) {
 }
 
 CustomToast.propTypes = {
-	title: PropTypes.string,
-	type: PropTypes.string,
+	message: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
 	delayCloseForSeconds: PropTypes.number,
+};
+
+CustomToast.defaultProps = {
+	delayCloseForSeconds: 5,
 };
 
 export default CustomToast;
