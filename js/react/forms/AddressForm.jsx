@@ -1,44 +1,99 @@
 import { Select, TextInput } from '@mantine/core';
+import PropTypes from 'prop-types';
 
+import Forms from '../translations/en/forms.json';
 import { STATE_NAMES } from '../utils/constants';
 
-function AddressForm() {
+// TODO: @stacysealky - Add validation to address form
+function AddressForm({ inputSize, onInputChange }) {
+	const handleInputs = (event) => {
+		const target = event.target;
+		const { name, value } = target;
+
+		onInputChange({ name, value });
+	};
+
+	const handleDropDowns = (value, name) => {
+		onInputChange({ name, value });
+	};
+
 	return (
 		<>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
-					<TextInput label="Address Line 1" />
+					<TextInput
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.address1.label}
+						name="address1"
+						required
+						onChange={handleInputs}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput label="Address Line 2" />
+					<TextInput
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.address2.label}
+						name="address2"
+						onChange={handleInputs}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput label="City" />
+					<TextInput
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.city.label}
+						name="city"
+						required
+						onChange={handleInputs}
+					/>
 				</div>
 			</div>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
 					<Select
-						label="State"
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.state.label}
 						searchable
-						placeholder="Select option"
+						placeholder={Forms.ADDRESS_FORM_INPUTS.state.placeholder}
+						required
 						data={STATE_NAMES}
+						onChange={(value) => handleDropDowns(value, 'state')}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
-					<TextInput label="Zipcode" />
+					<TextInput
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.zipcode.label}
+						name="zipcode"
+						required
+						onChange={handleInputs}
+					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<Select
-						label="Country"
+						size={inputSize}
+						label={Forms.ADDRESS_FORM_INPUTS.country.label}
 						searchable
-						placeholder="Select option"
+						placeholder={Forms.ADDRESS_FORM_INPUTS.country.placeholder}
+						required
 						data={['United States']}
+						onChange={(value) => handleDropDowns(value, 'country')}
 					/>
 				</div>
 			</div>
 		</>
 	);
 }
+
+AddressForm.displayName = 'AddressForm';
+
+AddressForm.defaultProps = {
+	inputSize: 'md',
+};
+
+AddressForm.propTypes = {
+	isVisible: PropTypes.bool,
+	inputSize: PropTypes.string,
+	onInputChange: PropTypes.func,
+};
 
 export default AddressForm;

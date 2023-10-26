@@ -2,21 +2,21 @@ import { Button, Loader } from '@mantine/core';
 import PropTypes from 'prop-types';
 
 function CustomButton(props) {
-	const { loading, onClick, disabled, size, type, variant, color, fullWidth, text, loader } =
-		props;
-
 	return (
 		<Button
-			type={type}
-			size={size}
-			variant={variant}
-			color={color}
-			fullWidth={fullWidth}
-			onClick={onClick}
-			disabled={disabled}
+			type={props.type}
+			size={props.size}
+			variant={props.variant}
+			color={props.color}
+			fullWidth={props.fullWidth}
+			onClick={props.onClick}
+			disabled={props.disabled}
+			className={props.additionalClass}
 		>
-			{text}
-			{loading && <Loader className="ms-2" color={loader.color} type={loader.type} />}
+			{props.text}
+			{props.loading && (
+				<Loader className="ms-2" color={props.loader.color} type={props.loader.type} />
+			)}
 		</Button>
 	);
 }
@@ -51,6 +51,8 @@ CustomButton.propTypes = {
 		type: PropTypes.oneOf(['dots', 'bars', 'oval']),
 		color: PropTypes.oneOf(['dark', 'light', 'gray']),
 	}),
+
+	additionalClass: PropTypes.string,
 };
 
 CustomButton.defaultProps = {
@@ -69,6 +71,8 @@ CustomButton.defaultProps = {
 		type: 'dots',
 		color: 'dark',
 	},
+
+	additionalClass: '',
 };
 
 export default CustomButton;

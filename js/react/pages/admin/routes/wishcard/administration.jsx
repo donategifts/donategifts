@@ -9,9 +9,10 @@ export default function Administration() {
 
 	axios.defaults.baseURL = '/api/admin';
 
-	const handleUpdateWishcard = async (wishCardId, wishItemUrl) => {
+	const handleUpdateWishcard = async (wishCardId) => {
+		const newWishItemUrl = document.getElementById('newWishItemUrl' + wishCardId).value;
 		try {
-			await axios.put('/publishWishcards', { wishCardId, wishItemUrl });
+			await axios.put('/publishWishcards', { wishCardId, wishItemUr: newWishItemUrl });
 
 			fetchAgencyWithWishCardsData();
 		} catch (error) {
@@ -35,7 +36,7 @@ export default function Administration() {
 
 	return (
 		<div>
-			{error !== '' ? <CustomToast type="error" title={error} /> : null}
+			{error !== '' && <CustomToast title={error} />}
 			<div id="profile-bg" className="background-color">
 				<div className="profile-title">
 					<div className="text-center fs-1">Wishcard admin panel11</div>
@@ -115,14 +116,7 @@ export default function Administration() {
 															id={'donate-btn-' + card._id}
 															data-value-id={card._id}
 															onClick={() => {
-																const newWishItemUrl =
-																	document.getElementById(
-																		'newWishItemUrl' + card._id,
-																	).value;
-																handleUpdateWishcard(
-																	card._id,
-																	newWishItemUrl,
-																);
+																handleUpdateWishcard(card._id);
 															}}
 														>
 															Publish WishCard
