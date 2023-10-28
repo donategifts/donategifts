@@ -1,3 +1,4 @@
+import axios from 'axios';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -6,11 +7,10 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import LoadingCard from '../components/shared/LoadingCard.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-function CommunityPosts(props) {
-	const { user, agency, _csrf } = props;
+function CommunityPosts({ user }) {
 	const [isLoading, setIsLoading] = useState(true);
-
-	const [posts, setPosts] = useState(props.posts);
+	const [agency, setAgency] = useState(null);
+	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
 		if (posts.length > 0) {
@@ -18,7 +18,35 @@ function CommunityPosts(props) {
 				setIsLoading(false);
 			}, 1000);
 		}
-	}, []);
+	}, [posts]);
+
+	useEffect(() => {
+		if (user?.role === 'partner') {
+			axios
+				.get('/api/agency', {
+					params: {
+						userId: user?.id,
+					},
+				})
+				.then(({ data }) => {
+					setAgency(data.agency);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		}
+	}, [user]);
+
+	useEffect(() => {
+		axios
+			.get('/api/community')
+			.then(({ data }) => {
+				setPosts(data.posts);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, [setPosts]);
 
 	const submitPost = (event) => {
 		event.preventDefault();
@@ -31,28 +59,19 @@ function CommunityPosts(props) {
 
 		const toast = new window.DG.Toast();
 
-		fetch('/api/community', {
-			method: 'POST',
-			headers: {
-				'x-csrf-token': _csrf,
-			},
-			body: formData,
-		})
-			.then((res) => {
-				if (!res.ok) {
-					throw new Error(`Response is not valid: ${res.status}`);
-				}
-				return res.json();
+		axios
+			.post('/api/community', {
+				body: formData,
 			})
 			.then((data) => {
 				document.querySelector('#communityPost').reset();
 				document.querySelector('#imagePreview').innerHTML = '';
-				toast.show('Post published');
+				toast.show('Post published', window.DG.Toast.styleMap.success);
 				setPosts(data.data);
 			})
 			.catch((err) => {
 				console.error(err);
-				toast.show('Post could not be saved', toast.styleMap.danger);
+				toast.show('Post could not be saved', window.DG.Toast.styleMap.danger);
 			});
 	};
 
@@ -137,11 +156,15 @@ function CommunityPosts(props) {
 					{user?.userRole === 'partner' && agency?.isVerified && createPost()}
 					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 						<Masonry gutter="1rem">
-							{posts.map((post) =>
-								isLoading ? (
-									<LoadingCard key={post._id} enableButtons={false} />
-								) : (
-									<div className="card shadow rounded-3 border-0" key={post._id}>
+							{isLoading &&
+								new Array(6)
+									.fill(0)
+									.map((_, index) => (
+										<LoadingCard enableButtons={false} key={index} />
+									))}
+							{!isLoading &&
+								posts.map((post) => (
+									<div className="card shadow rounded-3 border-0" key={post.id}>
 										<div className="card-header p-4 bg-white border-0">
 											<div className="text-center">
 												{post.belongsTo?.agencyProfileImage && (
@@ -173,8 +196,7 @@ function CommunityPosts(props) {
 											)}
 										</div>
 									</div>
-								),
-							)}
+								))}
 						</Masonry>
 					</ResponsiveMasonry>
 				</div>
@@ -185,19 +207,6 @@ function CommunityPosts(props) {
 
 CommunityPosts.propTypes = {
 	user: PropTypes.object,
-	agency: PropTypes.object,
-	_csrf: PropTypes.string,
-	posts: PropTypes.arrayOf(
-		PropTypes.shape({
-			belongsTo: PropTypes.shape({
-				agencyProfileImage: PropTypes.string,
-				agencyName: PropTypes.string,
-			}),
-			createdAt: PropTypes.string,
-			message: PropTypes.string,
-			image: PropTypes.string,
-		}),
-	),
 };
 
 export default CommunityPosts;

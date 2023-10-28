@@ -1,11 +1,9 @@
 import express from 'express';
 
-import FaqController from '../controller/faq';
-
 const router = express.Router();
 
-const faqController = new FaqController();
-
-router.get('/', faqController.handleGetIndex);
+router.get('/', (_req, res, _next) => {
+	return res.render('pages/faq');
+});
 
 export default router;

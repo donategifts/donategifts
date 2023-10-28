@@ -22,7 +22,11 @@ export default class ItemsRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('items').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('items')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	update(id: string, updateParams: ItemsUpdateParams) {

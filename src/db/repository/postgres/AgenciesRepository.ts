@@ -15,13 +15,18 @@ export default class AgenciesRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('agencies').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('agencies')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	getByAccountManagerId(id: string) {
 		return this.database
 			.selectFrom('agencies')
 			.where('account_manager_id', '=', id)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 
@@ -29,6 +34,7 @@ export default class AgenciesRepository {
 		return this.database
 			.selectFrom('agencies')
 			.where('name', '=', name)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 
@@ -53,6 +59,7 @@ export default class AgenciesRepository {
 		return this.database
 			.selectFrom('agencies')
 			.where('is_verified', '=', is_verified)
+			.selectAll()
 			.execute();
 	}
 

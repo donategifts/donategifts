@@ -35,7 +35,7 @@ export default class VerificationTokensRepository {
 		return this.database
 			.insertInto('verification_tokens')
 			.values(verificationTokenParams)
-			.returningAll()
+			.returning('token')
 			.executeTakeFirstOrThrow();
 	}
 
@@ -43,6 +43,15 @@ export default class VerificationTokensRepository {
 		return this.database
 			.selectFrom('verification_tokens')
 			.where('user_id', '=', userId)
-			.execute();
+			.select('token')
+			.executeTakeFirstOrThrow();
+	}
+
+	getByToken(token: string) {
+		return this.database
+			.selectFrom('verification_tokens')
+			.where('token', '=', token)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 }

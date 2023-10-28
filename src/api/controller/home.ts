@@ -1,22 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
+import { Kysely } from 'kysely';
 import moment from 'moment';
 
-import AgencyRepository from '../db/repository/AgencyRepository';
-import WishCardRepository from '../db/repository/WishCardRepository';
+import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
+import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
+import { DB } from '../../db/types/generated/database';
 
 import BaseController from './basecontroller';
 
 export default class HomeController extends BaseController {
-	private agencyRepository: AgencyRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly wishCardsRepository: WishCardsRepository;
 
-	private wishCardRepository: WishCardRepository;
-
-	constructor() {
+	constructor(database: Kysely<DB>) {
 		super();
-		this.agencyRepository = new AgencyRepository();
-		this.wishCardRepository = new WishCardRepository();
-
-		this.handleGetIndex = this.handleGetIndex.bind(this);
+		this.agenciesRepository = new AgenciesRepository(database);
+		this.wishCardsRepository = new WishCardsRepository(database);
 	}
 
 	private getChristmasString() {
@@ -43,17 +42,17 @@ export default class HomeController extends BaseController {
 	}
 
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
-		const agencies = await this.agencyRepository.getVerifiedAgencies();
+		const agencies = await this.agenciesRepository.getByVerificationStatus(true);
 
-		const wishCards = await this.wishCardRepository.getRandom('published', 6);
+		const wishCards = await this.wishCardsRepository.getRandom('published', 6);
 
-		const undonatedWishcards = await this.wishCardRepository.getWishCardsByStatus('published');
+		const undonatedWishcards = await this.wishCardsRepository.getByStatus('published');
 
-		const donatedWishcards = await this.wishCardRepository.getWishCardsByStatus('donated');
+		const donatedWishcards = await this.wishCardsRepository.getByStatus('donated');
 
-		this.renderView(res, 'home', {
+		this.sendResponse(res, {
 			wishCards,
-			verifiedAgencies: agencies?.length,
+			verifiedAgencies: agencies.length,
 			undonatedCards: undonatedWishcards.length,
 			donatedCards: donatedWishcards.length + 200, //don't delete +200, as it's due to data loss from last year
 			christmasData: this.getChristmasString(),

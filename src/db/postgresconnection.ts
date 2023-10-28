@@ -9,8 +9,10 @@ import { DB } from './types/generated/database';
 const databaseConfig: KyselyConfig = {
 	log(event): void {
 		if (event.level === 'query') {
-			logger.debug(event.query.sql);
-			logger.debug(JSON.stringify(event.query.parameters));
+			if (config.ENABLE_QUERY_LOGGING) {
+				logger.debug(event.query.sql);
+				logger.debug(JSON.stringify(event.query.parameters));
+			}
 		} else if (event.level === 'error') {
 			logger.error(event);
 		}

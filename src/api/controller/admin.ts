@@ -1,50 +1,43 @@
 import { NextFunction, Request, Response } from 'express';
+import { Kysely, NoResultError, Selectable } from 'kysely';
 import moment from 'moment';
 
-import Agency from '../../db/models/Agency';
-import User from '../../db/models/User';
-import AgencyRepository from '../../db/repository/AgencyRepository';
-import UserRepository from '../../db/repository/UserRepository';
+import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
+import UsersRepository from '../../db/repository/postgres/UsersRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
+import { Agencies, DB, Users } from '../../db/types/generated/database';
 import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
 
 export default class AdminController extends BaseController {
-	private agencyRepository: AgencyRepository;
-	private userRepository: UserRepository;
-	private wishCardRepository: WishCardRepository;
+	private readonly agenciesRepository: AgenciesRepository;
+	private readonly usersRepository: UsersRepository;
+	private readonly wishCardRepository: WishCardRepository;
 
-	constructor() {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.agencyRepository = new AgencyRepository();
-		this.userRepository = new UserRepository();
+		this.agenciesRepository = new AgenciesRepository(database);
+		this.usersRepository = new UsersRepository(database);
 		this.wishCardRepository = new WishCardRepository();
-
-		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
-		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
-		this.handleVerifyAgency = this.handleVerifyAgency.bind(this);
-		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
-		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
-		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
 	}
 
-	private formatAgencyResponse(agency: Agency, manager: User) {
+	private formatAgencyResponse(agency: Selectable<Agencies>, manager: Selectable<Users>) {
 		return {
-			id: agency._id,
-			name: agency.agencyName,
-			phone: agency.agencyPhone,
-			website: agency.agencyWebsite,
-			joined: moment(agency.joined).format('DD-MM-yyyy'),
-			bio: agency.agencyBio,
-			verified: agency.isVerified,
+			id: agency.id,
+			name: agency.name,
+			phone: agency.phone,
+			website: agency.website,
+			joined: moment(agency.created_at).format('DD-MM-yyyy'),
+			bio: agency.bio,
+			verified: agency.is_verified,
 			accountManager: {
-				firstName: manager.fName,
-				lastName: manager.lName,
+				firstName: manager.first_name,
+				lastName: manager.last_name,
 				email: manager.email,
-				joined: moment(manager.joined).format('DD-MM-yyyy'),
-				verified: manager.emailVerified,
+				joined: moment(manager.created_at).format('DD-MM-yyyy'),
+				verified: manager.is_verified,
 			},
 		};
 	}
@@ -52,82 +45,70 @@ export default class AdminController extends BaseController {
 	async handleGetAgencyOverview(req: Request, res: Response, _next: NextFunction) {
 		const getVerified = req.query.getVerified;
 		try {
-			let agencies: Agency[] | null = [];
-
-			if (getVerified === 'true') {
-				agencies = await this.agencyRepository.getVerifiedAgencies();
-			} else {
-				agencies = await this.agencyRepository.getUnverifiedAgencies();
-			}
-
-			if (!agencies) {
-				return this.handleError(res, 'No agencies found');
-			}
+			const agencies = await this.agenciesRepository.getByVerificationStatus(
+				getVerified === 'true',
+			);
 
 			const mappedAgencies = agencies.map((agency) => {
 				return {
-					id: agency._id,
-					name: agency.agencyName,
-					phone: agency.agencyPhone,
-					website: agency.agencyWebsite,
-					joined: moment(agency.joined).format('DD-MM-yyyy'),
-					bio: agency.agencyBio,
-					accountManager: agency.accountManager,
+					id: agency.id,
+					name: agency.name,
+					phone: agency.phone,
+					website: agency.website,
+					joined: moment(agency.created_at).format('DD-MM-yyyy'),
+					bio: agency.bio,
+					accountManager: agency.account_manager_id,
 				};
 			});
 
 			return this.sendResponse(res, mappedAgencies);
 		} catch (error) {
-			this.log.error('error', error);
+			this.log.error('[AdminController] handleGetAgencyOverview: ', error);
 			return this.handleError(res, error);
 		}
 	}
 
 	async handleGetAgencyDetail(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const agency = await this.agencyRepository.getAgencyById(req.params.agencyId);
+			const agency = await this.agenciesRepository.getById(req.params.agencyId);
 
-			if (!agency) {
-				return this.handleError(res, 'Agency not found');
-			}
-
-			let accountManager = await this.userRepository.getUserByObjectId(agency.accountManager);
+			let accountManager = await this.usersRepository.getById(agency.account_manager_id);
 
 			if (!accountManager) {
 				this.log.error(
-					`[AdminController] handleGetAgencyDetail: Agency account manager not found`,
+					`[AdminController] handleGetAgencyDetail: Agency account manager not found, setting default values`,
 				);
 
 				accountManager = {
-					fName: '',
-					lName: '',
+					first_name: '',
+					last_name: '',
 					email: '',
-					joined: new Date(),
-					emailVerified: false,
-				} as User;
+					created_at: new Date(),
+					is_verified: false,
+				} as Selectable<Users>;
 			}
 
 			return this.sendResponse(res, this.formatAgencyResponse(agency, accountManager));
 		} catch (error) {
+			this.log.error('[AdminController] handleGetAgencyDetail: ', error);
+
+			if (error instanceof NoResultError) {
+				return this.handleError(res, 'Agency not found');
+			}
+
 			return this.handleError(res, error);
 		}
 	}
 
-	async handleVerifyAgency(req: Request, res: Response, _next: NextFunction) {
+	async handlePutVerifyAgency(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const agency = await this.agencyRepository.verifyAgency(req.params.agencyId);
+			const agency = await this.agenciesRepository.verify(req.params.agencyId);
 
-			if (!agency) {
-				return this.handleError(res, 'Agency not found');
-			}
-
-			const accountManager = await this.userRepository.getUserByObjectId(
-				agency.accountManager,
-			);
+			const accountManager = await this.usersRepository.getById(agency.account_manager_id);
 
 			if (!accountManager) {
-				await this.agencyRepository.updateAgencyById(req.params.agencyId, {
-					isVerified: false,
+				await this.agenciesRepository.update(req.params.agencyId, {
+					is_verified: false,
 				});
 
 				return this.handleError(res, 'Agency account manager not found');
@@ -141,6 +122,11 @@ export default class AdminController extends BaseController {
 			});
 		} catch (error) {
 			this.log.error('[AdminController] verifyAgency: ', error);
+
+			if (error instanceof NoResultError) {
+				return this.handleError(res, 'Agency not found');
+			}
+
 			return this.handleError(res, 'Failed to verify agency');
 		}
 	}
@@ -149,22 +135,23 @@ export default class AdminController extends BaseController {
 		try {
 			const { name, phone, website, bio } = req.body;
 
-			const result = await this.agencyRepository.updateAgencyById(req.params.agencyId, {
-				agencyName: name,
-				agencyPhone: phone,
-				agencyWebsite: website,
-				agencyBio: bio,
+			await this.agenciesRepository.update(req.params.agencyId, {
+				name,
+				phone,
+				website,
+				bio,
 			});
-
-			if (result.matchedCount !== 1) {
-				return this.handleError(res, 'Agency could not be updated, check post params');
-			}
 
 			return this.sendResponse(res, {
 				message: 'Agency updated',
 			});
 		} catch (error) {
 			this.log.error('[AdminController] updateAgencyData: ', error);
+
+			if (error instanceof NoResultError) {
+				return this.handleError(res, 'Agency could not be updated, check post params');
+			}
+
 			return this.handleError(res, 'Failed to update agency');
 		}
 	}

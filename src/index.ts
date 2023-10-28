@@ -3,12 +3,11 @@ import path from 'node:path';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
-import mongoSanitize from 'express-mongo-sanitize';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 
 import { routes as apiRoutes } from './api';
-import BaseController from './controller/basecontroller';
+import BaseController from './api/controller/basecontroller';
 import MongooseConnection from './db/connection';
 import { connectPostgres } from './db/postgresconnection';
 import config from './helper/config';
@@ -66,7 +65,6 @@ const app = express();
 	};
 
 	app.use((req, res, next) => {
-		// TODO: assign agency to locals if there's one present in the request
 		if (req.session.user) {
 			res.locals.user = req.session.user;
 		}
@@ -95,7 +93,7 @@ const app = express();
 			const clientIp = req.ip;
 
 			const logString = `[${res.statusCode}] ${req.method} ${clientIp} (${
-				req.session?.user ? `USER ${req.session.user._id}` : 'GUEST'
+				req.session?.user ? `USER ${req.session.user.id}` : 'GUEST'
 			}) path: ${req.originalUrl}`;
 
 			logger.info(logString);
@@ -118,14 +116,6 @@ const app = express();
 	app.use(
 		express.urlencoded({
 			extended: true,
-		}),
-	);
-
-	// sanitize input data for mongo
-	// replace with _ so that we cannot write it to db
-	app.use(
-		mongoSanitize({
-			replaceWith: '_',
 		}),
 	);
 
@@ -161,7 +151,7 @@ const app = express();
 	});
 
 	// error handler
-	app.use((err, req, res, _next) => {
+	app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
 		// set locals, only providing error in development
 		res.locals.message = err.message;
 		res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -9,7 +9,11 @@ export default class ChildrenRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('children').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('children')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	create(createParams: ChildrenCreateParams) {

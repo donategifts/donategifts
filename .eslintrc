@@ -9,5 +9,8 @@
     "react": {
       "version": "detect"
     }
+  },
+  "rules": {
+    "require-atomic-updates": "off"
   }
 }

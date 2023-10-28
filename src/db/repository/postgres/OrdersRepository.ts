@@ -11,12 +11,15 @@ export default class OrdersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	create(createParams: OrdersCreateParams) {
-		return this.database.insertInto('orders').values(createParams).returningAll()
-			.executeTakeFirstOrThrow;
+		return this.database
+			.insertInto('orders')
+			.values(createParams)
+			.returningAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	getByDonorId(id: string) {
-		return this.database.selectFrom('orders').where('donor_id', '=', id).execute();
+		return this.database.selectFrom('orders').where('donor_id', '=', id).selectAll().execute();
 	}
 
 	getByAgencyId(id: string) {

@@ -21,7 +21,11 @@ export default class WishcardsRepository {
 	}
 
 	getAll() {
-		return this.database.selectFrom('wishcards').selectAll().execute();
+		return this.database
+			.selectFrom('wishcards')
+			.selectAll()
+			.orderBy('wishcards.status', 'desc')
+			.execute();
 	}
 
 	getByWishItemName(itemName: string) {
@@ -37,6 +41,7 @@ export default class WishcardsRepository {
 		return this.database
 			.selectFrom('wishcards')
 			.where('wishcards.id', '=', id)
+			.selectAll()
 			.executeTakeFirstOrThrow();
 	}
 
@@ -64,26 +69,25 @@ export default class WishcardsRepository {
 			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
 			.selectAll('wishcards')
 			.where('agencies.id', '=', id)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getByStatus(status: Wishcardstatus) {
 		return this.database
 			.selectFrom('wishcards')
-			.innerJoin('children', 'children.id', 'wishcards.child_id')
-			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
-			.selectAll(['wishcards', 'agencies'])
+			.selectAll()
 			.where('status', '=', status)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getRandom(status: Wishcardstatus, sampleSize: number) {
 		return this.database
 			.selectFrom('wishcards')
+			.innerJoin('children', 'children.id', 'wishcards.child_id')
 			.selectAll()
 			.limit(sampleSize)
 			.where('status', '=', status)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getViewable(showDonated: boolean) {
@@ -99,7 +103,7 @@ export default class WishcardsRepository {
 				}
 				return eb.and(filters);
 			})
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	getFuzzy(searchQuery: string, showDonated: boolean, reverseSort: boolean, cardsIds?: string[]) {
@@ -109,7 +113,7 @@ export default class WishcardsRepository {
 			.selectFrom('wishcards')
 			.innerJoin('children', 'children.id', 'wishcards.child_id')
 			.innerJoin('items', 'items.id', 'wishcards.item_id')
-			.selectAll()
+			.selectAll(['wishcards', 'children', 'items'])
 			.where((eb) => {
 				const filters: Expression<SqlBool>[] = [];
 				filters.push(eb('status', '=', 'published'));
@@ -120,8 +124,7 @@ export default class WishcardsRepository {
 					eb('items.name', 'ilike', likeSearchQuery),
 					eb('children.story', 'ilike', likeSearchQuery),
 					eb('children.interest', 'ilike', likeSearchQuery),
-					eb('children.first_name', 'ilike', likeSearchQuery),
-					eb('children.last_name', 'ilike', likeSearchQuery),
+					eb('children.name', 'ilike', likeSearchQuery),
 				);
 				if (cardsIds) {
 					return eb.and(filters).or(eb('wishcards.id', 'in', cardsIds));
@@ -130,7 +133,7 @@ export default class WishcardsRepository {
 			})
 			.orderBy('wishcards.status', 'desc')
 			.orderBy('wishcards.created_at', sortOrder)
-			.executeTakeFirstOrThrow();
+			.execute();
 	}
 
 	// Following two may need to be modified/moved elsewhere depending on how wishcard locking/polling is handled
@@ -138,7 +141,7 @@ export default class WishcardsRepository {
 		const {
 			agencyEmail,
 			agencyName,
-			childFirstName,
+			childName,
 			itemName,
 			itemPrice,
 			orderDate,
@@ -157,7 +160,7 @@ export default class WishcardsRepository {
 			.select([
 				'users.email as agencyEmail',
 				'agencies.name as agencyName',
-				'children.first_name as childFirstName',
+				'children.name as childName',
 				'items.name as itemName',
 				'items.price as itemPrice',
 				'orders.created_at as orderDate',
@@ -173,24 +176,11 @@ export default class WishcardsRepository {
 		await Messaging.sendAgencyDonationEmail({
 			agencyEmail,
 			agencyName,
-			childName: childFirstName,
+			childName,
 			item: itemName,
 			price: itemPrice,
 			donationDate: orderDate,
 			address: `${addressLine1} ${addressLine2} ${city}, ${state} ${zipCode}`,
 		});
-	}
-
-	async handlePublished(id: string) {
-		const { email: agencyEmail, first_name: childName } = await this.database
-			.selectFrom('wishcards')
-			.innerJoin('children', 'children.id', 'wishcards.child_id')
-			.innerJoin('agencies', 'agencies.id', 'children.agency_id')
-			.innerJoin('users', 'agencies.account_manager_id', 'users.id')
-			.select(['users.email', 'children.first_name'])
-			.where('wishcards.id', '=', id)
-			.executeTakeFirstOrThrow();
-
-		await Messaging.sendWishPublishedEmail({ agencyEmail, childName });
 	}
 }

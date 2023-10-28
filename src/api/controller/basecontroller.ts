@@ -4,7 +4,7 @@ import { RateLimitRequestHandler, rateLimit } from 'express-rate-limit';
 import logger from '../../helper/logger';
 
 export default class BaseController {
-	public log: typeof logger;
+	protected log: typeof logger;
 
 	public limiter: RateLimitRequestHandler;
 
@@ -15,15 +15,27 @@ export default class BaseController {
 			windowMs: limitTime * 60 * 1000,
 			max: 100,
 		});
+
+		this.bindMethods();
 	}
 
-	sendResponse(res: Response, data: any, status = 200) {
-		return res.status(status).send({
-			data,
+	private bindMethods() {
+		const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+
+		methods.forEach((method) => {
+			const property = this[method];
+
+			if (typeof property === 'function' && method.startsWith('handle')) {
+				this[method] = property.bind(this);
+			}
 		});
 	}
 
-	handleError(res: Response, error: any, code = 400) {
+	protected sendResponse<T>(response: Response, data: T, status = 200) {
+		return response.status(status).send(data);
+	}
+
+	protected handleError(response: Response, error: any, code = 400) {
 		let statusCode: number;
 
 		if (typeof error === 'object' && error.statusCode) {
@@ -32,9 +44,6 @@ export default class BaseController {
 			statusCode = code;
 		}
 
-		this.log.error(error);
-		return res.status(statusCode).send({
-			error,
-		});
+		return response.status(statusCode).send(error);
 	}
 }

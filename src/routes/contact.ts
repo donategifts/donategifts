@@ -1,15 +1,9 @@
 import express from 'express';
 
-import ContactController from '../controller/contact';
-
 const router = express.Router();
 
-const contactController = new ContactController();
-
-router.get('/', contactController.handleGetIndex);
-
-router.post('/email', contactController.handlePostEmail);
-
-router.post('/customer-service', contactController.handlePostCustomerService);
+router.get('/', (_req, res, _next) => {
+	return res.render('pages/contact');
+});
 
 export default router;

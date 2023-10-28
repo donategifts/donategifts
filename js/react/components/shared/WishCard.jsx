@@ -2,34 +2,34 @@ import PropTypes from 'prop-types';
 
 function WishCard({ wishCard, attributes }) {
 	return (
-		<div className="card border-0 shadow h-100" key={wishCard._id}>
+		<div className="card border-0 shadow h-100" key={wishCard.id}>
 			<img
 				className="card-img-top rounded-0 rounded-top-3"
-				src={wishCard.wishCardImage}
-				alt={wishCard.wishItemName}
+				src={wishCard.image}
+				alt={wishCard.item.name}
 				loading="lazy"
 			/>
 			<div className="card-body center-elements rounded-0 rounded-bottom-3">
 				<div className="w-100">
-					<h4 className="card-title text-center">My name is {wishCard.childFirstName}</h4>
+					<h4 className="card-title text-center">My name is {wishCard.child.name}</h4>
 					<div className="card-text">
 						<p className="mb-1">
-							{wishCard.wishItemName?.length > 26
-								? `Wish: ${wishCard.wishItemName.slice(0, 26)}...`
-								: `Wish: ${wishCard.wishItemName}`}
+							{wishCard.item.name?.length > 26
+								? `Wish: ${wishCard.item.name.slice(0, 26)}...`
+								: `Wish: ${wishCard.item.name}`}
 						</p>
-						<p className="mb-1">Item Price: ${wishCard.wishItemPrice}</p>
+						<p className="mb-1">Item Price: ${wishCard.item.price}</p>
 						<p>
 							{wishCard.childInterest?.length > 26
-								? `Interest: ${wishCard.childInterest.slice(0, 26)}...`
-								: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
+								? `Interest: ${wishCard.child.interest.slice(0, 26)}...`
+								: `Interest: ${wishCard.child.interest || 'Not Provided'}`}
 						</p>
 					</div>
 					<div className="d-block d-xxl-flex justify-content-center">
 						<div className="col-12 col-xxl-6 mb-2 mb-xxl-0">
 							<a
 								className="btn btn-lg btn-primary w-100"
-								href={`/wishcards/single/${wishCard._id}`}
+								href={`/wishcards/single/${wishCard.id}`}
 							>
 								View More
 							</a>

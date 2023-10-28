@@ -36,19 +36,19 @@ block content
                     each donation, index in donations
                         tr
                             th( scope='row' )= index + 1
-                            td= donation._id
+                            td= donation.order.id
 
                             if user.userRole === 'partner'
-                                td= donation.donationFrom.fName
+                                td= donation.user.name
 
-                            td= donation.donationCard.childFirstName
-                            td= donation.donationPrice
-                            td= donation.donationCard.wishItemName
-                            td= donation.donationDate
+                            td= donation.child.name
+                            td= donation.item.price
+                            td= donation.item.name
+                            td= donation.order.created_at
 
-                            if donation.status === 'confirmed'
+                            if donation.order.status === 'confirmed'
                                 td Awaiting Order
-                            else if donation.status === 'ordered'
+                            else if donation.order.status === 'ordered'
                                 td Order Placed
                             else
                                 td Order Delivered

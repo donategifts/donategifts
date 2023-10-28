@@ -11,8 +11,7 @@ export default class CommunityPostsRepository {
 		return this.database.selectFrom('community_posts').selectAll('community_posts').execute();
 	}
 
-	getAllByVerifiedAgencies() {}
-	getByAgencyVerificationStatus(is_verified: boolean) {
+	getByAgencyVerificationStatus(is_verified = true) {
 		return this.database
 			.selectFrom('community_posts')
 			.innerJoin('agencies', 'agencies.id', 'community_posts.agency_id')

@@ -1,11 +1,9 @@
 import express from 'express';
 
-import ProofController from '../controller/proof';
-
-const proofController = new ProofController();
-
 const router = express.Router();
 
-router.get('/', proofController.handleGetIndex);
+router.get('/', (_req, res, _next) => {
+	return res.render('pages/proof');
+});
 
 export default router;

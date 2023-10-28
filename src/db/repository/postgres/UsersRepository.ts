@@ -13,7 +13,11 @@ export default class UsersRepository {
 	constructor(private readonly database: Kysely<DB>) {}
 
 	getById(id: string) {
-		return this.database.selectFrom('users').where('id', '=', id).executeTakeFirstOrThrow();
+		return this.database
+			.selectFrom('users')
+			.where('id', '=', id)
+			.selectAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	update(id: string, updateParams: UsersUpdateParams) {
@@ -29,7 +33,8 @@ export default class UsersRepository {
 		return this.database
 			.selectFrom('users')
 			.where('email', '=', email)
-			.executeTakeFirstOrThrow();
+			.selectAll()
+			.executeTakeFirst();
 	}
 
 	getByVerificationToken(verificationToken: string) {
@@ -42,25 +47,34 @@ export default class UsersRepository {
 	}
 
 	async create(createParams: UsersCreateParams, verificationType: Verificationtype) {
+		const { login_mode } = createParams;
+
 		const user = await this.database
 			.insertInto('users')
-			.values(createParams)
+			.values({
+				...createParams,
+				is_verified: login_mode === 'email' ? false : true,
+			})
 			.returningAll()
 			.executeTakeFirstOrThrow();
 
-		const { token: emailVerificationToken } = await this.database
-			.insertInto('verification_tokens')
-			.values({
-				user_id: user.id,
-				token: Utils.createEmailVerificationHash(),
-				type: verificationType,
-				// 15 minutes from time of insertion
-				expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-			})
-			.returning('token')
-			.executeTakeFirstOrThrow();
+		if (login_mode === 'email') {
+			const { token: emailVerificationToken } = await this.database
+				.insertInto('verification_tokens')
+				.values({
+					user_id: user.id,
+					token: Utils.createEmailVerificationHash(),
+					type: verificationType,
+					// 15 minutes from time of insertion
+					expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+				})
+				.returning('token')
+				.executeTakeFirstOrThrow();
 
-		return { user, emailVerificationToken };
+			return { user, emailVerificationToken };
+		}
+
+		return { user };
 	}
 
 	getByPasswordResetToken(resetToken: string) {
@@ -68,7 +82,7 @@ export default class UsersRepository {
 			.selectFrom('users')
 			.innerJoin('verification_tokens', 'verification_tokens.user_id', 'users.id')
 			.where('verification_tokens.token', '=', resetToken)
-			.selectAll('users')
+			.selectAll('verification_tokens')
 			.executeTakeFirstOrThrow();
 	}
 

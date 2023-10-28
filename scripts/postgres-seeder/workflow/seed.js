@@ -2,11 +2,11 @@ const path = require('node:path');
 
 require('dotenv').config({ path: path.join(path.resolve(), '../../config.env') });
 
-const { db } = require('../../../dist/db/postgresconnection');
+const { database } = require('../../../dist/db/postgresconnection');
 const { importSeederFile } = require('../utils');
 
 const purgeDatabase = async () => {
-	await db.transaction().execute(async (trx) => {
+	await database.transaction().execute(async (trx) => {
 		// must be deleted in this order to prevent foreign key constraint errors
 		await trx.deleteFrom('verification_tokens').execute();
 		await trx.deleteFrom('community_posts').execute();
@@ -436,7 +436,7 @@ const seedDatabase = async () => {
 		orders,
 		verificationTokens,
 		images,
-	} = await db.transaction().execute(async (trx) => {
+	} = await database.transaction().execute(async (trx) => {
 		const users = await seedUsers(trx);
 		const images = await seedImages(trx);
 		// const usersWithImages = await seedUsers(trx, { withImages: true });

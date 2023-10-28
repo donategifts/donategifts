@@ -26,8 +26,7 @@ CREATE TABLE "agencies" (
 
 CREATE TABLE "children" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "first_name" varchar(255) NOT NULL,
-    "last_name" varchar(255) NOT NULL,
+    "name" varchar(255) NOT NULL,
     "birth_year" integer NOT NULL,
     "interest" text NOT NULL,
     "story" text NOT NULL,

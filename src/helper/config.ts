@@ -13,6 +13,7 @@ const envVariables = [
 	'PG_USER',
 	'PG_PASSWORD',
 	'PG_DATABASE',
+	'ENABLE_QUERY_LOGGING',
 	'MONGO_URI',
 	'NODE_ENV',
 	'SESS_NAME',
@@ -53,6 +54,7 @@ interface EnvVars {
 	PG_USER: string;
 	PG_PASSWORD: string;
 	PG_DATABASE: string;
+	ENABLE_QUERY_LOGGING: boolean;
 	MONGO_URI: string;
 	NODE_ENV: string;
 	SESS_NAME: string;
@@ -112,6 +114,8 @@ export default {
 	PG_USER: envVars.PG_USER,
 	PG_PASSWORD: envVars.PG_PASSWORD,
 	PG_DATABASE: envVars.PG_DATABASE,
+
+	ENABLE_QUERY_LOGGING: envVars.ENABLE_QUERY_LOGGING,
 
 	MONGO_URI: envVars.MONGO_URI,
 

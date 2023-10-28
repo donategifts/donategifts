@@ -1,22 +1,36 @@
 import { NextFunction, Request, Response } from 'express';
+import { Kysely } from 'kysely';
 
-import AgencyRepository from '../../db/repository/AgencyRepository';
-import PostRepository from '../../db/repository/PostRepository';
+import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
+import CommunityPostsRepository from '../../db/repository/postgres/CommunityPostsRepository';
+import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
+import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 
 import BaseController from './basecontroller';
 
 export default class CommunityController extends BaseController {
-	private agencyRepository: AgencyRepository;
-	private postRepository: PostRepository;
+	private readonly agencyRepository: AgenciesRepository;
+	private readonly postRepository: CommunityPostsRepository;
+	private readonly imagesRepository: ImagesRepository;
 
-	constructor() {
+	constructor(database: Kysely<DB>) {
 		super();
 
-		this.agencyRepository = new AgencyRepository();
-		this.postRepository = new PostRepository();
+		this.agencyRepository = new AgenciesRepository(database);
+		this.postRepository = new CommunityPostsRepository(database);
+		this.imagesRepository = new ImagesRepository(database);
+	}
 
-		this.addPost = this.addPost.bind(this);
+	async getPosts(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const result = await this.postRepository.getByAgencyVerificationStatus();
+			const posts = result.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+
+			return this.sendResponse(res, { posts });
+		} catch (error) {
+			return this.handleError(res, error);
+		}
 	}
 
 	async addPost(req: Request, res: Response, _next: NextFunction) {
@@ -27,40 +41,54 @@ export default class CommunityController extends BaseController {
 				return this.handleError(res, 'You must be logged in to make a post!');
 			}
 
-			const agency = await this.agencyRepository.getAgencyByUserId(user._id);
+			const agency = await this.agencyRepository.getByAccountManagerId(user.id);
 
-			if (!agency?.isVerified) {
+			if (!agency.is_verified) {
 				return this.handleError(
 					res,
 					'Please make sure your agency is verified before submitting your post.',
 				);
 			}
 
-			let profileImage: string | null = null;
+			const filePath = `/uploads/${req.file.filename}`;
+			const profileImage = config.AWS.USE ? req.file.Location : filePath;
 
-			if (req.file) {
-				let filePath: string | null = null;
-				if (config.NODE_ENV === 'development') {
-					// locally when using multer images are saved inside this folder
-					filePath = `/uploads/${req.file.filename}`;
-				}
-				profileImage = config.AWS.USE ? req.file.Location : filePath;
-			}
+			const image = await this.imagesRepository.create({
+				url: profileImage,
+				created_by: user.id,
+			});
 
-			const newPost = {
+			await this.postRepository.create({
 				message: req.body.message,
-				image: profileImage,
-				belongsTo: agency?._id.toString() || user._id.toString(),
-			};
+				image_id: image.id,
+				agency_id: agency.id,
+			});
 
-			await this.postRepository.createNewPost(newPost);
-
-			const posts = (await this.postRepository.getAllPostsByVerifiedAgencies()).sort(
-				(a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
-			);
+			const result = await this.postRepository.getByAgencyVerificationStatus();
+			const posts = result.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
 			return this.sendResponse(res, posts);
 		} catch (error: any) {
+			this.log.error('[CommunityController] addPost: ', error);
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { user } = res.locals;
+			const posts = (await this.postRepository.getByAgencyVerificationStatus(true)).sort(
+				(a, b) => a.created_at.getTime() - b.created_at.getTime(),
+			);
+
+			if (user?.role !== 'partner') {
+				return this.sendResponse(res, { posts });
+			}
+
+			const agency = await this.agencyRepository.getByAccountManagerId(user.id);
+			return this.sendResponse(res, { posts, agency });
+		} catch (error: any) {
+			this.log.error('[CommunityController] handleGetIndex: ', error);
 			return this.handleError(res, error);
 		}
 	}
