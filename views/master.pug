@@ -14,7 +14,6 @@ html( lang="en" )
         block styles
 
     body
-        //- #header-root
         block navigation
             include partials/navbar.pug
 
@@ -41,18 +40,3 @@ html( lang="en" )
         include partials/scripts.pug
 
         block scripts
-
-        //- append scripts
-        //-     script.
-        //-         $(document).ready(function () {
-        //-             const root = ReactRoot(document.querySelector('#header-root'));
-        //-             root.render(
-        //-                 React.createElement(
-        //-                     Header,
-        //-                     {
-        //-                         user: !{JSON.stringify(user || null)},
-        //-                         agency: !{JSON.stringify(agency || null)},
-        //-                     }
-        //-                 ),
-        //-             );
-        //-         })
