@@ -14,7 +14,7 @@ const wishCardController = new WishCardController(database);
 router.get('/all', wishCardController.handleGetAllCards);
 
 router.get(
-	'/single/:id',
+	'/detail',
 	Validations.getByIdValidationRules(),
 	Validations.validate,
 	wishCardController.handleGetSingle,

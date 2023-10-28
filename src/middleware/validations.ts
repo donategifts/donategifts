@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
-import UserRepository from '../db/repository/UserRepository';
-import WishCardRepository from '../db/repository/WishCardRepository';
+import { database } from '../db/postgresconnection';
+import UsersRepository from '../db/repository/postgres/UsersRepository';
+import WishCardsRepository from '../db/repository/postgres/WishCardsRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
 import Forms from '../translations/en/forms.json';
+
+const usersRepository = new UsersRepository(database);
+const wishCardsRepository = new WishCardsRepository(database);
 
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
@@ -198,7 +202,6 @@ export default class Validations {
 		];
 	}
 
-	//TODO: we need to pull all error messages from translations.js in the future
 	static createWishcardValidationRules() {
 		return [
 			body('childFirstName')
@@ -373,35 +376,40 @@ export default class Validations {
 				.notEmpty()
 				.withMessage('Message From - User is required')
 				.custom(async (value) => {
-					const foundUser = await new UserRepository().getUserByObjectId(value._id);
+					const foundUser = await usersRepository.getById(value.id);
+
 					if (!foundUser) {
 						throw new Error('User Error - User not found');
 					}
+
 					return true;
 				}),
 			body('messageTo')
 				.notEmpty()
 				.withMessage('Message To - Wishcard is required')
 				.custom(async (value) => {
-					const foundWishcard = await new WishCardRepository().getWishCardByObjectId(
-						value._id,
-					);
+					const foundWishcard = await wishCardsRepository.getById(value.id);
+
 					if (!foundWishcard) {
 						throw new Error('Wishcard Error - Wishcard not found');
 					}
+
+					return true;
 				}),
 			body('message')
 				.notEmpty()
 				.withMessage('Message is required')
 				.custom((value, { req }) => {
-					const { messageFrom: user, messageTo: wishcard } = req.body;
+					const { messageFrom, messageTo } = req.body;
 					const allMessages = Utils.getMessageChoices(
-						user.fName,
-						wishcard.childFirstName,
+						messageFrom.userName,
+						messageTo.childName,
 					);
+
 					if (!allMessages.includes(value)) {
 						throw new Error('Message Error - Message Choice not found');
 					}
+
 					return true;
 				}),
 		];

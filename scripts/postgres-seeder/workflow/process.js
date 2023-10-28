@@ -5,7 +5,7 @@ const processAgencies = async () => {
 	const users = await importSeederFile('users');
 	const images = await importSeederFile('images');
 
-	const adminUsers = users.filter((user) => user.role === 'admin');
+	const partnerUsers = users.filter((user) => user.role === 'partner');
 
 	const agenciesWithAccountManagers = agencies.reduce((acc, agency) => {
 		const hasValidUser =
@@ -14,15 +14,15 @@ const processAgencies = async () => {
 		const hasValidImage =
 			agency.image_id && images.some((image) => image.id === agency.image_id);
 
-		const randomAdminUserIndex = randomNumber(0, adminUsers.length - 1);
-		const randomAdminUserId = adminUsers[randomAdminUserIndex].id || null;
+		const randomPartnerUserIndex = randomNumber(0, partnerUsers.length - 1);
+		const randomPartnerUserId = partnerUsers[randomPartnerUserIndex].id || null;
 
 		const randomImageIndex = randomNumber(0, images.length - 1);
 		const randomImageId = images[randomImageIndex].id || null;
 
 		acc.push({
 			...agency,
-			...(!hasValidUser && { account_manager_id: randomAdminUserId }),
+			...(!hasValidUser && { account_manager_id: randomPartnerUserId }),
 			...(!hasValidImage && { image_id: randomImageId }),
 		});
 

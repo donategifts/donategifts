@@ -5,28 +5,37 @@ import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-function WishCards({ wishCards, user }) {
+function WishCards({ user }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cards, setCards] = useState([]);
+	const [wishCards, setWishCards] = useState([]);
+
+	useEffect(() => {
+		fetch('/api/wishcards/all')
+			.then((res) => res.json())
+			.then(({ wishcards }) => {
+				setWishCards(wishcards);
+			});
+	}, []);
 
 	useEffect(() => {
 		setCards(
 			wishCards.map((wishCard) => {
 				let attributes = {};
 
-				if (!user?._id) {
+				if (!user?.id) {
 					attributes = {
 						'data-bs-toggle': 'modal',
 						'data-bs-target': '#loginModalCenter',
 					};
 				} else {
 					attributes = {
-						href: `/wishcards/donate/${wishCard._id}`,
+						href: `/wishcards/donate/${wishCard.id}`,
 					};
 				}
 
 				return (
-					<div key={wishCard._id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
+					<div key={wishCard.id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
 						<WishCard wishCard={wishCard} attributes={attributes} />
 					</div>
 				);
@@ -36,7 +45,7 @@ function WishCards({ wishCards, user }) {
 		setTimeout(() => {
 			setIsLoading(false);
 		}, 1000);
-	}, []);
+	}, [wishCards]);
 
 	return (
 		<MantineProviderWrapper>
@@ -59,9 +68,8 @@ function WishCards({ wishCards, user }) {
 
 WishCards.propTypes = {
 	user: PropTypes.shape({
-		_id: PropTypes.string,
+		id: PropTypes.string,
 	}),
-	wishCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCards;

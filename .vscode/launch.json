@@ -21,7 +21,7 @@
       "request": "attach",
       "internalConsoleOptions": "neverOpen",
       "localRoot": "${workspaceFolder}",
-      "remoteRoot": "/app",
+      "remoteRoot": "/data/app",
       "skipFiles": [
         "<node_internals>/**",
         "node_modules/**"

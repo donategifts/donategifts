@@ -16,7 +16,7 @@ window.Header = Header;
 import Nav from './components/NavBar.jsx';
 window.Nav = Nav;
 
-import WishCards from './pages/wishCards.jsx';
+import WishCards from './pages/wishcards.jsx';
 window.WishCards = WishCards;
 
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
@@ -26,8 +26,8 @@ window.WishCardsCarousel = WishCardsCarousel;
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
 
-import WishCardCreate from './pages/wishcard/WishCardCreate.jsx';
-window.WishCardCreate = WishCardCreate;
+import Create from './pages/wishcard/create.jsx';
+window.Create = Create;
 
-import WishCardManage from './pages/wishcard/WishCardManage.jsx';
-window.WishCardManage = WishCardManage;
+import Manage from './pages/wishcard/manage.jsx';
+window.Manage = Manage;

@@ -15,17 +15,16 @@ services:
         volumes:
             - .:/data/app:z
         depends_on:
-            - mongo
             - postgres
 
-    mongo:
-        image: mongo
-        container_name: mongo
-        command: mongod --quiet --logpath /dev/null
-        ports:
-            - 27017:27017
-        volumes:
-            - mongo:/data/db
+    # mongo:
+    #     image: mongo
+    #     container_name: mongo
+    #     command: mongod --quiet --logpath /dev/null
+    #     ports:
+    #         - 27017:27017
+    #     volumes:
+    #         - mongo:/data/db
 
     postgres:
         image: postgres:14.1-alpine
@@ -49,5 +48,5 @@ services:
             - config_stripe_cli.env
 
 volumes:
-    mongo:
+    # mongo:
     postgres:

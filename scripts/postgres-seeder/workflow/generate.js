@@ -1,7 +1,7 @@
 const { randomUUID } = require('node:crypto');
 
 const { faker } = require('@faker-js/faker');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const { importSeederFile, saveSeederFile } = require('../utils');
 
@@ -56,8 +56,7 @@ const generateChildren = async () => {
 	const childrenData = children.map((child) => {
 		const {
 			id = randomUUID(),
-			first_name = faker.person.firstName(),
-			last_name = faker.person.lastName(),
+			name = faker.person.firstName(),
 			birth_year = faker.date.past({ years: 15 }).getFullYear(),
 			interest = faker.lorem.sentence(),
 			story = faker.lorem.paragraph(),
@@ -67,8 +66,7 @@ const generateChildren = async () => {
 
 		return {
 			id,
-			first_name,
-			last_name,
+			name,
 			birth_year,
 			interest,
 			story,

@@ -29,7 +29,7 @@ function WishCard({ wishCard, attributes }) {
 						<div className="col-12 col-xxl-6 mb-2 mb-xxl-0">
 							<a
 								className="btn btn-lg btn-primary w-100"
-								href={`/wishcards/single/${wishCard.id}`}
+								href={`/wishcards/detail?id=${wishCard.id}`}
 							>
 								View More
 							</a>

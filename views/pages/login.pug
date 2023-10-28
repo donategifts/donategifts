@@ -64,13 +64,13 @@ append scripts
 
                 $.ajax({
                     type: 'POST',
-                    url: '/login',
+                    url: '/api/login',
                     data: {
                         email,
                         password,
                     },
                     success: (response) => {
-                        location.href = response.data.redirect;
+                        location.href = response.redirect;
                     },
                     error: (response) => {
                         console.log(response);
@@ -79,8 +79,8 @@ append scripts
 
                         let message = '';
 
-                        if (txtToJson.error && txtToJson.error.msg) {
-                            message = txtToJson.error.msg;
+                        if (txtToJson.error && txtToJson.error) {
+                            message = txtToJson.error;
                         } else if (txtToJson.data && txtToJson.data.error) {
                             message = txtToJson.data.error;
                         }

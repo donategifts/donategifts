@@ -1,14 +1,13 @@
 import path from 'node:path';
 
-import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
+import { NoResultError } from 'kysely';
 
 import { routes as apiRoutes } from './api';
 import BaseController from './api/controller/basecontroller';
-import MongooseConnection from './db/connection';
 import { connectPostgres } from './db/postgresconnection';
 import config from './helper/config';
 import logger from './helper/logger';
@@ -19,9 +18,6 @@ const limiter = new BaseController().limiter;
 const app = express();
 
 (async () => {
-	await new MongooseConnection().connect();
-	await connectPostgres();
-
 	app.set('trust proxy', 1);
 
 	app.use(cors());
@@ -35,14 +31,11 @@ const app = express();
 		app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 	}
 
+	const sessionStore = await connectPostgres();
+
 	app.use(
 		session({
-			store: MongoStore.create({
-				mongoUrl: config.MONGO_URI,
-				autoRemove: 'interval',
-				// interval is now in minutes
-				autoRemoveInterval: 60,
-			}),
+			store: sessionStore,
 			name: config.SESSION.NAME,
 			resave: false,
 			saveUninitialized: false,
@@ -151,12 +144,12 @@ const app = express();
 	});
 
 	// error handler
-	app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
-		// set locals, only providing error in development
-		res.locals.message = err.message;
-		res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-		logger.error(err);
+	app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+		if (err instanceof NoResultError) {
+			logger.error(err.stack);
+		} else {
+			logger.error(err);
+		}
 
 		return res.status(500).render('error/500');
 	});

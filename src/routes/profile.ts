@@ -66,7 +66,7 @@ router.get('/', Permissions.redirectLogin, async (req, res, _next) => {
 		}
 	}
 
-	return res.render('profile/overview', {
+	return res.render('pages/profile/overview', {
 		agency,
 	});
 });

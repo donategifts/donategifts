@@ -15,28 +15,8 @@ append scripts
                 React.createElement(
                     WishCards,
                     {
-                        user: !{user ? JSON.stringify(user) : JSON.stringify({})},
-                        wishCards: !{JSON.stringify(wishcards)},
+                        user: !{JSON.stringify(user || null)},
                     }
                 )
             );
-        });
-
-    script.
-        // TODO: still needed?
-        countdown = [];
-
-        $(document).ready(function () {
-            const wishcards = !{JSON.stringify(wishcards)};
-
-            for (let i = 0; i < wishcards.length; i++) {
-                if (wishcards[i].status === 'donated') {
-                    $(document).find('#donate-btn-' + wishcards[i]._id).text('Donated!');
-                    $(document).find('#donate-btn-' + wishcards[i]._id).prop('disabled', true);
-                }
-
-                if (new Date(wishcards[i].isLockedUntil) > new Date()) {
-                    addCountdown(wishcards[i].isLockedUntil, wishcards[i]._id, `#donate-btn-${wishcards[i]._id}`)
-                }
-            }
         });

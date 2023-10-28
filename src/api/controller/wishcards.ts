@@ -485,7 +485,13 @@ export default class WishCardApiController extends BaseController {
 
 	async handleGetSingle(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const wishcard = await this.wishCardsRepository.getById(req.params.id);
+			const wishcardId = req.query.id?.toString();
+
+			if (!wishcardId) {
+				throw new Error('No wishcard id provided');
+			}
+
+			const wishcard = await this.wishCardsRepository.getById(wishcardId);
 
 			const agency = await this.agenciesRepository.getByAccountManagerId(wishcard.created_by);
 			const messages = await this.messagesRepository.getByWishCardId(wishcard.id);
@@ -560,15 +566,14 @@ export default class WishCardApiController extends BaseController {
 	async handlePostMessage(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { messageFrom, messageTo, message } = req.body;
-			const newMessage = await this.messagesRepository.create({
+
+			await this.messagesRepository.create({
 				content: message,
-				sender_id: messageFrom,
-				wishcard_id: messageTo,
+				sender_id: messageFrom.id,
+				wishcard_id: messageTo.id,
 			});
 
-			return this.sendResponse(res, {
-				data: newMessage,
-			});
+			return this.sendResponse(res, {});
 		} catch (error) {
 			this.log.error('[WishcardController] handlePostMessage: ', error);
 			return this.handleError(res, error);

@@ -1,3 +1,5 @@
+import genFunc from 'connect-pg-simple';
+import session from 'express-session';
 import { Kysely, KyselyConfig, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
@@ -40,4 +42,17 @@ export const connectPostgres = async () => {
 	} else {
 		logger.info(`Database initialized with ${tables.length} tables`);
 	}
+
+	const PostgresqlStore = genFunc(session);
+	const sessionStore = new PostgresqlStore({
+		conObject: {
+			database: config.PG_DATABASE,
+			host: config.PG_HOST,
+			user: config.PG_USER,
+			password: config.PG_PASSWORD,
+			port: config.PG_PORT,
+		},
+	});
+
+	return sessionStore;
 };

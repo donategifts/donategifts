@@ -158,13 +158,11 @@ const seedChildren = async (trx) => {
 	const data = await importSeederFile('children');
 
 	const formattedData = data.map((child) => {
-		const { id, first_name, last_name, birth_year, interest, story, image_id, agency_id } =
-			child;
+		const { id, name, birth_year, interest, story, image_id, agency_id } = child;
 
 		return {
 			id,
-			first_name,
-			last_name,
+			name,
 			birth_year,
 			interest,
 			story,
