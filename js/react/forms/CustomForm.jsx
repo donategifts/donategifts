@@ -1,0 +1,286 @@
+import { TextInput, Select, Textarea } from '@mantine/core';
+import PropTypes from 'prop-types';
+import { useRef, useEffect, useState } from 'react';
+
+import ImgUploader from '../components/shared/ImgUploader.jsx';
+import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
+
+// TODO: backend connection and backend validation
+// TODO: end to end feature testing
+// TODO: handle image and submit image
+// TODO: size and validation functions for each field need to be updated
+
+const CustomForm = ({
+	fieldsets,
+	currFormMap,
+	handleFormData,
+	handleFormDirty,
+	inputSize,
+	isFormSubmitted,
+}) => {
+	const [formData, setFormData] = useState({});
+	const [fieldErrors, setFieldErrors] = useState({});
+	const [fieldFunctions, setFieldFunctions] = useState({});
+	const [isErrorChecked, setIsErrorChecked] = useState(false);
+	const [isDataValid, setIsDataValid] = useState(false);
+	const refObjects = {};
+
+	useEffect(() => {
+		const errors = {};
+		const functions = {};
+		fieldsets.forEach((fieldset) => {
+			fieldset?.inputsPerRow?.forEach((row) => {
+				row.forEach((col) => {
+					const name = col?.name;
+					setFormData((data) => ({
+						...data,
+						[name]: col?.defaultValue,
+					}));
+					errors[`${name}Error`] = '';
+					if (col?.sizeFn) {
+						functions[`${name}SizeFn`] = col?.sizeFn;
+					}
+					if (col?.validateFn) {
+						functions[`${name}ValidateFn`] = col?.validateFn;
+					}
+				});
+			});
+		});
+		setFieldErrors(errors);
+		setFieldFunctions(functions);
+	}, []);
+
+	const handleInput = (e) => {
+		const target = e.target;
+		const { name, value } = target;
+
+		setFormData((data) => ({
+			...data,
+			[name]: value,
+		}));
+		setFieldErrors((prevErrors) => ({
+			...prevErrors,
+			[`${name}Error`]: '',
+		}));
+		handleFormDirty();
+	};
+
+	const handleDropDown = (value, name) => {
+		if (value) {
+			setFormData((data) => ({
+				...data,
+				[name]: value,
+			}));
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				[`${name}Error`]: '',
+			}));
+			handleFormDirty();
+		}
+	};
+
+	const handleScroll = (ref) => {
+		if (ref?.current) {
+			window?.scrollTo({
+				top: ref.offsetTop,
+				left: 0,
+				behavior: 'smooth',
+			});
+			ref.current.focus();
+		}
+	};
+
+	const validateField = (ref, fieldName, sizeFn = null, validationFn = null) => {
+		const fieldValue = ref?.current?.value;
+
+		if (!fieldValue || !fieldValue.length) {
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				[`${fieldName}Error`]: currFormMap[fieldName].errors?.default || '',
+			}));
+			handleScroll(ref);
+		} else if (sizeFn && sizeFn(fieldValue)) {
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				[`${fieldName}Error`]: currFormMap[fieldName].errors?.size || '',
+			}));
+			handleScroll(ref);
+		} else if (validationFn && !validationFn(fieldValue)) {
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				[`${fieldName}Error`]: currFormMap[fieldName].errors?.validate || '',
+			}));
+			handleScroll(ref);
+		} else {
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				[`${fieldName}Error`]: '',
+			}));
+			setFormData((data) => ({
+				...data,
+				[ref.current?.name]: fieldValue,
+			}));
+		}
+	};
+
+	const validateFormData = () => {
+		const fieldNames = Object.keys(formData);
+
+		fieldNames.forEach((name) => {
+			const ref = refObjects[`${name}Ref`];
+			const sizeFn = fieldFunctions[`${name}SizeFn`] || null;
+			const validateFn = fieldFunctions[`${name}ValidateFn`] || null;
+
+			if (ref && ref?.current) {
+				validateField(ref, name, sizeFn, validateFn);
+			}
+		});
+	};
+
+	useEffect(() => {
+		console.log(isFormSubmitted, isDataValid);
+
+		if (isFormSubmitted) {
+			validateFormData();
+			setIsErrorChecked(true);
+		}
+		if (isFormSubmitted && isDataValid) {
+			handleFormData(formData);
+		}
+	}, [isFormSubmitted, isDataValid]);
+
+	useEffect(() => {
+		if (isErrorChecked) {
+			console.log(fieldErrors);
+			setIsDataValid(Object.values(fieldErrors).every((error) => !error));
+			setIsErrorChecked(false);
+		}
+	}, [isErrorChecked]);
+
+	//TODO: [ ] make a generic img uploader
+
+	// enhancements todo - auto format phone, ein
+	//[x] need to keep track of validation status
+
+	const col2 = 'col-sm-12 col-lg-6 col-md-6';
+	const col3 = 'col-12 col-md-4';
+
+	return (
+		<MantineProviderWrapper>
+			<form autoComplete="off">
+				<div className="card-body">
+					{fieldsets.map((fieldset, index) => (
+						<div key={index} className="mb-5">
+							<h2 className="display-6 my-3">{fieldset.header}</h2>
+							{fieldset.instruction ? (
+								<p className="form-text">{fieldset.instruction}</p>
+							) : null}
+							{fieldset?.inputsPerRow?.map((row, i) => (
+								<div key={i} className="row d-flex align-items-center">
+									{row.map((col, j) => {
+										refObjects[`${col?.name}Ref`] = useRef();
+										return (
+											<div className={row.length == 3 ? col3 : col2} key={j}>
+												{col.inputType == 'textInput' && (
+													<TextInput
+														ref={refObjects[`${col?.name}Ref`]}
+														size={inputSize}
+														mt={inputSize}
+														label={currFormMap[col.name]?.label}
+														name={col.name}
+														required={col.isRequired}
+														placeholder={
+															currFormMap[col.name]?.placeholder || ''
+														}
+														error={fieldErrors[`${col.name}Error`]}
+														onChange={handleInput}
+													/>
+												)}
+												{col.inputType == 'select' && (
+													<Select
+														ref={refObjects[`${col?.name}Ref`]}
+														size={inputSize}
+														mt={inputSize}
+														label={currFormMap[col.name]?.label}
+														name={col.name}
+														searchable
+														data={currFormMap[col.name]?.data}
+														required={col.isRequired}
+														placeholder={
+															currFormMap[col.name]?.placeholder || ''
+														}
+														autoComplete="off"
+														error={fieldErrors[`${col.name}Error`]}
+														onChange={(value) =>
+															handleDropDown(value, col.name)
+														}
+													/>
+												)}
+												{col.inputType == 'textArea' && (
+													<Textarea
+														ref={refObjects[`${col?.name}Ref`]}
+														size={inputSize}
+														mt={inputSize}
+														label={currFormMap[col.name]?.label}
+														name={col.name}
+														required={col.isRequired}
+														placeholder={
+															currFormMap[col.name]?.placeholder || ''
+														}
+														error={fieldErrors[`${col.name}Error`]}
+														onChange={handleInput}
+													/>
+												)}
+												{col.inputType == 'image' && (
+													<ImgUploader
+														label={currFormMap[col.name]?.label}
+														instruction={
+															currFormMap[col.name].instruction
+														}
+														imgID={col.name}
+														required={col.isRequired}
+													/>
+												)}
+											</div>
+										);
+									})}
+								</div>
+							))}
+						</div>
+					))}
+				</div>
+			</form>
+		</MantineProviderWrapper>
+	);
+};
+
+CustomForm.defaultProps = {
+	fieldsets: [],
+	inputSize: 'md',
+};
+
+CustomForm.propTypes = {
+	fieldsets: PropTypes.arrayOf(
+		PropTypes.shape({
+			header: PropTypes.string.isRequired,
+			instruction: PropTypes.string,
+			inputsPerRow: PropTypes.arrayOf(
+				PropTypes.arrayOf(
+					PropTypes.shape({
+						name: PropTypes.string.isRequired,
+						inputType: PropTypes.string.isRequired,
+						isRequired: PropTypes.bool,
+						defaultValue: PropTypes.any,
+					}),
+				),
+			),
+		}).isRequired,
+	).isRequired,
+	currFormMap: PropTypes.object.isRequired,
+	inputSize: PropTypes.string,
+	handleFormData: PropTypes.func.isRequired,
+	handleFormDirty: PropTypes.func.isRequired,
+	isFormSubmitted: PropTypes.bool.isRequired,
+};
+
+export default CustomForm;

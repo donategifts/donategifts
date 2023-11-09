@@ -129,6 +129,12 @@ main {
 			font-weight: $fw-semi-bold;
 			content: "Upload Image";
 		}
+
+		&:hover {
+			background-color: darken($secondary, 10);
+			border: 1.5px solid darken($secondary, 10);
+			color: $white;
+		}
 	}
 }
 

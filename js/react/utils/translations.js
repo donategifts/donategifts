@@ -1,3 +1,5 @@
+import { STATE_NAMES } from './constants';
+
 const ADDRESS_FORM_INPUTS = {
 	address1: {
 		label: 'Address Line 1',
@@ -69,6 +71,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		errors: {
 			default: 'Agency description is required.',
 		},
+		placeholder: `(e.g. Your non-profit agency's purpose, mission, history, etc.)`,
 	},
 	agencyImage: {
 		label: 'Upload your agency logo',
@@ -101,6 +104,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 			default: 'State is required.',
 		},
 		placeholder: 'Select option',
+		data: STATE_NAMES,
 	},
 	country: {
 		label: 'Country',
@@ -109,6 +113,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 			size: 'Country must contain at least 2 characters.',
 		},
 		placeholder: 'Select option',
+		data: ['United States'],
 	},
 	zipcode: {
 		label: 'Zipcode',
@@ -210,4 +215,4 @@ const WISHCARD_FORM_INPUTS = {
 	},
 };
 
-module.exports = { WISHCARD_FORM_INPUTS, AGENCY_SIGNUP_FORM_INPUTS, ADDRESS_FORM_INPUTS };
+export { WISHCARD_FORM_INPUTS, AGENCY_SIGNUP_FORM_INPUTS, ADDRESS_FORM_INPUTS };

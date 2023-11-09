@@ -51,7 +51,6 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 		isDirty() {
 			return isDirty.current;
 		},
-		//TODO: need to submit formData
 		submit() {
 			const form = formRef.current;
 			if (form.reportValidity()) {

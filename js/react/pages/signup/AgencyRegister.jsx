@@ -1,97 +1,28 @@
-import { TextInput, Textarea } from '@mantine/core';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AGENCY_SIGNUP_FORM_INPUTS } from '../../../../translations/translations';
-import AddressForm from '../../forms/AddressForm.jsx';
-import { PHONE_NUMBER_REGEX } from '../../utils/constants';
+import CustomForm from '../../forms/CustomForm.jsx';
+import { AGENCY_SIGNUP_FIELDSETS } from '../../utils/fieldsets';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
+import { AGENCY_SIGNUP_FORM_INPUTS } from '../../utils/translations';
 
 function AgencyRegister() {
-	const agencyNameRef = useRef();
-	const agencyWebsiteRef = useRef();
-	const agencyPhoneRef = useRef();
-	const agencyEINRef = useRef();
-	const agencyBioRef = useRef();
-	const addressFormRef = useRef();
+	const currFormMap = AGENCY_SIGNUP_FORM_INPUTS;
+	const fieldsets = AGENCY_SIGNUP_FIELDSETS;
 
-	const [agencyFormData, setAgencyFormData] = useState({
-		agencyName: '',
-		agencyWebsite: '',
-		agencyPhone: '',
-		agencyEIN: '',
-		agencyBio: '',
-		agencyImage: null,
-		agencyAddress: {},
-	});
-
-	const [agencyNameError, setAgencyNameError] = useState('');
-	const [agencyWebsiteError, setAgencyWebsiteError] = useState('');
-	const [agencyPhoneError, setAgencyPhoneError] = useState('');
-	const [agencyEINError, setAgencyEINError] = useState('');
-	const [agencyBioError, setAgencyBioError] = useState('');
-	// const [agencyImageError, setAgencyImageError] = useState('');
-
-	const validateField = (ref, setError, fieldName, sizeFn = null, validationFn = null) => {
-		const fieldValue = ref.current?.value;
-
-		if (!fieldValue || !fieldValue.length) {
-			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.default);
-			handleScroll(ref);
-		} else if (sizeFn && sizeFn(fieldValue)) {
-			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.size);
-			handleScroll(ref);
-		} else if (validationFn && !validationFn(fieldValue)) {
-			setError(AGENCY_SIGNUP_FORM_INPUTS[fieldName].errors?.validate);
-			handleScroll(ref);
-		} else {
-			setError('');
-			setAgencyFormData((data) => ({
-				...data,
-				[fieldName]: fieldValue,
-			}));
-		}
-	};
-
-	const validateFormData = () => {
-		validateField(agencyNameRef, setAgencyNameError, 'agencyName');
-		validateField(agencyWebsiteRef, setAgencyWebsiteError, 'agencyWebsite');
-		validateField(agencyPhoneRef, setAgencyPhoneError, 'agencyPhone', null, (value) =>
-			PHONE_NUMBER_REGEX.test(value),
-		);
-		validateField(agencyEINRef, setAgencyEINError, 'agencyEIN');
-		validateField(agencyBioRef, setAgencyBioError, 'agencyBio');
-	};
-
-	const handleInputs = (event) => {
-		const target = event.target;
-		const { name, value } = target;
-
-		setAgencyFormData((data) => ({
-			...data,
-			[name]: value,
-		}));
-	};
-
-	const handleScroll = (ref) => {
-		window?.scrollTo({
-			top: ref.offsetTop,
-			left: 0,
-			behavior: 'smooth',
-		});
-		ref.current.focus();
-	};
+	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		validateFormData();
-		addressFormRef.current?.submit();
+		setIsFormSubmitted(true);
 	};
 
-	const handleAddressFormSubmit = (addressFormData) => {
-		setAgencyFormData({
-			...agencyFormData,
-			['agencyAddress']: addressFormData,
-		});
+	const handleFormData = (formData) => {
+		console.log(formData);
+		//TODO: call handlePost
+	};
+
+	const handleFormDirty = () => {
+		setIsFormSubmitted(false);
 	};
 
 	return (
@@ -101,113 +32,13 @@ function AgencyRegister() {
 					<h1 className="heading-primary mb-5 text-center">Register Your Agency</h1>
 					<section className="text-primary pt-2">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
-							<div className="card-body">
-								<h2 className="display-6 my-3">
-									Information about your non-profit agency
-								</h2>
-								<div className="row d-flex align-items-center">
-									<div className="col-sm-12 col-lg-6 col-md-6">
-										<TextInput
-											ref={agencyNameRef}
-											size="md"
-											name="agencyName"
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyName?.label}
-											error={agencyNameError}
-											required
-											onBlur={handleInputs}
-											// onChange={() => handleOnChange(setChildFirstNameError)}
-										/>
-									</div>
-									<div className="col-sm-12 col-lg-6 col-md-6">
-										<TextInput
-											ref={agencyWebsiteRef}
-											size="md"
-											name="agencyWebsite"
-											onBlur={handleInputs}
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyWebsite?.label}
-											error={agencyWebsiteError}
-										/>
-									</div>
-								</div>
-								<div className="row d-flex align-items-center">
-									<div className="col-sm-12 col-lg-6 col-md-6">
-										<TextInput
-											ref={agencyPhoneRef}
-											size="md"
-											mt="md"
-											name="agencyPhone"
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyPhone?.label}
-											error={agencyPhoneError}
-											required
-											// onChange={() => handleOnChange(setChildFirstNameError)}
-										/>
-									</div>
-									<div className="col-sm-12 col-lg-6 col-md-6">
-										<TextInput
-											ref={agencyEINRef}
-											size="md"
-											mt="md"
-											name="agencyEIN"
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyEIN?.label}
-											error={agencyEINError}
-											required
-										/>
-									</div>
-								</div>
-								<div className="row mt-1 d-flex">
-									<div className="col-sm-12 col-md-6 col-lg-6">
-										<Textarea
-											ref={agencyBioRef}
-											size="md"
-											rows={3}
-											mt="md"
-											name="agencyBio"
-											label={AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.label}
-											error={agencyBioError}
-											placeholder={
-												AGENCY_SIGNUP_FORM_INPUTS.agencyBio?.placeholder
-											}
-											required
-											// onChange={() => handleOnChange(setChildStoryError)}
-										/>
-									</div>
-									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
-										<div className="px-3 pt-3 pb-0">
-											<img
-												src={`/img/img-placeholder.png`}
-												alt="image-placeholder"
-												id="childImagePreview"
-											/>
-										</div>
-										<div className="p-3">
-											<label htmlFor="agencyImage" className="form-label">
-												{AGENCY_SIGNUP_FORM_INPUTS.agencyImage?.label}
-											</label>
-											<p className="form-text">
-												{AGENCY_SIGNUP_FORM_INPUTS.agencyImage?.instruction}
-											</p>
-											<input
-												type="file"
-												name="agencyImage"
-												id="agencyImage"
-												className="form-control mb-2"
-												// onChange={handleChildImage}
-												required
-											/>
-										</div>
-									</div>
-								</div>
-								<h2 className="display-6 mb-2 mt-5">
-									Information about your agency address
-								</h2>
-								<p className="form-text">
-									{AGENCY_SIGNUP_FORM_INPUTS.agencyAddress?.instruction}
-								</p>
-								<AddressForm
-									ref={addressFormRef}
-									onSubmit={handleAddressFormSubmit}
-								/>
-							</div>
+							<CustomForm
+								fieldsets={fieldsets}
+								currFormMap={currFormMap}
+								handleFormData={handleFormData}
+								isFormSubmitted={isFormSubmitted}
+								handleFormDirty={handleFormDirty}
+							/>
 						</div>
 						<div className="d-flex justify-content-center mt-5">
 							<button
