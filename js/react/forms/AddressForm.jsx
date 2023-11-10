@@ -18,7 +18,7 @@ function AddressForm({ inputSize, onInputChange }) {
 	};
 
 	return (
-		<form ref={formRef} onSubmit={handleFormSubmit}>
+		<form>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
 					<TextInput
@@ -82,20 +82,7 @@ function AddressForm({ inputSize, onInputChange }) {
 			</div>
 		</form>
 	);
-});
-
-AddressForm.displayName = 'AddressForm';
-
-AddressForm.defaultProps = {
-	inputSize: 'md',
-};
-
-AddressForm.propTypes = {
-	inputSize: PropTypes.string,
-	onSubmit: PropTypes.func,
-};
-
-AddressForm.displayName = 'AddressForm';
+}
 
 AddressForm.defaultProps = {
 	inputSize: 'md',

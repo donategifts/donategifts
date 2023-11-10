@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 
 import CustomForm from '../../forms/CustomForm.jsx';
@@ -18,7 +19,37 @@ function AgencyRegister() {
 
 	const handleFormData = (formData) => {
 		console.log(formData);
-		//TODO: call handlePost
+
+		handlePost(formData);
+	};
+
+	const handlePost = async (formData) => {
+		const data = new FormData();
+		//need to append to FormData() because of the image file transfer
+
+		data.append('agencyName', formData.agencyName);
+		data.append('agencyBio', formData.agencyBio);
+		//TODO: need to pass data with forEach
+		// this currently only passes 2 data inputs for testing
+
+		const toast = new window.DG.Toast();
+
+		try {
+			await axios.post('/api/wishcards', data, {
+				headers: {
+					'content-type': 'multipart/form-data',
+				},
+			});
+			toast.show('Submission was successful!');
+			// setTimeout(() => window.location.replace('/wishcards/manage'), 1000);
+		} catch (error) {
+			toast.show(
+				error?.response?.data?.error?.msg ||
+					error?.message ||
+					'Submission was unsuccessful. Please try again or contact us.',
+				toast.styleMap.danger,
+			);
+		}
 	};
 
 	const handleFormDirty = () => {

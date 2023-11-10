@@ -1,11 +1,12 @@
 import { STATE_NAMES } from './constants';
 
+//TODO: @stacysealky outdated - need to check and remove
 const ADDRESS_FORM_INPUTS = {
 	address1: {
 		label: 'Address Line 1',
 		errors: {
 			default: 'Address line 1 is required.',
-			size: 'Address line 1 must contain at least 2 characters.',
+			size: 'Address must be 2 to 250 characters long.',
 		},
 	},
 	address2: {
@@ -15,7 +16,7 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'City',
 		errors: {
 			default: 'City is required.',
-			size: 'City must contain at least 2 characters.',
+			size: 'City must be 2 to 250 characters long.',
 		},
 	},
 	state: {
@@ -29,7 +30,6 @@ const ADDRESS_FORM_INPUTS = {
 		label: 'Country',
 		errors: {
 			default: 'Country is required.',
-			size: 'Country must contain at least 2 characters.',
 		},
 		placeholder: 'Select option',
 	},
@@ -57,12 +57,14 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		label: 'Agency Phone Number',
 		errors: {
 			default: 'Agency phone number is required.',
+			validate: 'Phone number must be 10 digits and follow the format of (333) 444-5555',
 		},
 	},
 	agencyEIN: {
 		label: 'EIN (Employer Identification Number)',
 		errors: {
 			default: 'EIN (Employer Identification Number) is required.',
+			validate: 'EIN must be 9 digits and follow the format of (12-3456789)',
 		},
 		placeholder: '(12-3456789)',
 	},
@@ -70,6 +72,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		label: 'Agency Description',
 		errors: {
 			default: 'Agency description is required.',
+			size: 'Must be 5 to 500 characters long.',
 		},
 		placeholder: `(e.g. Your non-profit agency's purpose, mission, history, etc.)`,
 	},
@@ -110,7 +113,6 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		label: 'Country',
 		errors: {
 			default: 'Country is required.',
-			size: 'Country must contain at least 2 characters.',
 		},
 		placeholder: 'Select option',
 		data: ['United States'],
@@ -119,7 +121,6 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		label: 'Zipcode',
 		errors: {
 			default: 'Zipcode is required.',
-			size: 'Zipcode must contain at least 5 characters.',
 		},
 	},
 };

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
-import { WISHCARD_FORM_INPUTS, ADDRESS_FORM_INPUTS } from '../../translations/translations';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';

@@ -16,11 +16,11 @@ const chunkArray = (initialArray, chunkSize) => {
 	return chunks;
 };
 
-export const capitalizeFirstLetter = (word) => {
+const capitalizeFirstLetter = (word) => {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-export const validateImage = (setError, fieldName, formData, currFormMap) => {
+const validateImage = (setError, fieldName, formData, currFormMap) => {
 	if (!formData[fieldName]) {
 		return setError(currFormMap[fieldName].errors?.default);
 	}
@@ -39,4 +39,4 @@ export const validateImage = (setError, fieldName, formData, currFormMap) => {
 	}
 };
 
-export { loadlGoogleClientLibraryScript, chunkArray, validateImage };
+export { loadlGoogleClientLibraryScript, chunkArray, validateImage, capitalizeFirstLetter };

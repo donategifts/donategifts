@@ -23,12 +23,14 @@ const AGENCY_SIGNUP_FIELDSETS = [
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'textInput',
+					validateFn: (value) => /^\([2-9]\d{2}\) \d{3}-\d{4}$/.test(value),
 				},
 				{
 					name: 'agencyEIN',
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'textInput',
+					validateFn: (value) => /^\d{2}-\d{7}$/.test(value),
 				},
 			],
 			[
@@ -59,6 +61,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'textInput',
+					sizeFn: (value) => value.length < 2 || value.length > 250,
 				},
 				{
 					name: 'address2',
@@ -71,6 +74,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'textInput',
+					sizeFn: (value) => value.length < 2 || value.length > 250,
 				},
 			],
 			[

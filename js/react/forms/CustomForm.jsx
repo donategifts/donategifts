@@ -8,7 +8,6 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 // TODO: backend connection and backend validation
 // TODO: end to end feature testing
 // TODO: handle image and submit image
-// TODO: size and validation functions for each field need to be updated
 
 const CustomForm = ({
 	fieldsets,
@@ -63,6 +62,51 @@ const CustomForm = ({
 			[`${name}Error`]: '',
 		}));
 		handleFormDirty();
+	};
+
+	const formatEIN = (e) => {
+		const input = e.target.value.replace(/\D/g, '');
+		const length = input.length;
+		let formattedEIN = '';
+
+		if (e.inputType === 'deleteContentBackward' && length === 3) {
+			formattedEIN = input;
+		} else if (length > 2) {
+			// Formatting as "12-3456789"
+			formattedEIN = `${input.slice(0, 2)}-${input.slice(2, 9)}`;
+		} else {
+			// For inputs like "12" or "1" or "1-"
+			formattedEIN = input;
+		}
+		e.target.value = formattedEIN;
+	};
+
+	const formatPhone = (e) => {
+		const input = e.target.value.replace(/\D/g, '');
+		const length = input.length;
+		let formattedPhone = '';
+
+		if (e.inputType === 'deleteContentBackward' && length === 4) {
+			formattedPhone = input;
+		} else if (length > 3) {
+			// Formatting as "(123) 456-7890"
+			formattedPhone = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6, 10)}`;
+		} else {
+			// For inputs like "123" or "12" or "1" or "1-"
+			formattedPhone = input;
+		}
+
+		e.target.value = formattedPhone;
+	};
+
+	const handleFormatInput = (e) => {
+		//TODO: refactor this later if there are more formats
+		if (e.target?.name === 'agencyEIN') {
+			formatEIN(e);
+		} else if (e.target?.name === 'agencyPhone') {
+			formatPhone(e);
+		}
+		handleInput(e);
 	};
 
 	const handleDropDown = (value, name) => {
@@ -138,8 +182,6 @@ const CustomForm = ({
 	};
 
 	useEffect(() => {
-		console.log(isFormSubmitted, isDataValid);
-
 		if (isFormSubmitted) {
 			validateFormData();
 			setIsErrorChecked(true);
@@ -151,16 +193,10 @@ const CustomForm = ({
 
 	useEffect(() => {
 		if (isErrorChecked) {
-			console.log(fieldErrors);
 			setIsDataValid(Object.values(fieldErrors).every((error) => !error));
 			setIsErrorChecked(false);
 		}
 	}, [isErrorChecked]);
-
-	//TODO: [ ] make a generic img uploader
-
-	// enhancements todo - auto format phone, ein
-	//[x] need to keep track of validation status
 
 	const col2 = 'col-sm-12 col-lg-6 col-md-6';
 	const col3 = 'col-12 col-md-4';
@@ -193,7 +229,7 @@ const CustomForm = ({
 															currFormMap[col.name]?.placeholder || ''
 														}
 														error={fieldErrors[`${col.name}Error`]}
-														onChange={handleInput}
+														onChange={handleFormatInput}
 													/>
 												)}
 												{col.inputType == 'select' && (
