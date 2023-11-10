@@ -16,7 +16,6 @@
         "allowSyntheticDefaultImports": true,
     },
     "files": [
-        "types/discord.d.ts",
         "types/express-session.d.ts",
         "types/express.d.ts",
         "types/stripe.d.ts"

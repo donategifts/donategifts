@@ -1,18 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import {
-	body,
-	validationResult,
-	param,
-	Result,
-	ValidationError,
-	ExpressValidator,
-} from 'express-validator';
+import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
 import { WISHCARD_FORM_INPUTS, ADDRESS_FORM_INPUTS } from '../../translations/translations';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
+import Forms from '../translations/en/forms.json';
 
 const amazonLinkValidator = new ExpressValidator({
 	isValidLink: (value: string) => {
@@ -28,44 +22,17 @@ const amazonLinkValidator = new ExpressValidator({
 });
 
 export default class Validations {
-	private static handleError(
-		res: Response,
-		code: number,
-		errorMsg: { name: string; statusCode: number } | Result<ValidationError> | string,
-	) {
-		let statusCode = 400;
-		let name = 'Error handler';
-		let error;
+	static validate(req: Request, res: Response, next: NextFunction) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const [error] = errors.array({ onlyFirstError: true });
 
-		if (errorMsg instanceof Result) {
-			error = errorMsg.array({ onlyFirstError: true })[0];
-		} else if (typeof errorMsg === 'object') {
-			if (errorMsg.name) {
-				name = errorMsg.name;
-			}
+			log.error(`[Validations] ${error.msg}`);
 
-			statusCode = errorMsg.statusCode;
-			error = errorMsg;
-		} else if (typeof errorMsg === 'string') {
-			error = { msg: errorMsg };
+			return res.status(400).send({ error });
 		}
 
-		statusCode = code || statusCode;
-
-		if (errorMsg instanceof Error) {
-			log.error(errorMsg);
-		} else {
-			log.error({
-				msg: name,
-				statusCode,
-				error,
-			});
-		}
-
-		return res.status(statusCode).send({
-			statusCode,
-			error,
-		});
+		return next();
 	}
 
 	static signupValidationRules() {
@@ -220,20 +187,15 @@ export default class Validations {
 
 	static postPasswordResetValidationRules() {
 		return [
+			body('token').notEmpty().isString(),
 			body('password').notEmpty().isString().trim(),
 			body('passwordConfirm')
 				.notEmpty()
+				.isString()
 				.isLength({ min: 8 })
 				.withMessage('Password must be at least 8 characters long')
 				.matches(/^(?=.*\d.*)(?=.*[a-z].*)(?=.*[A-Z].*).{8,}$/)
-				.withMessage('Password must contain a number, one lower and one uppercase letter')
-				.isString(),
-			body('passwordConfirm').custom((value, { req }) => {
-				if (value !== req.body.password) {
-					throw new Error('Password confirmation does not match password');
-				}
-				return true;
-			}),
+				.withMessage('Password must contain a number, one lower and one uppercase letter'),
 		];
 	}
 
@@ -241,55 +203,53 @@ export default class Validations {
 		return [
 			body('childFirstName')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.childFirstName?.errors?.default)
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childFirstName.errors.default)
 				.isString(),
 			body('childInterest')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.childInterest?.errors?.default)
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childInterest.errors.default)
 				.isString(),
 			body('childBirthYear')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.childBirthYear?.errors?.default),
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childBirthYear.errors.default),
 			body('wishItemName')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.wishItemName?.errors?.default)
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemName.errors.default)
 				.isString(),
 			body('wishItemPrice')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.wishItemPrice?.errors?.default)
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemPrice.errors.default)
 				.isNumeric(),
 			amazonLinkValidator
 				.body('wishItemURL')
 				.isValidLink()
-				.withMessage(WISHCARD_FORM_INPUTS.wishItemURL?.errors?.validate),
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.wishItemURL.errors.validate),
 			body('childStory')
 				.notEmpty()
-				.withMessage(WISHCARD_FORM_INPUTS.childStory?.errors?.default)
+				.withMessage(Forms.WISHCARD_FORM_INPUTS.childStory.errors.default)
 				.isString(),
 			body('address1')
 				.notEmpty()
-				.withMessage(ADDRESS_FORM_INPUTS.address1?.errors?.default)
-				.isLength({ min: 5 })
-				.withMessage(ADDRESS_FORM_INPUTS.address1?.errors?.size),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.address1.errors.default)
+				.isLength({ min: 2 })
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.address1.errors.size),
 			body('address2').optional(),
 			body('city')
 				.notEmpty()
-				.withMessage(ADDRESS_FORM_INPUTS.city?.errors?.default)
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.city.errors.default)
 				.isLength({ min: 2 })
-				.withMessage(ADDRESS_FORM_INPUTS.city?.errors?.size),
-			body('state')
-				.notEmpty()
-				.withMessage(ADDRESS_FORM_INPUTS.state?.errors?.default),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.city.errors.size),
+			body('state').notEmpty().withMessage(Forms.ADDRESS_FORM_INPUTS.state.errors.default),
 			body('country')
 				.notEmpty()
-				.withMessage(ADDRESS_FORM_INPUTS.country?.errors?.default)
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.country.errors.default)
 				.isLength({ min: 2 })
-				.withMessage(ADDRESS_FORM_INPUTS.country?.errors?.size),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.country.errors.size),
 			body('zipcode')
 				.notEmpty()
-				.withMessage(ADDRESS_FORM_INPUTS.zipcode?.errors?.default)
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.zipcode.errors.default)
 				.isLength({ min: 5 })
-				.withMessage(ADDRESS_FORM_INPUTS.zipcode?.errors?.size),
+				.withMessage(Forms.ADDRESS_FORM_INPUTS.zipcode.errors.size),
 		];
 	}
 
@@ -459,14 +419,5 @@ export default class Validations {
 				.isLength({ min: 30 })
 				.withMessage('Message must contain at least 30 characters'),
 		];
-	}
-
-	static validate(req: Request, res: Response, next: NextFunction) {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return Validations.handleError(res, 400, errors);
-		}
-
-		return next();
 	}
 }

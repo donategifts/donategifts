@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const faker = require('faker');
 
 const agencies = require('./seeder-data/agencies.json');

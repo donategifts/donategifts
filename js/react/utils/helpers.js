@@ -16,7 +16,11 @@ const chunkArray = (initialArray, chunkSize) => {
 	return chunks;
 };
 
-const validateImage = (setError, fieldName, formData, currFormMap) => {
+export const capitalizeFirstLetter = (word) => {
+	return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+export const validateImage = (setError, fieldName, formData, currFormMap) => {
 	if (!formData[fieldName]) {
 		return setError(currFormMap[fieldName].errors?.default);
 	}

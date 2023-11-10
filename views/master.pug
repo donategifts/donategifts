@@ -15,22 +15,27 @@ html( lang="en" )
 
     body
         //- #header-root
-        include partials/navbar.pug
+        block navigation
+            include partials/navbar.pug
 
-        main
-            block toast
-                include mixins/toast.pug
-                +toast
+        block toast
+            include mixins/toast.pug
+            +toast
 
-            block content
-            //- react pages will be mounted here (see views/pages/wishcard/agencycards.pug)
-            //- single components should be mounted in their respective pages
-            #app-root
+        #admin-root
+
+        block main
+            main
+
+                block content
+                //- react pages will be mounted here (see views/pages/wishcard/agencycards.pug)
+                //- single components should be mounted in their respective pages
+                #app-root
 
         block modal
 
-        footer
-            block footer
+        block footer
+            footer
                 include partials/footer.pug
 
         include partials/scripts.pug

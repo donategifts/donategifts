@@ -1,63 +1,21 @@
 import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
-import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 
-import { ADDRESS_FORM_INPUTS } from '../../../translations/translations';
+import Forms from '../translations/en/forms.json';
 import { STATE_NAMES } from '../utils/constants';
 
-const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
-	const formRef = useRef();
-	const stateRef = useRef();
-	const countryRef = useRef();
-	const isDirty = useRef(false);
-
-	const [formData, setFormData] = useState({
-		address1: '',
-		address2: '',
-		city: '',
-		state: '',
-		country: '',
-		zipcode: '',
-	});
-
+// TODO: @stacysealky - Add validation to address form
+function AddressForm({ inputSize, onInputChange }) {
 	const handleInputs = (event) => {
 		const target = event.target;
 		const { name, value } = target;
 
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-		isDirty.current = true;
+		onInputChange({ name, value });
 	};
 
-	const handleDropDowns = (ref, name) => {
-		const value = ref.current?.value;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-		isDirty.current = true;
+	const handleDropDowns = (value, name) => {
+		onInputChange({ name, value });
 	};
-
-	const handleFormSubmit = (event) => {
-		event.preventDefault();
-		if (onSubmit) {
-			onSubmit(formData);
-		}
-	};
-
-	useImperativeHandle(ref, () => ({
-		isDirty() {
-			return isDirty.current;
-		},
-		submit() {
-			const form = formRef.current;
-			if (form.reportValidity()) {
-				form.requestSubmit();
-			}
-		},
-	}));
 
 	return (
 		<form ref={formRef} onSubmit={handleFormSubmit}>
@@ -65,15 +23,16 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 				<div className="col-12 col-md-4">
 					<TextInput
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.address1.label}
+						label={Forms.ADDRESS_FORM_INPUTS.address1.label}
 						name="address1"
+						required
 						onChange={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<TextInput
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.address2.label}
+						label={Forms.ADDRESS_FORM_INPUTS.address2.label}
 						name="address2"
 						onChange={handleInputs}
 					/>
@@ -81,8 +40,9 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 				<div className="col-12 col-md-4">
 					<TextInput
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.city.label}
+						label={Forms.ADDRESS_FORM_INPUTS.city.label}
 						name="city"
+						required
 						onChange={handleInputs}
 					/>
 				</div>
@@ -91,31 +51,32 @@ const AddressForm = forwardRef(({ inputSize, onSubmit }, ref) => {
 				<div className="col-12 col-md-4">
 					<Select
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.state.label}
+						label={Forms.ADDRESS_FORM_INPUTS.state.label}
 						searchable
-						placeholder={ADDRESS_FORM_INPUTS.state.placeholder}
+						placeholder={Forms.ADDRESS_FORM_INPUTS.state.placeholder}
+						required
 						data={STATE_NAMES}
-						ref={stateRef}
-						onChange={() => handleDropDowns(stateRef, 'state')}
+						onChange={(value) => handleDropDowns(value, 'state')}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<TextInput
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.zipcode.label}
+						label={Forms.ADDRESS_FORM_INPUTS.zipcode.label}
 						name="zipcode"
+						required
 						onChange={handleInputs}
 					/>
 				</div>
 				<div className="col-12 col-md-4">
 					<Select
 						size={inputSize}
-						label={ADDRESS_FORM_INPUTS.country.label}
+						label={Forms.ADDRESS_FORM_INPUTS.country.label}
 						searchable
-						placeholder={ADDRESS_FORM_INPUTS.country.placeholder}
+						placeholder={Forms.ADDRESS_FORM_INPUTS.country.placeholder}
+						required
 						data={['United States']}
-						ref={countryRef}
-						onChange={() => handleDropDowns(countryRef, 'country')}
+						onChange={(value) => handleDropDowns(value, 'country')}
 					/>
 				</div>
 			</div>
@@ -132,6 +93,18 @@ AddressForm.defaultProps = {
 AddressForm.propTypes = {
 	inputSize: PropTypes.string,
 	onSubmit: PropTypes.func,
+};
+
+AddressForm.displayName = 'AddressForm';
+
+AddressForm.defaultProps = {
+	inputSize: 'md',
+};
+
+AddressForm.propTypes = {
+	isVisible: PropTypes.bool,
+	inputSize: PropTypes.string,
+	onInputChange: PropTypes.func,
 };
 
 export default AddressForm;

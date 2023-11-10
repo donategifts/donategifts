@@ -6,7 +6,6 @@ const GOOGLE_CLIENT_LIBRARY_URL = 'https://accounts.google.com/gsi/client';
 
 const AMAZON_URL_REGEX = /^(https?(:\/\/)){1}([w]{3})(\.amazon\.com){1}\/.*$/;
 const AMAZON_PRODUCT_REGEX = /\/dp\/([A-Z0-9]{10})/;
-const PHONE_NUMBER_REGEX = /^(\([2-9][0-9]{2}\)[-\s]|[2-9][0-9]{2}[-\s])?[0-9]{3}[-\s]?[0-9]{4}$/;
 
 const STATE_NAMES = [
 	'Alabama',
@@ -95,7 +94,6 @@ export {
 	GOOGLE_CLIENT_LIBRARY_URL,
 	AMAZON_URL_REGEX,
 	AMAZON_PRODUCT_REGEX,
-	PHONE_NUMBER_REGEX,
 	STATE_NAMES,
 	BIRTH_YEAR,
 };

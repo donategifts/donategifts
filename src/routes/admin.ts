@@ -7,6 +7,8 @@ const router = express.Router();
 
 const adminController = new AdminController();
 
+router.get('/', Permissions.checkAdminPermission, adminController.handleGetIndex);
+
 router.get(
 	'/wishcards',
 	Permissions.checkAdminPermission,

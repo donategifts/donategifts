@@ -10,7 +10,14 @@ declare module 'express-serve-static-core' {
 			Express.MulterS3.File & {
 				Location: string;
 			};
-		files: { [fieldname: string]: Express.Multer.File[] };
+		files: {
+			[fieldname: string]: [
+				Express.Multer.File[] & {
+					Location: string;
+					filename: string;
+				},
+			];
+		};
 	}
 
 	interface Locals {

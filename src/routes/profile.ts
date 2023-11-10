@@ -31,10 +31,10 @@ router.get(
 );
 
 router.post(
-	'/password/reset/:token',
+	'/password/new/',
 	Validator.postPasswordResetValidationRules(),
 	Validator.validate,
-	passwordController.handlePostResetToken,
+	passwordController.handlePostNew,
 );
 
 router.get(

@@ -1,38 +1,53 @@
 version: '3.8'
 services:
+    app:
+        build:
+            context: .
+            # custom image is needed unfortunately to make it work everywhere
+            # sharp is acting up on mac and windows
+            dockerfile: Dockerfile.dev
+        container_name: app
+        working_dir: /data/app
+        command: npm run dev
+        ports:
+            - 3000:3000
+            - 9229:9229
+        volumes:
+            - .:/data/app:z
+        depends_on:
+            - mongo
+            # - postgres
+
     mongo:
         image: mongo
-        container_name: dg-mongo
-        restart: unless-stopped
+        container_name: mongo
+        command: mongod --quiet --logpath /dev/null
         ports:
             - 27017:27017
         volumes:
             - mongo:/data/db
 
-    stripe-cli:
-        image: stripe/stripe-cli
-        container_name: stripe-cli
-        command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to localhost:3000/payment/webhook/
-        env_file:
-            - config_stripe_cli.env
-
     # postgres:
     #     image: postgres:14.1-alpine
-    #     container_name: dg-postgres
-    #     restart: unless-stopped
+    #     container_name: postgres
     #     environment:
     #         - POSTGRES_DB=donategifts
     #         - POSTGRES_USER=postgres
     #         - POSTGRES_PASSWORD=postgres
-    #         - PGDATA=/data/postgres-donategifts
+    #         - PGDATA=/data/donategifts
     #     ports:
     #         - 5432:5432
     #     volumes:
     #         - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    #         - donategifts:/data/postgres-donategifts
+    #         - postgres:/data/db
+
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to host.docker.internal:3000/payment/webhook/
+        env_file:
+            - config_stripe_cli.env
 
 volumes:
     mongo:
-        driver: local
-    # donategifts:
-    #     driver: local
+    # postgres:

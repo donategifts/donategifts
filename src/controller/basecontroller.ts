@@ -13,10 +13,10 @@ export default class BaseController {
 
 		this.limiter = rateLimit({
 			windowMs: limitTime * 60 * 1000,
-			max: 100,
+			limit: 100,
 			validate: {
 				xForwardedForHeader: true,
-			} as any,
+			},
 		});
 	}
 
@@ -48,7 +48,9 @@ export default class BaseController {
 		this.log.error(error);
 
 		if (renderErrorPage) {
-			return res.status(statusCode).render(code === 400 ? '404' : code.toString(), {
+			const template = `error/${code.toString()}`;
+
+			return res.status(statusCode).render(template, {
 				statusCode,
 				error,
 			});
