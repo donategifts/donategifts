@@ -5,13 +5,13 @@ import { useRef, useEffect, useState } from 'react';
 import ImgUploader from '../components/shared/ImgUploader.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-// TODO: backend connection and backend validation
-// TODO: end to end feature testing
-// TODO: handle image and submit image
+// TODO: @enubia - backend api connection and backend validation
+// TODO: @enubia - handle image and submit image
+// TODO: @enubia, @stacysealky - end to end feature testing, check db and page redirect, test edge case errors
 
 const CustomForm = ({
 	fieldsets,
-	currFormMap,
+	formTranslations,
 	handleFormData,
 	handleFormDirty,
 	inputSize,
@@ -27,6 +27,8 @@ const CustomForm = ({
 	useEffect(() => {
 		const errors = {};
 		const functions = {};
+
+		// Setting fields, errors, and validation functions, as they are customizable from props
 		fieldsets.forEach((fieldset) => {
 			fieldset?.inputsPerRow?.forEach((row) => {
 				row.forEach((col) => {
@@ -100,7 +102,7 @@ const CustomForm = ({
 	};
 
 	const handleFormatInput = (e) => {
-		//TODO: refactor this later if there are more formats
+		// refactor this later if there are more formats
 		if (e.target?.name === 'agencyEIN') {
 			formatEIN(e);
 		} else if (e.target?.name === 'agencyPhone') {
@@ -140,19 +142,19 @@ const CustomForm = ({
 		if (!fieldValue || !fieldValue.length) {
 			setFieldErrors((prevErrors) => ({
 				...prevErrors,
-				[`${fieldName}Error`]: currFormMap[fieldName].errors?.default || '',
+				[`${fieldName}Error`]: formTranslations[fieldName].errors?.default || '',
 			}));
 			handleScroll(ref);
 		} else if (sizeFn && sizeFn(fieldValue)) {
 			setFieldErrors((prevErrors) => ({
 				...prevErrors,
-				[`${fieldName}Error`]: currFormMap[fieldName].errors?.size || '',
+				[`${fieldName}Error`]: formTranslations[fieldName].errors?.size || '',
 			}));
 			handleScroll(ref);
 		} else if (validationFn && !validationFn(fieldValue)) {
 			setFieldErrors((prevErrors) => ({
 				...prevErrors,
-				[`${fieldName}Error`]: currFormMap[fieldName].errors?.validate || '',
+				[`${fieldName}Error`]: formTranslations[fieldName].errors?.validate || '',
 			}));
 			handleScroll(ref);
 		} else {
@@ -222,11 +224,12 @@ const CustomForm = ({
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
 														mt={inputSize}
-														label={currFormMap[col.name]?.label}
+														label={formTranslations[col.name]?.label}
 														name={col.name}
 														required={col.isRequired}
 														placeholder={
-															currFormMap[col.name]?.placeholder || ''
+															formTranslations[col.name]
+																?.placeholder || ''
 														}
 														error={fieldErrors[`${col.name}Error`]}
 														onChange={handleFormatInput}
@@ -237,13 +240,14 @@ const CustomForm = ({
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
 														mt={inputSize}
-														label={currFormMap[col.name]?.label}
+														label={formTranslations[col.name]?.label}
 														name={col.name}
 														searchable
-														data={currFormMap[col.name]?.data}
+														data={formTranslations[col.name]?.data}
 														required={col.isRequired}
 														placeholder={
-															currFormMap[col.name]?.placeholder || ''
+															formTranslations[col.name]
+																?.placeholder || ''
 														}
 														autoComplete="off"
 														error={fieldErrors[`${col.name}Error`]}
@@ -257,11 +261,12 @@ const CustomForm = ({
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
 														mt={inputSize}
-														label={currFormMap[col.name]?.label}
+														label={formTranslations[col.name]?.label}
 														name={col.name}
 														required={col.isRequired}
 														placeholder={
-															currFormMap[col.name]?.placeholder || ''
+															formTranslations[col.name]
+																?.placeholder || ''
 														}
 														error={fieldErrors[`${col.name}Error`]}
 														onChange={handleInput}
@@ -269,9 +274,9 @@ const CustomForm = ({
 												)}
 												{col.inputType == 'image' && (
 													<ImgUploader
-														label={currFormMap[col.name]?.label}
+														label={formTranslations[col.name]?.label}
 														instruction={
-															currFormMap[col.name].instruction
+															formTranslations[col.name].instruction
 														}
 														imgID={col.name}
 														required={col.isRequired}
@@ -312,7 +317,7 @@ CustomForm.propTypes = {
 			),
 		}).isRequired,
 	).isRequired,
-	currFormMap: PropTypes.object.isRequired,
+	formTranslations: PropTypes.object.isRequired,
 	inputSize: PropTypes.string,
 	handleFormData: PropTypes.func.isRequired,
 	handleFormDirty: PropTypes.func.isRequired,

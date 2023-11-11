@@ -553,7 +553,6 @@ function WishCardCreate() {
 								{!isShippingDefault && (
 									<AddressForm onInputChange={handleNewShippingAddress} />
 								)}
-								{/* TODO: need to collect address state after user fills out address form*/}
 							</div>
 						</div>
 						<p className="mt-5 text-center">

@@ -1,6 +1,18 @@
 import PropTypes from 'prop-types';
 
 const ImgUploader = ({ imgSrc, imgError, handleImg, required, label, instruction, imgID }) => {
+	// const handleImage = (e, setImage, setError, fieldName) => {
+	// 	const file = e.target.files[0];
+	// 	if (file) {
+	// 		setImage(URL.createObjectURL(file));
+	// 		setError('');
+	// 		setFormData((data) => ({
+	// 			...data,
+	// 			[fieldName]: file,
+	// 		}));
+	// 	}
+	// };
+
 	return (
 		<div className="uploader form-group py-4 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
 			<div className="px-3 pt-3 pb-0">

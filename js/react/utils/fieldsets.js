@@ -43,7 +43,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 				},
 				{
 					name: 'agencyImage',
-					isRequired: false, //TODO make it back to true after testing
+					isRequired: false, //TODO: @enubia - make it back to true after testing
 					defaultValue: null,
 					inputType: 'image',
 				},

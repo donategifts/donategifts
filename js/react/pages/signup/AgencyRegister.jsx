@@ -7,7 +7,7 @@ import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import { AGENCY_SIGNUP_FORM_INPUTS } from '../../utils/translations';
 
 function AgencyRegister() {
-	const currFormMap = AGENCY_SIGNUP_FORM_INPUTS;
+	const formTranslations = AGENCY_SIGNUP_FORM_INPUTS;
 	const fieldsets = AGENCY_SIGNUP_FIELDSETS;
 
 	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -18,30 +18,28 @@ function AgencyRegister() {
 	};
 
 	const handleFormData = (formData) => {
-		console.log(formData);
+		console.log(formData); //still testing
 
 		handlePost(formData);
 	};
 
 	const handlePost = async (formData) => {
+		const toast = new window.DG.Toast();
 		const data = new FormData();
 		//need to append to FormData() because of the image file transfer
 
-		data.append('agencyName', formData.agencyName);
-		data.append('agencyBio', formData.agencyBio);
-		//TODO: need to pass data with forEach
-		// this currently only passes 2 data inputs for testing
-
-		const toast = new window.DG.Toast();
+		Object.entries(formData).forEach(([key, value]) => {
+			data.append(key, value);
+		});
 
 		try {
-			await axios.post('/api/wishcards', data, {
+			//TODO: BUG: 404 error - need to fix
+			await axios.post('/api/signup/agency', data, {
 				headers: {
 					'content-type': 'multipart/form-data',
 				},
 			});
 			toast.show('Submission was successful!');
-			// setTimeout(() => window.location.replace('/wishcards/manage'), 1000);
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -65,7 +63,7 @@ function AgencyRegister() {
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<CustomForm
 								fieldsets={fieldsets}
-								currFormMap={currFormMap}
+								formTranslations={formTranslations}
 								handleFormData={handleFormData}
 								isFormSubmitted={isFormSubmitted}
 								handleFormDirty={handleFormDirty}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Forms from '../translations/en/forms.json';
 import { STATE_NAMES } from '../utils/constants';
 
-// TODO: @stacysealky - Add validation to address form
+// @enubia this is deprecated? - since we have the CustomForm now?
 function AddressForm({ inputSize, onInputChange }) {
 	const handleInputs = (event) => {
 		const target = event.target;
