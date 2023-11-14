@@ -33,14 +33,12 @@ main {
 }
 
 .gradient-form {
-	background:
-		linear-gradient(#ff5f6d00, #ffc37100), center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 
 	form {
-		background: linear-gradient(45deg, $danger, $warning);
+		background: linear-gradient(45deg, rgba($danger, 0.9), rgba($warning, 0.95));
 
 		.form-control::placeholder {
 			color: $white;
@@ -85,4 +83,11 @@ main {
 		left: 50%;
 		z-index: 1000;
 	}
+}
+
+// for password show/hide icon
+.fa-eye,
+.fa-eye-slash {
+	cursor: pointer;
+	font-size: 1.15rem;
 }
