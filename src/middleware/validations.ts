@@ -48,7 +48,7 @@ export default class Validations {
 				.notEmpty()
 				.isString()
 				.isLength({ min: 8 })
-				.withMessage('must be at least 8 characters long')
+				.withMessage('Password must be at least 8 characters long')
 				.matches(/^(?=.*\d.*)(?=.*[a-z].*)(?=.*[A-Z].*).{8,}$/)
 				.withMessage('Password must contain a number, one lower and one uppercase letter'),
 			body('passwordConfirm').custom((value, { req }) => {
