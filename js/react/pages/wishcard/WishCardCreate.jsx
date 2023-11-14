@@ -546,7 +546,11 @@ function WishCardCreate() {
 									label={
 										!isShippingDefault
 											? 'Ship this wish item to the below address'
-											: `Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`
+											: `Ship this wish item to my agency (${
+													agencyAddress?.address1
+											  }, ${agencyAddress?.address2 || ''}, ${
+													agencyAddress?.city
+											  }, ${agencyAddress?.state} ${agencyAddress?.zipcode})`
 									}
 									onChange={handleShippingAddress}
 								/>
