@@ -146,7 +146,7 @@ block scripts
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
                             $('#loading-spinner').addClass('d-none');
-                            new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
+                            new DG.Toast().show(response.responseJSON.error.msg || response.responseJSON.error, DG.Toast.styleMap.danger);
                             grecaptcha.reset();
                         },
                     });
@@ -188,7 +188,7 @@ block scripts
                         error: function (response, textStatus, errorThrown) {
                             $('#submit-btn').prop('disabled', false);
                             $('#loading-spinner').addClass('d-none');
-                            new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
+                            new DG.Toast().show(response.responseJSON.error.msg || response.responseJSON.error, DG.Toast.styleMap.danger);
                         },
                     });
                 });
