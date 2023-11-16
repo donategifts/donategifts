@@ -47,12 +47,15 @@ export default class HomeController extends BaseController {
 
 		const wishCards = await this.wishCardRepository.getRandom('published', 6);
 
+		const curatedCards = await this.wishCardRepository.getCurated();
+
 		const undonatedWishcards = await this.wishCardRepository.getWishCardsByStatus('published');
 
 		const donatedWishcards = await this.wishCardRepository.getWishCardsByStatus('donated');
 
 		this.renderView(res, 'home', {
 			wishCards,
+			curatedCards,
 			verifiedAgencies: agencies?.length,
 			undonatedCards: undonatedWishcards.length,
 			donatedCards: donatedWishcards.length + 200, //don't delete +200, as it's due to data loss from last year
