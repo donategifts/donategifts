@@ -10,13 +10,13 @@ mixin passwordToggleJS()
                 const $this = $(e.currentTarget);
 
                 if (passworInputType === 'password') {
-                        $passwordInput.attr('type', 'text');
-                        $this.removeClass(imageHideClass);
-                        $this.addClass(imageVisibleClass);
+                    $passwordInput.attr('type', 'text');
+                    $this.removeClass(imageHideClass);
+                    $this.addClass(imageVisibleClass);
                 } else {
-                        $passwordInput.attr('type', 'password');
-                        $this.removeClass(imageVisibleClass);
-                        $this.addClass(imageHideClass);
+                    $passwordInput.attr('type', 'password');
+                    $this.removeClass(imageVisibleClass);
+                    $this.addClass(imageHideClass);
                 }
             });
         });

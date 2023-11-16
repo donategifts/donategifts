@@ -1,4 +1,4 @@
-import { TextInput, Textarea } from '@mantine/core';
+import { Group, TextInput, Textarea } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -133,29 +133,23 @@ export default function Detail() {
 					defaultValue={agency.bio}
 				/>
 			</div>
-			<div className="row center-elements">
-				<div className="col-4">
-					<CustomButton
-						size="lg"
-						fullWidth={true}
-						onClick={verifyAgency}
-						loading={showVerifyLoader}
-						disabled={agency.verified || showVerifyLoader}
-						text={agency.verified ? 'Verified' : 'Verify Agency'}
-					/>
-				</div>
-				<div className="col-4">
-					<CustomButton
-						size="lg"
-						color={'lime'}
-						fullWidth={true}
-						loading={showUpdateLoader}
-						onClick={updateAgencyData}
-						disabled={showUpdateLoader}
-						text={'Update Agency Data'}
-					/>
-				</div>
-			</div>
+			<Group justify={'center'}>
+				<CustomButton
+					size="lg"
+					onClick={verifyAgency}
+					loading={showVerifyLoader}
+					disabled={agency.verified || showVerifyLoader}
+					text={agency.verified ? 'Verified' : 'Verify Agency'}
+				/>
+				<CustomButton
+					size="lg"
+					color={'orange.3'}
+					loading={showUpdateLoader}
+					onClick={updateAgencyData}
+					disabled={showUpdateLoader}
+					text={'Update Agency Data'}
+				/>
+			</Group>
 			<hr />
 			<div className="d-flex align-items-baseline">
 				<h3 className="me-2">Account Manager</h3>

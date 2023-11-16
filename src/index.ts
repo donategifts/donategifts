@@ -124,6 +124,10 @@ const app = express();
 	app.use('/', routes);
 	app.use('/api', apiRoutes);
 
+	app.use('/admin/*', (_req, res) => {
+		return res.redirect('/admin');
+	});
+
 	if (config.NODE_ENV !== 'production') {
 		app.use('/theme', (_req, res) => {
 			res.render('theme/master.pug');
