@@ -1,11 +1,21 @@
-import { Table, Tabs } from '@mantine/core';
+import { Table, Tabs, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Overview() {
 	const basePath = '/api/admin';
+
+	const navigate = useNavigate();
+
 	const [rows, setRows] = useState([]);
 	const [value, setValue] = useState('unverified');
+	const [shouldNavigate, setShouldNavigate] = useState(false);
+	const [id, setId] = useState('');
+
+	const forward = (id) => {
+		setShouldNavigate(true);
+		setId(id);
+	};
 
 	const fetchAgencies = async (verified = false) => {
 		const res = await fetch(`${basePath}/agencyOverview?getVerified=${verified}`);
@@ -13,19 +23,19 @@ export default function Overview() {
 
 		setRows(
 			data.map((agency) => (
-				<Table.Tr key={agency.id}>
+				<Table.Tr
+					key={agency.id}
+					onClick={() => forward(agency.id)}
+					style={{ cursor: 'pointer' }}
+				>
 					<Table.Td>{agency.name}</Table.Td>
 					<Table.Td>{agency.phone}</Table.Td>
-					<Table.Td>
-						<a href={agency.website} target="_blank" rel="noreferrer">
-							{agency.website}
-						</a>
-					</Table.Td>
+					<Table.Td>{agency.website}</Table.Td>
 					<Table.Td>{agency.joined}</Table.Td>
 					<Table.Td>{agency.bio}</Table.Td>
 					<Table.Td>{agency.accountManager}</Table.Td>
 					<Table.Td>
-						<Link to={`/agency/${agency.id}`}>Detail</Link>
+						<Text style={{ textDecoration: 'underline' }}>Detail</Text>
 					</Table.Td>
 				</Table.Tr>
 			)),
@@ -39,6 +49,12 @@ export default function Overview() {
 			fetchAgencies(true);
 		}
 	}, [value]);
+
+	useEffect(() => {
+		if (shouldNavigate) {
+			navigate(`/agency/${id}`);
+		}
+	}, [shouldNavigate, id]);
 
 	const ths = (
 		<Table.Tr>
