@@ -31,3 +31,6 @@ window.WishCardCreate = WishCardCreate;
 
 import WishCardManage from './pages/wishcard/WishCardManage.jsx';
 window.WishCardManage = WishCardManage;
+
+import DonationHistory from './pages/profile/DonationHistory.jsx';
+window.DonationHistory = DonationHistory;
