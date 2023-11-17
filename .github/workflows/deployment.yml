@@ -27,7 +27,7 @@ jobs:
           tags: marcodghub/donategifts:latest
       
       - name: Deploy to DigitalOcean
-        uses: appleboy/ssh-action@v5
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DIGITAL_OCEAN_HOST }}
           username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
