@@ -34,6 +34,7 @@ jobs:
           password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           port: ${{ secrets.DIGITAL_OCEAN_PORT }}
           script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull marcodghub/donategifts:latest
             docker stop marcodghub/donategifts:latest
             docker rm marcodghub/donategifts:latest
