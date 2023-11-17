@@ -36,6 +36,45 @@ jobs:
           script: |
             docker pull marcodghub/donategifts:latest
             docker stop donategifts
-            docker rm donategifts 
-            docker run -d -p 8080:8080 --env PORT=${{ secrets.PORT }} --env PG_HOST=${{ secrets.PG_HOST }} --env PG_PORT=${{ secrets.PG_PORT }} --env PG_USER=${{ secrets.PG_USER }} --env PG_PASSWORD=${{ secrets.PG_PASSWORD }} --env PG_DATABASE=${{ secrets.PG_DATABASE }} --env MONGO_URI=${{ secrets.MONGO_URI }} --env NODE_ENV=${{ secrets.NODE_ENV }} --env SESS_NAME=${{ secrets.SESS_NAME }} --env SESS_SECRET=${{ secrets.SESS_SECRET }} --env SESS_LIFE=${{ secrets.SESS_LIFE }} --env MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} --env MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} --env USE_AWS=${{ secrets.USE_AWS }} --env AWS_KEY=${{ secrets.AWS_KEY }} --env AWS_SECRET=${{ secrets.AWS_SECRET }} --env S3BUCKET=${{ secrets.S3BUCKET }} --env DEFAULT_EMAIL=${{ secrets.DEFAULT_EMAIL }} --env DEFAULT_EMAIL_PASSWORD=${{ secrets.DEFAULT_EMAIL_PASSWORD }} --env BASE_URL=${{ secrets.BASE_URL }} --env GOOGLE_CAPTCHA_KEY=${{ secrets.GOOGLE_CAPTCHA_KEY }} --env G_CLIENT_ID=${{ secrets.G_CLIENT_ID }} --env FB_APP_ID=${{ secrets.FB_APP_ID }} --env STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} --env STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} --env STRIPE_SIGNING_SECRET=${{ secrets.STRIPE_SIGNING_SECRET }} --env PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }} --env PAYPAL_SECRET=${{ secrets.PAYPAL_SECRET }} --env PAYPAL_WEBHOOK_ID=${{ secrets.PAYPAL_WEBHOOK_ID }} --env DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} --env DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} --env DISCORD_STATUS_WEBHOOK_URL=${{ secrets.DISCORD_STATUS_WEBHOOK_URL }} --env DISCORD_CONTACT_WEBHOOK_URL=${{ secrets.DISCORD_CONTACT_WEBHOOK_URL }} --env DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL=${{ secrets.DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL }} --env LOG_LEVEL=${{ secrets.LOG_LEVEL }} --env MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} --name donategifts marcodghub/donategifts:latest
+            docker rm donategifts
+            docker run -d \
+            -p 8080:8080 \
+            --env PORT=${{ secrets.PORT }} \
+            --env PG_HOST=${{ secrets.PG_HOST }} \
+            --env PG_PORT=${{ secrets.PG_PORT }} \
+            --env PG_USER=${{ secrets.PG_USER }} \
+            --env PG_PASSWORD=${{ secrets.PG_PASSWORD }} \
+            --env PG_DATABASE=${{ secrets.PG_DATABASE }} \
+            --env MONGO_URI=${{ secrets.MONGO_URI }} \
+            --env NODE_ENV=${{ secrets.NODE_ENV }} \
+            --env SESS_NAME=${{ secrets.SESS_NAME }} \
+            --env SESS_SECRET=${{ secrets.SESS_SECRET }} \
+            --env SESS_LIFE=${{ secrets.SESS_LIFE }} \
+            --env MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} \
+            --env MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} \
+            --env USE_AWS=${{ secrets.USE_AWS }} \
+            --env AWS_KEY=${{ secrets.AWS_KEY }} \
+            --env AWS_SECRET=${{ secrets.AWS_SECRET }} \
+            --env S3BUCKET=${{ secrets.S3BUCKET }} \
+            --env DEFAULT_EMAIL=${{ secrets.DEFAULT_EMAIL }} \
+            --env DEFAULT_EMAIL_PASSWORD=${{ secrets.DEFAULT_EMAIL_PASSWORD }} \
+            --env BASE_URL=${{ secrets.BASE_URL }} \
+            --env GOOGLE_CAPTCHA_KEY=${{ secrets.GOOGLE_CAPTCHA_KEY }} \
+            --env G_CLIENT_ID=${{ secrets.G_CLIENT_ID }} \
+            --env FB_APP_ID=${{ secrets.FB_APP_ID }} \
+            --env STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} \
+            --env STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} \
+            --env STRIPE_SIGNING_SECRET=${{ secrets.STRIPE_SIGNING_SECRET }} \
+            --env PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }} \
+            --env PAYPAL_SECRET=${{ secrets.PAYPAL_SECRET }} \
+            --env PAYPAL_WEBHOOK_ID=${{ secrets.PAYPAL_WEBHOOK_ID }} \
+            --env DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} \
+            --env DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} \
+            --env DISCORD_STATUS_WEBHOOK_URL=${{ secrets.DISCORD_STATUS_WEBHOOK_URL }} \
+            --env DISCORD_CONTACT_WEBHOOK_URL=${{ secrets.DISCORD_CONTACT_WEBHOOK_URL }} \
+            --env DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL=${{ secrets.DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL }} \
+            --env LOG_LEVEL=${{ secrets.LOG_LEVEL }} \
+            --env MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} \
+            --name donategifts \
+            marcodghub/donategifts:latest
 
