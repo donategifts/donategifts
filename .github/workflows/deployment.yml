@@ -1,11 +1,11 @@
-name: Deployment
+name: DO Deployment
 
 on:
   workflow_dispatch:
 
 jobs:
   deploy:
-    name: Build and push to Docker Hub
+    name: DO Deployment
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -34,7 +34,6 @@ jobs:
           password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           port: ${{ secrets.DIGITAL_OCEAN_PORT }}
           script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin ${{ secrets.DOCKER_PASSWORD }}
             docker pull marcodghub/donategifts:latest
             docker stop donategifts
             docker rm donategifts
