@@ -65,7 +65,7 @@ export default class WishCardRepository {
 			'5fc486a5495483e2e4e87433',
 			'5f847114a99508e349bb87fd',
 		];
-		const curated = [];
+		const curated: WishCard[] = [];
 		[...donated].forEach((card: WishCard) => {
 			if (selectedWishcardIds.includes(`${card._id}`)) {
 				curated.push(card);
