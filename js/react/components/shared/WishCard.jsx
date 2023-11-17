@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-
 function WishCard({ wishCard, attributes }) {
 	return (
 		<div className="card border-0 shadow h-100" key={wishCard._id}>
 			<img
 				className="card-img-top rounded-0 rounded-top-3"
-				src={wishCard.wishCardImage}
+				src={wishCard.wishCardImage ?? wishCard.childImage}
 				alt={wishCard.wishItemName}
 				loading="lazy"
 			/>

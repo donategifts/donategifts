@@ -55,7 +55,7 @@ export default function Administration() {
 												<img
 													id="img-fix"
 													className="card-img-top"
-													src={card.wishCardImage}
+													src={card.wishCardImage ?? card.childImage}
 													alt="Card image"
 												/>
 												<a href="#" className="mask rgba-white-slight"></a>
