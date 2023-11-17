@@ -9,7 +9,6 @@ import WishCard from '../models/WishCard';
 
 import DonationRepository from './DonationRepository';
 import UserRepository from './UserRepository';
-
 export default class WishCardRepository {
 	private wishCardModel: typeof WishCard;
 
@@ -40,7 +39,7 @@ export default class WishCardRepository {
 	}
 
 	async getAll() {
-		const publisehd = await this.wishCardModel
+		const publisehd = await this.wishCardModel //NOTE: there is a typo here @Enubia
 			.aggregate<WishCard>([{ $match: { status: 'published' } }])
 			.exec();
 
@@ -48,6 +47,32 @@ export default class WishCardRepository {
 			.aggregate<WishCard>([{ $match: { status: 'donated' } }])
 			.exec();
 		return [...publisehd, ...donated];
+	}
+
+	async getCurated() {
+		const donated = await this.wishCardModel
+			.aggregate<WishCard>([{ $match: { status: 'donated' } }])
+			.exec();
+
+		const selectedWishcardIds = [
+			'5f80d422a99508e349bb87ea',
+			'5f7f8a8eb09ed5121216bd1b',
+			'5fc48548495483e2e4e87432',
+			'5f90a7fc987faa6593d8c061',
+			'5fd18775e7553d5923e6ce63',
+			'5fd188fee7553d5923e6ce64',
+			'5f9b3373987faa6593d8c07a',
+			'5fc486a5495483e2e4e87433',
+			'5f847114a99508e349bb87fd',
+		];
+		const curated = [];
+		[...donated].forEach((card: WishCard) => {
+			if (selectedWishcardIds.includes(`${card._id}`)) {
+				curated.push(card);
+			}
+		});
+
+		return curated;
 	}
 
 	async getRandom(status: STATUS, sampleSize: number) {
