@@ -14,6 +14,14 @@
 	background-color: lighten($cream, 10%);
 	margin-top: -5px;
 
+	.fa-upload {
+		font-size: 1.15rem;
+	}
+
+	.upload-text {
+		font-size: 1rem;
+	}
+
 	.card {
 		label {
 			color: $navy-dark;

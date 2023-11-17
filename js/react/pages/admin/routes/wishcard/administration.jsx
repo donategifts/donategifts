@@ -39,7 +39,7 @@ export default function Administration() {
 			{error !== '' && <CustomToast title={error} />}
 			<div id="profile-bg" className="background-color">
 				<div className="profile-title">
-					<div className="text-center fs-1">Wishcard admin panel11</div>
+					<div className="text-center fs-1">Wishcard Admin Panel</div>
 				</div>
 			</div>
 			<div className="wishcards background-color">
@@ -55,7 +55,7 @@ export default function Administration() {
 												<img
 													id="img-fix"
 													className="card-img-top"
-													src={card.wishCardImage}
+													src={card.wishCardImage ?? card.childImage}
 													alt="Card image"
 												/>
 												<a href="#" className="mask rgba-white-slight"></a>
@@ -82,12 +82,7 @@ export default function Administration() {
 															<span className="font-weight-bold">
 																Wish:
 															</span>{' '}
-															{card.wishItemName.length > 25
-																? card.wishItemName.substring(
-																		0,
-																		25,
-																  ) + '...'
-																: card.wishItemName}
+															{card.wishItemName}
 														</p>
 														<p className="card-text">
 															<span className="font-weight-bold">

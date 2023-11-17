@@ -32,7 +32,7 @@ block content
                                     .ms-1 Message &amp; photo from <span class="fw-bold">#{wishcard.childFirstName}</span> if partner agency permits
                         .card-body
                             .col-6.mx-auto
-                                img.img-fluid.rounded-3( src= wishcard.wishCardImage alt='wish card kid photo' )
+                                img.img-fluid.rounded-3( alt='wish card kid photo' src= wishcard.wishCardImage || wishcard.childImage )
 
                             .py-3 Wish item: #{wishcard.wishItemName}
 
