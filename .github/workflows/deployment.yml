@@ -34,10 +34,10 @@ jobs:
           password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           port: ${{ secrets.DIGITAL_OCEAN_PORT }}
           script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin ${{ secrets.DOCKER_PASSWORD }}
             docker pull marcodghub/donategifts:latest
-            docker stop marcodghub/donategifts:latest
-            docker rm marcodghub/donategifts:latest
+            docker stop donategifts
+            docker rm donategifts
             docker run -d \
             -p 8080:8080 \
             --env PORT=${{ secrets.PORT }} \
@@ -76,6 +76,6 @@ jobs:
             --env DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL=${{ secrets.DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL }} \
             --env LOG_LEVEL=${{ secrets.LOG_LEVEL }} \
             --env MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} \
-            --name marcodghub/donategifts:latest \
+            --name donategifts \
             marcodghub/donategifts:latest
 
