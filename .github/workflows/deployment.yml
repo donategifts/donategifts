@@ -78,4 +78,5 @@ jobs:
             --env MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} \
             --name donategifts \
             marcodghub/donategifts
+            docker rmi $(docker images -f "dangling=true" -q)
 
