@@ -37,3 +37,6 @@ window.WishcardsAdministration = WishcardsAdministration;
 
 import AgencyRegister from './pages/signup/AgencyRegister.jsx';
 window.AgencyRegister = AgencyRegister;
+
+import DonationHistory from './pages/profile/DonationHistory.jsx';
+window.DonationHistory = DonationHistory;

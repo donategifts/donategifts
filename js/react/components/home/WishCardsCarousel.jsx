@@ -5,9 +5,10 @@ import { chunkArray } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
-function WishCardsCarousel({ wishCards, user }) {
+function WishCardsCarousel({ wishCards, user, undonatedCards, curatedCards }) {
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(wishCards, 3));
+	const displayedWishCards = +undonatedCards === 0 ? curatedCards : wishCards;
+	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(displayedWishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
 
 	const resizeWidth = () => {
@@ -16,13 +17,12 @@ function WishCardsCarousel({ wishCards, user }) {
 
 	useEffect(() => {
 		if (windowWidth > 1400) {
-			setChunkedWishCards(chunkArray(wishCards, 3));
+			setChunkedWishCards(chunkArray(displayedWishCards, 3));
 			setColStyle('col-4');
 		} else if (windowWidth < 1400 && windowWidth > 992) {
-			setChunkedWishCards(chunkArray(wishCards, 2));
+			setChunkedWishCards(chunkArray(displayedWishCards, 2));
 			setColStyle('col-6');
 		}
-
 		window.addEventListener('resize', resizeWidth);
 		return () => window.removeEventListener('resize', resizeWidth);
 	}, [windowWidth]);
@@ -92,9 +92,9 @@ function WishCardsCarousel({ wishCards, user }) {
 						data-bs-ride="carousel"
 					>
 						<div className="carousel-inner p-4">
-							{wishCards?.map((currentCard, index) => (
+							{chunkedWishCards?.map((currentCard, index) => (
 								<div
-									key={currentCard._id}
+									key={index}
 									className={`carousel-item ${index === 0 ? 'active' : ''}`}
 									data-bs-interval="20000"
 								>
@@ -124,6 +124,8 @@ WishCardsCarousel.propTypes = {
 	// we'll make this more specific once the db migration is complete
 	wishCards: PropTypes.arrayOf(PropTypes.object),
 	user: PropTypes.object,
+	undonatedCards: PropTypes.number,
+	curatedCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCardsCarousel;

@@ -85,10 +85,10 @@ const AgencyCardEditForm = forwardRef(({ card, onSubmit }, ref) => {
 							className="form-control"
 							type="number"
 							min={0.01}
-							max={40}
+							max={50}
 							step={0.01}
 							onWheel={noScroll}
-							placeholder="Must be under $40"
+							placeholder="Must be under $50"
 							{...getInputProps('wishItemPrice')}
 						/>
 					</div>

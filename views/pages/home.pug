@@ -28,7 +28,6 @@ block content
                     .d-flex.justify-content-center.align-items-center.actions.mt-4
                         a.button-outline.button-width.m-2( href='/howto' ) How It Works
                         a.button-accent.button-width.m-2( href='/wishcards' ) See Wish Cards
-
         #carousel-root
 
         #status-section.container-fluid.d-md-flex.align-items-center
@@ -37,19 +36,12 @@ block content
                     .text-center
                         .status
                             img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
-                        .display-3.text-danger= undonatedCards
-                        if undonatedCards < 2
-                            .fs-6.text-primary
-                                = undonatedCards > 0 ? 'Child ' : 'Children '
-                                | awaiting
-                                br
-                                | your donation
-                        else
-                            .fs-6.text-primary
-                                | Children
-                                | awaiting
-                                br
-                                | your donation
+                        .display-2.text-danger= undonatedCards
+                        .fs-6.text-primary
+                            = undonatedCards <= 1 ? 'Child ' : 'Children '
+                            | awaiting
+                            br
+                            | your donation
 
                 .col-md.py-5.py-md-0
                     .text-center
@@ -270,6 +262,8 @@ block scripts
                     {
                         wishCards: !{JSON.stringify(wishCards)},
                         user: !{JSON.stringify(user || {})},
+                        undonatedCards: !{JSON.stringify(undonatedCards)},
+                        curatedCards: !{JSON.stringify(curatedCards)},
                     }
                 )
             );

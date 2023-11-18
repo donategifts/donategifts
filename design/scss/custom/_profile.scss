@@ -19,3 +19,22 @@
 		color: $primary;
 	}
 }
+
+
+#donation-history {
+	.fa-question-circle {
+		cursor: pointer;
+		color: $secondary;
+	}
+
+	.fa-crown, 
+	.fa-gifts, 
+	.fa-hand-holding-usd {
+		font-size: 2.5rem;
+		color: $secondary;
+	}
+
+	.border-left {
+		border-left: 1px solid $secondary;
+	}
+}

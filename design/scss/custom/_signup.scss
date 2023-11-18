@@ -33,3 +33,19 @@
     }
 }
 
+// this is temporary until the new signup system with react
+#sign-up, #agency-data, #login {
+	form {
+		label,
+		button {
+			font-weight: $fw-semi-bold;
+		}
+
+		.btn-outline-light {
+			&:hover {
+				background-color: $white;
+				color: $navy;
+			}
+		}
+	}
+}
