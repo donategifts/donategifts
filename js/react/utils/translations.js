@@ -67,6 +67,8 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 			validate: 'EIN must be 9 digits and follow the format of (12-3456789)',
 		},
 		placeholder: '(12-3456789)',
+		popOverText:
+			'We require EIN to verify your non-profit agency. If you represent a foster care home, please enter as (00-0000000). We will manually review your account.',
 	},
 	agencyBio: {
 		label: 'Agency Description',

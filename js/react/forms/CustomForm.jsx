@@ -5,8 +5,9 @@ import { useRef, useEffect, useState } from 'react';
 import ImgUploader from '../components/shared/ImgUploader.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
+// TODO: @sealkysmooth - add a popover for EIN, etc.
 // TODO: @enubia - backend api connection and backend validation
-// TODO: @enubia - handle image and submit image
+// TODO: @enubia - test submit image local and aws
 // TODO: @enubia, @stacysealky - end to end feature testing, check db and page redirect, test edge case errors
 
 const CustomForm = ({
@@ -51,21 +52,6 @@ const CustomForm = ({
 		setFieldFunctions(functions);
 	}, []);
 
-	const handleInput = (e) => {
-		const target = e.target;
-		const { name, value } = target;
-
-		setFormData((data) => ({
-			...data,
-			[name]: value,
-		}));
-		setFieldErrors((prevErrors) => ({
-			...prevErrors,
-			[`${name}Error`]: '',
-		}));
-		handleFormDirty();
-	};
-
 	const formatEIN = (e) => {
 		const input = e.target.value.replace(/\D/g, '');
 		const length = input.length;
@@ -101,6 +87,25 @@ const CustomForm = ({
 		e.target.value = formattedPhone;
 	};
 
+	const handleDataError = (name, value) => {
+		setFormData((data) => ({
+			...data,
+			[name]: value,
+		}));
+		setFieldErrors((prevErrors) => ({
+			...prevErrors,
+			[`${name}Error`]: '',
+		}));
+		handleFormDirty();
+	};
+
+	const handleInput = (e) => {
+		const target = e.target;
+		const { name, value } = target;
+
+		handleDataError(name, value);
+	};
+
 	const handleFormatInput = (e) => {
 		// refactor this later if there are more formats
 		if (e.target?.name === 'agencyEIN') {
@@ -113,15 +118,7 @@ const CustomForm = ({
 
 	const handleDropDown = (value, name) => {
 		if (value) {
-			setFormData((data) => ({
-				...data,
-				[name]: value,
-			}));
-			setFieldErrors((prevErrors) => ({
-				...prevErrors,
-				[`${name}Error`]: '',
-			}));
-			handleFormDirty();
+			handleDataError(name, value);
 		}
 	};
 
@@ -203,6 +200,12 @@ const CustomForm = ({
 	const col2 = 'col-sm-12 col-lg-6 col-md-6';
 	const col3 = 'col-12 col-md-4';
 
+	const handleImage = (name, file) => {
+		if (file) {
+			handleDataError(name, file);
+		}
+	};
+
 	return (
 		<MantineProviderWrapper>
 			<form autoComplete="off">
@@ -214,7 +217,7 @@ const CustomForm = ({
 								<p className="form-text">{fieldset.instruction}</p>
 							) : null}
 							{fieldset?.inputsPerRow?.map((row, i) => (
-								<div key={i} className="row d-flex align-items-center">
+								<div key={i} className="row d-flex align-items-start">
 									{row.map((col, j) => {
 										refObjects[`${col?.name}Ref`] = useRef();
 										return (
@@ -279,7 +282,8 @@ const CustomForm = ({
 															formTranslations[col.name].instruction
 														}
 														imgID={col.name}
-														required={col.isRequired}
+														isRequired={col.isRequired}
+														handleImage={handleImage}
 													/>
 												)}
 											</div>

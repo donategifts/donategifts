@@ -12,24 +12,10 @@
             font-weight: $fw-semi-bold;
             color: $primary;
         }
-    
-        .fa-question-circle {
-            color: $secondary;
-            font-size: 1.15em;
-            cursor: pointer;
-        }
     }
 
     textarea {
-        min-height: 260px;
-    }
-
-    .uploader {
-        margin-top: 2.5em;
-        
-        .form-text {
-            width: 200px;
-        }
+        min-height: 255px;
     }
 }
 

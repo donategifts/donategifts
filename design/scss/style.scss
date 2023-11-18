@@ -75,7 +75,6 @@ main {
 	}
 }
 
-
 #toast {
 	&.toast {
 		top: 10%;
@@ -90,4 +89,47 @@ main {
 .fa-eye-slash {
 	cursor: pointer;
 	font-size: 1.15rem;
+}
+
+
+.card {
+	.fa-question-circle {
+		color: $secondary;
+		font-size: 1.15em;
+		cursor: pointer;
+	}
+	
+	.fa-upload {
+		font-size: 1.15rem;
+	}
+
+	.upload-text {
+		font-size: 1rem;
+	}
+
+	.uploader {
+		background-color: lighten($cream, 8%);
+		margin-top: 2.5rem;
+	}
+}
+
+@media (width > 768px) {
+	.card {
+		.uploader {
+			img {
+				max-height: 200px;
+				width: auto;
+			}
+		}
+	}
+}
+
+@media (width <= 768px) {
+	.card {
+		.uploader {
+			.form-text {
+				width: 100%;
+			}
+		}
+	}
 }

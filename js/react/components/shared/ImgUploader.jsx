@@ -1,23 +1,19 @@
+import { FileButton, Button } from '@mantine/core';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-const ImgUploader = ({ imgSrc, imgError, handleImg, required, label, instruction, imgID }) => {
-	// const handleImage = (e, setImage, setError, fieldName) => {
-	// 	const file = e.target.files[0];
-	// 	if (file) {
-	// 		setImage(URL.createObjectURL(file));
-	// 		setError('');
-	// 		setFormData((data) => ({
-	// 			...data,
-	// 			[fieldName]: file,
-	// 		}));
-	// 	}
-	// };
+const ImgUploader = ({ imgError, handleImage, isRequired, label, instruction, imgID }) => {
+	const [image, setImage] = useState(null);
+	const uploadImage = (file) => {
+		setImage(URL.createObjectURL(file));
+		handleImage(imgID, file);
+	};
 
 	return (
-		<div className="uploader form-group py-4 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
-			<div className="px-3 pt-3 pb-0">
+		<div className="uploader form-group py-5 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
+			<div className="px-4">
 				<img
-					src={imgSrc || `/img/img-placeholder.png`}
+					src={image || `/img/img-placeholder.png`}
 					alt="image-preview"
 					className={
 						imgError ? 'img-fluid input-border-danger rounded' : 'img-fluid rounded'
@@ -31,14 +27,20 @@ const ImgUploader = ({ imgSrc, imgError, handleImg, required, label, instruction
 					{/* TODO: Add PopOver component here */}
 				</label>
 				<p className="form-text">{instruction}</p>
-				<input
-					type="file"
+				<FileButton
+					onChange={uploadImage}
+					accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
 					name={imgID}
 					id={imgID}
-					className="form-control mb-2"
-					onChange={handleImg}
-					required={required}
-				/>
+					required={isRequired}
+				>
+					{(props) => (
+						<Button {...props}>
+							<i className="fas fa-upload m-2 p-1"></i>
+							<span className="upload-text">Upload Image</span>
+						</Button>
+					)}
+				</FileButton>
 			</div>
 		</div>
 	);
@@ -49,13 +51,12 @@ ImgUploader.defaultProps = {
 };
 
 ImgUploader.propTypes = {
-	imgSrc: PropTypes.string,
 	imgError: PropTypes.string,
-	handleImg: PropTypes.func,
-	required: PropTypes.bool,
+	handleImage: PropTypes.func.isRequired,
+	isRequired: PropTypes.bool,
 	label: PropTypes.string,
 	instruction: PropTypes.string,
-	imgID: PropTypes.string,
+	imgID: PropTypes.string.isRequired,
 };
 
 export default ImgUploader;
