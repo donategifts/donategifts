@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { useRef, useEffect, useState } from 'react';
 
 import ImgUploader from '../components/shared/ImgUploader.jsx';
+import PopOver from '../components/shared/PopOver.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-// TODO: @sealkysmooth - add a popover for EIN, etc.
-// TODO: @enubia - backend api connection and backend validation
+// TODO: backend api connection and backend validation
 // TODO: @enubia - test submit image local and aws
 // TODO: @enubia, @stacysealky - end to end feature testing, check db and page redirect, test edge case errors
 
@@ -236,6 +236,17 @@ const CustomForm = ({
 														}
 														error={fieldErrors[`${col.name}Error`]}
 														onChange={handleFormatInput}
+														rightSection={
+															formTranslations[col.name]
+																?.popOverText ? (
+																<PopOver
+																	text={
+																		formTranslations[col.name]
+																			?.popOverText
+																	}
+																/>
+															) : null
+														}
 													/>
 												)}
 												{col.inputType == 'select' && (

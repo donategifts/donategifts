@@ -2,7 +2,17 @@ import { FileButton, Button } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const ImgUploader = ({ imgError, handleImage, isRequired, label, instruction, imgID }) => {
+import PopOver from './PopOver.jsx';
+
+const ImgUploader = ({
+	imgError,
+	handleImage,
+	isRequired,
+	label,
+	instruction,
+	imgID,
+	popOverText,
+}) => {
 	const [image, setImage] = useState(null);
 	const uploadImage = (file) => {
 		setImage(URL.createObjectURL(file));
@@ -24,7 +34,7 @@ const ImgUploader = ({ imgError, handleImage, isRequired, label, instruction, im
 			<div className="p-3">
 				<label htmlFor={imgID} className="form-label">
 					{label}
-					{/* TODO: Add PopOver component here */}
+					{popOverText && <PopOver text={popOverText} />}
 				</label>
 				<p className="form-text">{instruction}</p>
 				<FileButton
@@ -57,6 +67,7 @@ ImgUploader.propTypes = {
 	label: PropTypes.string,
 	instruction: PropTypes.string,
 	imgID: PropTypes.string.isRequired,
+	popOverText: PropTypes.string,
 };
 
 export default ImgUploader;

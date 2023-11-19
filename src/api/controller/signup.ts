@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import UserRepository from '../../db/repository/UserRepository';
-import config from '../../helper/config';
-import Messaging from '../../helper/messaging';
+// import config from '../../helper/config';
+// import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
 
@@ -33,20 +33,15 @@ export default class SignupController extends BaseController {
 				accountManager: res.locals.user._id,
 			});
 
-			if (config.NODE_ENV !== 'test') {
-				await Messaging.sendAgencyVerificationNotification({
-					id: agency._id,
-					name: agency.agencyName,
-					website: agency.agencyWebsite,
-					bio: agency.agencyBio,
-				});
-			}
-
-			return res.status(200).send({
-				success: true,
-				user: res.locals.user,
-				url: '/profile',
-			});
+			// if (config.NODE_ENV !== 'test') {
+			// 	await Messaging.sendAgencyVerificationNotification({
+			// 		id: agency._id,
+			// 		name: agency.agencyName,
+			// 		website: agency.agencyWebsite,
+			// 		bio: agency.agencyBio,
+			// 	});
+			// }
+			return this.sendResponse(res, agency);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

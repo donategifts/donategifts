@@ -7,11 +7,6 @@ import SignupController from './controller/signup';
 const router = express.Router();
 const signupController = new SignupController();
 
-router.post(
-	'/agency',
-	Validations.createAgencyValidationRules(),
-	Validations.validate,
-	signupController.handlePostAgency,
-);
+router.post('/agency', Validations.validate, signupController.handlePostAgency);
 
 export default router;

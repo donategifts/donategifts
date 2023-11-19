@@ -59,6 +59,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 			default: 'Agency phone number is required.',
 			validate: 'Phone number must be 10 digits and follow the format of (333) 444-5555',
 		},
+		placeholder: '(123) 456-7890',
 	},
 	agencyEIN: {
 		label: 'EIN (Employer Identification Number)',
