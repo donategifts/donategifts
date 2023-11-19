@@ -116,9 +116,13 @@ export default class WishCardController extends BaseController {
 			const wishcards = await this.wishCardRepository.getAll();
 
 			const data = [] as unknown as WishCard & { age: number }[];
-
+			let birthday: moment.Moment;
 			for (let i = 0; i < wishcards.length; i++) {
-				const birthday = moment(new Date(wishcards[i].childBirthday));
+				if (wishcards[i].childBirthYear) {
+					birthday = moment(new Date(wishcards[i].childBirthYear));
+				} else {
+					birthday = moment(new Date(wishcards[i].childBirthday));
+				}
 				const today = moment(new Date());
 
 				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
