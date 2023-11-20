@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
+import CarouselCard from '../components/shared/CarouselCard.jsx';
 import LoadingCard from '../components/shared/LoadingCard.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
-
 function CommunityPosts(props) {
 	const { user, agency, _csrf } = props;
 	const [isLoading, setIsLoading] = useState(true);
@@ -151,6 +151,7 @@ function CommunityPosts(props) {
 		<MantineProviderWrapper>
 			<div className="bg-light">
 				<div id="community" className="container py-3">
+					<CarouselCard />
 					{user?.userRole === 'partner' && agency?.isVerified && createPost()}
 					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 						<Masonry gutter="1.5rem">

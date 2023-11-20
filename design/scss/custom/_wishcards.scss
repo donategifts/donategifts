@@ -9,8 +9,7 @@
 	}
 }
 
-
-#wish-create-page {
+#wish-create-page, #wishcard-single {
 	background-color: lighten($cream, 10%);
 	margin-top: -5px;
 
@@ -22,7 +21,7 @@
 		font-size: 1rem;
 	}
 
-	.card {
+	.card, .card-body {
 		label {
 			color: $navy-dark;
 		}
