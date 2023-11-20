@@ -47,7 +47,10 @@ const scss = (done) =>
 		.on('end', onSuccess('sass', done));
 
 const css = (done) =>
-	src('./node_modules/@mantine/core/esm/index.css')
+	src([
+		'./node_modules/@mantine/core/esm/index.css',
+		'./node_modules/@mantine/carousel/esm/index.css',
+	])
 		.pipe(plumber(onError('css', done)))
 		.pipe(gulpif(isDev, sourcemaps.init()))
 		.pipe(concat('vendor.min.css'))
