@@ -5,9 +5,9 @@ import { chunkArray } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
-function WishCardsCarousel({ wishCards, user, undonatedCards, curatedCards }) {
+function WishCardsCarousel({ wishCards, user, publishedCards, curatedCards }) {
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-	const displayedWishCards = +undonatedCards === 0 ? curatedCards : wishCards;
+	const displayedWishCards = +publishedCards === 0 ? curatedCards : wishCards;
 	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(displayedWishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
 
@@ -19,11 +19,13 @@ function WishCardsCarousel({ wishCards, user, undonatedCards, curatedCards }) {
 		if (windowWidth > 1400) {
 			setChunkedWishCards(chunkArray(displayedWishCards, 3));
 			setColStyle('col-4');
-		} else if (windowWidth < 1400 && windowWidth > 992) {
+		} else if (windowWidth > 992 && windowWidth < 1400) {
 			setChunkedWishCards(chunkArray(displayedWishCards, 2));
 			setColStyle('col-6');
 		}
+
 		window.addEventListener('resize', resizeWidth);
+
 		return () => window.removeEventListener('resize', resizeWidth);
 	}, [windowWidth]);
 
@@ -92,7 +94,7 @@ function WishCardsCarousel({ wishCards, user, undonatedCards, curatedCards }) {
 						data-bs-ride="carousel"
 					>
 						<div className="carousel-inner p-4">
-							{chunkedWishCards?.map((currentCard, index) => (
+							{displayedWishCards?.map((currentCard, index) => (
 								<div
 									key={index}
 									className={`carousel-item ${index === 0 ? 'active' : ''}`}
@@ -124,7 +126,7 @@ WishCardsCarousel.propTypes = {
 	// we'll make this more specific once the db migration is complete
 	wishCards: PropTypes.arrayOf(PropTypes.object),
 	user: PropTypes.object,
-	undonatedCards: PropTypes.number,
+	publishedCards: PropTypes.number,
 	curatedCards: PropTypes.arrayOf(PropTypes.object),
 };
 

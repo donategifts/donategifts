@@ -36,9 +36,9 @@ block content
                     .text-center
                         .status
                             img( src='/svg/wreath-3.svg' alt='wreath-illustration' loading='lazy' )
-                        .display-2.text-danger= undonatedCards
+                        .display-2.text-danger= publishedCards
                         .fs-6.text-primary
-                            = undonatedCards <= 1 ? 'Child ' : 'Children '
+                            = publishedCards <= 1 ? 'Child ' : 'Children '
                             | awaiting
                             br
                             | your donation
@@ -262,7 +262,7 @@ block scripts
                     {
                         wishCards: !{JSON.stringify(wishCards)},
                         user: !{JSON.stringify(user || {})},
-                        undonatedCards: !{JSON.stringify(undonatedCards)},
+                        publishedCards: !{JSON.stringify(publishedCards)},
                         curatedCards: !{JSON.stringify(curatedCards)},
                     }
                 )

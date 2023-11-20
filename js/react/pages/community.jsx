@@ -1,3 +1,4 @@
+import { Textarea } from '@mantine/core';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -9,8 +10,8 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 function CommunityPosts(props) {
 	const { user, agency, _csrf } = props;
 	const [isLoading, setIsLoading] = useState(true);
-
 	const [posts, setPosts] = useState(props.posts);
+	const [messageError, setMessageError] = useState('');
 
 	useEffect(() => {
 		if (posts.length > 0) {
@@ -19,6 +20,19 @@ function CommunityPosts(props) {
 			}, 1000);
 		}
 	}, []);
+
+	const handleOnChange = () => {
+		setMessageError('');
+	};
+
+	const validateThenSubmit = (event) => {
+		const message = document.querySelector('#message').value;
+		if (!message.length) {
+			setMessageError('Please write a message before submitting the post.');
+		} else {
+			submitPost(event);
+		}
+	};
 
 	const submitPost = (event) => {
 		event.preventDefault();
@@ -47,12 +61,13 @@ function CommunityPosts(props) {
 			.then((data) => {
 				document.querySelector('#communityPost').reset();
 				document.querySelector('#imagePreview').innerHTML = '';
-				toast.show('Post published');
+				toast.show('Your post is published.');
 				setPosts(data.data);
+				setTimeout(() => window.location.reload(), 2000);
 			})
 			.catch((err) => {
 				console.error(err);
-				toast.show('Post could not be saved', toast.styleMap.danger);
+				toast.show('Post could not be saved.', toast.styleMap.danger);
 			});
 	};
 
@@ -65,7 +80,7 @@ function CommunityPosts(props) {
 			fileReader.readAsDataURL(imageFile);
 			fileReader.addEventListener('load', (event) => {
 				const imageElementContainer = document.querySelector('#imagePreview');
-				imageElementContainer.innerHTML = `<img class="img-fluid" src="${event.target.result}" />`;
+				imageElementContainer.innerHTML = `<img class="img-fluid post-image" src="${event.target.result}" />`;
 			});
 		}
 	};
@@ -74,22 +89,24 @@ function CommunityPosts(props) {
 		<div className="d-md-flex justify-content-center">
 			<div className="col-12 py-3">
 				<div className="card border-white shadow rounded">
-					<div className="card-title pt-3 text-center">
-						<h3 className="py-2">Post a message to your donors</h3>
+					<div className="card-title pt-4 text-center">
+						<h1 className="display-6">Post a message to your donors</h1>
 					</div>
 					<div className="card-body">
 						<form id="communityPost">
-							<div className="d-md-flex justify-content-center">
-								<div className="col-md-8">
-									<div className="form-group">
-										<textarea
-											className="form-control bg-white border"
-											id="message"
-											rows="5"
-											placeholder="Write a thank you message here"
-										></textarea>
-									</div>
-								</div>
+							<div className="d-md-flex justify-content-center px-4">
+								<Textarea
+									size="md"
+									rows={5}
+									mt="md"
+									id="message"
+									name="message"
+									className="w-100"
+									error={messageError}
+									onChange={handleOnChange}
+									placeholder="Write a thank you message here"
+									required
+								/>
 							</div>
 							<div
 								id="imagePreview"
@@ -103,7 +120,7 @@ function CommunityPosts(props) {
 												className="btn btn-lg btn-secondary w-100"
 												htmlFor="image"
 											>
-												Upload Photo
+												Upload Donation Item Photo
 											</label>
 											<input
 												id="image"
@@ -115,7 +132,7 @@ function CommunityPosts(props) {
 										<div className="col-md-6 text-center ms-0 ms-md-1">
 											<button
 												className="btn btn-lg btn-primary w-100"
-												onClick={submitPost}
+												onClick={validateThenSubmit}
 											>
 												Submit Post
 											</button>
@@ -136,13 +153,13 @@ function CommunityPosts(props) {
 				<div id="community" className="container py-3">
 					{user?.userRole === 'partner' && agency?.isVerified && createPost()}
 					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
-						<Masonry gutter="1rem">
+						<Masonry gutter="1.5rem">
 							{posts.map((post) =>
 								isLoading ? (
 									<LoadingCard key={post._id} enableButtons={false} />
 								) : (
 									<div className="card shadow rounded-3 border-0" key={post._id}>
-										<div className="card-header p-4 bg-white border-0">
+										<div className="card-header p-2 bg-white border-0">
 											<div className="text-center">
 												{post.belongsTo?.agencyProfileImage && (
 													<img
@@ -151,23 +168,23 @@ function CommunityPosts(props) {
 														alt="partner agency logo"
 													/>
 												)}
-												<div className="mt-3 display-6 text-primary cool-font">
+												<div className="mt-3 display-6 text-primary">
 													{post.belongsTo?.agencyName}
 												</div>
 											</div>
 										</div>
 										<div className="card-body mx-1">
-											<small className="text-muted">
+											<p className="text-muted">
 												Posted on{' '}
 												{moment(post.createdAt).format('MMM DD, YYYY')}
-											</small>
+											</p>
 											<div className="my-2">{post.message}</div>
 											{post.image && (
 												<div className="d-flex justify-content-center">
 													<img
-														className="img-fluid rounded mt-3"
+														className="img-fluid rounded mt-3 post-image"
 														src={post.image}
-														alt="post image"
+														alt="image posted by the agency"
 													/>
 												</div>
 											)}
