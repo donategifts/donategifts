@@ -116,9 +116,13 @@ export default class WishCardController extends BaseController {
 			const wishcards = await this.wishCardRepository.getAll();
 
 			const data = [] as unknown as WishCard & { age: number }[];
-
+			let birthday: moment.Moment;
 			for (let i = 0; i < wishcards.length; i++) {
-				const birthday = moment(new Date(wishcards[i].childBirthday));
+				if (wishcards[i].childBirthYear) {
+					birthday = moment(new Date(wishcards[i].childBirthYear));
+				} else {
+					birthday = moment(new Date(wishcards[i].childBirthday));
+				}
 				const today = moment(new Date());
 
 				data.push({ ...wishcards[i], age: today.diff(birthday, 'years') });
@@ -411,6 +415,17 @@ export default class WishCardController extends BaseController {
 			// this agency object is returning undefined and breaking frontend
 			const agency = wishcard!.belongsTo;
 			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
+
+			const birthday = wishcard?.childBirthYear
+				? moment(new Date(wishcard.childBirthYear))
+				: wishcard?.childBirthday
+				? moment(new Date(wishcard.childBirthday))
+				: undefined;
+
+			const age = birthday?.isValid()
+				? moment(new Date()).diff(birthday, 'years')
+				: 'Not Provided';
+
 			let defaultMessages;
 			if (res.locals.user) {
 				defaultMessages = Utils.getMessageChoices(
@@ -422,9 +437,7 @@ export default class WishCardController extends BaseController {
 			this.renderView(res, 'wishcard/single', {
 				wishcard: {
 					...wishcard,
-					age: wishcard?.childBirthday
-						? moment(new Date()).diff(wishcard?.childBirthday, 'years')
-						: 'Not Provided',
+					age,
 				},
 				agency: agency || {},
 				messages,
