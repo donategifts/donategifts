@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function Footer() {
@@ -62,6 +64,7 @@ function Footer() {
 								href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LA5DA2K2C8HLW"
 								title="support our organization by paypal donation"
 								target="_blank"
+								rel="noreferrer"
 							>
 								Support Our Cause
 							</a>
@@ -70,8 +73,8 @@ function Footer() {
 					</div>
 
 					<div className="d-md-flex justify-content-center text-center">
-						{footerList.map((item) => (
-							<>
+						{footerList.map((item, index) => (
+							<Fragment key={index}>
 								<a
 									className="px-2 footer-item"
 									href={item.link}
@@ -80,7 +83,7 @@ function Footer() {
 									{item.text}
 								</a>
 								{item.addPipe && <span className="text-white">|</span>}
-							</>
+							</Fragment>
 						))}
 					</div>
 					<div className="d-flex justify-content-center py-3">
