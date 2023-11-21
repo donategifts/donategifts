@@ -17,29 +17,25 @@ function AgencyRegister() {
 		setIsFormSubmitted(true);
 	};
 
-	const handleFormData = (formData) => {
-		console.log(formData); //still testing
-
-		handlePost(formData);
-	};
-
 	const handlePost = async (formData) => {
 		const toast = new window.DG.Toast();
-		const data = new FormData();
-		//need to append to FormData() because of the image file transfer
+		const data = new FormData(); //need to append to FormData() because of Image transfer
 
-		Object.entries(formData).forEach(([key, value]) => {
+		for (const [key, value] of Object.entries(formData)) {
+			if (key === '') {
+				continue;
+			}
 			data.append(key, value);
-		});
+		}
 
 		try {
-			//TODO: BUG: 404 error - need to fix
 			await axios.post('/api/signup/agency', data, {
 				headers: {
 					'content-type': 'multipart/form-data',
 				},
 			});
 			toast.show('Submission was successful!');
+			setTimeout(() => window.location.assign('/profile'), 2000);
 		} catch (error) {
 			toast.show(
 				error?.response?.data?.error?.msg ||
@@ -64,7 +60,7 @@ function AgencyRegister() {
 							<CustomForm
 								fieldsets={fieldsets}
 								formTranslations={formTranslations}
-								handleFormData={handleFormData}
+								handleFormData={handlePost}
 								isFormSubmitted={isFormSubmitted}
 								handleFormDirty={handleFormDirty}
 							/>

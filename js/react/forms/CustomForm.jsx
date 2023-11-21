@@ -6,10 +6,6 @@ import ImgUploader from '../components/shared/ImgUploader.jsx';
 import PopOver from '../components/shared/PopOver.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-// TODO: backend api connection and backend validation
-// TODO: @enubia - test submit image local and aws
-// TODO: @enubia, @stacysealky - end to end feature testing, check db and page redirect, test edge case errors
-
 const CustomForm = ({
 	fieldsets,
 	formTranslations,
