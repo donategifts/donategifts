@@ -162,7 +162,7 @@ export default function Detail() {
 					className="col-6"
 					label="First name"
 					defaultValue={agency.accountManager.firstName}
-					disabled
+					readOnly
 				/>
 				<TextInput
 					className="col-6"
@@ -176,7 +176,7 @@ export default function Detail() {
 					className="col-6"
 					label="Email"
 					defaultValue={agency.accountManager.email}
-					disabled
+					readOnly
 				/>
 				<TextInput
 					className="col-6"
