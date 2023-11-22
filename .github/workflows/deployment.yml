@@ -1,11 +1,11 @@
-name: Deployment
+name: DO Deployment
 
 on:
   workflow_dispatch:
 
 jobs:
   deploy:
-    name: Build and push to Docker Hub
+    name: DO Deployment
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -27,18 +27,19 @@ jobs:
           tags: marcodghub/donategifts:latest
       
       - name: Deploy to DigitalOcean
-        uses: appleboy/ssh-action@v5
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DIGITAL_OCEAN_HOST }}
           username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
           password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           port: ${{ secrets.DIGITAL_OCEAN_PORT }}
           script: |
-            docker pull marcodghub/donategifts:latest
-            docker stop marcodghub/donategifts:latest
-            docker rm marcodghub/donategifts:latest
+            docker pull marcodghub/donategifts
+            docker stop donategifts
+            docker rm donategifts
             docker run -d \
             -p 8080:8080 \
+            --restart=unless-stopped \
             --env PORT=${{ secrets.PORT }} \
             --env PG_HOST=${{ secrets.PG_HOST }} \
             --env PG_PORT=${{ secrets.PG_PORT }} \
@@ -75,6 +76,7 @@ jobs:
             --env DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL=${{ secrets.DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL }} \
             --env LOG_LEVEL=${{ secrets.LOG_LEVEL }} \
             --env MAINTENANCE_ENABLED=${{ secrets.MAINTENANCE_ENABLED }} \
-            --name marcodghub/donategifts:latest \
-            marcodghub/donategifts:latest
+            --name donategifts \
+            marcodghub/donategifts
+            docker rmi $(docker images -f "dangling=true" -q)
 

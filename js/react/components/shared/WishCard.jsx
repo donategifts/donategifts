@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-
 function WishCard({ wishCard, attributes }) {
 	return (
 		<div className="card border-0 shadow h-100" key={wishCard.id}>
 			<img
 				className="card-img-top rounded-0 rounded-top-3"
-				src={wishCard.image}
+				src={wishCard.image ?? wishCard.child.image}
 				alt={wishCard.item.name}
 				loading="lazy"
 			/>
@@ -20,8 +19,8 @@ function WishCard({ wishCard, attributes }) {
 						</p>
 						<p className="mb-1">Item Price: ${wishCard.item.price}</p>
 						<p>
-							{wishCard.childInterest?.length > 26
-								? `Interest: ${wishCard.child.interest.slice(0, 26)}...`
+							{wishCard.child.interest?.length > 24
+								? `Interest: ${wishCard.child.interest.slice(0, 24)}...`
 								: `Interest: ${wishCard.child.interest || 'Not Provided'}`}
 						</p>
 					</div>

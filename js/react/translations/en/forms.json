@@ -93,11 +93,11 @@
             "label": "Wish item price",
             "errors": {
                 "default": "Wish item price is required.",
-                "size": "Must be over 1 and under 40.",
+                "size": "Must be over 1 and under 50.",
                 "validate": "Price must be a number."
             },
-            "placeholder": "Price must be rounded up and under $40",
-            "popOverText": "Wish items must be under $40 and can include toys, games, school supplies, hobby supplies, and wearable items. Gift cards are not allowed."
+            "placeholder": "Price must be rounded up and under $50",
+            "popOverText": "Wish items must be under $50 and can include toys, games, school supplies, hobby supplies, and wearable items. Gift cards are not allowed."
         },
         "wishItemInfo": {
             "label": "Wish item description",

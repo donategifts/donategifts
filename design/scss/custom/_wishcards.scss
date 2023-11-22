@@ -9,10 +9,26 @@
 	}
 }
 
+#wishcard-single {
+	.display-6 {
+		font-size: 1.3rem;
+		font-weight: $fw-semi-bold;
+		color: $primary;
+	}
+}
+
 
 #wish-create-page {
 	background-color: lighten($cream, 10%);
 	margin-top: -5px;
+
+	.fa-upload {
+		font-size: 1.15rem;
+	}
+
+	.upload-text {
+		font-size: 1rem;
+	}
 
 	.card {
 		label {

@@ -37,7 +37,8 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 Must do first:
 
-- copy `example-config.env` file and rename it to `config.env`
+- copy `example.config.env` file and rename it to `config.env`
+- copy `example.config_stripe_cli.env` file and rename it to `config_stripe_cli.env`
 
 There are several scripts that can be executed to run/build the project/assets, the ones listed below are what you will be using most of the time.
 

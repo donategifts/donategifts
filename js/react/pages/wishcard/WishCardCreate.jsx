@@ -1,4 +1,4 @@
-import { Switch, TextInput, Select, Textarea } from '@mantine/core';
+import { Switch, TextInput, Select, Textarea, FileButton, Button } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect, useRef, useMemo } from 'react';
 
@@ -120,7 +120,7 @@ function WishCardCreate() {
 			wishItemPriceRef,
 			setWishItemPriceError,
 			'wishItemPrice',
-			(value) => +value < 1 || +value > 40,
+			(value) => +value < 1 || +value >= 50,
 			(value) => !isNaN(value),
 		);
 		validateField(
@@ -179,8 +179,7 @@ function WishCardCreate() {
 		],
 	);
 
-	const handleImage = (e, setImage, setError, fieldName) => {
-		const file = e.target.files[0];
+	const handleImage = (file, setImage, setError, fieldName) => {
 		if (file) {
 			setImage(URL.createObjectURL(file));
 			setError('');
@@ -395,14 +394,23 @@ function WishCardCreate() {
 											<p className="form-text">
 												{currentFormTranslations.childImage.instruction}
 											</p>
-											<input
-												type="file"
+											<FileButton
+												onChange={handleChildImage}
+												accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
 												name="childImage"
 												id="childImage"
-												className="form-control mb-2"
-												onChange={handleChildImage}
+												className="mb-2"
 												required
-											/>
+											>
+												{(props) => (
+													<Button {...props}>
+														<i className="fas fa-upload m-2 p-1"></i>
+														<span className="upload-text">
+															Upload Image
+														</span>
+													</Button>
+												)}
+											</FileButton>
 										</div>
 									</div>
 								</div>
@@ -496,13 +504,22 @@ function WishCardCreate() {
 											<p className="form-text">
 												{currentFormTranslations.wishItemImage.instruction}
 											</p>
-											<input
-												type="file"
+											<FileButton
+												onChange={handleItemImage}
+												className="mt-4"
 												name="wishItemImage"
 												id="wishItemImage"
-												className="form-control mt-4"
-												onChange={handleItemImage}
-											/>
+												accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+											>
+												{(props) => (
+													<Button {...props}>
+														<i className="fas fa-upload m-2 p-1"></i>
+														<span className="upload-text">
+															Upload Image
+														</span>
+													</Button>
+												)}
+											</FileButton>
 										</div>
 									</div>
 								</div>
@@ -553,7 +570,6 @@ function WishCardCreate() {
 								{!isShippingDefault && (
 									<AddressForm onInputChange={handleNewShippingAddress} />
 								)}
-								{/* TODO: need to collect address state after user fills out address form*/}
 							</div>
 						</div>
 						<p className="mt-5 text-center">
@@ -562,7 +578,6 @@ function WishCardCreate() {
 						<div className="d-flex justify-content-center mt-2">
 							<CustomButton
 								size="lg"
-								color="lime"
 								loading={showSubmitLoader}
 								disabled={showSubmitLoader}
 								onClick={handleSubmit}

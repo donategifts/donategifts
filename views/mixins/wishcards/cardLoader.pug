@@ -42,7 +42,7 @@ mixin cardLoaderJS()
                             <div class="wishcard-content col-lg-4 col-xs-12 mb-5">
                                 <div id="card-fix" class="card h-100">
                                     <div class="view overlay">
-                                        <img id="img-fix" class="card-img-top" src=${wishCard.wishCardImage} alt="Card image" />
+                                        <img id="img-fix" class="card-img-top" src=${wishCard.wishCardImage ?? wishCard.childImage} alt="wish card image" />
                                         <a href="#">
                                             <div class="mask rgba-white-slight"></div>
                                         </a>
