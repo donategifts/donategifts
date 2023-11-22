@@ -13,6 +13,10 @@
 		p {
 			@include font-styling($font-body, 1.15em, $white, $fw-normal);
 		}
+
+		p.text-mute {
+			font-size: 0.8rem;
+		}
 	}
 
 	#desktop-cards-carousel, #mobile-cards-carousel {

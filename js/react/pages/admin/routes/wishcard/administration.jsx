@@ -9,10 +9,11 @@ export default function Administration() {
 
 	axios.defaults.baseURL = '/api/admin';
 
+	//NOTE: BUG: Editing the wishItemURL function does not work. It's either broken or incomplete.
 	const handleUpdateWishcard = async (wishCardId) => {
 		const newWishItemUrl = document.getElementById('newWishItemUrl' + wishCardId).value;
 		try {
-			await axios.put('/publishWishcards', { wishCardId, wishItemUr: newWishItemUrl });
+			await axios.put('/publishWishcards', { wishCardId, wishItemUr: newWishItemUrl }); //NOTE: there is a typo
 
 			fetchAgencyWithWishCardsData();
 		} catch (error) {
@@ -35,78 +36,102 @@ export default function Administration() {
 	}, []);
 
 	return (
-		<div>
+		<div id="admin-page">
 			{error !== '' && <CustomToast title={error} />}
-			<div id="profile-bg" className="background-color">
+			<div id="profile-bg">
 				<div className="profile-title">
-					<div className="text-center fs-1">Wishcard Admin Panel</div>
+					<h1 className="text-center my-4">Wishcard Admin Panel</h1>
 				</div>
 			</div>
-			<div className="wishcards background-color">
+			<div className="wishcards">
 				<div className="container">
 					{Object.keys(agenciesWithWishCards).map((key) => (
 						<div key={key}>
-							<h2 className="cray-font">Agency name: {key}</h2>
-							<div className="row justify-content-center agency-card-container">
+							<h2 className="pt-5">
+								Agency Name: <span>{key}</span>
+							</h2>
+							<div className="row justify-content-center agency-cards">
 								{agenciesWithWishCards[key].map((card) => (
 									<div key={card._id} className="col-lg-4 col-xs-12 mb-5 mt-4">
-										<div className="card mb-3">
-											<div className="view overlay">
-												<img
-													id="img-fix"
-													className="card-img-top"
-													src={card.wishCardImage ?? card.childImage}
-													alt="Card image"
-												/>
-												<a href="#" className="mask rgba-white-slight"></a>
-											</div>
-											<div className="card-body card-details">
-												<div className="card-text-container">
-													<h3 className="card-title text-center">
-														My name is
-													</h3>
-													<div className="quick-font">
-														<p className="card-text">
-															<span className="font-weight-bold">
-																Status:
-															</span>{' '}
-															{card.status}
-														</p>
-														<p className="card-text">
-															<span className="font-weight-bold">
-																Age:
-															</span>{' '}
-															{card.age}
-														</p>
-														<p className="card-text">
-															<span className="font-weight-bold">
-																Wish:
-															</span>{' '}
-															{card.wishItemName}
-														</p>
-														<p className="card-text">
-															<span className="font-weight-bold">
-																Item Price:
-															</span>{' '}
-															${card.wishItemPrice}
-														</p>
+										<div className="border-0 shadow h-100 bg-white">
+											<img
+												id="img-fix"
+												className="card-img-top rounded-0 rounded-top-3"
+												src={card.wishCardImage ?? card.childImage}
+												alt={card.childFirstName}
+												loading="lazy"
+											/>
+											<div className="card-body card-details py-2 px-3">
+												<div className="card-text-container text-primary">
+													<p>
+														Child Name:{' '}
+														<span>{card.childFirstName}</span>
+													</p>
+													<p>
+														Child DOB:{' '}
+														<span>
+															{card.childBirthday ??
+																`01/01/${card.childBirthYear}`}
+														</span>
+													</p>
+													<p>
+														Wish Item Price:{' '}
+														<span>${card.wishItemPrice}</span>
+													</p>
+													<p>
+														Wish Item Name:{' '}
+														<span>{card.wishItemName}</span>
+													</p>
+													<p>
+														Product ID:{' '}
+														<span>{card.productID || 'unknown'}</span>
+													</p>
+													<p>
+														Shipping Address:{' '}
+														<span>
+															{card.address
+																? `${card.address?.address1} ${
+																		card.address?.address2 ?? ''
+																  } ${card.address.city} ${
+																		card.address.state
+																  } ${card.address.country}`
+																: 'unknown'}
+														</span>
+													</p>
+													{card.wishItemImage && (
 														<p>
-															<span>Item Url:</span>{' '}
+															Wish Item Image:{' '}
 															<a
-																id={'oldWishItemUrl' + card._id}
-																href={card.wishItemURL}
+																target="_blank"
+																href={card.wishItemImage}
+																alt={card.wishItemName}
+																rel="noreferrer"
 															>
-																Link
+																Check Item Image
 															</a>
 														</p>
-														<input
-															id={'newWishItemUrl' + card._id}
-															type="text"
-															name="newWishItemUrl"
-															placeholder="Url for wish item..."
-														/>
+													)}
+													<p>
+														Wish Item URL:{' '}
+														<a
+															id={'oldWishItemUrl' + card._id}
+															target="_blank"
+															href={card.wishItemURL}
+															rel="noreferrer"
+														>
+															Check Submitted Link
+														</a>
+													</p>
+													<input
+														id={'newWishItemUrl' + card._id}
+														type="text"
+														className="w-100"
+														name="newWishItemUrl"
+														placeholder="Replace wish item URL"
+													/>
+													<div className="d-flex justify-content-center mt-3">
 														<button
-															className="card-details-publish-button"
+															className="button-accent"
 															type="button"
 															id={'donate-btn-' + card._id}
 															data-value-id={card._id}
