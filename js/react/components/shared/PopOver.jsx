@@ -17,6 +17,14 @@ function PopOver({ width, position, text, textSize, isBtnQuestion, isImgProvided
 	);
 }
 
+PopOver.defaultProps = {
+	width: 300,
+	position: 'bottom',
+	textSize: 'md',
+	isBtnQuestion: true,
+	isImgProvided: false,
+};
+
 PopOver.propTypes = {
 	width: PropTypes.number,
 	position: PropTypes.string,
@@ -25,14 +33,6 @@ PopOver.propTypes = {
 	isBtnQuestion: PropTypes.bool,
 	isImgProvided: PropTypes.bool,
 	imgSrc: PropTypes.string,
-};
-
-PopOver.defaultProps = {
-	width: 300,
-	position: 'bottom',
-	textSize: 'md',
-	isBtnQuestion: true,
-	isImgProvided: false,
 };
 
 export default PopOver;

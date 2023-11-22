@@ -7,3 +7,4 @@ node_modules
 config*.env
 private
 dist
+*.sh

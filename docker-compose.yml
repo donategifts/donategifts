@@ -3,12 +3,9 @@ services:
     app:
         build:
             context: .
-            # custom image is needed unfortunately to make it work everywhere
-            # sharp is acting up on mac and windows
             dockerfile: Dockerfile.dev
         container_name: app
         working_dir: /data/app
-        command: npm run dev
         ports:
             - 3000:3000
             - 9229:9229

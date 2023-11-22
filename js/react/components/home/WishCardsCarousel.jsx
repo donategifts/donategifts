@@ -6,10 +6,11 @@ import { chunkArray } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 import WishCard from '../shared/WishCard.jsx';
 
-function WishCardsCarousel({ user }) {
+function WishCardsCarousel({ user, publishedCards, curatedCards }) {
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [wishCards, setWishCards] = useState([]);
-	const [chunkedWishCards, setChunkedWishCards] = useState([]);
+	const displayedWishCards = +publishedCards === 0 ? curatedCards : wishCards;
+	const [chunkedWishCards, setChunkedWishCards] = useState(chunkArray(displayedWishCards, 3));
 	const [colStyle, setColStyle] = useState('col-4');
 
 	const resizeWidth = () => {
@@ -18,10 +19,10 @@ function WishCardsCarousel({ user }) {
 
 	const setChunksAndStyle = (cards) => {
 		if (windowWidth > 1400) {
-			setChunkedWishCards(chunkArray(cards || wishCards, 3));
+			setChunkedWishCards(chunkArray(displayedWishCards, 3));
 			setColStyle('col-4');
-		} else if (windowWidth < 1400 && windowWidth > 992) {
-			setChunkedWishCards(chunkArray(cards || wishCards, 2));
+		} else if (windowWidth > 992 && windowWidth < 1400) {
+			setChunkedWishCards(chunkArray(displayedWishCards, 2));
 			setColStyle('col-6');
 		} else {
 			setChunkedWishCards(chunkArray(cards || wishCards, 1));
@@ -46,6 +47,7 @@ function WishCardsCarousel({ user }) {
 		}
 
 		window.addEventListener('resize', resizeWidth);
+
 		return () => window.removeEventListener('resize', resizeWidth);
 	}, [windowWidth]);
 
@@ -107,6 +109,36 @@ function WishCardsCarousel({ user }) {
 						<div className="fa-solid fa-chevron-right fa-2xl text-dark"></div>
 					</button>
 				</div>
+				<div className="d-flex justify-content-center d-lg-none">
+					<div
+						className="carousel slide"
+						id="mobile-cards-carousel"
+						data-bs-ride="carousel"
+					>
+						<div className="carousel-inner p-4">
+							{displayedWishCards?.map((currentCard, index) => (
+								<div
+									key={index}
+									className={`carousel-item ${index === 0 ? 'active' : ''}`}
+									data-bs-interval="20000"
+								>
+									<div className="row justify-content-center">
+										<div key={currentCard._id} className="col-12">
+											<WishCard
+												wishCard={currentCard}
+												attributes={{
+													href: user?._id
+														? `/wishcards/donate/${currentCard._id}`
+														: '/login',
+												}}
+											/>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
 			</div>
 		</MantineProviderWrapper>
 	);
@@ -114,6 +146,8 @@ function WishCardsCarousel({ user }) {
 
 WishCardsCarousel.propTypes = {
 	user: PropTypes.object,
+	publishedCards: PropTypes.number,
+	curatedCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCardsCarousel;

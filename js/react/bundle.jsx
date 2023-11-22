@@ -16,6 +16,9 @@ window.Header = Header;
 import Nav from './components/NavBar.jsx';
 window.Nav = Nav;
 
+import Footer from './components/Footer.jsx';
+window.Footer = Footer;
+
 import WishCards from './pages/wishcards.jsx';
 window.WishCards = WishCards;
 
@@ -31,3 +34,6 @@ window.Create = Create;
 
 import Manage from './pages/wishcard/manage.jsx';
 window.Manage = Manage;
+
+import DonationHistory from './pages/profile/DonationHistory.jsx';
+window.DonationHistory = DonationHistory;

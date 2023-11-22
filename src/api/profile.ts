@@ -45,5 +45,6 @@ router.post(
 );
 
 router.delete('/picture', Permissions.redirectLogin, profileController.handleDeleteImage);
+router.get('/donations', profileController.getDonations);
 
 export default router;

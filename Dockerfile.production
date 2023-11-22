@@ -12,6 +12,9 @@ RUN npm run build
 
 RUN npm ci --omit=dev --ignore-scripts
 
+# rebuild for multer-sharp
+RUN npm rebuild
+
 EXPOSE 8080
 
 ENTRYPOINT [ "npm", "start" ]

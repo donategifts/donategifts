@@ -35,8 +35,19 @@ html( lang="en" )
 
         block footer
             footer
-                include partials/footer.pug
+                #footer-root
 
         include partials/scripts.pug
 
         block scripts
+
+        append scripts
+            script.
+                $(document).ready(function () {
+                    const root = ReactRoot(document.querySelector('#footer-root'));
+                    root.render(
+                        React.createElement(
+                            Footer
+                        ),
+                    );
+                })
