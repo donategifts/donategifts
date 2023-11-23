@@ -9,24 +9,24 @@ const router = express.Router();
 const loginController = new LoginController(database);
 
 router.post(
-	'/google-signin',
-	Validations.googlesignupValidationRules(),
-	Validations.validate,
-	loginController.handlePostGoogleLogin,
+    '/google-signin',
+    Validations.googlesignupValidationRules(),
+    Validations.validate,
+    loginController.handlePostGoogleLogin,
 );
 
 router.post(
-	'/fb-signin',
-	Validations.fbsignupValidationRules(),
-	Validations.validate,
-	loginController.handlePostFacebookLogin,
+    '/fb-signin',
+    Validations.fbsignupValidationRules(),
+    Validations.validate,
+    loginController.handlePostFacebookLogin,
 );
 
 router.post(
-	'/',
-	Validations.loginValidationRules(),
-	Validations.validate,
-	loginController.handlePostIndex,
+    '/',
+    Validations.loginValidationRules(),
+    Validations.validate,
+    loginController.handlePostIndex,
 );
 
 export default router;
