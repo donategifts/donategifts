@@ -95,4 +95,11 @@ export default class Utils {
 		}
 		return match[1];
 	}
+
+	static ensureProtocol(url: string) {
+		if (!url.startsWith('http://') && !url.startsWith('https://')) {
+			return 'http://' + url;
+		}
+		return url;
+	}
 }

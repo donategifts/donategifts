@@ -414,6 +414,9 @@ export default class WishCardController extends BaseController {
 
 			// this agency object is returning undefined and breaking frontend
 			const agency = wishcard!.belongsTo;
+
+			agency.agencyWebsite = Utils.ensureProtocol(agency.agencyWebsite);
+
 			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
 
 			const birthday = wishcard?.childBirthYear
