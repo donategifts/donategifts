@@ -2,8 +2,6 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (_req, res, _next) => {
-	return res.render('pages/team');
-});
+router.get('/', (_req, res, _next) => res.render('pages/team'));
 
 export default router;

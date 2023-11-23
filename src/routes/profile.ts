@@ -26,92 +26,92 @@ const wishcardsRepository = new WishcardsRepository(database);
 const verificationTokensRepository = new VerificationTokensRepository(database);
 
 router.get(
-	'/verify/:token',
-	Validator.verifyHashValidationRules(),
-	Validator.validate,
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			const tokenData = await verificationTokensRepository.getByToken(req.params.token);
-			let user = await usersRepository.getById(tokenData.user_id);
+    '/verify/:token',
+    Validator.verifyHashValidationRules(),
+    Validator.validate,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const tokenData = await verificationTokensRepository.getByToken(req.params.token);
+            let user = await usersRepository.getById(tokenData.user_id);
 
-			if (user) {
-				user = await usersRepository.updateVerificationStatus(user.id, true);
+            if (user) {
+                user = await usersRepository.updateVerificationStatus(user.id, true);
 
-				if (req && user) {
-					req.session.user = user;
-				}
+                if (req && user) {
+                    req.session.user = user;
+                }
 
-				return res.render('profile/verify');
-			}
+                return res.render('profile/verify');
+            }
 
-			logger.error(`Email verification failed for hash ${req.params.token}!`);
-			return next();
-		} catch (error) {
-			logger.error(`Email verification failed for hash ${req.params.hash}!`);
-			return next(error);
-		}
-	},
+            logger.error(`Email verification failed for hash ${req.params.token}!`);
+            return next();
+        } catch (error) {
+            logger.error(`Email verification failed for hash ${req.params.hash}!`);
+            return next(error);
+        }
+    },
 );
 
 // ------------ only logged in users from here on ------------
 
 router.get('/', Permissions.redirectLogin, async (req, res, _next) => {
-	let agency: Selectable<Agencies> | null = null;
+    let agency: Selectable<Agencies> | null = null;
 
-	if (res.locals.user.role === 'partner') {
-		try {
-			agency = await agenciesRepository.getByAccountManagerId(res.locals.user.id);
-		} catch (error) {
-			logger.error('Error getting agency by account manager id', error);
-		}
-	}
+    if (res.locals.user.role === 'partner') {
+        try {
+            agency = await agenciesRepository.getByAccountManagerId(res.locals.user.id);
+        } catch (error) {
+            logger.error('Error getting agency by account manager id', error);
+        }
+    }
 
-	return res.render('pages/profile/overview', {
-		agency,
-	});
+    return res.render('pages/profile/overview', {
+        agency,
+    });
 });
 
 router.get('/history', Permissions.redirectLogin, async (_req, res, next) => {
-	try {
-		const user = res.locals.user;
+    try {
+        const user = res.locals.user;
 
-		const donations = [] as {
-			order: Selectable<Orders>;
-			child: Selectable<Children>;
-			item: Selectable<Items>;
-			user: Selectable<Users>;
-		}[];
+        const donations = [] as {
+            order: Selectable<Orders>;
+            child: Selectable<Children>;
+            item: Selectable<Items>;
+            user: Selectable<Users>;
+        }[];
 
-		const addDonations = async (orders: Selectable<Orders>[]) => {
-			for (const order of orders) {
-				const wishcard = await wishcardsRepository.getById(order.wishcard_id);
-				const child = await childrenRepository.getById(wishcard.child_id);
-				const item = await itemsRepository.getById(wishcard.item_id);
+        const addDonations = async (orders: Selectable<Orders>[]) => {
+            for (const order of orders) {
+                const wishcard = await wishcardsRepository.getById(order.wishcard_id);
+                const child = await childrenRepository.getById(wishcard.child_id);
+                const item = await itemsRepository.getById(wishcard.item_id);
 
-				donations.push({
-					order,
-					child,
-					item,
-					user,
-				});
-			}
-		};
+                donations.push({
+                    order,
+                    child,
+                    item,
+                    user,
+                });
+            }
+        };
 
-		if (user.role === 'partner') {
-			const agency = await agenciesRepository.getByAccountManagerId(user.id);
-			const orders = await ordersRepository.getByAgencyId(agency.id);
+        if (user.role === 'partner') {
+            const agency = await agenciesRepository.getByAccountManagerId(user.id);
+            const orders = await ordersRepository.getByAgencyId(agency.id);
 
-			await addDonations(orders);
-		} else {
-			const orders = await ordersRepository.getByDonorId(user.id);
+            await addDonations(orders);
+        } else {
+            const orders = await ordersRepository.getByDonorId(user.id);
 
-			await addDonations(orders);
-		}
+            await addDonations(orders);
+        }
 
-		return res.render('pages/profile/history', { donations });
-	} catch (error) {
-		return next(error);
-	}
+        return res.render('pages/profile/history', { donations });
+    } catch (error) {
+        return next(error);
+    }
 });
 
 router.get('/logout', Permissions.redirectLogin, Utils.logoutUser);

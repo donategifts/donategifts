@@ -5,24 +5,21 @@
             "ESNext",
         ],
         "outDir": "dist",
-        "module": "CommonJS",
-        "moduleResolution": "Node",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "strict": true,
         "resolveJsonModule": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "./types",
+            "./node_modules/@types"
+        ]
     },
-    "files": [
-        "types/express-session.d.ts",
-        "types/express.d.ts",
-        "types/stripe.d.ts"
-    ],
     "ts-node": {
         "transpileOnly": true,
-        "files": true
     },
     "include": [
         "src/**/*.ts",

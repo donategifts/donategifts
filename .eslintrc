@@ -1,16 +1,73 @@
 {
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
-  "extends": [
-    "slurp-config"
-  ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "rules": {
-    "require-atomic-updates": "off"
-  }
+    "root": true,
+
+    "overrides": [
+        {
+            "files": ["*.ts"],
+
+            "extends": [
+                "slurp-config",
+                "slurp-config/ts"
+            ],
+            "parserOptions": {
+                "project": "./tsconfig.eslint.json"
+            },
+            "env": {
+                "node": true
+            }
+        },
+        {
+            "files": ["*.js"],
+
+            "extends": [
+                "slurp-config"
+            ],
+
+            "rules": {
+                "no-undef": "off"
+            },
+
+            "env": {
+                "browser": true
+            }
+        },
+        {
+            "files": ["*.jsx"],
+
+            "extends": [
+                "slurp-config",
+                "plugin:react/recommended",
+                "plugin:react-hooks/recommended"
+            ],
+
+            "env": {
+                "browser": true
+            },
+
+            "rules": {
+                "react/react-in-jsx-scope": "off",
+
+                "react-hooks/exhaustive-deps": "off",
+
+                "@stylistic/jsx-indent-props": "off",
+
+                "import/extensions": [
+                    "error",
+                    "ignorePackages",
+                    {
+                        "js": "never",
+                        "jsx": "always",
+                        "ts": "never",
+                        "tsx": "always"
+                    }
+                ]
+            },
+
+            "settings": {
+                "react": {
+                    "version": "detect"
+                }
+            }
+        }
+    ]
 }
