@@ -1,53 +1,93 @@
+import { Carousel } from '@mantine/carousel';
+import { Image, Card, Text, Group, Button } from '@mantine/core';
 import PropTypes from 'prop-types';
 function WishCard({ wishCard, attributes }) {
-	return (
-		<div className="card border-0 shadow h-100" key={wishCard._id}>
-			<img
-				className="card-img-top rounded-0 rounded-top-3"
-				src={wishCard.wishCardImage ?? wishCard.childImage}
-				alt={wishCard.wishItemName}
-				loading="lazy"
+	const imgList = [
+		'/img/gift-placeholder-1.jpg',
+		'/img/gift-placeholder-2.jpg',
+		'/img/gift-placeholder-3.jpg',
+		'/img/gift-placeholder-4.jpg',
+		'/img/gift-placeholder-5.jpg',
+	];
+
+	const childImage = wishCard.wishCardImage ?? wishCard.childImage;
+	const itemImage = wishCard.wishItemImage ?? imgList[Math.floor(Math.random() * 5)];
+	const wishCardTitle =
+		wishCard.childFirstName?.length > 10
+			? wishCard.childFirstName
+			: `${wishCard.childFirstName}'s Wish`;
+
+	const slides = [childImage, itemImage].map((image) => (
+		<Carousel.Slide key={image}>
+			<Image
+				src={image}
+				fallbackSrc="/img/img-placeholder.png"
+				height={220}
+				fit="cover"
+				alt={wishCardTitle}
 			/>
-			<div className="card-body center-elements rounded-0 rounded-bottom-3">
-				<div className="w-100">
-					<h4 className="card-title text-center">My name is {wishCard.childFirstName}</h4>
-					<div className="card-text">
-						<p className="mb-1">
-							{wishCard.wishItemName?.length > 26
-								? `Wish: ${wishCard.wishItemName.slice(0, 26)}...`
-								: `Wish: ${wishCard.wishItemName}`}
-						</p>
-						<p className="mb-1">Item Price: ${wishCard.wishItemPrice}</p>
-						<p>
-							{wishCard.childInterest?.length > 24
-								? `Interest: ${wishCard.childInterest.slice(0, 24)}...`
-								: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
-						</p>
-					</div>
-					<div className="d-block d-xxl-flex justify-content-center">
-						<div className="col-12 col-xxl-6 mb-2 mb-xxl-0">
-							<a
-								className="btn btn-lg btn-primary w-100"
-								href={`/wishcards/single/${wishCard._id}`}
-							>
-								View More
-							</a>
-						</div>
-						<div className="col-12 col-xxl-6 ms-0 ms-xxl-1">
-							{wishCard.status === 'donated' ? (
-								<button className="btn btn-lg btn-dark disabled w-100">
-									Donated
-								</button>
-							) : (
-								<a className="btn btn-lg btn-secondary w-100" {...attributes}>
-									Donate
-								</a>
-							)}
-						</div>
-					</div>
-				</div>
+		</Carousel.Slide>
+	));
+
+	return (
+		<Card radius="md" withBorder shadow="md" padding="lg">
+			<Card.Section>
+				<Carousel withIndicators loop align="center">
+					{slides}
+				</Carousel>
+			</Card.Section>
+
+			<Group justify="space-between" mt="lg">
+				<Text fw={600} fz="xl">
+					{wishCardTitle}
+				</Text>
+				{/* TODO: separate issue for message and heart feature on wishcards - @stacysealky will revisit later */}
+				{/* <Group gap={5}>
+					<ActionIcon variant="light" aria-label="message" radius={50}>
+						<i className="far fa-envelope"></i>
+					</ActionIcon>
+					<ActionIcon variant="light" aria-label="message" radius={50}>
+						<i className="far fa-heart"></i>
+					</ActionIcon>
+				</Group> */}
+			</Group>
+
+			<div className="mt-2">
+				<p className="mb-1">
+					{wishCard.wishItemName?.length > 24
+						? `Wish: ${wishCard.wishItemName.slice(0, 24)}...`
+						: `Wish: ${wishCard.wishItemName}`}
+				</p>
+				<p className="mb-1">Price: ${wishCard.wishItemPrice}</p>
+				<p>
+					{wishCard.childInterest?.length > 24
+						? `Interest: ${wishCard.childInterest.slice(0, 24)}...`
+						: `Interest: ${wishCard.childInterest || 'Not Provided'}`}
+				</p>
 			</div>
-		</div>
+
+			<Group justify="center" mt="xs" align="center">
+				<Button
+					radius="md"
+					size="md"
+					component="a"
+					target="_blank"
+					href={`/wishcards/single/${wishCard._id}`}
+				>
+					View More
+				</Button>
+
+				{wishCard.status === 'donated' ? (
+					<Button radius="md" color="#6c757d " size="md" disabled="true">
+						Donated
+					</Button>
+				) : (
+					<Button radius="md" color="#ff826b" size="md" component="a" {...attributes}>
+						Donate Gift
+					</Button>
+				)}
+			</Group>
+		</Card>
 	);
 }
 

@@ -19,8 +19,7 @@ function WishCards({ wishCards, user }) {
 
 				if (!user?._id) {
 					attributes = {
-						'data-bs-toggle': 'modal',
-						'data-bs-target': '#loginModalCenter',
+						href: '/login',
 					};
 				} else {
 					attributes = {
@@ -29,7 +28,7 @@ function WishCards({ wishCards, user }) {
 				}
 
 				return (
-					<div key={wishCard._id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
+					<div key={wishCard._id} className="m-3 col-12 col-md-5 col-lg-4 col-xxl-3">
 						<WishCard wishCard={wishCard} attributes={attributes} />
 					</div>
 				);

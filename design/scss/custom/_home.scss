@@ -19,23 +19,6 @@
 		}
 	}
 
-	#desktop-cards-carousel, #mobile-cards-carousel {
-		img {
-			height: 240px;
-			width: auto;
-			min-width: 300px;
-			object-fit: cover;
-		}
-
-		.card-body {
-			background-color: lighten($cream, 8%);
-		}
-
-		h4 {
-			@include font-styling($font-heading-alt, 2.15em, $primary, $fw-medium);
-		}
-	}
-
 	#status-section {
 		background-image: url("/svg/paper-bg-2.svg");
 		background-size: cover;
