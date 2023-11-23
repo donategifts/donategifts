@@ -1,19 +1,7 @@
 import { Carousel } from '@mantine/carousel';
-import { Image, Card, Text, Group, Button, ActionIcon } from '@mantine/core';
+import { Image, Card, Text, Group, Button } from '@mantine/core';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 function WishCard({ wishCard, attributes }) {
-	useEffect(() => {
-		// console.log(wishCard);
-	}, []);
-
-	// [x] change images to real child image + wish item image
-	// [x] add view more button and donate gift button
-	// [x] gift donated button grayed out with disbled pointer
-	// [x] add more details - wish, item price, interest
-	// [ ] show agency info popover
-	// [x] link single page
-
 	const imgList = [
 		'/img/gift-placeholder-1.jpg',
 		'/img/gift-placeholder-2.jpg',
@@ -53,15 +41,15 @@ function WishCard({ wishCard, attributes }) {
 				<Text fw={600} fz="xl">
 					{wishCardTitle}
 				</Text>
-
-				<Group gap={5}>
+				{/* TODO: separate issue for message and heart feature on wishcards - @stacysealky will revisit later */}
+				{/* <Group gap={5}>
 					<ActionIcon variant="light" aria-label="message" radius={50}>
 						<i className="far fa-envelope"></i>
 					</ActionIcon>
 					<ActionIcon variant="light" aria-label="message" radius={50}>
 						<i className="far fa-heart"></i>
 					</ActionIcon>
-				</Group>
+				</Group> */}
 			</Group>
 
 			<div className="mt-2">

@@ -16,8 +16,7 @@ function WishCards({ wishCards, user }) {
 
 				if (!user?._id) {
 					attributes = {
-						'data-bs-toggle': 'modal',
-						'data-bs-target': '#loginModalCenter',
+						href: '/login',
 					};
 				} else {
 					attributes = {
