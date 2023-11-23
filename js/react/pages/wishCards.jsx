@@ -62,7 +62,7 @@ function WishCards({ wishCards, user }) {
 											className="w-50 mt-5 mb-3 button-modal-secondary"
 											onClick={handleLoadMore}
 										>
-											Load more
+											Load More
 										</button>
 									)}
 							</>
