@@ -5,9 +5,12 @@ import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
+const cardsPerPage = 24;
+
 function WishCards({ wishCards, user }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cards, setCards] = useState([]);
+	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
 	useEffect(() => {
 		setCards(
@@ -38,18 +41,33 @@ function WishCards({ wishCards, user }) {
 		}, 1000);
 	}, []);
 
+	function handleLoadMore() {
+		setNumCardsToShow(numCardsToShow + cardsPerPage);
+	}
+
 	return (
 		<MantineProviderWrapper>
 			<div id="wishcards" className="bg-light p-4">
 				<div className="container">
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
-						{isLoading
-							? new Array(6)
-									.fill(0)
-									.map((_, index) => (
-										<LoadingCard key={index} enableButtons={true} />
-									))
-							: cards.map((card) => card)}
+						{isLoading ? (
+							new Array(6)
+								.fill(0)
+								.map((_, index) => <LoadingCard key={index} enableButtons={true} />)
+						) : (
+							<>
+								{cards.slice(0, numCardsToShow).map((card) => card)}
+								{cards.length > cardsPerPage &&
+									cards.length >= numCardsToShow + 1 && (
+										<button
+											className="w-50 mt-5 mb-3 button-modal-secondary"
+											onClick={handleLoadMore}
+										>
+											Load more
+										</button>
+									)}
+							</>
+						)}
 					</div>
 				</div>
 			</div>
