@@ -35,5 +35,11 @@ window.Create = Create;
 import Manage from './pages/wishcard/manage.jsx';
 window.Manage = Manage;
 
-import DonationHistory from './pages/profile/DonationHistory.jsx';
+import WishcardsAdministration from './pages/admin/routes/wishcard/administration.jsx';
+window.WishcardsAdministration = WishcardsAdministration;
+
+import AgencyRegister from './pages/profile/agency/register.jsx';
+window.AgencyRegister = AgencyRegister;
+
+import DonationHistory from './pages/profile/donationhistory.jsx';
 window.DonationHistory = DonationHistory;

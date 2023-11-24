@@ -2,10 +2,10 @@ import { Switch, TextInput, Select, Textarea, FileButton, Button } from '@mantin
 import axios from 'axios';
 import { useState, useEffect, useRef, useMemo } from 'react';
 
+import AddressForm from '../../components/forms/AddressForm.jsx';
 import CustomButton from '../../components/shared/CustomButton.jsx';
 import CustomToast from '../../components/shared/CustomToast.jsx';
 import PopOver from '../../components/shared/PopOver.jsx';
-import AddressForm from '../../forms/AddressForm.jsx';
 import Forms from '../../translations/en/forms.json';
 import { BIRTH_YEAR, AMAZON_URL_REGEX, AMAZON_PRODUCT_REGEX } from '../../utils/constants';
 import { validateImage } from '../../utils/helpers';
@@ -563,7 +563,11 @@ function WishCardCreate() {
                                     label={
                                         !isShippingDefault ?
                                             'Ship this wish item to the below address' :
-                                            `Ship this wish item to my agency (${agencyAddress?.address1}, ${agencyAddress?.address2}, ${agencyAddress?.city}, ${agencyAddress?.state} ${agencyAddress?.zipcode})`
+                                            `Ship this wish item to my agency (${
+                                                agencyAddress?.address1
+                                            }, ${agencyAddress?.address2 || ''}, ${
+                                                agencyAddress?.city
+                                            }, ${agencyAddress?.state} ${agencyAddress?.zipcode})`
                                     }
                                     onChange={handleShippingAddress}
                                 />

@@ -55,7 +55,9 @@ export default class SignupController extends BaseController {
         );
 
         try {
-            await Messaging.sendVerificationEmail(email, emailVerificationToken);
+            if (emailVerificationToken) {
+                await Messaging.sendVerificationEmail(email, emailVerificationToken);
+            }
 
             let url = '/profile';
             req.session.user = user;
@@ -118,4 +120,57 @@ export default class SignupController extends BaseController {
             return this.handleError(res, error);
         }
     }
+
+    // new code, needs to be adapted to postgres
+    // async handlePostAgency(req: Request, res: Response, _next: NextFunction) {
+    //     try {
+    //         const {
+    //             agencyName,
+    //             agencyWebsite,
+    //             agencyPhone,
+    //             agencyEIN,
+    //             agencyBio,
+    //             address1,
+    //             address2,
+    //             city,
+    //             state,
+    //             zipcode,
+    //             country,
+    //         } = req.body;
+
+    //         const { agencyImage } = req.files;
+
+    //         const agency = await this.agencyRepository.create({
+    //             agencyName,
+    //             agencyWebsite,
+    //             agencyPhone,
+    //             agencyEIN,
+    //             agencyBio,
+    //             agencyImage: config.AWS.USE ?
+    //                 req.files?.agencyImage[0].Location :
+    //                 `/uploads/${agencyImage[0].filename}`,
+    //             agencyAddress: {
+    //                 address1,
+    //                 address2,
+    //                 city,
+    //                 state,
+    //                 zipcode,
+    //                 country,
+    //             },
+    //             accountManager: res.locals.user._id,
+    //         });
+
+    //         if (config.NODE_ENV !== 'test') {
+    //             await Messaging.sendAgencyVerificationNotification({
+    //                 id: agency._id,
+    //                 name: agency.agencyName,
+    //                 website: agency.agencyWebsite,
+    //                 bio: agency.agencyBio,
+    //             });
+    //         }
+    //         return this.sendResponse(res, agency);
+    //     } catch (error) {
+    //         return this.handleError(res, error);
+    //     }
+    // }
 }
