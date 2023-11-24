@@ -1,8 +1,8 @@
 import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
 
-import Forms from '../translations/en/forms.json';
-import { STATE_NAMES } from '../utils/constants';
+import Forms from '../../translations/en/forms.json';
+import { STATE_NAMES } from '../../utils/constants';
 
 // @enubia this is deprecated? - since we have the CustomForm now?
 function AddressForm({ inputSize, onInputChange }) {

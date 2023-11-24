@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-import CustomForm from '../../forms/CustomForm.jsx';
-import { AGENCY_SIGNUP_FIELDSETS } from '../../utils/fieldsets';
-import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-import { AGENCY_SIGNUP_FORM_INPUTS } from '../../utils/translations';
+import CustomForm from '../../../components/forms/CustomForm.jsx';
+import { AGENCY_SIGNUP_FIELDSETS } from '../../../utils/fieldsets';
+import MantineProviderWrapper from '../../../utils/mantineProviderWrapper.jsx';
+import { AGENCY_SIGNUP_FORM_INPUTS } from '../../../utils/translations';
 
 function AgencyRegister() {
 	const formTranslations = AGENCY_SIGNUP_FORM_INPUTS;

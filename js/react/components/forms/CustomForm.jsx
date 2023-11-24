@@ -2,9 +2,9 @@ import { TextInput, Select, Textarea } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useRef, useEffect, useState } from 'react';
 
-import ImgUploader from '../components/shared/ImgUploader.jsx';
-import PopOver from '../components/shared/PopOver.jsx';
-import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
+import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
+import ImgUploader from '../shared/ImgUploader.jsx';
+import PopOver from '../shared/PopOver.jsx';
 
 const CustomForm = ({
 	fieldsets,
@@ -217,8 +217,8 @@ const CustomForm = ({
 									{row.map((col, j) => {
 										refObjects[`${col?.name}Ref`] = useRef();
 										return (
-											<div className={row.length == 3 ? col3 : col2} key={j}>
-												{col.inputType == 'textInput' && (
+											<div className={row.length === 3 ? col3 : col2} key={j}>
+												{col.inputType === 'textInput' && (
 													<TextInput
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
@@ -245,14 +245,14 @@ const CustomForm = ({
 														}
 													/>
 												)}
-												{col.inputType == 'select' && (
+												{col.inputType === 'select' && (
 													<Select
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
 														mt={inputSize}
 														label={formTranslations[col.name]?.label}
 														name={col.name}
-														searchable
+														searchable={col.searchable}
 														data={formTranslations[col.name]?.data}
 														required={col.isRequired}
 														placeholder={
@@ -266,7 +266,7 @@ const CustomForm = ({
 														}
 													/>
 												)}
-												{col.inputType == 'textArea' && (
+												{col.inputType === 'textArea' && (
 													<Textarea
 														ref={refObjects[`${col?.name}Ref`]}
 														size={inputSize}
@@ -282,7 +282,7 @@ const CustomForm = ({
 														onChange={handleInput}
 													/>
 												)}
-												{col.inputType == 'image' && (
+												{col.inputType === 'image' && (
 													<ImgUploader
 														label={formTranslations[col.name]?.label}
 														instruction={

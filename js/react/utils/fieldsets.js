@@ -43,7 +43,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 				},
 				{
 					name: 'agencyImage',
-					isRequired: false, //TODO: @enubia - make it back to true after testing
+					isRequired: true,
 					defaultValue: null,
 					inputType: 'image',
 				},
@@ -83,6 +83,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'select',
+					searchable: true,
 				},
 				{
 					name: 'zipcode',
@@ -95,6 +96,7 @@ const AGENCY_SIGNUP_FIELDSETS = [
 					isRequired: true,
 					defaultValue: '',
 					inputType: 'select',
+					searchable: false,
 				},
 			],
 		],
