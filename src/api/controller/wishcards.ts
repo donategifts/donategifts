@@ -488,6 +488,9 @@ export default class WishCardApiController extends BaseController {
             const wishcard = await this.wishCardsRepository.getById(req.params.id);
 
             const agency = await this.agenciesRepository.getByAccountManagerId(wishcard.created_by);
+
+            agency.website = Utils.ensureProtocol(agency.website);
+
             const messages = await this.messagesRepository.getByWishCardId(wishcard.id);
             const child = await this.childrenRepository.getById(wishcard.child_id);
 
