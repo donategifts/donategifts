@@ -16,6 +16,9 @@ window.Header = Header;
 import Nav from './components/NavBar.jsx';
 window.Nav = Nav;
 
+import Footer from './components/Footer.jsx';
+window.Footer = Footer;
+
 import WishCards from './pages/wishCards.jsx';
 window.WishCards = WishCards;
 
