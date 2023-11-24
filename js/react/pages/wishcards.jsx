@@ -5,37 +5,30 @@ import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
-function WishCards({ user }) {
+const cardsPerPage = 24;
+
+function WishCards({ wishCards, user }) {
     const [isLoading, setIsLoading] = useState(true);
     const [cards, setCards] = useState([]);
-    const [wishCards, setWishCards] = useState([]);
-
-    useEffect(() => {
-        fetch('/api/wishcards/all')
-            .then(res => res.json())
-            .then(({ wishcards }) => {
-                setWishCards(wishcards);
-            });
-    }, []);
+    const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
     useEffect(() => {
         setCards(
             wishCards.map((wishCard) => {
                 let attributes = {};
 
-                if (!user?.id) {
+                if (!user?._id) {
                     attributes = {
-                        'data-bs-toggle': 'modal',
-                        'data-bs-target': '#loginModalCenter',
+                        href: '/login',
                     };
                 } else {
                     attributes = {
-                        href: `/wishcards/donate/${wishCard.id}`,
+                        href: `/wishcards/donate/${wishCard._id}`,
                     };
                 }
 
                 return (
-                    <div key={wishCard.id} className="m-3 mt-0 col-12 col-md-5 col-lg-4 col-xxl-3">
+                    <div key={wishCard._id} className="m-3 col-12 col-md-5 col-lg-4 col-xxl-3">
                         <WishCard wishCard={wishCard} attributes={attributes} />
                     </div>
                 );
@@ -45,7 +38,11 @@ function WishCards({ user }) {
         setTimeout(() => {
             setIsLoading(false);
         }, 1000);
-    }, [wishCards]);
+    }, []);
+
+    function handleLoadMore() {
+        setNumCardsToShow(numCardsToShow + cardsPerPage);
+    }
 
     return (
         <MantineProviderWrapper>
@@ -53,12 +50,25 @@ function WishCards({ user }) {
                 <div className="container">
                     <div className="d-flex flex-wrap justify-content-center align-items-stretch">
                         {isLoading ?
-                            new Array(6)
-                                .fill(0)
-                                .map((_, index) => (
-                                    <LoadingCard key={index} enableButtons={true} />
-                                )) :
-                            cards.map(card => card)}
+                            (
+                                new Array(6)
+                                    .fill(0)
+                                    .map((_, index) => <LoadingCard key={index} enableButtons={true} />)
+                            ) :
+                            (
+                                <>
+                                    {cards.slice(0, numCardsToShow).map(card => card)}
+                                    {cards.length > cardsPerPage &&
+                                    cards.length >= numCardsToShow + 1 && (
+                                        <button
+                                            className="w-50 mt-5 mb-3 button-modal-secondary"
+                                            onClick={handleLoadMore}
+                                        >
+                                            Load More
+                                        </button>
+                                    )}
+                                </>
+                            )}
                     </div>
                 </div>
             </div>
@@ -68,8 +78,9 @@ function WishCards({ user }) {
 
 WishCards.propTypes = {
     user: PropTypes.shape({
-        id: PropTypes.string,
+        _id: PropTypes.string,
     }),
+    wishCards: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCards;
