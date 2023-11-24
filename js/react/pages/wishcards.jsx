@@ -7,10 +7,19 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
 
-function WishCards({ wishCards, user }) {
+function WishCards({ user }) {
     const [isLoading, setIsLoading] = useState(true);
     const [cards, setCards] = useState([]);
     const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
+    const [wishCards, setWishCards] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/wishcards/all')
+            .then(res => res.json())
+            .then(({ wishcards }) => {
+                setWishCards(wishcards);
+            });
+    }, []);
 
     useEffect(() => {
         setCards(
@@ -38,7 +47,7 @@ function WishCards({ wishCards, user }) {
         setTimeout(() => {
             setIsLoading(false);
         }, 1000);
-    }, []);
+    }, [wishCards]);
 
     function handleLoadMore() {
         setNumCardsToShow(numCardsToShow + cardsPerPage);
