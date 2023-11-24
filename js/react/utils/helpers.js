@@ -1,4 +1,4 @@
-export const loadlGoogleClientLibraryScript = (src) => {
+const loadlGoogleClientLibraryScript = (src) => {
 	const tag = document.createElement('script');
 	tag.async = true;
 	tag.defer = true;
@@ -7,7 +7,7 @@ export const loadlGoogleClientLibraryScript = (src) => {
 	body.appendChild(tag);
 };
 
-export const chunkArray = (initialArray, chunkSize) => {
+const chunkArray = (initialArray, chunkSize) => {
 	const chunks = [];
 	for (let index = 0; index < initialArray.length; index += chunkSize) {
 		const chunk = initialArray.slice(index, index + chunkSize);
@@ -16,11 +16,11 @@ export const chunkArray = (initialArray, chunkSize) => {
 	return chunks;
 };
 
-export const capitalizeFirstLetter = (word) => {
+const capitalizeFirstLetter = (word) => {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-export const validateImage = (setError, fieldName, formData, currFormMap) => {
+const validateImage = (setError, fieldName, formData, currFormMap) => {
 	if (!formData[fieldName]) {
 		return setError(currFormMap[fieldName].errors?.default);
 	}
@@ -38,3 +38,5 @@ export const validateImage = (setError, fieldName, formData, currFormMap) => {
 		setError('');
 	}
 };
+
+export { loadlGoogleClientLibraryScript, chunkArray, validateImage, capitalizeFirstLetter };

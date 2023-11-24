@@ -1,10 +1,10 @@
 import { Select, TextInput } from '@mantine/core';
 import PropTypes from 'prop-types';
 
-import Forms from '../translations/en/forms.json';
-import { STATE_NAMES } from '../utils/constants';
+import Forms from '../../translations/en/forms.json';
+import { STATE_NAMES } from '../../utils/constants';
 
-// TODO: @stacysealky - Add validation to address form
+// @enubia this is deprecated? - since we have the CustomForm now?
 function AddressForm({ inputSize, onInputChange }) {
 	const handleInputs = (event) => {
 		const target = event.target;
@@ -18,7 +18,7 @@ function AddressForm({ inputSize, onInputChange }) {
 	};
 
 	return (
-		<>
+		<form>
 			<div className="row mt-3">
 				<div className="col-12 col-md-4">
 					<TextInput
@@ -80,11 +80,9 @@ function AddressForm({ inputSize, onInputChange }) {
 					/>
 				</div>
 			</div>
-		</>
+		</form>
 	);
 }
-
-AddressForm.displayName = 'AddressForm';
 
 AddressForm.defaultProps = {
 	inputSize: 'md',

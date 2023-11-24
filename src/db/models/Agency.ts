@@ -5,8 +5,10 @@ interface Agency {
 	agencyName: string;
 	agencyWebsite: string;
 	agencyPhone: string;
+	agencyEIN: string;
 	accountManager: string;
 	agencyBio: string;
+	agencyImage: string;
 	agencyAddress: {
 		address1: string;
 		address2: string;
@@ -15,9 +17,7 @@ interface Agency {
 		country: string;
 		zipcode: string;
 	};
-	childrenUnderCare: number;
-	childrenAgeRange: string;
-	agencyProfileImage: string;
+	agencyProfileImage: string; //deprecated but still used in /community
 	joined: Date;
 	isVerified: boolean;
 }
@@ -34,11 +34,17 @@ const AgencySchema = new Schema(
 		agencyPhone: {
 			type: String,
 		},
+		agencyEIN: {
+			type: String,
+		},
 		accountManager: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
 		agencyBio: {
+			type: String,
+		},
+		agencyImage: {
 			type: String,
 		},
 		agencyAddress: {
@@ -49,14 +55,8 @@ const AgencySchema = new Schema(
 			country: { type: String },
 			zipcode: { type: String },
 		},
-		childrenUnderCare: {
-			type: Number,
-		},
-		childrenAgeRange: {
-			type: String,
-		},
 		agencyProfileImage: {
-			type: String,
+			type: String, //deprecated but still used in /community
 		},
 		joined: {
 			type: Date,

@@ -110,22 +110,23 @@ function DonationHistory() {
 							? donations.map((data) => (
 									<Table.Tr key={data?._id}>
 										<Table.Td>
-											{data?.donationCard?.childFirstName || ''}
+											{data?.donationCard?.childFirstName ?? 'Unknown'}
 										</Table.Td>
 										<Table.Td>
-											${data?.donationCard?.wishItemPrice || ''}
+											${data?.donationCard?.wishItemPrice ?? 'Unknown'}
 										</Table.Td>
 										<Table.Td>
-											{data?.donationCard?.wishItemName || ''}
+											{data?.donationCard?.wishItemName ?? 'Unknown'}
 										</Table.Td>
 										<Table.Td>
-											{data?.donationDate &&
-												new Date(data?.donationDate).toLocaleDateString(
-													'en-US',
-													dateConfig,
-												)}
+											{data?.donationDate
+												? new Date(data?.donationDate).toLocaleDateString(
+														'en-US',
+														dateConfig,
+												  )
+												: 'Unknown'}
 										</Table.Td>
-										<Table.Td>{data?.status || ''}</Table.Td>
+										<Table.Td>{data?.status ?? 'Unknown'}</Table.Td>
 									</Table.Tr>
 							  ))
 							: null}
