@@ -1,3 +1,24 @@
+#agency-register-page {
+    background-color: lighten($cream, 10%);
+    min-height: 100vh;
+
+    label {
+        color: $navy-dark;
+    }
+
+    .card {
+        .display-6 {
+            font-size: 1.3rem;
+            font-weight: $fw-semi-bold;
+            color: $primary;
+        }
+    }
+
+    textarea {
+        min-height: 255px;
+    }
+}
+
 // this is temporary until the new signup system with react
 #sign-up, #agency-data, #login {
 	form {

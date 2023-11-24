@@ -341,10 +341,10 @@ export default class Messaging {
 
     // NOTE: Broken
     static async sendAgencyVerificationNotification({ id, name, website, bio }: {
-        id: number;
+        id: string;
         name: string;
         website: string;
-        bio: string;
+        bio: string | null;
     }) {
         if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
             return;

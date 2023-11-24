@@ -26,7 +26,7 @@ export default class AgencyRepository {
             .exec();
     }
 
-    async createNewAgency(agencyParams: Agency) {
+    async createNewAgency(agencyParams: Partial<Agency>) {
         try {
             return await this.agencyModel.create(agencyParams);
         } catch (error) {

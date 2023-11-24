@@ -2,8 +2,8 @@ import { Tabs } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 
+import AgencyCardEditForm from '../../components/forms/AgencyCardEditForm.jsx';
 import SimpleModal from '../../components/shared/SimpleModal.jsx';
-import AgencyCardEditForm from '../../forms/AgencyCardEditForm.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 const renderAgencyWishCards =

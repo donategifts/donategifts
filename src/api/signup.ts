@@ -1,13 +1,27 @@
 import express from 'express';
 
 import { database } from '../db/postgresconnection';
+import FileUpload from '../middleware/fileupload';
+import Validations from '../middleware/validations';
 
 import SignupController from './controller/signup';
 
 const router = express.Router();
 const signupController = new SignupController(database);
+const fileUpload = new FileUpload();
 
 router.post('/signup', signupController.handlePostSignup);
-router.post('/agency', signupController.handlePostAgency);
+
+router.post(
+    '/agency',
+    fileUpload.upload.fields([
+        {
+            name: 'agencyImage',
+            maxCount: 1,
+        },
+    ]),
+    Validations.createAgencyValidationRules(),
+    signupController.handlePostAgency,
+);
 
 export default router;

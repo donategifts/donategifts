@@ -235,25 +235,26 @@ block modal
                                     input#agencyPhone-edit.form-control( type='text' name='agencyPhone' placeholder='000-000-0000' value=agency.agencyPhone )
                                 .my-2
                                     label.form-label( for='agencyWebsite-edit' ) Website:
-                                    input#agencyWebsite-edit.form-control( type='text' name='agencyWebsite' value=agency.agencyWebsite )
-                                .my-2
-                                    label.form-label( for='address1-edit' ) Address Line 1:
-                                    input#address1-edit.form-control( type='text' name='address1' value=agency.agencyAddress.address1 )
-                                .my-2
-                                    label.form-label( for='address2-edit' ) Address Line 2:
-                                    input#address2-edit.form-control( type='text' name='address2' value=agency.agencyAddress.address2 )
-                                .my-2
-                                    label.form-label( for='city-edit' ) City:
-                                    input#city-edit.form-control( type='text' name='city' value=agency.agencyAddress.city )
-                                .my-2
-                                    label.form-label( for='state-edit' ) State:
-                                    input#state-edit.form-control( type='text' name='state' value=agency.agencyAddress.state )
-                                .my-2
-                                    label.form-label( for='country-edit' ) Country:
-                                    input#country-edit.form-control( type='text' name='country' value=agency.agencyAddress.country )
-                                .my-2
-                                    label.form-label( for='zipcode-edit' ) Zipcode:
-                                    input#zipcode-edit.form-control( type='text' name='zipcode' value=agency.agencyAddress.zipcode )
+                                    input#agencyWebsite-edit.form-control( type='text' name='agencyWebsite' value=agency.agencyWebsite || '' )
+                                if agency.agencyAddress
+                                    .my-2
+                                        label.form-label( for='address1-edit' ) Address Line 1:
+                                        input#address1-edit.form-control( type='text' name='address1' value=agency.agencyAddress.address1 || '' )
+                                    .my-2
+                                        label.form-label( for='address2-edit' ) Address Line 2:
+                                        input#address2-edit.form-control( type='text' name='address2' value=agency.agencyAddress.address2 || '' )
+                                    .my-2
+                                        label.form-label( for='city-edit' ) City:
+                                        input#city-edit.form-control( type='text' name='city' value=agency.agencyAddress.city || '' )
+                                    .my-2
+                                        label.form-label( for='state-edit' ) State:
+                                        input#state-edit.form-control( type='text' name='state' value=agency.agencyAddress.state || '' )
+                                    .my-2
+                                        label.form-label( for='country-edit' ) Country:
+                                        input#country-edit.form-control( type='text' name='country' value=agency.agencyAddress.country || '' )
+                                    .my-2
+                                        label.form-label( for='zipcode-edit' ) Zipcode:
+                                        input#zipcode-edit.form-control( type='text' name='zipcode' value=agency.agencyAddress.zipcode || '' )
                     .modal-footer.d-flex.justify-content-end
                         .col-12.col-md-4
                             button#save-agency-details.btn.btn-lg.btn-primary.w-100( type='button' data-bs-dismiss='modal' ) Save
