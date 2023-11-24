@@ -190,9 +190,9 @@ export default class AdminController extends BaseController {
 
 	async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const { wishCardId, wishItemUrl } = req.body;
+			const { wishCardId, wishItemURL } = req.body;
 			const wishCardModifiedFields = {
-				wishItemUrl,
+				wishItemURL,
 				status: 'published',
 			};
 
