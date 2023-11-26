@@ -29,6 +29,9 @@ window.WishCardsCarousel = WishCardsCarousel;
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
 
+import Signup from './pages/Signup.jsx';
+window.Signup = Signup;
+
 import WishCardCreate from './pages/wishcard/create.jsx';
 window.WishCardCreate = WishCardCreate;
 
