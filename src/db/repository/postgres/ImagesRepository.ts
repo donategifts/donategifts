@@ -1,13 +1,14 @@
-import { Kysely, UpdateObject, InsertObject } from 'kysely';
+import { UpdateObject, InsertObject } from 'kysely';
 
+import { database } from '../../postgresconnection';
 import { DB } from '../../types/generated/database';
 
 export type ImagesUpdateParams = Omit<UpdateObject<DB, 'images'>, 'id' | 'created_at' | 'updated_at'>;
 
 export type ImagesCreateParams = Omit<InsertObject<DB, 'images'>, 'id' | 'created_at'>;
 
-export default class ImagesRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class ImagesRepository {
+    private database = database;
 
     getById(id: string) {
         return this.database
@@ -34,3 +35,5 @@ export default class ImagesRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new ImagesRepository();

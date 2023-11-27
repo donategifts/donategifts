@@ -1,13 +1,14 @@
-import { Kysely, UpdateObject } from 'kysely';
+import { UpdateObject } from 'kysely';
 
 import Utils from '../../../helper/utils';
+import { database } from '../../postgresconnection';
 import { DB, Users, Verificationtype } from '../../types/generated/database';
 
 export type UsersUpdateParams = Omit<UpdateObject<DB, 'users'>, 'id' | 'created_at' | 'updated_at'>;
 export type UsersCreateParams = Omit<Users, 'id' | 'is_verified' | 'is_disabled' | 'created_at' | 'updated_at'>;
 
-export default class UsersRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class UsersRepository {
+    private database = database;
 
     getById(id: string) {
         return this.database
@@ -92,3 +93,5 @@ export default class UsersRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new UsersRepository();

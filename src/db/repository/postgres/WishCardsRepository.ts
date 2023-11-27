@@ -1,13 +1,14 @@
-import { Expression, Kysely, SqlBool, UpdateObject } from 'kysely';
+import { Expression, SqlBool, UpdateObject } from 'kysely';
 
 import Messaging from '../../../helper/messaging';
+import { database } from '../../postgresconnection';
 import { DB, Wishcards, Wishcardstatus } from '../../types/generated/database';
 
 export type WishcardsUpdateParams = Omit<UpdateObject<DB, 'wishcards'>, 'id' | 'created_at' | 'updated_at' | 'agency_id' | 'child_id'>;
 export type WishcardsCreateParams = Omit<Wishcards, 'id' | 'created_at' | 'updated_at' | 'status'>;
 
-export default class WishcardsRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class WishcardsRepository {
+    private database = database;
 
     create(createParams: WishcardsCreateParams) {
         return this.database
@@ -181,3 +182,5 @@ export default class WishcardsRepository {
         });
     }
 }
+
+export default new WishcardsRepository();

@@ -1,14 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
 import moment from 'moment';
 
-import { database } from '../db/postgresconnection';
 import VerificationTokensRepository from '../db/repository/postgres/VerificationTokensRepository';
 import logger from '../helper/logger';
 import Validations from '../middleware/validations';
 
 const router = express.Router();
-
-const verificationTokensRepository = new VerificationTokensRepository(database);
 
 router.get('/reset', (_req, res, _next) => {
     res.render('pages/passwordreset');
@@ -20,7 +17,7 @@ router.get(
     Validations.validate,
     async (req: Request, res: Response, _next: NextFunction) => {
         try {
-            const { user_id, expires_at } = await verificationTokensRepository.getByToken(
+            const { user_id, expires_at } = await VerificationTokensRepository.getByToken(
                 req.params.token,
             );
 

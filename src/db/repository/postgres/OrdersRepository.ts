@@ -1,11 +1,10 @@
-import { Kysely } from 'kysely';
-
-import { DB, Orders, Orderstatus } from '../../types/generated/database';
+import { database } from '../../postgresconnection';
+import { Orders, Orderstatus } from '../../types/generated/database';
 
 export type OrdersCreateParams = Omit<Orders, 'id' | 'status' | 'delivery_date' | 'created_at' | 'updated_at'>;
 
-export default class OrdersRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class OrdersRepository {
+    private database = database;
 
     create(createParams: OrdersCreateParams) {
         return this.database
@@ -46,3 +45,5 @@ export default class OrdersRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new OrdersRepository();

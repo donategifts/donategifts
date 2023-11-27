@@ -1,11 +1,10 @@
-import { Kysely } from 'kysely';
-
-import { DB, CommunityPosts } from '../../types/generated/database';
+import { database } from '../../postgresconnection';
+import { CommunityPosts } from '../../types/generated/database';
 
 export type CommunityPostsCreateParams = Omit<CommunityPosts, 'id' | 'created_at'>;
 
-export default class CommunityPostsRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class CommunityPostsRepository {
+    private database = database;
 
     getAll() {
         return this.database.selectFrom('community_posts').selectAll('community_posts').execute();
@@ -36,3 +35,5 @@ export default class CommunityPostsRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new CommunityPostsRepository();

@@ -1,12 +1,13 @@
-import { Kysely, UpdateObject } from 'kysely';
+import { UpdateObject } from 'kysely';
 
+import { database } from '../../postgresconnection';
 import { Agencies, DB } from '../../types/generated/database';
 
 export type AgenciesUpdateParams = Omit<UpdateObject<DB, 'agencies'>, 'id' | 'created_at' | 'updated_at'>;
 export type AgenciesCreateParams = Omit<Agencies, 'id' | 'is_verified' | 'created_at' | 'updated_at'>;
 
-export default class AgenciesRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class AgenciesRepository {
+    private database = database;
 
     getById(id: string) {
         return this.database
@@ -66,3 +67,5 @@ export default class AgenciesRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new AgenciesRepository();

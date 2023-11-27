@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { Selectable } from 'kysely';
 
-import { database } from '../db/postgresconnection';
 import AgenciesRepository from '../db/repository/postgres/AgenciesRepository';
 import ChildrenRepository from '../db/repository/postgres/ChildrenRepository';
 import ItemsRepository from '../db/repository/postgres/ItemsRepository';
@@ -17,25 +16,17 @@ import Validator from '../middleware/validations';
 
 const router = express.Router();
 
-const usersRepository = new UsersRepository(database);
-const agenciesRepository = new AgenciesRepository(database);
-const ordersRepository = new OrdersRepository(database);
-const childrenRepository = new ChildrenRepository(database);
-const itemsRepository = new ItemsRepository(database);
-const wishcardsRepository = new WishcardsRepository(database);
-const verificationTokensRepository = new VerificationTokensRepository(database);
-
 router.get(
     '/verify/:token',
     Validator.verifyHashValidationRules(),
     Validator.validate,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const tokenData = await verificationTokensRepository.getByToken(req.params.token);
-            let user = await usersRepository.getById(tokenData.user_id);
+            const tokenData = await VerificationTokensRepository.getByToken(req.params.token);
+            let user = await UsersRepository.getById(tokenData.user_id);
 
             if (user) {
-                user = await usersRepository.updateVerificationStatus(user.id, true);
+                user = await UsersRepository.updateVerificationStatus(user.id, true);
 
                 if (req && user) {
                     req.session.user = user;
@@ -60,7 +51,7 @@ router.get('/', Permissions.redirectLogin, async (req, res, _next) => {
 
     if (res.locals.user.role === 'partner') {
         try {
-            agency = await agenciesRepository.getByAccountManagerId(res.locals.user.id);
+            agency = await AgenciesRepository.getByAccountManagerId(res.locals.user.id);
         } catch (error) {
             logger.error('Error getting agency by account manager id', error);
         }
@@ -84,9 +75,9 @@ router.get('/history', Permissions.redirectLogin, async (_req, res, next) => {
 
         const addDonations = async (orders: Selectable<Orders>[]) => {
             for (const order of orders) {
-                const wishcard = await wishcardsRepository.getById(order.wishcard_id);
-                const child = await childrenRepository.getById(wishcard.child_id);
-                const item = await itemsRepository.getById(wishcard.item_id);
+                const wishcard = await WishcardsRepository.getById(order.wishcard_id);
+                const child = await ChildrenRepository.getById(wishcard.child_id);
+                const item = await ItemsRepository.getById(wishcard.item_id);
 
                 donations.push({
                     order,
@@ -98,12 +89,12 @@ router.get('/history', Permissions.redirectLogin, async (_req, res, next) => {
         };
 
         if (user.role === 'partner') {
-            const agency = await agenciesRepository.getByAccountManagerId(user.id);
-            const orders = await ordersRepository.getByAgencyId(agency.id);
+            const agency = await AgenciesRepository.getByAccountManagerId(user.id);
+            const orders = await OrdersRepository.getByAgencyId(agency.id);
 
             await addDonations(orders);
         } else {
-            const orders = await ordersRepository.getByDonorId(user.id);
+            const orders = await OrdersRepository.getByDonorId(user.id);
 
             await addDonations(orders);
         }

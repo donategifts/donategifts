@@ -1,7 +1,6 @@
 import express from 'express';
 import { Selectable } from 'kysely';
 
-import { database } from '../db/postgresconnection';
 import AgenciesRepository from '../db/repository/postgres/AgenciesRepository';
 import ChildrenRepository from '../db/repository/postgres/ChildrenRepository';
 import ImagesRepository from '../db/repository/postgres/ImagesRepository';
@@ -14,14 +13,6 @@ import Utils from '../helper/utils';
 import Permissions from '../middleware/permissions';
 
 const router = express.Router();
-
-const usersRepository = new UsersRepository(database);
-const agenciesRepository = new AgenciesRepository(database);
-const itemsRepository = new ItemsRepository(database);
-const childrenRepository = new ChildrenRepository(database);
-const wishcardRepository = new WishcardsRepository(database);
-const messagesRepository = new MessagesRepository(database);
-const imagesRepository = new ImagesRepository(database);
 
 router.get('/', (_req, res, _next) => res.render('pages/wishcards'));
 
@@ -40,20 +31,20 @@ router.get('/detail', async (req, res, next) => {
 
         let childImage: Selectable<Images> | null = null;
 
-        const wishcard = await wishcardRepository.getById(wishcardId);
+        const wishcard = await WishcardsRepository.getById(wishcardId);
         if (wishcard.image_id) {
-            childImage = await imagesRepository.getById(wishcard.image_id);
+            childImage = await ImagesRepository.getById(wishcard.image_id);
         }
-        const child = await childrenRepository.getById(wishcard.child_id);
-        const item = await itemsRepository.getById(wishcard.item_id);
+        const child = await ChildrenRepository.getById(wishcard.child_id);
+        const item = await ItemsRepository.getById(wishcard.item_id);
 
         let itemImage: Selectable<Images> | null = null;
 
         if (item.image_id) {
-            itemImage = await imagesRepository.getById(item.image_id);
+            itemImage = await ImagesRepository.getById(item.image_id);
         }
 
-        const result = (await messagesRepository.getByWishCardId(
+        const result = (await MessagesRepository.getByWishCardId(
             wishcardId,
         )) as Selectable<Messages>[];
 
@@ -62,7 +53,7 @@ router.get('/detail', async (req, res, next) => {
                 continue;
             }
 
-            const poster = await usersRepository.getById(message.sender_id);
+            const poster = await UsersRepository.getById(message.sender_id);
 
             messages.push({
                 sender: poster,
@@ -70,7 +61,7 @@ router.get('/detail', async (req, res, next) => {
             });
         }
 
-        const agency = await agenciesRepository.getByAccountManagerId(wishcard.created_by);
+        const agency = await AgenciesRepository.getByAccountManagerId(wishcard.created_by);
 
         let defaultMessages: string[] = [];
 

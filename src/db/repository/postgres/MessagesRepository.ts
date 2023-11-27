@@ -1,11 +1,10 @@
-import { Kysely } from 'kysely';
-
-import { DB, Messages } from '../../types/generated/database';
+import { database } from '../../postgresconnection';
+import { Messages } from '../../types/generated/database';
 
 export type MessagesCreateParams = Omit<Messages, 'id' | 'created_at'>;
 
-export default class MessagesRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class MessagesRepository {
+    private database = database;
 
     getById(id: string) {
         return this.database.selectFrom('messages').where('id', '=', id).executeTakeFirstOrThrow();
@@ -27,3 +26,5 @@ export default class MessagesRepository {
             .execute();
     }
 }
+
+export default new MessagesRepository();

@@ -1,15 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
-import { database } from '../db/postgresconnection';
 import UsersRepository from '../db/repository/postgres/UsersRepository';
 import WishCardsRepository from '../db/repository/postgres/WishCardsRepository';
 import log from '../helper/logger';
 import Utils from '../helper/utils';
 import Forms from '../translations/en/forms.json';
-
-const usersRepository = new UsersRepository(database);
-const wishCardsRepository = new WishCardsRepository(database);
 
 const amazonLinkValidator = new ExpressValidator({
     isValidLink: (value: string) => {
@@ -374,7 +370,7 @@ export default class Validations {
                 .notEmpty()
                 .withMessage('Message From - User is required')
                 .custom(async (value) => {
-                    const foundUser = await usersRepository.getById(value.id);
+                    const foundUser = await UsersRepository.getById(value.id);
 
                     if (!foundUser) {
                         throw new Error('User Error - User not found');
@@ -386,7 +382,7 @@ export default class Validations {
                 .notEmpty()
                 .withMessage('Message To - Wishcard is required')
                 .custom(async (value) => {
-                    const foundWishcard = await wishCardsRepository.getById(value.id);
+                    const foundWishcard = await WishCardsRepository.getById(value.id);
 
                     if (!foundWishcard) {
                         throw new Error('Wishcard Error - Wishcard not found');

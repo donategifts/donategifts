@@ -1,12 +1,11 @@
-import { Kysely } from 'kysely';
-
-import { Children, DB } from '../../types/generated/database';
+import { database } from '../../postgresconnection';
+import { Children } from '../../types/generated/database';
 
 export type ChildrenCreateParams = Omit<Children, 'id' | 'created_at'>;
 export type ChildrenUpdateParams = Partial<Omit<Children, 'id' | 'created_at'>>;
 
-export default class ChildrenRepository {
-    constructor(private readonly database: Kysely<DB>) {}
+class ChildrenRepository {
+    private database = database;
 
     getById(id: string) {
         return this.database
@@ -37,3 +36,5 @@ export default class ChildrenRepository {
             .executeTakeFirstOrThrow();
     }
 }
+
+export default new ChildrenRepository();
