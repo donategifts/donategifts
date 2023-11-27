@@ -66,6 +66,7 @@ export default class SignupController extends BaseController {
         try {
             const {
                 bio,
+                employer_identification_number,
                 name,
                 website,
                 phone,
@@ -76,6 +77,15 @@ export default class SignupController extends BaseController {
                 country_code,
                 zip_code,
             } = req.body;
+
+            const { agencyImage } = req.files;
+
+            const result = await this.imagesRepository.create({
+                created_by: res.locals.user.id,
+                url: config.AWS.USE ?
+                    req.files?.agencyImage[0].Location :
+                    `/uploads/${agencyImage[0].filename}`,
+            });
 
             const agency = await this.agenciesRepository.create({
                 bio,
@@ -89,8 +99,8 @@ export default class SignupController extends BaseController {
                 country_code,
                 zip_code,
                 account_manager_id: res.locals.user.id,
-                image_id: null,
-                employer_identification_number: null,
+                image_id: result.id,
+                employer_identification_number,
             });
 
             await Messaging.sendAgencyVerificationNotification({
@@ -107,57 +117,4 @@ export default class SignupController extends BaseController {
             return this.handleError(res, error);
         }
     }
-
-    // new code, needs to be adapted to postgres
-    // async handlePostAgency(req: Request, res: Response, _next: NextFunction) {
-    //     try {
-    //         const {
-    //             agencyName,
-    //             agencyWebsite,
-    //             agencyPhone,
-    //             agencyEIN,
-    //             agencyBio,
-    //             address1,
-    //             address2,
-    //             city,
-    //             state,
-    //             zipcode,
-    //             country,
-    //         } = req.body;
-
-    //         const { agencyImage } = req.files;
-
-    //         const agency = await this.agencyRepository.create({
-    //             agencyName,
-    //             agencyWebsite,
-    //             agencyPhone,
-    //             agencyEIN,
-    //             agencyBio,
-    //             agencyImage: config.AWS.USE ?
-    //                 req.files?.agencyImage[0].Location :
-    //                 `/uploads/${agencyImage[0].filename}`,
-    //             agencyAddress: {
-    //                 address1,
-    //                 address2,
-    //                 city,
-    //                 state,
-    //                 zipcode,
-    //                 country,
-    //             },
-    //             accountManager: res.locals.user._id,
-    //         });
-
-    //         if (config.NODE_ENV !== 'test') {
-    //             await Messaging.sendAgencyVerificationNotification({
-    //                 id: agency._id,
-    //                 name: agency.agencyName,
-    //                 website: agency.agencyWebsite,
-    //                 bio: agency.agencyBio,
-    //             });
-    //         }
-    //         return this.sendResponse(res, agency);
-    //     } catch (error) {
-    //         return this.handleError(res, error);
-    //     }
-    // }
 }

@@ -90,8 +90,8 @@ export default class PaymentProviderController extends BaseController {
                     child: child.name,
                 },
                 donation: {
-                    amount,
-                    userDonation,
+                    amount: parseInt(amount, 10),
+                    userDonation: parseInt(userDonation, 10),
                 },
             });
         } catch (error) {
@@ -155,16 +155,18 @@ export default class PaymentProviderController extends BaseController {
                     secret,
                 );
 
-                if (this.lastWishcardDonation !== event.data.object.metadata.wishCardId) {
-                    this.lastWishcardDonation = event.data.object.metadata.wishCardId;
+                const eventData = event.data.object as Stripe.PaymentIntent;
+
+                if (this.lastWishcardDonation !== eventData.metadata.wishCardId) {
+                    this.lastWishcardDonation = eventData.metadata.wishCardId;
 
                     await this.finishDonation({
                         service: 'Stripe',
-                        userId: event.data.object.metadata.userId,
-                        wishCardId: event.data.object.metadata.wishCardId,
-                        amount: event.data.object.metadata.amount,
-                        userDonation: event.data.object.metadata.userDonation,
-                        agencyName: event.data.object.metadata.agencyName,
+                        userId: eventData.metadata.userId,
+                        wishCardId: eventData.metadata.wishCardId,
+                        amount: eventData.metadata.amount,
+                        userDonation: eventData.metadata.userDonation,
+                        agencyName: eventData.metadata.agencyName,
                     });
                 }
             } catch (error) {

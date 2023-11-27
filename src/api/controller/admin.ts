@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { NoResultError, Selectable } from 'kysely';
 import moment from 'moment';
 
-import { WishcardsUpdateParams } from '../../db/repository/postgres/WishCardsRepository';
 import { Agencies, Users } from '../../db/types/generated/database';
 import Messaging from '../../helper/messaging';
 
@@ -146,7 +145,11 @@ export default class AdminController extends BaseController {
             const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
 
             for (const wishCard of wishcards) {
-                const agencyName = wishCard.belongsTo.agencyName;
+                const user = await this.usersRepository.getById(wishCard.created_by);
+                const agency = await this.agenciesRepository.getByAccountManagerId(user.id);
+
+                const agencyName = agency.name;
+
                 if (!agenciesWithWishCardsMap.has(agencyName)) {
                     agenciesWithWishCardsMap.set(agencyName, []);
                 }
@@ -162,15 +165,19 @@ export default class AdminController extends BaseController {
     async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
         try {
             const { wishCardId, wishItemURL } = req.body;
-            const wishCardModifiedFields: WishcardsUpdateParams = {
-                wishItemURL,
-                status: 'published',
-            };
 
-            await this.wishCardsRepository.update(
+            const result = await this.wishCardsRepository.update(
                 wishCardId,
-                wishCardModifiedFields,
+                {
+                    status: 'published',
+                },
             );
+
+            if (wishItemURL) {
+                await this.itemsRepository.update(result.id, {
+                    link: wishItemURL,
+                });
+            }
 
             return this.sendResponse(res, wishCardId);
         } catch (error) {

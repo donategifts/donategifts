@@ -52,28 +52,28 @@ const generateAgencies = async () => {
 };
 
 const generateChildren = async () => {
-	const children = await importSeederFile('children');
-	const childrenData = children.map((child) => {
-		const {
-			id = randomUUID(),
-			name = faker.person.firstName(),
-			birth_year = faker.date.past({ years: 15 }).getFullYear(),
-			interest = faker.lorem.sentence(),
-			story = faker.lorem.paragraph(),
-			image_id = null,
-			agency_id = null,
-		} = child;
+    const children = await importSeederFile('children');
+    const childrenData = children.map((child) => {
+        const {
+            id = randomUUID(),
+            name = faker.person.firstName(),
+            birth_year = faker.date.past({ years: 15 }).getFullYear(),
+            interest = faker.lorem.sentence(),
+            story = faker.lorem.paragraph(),
+            image_id = null,
+            agency_id = null,
+        } = child;
 
-		return {
-			id,
-			name,
-			birth_year,
-			interest,
-			story,
-			image_id,
-			agency_id,
-		};
-	});
+        return {
+            id,
+            name,
+            birth_year,
+            interest,
+            story,
+            image_id,
+            agency_id,
+        };
+    });
 
     await saveSeederFile('children', childrenData);
     return childrenData;
@@ -103,8 +103,7 @@ const generateCommunityPosts = async () => {
 
 const generateUsers = async () => {
     const users = await importSeederFile('users');
-    const salt = await bcrypt.genSalt(10);
-    const saltedPassword = await bcrypt.hash('Hello1234!', salt);
+    const saltedPassword = await bcrypt.hash('Test123!', 10);
 
     const loginModeEnum = {
         Email: 'email',

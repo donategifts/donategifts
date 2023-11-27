@@ -27,8 +27,8 @@ function DonationHistory() {
         if (donations) {
             setTotalGifts(donations.length);
             donations.forEach((data) => {
-                if (data?.donationPrice) {
-                    setTotalDonation(prev => prev + data?.donationPrice);
+                if (data?.price) {
+                    setTotalDonation(prev => prev + data?.price);
                 }
             });
         }
@@ -115,18 +115,18 @@ function DonationHistory() {
                             donations.map(data => (
                                 <Table.Tr key={data?._id}>
                                     <Table.Td>
-                                        {data?.donationCard?.childFirstName ?? 'Unknown'}
+                                        {data?.card?.childFirstName ?? 'Unknown'}
                                     </Table.Td>
                                     <Table.Td>
                                         $
-                                        {data?.donationCard?.wishItemPrice ?? 'Unknown'}
+                                        {data?.card?.wishItemPrice ?? 'Unknown'}
                                     </Table.Td>
                                     <Table.Td>
-                                        {data?.donationCard?.wishItemName ?? 'Unknown'}
+                                        {data?.card?.wishItemName ?? 'Unknown'}
                                     </Table.Td>
                                     <Table.Td>
-                                        {data?.donationDate ?
-                                            new Date(data?.donationDate).toLocaleDateString(
+                                        {data?.orderDate ?
+                                            new Date(data?.orderDate).toLocaleDateString(
                                                 'en-US',
                                                 dateConfig,
                                             ) :

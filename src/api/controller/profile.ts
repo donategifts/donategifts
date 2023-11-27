@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import { Selectable } from 'kysely';
 
+import { Orderstatus, Wishcards } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
@@ -237,13 +239,36 @@ export default class ProfileController extends BaseController {
         }
     }
 
-    async getDonations(_req: Request, res: Response, _next: NextFunction) {
+    // TODO: needs testing, not sure if it works
+    async handleGetDonations(_req: Request, res: Response, _next: NextFunction) {
         try {
-            const { user } = res.locals;
+            const orders = await this.ordersRepository.getByDonorId(res.locals.user.id);
 
-            const donations = await this.donationRepository.getDonationsByUser(user.id);
-            if (!donations) {
+            if (!orders) {
                 return this.handleError(res, 'Donation data could not be found');
+            }
+
+            const donations: {
+                from: string;
+                to: string;
+                orderDate: Date;
+                card: Selectable<Wishcards>;
+                price: number;
+                status: Orderstatus;
+            }[] = [];
+
+            for (const order of orders) {
+                const wishCard = await this.wishCardsRepository.getById(order.wishcard_id);
+                const item = await this.itemsRepository.getById(wishCard.item_id);
+
+                donations.push({
+                    from: order.donor_id,
+                    to: wishCard.child_id,
+                    orderDate: order.created_at,
+                    card: wishCard,
+                    price: parseFloat(item.price),
+                    status: order.status,
+                });
             }
 
             return this.sendResponse(res, donations);

@@ -4,7 +4,7 @@ import Messaging from '../../../helper/messaging';
 import { database } from '../../postgresconnection';
 import { DB, Wishcards, Wishcardstatus } from '../../types/generated/database';
 
-export type WishcardsUpdateParams = Omit<UpdateObject<DB, 'wishcards'>, 'id' | 'created_at' | 'updated_at' | 'agency_id' | 'child_id'>;
+export type WishcardsUpdateParams = Omit<Partial<UpdateObject<DB, 'wishcards'>>, 'id' | 'created_at' | 'updated_at' | 'agency_id' | 'child_id'>;
 export type WishcardsCreateParams = Omit<Wishcards, 'id' | 'created_at' | 'updated_at' | 'status'>;
 
 class WishcardsRepository {

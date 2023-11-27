@@ -28,12 +28,9 @@ export default class LoginController extends BaseController {
         const user = await this.usersRepository.getByEmail(email.toLowerCase());
 
         if (user) {
+            // FIXME: @stacysealky @Enubia always returns false for some reason
             if (await bcrypt.compare(password, user.password)) {
-                if (req) {
-                    req.session.user = user;
-                } else {
-                    return this.handleError(res, 'request already ended', 500);
-                }
+                req.session.user = user;
 
                 return this.sendResponse(res, { redirect: '/profile' });
             }
