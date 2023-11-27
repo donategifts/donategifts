@@ -21,11 +21,11 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+				use: ['style-loader', 'css-loader'],
 			},
 		],
 	},
 	resolve: {
-		extensions: ['.jsx', '.js', '.css'],
+		extensions: ['.jsx', '.js', '.module.css'],
 	},
 };

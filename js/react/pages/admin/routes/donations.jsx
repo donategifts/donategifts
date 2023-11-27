@@ -1,4 +1,4 @@
-import { Box, Table } from '@mantine/core';
+import { Table } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -39,6 +39,10 @@ export default function Donations() {
 			setDonations(data);
 		} catch (error) {
 			console.error(error);
+			new window.DG.Toast().show(
+				'Could not fetch donations!',
+				window.DG.Toast.styleMap.success,
+			);
 		}
 	};
 
@@ -94,25 +98,23 @@ export default function Donations() {
 	}, [donations]);
 
 	return (
-		<Box>
-			<Table.ScrollContainer minWidth={500}>
-				<Table striped highlightOnHover>
-					<Table.Thead>
-						<Table.Tr>
-							<Table.Th>Donator</Table.Th>
-							<Table.Th>Agency</Table.Th>
-							{/* <Table.Th>Item</Table.Th> */}
-							<Table.Th>Price</Table.Th>
-							<Table.Th>URL</Table.Th>
-							<Table.Th>Date</Table.Th>
-							<Table.Th>Status</Table.Th>
-							<Table.Th>Total</Table.Th>
-							<Table.Th>Actions</Table.Th>
-						</Table.Tr>
-					</Table.Thead>
-					<Table.Tbody>{rows}</Table.Tbody>
-				</Table>
-			</Table.ScrollContainer>
-		</Box>
+		<Table.ScrollContainer minWidth={500}>
+			<Table striped highlightOnHover>
+				<Table.Thead>
+					<Table.Tr>
+						<Table.Th>Donator</Table.Th>
+						<Table.Th>Agency</Table.Th>
+						{/* <Table.Th>Item</Table.Th> */}
+						<Table.Th>Price</Table.Th>
+						<Table.Th>URL</Table.Th>
+						<Table.Th>Date</Table.Th>
+						<Table.Th>Status</Table.Th>
+						<Table.Th>Total</Table.Th>
+						<Table.Th>Actions</Table.Th>
+					</Table.Tr>
+				</Table.Thead>
+				<Table.Tbody>{rows}</Table.Tbody>
+			</Table>
+		</Table.ScrollContainer>
 	);
 }
