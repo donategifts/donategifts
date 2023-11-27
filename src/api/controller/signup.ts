@@ -1,9 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Kysely } from 'kysely';
 
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 import Utils from '../../helper/utils';
@@ -11,15 +7,6 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class SignupController extends BaseController {
-    private readonly usersRepository: UsersRepository;
-    private readonly agenciesRepository: AgenciesRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-        this.usersRepository = new UsersRepository(database);
-        this.agenciesRepository = new AgenciesRepository(database);
-    }
-
     async handlePostSignup(req: Request, res: Response, _next: NextFunction) {
         const { first_name, last_name, email, password, userRole, captchaToken } = req.body;
 

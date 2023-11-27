@@ -1,15 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { Kysely } from 'kysely';
 import moment from 'moment';
 import PayPal, { notification } from 'paypal-rest-sdk';
 import Stripe from 'stripe';
 
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import ChildrenRepository from '../../db/repository/postgres/ChildrenRepository';
-import ItemsRepository from '../../db/repository/postgres/ItemsRepository';
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
-import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 import Utils from '../../helper/utils';
@@ -17,14 +10,9 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class PaymentProviderController extends BaseController {
-    private readonly wishcardsRepository: WishCardsRepository;
-    private readonly usersRepository: UsersRepository;
-    private readonly agenciesRepository: AgenciesRepository;
-    private readonly childrenRepository: ChildrenRepository;
-    private readonly itemsRepository: ItemsRepository;
     private readonly stripeClient: Stripe;
     private lastWishcardDonation: string;
-    constructor(database: Kysely<DB>) {
+    constructor() {
         super();
 
         PayPal.configure({
@@ -37,12 +25,6 @@ export default class PaymentProviderController extends BaseController {
             apiVersion: '2022-11-15',
             typescript: true,
         });
-
-        this.wishcardsRepository = new WishCardsRepository(database);
-        this.usersRepository = new UsersRepository(database);
-        this.agenciesRepository = new AgenciesRepository(database);
-        this.childrenRepository = new ChildrenRepository(database);
-        this.itemsRepository = new ItemsRepository(database);
 
         this.lastWishcardDonation = '';
     }
@@ -64,13 +46,13 @@ export default class PaymentProviderController extends BaseController {
     }) {
         try {
             const user = await this.usersRepository.getById(userId);
-            const wishCard = await this.wishcardsRepository.getById(wishCardId);
+            const wishCard = await this.wishCardsRepository.getById(wishCardId);
             const agency = await this.agenciesRepository.getByName(agencyName);
 
             const child = await this.childrenRepository.getById(wishCard.child_id);
             const item = await this.itemsRepository.getById(wishCard.item_id);
 
-            await this.wishcardsRepository.update(wishCard.id, {
+            await this.wishCardsRepository.update(wishCard.id, {
                 status: 'donated',
             });
 
@@ -121,7 +103,7 @@ export default class PaymentProviderController extends BaseController {
         const { wishCardId, email, agencyName, userDonation } = req.body;
 
         // Create a PaymentIntent with the order amount and currency
-        const wishCard = await this.wishcardsRepository.getById(wishCardId);
+        const wishCard = await this.wishCardsRepository.getById(wishCardId);
         const item = await this.itemsRepository.getById(wishCard.item_id);
 
         if (wishCard) {

@@ -1,11 +1,9 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
-
 import AdminController from './controller/admin';
 
 const router = express.Router();
-const adminController = new AdminController(database);
+const adminController = new AdminController();
 
 router.get('/publishWishcards', adminController.handleGetDraftWishcards);
 

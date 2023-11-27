@@ -1,12 +1,32 @@
 import { Response } from 'express';
 import { RateLimitRequestHandler, rateLimit } from 'express-rate-limit';
 
+import { database } from '../../db/postgresconnection';
+import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
+import ChildrenRepository from '../../db/repository/postgres/ChildrenRepository';
+import CommunityPostsRepository from '../../db/repository/postgres/CommunityPostsRepository';
+import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
+import ItemsRepository from '../../db/repository/postgres/ItemsRepository';
+import MessagesRepository from '../../db/repository/postgres/MessagesRepository';
+import OrdersRepository from '../../db/repository/postgres/OrdersRepository';
+import UsersRepository from '../../db/repository/postgres/UsersRepository';
+import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
+import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
 import logger from '../../helper/logger';
 
 export default class BaseController {
     protected log: typeof logger;
-
     public limiter: RateLimitRequestHandler;
+    protected agenciesRepository: AgenciesRepository;
+    protected childrenRepository: ChildrenRepository;
+    protected communityPostsRepository: CommunityPostsRepository;
+    protected imagesRepository: ImagesRepository;
+    protected itemsRepository: ItemsRepository;
+    protected messagesRepository: MessagesRepository;
+    protected ordersRepository: OrdersRepository;
+    protected usersRepository: UsersRepository;
+    protected verificationTokensRepository: VerificationTokensRepository;
+    protected wishCardsRepository: WishCardsRepository;
 
     constructor(limitTime = 15) {
         this.log = logger;
@@ -15,6 +35,17 @@ export default class BaseController {
             windowMs: limitTime * 60 * 1000,
             max: 100,
         });
+
+        this.agenciesRepository = new AgenciesRepository(database);
+        this.childrenRepository = new ChildrenRepository(database);
+        this.communityPostsRepository = new CommunityPostsRepository(database);
+        this.imagesRepository = new ImagesRepository(database);
+        this.itemsRepository = new ItemsRepository(database);
+        this.messagesRepository = new MessagesRepository(database);
+        this.ordersRepository = new OrdersRepository(database);
+        this.usersRepository = new UsersRepository(database);
+        this.verificationTokensRepository = new VerificationTokensRepository(database);
+        this.wishCardsRepository = new WishCardsRepository(database);
 
         this.bindMethods();
     }

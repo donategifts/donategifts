@@ -1,35 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { Kysely } from 'kysely';
 
-import DonationRepository from '../../db/repository/DonationRepository';
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
-import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
 
 export default class ProfileController extends BaseController {
-    private readonly usersRepository: UsersRepository;
-    private readonly donationRepository: DonationRepository;
-    private readonly agenciesRepository: AgenciesRepository;
-    private readonly imagesRepository: ImagesRepository;
-    private readonly verificationTokensRepository: VerificationTokensRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-
-        this.usersRepository = new UsersRepository(database);
-        // check this, we don't have a donation repository anymore
-        this.donationRepository = new DonationRepository();
-        this.agenciesRepository = new AgenciesRepository(database);
-        this.imagesRepository = new ImagesRepository(database);
-        this.verificationTokensRepository = new VerificationTokensRepository(database);
-    }
-
     private async sendEmail(email: string, verificationHash: string) {
         const emailResponse = await Messaging.sendVerificationEmail(email, verificationHash);
         const response = emailResponse ? emailResponse.data : '';

@@ -1,11 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Kysely } from 'kysely';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import VerificationTokensRepository from '../../db/repository/postgres/VerificationTokensRepository';
-import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 import Utils from '../../helper/utils';
@@ -13,16 +9,6 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class PasswordController extends BaseController {
-    private readonly usersRepository: UsersRepository;
-    private readonly verificationTokensRepository: VerificationTokensRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-
-        this.usersRepository = new UsersRepository(database);
-        this.verificationTokensRepository = new VerificationTokensRepository(database);
-    }
-
     async handlePostNew(req: Request, res: Response, _next: NextFunction) {
         try {
             const tokenData = await this.usersRepository.getByPasswordResetToken(req.body.token);
@@ -55,14 +41,14 @@ export default class PasswordController extends BaseController {
                 return this.handleError(res, 'User not found');
             }
 
-            const token = await this.verificationTokensRepository.create({
+            const result = await this.verificationTokensRepository.create({
                 token: uuidv4(),
                 type: 'email',
                 user_id: user.id,
                 expires_at: moment().add(1, 'hours').toDate(),
             });
 
-            await Messaging.sendPasswordResetMail(user.email, token);
+            await Messaging.sendPasswordResetMail(user.email, result.token);
 
             return this.sendResponse(res, {});
         } catch (error) {

@@ -1,12 +1,11 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
 import Validations from '../middleware/validations';
 
 import LoginController from './controller/login';
 
 const router = express.Router();
-const loginController = new LoginController(database);
+const loginController = new LoginController();
 
 router.post(
     '/google-signin',

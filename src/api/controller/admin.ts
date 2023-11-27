@@ -1,28 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
-import { Kysely, NoResultError, Selectable } from 'kysely';
+import { NoResultError, Selectable } from 'kysely';
 import moment from 'moment';
 
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import WishCardRepository from '../../db/repository/WishCardRepository';
-import { Agencies, DB, Users } from '../../db/types/generated/database';
+import { WishcardsUpdateParams } from '../../db/repository/postgres/WishCardsRepository';
+import { Agencies, Users } from '../../db/types/generated/database';
 import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
 
 export default class AdminController extends BaseController {
-    private readonly agenciesRepository: AgenciesRepository;
-    private readonly usersRepository: UsersRepository;
-    private readonly wishCardRepository: WishCardRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-
-        this.agenciesRepository = new AgenciesRepository(database);
-        this.usersRepository = new UsersRepository(database);
-        this.wishCardRepository = new WishCardRepository();
-    }
-
     private formatAgencyResponse(agency: Selectable<Agencies>, manager: Selectable<Users>) {
         return {
             id: agency.id,
@@ -156,7 +142,7 @@ export default class AdminController extends BaseController {
 
     async handleGetDraftWishcards(_req: Request, res: Response, _next: NextFunction) {
         try {
-            const wishcards = await this.wishCardRepository.getWishCardsByStatus('draft');
+            const wishcards = await this.wishCardsRepository.getByStatus('draft');
             const agenciesWithWishCardsMap: Map<string, any[]> = new Map();
 
             for (const wishCard of wishcards) {
@@ -176,12 +162,12 @@ export default class AdminController extends BaseController {
     async handlePutDraftWishcard(req: Request, res: Response, _next: NextFunction) {
         try {
             const { wishCardId, wishItemURL } = req.body;
-            const wishCardModifiedFields = {
+            const wishCardModifiedFields: WishcardsUpdateParams = {
                 wishItemURL,
                 status: 'published',
             };
 
-            await this.wishCardRepository.updateWishCardByObjectId(
+            await this.wishCardsRepository.update(
                 wishCardId,
                 wishCardModifiedFields,
             );

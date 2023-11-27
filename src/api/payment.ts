@@ -1,11 +1,9 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
-
 import PaymentProviderController from './controller/payment';
 
 const router = express.Router();
-const paymentProviderController = new PaymentProviderController(database);
+const paymentProviderController = new PaymentProviderController();
 
 router.post('/create-intent', paymentProviderController.handlePostCreateIntent);
 

@@ -1,13 +1,12 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
 import Validations from '../middleware/validations';
 
 import SignupController from './controller/signup';
 
 const router = express.Router();
-const signupController = new SignupController(database);
+const signupController = new SignupController();
 const fileUpload = new FileUpload();
 
 router.post('/signup', signupController.handlePostSignup);

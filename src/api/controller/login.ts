@@ -1,24 +1,13 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { OAuth2Client } from 'google-auth-library';
-import { Kysely } from 'kysely';
 
-import UsersRepository from '../../db/repository/postgres/UsersRepository';
-import { DB } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import Utils from '../../helper/utils';
 
 import BaseController from './basecontroller';
 
 export default class LoginController extends BaseController {
-    private readonly usersRepository: UsersRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-
-        this.usersRepository = new UsersRepository(database);
-    }
-
     private async verifyGoogleToken(token: string) {
         const oauthClient = new OAuth2Client(config.G_CLIENT_ID ? config.G_CLIENT_ID : undefined);
         const ticket = await oauthClient.verifyIdToken({

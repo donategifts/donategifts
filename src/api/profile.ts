@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
 import Validator from '../middleware/validations';
@@ -8,7 +7,7 @@ import Validator from '../middleware/validations';
 import ProfileController from './controller/profile';
 
 const router = express.Router();
-const profileController = new ProfileController(database);
+const profileController = new ProfileController();
 
 const fileUpload = new FileUpload();
 

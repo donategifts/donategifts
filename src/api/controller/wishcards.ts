@@ -1,14 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { Kysely, Selectable } from 'kysely';
+import { Selectable } from 'kysely';
 import moment from 'moment';
 
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import ChildrenRepository from '../../db/repository/postgres/ChildrenRepository';
-import ImagesRepository from '../../db/repository/postgres/ImagesRepository';
-import ItemsRepository from '../../db/repository/postgres/ItemsRepository';
-import MessagesRepository from '../../db/repository/postgres/MessagesRepository';
-import WishcardsRepository from '../../db/repository/postgres/WishCardsRepository';
-import { Children, DB, Items, Wishcards } from '../../db/types/generated/database';
+import { Children, Items, Wishcards } from '../../db/types/generated/database';
 import config from '../../helper/config';
 import * as DefaultItems from '../../helper/defaultItems';
 import Utils from '../../helper/utils';
@@ -16,24 +10,6 @@ import Utils from '../../helper/utils';
 import BaseController from './basecontroller';
 
 export default class WishCardApiController extends BaseController {
-    private readonly wishCardsRepository: WishcardsRepository;
-    private readonly agenciesRepository: AgenciesRepository;
-    private readonly itemsRepository: ItemsRepository;
-    private readonly childrenRepository: ChildrenRepository;
-    private readonly messagesRepository: MessagesRepository;
-    private readonly imagesRepository: ImagesRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-
-        this.wishCardsRepository = new WishcardsRepository(database);
-        this.agenciesRepository = new AgenciesRepository(database);
-        this.itemsRepository = new ItemsRepository(database);
-        this.childrenRepository = new ChildrenRepository(database);
-        this.messagesRepository = new MessagesRepository(database);
-        this.imagesRepository = new ImagesRepository(database);
-    }
-
     async getWishCardSearchResult(
         itemName: string,
         childAge: number,

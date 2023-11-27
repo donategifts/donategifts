@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { database } from '../db/postgresconnection';
 import FileUpload from '../middleware/fileupload';
 import Permissions from '../middleware/permissions';
 import Validations from '../middleware/validations';
@@ -9,7 +8,7 @@ import WishCardController from './controller/wishcards';
 
 const router = express.Router();
 const fileUpload = new FileUpload();
-const wishCardController = new WishCardController(database);
+const wishCardController = new WishCardController();
 
 router.get('/all', wishCardController.handleGetAllCards);
 

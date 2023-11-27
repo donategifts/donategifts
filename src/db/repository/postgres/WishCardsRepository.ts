@@ -176,7 +176,7 @@ export default class WishcardsRepository {
             childName,
             item: itemName,
             price: itemPrice,
-            donationDate: orderDate,
+            donationDate: orderDate.toString(),
             address: `${addressLine1} ${addressLine2} ${city}, ${state} ${zipCode}`,
         });
     }

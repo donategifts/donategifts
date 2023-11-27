@@ -1,23 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { Kysely } from 'kysely';
 import moment from 'moment';
-
-import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
-import WishCardsRepository from '../../db/repository/postgres/WishCardsRepository';
-import { DB } from '../../db/types/generated/database';
 
 import BaseController from './basecontroller';
 
 export default class HomeController extends BaseController {
-    private readonly agenciesRepository: AgenciesRepository;
-    private readonly wishCardsRepository: WishCardsRepository;
-
-    constructor(database: Kysely<DB>) {
-        super();
-        this.agenciesRepository = new AgenciesRepository(database);
-        this.wishCardsRepository = new WishCardsRepository(database);
-    }
-
     private getChristmasString() {
         const christmas = moment([2021, 11, 25]);
         const today = moment();
