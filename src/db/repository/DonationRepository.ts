@@ -65,4 +65,14 @@ export default class DonationRepository {
             throw new Error(`Failed to update donation status: ${error}`);
         }
     }
+
+    getAllDonations() {
+        return this.donationModel
+            .find()
+            .populate<{ donationCard: WishCard }>('donationCard')
+            .populate<{ donationFrom: User }>('donationFrom')
+            .populate<{ donationTo: Agency }>('donationTo')
+            .lean()
+            .exec();
+    }
 }

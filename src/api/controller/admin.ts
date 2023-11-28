@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { Kysely, NoResultError, Selectable } from 'kysely';
 import moment from 'moment';
 
+import { STATUS } from '../../db/models/Donation';
+import DonationRepository from '../../db/repository/DonationRepository';
 import AgenciesRepository from '../../db/repository/postgres/AgenciesRepository';
 import UsersRepository from '../../db/repository/postgres/UsersRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
@@ -15,12 +17,17 @@ export default class AdminController extends BaseController {
     private readonly usersRepository: UsersRepository;
     private readonly wishCardRepository: WishCardRepository;
 
+    private donationRepository: DonationRepository;
+
     constructor(database: Kysely<DB>) {
         super();
 
         this.agenciesRepository = new AgenciesRepository(database);
         this.usersRepository = new UsersRepository(database);
         this.wishCardRepository = new WishCardRepository();
+
+        // TODO: needs refactoring, donations table does not exist anymore
+        this.donationRepository = new DonationRepository();
     }
 
     private formatAgencyResponse(agency: Selectable<Agencies>, manager: Selectable<Users>) {
@@ -187,6 +194,92 @@ export default class AdminController extends BaseController {
             );
 
             return this.sendResponse(res, wishCardId);
+        } catch (error) {
+            return this.handleError(res, error);
+        }
+    }
+
+    // TODO: needs refactoring, donations table does not exist anymore
+    async handleGetAllDonations(_req: Request, res: Response, _next: NextFunction) {
+        try {
+            const donations = await this.donationRepository.getAllDonations();
+            const data: {
+                id: string;
+                user: {
+                    id: string;
+                    name: string;
+                };
+                agency: {
+                    id: string;
+                    name: string;
+                };
+                wishCard: {
+                    id: string;
+                    itemName: string;
+                    itemPrice: number;
+                    itemURL: string;
+                };
+                date: string;
+                status: STATUS;
+                totalAmount: number;
+            }[] = [];
+
+            for (const donation of donations) {
+                const user = donation.donationFrom;
+                const agency = donation.donationTo;
+                const wishCard = donation.donationCard;
+
+                data.push({
+                    id: donation._id,
+                    user: {
+                        id: user?._id,
+                        name: `${user?.fName} ${user?.lName}`,
+                    },
+                    agency: {
+                        id: agency?._id || '',
+                        name: agency?.agencyName,
+                    },
+                    wishCard: {
+                        id: wishCard?._id,
+                        itemName: wishCard?.wishItemName,
+                        itemPrice: wishCard?.wishItemPrice,
+                        itemURL: wishCard?.wishItemURL,
+                    },
+                    date: moment(donation.donationDate).format('DD-MM-yyyy'),
+                    status: donation.status,
+                    totalAmount: donation.donationPrice,
+                });
+            }
+
+            // sort by status
+            // confirmed donations first
+            // then ordered donations
+            // then delivered donations
+            data.sort((a, b) => {
+                if (a.status === 'confirmed' && b.status !== 'confirmed') {
+                    return -1;
+                } else if (a.status !== 'confirmed' && b.status === 'confirmed') {
+                    return 1;
+                } else if (a.status === 'ordered' && b.status === 'delivered') {
+                    return -1;
+                } else if (a.status === 'delivered' && b.status === 'ordered') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            return this.sendResponse(res, data);
+        } catch (error) {
+            return this.handleError(res, error);
+        }
+    }
+
+    async handlePutUpdateDonationStatus(req: Request, res: Response, _next: NextFunction) {
+        try {
+            const { donationId, status } = req.body;
+            await this.donationRepository.updateDonationStatus(donationId, status);
+            return this.sendResponse(res, { message: 'Donation status updated' });
         } catch (error) {
             return this.handleError(res, error);
         }
