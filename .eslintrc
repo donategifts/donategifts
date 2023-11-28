@@ -5,6 +5,9 @@
   "extends": [
     "slurp-config"
   ],
+  "rules": {
+    "require-atomic-updates": "off"
+  },
   "settings": {
     "react": {
       "version": "detect"
