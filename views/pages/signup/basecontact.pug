@@ -7,6 +7,13 @@ append head
     if locals.env.captcha
         script( src='https://www.google.com/recaptcha/api.js' async defer )
 
+append meta
+    if locals.env.mode === 'development'
+        meta( name='referrer' content='no-referrer-when-downgrade' )
+
+block external
+    include ../../mixins/googlefacebookscripts.pug
+
 block content
     #sign-up.gradient-form.d-flex.justify-content-center.align-items-center.flex-column
         h1.heading-primary.mt-5 Join DonateGifts!
@@ -86,12 +93,25 @@ block content
                                     .spinner-border( role='status' )
                                         span.visually-hidden Loading...
 
+                            #google-login-button.mt-3.center-elements
+
 block modal
     include ../../components/modal/signupModal.pug
 
 block scripts
     include ../../mixins/formvalidation
     +passwordToggleJS
+
+    script.
+        $(document).ready(() => {
+            $('input[type="radio"]').click((e) => {
+                if ($(e.currentTarget).val() === 'partner') {
+                    $('#google-login-button').addClass('d-none');
+                } else {
+                    $('#google-login-button').removeClass('d-none');
+                }
+            });
+        });
 
     script.
         $(document).ready(() => {
@@ -193,3 +213,34 @@ block scripts
                     });
                 });
             });
+
+    script.
+        const handleCredentialResponse = (googleResponse) => {
+            $.ajax({
+                type: 'POST',
+                url: '/login/google-signin',
+                data: {
+                    id_token: googleResponse.credential,
+                },
+                success: (response) => {
+                    location.assign(response.url);
+                },
+                error: (response) => {
+                    new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
+                },
+            });
+        }
+
+        window.onload = () => {
+            google.accounts.id.initialize({
+                client_id: '#{locals.env.google}',
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('google-login-button'),
+                { theme: 'outline', size: 'large' }  // customization attributes
+            );
+
+            google.accounts.id.prompt(); // also display the One Tap dialog
+        }
