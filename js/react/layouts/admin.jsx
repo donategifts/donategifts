@@ -46,8 +46,8 @@ function AdminLayout() {
                     Agencies
                 </Link>
                 <hr />
-                <Link className="btn btn-link text-decoration-none" to="/users/overview">
-                    Users
+                <Link className="btn btn-link text-decoration-none" to="/donations">
+                    Donations
                 </Link>
             </AppShell.Navbar>
 

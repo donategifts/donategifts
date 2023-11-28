@@ -7,7 +7,7 @@ function CustomButton(props) {
             type={props.type}
             size={props.size}
             variant={props.variant}
-            color={props.color}
+            c={props.color}
             fullWidth={props.fullWidth}
             onClick={props.onClick}
             disabled={props.disabled}

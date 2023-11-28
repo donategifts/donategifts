@@ -17,4 +17,8 @@ router.put('/verifyAgency/:agencyId', adminController.handlePutVerifyAgency);
 
 router.post('/updateAgencyData/:agencyId', adminController.handleUpdateAgencyData);
 
+router.get('/donations', adminController.handleGetAllDonations);
+
+router.put('/donations', adminController.handlePutUpdateDonationStatus);
+
 export default router;

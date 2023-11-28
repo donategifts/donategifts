@@ -5,6 +5,7 @@ import AdminLayout from '../../../layouts/admin.jsx';
 
 import Detail from './agency/detail.jsx';
 import Overview from './agency/overview.jsx';
+import Donations from './donations.jsx';
 import Administration from './wishcard/administration.jsx';
 
 export const router = createBrowserRouter(
@@ -29,6 +30,10 @@ export const router = createBrowserRouter(
                 {
                     path: 'wishcards/administration',
                     element: <Administration />,
+                },
+                {
+                    path: 'donations',
+                    element: <Donations />,
                 },
             ],
             // TODO: create a 404 page

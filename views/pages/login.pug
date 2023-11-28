@@ -3,6 +3,10 @@ extends ../master
 block title
     title Sign Up to Donate Gifts
 
+append meta
+    if locals.env.mode === 'development'
+        meta( name='referrer' content='no-referrer-when-downgrade' )
+
 block external
     include ../mixins/googlefacebookscripts.pug
 
@@ -37,16 +41,19 @@ block content
                                     .spinner-border( role='status' )
                                         span.visually-hidden Loading...
 
-                            //- #google-fb-login
-                            //-     .g-signin2.mt-3( data-width='228' data-longtitle='true' data-onsuccess='googleLogin' )
-                            //-     .fb-login-button.mt-3( data-size='large'
-                            //-         data-button-type='login_with'
-                            //-         data-layout='default'
-                            //-         data-auto-logout-link='false'
-                            //-         data-use-continue-as='false'
-                            //-         data-scope='public_profile,email'
-                            //-         data-onlogin='facebookLogin'
-                            //-     )
+                            #google-login-button.mt-3.center-elements
+                            //- .fb-login-button.mt-3( data-width=''
+                            //-     data-size='large'
+                            //-     data-button-type='login_with'
+                            //-     data-layout='default'
+                            //-     data-auto-logout-link='false'
+                            //-     data-use-continue-as='false'
+                            //-     data-scope='public_profile,email'
+                            //-     data-onlogin='facebookLogin'
+                            //- )
+
+//- prepend scripts
+//-     script( async defer crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0' nonce='hY4o2Tzj' )
 
 append scripts
     include ../mixins/formvalidation
@@ -105,46 +112,58 @@ append scripts
                 window.history.pushState({}, null, '/login');
             });
 
+    //- script.
+    //-     const facebookLogin = (fbUser) => {
+    //-         if (fbUser.authResponse && fbUser.status === 'connected') {
+    //-             FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
+    //-                 if (response.id) {
+    //-                     $.ajax({
+    //-                         type: 'POST',
+    //-                         url: '/login/fb-signin',
+    //-                         data: {
+    //-                             userName: response.name,
+    //-                             email: response.email,
+    //-                         },
+    //-                         success: (_) => {
+    //-                             location.reload();
+    //-                         },
+    //-                         error: (response) => {
+    //-                             const txtToJson = JSON.parse(response.responseText);
+    //-                             new DG.Toast().show(txtToJson.error.msg, DG.Toast.styleMap.danger);
+    //-                         },
+    //-                     });
+    //-                 }
+    //-             });
+    //-         }
+    //-     }
+
     script.
-        const facebookLogin = (fbUser) => {
-            if (fbUser.authResponse && fbUser.status === 'connected') {
-                FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
-                    if (response.id) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/fb-signin',
-                            data: {
-                                userName: response.name,
-                                email: response.email,
-                            },
-                            success: (_) => {
-                                location.reload();
-                            },
-                            error: (response) => {
-                                const txtToJson = JSON.parse(response.responseText);
-                                new DG.Toast().show(txtToJson.error.msg, DG.Toast.styleMap.danger);
-                            },
-                        });
-                    }
-                });
-            }
-        }
-
-        const googleLogin = (googleUser) => {
-            var id_token = googleUser.getAuthResponse().id_token;
-            googleUser.disconnect();
-
+        const handleCredentialResponse = (googleResponse) => {
             $.ajax({
                 type: 'POST',
-                url: '/google-signin',
+                url: '/login/google-signin',
                 data: {
-                    id_token,
+                    id_token: googleResponse.credential,
                 },
-                success: (_) => {
-                    location.reload();
+                success: (response) => {
+                    location.assign(response.url);
                 },
                 error: (response) => {
                     new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
                 },
             });
+        }
+
+        window.onload = () => {
+            google.accounts.id.initialize({
+                client_id: '#{locals.env.google}',
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('google-login-button'),
+                { theme: 'outline', size: 'large' }  // customization attributes
+            );
+
+            google.accounts.id.prompt(); // also display the One Tap dialog
         }
