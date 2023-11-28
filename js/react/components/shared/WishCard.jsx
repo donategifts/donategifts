@@ -78,7 +78,7 @@ function WishCard({ wishCard, attributes }) {
 				</Button>
 
 				{wishCard.status === 'donated' ? (
-					<Button radius="md" color="#6c757d " size="md" disabled="true">
+					<Button radius="md" color="#6c757d " size="md" disabled>
 						Donated
 					</Button>
 				) : (
