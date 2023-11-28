@@ -61,6 +61,7 @@ const app = express();
 		facebook: config.FB_APP_ID,
 		google: config.G_CLIENT_ID,
 		captcha: config.GOOGLE_CAPTCHA_KEY,
+		mode: config.NODE_ENV,
 	};
 
 	app.use((req, res, next) => {

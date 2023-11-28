@@ -80,11 +80,7 @@ export default class LoginController extends BaseController {
 						emailVerified: true,
 					});
 
-					if (req) {
-						req.session.user = newUser;
-					} else {
-						return this.handleError(res, 'request already ended', 500);
-					}
+					req.session.user = newUser;
 
 					return res.status(200).send({
 						url: '/profile',
