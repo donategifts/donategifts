@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import axios from 'axios';
 import { useState, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -25,24 +25,21 @@ function Signup() {
 		e.preventDefault();
 		const captchaToken = await recaptchaRef.current.executeAsync();
 		recaptchaRef.current.reset();
-		$.ajax({
-			type: 'POST',
-			url: '/signup',
-			data: {
+		axios
+			.post('/signup', {
 				...formState,
 				userRole,
 				captchaToken,
-			},
-			success(response) {
-				location.assign(response.url);
-			},
-			error(response) {
+			})
+			.then((res) => {
+				location.assign(res.data.url);
+			})
+			.catch((err) => {
 				new window.DG.Toast().show(
-					response.responseJSON.error.msg || response.responseJSON.error,
+					err.response.data.error.msg || err.response.data.error,
 					window.DG.Toast.styleMap.danger,
 				);
-			},
-		});
+			});
 	}
 
 	return (
