@@ -1,7 +1,7 @@
 extends ../master
 
 block title
-    title Sign Up to Donate Gifts
+    title Log In Existing User | Donate Gifts
 
 append meta
     if locals.env.mode === 'development'
@@ -36,11 +36,10 @@ block content
 
                     .row.pt-5.pb-2.justify-content-center
                         .col-md-6
-                            button.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' ) Login
+                            button.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' ) Log In
                                 #loading-spinner.ms-2.d-none
                                     .spinner-border( role='status' )
                                         span.visually-hidden Loading...
-
                             #google-login-button.mt-3.center-elements
                             //- .fb-login-button.mt-3( data-width=''
                             //-     data-size='large'
@@ -164,6 +163,8 @@ append scripts
                 document.getElementById('google-login-button'),
                 { theme: 'outline', size: 'large' }  // customization attributes
             );
+
+            $('#google-login-button span').text('Log in with Google');
 
             google.accounts.id.prompt(); // also display the One Tap dialog
         }

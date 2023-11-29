@@ -91,6 +91,11 @@ main {
 	font-size: 1.15rem;
 }
 
+#google-login-button {
+	> div:first-child {
+		width: 100% !important;
+	}
+}
 
 .card {
 	.fa-question-circle {
