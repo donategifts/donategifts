@@ -317,7 +317,6 @@ export default class Messaging {
 			to,
 			'DonateGifts Agency Account Verified',
 			this.templates.agencyVerified,
-			this.attachments.templateAttachments,
 		);
 	}
 
