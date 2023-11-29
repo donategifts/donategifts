@@ -243,10 +243,11 @@ export default class Messaging {
 		);
 	}
 
-	static sendWishPublishedEmail({ agencyEmail, childName }) {
+	static sendWishPublishedEmail({ agencyEmail, childName, wishCardId }) {
 		const body = this.templates.agencyWishPublished
 			.replace(/%childName%/g, childName)
-			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString());
+			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString())
+			.replace('%wishCardId%', wishCardId);
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,

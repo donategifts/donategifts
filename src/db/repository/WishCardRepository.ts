@@ -305,6 +305,7 @@ export default class WishCardRepository {
 			await Messaging.sendWishPublishedEmail({
 				agencyEmail: accountManager?.email,
 				childName: wishCard.childFirstName,
+				wishCardId: wishCard._id,
 			});
 		}
 	}
