@@ -295,7 +295,7 @@ export default class Messaging {
 				'Please confirm your email address to continue using our services.',
 			)
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString())
-			.replace('%buttonText%', 'Confirm Your Email');
+			.replace('%buttonText%', 'Confirm Email');
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
@@ -333,7 +333,32 @@ export default class Messaging {
 		);
 	}
 
-	//NOTE: Broken
+	static sendAgencyShippingAlert({
+		agencyEmail,
+		childName,
+		donorFirstName,
+		itemName,
+		donationOrderId,
+		trackingInfo,
+		agencyAddress,
+	}) {
+		const body = this.templates.agencyShippingAlert
+			.replace(/%childName%/g, childName)
+			.replace('%donorFirstName%', donorFirstName)
+			.replace('%itemName%', itemName)
+			.replace('%orderId%', donationOrderId)
+			.replace('%trackingInfo%', trackingInfo)
+			.replace('%agencyAddress%', agencyAddress);
+
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			agencyEmail,
+			`Shipping confirmed for ${childName}`,
+			body,
+		);
+	}
+
+	//NOTE: Broken - only works sometimes
 	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
 		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
@@ -376,7 +401,6 @@ export default class Messaging {
 		}
 	}
 
-	//NOTE: Broken
 	static async sendFeedbackMessage({ name, email, subject, message }) {
 		if (!config.DISCORD.CONTACT_WEBHOOK_URL) {
 			return;
