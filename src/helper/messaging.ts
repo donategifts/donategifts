@@ -237,7 +237,7 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			email,
-			`${firstName}, you made a donation to ${childName}`,
+			`Your donation receipt for ${childName}'s wish`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
@@ -279,7 +279,7 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			agencyEmail,
-			`New donation alert for ${childName}'s wish item`,
+			`New donation alert for ${childName}'s wish`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
@@ -300,7 +300,7 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'Verify email for DonateGifts',
+			'Verify your email for DonateGifts',
 			body,
 			this.attachments.templateAttachments,
 		);
@@ -328,7 +328,7 @@ export default class Messaging {
 		await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'DonateGifts Agency Account Verified',
+			'Your agency account is verified!',
 			this.templates.agencyVerified,
 		);
 	}
@@ -353,6 +353,33 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			agencyEmail,
+			`Shipping confirmed for ${childName}`,
+			body,
+		);
+	}
+
+	static sendDonorShippingAlert({
+		donorEmail,
+		donorFirstName,
+		childName,
+		itemName,
+		agencyName,
+		donationOrderId,
+		trackingInfo,
+		wishCardId,
+	}) {
+		const body = this.templates.donorShippingAlert
+			.replace('%donorFirstName%', donorFirstName)
+			.replace(/%childName%/g, childName)
+			.replace('%item%', itemName)
+			.replace('%agency%', agencyName)
+			.replace('%orderId%', donationOrderId)
+			.replace('%trackingInfo%', trackingInfo)
+			.replace('%wishCardId%', wishCardId);
+
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			donorEmail,
 			`Shipping confirmed for ${childName}`,
 			body,
 		);
