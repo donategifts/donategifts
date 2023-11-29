@@ -198,6 +198,7 @@ function Signup() {
 								>
 									Sign Up
 								</button>
+								<div className="mt-3 center-elements" id="google-login-button" />
 							</div>
 						</div>
 					</div>
