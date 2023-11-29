@@ -43,9 +43,21 @@ export default class Messaging {
 					encoding: 'utf-8',
 				},
 			),
+			agencyShippingAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/agencyShippingAlert.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
 			//donor-only
 			donorDonationAlert: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/donorDonationAlert.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
+			donorShippingAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/donorShippingAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
