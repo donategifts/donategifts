@@ -322,7 +322,7 @@ function WishCardCreate() {
 					<div className="text-primary">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
-								<div className="display-6 mt-3 mb-3">Information about child</div>
+								<div className="display-6 mt-3 mb-2">Information about child</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<TextInput
@@ -428,9 +428,21 @@ function WishCardCreate() {
 										onChange={() => handleOnChange(setChildStoryError)}
 									/>
 								</div>
-								<div className="display-6 mt-5 mb-4">
+								<div className="display-6 mt-5 mb-2">
 									Information about wish item
 								</div>
+								<p className="form-text w-100 mb-0">
+									Wish item MUST NOT be a gift card. If you need an inspiration:{' '}
+									<span>
+										<a
+											target="_blank"
+											href="https://www.amazon.com/s?k=gifts+for+kids+all+ages&crid=2438GIIO55T67&sprefix=gifts+for+kids+all+ages%2Caps%2C133&ref=nb_sb_noss_1"
+											rel="noreferrer"
+										>
+											See Suggested Items
+										</a>
+									</span>
+								</p>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3 mb-sm-4">
 										<TextInput

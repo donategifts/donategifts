@@ -1,7 +1,7 @@
 extends ../../master
 
 block title
-    title Sign Up | Donate Gifts
+    title Sign Up New User | Donate Gifts
 
 append head
     if locals.env.captcha
@@ -92,7 +92,6 @@ block content
                                 #loading-spinner.ms-2.d-none
                                     .spinner-border( role='status' )
                                         span.visually-hidden Loading...
-
                             #google-login-button.mt-3.center-elements
 
 block modal
@@ -241,6 +240,8 @@ block scripts
                 document.getElementById('google-login-button'),
                 { theme: 'outline', size: 'large' }  // customization attributes
             );
+
+            $('#google-login-button span').text('Sign up with Google (Gift Sender Only)');
 
             google.accounts.id.prompt(); // also display the One Tap dialog
         }
