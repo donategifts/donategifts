@@ -15,17 +15,6 @@ block modal
 
 block scripts
     script.
-        $(document).ready(() => {
-            $('input[type="radio"]').click((e) => {
-                if ($(e.currentTarget).val() === 'partner') {
-                    $('#google-login-button').addClass('d-none');
-                } else {
-                    $('#google-login-button').removeClass('d-none');
-                }
-            });
-        });
-
-    script.
         const handleCredentialResponse = (googleResponse) => {
             $.ajax({
                 type: 'POST',
