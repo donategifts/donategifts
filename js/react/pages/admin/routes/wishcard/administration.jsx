@@ -9,11 +9,10 @@ export default function Administration() {
 
 	axios.defaults.baseURL = '/api/admin';
 
-	//NOTE: BUG: Editing the wishItemURL function does not work. It's either broken or incomplete.
 	const handleUpdateWishcard = async (wishCardId) => {
 		const newWishItemUrl = document.getElementById('newWishItemUrl' + wishCardId).value;
 		try {
-			await axios.put('/publishWishcards', { wishCardId, wishItemUr: newWishItemUrl }); //NOTE: there is a typo
+			await axios.put('/publishWishcards', { wishCardId, wishItemURL: newWishItemUrl });
 
 			fetchAgencyWithWishCardsData();
 		} catch (error) {
