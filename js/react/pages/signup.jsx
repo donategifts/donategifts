@@ -161,7 +161,7 @@ function Signup() {
 								{formState.passwordConfirm !== '' &&
 									formState.password !== formState.passwordConfirm && (
 										<small className="text-primary" id="password-error">
-											The passwords dont match.
+											The passwords do not match.
 										</small>
 									)}
 							</div>
@@ -187,21 +187,16 @@ function Signup() {
 							ref={recaptchaRef}
 						/>
 						<div className="row pt-4 justify-content-center">
-							<div className="col-md-6">
-								<button
-									className="btn btn-lg btn-primary w-100 d-flex justify-content-center"
-									id="submit-btn"
-									type="submit"
-								>
-									Sign Up
-								</button>
-								{userRole === 'donor' && (
-									<div
-										className="mt-3 center-elements"
-										id="google-login-button"
-									/>
-								)}
-							</div>
+							<button
+								className="btn btn-lg btn-primary w-100 d-flex justify-content-center"
+								id="submit-btn"
+								type="submit"
+							>
+								Sign Up
+							</button>
+							{userRole === 'donor' && (
+								<div className="mt-3 center-elements" id="google-login-button" />
+							)}
 						</div>
 					</div>
 				</form>
