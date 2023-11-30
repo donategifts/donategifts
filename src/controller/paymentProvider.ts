@@ -257,6 +257,7 @@ export default class PaymentProviderController extends BaseController {
 
 			this.renderView(res, 'payment/success', {
 				donationInformation,
+				wishCardId: wishCard?._id,
 			});
 		} catch (error) {
 			this.handleError(res, error);

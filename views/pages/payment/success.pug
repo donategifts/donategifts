@@ -8,8 +8,10 @@ block content
         section.text-center
             .display-4.mb-3 Thank you for your donation !
             p.mb-6 Your payment was successful and we are processing your order now.
-            a.btn.btn-lg.btn-success.mb-3( href='/wishcards' ) See More Wish Cards
-
+            p.mb-6 You can now leave a custom message for #{donationInformation.childName}:
+            a.btn.btn-lg.btn-success.mb-3( href='/wishcards/single/' + wishCardId ) Back to #{donationInformation.childName}'s Wish card
+            br
+            a.btn.btn-sm.btn-success.mb-3( href='/wishcards' ) See More Wish Cards
         hr
 
         section.d-none.d-md-flex.justify-content-center
