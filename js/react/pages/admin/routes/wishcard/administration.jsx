@@ -7,14 +7,15 @@ export default function Administration() {
 	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState({});
 	const [error, setError] = useState('');
 
-	axios.defaults.baseURL = '/api/admin';
-
 	const handleUpdateWishcard = async (wishCardId) => {
 		const newWishItemUrl = document.getElementById('newWishItemUrl' + wishCardId).value;
 		try {
-			await axios.put('/publishWishcards', { wishCardId, wishItemURL: newWishItemUrl });
+			await axios.put('/api/admin/publishWishcards', {
+				wishCardId,
+				wishItemURL: newWishItemUrl,
+			});
 
-			fetchAgencyWithWishCardsData();
+			await fetchAgencyWithWishCardsData();
 		} catch (error) {
 			setError(error?.message || 'Unable to publish wishcard');
 		}
@@ -22,7 +23,7 @@ export default function Administration() {
 
 	const fetchAgencyWithWishCardsData = async () => {
 		try {
-			const { data } = await axios.get('/publishWishcards');
+			const { data } = await axios.get('/api/admin/publishWishcards');
 
 			setAgenciesWithWishCards(data.data);
 		} catch (error) {
@@ -31,7 +32,9 @@ export default function Administration() {
 	};
 
 	useEffect(() => {
-		fetchAgencyWithWishCardsData();
+		fetchAgencyWithWishCardsData().catch((error) => {
+			setError(error?.message || 'Could not fetch wishcards');
+		});
 	}, []);
 
 	return (
