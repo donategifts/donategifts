@@ -91,10 +91,11 @@ main {
 	font-size: 1.15rem;
 }
 
-#google-login-button {
-	> div:first-child {
-		width: 100% !important;
-	}
+.art-badge {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	font-weight: $fw-semi-bold;
 }
 
 .card {
@@ -127,6 +128,10 @@ main {
 			}
 		}
 	}
+
+	.w-sm-100 {
+		width: auto;
+	}
 }
 
 @media (width <= 768px) {
@@ -137,4 +142,10 @@ main {
 			}
 		}
 	}
+
+	.w-sm-100 {
+		width: 100% !important;
+		margin-top: -3px !important;
+	}
 }
+
