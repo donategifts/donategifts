@@ -41,18 +41,14 @@
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
         .modal-content
             .modal-header.d-flex.align-items-start
-                h4.quick-font.px-3.grn-font What is the processing fee?
+                h4.quick-font.px-3.grn-font Why is there a processing fee?
                 button.btn-close( type='button' data-bs-dismiss='modal' aria-label='close' )
             .modal-body.quick-font
                 .container
                     .row
-                        p.px-3
-                            | We don't want to charge you anything extra, as we are a non-proft organization, but each card transaction is powered by Stripe
-                            span.grn-font.bold-text (PCI compliant secure payment processing system).
-                            | Stripe charges about 3% per transaction.
+                        p.px-3 We strive not to impose any additional costs on you, given our status as a non-profit organization. However, it's important to note that each card transaction is facilitated through Stripe, a PCI-compliant secure payment processing system. Stripe typically incurs a charge of approximately 3% per transaction.
                     .row
-                        p.px-3
-                            | In addition, there is a 5% cover fee for item price changes, so that if the item price goes up right after your payment, we can still place the order and ship to the partner agency.
+                        p.px-3 Furthermore, to account for potential fluctuations in item prices, we have implemented a 5% cover fee. This ensures that even if the item price increases immediately after your payment, we can still proceed with placing the order and shipping it to the partner agency.
             .modal-footer
                 button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
 
@@ -65,10 +61,7 @@
             .modal-body.quick-font
                 .container
                     .row
-                        p.px-3
-                            | Item sales tax is
-                            span.grn-font.bold-text charged by the merchant
-                            | when we place the order to ship your donation item to our partner foster agency. Sales tax is governed at the state level and varies depending on the recipient (partner agency)'s address.
+                        p.px-3 The merchant charges sales tax on the donation item when the order is placed for shipment to our partner foster agency. Sales tax is governed at the state level and varies based on the recipient's (partner agency) address.
             .modal-footer
                 button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
 
