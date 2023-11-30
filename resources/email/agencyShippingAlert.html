@@ -110,10 +110,6 @@
           width: 83.3% !important;
         }
 
-        .video-block {
-          max-width: none !important;
-        }
-
         .mobile_hide {
           min-height: 0px;
           max-height: 0px;
@@ -222,6 +218,10 @@
                                   min-width: 100%;
                                   -ms-text-size-adjust: 100%;
                                   -webkit-text-size-adjust: 100%;
+                                  padding-top: 0px;
+                                  padding-right: 0px;
+                                  padding-bottom: 0px;
+                                  padding-left: 0px;
                                 "
                                 valign="top"
                               >
@@ -344,7 +344,6 @@
                             line-height: 1.2;
                             padding-top: 10px;
                             padding-right: 40px;
-                            padding-bottom: 10px;
                             padding-left: 40px;
                           "
                         >
@@ -360,32 +359,117 @@
                             "
                           >
                             <span style="font-size: 26px; color: #2b303a"
-                              ><strong>%childName%'s wish card is published</strong></span
+                              ><strong>Item for %childName% has been shipped</strong></span
                             >
                           </p>
-                        </div>                        
+                        </div>
+                        <table
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                          class="divider"
+                          role="presentation"
+                          style="
+                            table-layout: fixed;
+                            vertical-align: top;
+                            border-spacing: 0;
+                            border-collapse: collapse;
+                            mso-table-lspace: 0pt;
+                            mso-table-rspace: 0pt;
+                            min-width: 100%;
+                            -ms-text-size-adjust: 100%;
+                            -webkit-text-size-adjust: 100%;
+                          "
+                          valign="top"
+                          width="100%"
+                        >
+                          <tbody>
+                            <tr style="vertical-align: top" valign="top">
+                              <td
+                                class="divider_inner"
+                                style="
+                                  word-break: break-word;
+                                  vertical-align: top;
+                                  min-width: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  -webkit-text-size-adjust: 100%;
+                                  padding-top: 25px;
+                                  padding-right: 0px;
+                                  padding-bottom: 0px;
+                                  padding-left: 0px;
+                                "
+                                valign="top"
+                              >
+                                <table
+                                  align="center"
+                                  border="0"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  class="divider_content"
+                                  role="presentation"
+                                  style="
+                                    table-layout: fixed;
+                                    vertical-align: top;
+                                    border-spacing: 0;
+                                    border-collapse: collapse;
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    border-top: 0px solid #bbbbbb;
+                                    width: 100%;
+                                  "
+                                  valign="top"
+                                  width="100%"
+                                >
+                                  <tbody>
+                                    <tr style="vertical-align: top" valign="top">
+                                      <td
+                                        style="
+                                          word-break: break-word;
+                                          vertical-align: top;
+                                          -ms-text-size-adjust: 100%;
+                                          -webkit-text-size-adjust: 100%;
+                                        "
+                                        valign="top"
+                                      >
+                                        <span></span>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                         <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 40px; padding-left: 40px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
                         <div
                           style="
                             color: #2b303a;
                             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
                             line-height: 1.5;
+                            padding: 10px 40px;
+                            margin: 0px 15px;
+                            word-break: break-word;
+                            mso-line-height-alt: 21px;
                             font-size: 18px;
                           "
-                          class="center"
-                          align="center"
                         >
-                            <p>Thank you for submitting %childName%'s wish card.</p>
-                          </div>
+                          <p>Please post a photo of the received item and write a thank-you message for the donor. This ensures transparency in our donation process. With your help, we can continue to deliver more gifts and supplies.</p>
+                          <p><strong>Donor's Name: </strong>%donorFirstName%</p>
+                          <p><strong>Donated Item: </strong>%itemName%</p>
+                          <p><strong>Order Id: </strong>%orderId%</p>
+                          <p><strong>Tracking Number: </strong>%trackingInfo%</p>
+                          <p><strong>Shipping Address: </strong>%agencyAddress%</p>
                         </div>
+
                         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px 10px;"
                         align="center" class="center">
-                          <a href="https://donate-gifts.com/wishcards/single/%wishCardId%" target="_blank"
+                          <a href="https://donate-gifts.com/community" target="_blank"
                           style="text-align: center; padding: 1rem 1.5rem; border-radius: 0.55rem; font-size: 1.25rem; background-color: #ff826b; color: #fff; text-decoration: none;">
-                            View Wish Card
+                            Send a message to the donor
                           </a>
                         </div>
-                        <div style="
+                        <div
+                          style="
                             color: #2b303a;
                             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
                             line-height: 1.8;
@@ -398,15 +482,16 @@
                           "
                         >
                             <p>
-                              If this information is incorrect,
+                              Follow us on Instagram:
                               <a
-                                href="https://donate-gifts.com/contact"
+                                href="https://instagram.com/donategifts"
                                 rel="noopener"
                                 style="text-decoration: underline; color: #ff826b"
                                 target="_blank"
-                                >please contact us</a
-                              >
+                                alt="social media instagram link"
+                                >@donategifts</a>
                             </p>
+                            <p>If this information is incorrect, please contact us.</p>
                         </div>
                         <!--[if mso]></td></tr></table><![endif]-->
                         <table
@@ -608,218 +693,7 @@
                             </tr>
                           </tbody>
                         </table>
-                        <table
-                          cellpadding="0"
-                          cellspacing="0"
-                          class="social_icons"
-                          role="presentation"
-                          style="
-                            table-layout: fixed;
-                            vertical-align: top;
-                            border-spacing: 0;
-                            border-collapse: collapse;
-                            mso-table-lspace: 0pt;
-                            mso-table-rspace: 0pt;
-                          "
-                          valign="top"
-                          width="100%"
-                        >
-                          <tbody>
-                            <tr style="vertical-align: top" valign="top">
-                              <td
-                                style="
-                                  word-break: break-word;
-                                  vertical-align: top;
-                                  padding-top: 28px;
-                                  padding-right: 10px;
-                                  padding-bottom: 10px;
-                                  padding-left: 10px;
-                                "
-                                valign="top"
-                              >
-                                <table
-                                  align="center"
-                                  cellpadding="0"
-                                  cellspacing="0"
-                                  class="social_table"
-                                  role="presentation"
-                                  style="
-                                    table-layout: fixed;
-                                    vertical-align: top;
-                                    border-spacing: 0;
-                                    border-collapse: collapse;
-                                  "
-                                  valign="top"
-                                >
-                                  <tbody>
-                                    <tr
-                                      align="center"
-                                      style="vertical-align: top; display: inline-block; text-align: center"
-                                      valign="top"
-                                    >
-                                      <td
-                                        style="
-                                          word-break: break-word;
-                                          vertical-align: top;
-                                          padding-bottom: 0;
-                                          padding-right: 10px;
-                                          padding-left: 10px;
-                                        "
-                                        valign="top"
-                                      >
-                                        <a href="https://instagram.com/donategifts" target="_blank"
-                                          ><img
-                                            alt="Instagram"
-                                            height="32"
-                                            src="cid:instagram2x.png"
-                                            style="
-                                              text-decoration: none;
-                                              -ms-interpolation-mode: bicubic;
-                                              height: auto;
-                                              border: 0;
-                                              display: block;
-                                            "
-                                            title="Instagram"
-                                            width="32"
-                                        /></a>
-                                      </td>
-                                      <td
-                                        style="
-                                          word-break: break-word;
-                                          vertical-align: top;
-                                          padding-bottom: 0;
-                                          padding-right: 10px;
-                                          padding-left: 10px;
-                                        "
-                                        valign="top"
-                                      >
-                                        <a href="mailto:support@donate-gifts.com" target="_blank"
-                                          ><img
-                                            alt="E-Mail"
-                                            height="32"
-                                            src="cid:mail2x.png"
-                                            style="
-                                              text-decoration: none;
-                                              -ms-interpolation-mode: bicubic;
-                                              height: auto;
-                                              border: 0;
-                                              display: block;
-                                            "
-                                            title="E-Mail"
-                                            width="32"
-                                        /></a>
-                                      </td>
-                                      <td
-                                        style="
-                                          word-break: break-word;
-                                          vertical-align: top;
-                                          padding-bottom: 0;
-                                          padding-right: 10px;
-                                          padding-left: 10px;
-                                        "
-                                        valign="top"
-                                      >
-                                        <a href="https://donate-gifts.com" target="_blank"
-                                          ><img
-                                            alt="Web Site"
-                                            height="32"
-                                            src="cid:website2x.png"
-                                            style="
-                                              text-decoration: none;
-                                              -ms-interpolation-mode: bicubic;
-                                              height: auto;
-                                              border: 0;
-                                              display: block;
-                                            "
-                                            title="Web Site"
-                                            width="32"
-                                        /></a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          class="divider"
-                          role="presentation"
-                          style="
-                            table-layout: fixed;
-                            vertical-align: top;
-                            border-spacing: 0;
-                            border-collapse: collapse;
-                            mso-table-lspace: 0pt;
-                            mso-table-rspace: 0pt;
-                            min-width: 100%;
-                            -ms-text-size-adjust: 100%;
-                            -webkit-text-size-adjust: 100%;
-                          "
-                          valign="top"
-                          width="100%"
-                        >
-                          <tbody>
-                            <tr style="vertical-align: top" valign="top">
-                              <td
-                                class="divider_inner"
-                                style="
-                                  word-break: break-word;
-                                  vertical-align: top;
-                                  min-width: 100%;
-                                  -ms-text-size-adjust: 100%;
-                                  -webkit-text-size-adjust: 100%;
-                                  padding-top: 25px;
-                                  padding-right: 40px;
-                                  padding-bottom: 10px;
-                                  padding-left: 40px;
-                                "
-                                valign="top"
-                              >
-                                <table
-                                  align="center"
-                                  border="0"
-                                  cellpadding="0"
-                                  cellspacing="0"
-                                  class="divider_content"
-                                  role="presentation"
-                                  style="
-                                    table-layout: fixed;
-                                    vertical-align: top;
-                                    border-spacing: 0;
-                                    border-collapse: collapse;
-                                    mso-table-lspace: 0pt;
-                                    mso-table-rspace: 0pt;
-                                    border-top: 1px solid #555961;
-                                    width: 100%;
-                                  "
-                                  valign="top"
-                                  width="100%"
-                                >
-                                  <tbody>
-                                    <tr style="vertical-align: top" valign="top">
-                                      <td
-                                        style="
-                                          word-break: break-word;
-                                          vertical-align: top;
-                                          -ms-text-size-adjust: 100%;
-                                          -webkit-text-size-adjust: 100%;
-                                        "
-                                        valign="top"
-                                      >
-                                        <span></span>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 40px; padding-left: 40px; padding-top: 20px; padding-bottom: 30px; font-family: Arial, sans-serif"><![endif]-->
+                        
                         <div
                           style="
                             color: #555555;
@@ -842,15 +716,12 @@
                           >
                             <p>
                               <span style="color: #fff;"
-                                >DonateGifts Inc. Copyright © %currentYearPlaceholder% | donate-gifts.com | 501c3 Nonprofit</span
+                                >DonateGifts Inc. | donate-gifts.com | 501c3 Nonprofit Charity Organization</span
                               >
                             </p>
                           </div>
                         </div>
-                        <!--[if mso]></td></tr></table><![endif]-->
-                        <!--[if (!mso)&(!IE)]><!-->
                       </div>
-                      <!--<![endif]-->
                     </div>
                   </div>
                 </div>

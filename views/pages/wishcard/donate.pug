@@ -6,7 +6,7 @@ block title
 block content
     #donate.bg-light
         .container.py-3
-            h1.text-center.cool-font.text-primary Wish Donation Secure Checkout
+            h1.text-center.cool-font.text-primary Wish Item Donation Checkout
             .text-center
                 -
                     var text = wishcard.childFirstName + "'s gift will be delivered to our partner agency,";
@@ -23,7 +23,7 @@ block content
                             .mt-1
                                 .center-elements.justify-content-start
                                     .fa.fa-heart.text-secondary
-                                    .ms-1 100% tax-deductible receipt &amp; shipping details
+                                    .ms-1 Tax-deductible receipt with shipping details
                                 .center-elements.justify-content-start
                                     .fa.fa-heart.text-secondary
                                     .ms-1 Notification with a delivery proof
@@ -135,7 +135,7 @@ block content
 
             .text-center.mt-2
                 .fw-bold.fs-5 Secure Checkout Guaranteed
-                img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
+                img.img-fluid.checkout-img( src='/img/secure-cards.png' alt='secure checkout images' )
 
     #cardId( hidden )= wishcard._id
     #userId( hidden )= user._id

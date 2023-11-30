@@ -86,13 +86,12 @@ block content
                     )
 
                     .row.pt-4.justify-content-center
-                        .col-md-6
-                            button#submit-btn.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' )
-                                | Sign Up
-                                #loading-spinner.ms-2.d-none
-                                    .spinner-border( role='status' )
-                                        span.visually-hidden Loading...
-                            //- #google-login-button.mt-3.center-elements
+                        button#submit-btn.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' )
+                            | Sign Up
+                            #loading-spinner.ms-2.d-none
+                                .spinner-border( role='status' )
+                                    span.visually-hidden Loading...
+                        #google-login-button.mt-3.center-elements
 
 block modal
     include ../../components/modal/signupModal.pug
@@ -238,10 +237,8 @@ block scripts
 
             google.accounts.id.renderButton(
                 document.getElementById('google-login-button'),
-                { theme: 'outline', size: 'large' }  // customization attributes
+                { theme: 'outline', size: 'large', text: "signup_with", width: '280'}  // customization attributes
             );
-
-            $('#google-login-button span').text('Sign up with Google (Gift Sender Only)');
 
             google.accounts.id.prompt(); // also display the One Tap dialog
         }

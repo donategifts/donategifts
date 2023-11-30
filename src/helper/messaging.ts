@@ -43,9 +43,21 @@ export default class Messaging {
 					encoding: 'utf-8',
 				},
 			),
+			agencyShippingAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/agencyShippingAlert.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
 			//donor-only
 			donorDonationAlert: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/donorDonationAlert.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
+			donorShippingAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/donorShippingAlert.html'),
 				{
 					encoding: 'utf-8',
 				},
@@ -225,16 +237,17 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			email,
-			`${firstName}, you made a donation to ${childName}`,
+			`Your donation receipt for ${childName}'s wish`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
 	}
 
-	static sendWishPublishedEmail({ agencyEmail, childName }) {
+	static sendWishPublishedEmail({ agencyEmail, childName, wishCardId }) {
 		const body = this.templates.agencyWishPublished
 			.replace(/%childName%/g, childName)
-			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString());
+			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString())
+			.replace('%wishCardId%', wishCardId);
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
@@ -266,7 +279,7 @@ export default class Messaging {
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			agencyEmail,
-			`New donation alert for ${childName}'s wish item`,
+			`New donation alert for ${childName}'s wish`,
 			body,
 			this.attachments.donationTemplateAttachments,
 		);
@@ -282,12 +295,12 @@ export default class Messaging {
 				'Please confirm your email address to continue using our services.',
 			)
 			.replace('%currentYearPlaceholder%', new Date().getUTCFullYear().toString())
-			.replace('%buttonText%', 'Confirm Your Email');
+			.replace('%buttonText%', 'Confirm Email');
 
 		return this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'Verify email for DonateGifts',
+			'Verify your email for DonateGifts',
 			body,
 			this.attachments.templateAttachments,
 		);
@@ -315,12 +328,64 @@ export default class Messaging {
 		await this.sendMail(
 			config.EMAIL.ADDRESS,
 			to,
-			'DonateGifts Agency Account Verified',
+			'Your agency account is verified!',
 			this.templates.agencyVerified,
 		);
 	}
 
-	//NOTE: Broken
+	static sendAgencyShippingAlert({
+		agencyEmail,
+		childName,
+		donorFirstName,
+		itemName,
+		donationOrderId,
+		trackingInfo,
+		agencyAddress,
+	}) {
+		const body = this.templates.agencyShippingAlert
+			.replace(/%childName%/g, childName)
+			.replace('%donorFirstName%', donorFirstName)
+			.replace('%itemName%', itemName)
+			.replace('%orderId%', donationOrderId)
+			.replace('%trackingInfo%', trackingInfo)
+			.replace('%agencyAddress%', agencyAddress);
+
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			agencyEmail,
+			`Shipping confirmed for ${childName}`,
+			body,
+		);
+	}
+
+	static sendDonorShippingAlert({
+		donorEmail,
+		donorFirstName,
+		childName,
+		itemName,
+		agencyName,
+		donationOrderId,
+		trackingInfo,
+		wishCardId,
+	}) {
+		const body = this.templates.donorShippingAlert
+			.replace('%donorFirstName%', donorFirstName)
+			.replace(/%childName%/g, childName)
+			.replace('%item%', itemName)
+			.replace('%agency%', agencyName)
+			.replace('%orderId%', donationOrderId)
+			.replace('%trackingInfo%', trackingInfo)
+			.replace('%wishCardId%', wishCardId);
+
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			donorEmail,
+			`Shipping confirmed for ${childName}`,
+			body,
+		);
+	}
+
+	//NOTE: Broken - only works sometimes
 	static async sendAgencyVerificationNotification({ id, name, website, bio }) {
 		if (!config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL) {
 			return;
@@ -363,7 +428,6 @@ export default class Messaging {
 		}
 	}
 
-	//NOTE: Broken
 	static async sendFeedbackMessage({ name, email, subject, message }) {
 		if (!config.DISCORD.CONTACT_WEBHOOK_URL) {
 			return;
