@@ -1,7 +1,7 @@
 extends ../../master
 
 block title
-    title Sign Up | Donate Gifts
+    title Sign Up New User | Donate Gifts
 
 append meta
     if locals.env.mode === 'development'
@@ -41,6 +41,8 @@ block scripts
                 document.getElementById('google-login-button'),
                 { theme: 'outline', size: 'large' }  // customization attributes
             );
+
+            $('#google-login-button span').text('Sign up with Google (Gift Sender Only)');
 
             google.accounts.id.prompt(); // also display the One Tap dialog
         }
