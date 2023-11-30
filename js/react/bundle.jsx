@@ -46,3 +46,6 @@ window.AgencyRegister = AgencyRegister;
 
 import DonationHistory from './pages/profile/donationhistory.jsx';
 window.DonationHistory = DonationHistory;
+
+import Terms from './pages/terms.jsx';
+window.Terms = Terms;

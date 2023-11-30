@@ -1,5 +1,5 @@
 import { Carousel } from '@mantine/carousel';
-import { Image, Card, Text, Group, Button } from '@mantine/core';
+import { Image, Card, Text, Group, Button, Badge } from '@mantine/core';
 import PropTypes from 'prop-types';
 function WishCard({ wishCard, attributes }) {
 	const imgList = [
@@ -17,8 +17,11 @@ function WishCard({ wishCard, attributes }) {
 			? wishCard.childFirstName
 			: `${wishCard.childFirstName}'s Wish`;
 
-	const slides = [childImage, itemImage].map((image) => (
+	const slides = [childImage, itemImage].map((image, index) => (
 		<Carousel.Slide key={image}>
+			{wishCard.hasArtImage && index === 0 ? (
+				<Badge className="art-badge">{`${wishCard.childFirstName}'s Art`}</Badge>
+			) : null}
 			<Image
 				src={image}
 				fallbackSrc="/img/img-placeholder.png"
@@ -69,6 +72,7 @@ function WishCard({ wishCard, attributes }) {
 			<Group justify="center" mt="xs" align="center">
 				<Button
 					radius="md"
+					className="w-sm-100"
 					size="md"
 					component="a"
 					target="_blank"
@@ -78,11 +82,18 @@ function WishCard({ wishCard, attributes }) {
 				</Button>
 
 				{wishCard.status === 'donated' ? (
-					<Button radius="md" color="#6c757d " size="md" disabled>
+					<Button radius="md" className="w-sm-100" color="#6c757d " size="md" disabled>
 						Donated
 					</Button>
 				) : (
-					<Button radius="md" color="#ff826b" size="md" component="a" {...attributes}>
+					<Button
+						radius="md"
+						className="w-sm-100"
+						color="#ff826b"
+						size="md"
+						component="a"
+						{...attributes}
+					>
 						Donate Gift
 					</Button>
 				)}

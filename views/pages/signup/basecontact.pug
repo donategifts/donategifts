@@ -39,10 +39,8 @@ block scripts
 
             google.accounts.id.renderButton(
                 document.getElementById('google-login-button'),
-                { theme: 'outline', size: 'large' }  // customization attributes
+                { theme: 'outline', size: 'large', text: "signup_with", width: '280'}  // customization attributes
             );
-
-            $('#google-login-button span').text('Sign up with Google (Gift Sender Only)');
 
             google.accounts.id.prompt(); // also display the One Tap dialog
         }
