@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import moment from 'moment';
 
 import WishCardRepository from '../../db/repository/WishCardRepository';
 
@@ -6,15 +7,11 @@ import BaseController from './basecontroller';
 
 export default class PaymentController extends BaseController {
 	private wishCardRepository: WishCardRepository;
-	// private userRepository: UserRepository;
-	// private donationRepository: DonationRepository;
 
 	constructor() {
 		super();
 
 		this.wishCardRepository = new WishCardRepository();
-		// this.userRepository = new UserRepository();
-		// this.donationRepository = new DonationRepository();
 
 		this.handleGetPaymentSuccess = this.handleGetPaymentSuccess.bind(this);
 	}
@@ -28,6 +25,7 @@ export default class PaymentController extends BaseController {
 
 			let id = '';
 			let amount = '';
+			const currentDate = moment(Date.now());
 
 			if (paramIndex) {
 				const url = req.rawHeaders[paramIndex];
@@ -41,7 +39,6 @@ export default class PaymentController extends BaseController {
 			}
 
 			const wishCard = await this.wishCardRepository.getWishCardByObjectId(id);
-
 			const suggestedCards = await this.wishCardRepository.getRandom('published', 3);
 
 			if (!wishCard) {
@@ -49,8 +46,11 @@ export default class PaymentController extends BaseController {
 			}
 
 			const data = {
-				email: res.locals.user.email,
+				email: res.locals?.user?.email,
+				userId: res.locals?.user?._id,
 				amount,
+				donationDate: currentDate.format('MMM DD YYYY'),
+				wishCardId: wishCard._id,
 				wishCard,
 				suggestedCards,
 			};

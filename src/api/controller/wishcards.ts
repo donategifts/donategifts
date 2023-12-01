@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
+import MessageRepository from '../../db/repository/MessageRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
 import config from '../../helper/config';
 import Utils from '../../helper/utils';
@@ -9,18 +10,20 @@ import BaseApiController from './basecontroller';
 
 export default class WishCardApiController extends BaseApiController {
 	private wishCardRepository: WishCardRepository;
-
 	private agencyRepository: AgencyRepository;
+	private messageRepository: MessageRepository;
 
 	constructor() {
 		super();
 
 		this.wishCardRepository = new WishCardRepository();
 		this.agencyRepository = new AgencyRepository();
+		this.messageRepository = new MessageRepository();
 
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
 		this.postWishCardAsDraft = this.postWishCardAsDraft.bind(this);
+		this.postMessage = this.postMessage.bind(this);
 	}
 
 	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
@@ -129,6 +132,21 @@ export default class WishCardApiController extends BaseApiController {
 			});
 
 			return this.sendResponse(res, newWishCard);
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async postMessage(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { messageFrom, messageTo, message } = req.body;
+			const newMessage = await this.messageRepository.createNewMessage({
+				messageFrom,
+				messageTo,
+				message,
+			});
+
+			return this.sendResponse(res, newMessage);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

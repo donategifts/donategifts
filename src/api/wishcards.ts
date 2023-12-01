@@ -38,4 +38,11 @@ router.post(
 	wishCardController.postWishCardAsDraft,
 );
 
+router.post(
+	'/message',
+	// Validator.postMessageValidationRules(),
+	Validator.validate,
+	wishCardController.postMessage,
+);
+
 export default router;
