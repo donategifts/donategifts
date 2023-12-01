@@ -49,3 +49,6 @@ window.DonationHistory = DonationHistory;
 
 import Terms from './pages/terms.jsx';
 window.Terms = Terms;
+
+import Contact from './pages/contact.jsx';
+window.Contact = Contact;
