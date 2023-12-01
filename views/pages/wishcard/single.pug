@@ -76,21 +76,25 @@ block content
                                 .display-6.text-primary.my-4 My Wish
                                 img.img-fluid.mb-3.rounded-3( alt= wishcard.wishItemName loading='lazy' src= wishcard.wishItemImage || wishItemImg )
                                 p
-                                    span.fw-bold Item Name:
-                                    span.mx-2= wishcard.wishItemName
-                                p
                                     span.fw-bold Item Price:
                                     span.mx-2= wishItemPrice
+                                p
+                                    span.fw-bold Item Name:
+                                    span.mx-2= wishcard.wishItemName
+                                if wishcard.wishItemInfo
+                                p
+                                    span.fw-bold Item Description:
+                                    span.mx-2= wishcard.wishItemInfo
+
                             .col-md-6.col-lg-6.col-12
                                 if user
                                     .display-6.text-primary.my-4 Send Message
                                     form.text-center.d-flex.flex-column.justify-content-center( action='/wishcards/message' method='post' )
-                                        select#messageSelect.form-select.form-select-lg.mb-3( aria-label=".form-select-lg example" )
+                                        select#messageSelect.form-select.form-select-lg.mb-3.input-border-primary( aria-label=".form-select-lg example" )
                                             each message, index in defaultMessages
                                                 option( value=index )= message
-                                        if donationFrom
-                                            textarea#customMessageArea.mt-3.p-3.rounded-3.border.border-1( rows= "7" placeholder="or write your custom message..." )
-                                        button.btn.btn-lg.btn-primary.mt-4.d-flex.justify-content-center( type='submit' )= messageChildName
+                                        //- textarea#customMessageArea.mt-1.rounded-3.text-primary.input-border-primary( rows= "7" placeholder="You can only write a custom message after donating this wish item." disabled=donationFrom? false: true)
+                                        button.btn.btn-lg.btn-primary.mt-2.d-flex.justify-content-center( type='submit' )= messageChildName
 
                     .card-body.bg-white.p-4.mb-4.shadow-lg.rounded-3.border.border-1
                         .row.m-2

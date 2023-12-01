@@ -91,6 +91,14 @@ main {
 	font-size: 1.15rem;
 }
 
+.fw-semi-bold {
+	font-weight: $fw-semi-bold;
+}
+
+.text-dark {
+	color: $dark;
+}
+
 .art-badge {
 	position: absolute;
 	top: 15px;
