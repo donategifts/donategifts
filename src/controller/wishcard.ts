@@ -472,6 +472,12 @@ export default class WishCardController extends BaseController {
 		try {
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
+			// if card is donated throw an error
+			if (wishcard?.status === 'donated') {
+				this.handleError(res, 'Wishcard already donated', 404, true);
+				return;
+			}
+
 			const agency = wishcard!.belongsTo;
 			const processingFee = 1.08;
 			const shipping = 'FREE';
