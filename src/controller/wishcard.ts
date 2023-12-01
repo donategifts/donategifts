@@ -464,7 +464,7 @@ export default class WishCardController extends BaseController {
 				defaultMessages: defaultMessages || [],
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			this.handleError(res, error, 404, true);
 		}
 	}
 
@@ -496,7 +496,7 @@ export default class WishCardController extends BaseController {
 				agency,
 			});
 		} catch (error) {
-			this.handleError(res, error);
+			this.handleError(res, error, 404, true);
 		}
 	}
 
