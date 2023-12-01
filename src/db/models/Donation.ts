@@ -15,6 +15,7 @@ interface Donation {
 	donationCard: string;
 	donationPrice: number;
 	donationDate: Date;
+	tracking_info: string | undefined;
 	status: keyof typeof Status;
 }
 
@@ -39,6 +40,9 @@ const DonationSchema = new Schema(
 		donationDate: {
 			type: Date,
 			default: Date.now,
+		},
+		tracking_info: {
+			type: String,
 		},
 		status: {
 			type: String,

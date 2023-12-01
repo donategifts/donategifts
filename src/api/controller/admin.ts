@@ -35,6 +35,7 @@ export default class AdminController extends BaseController {
 		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
 		this.handleGetAllDonations = this.handleGetAllDonations.bind(this);
 		this.handlePutUpdateDonationStatus = this.handlePutUpdateDonationStatus.bind(this);
+		this.handlePutUpdateTrackingInfo = this.handlePutUpdateTrackingInfo.bind(this);
 	}
 
 	private formatAgencyResponse(agency: Agency, manager: User) {
@@ -59,7 +60,7 @@ export default class AdminController extends BaseController {
 	async handleGetAgencyOverview(req: Request, res: Response, _next: NextFunction) {
 		const getVerified = req.query.getVerified;
 		try {
-			let agencies: Agency[] | null = [];
+			let agencies: Agency[] | null;
 
 			if (getVerified === 'true') {
 				agencies = await this.agencyRepository.getVerifiedAgencies();
@@ -233,6 +234,7 @@ export default class AdminController extends BaseController {
 					itemPrice: number;
 					itemURL: string;
 				};
+				tracking_info: string;
 				date: string;
 				status: STATUS;
 				totalAmount: number;
@@ -259,6 +261,7 @@ export default class AdminController extends BaseController {
 						itemPrice: wishCard?.wishItemPrice,
 						itemURL: wishCard?.wishItemURL,
 					},
+					tracking_info: donation.tracking_info || '',
 					date: moment(donation.donationDate).format('DD-MM-yyyy'),
 					status: donation.status,
 					totalAmount: donation.donationPrice,
@@ -294,6 +297,21 @@ export default class AdminController extends BaseController {
 			const { donationId, status } = req.body;
 			await this.donationRepository.updateDonationStatus(donationId, status);
 			return this.sendResponse(res, { message: 'Donation status updated' });
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePutUpdateTrackingInfo(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { id, tracking_info } = req.body;
+			const result = await this.donationRepository.updateTrackingInfo(id, tracking_info);
+
+			if (result.acknowledged) {
+				return this.sendResponse(res, { message: 'Donation tracking info updated' });
+			} else {
+				return this.handleError(res, 'Failed to update donation tracking info');
+			}
 		} catch (error) {
 			return this.handleError(res, error);
 		}
