@@ -49,6 +49,7 @@ export default class DonationRepository {
 				.populate<{ donationCard: WishCard }>('donationCard')
 				.populate<{ donationFrom: User }>('donationFrom')
 				.populate<{ donationTo: Agency }>('donationTo')
+				.lean()
 				.exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency's Donations: ${error}`);

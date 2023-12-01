@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult, param, ExpressValidator } from 'express-validator';
 
+import DonationRepository from '../db/repository/DonationRepository';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
 import log from '../helper/logger';
@@ -390,8 +391,15 @@ export default class Validations {
 			body('message')
 				.notEmpty()
 				.withMessage('Message is required')
-				.custom((value, { req }) => {
+				.custom(async (value, { req }) => {
 					const { messageFrom: user, messageTo: wishcard } = req.body;
+					const donation = await new DonationRepository().getDonationByWishCardId(
+						wishcard._id.toString(),
+					);
+					// If it's the donated user, skip validation check
+					if (donation && donation?.donationFrom._id.toString() == user._id.toString()) {
+						return true;
+					}
 					const allMessages = Utils.getMessageChoices(
 						user.fName,
 						wishcard.childFirstName,
