@@ -29,6 +29,15 @@ window.WishCardsCarousel = WishCardsCarousel;
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
 
+import AgencyRegister from './pages/profile/agency/register.jsx';
+window.AgencyRegister = AgencyRegister;
+
+import Contact from './pages/contact.jsx';
+window.Contact = Contact;
+
+import DonationHistory from './pages/profile/donationhistory.jsx';
+window.DonationHistory = DonationHistory;
+
 import Signup from './pages/signup.jsx';
 window.Signup = Signup;
 
@@ -41,14 +50,8 @@ window.WishCardManage = WishCardManage;
 import WishcardsAdministration from './pages/admin/routes/wishcard/administration.jsx';
 window.WishcardsAdministration = WishcardsAdministration;
 
-import AgencyRegister from './pages/profile/agency/register.jsx';
-window.AgencyRegister = AgencyRegister;
-
-import DonationHistory from './pages/profile/donationhistory.jsx';
-window.DonationHistory = DonationHistory;
+import PaymentSuccess from './pages/payment/success.jsx';
+window.PaymentSuccess = PaymentSuccess;
 
 import Terms from './pages/terms.jsx';
 window.Terms = Terms;
-
-import PaymentSuccess from './pages/payment/success.jsx';
-window.PaymentSuccess = PaymentSuccess;

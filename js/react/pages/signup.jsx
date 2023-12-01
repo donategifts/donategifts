@@ -194,9 +194,12 @@ function Signup() {
 							>
 								Sign Up
 							</button>
-							{userRole === 'donor' && (
-								<div className="mt-3 center-elements" id="google-login-button" />
-							)}
+							<div
+								className={
+									(userRole === 'partner' && 'd-none') + ' mt-3 center-elements'
+								}
+								id="google-login-button"
+							/>
 						</div>
 					</div>
 				</form>

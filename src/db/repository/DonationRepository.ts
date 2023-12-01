@@ -76,4 +76,8 @@ export default class DonationRepository {
 			.lean()
 			.exec();
 	}
+
+	updateTrackingInfo(id: string, tracking_info: string) {
+		return this.donationModel.updateOne({ _id: id }, { $set: { tracking_info } });
+	}
 }
