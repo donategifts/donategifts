@@ -193,7 +193,7 @@ export default class ProfileController extends BaseController {
 		}
 
 		this.log.error(`Email verification failed for hash ${req.params.hash}!`);
-		return this.handleError(res, 'Email Verification failed!', 500);
+		return this.handleError(res, 'Email Verification failed!', 500, true);
 	}
 
 	async handlePutAccount(req: Request, res: Response, _next: NextFunction) {
