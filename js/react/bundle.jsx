@@ -49,3 +49,6 @@ window.DonationHistory = DonationHistory;
 
 import Terms from './pages/terms.jsx';
 window.Terms = Terms;
+
+import PaymentSuccess from './pages/payment/success.jsx';
+window.PaymentSuccess = PaymentSuccess;

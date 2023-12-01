@@ -140,6 +140,10 @@ main {
 	.w-sm-100 {
 		width: auto;
 	}
+
+	.mb-sm-3 {
+		margin-bottom: auto;
+	}
 }
 
 @media (width <= 768px) {
@@ -154,6 +158,10 @@ main {
 	.w-sm-100 {
 		width: 100% !important;
 		margin-top: -3px !important;
+	}
+
+	.mb-sm-3 {
+		margin-bottom: 1.5rem;
 	}
 }
 

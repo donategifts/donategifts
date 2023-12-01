@@ -10,3 +10,11 @@
 		max-width: 300px;
 	}
 }
+
+#payment-success {
+	.display-6 {
+		font-size: 1.3rem;
+		font-weight: $fw-semi-bold;
+		color: $primary;
+	}
+}
