@@ -72,7 +72,7 @@ function WishCard({ wishCard, attributes }) {
 			<Group justify="center" mt="xs" align="center">
 				<Button
 					radius="md"
-					className="w-sm-100"
+					className={`w-sm-100`}
 					size="md"
 					component="a"
 					target="_blank"

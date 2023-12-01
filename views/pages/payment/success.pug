@@ -1,59 +1,15 @@
 extends ../../master
 
 block title
-    title Thank you
+    title Donation Payment Success | DonateGifts
 
-block content
-    .container.quick-font
-        section.text-center
-            .display-4.mb-3 Thank you for your donation !
-            p.mb-6 Your payment was successful and we are processing your order now.
-            p.mb-6 You can now leave a custom message for #{donationInformation.childName}:
-            a.btn.btn-lg.btn-success.mb-3( href='/wishcards/single/' + wishCardId ) Back to #{donationInformation.childName}'s Wish card
-            br
-            a.btn.btn-sm.btn-success.mb-3( href='/wishcards' ) See More Wish Cards
-        hr
-
-        section.d-none.d-md-flex.justify-content-center
-            .col-6.text-end.pe-1
-                p.fw-bold Confirmation will be sent to
-                p.fw-bold Donation order date
-                p.fw-bold Donated wish item
-                p.fw-bold Donated total amount
-            .col-6.text-start.ps-1
-                p= donationInformation.email
-                p= donationInformation.orderDate
-                p= donationInformation.itemName
-                p= donationInformation.totalAmount
-
-        section.d-md-none
-            .text-center
-                .fw-bold.pe-md-1 Confirmation will be sent to
-                .ps-md-1= donationInformation.email
-            .text-center
-                .fw-bold.pe-md-1 Donation order date
-                .ps-md-1= donationInformation.orderDate
-            .text-center
-                .fw-bold.pe-md-1 Donated wish item
-                .ps-md-1= donationInformation.itemName
-            .text-center
-                .fw-bold.pe-md-1 Donated total amount
-                .ps-md-1= donationInformation.totalAmount
-
-        hr
-
-        section.text-center
-            h3 From this donation, you will recieve:
-            .d-flex.justify-content-center.my-3
-                p.text-start
-                    i.fa.fa-heart.text-success( aria-hidden='true' )
-                    | 100% tax-deductible receipt &amp; shipping details
-                    br
-                    i.fa.fa-heart.text-success( aria-hidden='true' )
-                    | Notification with a delivery proof
-                    br
-                    i.fa.fa-heart.text-success( aria-hidden='true' )
-
-                    - var text = `Message &amp; photo from <span class="cap bold-text">${donationInformation.childName}</span> if partner agency permits`;
-
-                    span!= text
+block scripts
+    script.
+        $(document).ready(() => {
+            const root = ReactRoot(document.querySelector('#app-root'));
+            root.render(
+                React.createElement(
+                    PaymentSuccess
+                )
+            );
+        });

@@ -1,49 +1,34 @@
 #checkoutHelper.modal.fade( tabindex='-1' )
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-        .modal-content
-            .modal-header.d-flex.align-items-start
-                h4.quick-font.px-3.grn-font Where is my donation item being delivered to?
+        .modal-content.text-primary
+            .modal-header.d-flex.align-items-center
+                h3.px-3 Where is my donation item being delivered to?
                 button.btn-close.btn-close( type='button' data-bs-dismiss='modal' aria-label='close' )
-            .modal-body.quick-font
+            .modal-body.text-dark
                 .container
-                    .row
-                        p.px-3
-                            -
-                                var name = 'Partner Agency Name: ' + agency.agencyName;
-                                var website = 'Website: ' + agency.agencyWebsite;
-                                var phone = 'Phone Number: ' + agency.agencyPhone;
-                                var address = 'Address (partial for privacy): ' + agency.agencyAddress.city  + ' ' + agency.agencyAddress.state + ' in ' + agency.agencyAddress.country;
-                            span.bold-text.grn-font= name
-                            br
-                            span.bold-text.grn-font= website
-                            br
-                            span.bold-text.grn-font= phone
-                            br
-                            span.bold-text.grn-font= address
-                            br
-                    .row
-                        p.px-3
-                            | We deliver the kids' wish items to their
-                            |
-                            span.org-font managing foster agencies.
-                            |
-                            | All kids and youth are under our partner foster agencies' care and the
-                            | social worker or agency staff will collect the shipped wish items and distribute each gift.
-                            | We don't have a drop-off site because we handle all shipping orders to make the donation experience more
-                            |
-                            span.org-font easy and efficient
-                            |
-                            | for you. We will notify you with the delivery process.
+                    .row.px-2
+                        p
+                            span= `Partner Agency: `
+                            span.fw-semi-bold= agency.agencyName
+                        p
+                            span= `Website: `
+                            span.fw-semi-bold= agency.agencyWebsite ? agency.agencyWebsite : 'Not Provided'
+                        p
+                            span= `Phone Number: `
+                            span.fw-semi-bold= agency.agencyPhone
+                        p
+                            span= `Address (partial for privacy): `
+                            span.fw-semi-bold= `${agency.agencyAddress.city}, ${agency.agencyAddress.state} ${agency.agencyAddress.zipcode}, ${agency.agencyAddress.country}`
             .modal-footer
                 button.btn.btn-secondary( type='button' data-bs-dismiss='modal' ) Close
 
 #checkoutHelper2.modal.fade( tabindex='-1' )
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-        .modal-content
-            .modal-header.d-flex.align-items-start
-                h4.quick-font.px-3.grn-font Why is there a processing fee?
+        .modal-content.text-primary
+            .modal-header.d-flex.align-items-center
+                h4.px-3 Why is there a processing fee?
                 button.btn-close( type='button' data-bs-dismiss='modal' aria-label='close' )
-            .modal-body.quick-font
+            .modal-body.text-dark
                 .container
                     .row
                         p.px-3 We strive not to impose any additional costs on you, given our status as a non-profit organization. However, it's important to note that each card transaction is facilitated through Stripe, a PCI-compliant secure payment processing system. Stripe typically incurs a charge of approximately 3% per transaction.
@@ -54,11 +39,11 @@
 
 #checkoutHelper3.modal.fade( tabindex='-1' )
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-        .modal-content
-            .modal-header.d-flex.align-items-start
-                h4.quick-font.px-3.grn-font What is the item sales tax?
+        .modal-content.text-primary
+            .modal-header.d-flex.align-items-center
+                h4.px-3 What is the item sales tax?
                 button.btn-close( type='button' data-bs-dismiss='modal' aria-label='close' )
-            .modal-body.quick-font
+            .modal-body.text-dark
                 .container
                     .row
                         p.px-3 The merchant charges sales tax on the donation item when the order is placed for shipment to our partner foster agency. Sales tax is governed at the state level and varies based on the recipient's (partner agency) address.
@@ -67,11 +52,11 @@
 
 #checkoutHelper4.modal.fade( tabindex='-1' )
     .text-fix.modal-dialog.modal-dialog-centered.modal-lg( role='document' )
-        .modal-content
-            .modal-header.d-flex.align-items-start
-                h4.quick-font.px-3.grn-font Please support our cause
+        .modal-content.text-primary
+            .modal-header.d-flex.align-items-center
+                h4.px-3 Please support our cause
                 button.btn-close( type='button' data-bs-dismiss='modal' aria-label='close' )
-            .modal-body.quick-font
+            .modal-body.text-dark
                 .container
                     .row
                         p.px-3 We'd love to continue our project and help more kids, but as a nonprofit, it's challenging to proceed without your support. Your assistance will enable us to further develop and enhance this project, extending our reach to more foster kids and bringing smiles to their faces.
