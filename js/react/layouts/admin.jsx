@@ -1,4 +1,4 @@
-import { AppShell, Burger, Image } from '@mantine/core';
+import { AppShell, Burger, Divider, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, Outlet } from 'react-router-dom';
 
@@ -15,11 +15,10 @@ function AdminLayout() {
 	return (
 		<AppShell
 			header={{ height: 100 }}
-			navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+			navbar={{ width: 200, breakpoint: 'md', collapsed: { mobile: !opened } }}
 			padding="lg"
 		>
 			<AppShell.Header className="d-flex justify-content-between align-items-center px-3">
-				<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
 				<Link to="/" className="d-flex align-items-baseline text-decoration-none">
 					<Image
 						src="/img/new-donate-gifts-logo-2.png"
@@ -32,23 +31,37 @@ function AdminLayout() {
 						Admin
 					</small>
 				</Link>
-				<a className="btn btn-link text-decoration-none nav-link" href="/">
-					<i className="fas fa-sign-out-alt fs-2"></i>
-				</a>
+				<Burger opened={opened} onClick={toggle} hiddenFrom="md" size="md" />
 			</AppShell.Header>
 
 			<AppShell.Navbar p="md">
-				<Link className="btn btn-link text-decoration-none" to="/wishcards/administration">
-					Wishcards
-				</Link>
-				<hr />
-				<Link className="btn btn-link text-decoration-none w-100" to="/agency/overview">
+				<Link
+					className="btn btn-link text-decoration-none w-100"
+					onClick={toggle}
+					to="/agency/overview"
+				>
 					Agencies
 				</Link>
-				<hr />
-				<Link className="btn btn-link text-decoration-none" to="/donations">
+				<Divider my="md" />
+				<Link
+					className="btn btn-link text-decoration-none"
+					onClick={toggle}
+					to="/wishcards/administration"
+				>
+					Wishcards
+				</Link>
+				<Divider my="md" />
+				<Link
+					className="btn btn-link text-decoration-none"
+					onClick={toggle}
+					to="/donations"
+				>
 					Donations
 				</Link>
+				<Divider my="md" />
+				<a className="btn btn-link text-decoration-none" href="/">
+					Back to Home
+				</a>
 			</AppShell.Navbar>
 
 			<AppShell.Main>
