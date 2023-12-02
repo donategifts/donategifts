@@ -232,6 +232,7 @@ export default class AdminController extends BaseController {
 					id: string;
 					itemName: string;
 					itemPrice: number;
+					productID: string;
 					itemURL: string;
 				};
 				tracking_info: string;
@@ -244,6 +245,15 @@ export default class AdminController extends BaseController {
 				const user = donation.donationFrom;
 				const agency = donation.donationTo;
 				const wishCard = donation.donationCard;
+
+				let wishProductId = '';
+				const match = wishCard?.wishItemURL?.match(/\/dp\/([A-Z0-9]{10})/);
+
+				if (wishCard?.productID) {
+					wishProductId = wishCard.productID;
+				} else if (match) {
+					wishProductId = match[1];
+				}
 
 				data.push({
 					id: donation._id,
@@ -259,10 +269,11 @@ export default class AdminController extends BaseController {
 						id: wishCard?._id,
 						itemName: wishCard?.wishItemName,
 						itemPrice: wishCard?.wishItemPrice,
+						productID: wishProductId,
 						itemURL: wishCard?.wishItemURL,
 					},
 					tracking_info: donation.tracking_info || '',
-					date: moment(donation.donationDate).format('DD-MM-yyyy'),
+					date: moment(donation.donationDate).format('MMM DD, YYYY'),
 					status: donation.status,
 					totalAmount: donation.donationPrice,
 				});

@@ -21,6 +21,12 @@ export default function Donations() {
 
 			new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
 
+			//send shipping alert email to agency and donor
+			// sendAgencyShippingAlert
+			if (status === 'ordered') {
+				console.log(id);
+			}
+
 			await fetchDonations();
 		} catch (error) {
 			console.error(error);
@@ -80,13 +86,16 @@ export default function Donations() {
 		donations.map((donation) => (
 			<Table.Tr key={donation.id}>
 				<Table.Td>{donation.user.name}</Table.Td>
-				<Table.Td>{donation.agency.name?.slice(0, 50)}...</Table.Td>
+				{/* TODO: add shipping address with modal or popover */}
+				<Table.Td>{donation.agency.name?.slice(0, 20)}...</Table.Td>
 				<Table.Td>
 					<b>${donation.wishCard.itemPrice}</b>
 				</Table.Td>
+				{/* TODO: why is productID not showing? Also extract productid from url if !pid */}
+				<Table.Td>{donation.wishCard.productID ?? ''}</Table.Td>
 				<Table.Td>
 					<a href={donation.wishCard.itemURL} target="_blank" rel="noreferrer">
-						{donation.wishCard.itemURL?.slice(0, 80)}...
+						{donation.wishCard.itemURL?.slice(0, 20)}...
 					</a>
 				</Table.Td>
 				<Table.Td>{donation.date}</Table.Td>
@@ -100,6 +109,7 @@ export default function Donations() {
 					<b>${donation.totalAmount}</b>
 				</Table.Td>
 				<Table.Td>
+					{/* TODO: change this into Add button with modal popup similar to edit wishcard */}
 					<Input
 						defaultValue={donation.tracking_info}
 						placeholder="Tracking Info"
@@ -147,9 +157,10 @@ export default function Donations() {
 			<Table striped highlightOnHover>
 				<Table.Thead>
 					<Table.Tr>
-						<Table.Th style={{ textAlign: 'center' }}>Donator</Table.Th>
+						<Table.Th style={{ textAlign: 'center' }}>Donor</Table.Th>
 						<Table.Th style={{ textAlign: 'center' }}>Agency</Table.Th>
 						<Table.Th style={{ textAlign: 'center' }}>Price</Table.Th>
+						<Table.Th style={{ textAlign: 'center' }}>Product ID</Table.Th>
 						<Table.Th style={{ textAlign: 'center' }}>URL</Table.Th>
 						<Table.Th style={{ textAlign: 'center' }}>Date</Table.Th>
 						<Table.Th style={{ textAlign: 'center' }}>Status</Table.Th>
