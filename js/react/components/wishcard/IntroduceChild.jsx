@@ -1,10 +1,11 @@
 import { Button } from '@mantine/core';
 import PropType from 'prop-types';
+import React from 'react';
 
 const IntroduceChild = ({ childId, childName, image, user, status }) => {
-	const attributes = {
-		href: user?._id ? `/wishcards/donate/${childId}` : '/login',
-	};
+	const isDonated = status === 'donated';
+	const buttonHref = user?._id ? `/wishcards/donate/${childId}` : '/login';
+	const buttonColor = isDonated ? '#6c757d' : '#ff826b';
 
 	return (
 		<div className="col-md-4 col-lg-3 col-12 mt-4 p-4">
@@ -16,22 +17,17 @@ const IntroduceChild = ({ childId, childName, image, user, status }) => {
 					loading="lazy"
 				/>
 				<h1 className="cool-font text-primary my-3">Hi, I am {childName}!</h1>
-				{status === 'donated' ? (
-					<Button radius="md" className="w-sm-100" color="#6c757d " size="md" disabled>
-						Donated
-					</Button>
-				) : (
-					<Button
-						radius="md"
-						className="w-sm-100"
-						color="#ff826b"
-						size="md"
-						component="a"
-						{...attributes}
-					>
-						Donate Gift
-					</Button>
-				)}
+				<Button
+					radius="md"
+					className="w-sm-100"
+					color={buttonColor}
+					size="md"
+					component="a"
+					href={buttonHref}
+					disabled={isDonated}
+				>
+					{isDonated ? 'Donated' : 'Donate Gift'}
+				</Button>
 			</div>
 		</div>
 	);

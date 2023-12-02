@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import axios from 'axios';
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CustomToast from '../../components/shared/CustomToast.jsx';
 
@@ -11,15 +11,20 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 	const [toastType, setToastType] = useState('');
 	const [showToast, setShowToast] = useState(false);
 
+	useEffect(() => {
+		setSelectedMessage(defaultMessages[0] || '');
+	}, [defaultMessages]);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			await axios.post('/wishcards/message', {
+			const res = await axios.post('/wishcards/message', {
 				messageFrom: user || {},
 				messageTo: wishcard,
 				message: selectedMessage,
 			});
-			onMessageSend();
+			const data = res.data.data;
+			onMessageSend({ ...data, messageFrom: user });
 			setToastMessage('Message sent successfully!');
 			setToastType('success');
 			setShowToast(true);

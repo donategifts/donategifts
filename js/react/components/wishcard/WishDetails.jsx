@@ -1,4 +1,5 @@
 import PropType from 'prop-types';
+import { useEffect, useState } from 'react';
 
 const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
 	const defaultImages = [
@@ -9,8 +10,15 @@ const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
 		'/img/gift-placeholder-5.jpg',
 	];
 
-	const imageSrc =
-		wishItemImage || defaultImages[Math.floor(Math.random() * defaultImages.length)];
+	const [defaultImageSrc, setDefaultImageSrc] = useState('');
+
+	useEffect(() => {
+		if (!wishItemImage) {
+			setDefaultImageSrc(defaultImages[Math.floor(Math.random() * defaultImages.length)]);
+		}
+	}, [wishItemImage]);
+
+	const imageSrc = wishItemImage || defaultImageSrc;
 
 	return (
 		<div className="col-md-6 col-lg-6 col-12">
@@ -32,6 +40,7 @@ const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
 		</div>
 	);
 };
+
 WishDetails.propTypes = {
 	wishItemName: PropType.string.isRequired,
 	wishItemImage: PropType.string,

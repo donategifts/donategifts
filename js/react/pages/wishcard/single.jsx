@@ -5,66 +5,13 @@ import { useEffect, useState, useCallback } from 'react';
 import React from 'react';
 
 import MessageForm from '../../components/forms/MessageForm.jsx';
+import CustomToast from '../../components/shared/CustomToast.jsx';
 import MessageBoard from '../../components/shared/MessageBoard.jsx';
-import AgencyDetails from '../../components/wishcard/AgencyDetails.jsx';
+import AboutChild from '../../components/wishcard/AboutChild.jsx';
 import IntroduceChild from '../../components/wishcard/IntroduceChild.jsx';
 import WishDetails from '../../components/wishcard/WishDetails.jsx';
 import { formatAddress, getLastUrlSegment } from '../../utils/helpers';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-
-const ChildDetails = React.memo(
-	({ firstName, age = 'Not Provided', interest = 'Not Provided', story = 'Not Provided' }) => {
-		return (
-			<div className="col-md-6 col-lg-6 col-12">
-				<div className="display-6 text-primary my-4">About {firstName}</div>
-				<p>
-					<span className="fw-bold">My Age:</span>
-					<span className="mx-2">{age}</span>
-				</p>
-				<p>
-					<span className="fw-bold">My Interest:</span>
-					<span className="mx-2">{interest}</span>
-				</p>
-				<p>
-					<span className="fw-bold">My Story:</span>
-					<span className="mx-2">{story}</span>
-				</p>
-			</div>
-		);
-	},
-);
-
-ChildDetails.displayName = 'ChildDetails';
-ChildDetails.propTypes = {
-	firstName: PropType.string,
-	age: PropType.number,
-	interest: PropType.string,
-	story: PropType.string,
-};
-
-const AboutChild = ({ childData, agencyData }) => (
-	<div className="card-body bg-white p-4 mb-4 shadow-lg rounded-3 border border-1">
-		<div className="row m-2">
-			<ChildDetails {...childData} />
-			<AgencyDetails {...agencyData} />
-		</div>
-	</div>
-);
-
-AboutChild.propTypes = {
-	childData: PropType.shape({
-		age: PropType.number,
-		interest: PropType.string,
-		story: PropType.string,
-	}),
-	agencyData: PropType.shape({
-		name: PropType.string,
-		address: PropType.string,
-		phone: PropType.string,
-		website: PropType.string,
-		bio: PropType.string,
-	}),
-};
 
 export default function WishCardSingle({ user }) {
 	const id = getLastUrlSegment();
@@ -73,6 +20,13 @@ export default function WishCardSingle({ user }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [messages, setMessages] = useState([]);
 	const [defaultMessages, setDefaultMessages] = useState([]);
+	const [toastMessage, setToastMessage] = useState('');
+	const [toastType, setToastType] = useState('');
+	const [showToast, setShowToast] = useState(false);
+
+	const addNewMessage = useCallback((newMessage) => {
+		setMessages((prevMessages) => [...prevMessages, newMessage]);
+	}, []);
 
 	const fetchData = useCallback(async () => {
 		setIsLoading(true);
@@ -85,6 +39,9 @@ export default function WishCardSingle({ user }) {
 			setDefaultMessages(defaultMessages);
 		} catch (error) {
 			console.error('Error fetching data:', error);
+			setToastMessage(error.response?.data?.error?.msg || 'Error sending message');
+			setToastType('error');
+			setShowToast(true);
 		}
 		setIsLoading(false);
 	}, [id]);
@@ -144,7 +101,7 @@ export default function WishCardSingle({ user }) {
 										defaultMessages={defaultMessages}
 										wishcard={wishcard}
 										user={user}
-										onMessageSend={fetchData}
+										onMessageSend={addNewMessage}
 									/>
 								)}
 							</div>
@@ -152,6 +109,9 @@ export default function WishCardSingle({ user }) {
 						<MessageBoard childName={wishcard.childFirstName} messages={messages} />
 					</div>
 				</div>
+				{showToast && (
+					<CustomToast message={toastMessage} type={toastType} delayCloseForSeconds={5} />
+				)}
 			</div>
 		</MantineProviderWrapper>
 	);
