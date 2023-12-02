@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import moment from 'moment';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import MessageRepository from '../../db/repository/MessageRepository';
@@ -28,6 +29,7 @@ export default class WishCardApiController extends BaseApiController {
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
 		this.postWishCardAsDraft = this.postWishCardAsDraft.bind(this);
 		this.postMessage = this.postMessage.bind(this);
+		this.getWishCardSingle = this.getWishCardSingle.bind(this);
 	}
 
 	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
@@ -43,6 +45,49 @@ export default class WishCardApiController extends BaseApiController {
 				draftWishcards,
 				activeWishcards,
 				inactiveWishcards,
+			});
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async getWishCardSingle(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
+
+			// this agency object is returning undefined and breaking frontend
+			const agency = wishcard!.belongsTo;
+
+			agency.agencyWebsite = Utils.ensureProtocol(agency.agencyWebsite);
+
+			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
+
+			const birthday = wishcard?.childBirthYear
+				? moment(new Date(wishcard.childBirthYear))
+				: wishcard?.childBirthday
+				? moment(new Date(wishcard.childBirthday))
+				: undefined;
+
+			const age = birthday?.isValid()
+				? moment(new Date()).diff(birthday, 'years')
+				: 'Not Provided';
+
+			let defaultMessages;
+			if (res.locals.user) {
+				defaultMessages = Utils.getMessageChoices(
+					res.locals.user.fName,
+					wishcard!.childFirstName,
+				);
+			}
+
+			return this.sendResponse(res, {
+				wishcard: {
+					...wishcard,
+					age,
+				},
+				agency: agency || {},
+				messages,
+				defaultMessages: defaultMessages || [],
 			});
 		} catch (error) {
 			return this.handleError(res, error);

@@ -47,6 +47,9 @@ window.WishCardCreate = WishCardCreate;
 import WishCardManage from './pages/wishcard/manage.jsx';
 window.WishCardManage = WishCardManage;
 
+import WishCardSingle from './pages/wishcard/single.jsx';
+window.WishCardSingle = WishCardSingle;
+
 import WishcardsAdministration from './pages/admin/routes/wishcard/administration.jsx';
 window.WishcardsAdministration = WishcardsAdministration;
 
