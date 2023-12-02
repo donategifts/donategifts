@@ -83,7 +83,7 @@
 		"@types/express-session": "1.17.10",
 		"@types/lusca": "1.7.1",
 		"@types/multer": "1.4.11",
-		"@types/multer-s3": "3.0.0",
+		"@types/multer-s3": "3.0.3",
 		"@types/paypal-rest-sdk": "1.7.6",
 		"@types/pg": "8.10.2",
 		"@types/uuid": "9.0.2",
