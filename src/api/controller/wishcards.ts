@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import moment from 'moment';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
+import DonationRepository from '../../db/repository/DonationRepository';
 import MessageRepository from '../../db/repository/MessageRepository';
 import UserRepository from '../../db/repository/UserRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
@@ -16,6 +17,7 @@ export default class WishCardApiController extends BaseApiController {
 	private agencyRepository: AgencyRepository;
 	private messageRepository: MessageRepository;
 	private userRepository: UserRepository;
+	private donationRepository: DonationRepository;
 
 	constructor() {
 		super();
@@ -24,6 +26,7 @@ export default class WishCardApiController extends BaseApiController {
 		this.agencyRepository = new AgencyRepository();
 		this.messageRepository = new MessageRepository();
 		this.userRepository = new UserRepository();
+		this.donationRepository = new DonationRepository();
 
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
@@ -55,7 +58,16 @@ export default class WishCardApiController extends BaseApiController {
 		try {
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
-			// this agency object is returning undefined and breaking frontend
+			let donationFrom;
+			if (res.locals.user && wishcard?.status == 'donated') {
+				const donation = await this.donationRepository.getDonationByWishCardId(
+					String(wishcard._id),
+				);
+				if (donation?.donationFrom._id.toString() == String(res.locals.user._id)) {
+					donationFrom = donation?.donationFrom._id.toString();
+				}
+			}
+
 			const agency = wishcard!.belongsTo;
 
 			agency.agencyWebsite = Utils.ensureProtocol(agency.agencyWebsite);
@@ -79,6 +91,9 @@ export default class WishCardApiController extends BaseApiController {
 					wishcard!.childFirstName,
 				);
 			}
+			if (donationFrom && defaultMessages) {
+				defaultMessages.unshift(`Custom Message`);
+			}
 
 			return this.sendResponse(res, {
 				wishcard: {
@@ -86,6 +101,7 @@ export default class WishCardApiController extends BaseApiController {
 					age,
 				},
 				agency: agency || {},
+				donationFrom: donationFrom || null,
 				messages,
 				defaultMessages: defaultMessages || [],
 			});
