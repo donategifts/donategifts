@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import MessageRepository from '../../db/repository/MessageRepository';
+import UserRepository from '../../db/repository/UserRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
 import config from '../../helper/config';
+import Messaging from '../../helper/messaging';
 import Utils from '../../helper/utils';
 
 import BaseApiController from './basecontroller';
@@ -12,6 +14,7 @@ export default class WishCardApiController extends BaseApiController {
 	private wishCardRepository: WishCardRepository;
 	private agencyRepository: AgencyRepository;
 	private messageRepository: MessageRepository;
+	private userRepository: UserRepository;
 
 	constructor() {
 		super();
@@ -19,6 +22,7 @@ export default class WishCardApiController extends BaseApiController {
 		this.wishCardRepository = new WishCardRepository();
 		this.agencyRepository = new AgencyRepository();
 		this.messageRepository = new MessageRepository();
+		this.userRepository = new UserRepository();
 
 		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
 		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
@@ -145,6 +149,27 @@ export default class WishCardApiController extends BaseApiController {
 				messageTo,
 				message,
 			});
+
+			const wishCard = await this.wishCardRepository.getWishCardById(messageTo);
+			const donor = await this.userRepository.getUserByObjectId(messageFrom);
+
+			if (wishCard && donor) {
+				const agencyManager = await this.userRepository.getUserByObjectId(
+					wishCard?.createdBy,
+				);
+
+				try {
+					this.log.info('Sending agency message alert.');
+					await Messaging.sendAgencyMessageAlert({
+						agencyEmail: agencyManager?.email,
+						childName: wishCard?.childFirstName,
+						message,
+						donorFirstName: donor?.email,
+					});
+				} catch (error) {
+					this.log.error(error);
+				}
+			}
 
 			return this.sendResponse(res, newMessage);
 		} catch (error) {
