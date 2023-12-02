@@ -81,7 +81,7 @@
 		"@types/bcryptjs": "2.4.6",
 		"@types/express": "4.17.17",
 		"@types/express-session": "1.17.10",
-		"@types/lusca": "1.7.1",
+		"@types/lusca": "1.7.4",
 		"@types/multer": "1.4.11",
 		"@types/multer-s3": "3.0.0",
 		"@types/paypal-rest-sdk": "1.7.6",
