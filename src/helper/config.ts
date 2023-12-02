@@ -8,6 +8,12 @@ dotenv.config({
 
 const envVariables = [
 	'PORT',
+	'PG_HOST',
+	'PG_PORT',
+	'PG_USER',
+	'PG_PASSWORD',
+	'PG_DATABASE',
+	'ENABLE_QUERY_LOGGING',
 	'MONGO_URI',
 	'NODE_ENV',
 	'SESS_NAME',
@@ -41,9 +47,14 @@ const envVariables = [
 	'MAINTENANCE_ENABLED',
 ];
 
-interface EnvVars {
+type EnvVars = {
 	PORT: number;
-	DATABASE_URL: string;
+	PG_HOST: string;
+	PG_PORT: number;
+	PG_USER: string;
+	PG_PASSWORD: string;
+	PG_DATABASE: string;
+	ENABLE_QUERY_LOGGING: boolean;
 	MONGO_URI: string;
 	NODE_ENV: string;
 	SESS_NAME: string;
@@ -75,7 +86,7 @@ interface EnvVars {
 	DISCORD_AGENCY_REGISTRATION_WEBHOOK_URL: string | null;
 	LOG_LEVEL: string;
 	MAINTENANCE_ENABLED: boolean;
-}
+};
 
 const envVars = {} as EnvVars;
 
@@ -83,14 +94,19 @@ const envVars = {} as EnvVars;
 for (const variable of envVariables) {
 	const currentEnvVar = process.env[variable];
 	if (!currentEnvVar || currentEnvVar === '') {
+		// @ts-ignore
 		envVars[variable] = null;
 	} else if (currentEnvVar === 'true') {
+		// @ts-ignore
 		envVars[variable] = true;
 	} else if (currentEnvVar === 'false') {
+		// @ts-ignore
 		envVars[variable] = false;
 	} else if (!isNaN(currentEnvVar as any)) {
+		// @ts-ignore
 		envVars[variable] = parseInt(currentEnvVar as string, 10);
 	} else {
+		// @ts-ignore
 		envVars[variable] = currentEnvVar;
 	}
 }
@@ -98,7 +114,13 @@ for (const variable of envVariables) {
 export default {
 	PORT: envVars.PORT,
 
-	DATABASE_URL: envVars.DATABASE_URL,
+	PG_HOST: envVars.PG_HOST,
+	PG_PORT: envVars.PG_PORT,
+	PG_USER: envVars.PG_USER,
+	PG_PASSWORD: envVars.PG_PASSWORD,
+	PG_DATABASE: envVars.PG_DATABASE,
+
+	ENABLE_QUERY_LOGGING: envVars.ENABLE_QUERY_LOGGING,
 
 	MONGO_URI: envVars.MONGO_URI,
 

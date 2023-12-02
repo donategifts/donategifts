@@ -4,15 +4,15 @@ require('dotenv').config({ path: path.resolve(__dirname, '../config.env') });
 
 const mongoose = require('mongoose');
 
-const MongooseConnection = require('../dist/db/connection').default;
-const Agency = require('../dist/db/models/Agency').default;
-const Contact = require('../dist/db/models/Contact').default;
-const Donation = require('../dist/db/models/Donation').default;
-const Message = require('../dist/db/models/Message').default;
-const Post = require('../dist/db/models/Post').default;
-const User = require('../dist/db/models/User').default;
-const WishCard = require('../dist/db/models/WishCard').default;
-const log = require('../dist/helper/logger').default;
+const MongooseConnection = require('../../dist/db/connection').default;
+const Agency = require('../../dist/db/models/Agency').default;
+const Contact = require('../../dist/db/models/Contact').default;
+const Donation = require('../../dist/db/models/Donation').default;
+const Message = require('../../dist/db/models/Message').default;
+const Post = require('../../dist/db/models/Post').default;
+const User = require('../../dist/db/models/User').default;
+const WishCard = require('../../dist/db/models/WishCard').default;
+const log = require('../../dist/helper/logger').default;
 
 (async () => {
 	const mongooseConnection = new MongooseConnection();
@@ -21,7 +21,7 @@ const log = require('../dist/helper/logger').default;
 			mongooseConnection.connect();
 
 			const addAgencies = async () => {
-				const agenciesData = require('./seeder-data/agencies.json');
+				const agenciesData = require('./data/agencies.json');
 
 				log.info('Adding agencies to database...');
 				await Agency.insertMany(
@@ -37,7 +37,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addContacts = async () => {
-				const contactsData = require('./seeder-data/contacts.json');
+				const contactsData = require('./data/contacts.json');
 
 				log.info('Adding contacts to database...');
 				await Contact.insertMany(
@@ -50,7 +50,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addDonations = async () => {
-				const donationsData = require('./seeder-data/donations.json');
+				const donationsData = require('./data/donations.json');
 
 				log.info('Adding donations to database...');
 				await Donation.insertMany(
@@ -70,7 +70,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addMessages = async () => {
-				const messagesData = require('./seeder-data/messages.json');
+				const messagesData = require('./data/messages.json');
 
 				log.info('Adding messages to database...');
 				await Message.insertMany(
@@ -85,7 +85,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addPosts = async () => {
-				const postsData = require('./seeder-data/posts.json');
+				const postsData = require('./data/posts.json');
 
 				log.info('Adding posts to database...');
 				await Post.insertMany(
@@ -99,7 +99,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addUsers = async () => {
-				const usersData = require('./seeder-data/users.json');
+				const usersData = require('./data/users.json');
 
 				log.info('Adding users to database...');
 				await User.insertMany(
@@ -115,7 +115,7 @@ const log = require('../dist/helper/logger').default;
 			};
 
 			const addWishCards = async () => {
-				const wishCardsData = require('./seeder-data/wishcards.json');
+				const wishCardsData = require('./data/wishcards.json');
 
 				log.info('Adding wish cards to database...');
 				await WishCard.insertMany(
