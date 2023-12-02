@@ -43,6 +43,12 @@ export default class Messaging {
 					encoding: 'utf-8',
 				},
 			),
+			agencyMessageAlert: fs.readFileSync(
+				path.resolve(__dirname, '../../resources/email/agencyMessageAlert.html'),
+				{
+					encoding: 'utf-8',
+				},
+			),
 			agencyShippingAlert: fs.readFileSync(
 				path.resolve(__dirname, '../../resources/email/agencyShippingAlert.html'),
 				{
@@ -255,6 +261,19 @@ export default class Messaging {
 			`Wish card is published for ${childName}`,
 			body,
 			this.attachments.templateAttachments,
+		);
+	}
+
+	static sendAgencyMessageAlert({ agencyEmail, childName, message, donorFirstName }) {
+		const body = this.templates.agencyMessageAlert
+			.replace(/%childName%/g, childName)
+			.replace('%message%', message)
+			.replace('%donorFirstName%', donorFirstName);
+		return this.sendMail(
+			config.EMAIL.ADDRESS,
+			agencyEmail,
+			`${childName} received a new message!`,
+			body,
 		);
 	}
 

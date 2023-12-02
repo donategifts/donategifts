@@ -104,7 +104,7 @@ function CommunityPosts(props) {
 									className="w-100"
 									error={messageError}
 									onChange={handleOnChange}
-									placeholder="Write a thank you message here"
+									placeholder="Your message will be posted publicly on this page. Private messaging will be available soon."
 									required
 								/>
 							</div>

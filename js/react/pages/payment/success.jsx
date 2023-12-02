@@ -95,17 +95,28 @@ function PaymentSuccess() {
 					</div>
 					<hr />
 					<div className="col-sm-12 col-md-6 mt-3">
-						<p className="display-6">
-							Send a custom message to {successInfo?.wishCard?.childFirstName}
-						</p>
+						{isMessageSent ? (
+							<p className="display-6">
+								Message was sent to the agency and posted on
+								<a
+									href={`/wishcards/single/${successInfo?.wishCard?._id}`}
+									target="_blank"
+									rel="noreferrer"
+								>{` ${successInfo?.wishCard?.childFirstName}'s wish page`}</a>
+							</p>
+						) : (
+							<p className="display-6">
+								Write a custom message to {successInfo?.wishCard?.childFirstName}
+							</p>
+						)}
 						<Textarea
 							size="lg"
-							rows={6}
+							rows={7}
 							name="message"
 							placeholder={
 								isMessageSent
 									? 'Your message was successfully sent.'
-									: 'Write something nice here...'
+									: 'Your message will appear on the wish card page. Please avoid sharing private information.'
 							}
 							error={messageError}
 							ref={messageRef}
@@ -143,7 +154,7 @@ function PaymentSuccess() {
 					</div>
 					{suggestedCards.length > 0 ? (
 						<>
-							<hr className="mt-5" />
+							<hr className="mt-4" />
 							<h4 className="heading-primary text-center mt-5">
 								Other kids still awaiting gifts
 							</h4>
