@@ -164,7 +164,7 @@ export default class WishCardApiController extends BaseApiController {
 						agencyEmail: agencyManager?.email,
 						childName: wishCard?.childFirstName,
 						message,
-						donorFirstName: donor?.email,
+						donorFirstName: donor?.fName,
 					});
 				} catch (error) {
 					this.log.error(error);
