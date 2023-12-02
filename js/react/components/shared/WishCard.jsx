@@ -16,7 +16,6 @@ function WishCard({ wishCard, attributes }) {
 		wishCard.childFirstName?.length > 10
 			? wishCard.childFirstName
 			: `${wishCard.childFirstName}'s Wish`;
-
 	const slides = [childImage, itemImage].map((image, index) => (
 		<Carousel.Slide key={image}>
 			{wishCard.hasArtImage && index === 0 ? (
