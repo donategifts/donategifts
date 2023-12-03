@@ -37,7 +37,7 @@ function WishCardsCarousel({ wishCards, user, publishedCards, curatedCards }) {
 
 	const slides = chunkedWishCards?.map((chunk, index) => (
 		<Carousel.Slide key={index}>
-			<div className="row justify-content-center m-5">
+			<div className={`row justify-content-center ${colStyle == 'col' ? '' : 'm-5'}`}>
 				{chunk.map((currentCard) => {
 					return (
 						<div key={currentCard._id} className={`${colStyle} p-4`}>
@@ -60,11 +60,16 @@ function WishCardsCarousel({ wishCards, user, publishedCards, curatedCards }) {
 		<MantineProviderWrapper>
 			<div className="container my-5">
 				<Carousel
-					withControls
+					withControls={colStyle == 'col' ? false : true}
+					withIndicators={colStyle == 'col' ? true : false}
 					loop
 					plugins={[autoplay.current]}
 					onMouseEnter={autoplay.current.stop}
 					onMouseLeave={autoplay.current.reset}
+					styles={{
+						indicator: { backgroundColor: '#CEBEC2' },
+						container: { marginBottom: '25px' },
+					}}
 				>
 					{slides}
 				</Carousel>
