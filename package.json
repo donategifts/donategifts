@@ -39,7 +39,7 @@
 	"homepage": "https://github.com/stacysealky/donategifts#readme",
 	"dependencies": {
 		"aws-sdk": "2.1435.0",
-		"axios": "1.6.0",
+		"axios": "1.6.2",
 		"bcryptjs": "2.4.3",
 		"connect-mongo": "5.0.0",
 		"cookie-parser": "1.4.6",
