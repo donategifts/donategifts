@@ -12,6 +12,8 @@ const fileUpload = new FileUpload();
 
 router.get('/agency', Permissions.isAdminOrAgency, wishCardController.getAgencyWishcards);
 
+router.get('/single/:id', wishCardController.getWishCardSingle);
+
 router.put(
 	'/agency',
 	Permissions.isAdminOrAgency,

@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import WishCard from '../db/models/WishCard';
 import AgencyRepository from '../db/repository/AgencyRepository';
-import DonationRepository from '../db/repository/DonationRepository';
 import MessageRepository from '../db/repository/MessageRepository';
 import UserRepository from '../db/repository/UserRepository';
 import WishCardRepository from '../db/repository/WishCardRepository';
@@ -22,8 +21,6 @@ export default class WishCardController extends BaseController {
 
 	private messageRepository: MessageRepository;
 
-	private donationRepository: DonationRepository;
-
 	constructor() {
 		super();
 
@@ -31,7 +28,6 @@ export default class WishCardController extends BaseController {
 		this.agencyRepository = new AgencyRepository();
 		this.userRepository = new UserRepository();
 		this.messageRepository = new MessageRepository();
-		this.donationRepository = new DonationRepository();
 
 		this.handleGetIndex = this.handleGetIndex.bind(this);
 		this.handlePostIndex = this.handlePostIndex.bind(this);
@@ -415,22 +411,11 @@ export default class WishCardController extends BaseController {
 	async handleGetSingle(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
-			let donationFrom;
-			if (res.locals.user && wishcard?.status == 'donated') {
-				const donation = await this.donationRepository.getDonationByWishCardId(
-					String(wishcard._id),
-				);
-				if (donation?.donationFrom._id.toString() == String(res.locals.user._id)) {
-					donationFrom = donation?.donationFrom._id.toString();
-				}
-			}
 
 			// this agency object is returning undefined and breaking frontend
 			const agency = wishcard!.belongsTo;
 
 			agency.agencyWebsite = Utils.ensureProtocol(agency.agencyWebsite);
-
-			const messages = await this.messageRepository.getMessagesByWishCardId(wishcard!._id);
 
 			const birthday = wishcard?.childBirthYear
 				? moment(new Date(wishcard.childBirthYear))
@@ -442,26 +427,11 @@ export default class WishCardController extends BaseController {
 				? moment(new Date()).diff(birthday, 'years')
 				: 'Not Provided';
 
-			let defaultMessages;
-			if (res.locals.user) {
-				defaultMessages = Utils.getMessageChoices(
-					res.locals.user.fName,
-					wishcard!.childFirstName,
-				);
-			}
-			if (donationFrom && defaultMessages) {
-				defaultMessages.unshift(`Custom Message`);
-			}
-
 			this.renderView(res, 'wishcard/single', {
 				wishcard: {
 					...wishcard,
 					age,
 				},
-				agency: agency || {},
-				donationFrom: donationFrom || null,
-				messages,
-				defaultMessages: defaultMessages || [],
 			});
 		} catch (error) {
 			this.handleError(res, error, 404, true);
