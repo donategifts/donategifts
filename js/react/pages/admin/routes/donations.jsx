@@ -21,7 +21,7 @@ export default function Donations() {
 
 			new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
 
-			//send shipping alert email to agency and donor
+			//TODO: send shipping alert email to agency and donor trigger axios post request here
 			// sendAgencyShippingAlert
 			if (status === 'ordered') {
 				console.log(id);
@@ -100,9 +100,7 @@ export default function Donations() {
 				>
 					{donation.wishCard.shippingAddress}
 				</Table.Td>
-				<Table.Td>
-					<b>${donation.wishCard.itemPrice}</b>
-				</Table.Td>
+				<Table.Td>${donation.wishCard.itemPrice}</Table.Td>
 				<Table.Td>{donation.wishCard.productID ?? ''}</Table.Td>
 				<Table.Td>
 					<a href={donation.wishCard.itemURL} target="_blank" rel="noreferrer">
