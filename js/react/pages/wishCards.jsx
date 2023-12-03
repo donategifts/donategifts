@@ -1,4 +1,4 @@
-import { TextInput, Radio, Group, Checkbox } from '@mantine/core';
+import { TextInput, Radio, Group, Checkbox, Select } from '@mantine/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
 
-function WishCards({ wishCards, user }) {
+function WishCards({ wishCards, user, agencies }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cardData, setCardData] = useState(wishCards);
 	const [cards, setCards] = useState([]);
@@ -17,6 +17,7 @@ function WishCards({ wishCards, user }) {
 		textInput: '',
 		showDonated: 'yes',
 		ageGroups: [],
+		agencyFilter: '',
 	});
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
@@ -70,6 +71,10 @@ function WishCards({ wishCards, user }) {
 				younger: searchQueryParams.ageGroups.includes('younger') ? 'true' : null,
 				older: searchQueryParams.ageGroups.includes('older') ? 'true' : null,
 				recentlyAdded: 'true',
+				agencyFilter: searchQueryParams.agencyFilter
+					? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)
+							._id
+					: null,
 			},
 			{
 				headers: {
@@ -93,7 +98,6 @@ function WishCards({ wishCards, user }) {
 									onChange={handleSearchInputChange}
 									size="xl"
 								></TextInput>
-
 								<button
 									className="col btn btn-primary d-flex align-self-center p-3 me-3"
 									id="submit-btn"
@@ -132,6 +136,20 @@ function WishCards({ wishCards, user }) {
 										<Checkbox value="older" label="15+" />
 									</Group>
 								</Checkbox.Group>
+								<Select
+									label="Filter by agency"
+									data={agencies.map((agency) => agency.agencyName)}
+									value={searchQueryParams.agencyFilter}
+									onChange={(value) =>
+										setSearchQueryParams({
+											...searchQueryParams,
+											agencyFilter: value,
+										})
+									}
+									clearable
+									searchable
+								/>
+								;
 							</div>
 							<div className="d-flex gap-5 justify-content-center"></div>
 						</form>
@@ -167,6 +185,7 @@ WishCards.propTypes = {
 		_id: PropTypes.string,
 	}),
 	wishCards: PropTypes.arrayOf(PropTypes.object),
+	agencies: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default WishCards;

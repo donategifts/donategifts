@@ -55,13 +55,20 @@ export default class WishCardController extends BaseController {
 		cardIds,
 		showDonated = false,
 		reverseSort = false,
+		agencyFilter = null,
 	) {
-		const fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
+		let fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
 			(itemName && itemName.trim()) || '',
 			showDonated,
 			reverseSort,
 			cardIds,
 		);
+
+		if (agencyFilter) {
+			fuzzySearchResult = fuzzySearchResult.filter(
+				(card) => card.belongsTo?.toString() == agencyFilter,
+			);
+		}
 
 		// remove duplicates
 		const allWishCards = fuzzySearchResult.filter(
@@ -118,6 +125,10 @@ export default class WishCardController extends BaseController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcards = await this.wishCardRepository.getAll();
+			const verifiedAgencies = await this.agencyRepository.getVerifiedAgencies();
+			const agencies = verifiedAgencies?.map((agency) => {
+				return { agencyName: agency.agencyName, _id: agency._id };
+			});
 
 			const data = [] as unknown as WishCard & { age: number }[];
 			let birthday: moment.Moment;
@@ -134,6 +145,7 @@ export default class WishCardController extends BaseController {
 
 			this.renderView(res, 'wishcards', {
 				wishcards: data,
+				agencies,
 			});
 		} catch (error) {
 			this.handleError(res, error);
@@ -372,7 +384,15 @@ export default class WishCardController extends BaseController {
 
 	async handlePostSearch(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+			const {
+				wishitem,
+				showDonatedCheck,
+				younger,
+				older,
+				cardIds,
+				recentlyAdded,
+				agencyFilter,
+			} = req.body;
 
 			let childAge;
 			let showDonated = showDonatedCheck === 'yes' ? true : false;
@@ -401,6 +421,7 @@ export default class WishCardController extends BaseController {
 				cardIds || [],
 				showDonated,
 				recentlyAdded,
+				agencyFilter,
 			);
 
 			return res.status(200).send({
