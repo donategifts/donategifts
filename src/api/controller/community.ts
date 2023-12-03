@@ -15,11 +15,9 @@ export default class CommunityController extends BaseController {
 
 		this.agencyRepository = new AgencyRepository();
 		this.postRepository = new PostRepository();
-
-		this.addPost = this.addPost.bind(this);
 	}
 
-	async addPost(req: Request, res: Response, _next: NextFunction) {
+	async handleAddPost(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = res.locals;
 

@@ -16,8 +16,6 @@ export default class SignupController extends BaseController {
 
 		this.userRepository = new UserRepository();
 		this.agencyRepository = new AgencyRepository();
-
-		this.handlePostAgency = this.handlePostAgency.bind(this);
 	}
 
 	async handlePostAgency(req: Request, res: Response, _next: NextFunction) {

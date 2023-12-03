@@ -7,157 +7,16 @@ append meta
     if locals.env.mode === 'development'
         meta( name='referrer' content='no-referrer-when-downgrade' )
 
-block external
-    include ../mixins/googlefacebookscripts.pug
-
-block content
-    #fb-root
-    #login.gradient-form.d-flex.align-items-center.justify-content-center.flex-column
-        h1.heading-primary.mt-5 Welcome Back!
-        .container.pt-4.pb-5
-            form.p-5.rounded-4
-                .col-md-8.mx-auto.text-white
-                    .py-2
-                        label.form-label( for='email' ) Email
-                        input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required type='email'
-                            name='email'
-                        )
-                    .py-2
-                        label.form-label( for='password' ) Password
-                        .input-group
-                            input#password.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( required
-                                type='password'
-                                name='password'
-                            )
-                            span.input-group-text.bg-transparent.border-0.rounded-0.border-bottom.border-white
-                                #showPassword.fas.fa-eye.text-white.pointer
-                    .py-2
-                        a.text-white( href='/profile/password/reset/' ) Forgot Password?
-
-                    .row.pt-5.pb-2.justify-content-center
-                        button#submit-btn.btn.btn-lg.btn-primary.w-100.d-flex.justify-content-center( type='submit' ) Log In
-                            #loading-spinner.ms-2.d-none
-                                .spinner-border( role='status' )
-                                    span.visually-hidden Loading...
-                        #google-login-button.mt-3.center-elements
-                        //- .fb-login-button.mt-3( data-width=''
-                        //-     data-size='large'
-                        //-     data-button-type='login_with'
-                        //-     data-layout='default'
-                        //-     data-auto-logout-link='false'
-                        //-     data-use-continue-as='false'
-                        //-     data-scope='public_profile,email'
-                        //-     data-onlogin='facebookLogin'
-                        //- )
 append scripts
-    include ../mixins/formvalidation
-    +passwordToggleJS
-
     script.
-        $(document).ready(() => {
-            $('form').submit((event) => {
-                event.preventDefault();
-
-                const email = $('#email').val();
-                const password = $('#password').val();
-
-                $('#loading-spinner').removeClass('d-none');
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/login',
-                    data: {
-                        email,
-                        password,
-                    },
-                    success: (response) => {
-                        location.href = response.data.redirect;
-                    },
-                    error: (response) => {
-                        console.log(response);
-                        $('#loading-spinner').addClass('d-none');
-                        const txtToJson = JSON.parse(response.responseText);
-
-                        let message = '';
-
-                        if (txtToJson.error && txtToJson.error.msg) {
-                            message = txtToJson.error.msg;
-                        } else if (txtToJson.data && txtToJson.data.error) {
-                            message = txtToJson.data.error;
-                        }
-
-                        new DG.Toast().show(message, DG.Toast.styleMap.danger);
-                    },
-                });
-            });
-        });
-
-    if error
-        script.
-            $(document).ready(() => {
-                new DG.Toast().show('#{error}', DG.Toast.styleMap.danger);
-                window.history.pushState({}, null, '/login');
-            });
-
-    if message
-        script.
-            $(document).ready(() => {
-                new DG.Toast().show('#{message}', DG.Toast.styleMap.info);
-                window.history.pushState({}, null, '/login');
-            });
-
-    //- script.
-    //-     const facebookLogin = (fbUser) => {
-    //-         if (fbUser.authResponse && fbUser.status === 'connected') {
-    //-             FB.api('/me', 'GET', { fields: ['name', 'email'] }, (response) => {
-    //-                 if (response.id) {
-    //-                     $.ajax({
-    //-                         type: 'POST',
-    //-                         url: '/login/fb-signin',
-    //-                         data: {
-    //-                             userName: response.name,
-    //-                             email: response.email,
-    //-                         },
-    //-                         success: (_) => {
-    //-                             location.reload();
-    //-                         },
-    //-                         error: (response) => {
-    //-                             const txtToJson = JSON.parse(response.responseText);
-    //-                             new DG.Toast().show(txtToJson.error.msg, DG.Toast.styleMap.danger);
-    //-                         },
-    //-                     });
-    //-                 }
-    //-             });
-    //-         }
-    //-     }
-
-    script.
-        const handleCredentialResponse = (googleResponse) => {
-            $.ajax({
-                type: 'POST',
-                url: '/login/google-signin',
-                data: {
-                    id_token: googleResponse.credential,
-                },
-                success: (response) => {
-                    location.assign(response.url);
-                },
-                error: (response) => {
-                    new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
-                },
-            });
-        }
-
-        window.onload = () => {
-            google.accounts.id.initialize({
-                client_id: '#{locals.env.google}',
-                callback: handleCredentialResponse
-            });
-
-            google.accounts.id.renderButton(
-                document.getElementById('google-login-button'),
-                { theme: 'outline', size: 'large', width: '280' }  // customization attributes
+        $(document).ready(function() {
+            const root = ReactRoot(document.querySelector('#app-root'));
+            root.render(
+                React.createElement(
+                    Login,
+                    {
+                        clientId: '#{locals.env.google}',
+                    }
+                )
             );
-
-            google.accounts.id.prompt(); // also display the One Tap dialog
-        }
+        });
