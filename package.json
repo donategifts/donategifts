@@ -93,7 +93,7 @@
 		"concurrently": "8.2.0",
 		"css-loader": "6.8.1",
 		"eslint-config-slurp-config": "1.1.4",
-		"eslint-plugin-react": "7.33.1",
+		"eslint-plugin-react": "7.33.2",
 		"faker": "5.5.3",
 		"gulp": "4.0.2",
 		"gulp-autoprefixer": "8.0.0",
