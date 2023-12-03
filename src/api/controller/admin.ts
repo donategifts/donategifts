@@ -234,6 +234,7 @@ export default class AdminController extends BaseController {
 					itemPrice: number;
 					productID: string;
 					itemURL: string;
+					shippingAddress: string;
 				};
 				tracking_info: string;
 				date: string;
@@ -245,6 +246,15 @@ export default class AdminController extends BaseController {
 				const user = donation.donationFrom;
 				const agency = donation.donationTo;
 				const wishCard = donation.donationCard;
+
+				const address = `${wishCard?.address?.address1 ?? ''} ${
+					wishCard?.address?.address2 ?? ''
+				} ${wishCard?.address?.city ?? ''} ${wishCard?.address?.state ?? ''} ${
+					wishCard?.address?.zipcode ?? ''
+				} ${wishCard?.address?.country ?? ''}`;
+				const shippingAddress = wishCard?.address
+					? address
+					: 'No address found. Contact agency.';
 
 				let wishProductId = '';
 				const match = wishCard?.wishItemURL?.match(/\/dp\/([A-Z0-9]{10})/);
@@ -271,6 +281,7 @@ export default class AdminController extends BaseController {
 						itemPrice: wishCard?.wishItemPrice,
 						productID: wishProductId,
 						itemURL: wishCard?.wishItemURL,
+						shippingAddress,
 					},
 					tracking_info: donation.tracking_info || '',
 					date: moment(donation.donationDate).format('MMM DD, YYYY'),
