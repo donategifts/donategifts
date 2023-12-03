@@ -120,7 +120,7 @@
 		"react-dom": "18.2.0",
 		"react-responsive-masonry": "2.1.7",
 		"react-router-dom": "6.17.0",
-		"rimraf": "5.0.1",
+		"rimraf": "5.0.5",
 		"sass": "1.65.1",
 		"style-loader": "3.3.3",
 		"stylelint": "15.10.2",
