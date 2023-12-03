@@ -1,4 +1,4 @@
-import { TextInput, Radio, Group, Checkbox, Select } from '@mantine/core';
+import { TextInput, Radio, Group, Checkbox, Select, Switch } from '@mantine/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ function WishCards({ wishCards, user, agencies }) {
 		showDonated: 'yes',
 		ageGroups: [],
 		agencyFilter: '',
+		sortOrder: [],
 	});
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
@@ -70,7 +71,7 @@ function WishCards({ wishCards, user, agencies }) {
 				showDonatedCheck: searchQueryParams.showDonated,
 				younger: searchQueryParams.ageGroups.includes('younger') ? 'true' : null,
 				older: searchQueryParams.ageGroups.includes('older') ? 'true' : null,
-				recentlyAdded: 'true',
+				recentlyAdded: searchQueryParams.sortOrder.includes('1') ? 1 : 0,
 				agencyFilter: searchQueryParams.agencyFilter
 					? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)
 							._id
@@ -90,68 +91,84 @@ function WishCards({ wishCards, user, agencies }) {
 			<div id="wishcards" className="bg-light p-4">
 				<div className="container d-flex flex-column">
 					<div className="d-flex justify-content-center">
-						<form className="p-4 rounded-4" onSubmit={handleSearchSubmit}>
-							<div className="d-flex gap-3 mb-2">
+						<form className="p-4 rounded-2 bg-white" onSubmit={handleSearchSubmit}>
+							<div className="d-flex flex-wrap gap-3 mb-2">
 								<TextInput
 									placeholder="Search"
 									value={searchQueryParams.textInput}
 									onChange={handleSearchInputChange}
 									size="xl"
+									aria-label="Search"
 								></TextInput>
 								<button
-									className="col btn btn-primary d-flex align-self-center p-3 me-3"
+									className="col btn btn-primary d-flex align-self-center p-3 me-2"
 									id="submit-btn"
 									type="submit"
+									aria-label="search button"
 								>
 									Submit
 								</button>
-								<Radio.Group
-									name="donationStatus"
-									label="Show donated cards?"
-									value={searchQueryParams.showDonated}
-									onChange={(value) =>
-										setSearchQueryParams({
-											...searchQueryParams,
-											showDonated: value,
-										})
-									}
-								>
-									<Group mt="xs">
-										<Radio value="yes" label="Yes" />
-										<Radio value="no" label="No" />
-									</Group>
-								</Radio.Group>
-								<Checkbox.Group
-									label="Filter by age group"
-									value={searchQueryParams.ageGroups}
-									onChange={(value) =>
-										setSearchQueryParams({
-											...searchQueryParams,
-											ageGroups: value,
-										})
-									}
-								>
-									<Group mt="xs">
-										<Checkbox value="younger" label="0 - 15" />
-										<Checkbox value="older" label="15+" />
-									</Group>
-								</Checkbox.Group>
-								<Select
-									label="Filter by agency"
-									data={agencies.map((agency) => agency.agencyName)}
-									value={searchQueryParams.agencyFilter}
-									onChange={(value) =>
-										setSearchQueryParams({
-											...searchQueryParams,
-											agencyFilter: value,
-										})
-									}
-									clearable
-									searchable
-								/>
-								;
+								<div className="d-flex flex-wrap gap-3">
+									<Radio.Group
+										name="donationStatus"
+										label="Show donated cards"
+										value={searchQueryParams.showDonated}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												showDonated: value,
+											})
+										}
+									>
+										<Group mt="xs">
+											<Radio value="yes" label="Yes" />
+											<Radio value="no" label="No" />
+										</Group>
+									</Radio.Group>
+									<Checkbox.Group
+										label="Filter by age group"
+										value={searchQueryParams.ageGroups}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												ageGroups: value,
+											})
+										}
+									>
+										<Group mt="xs">
+											<Checkbox value="younger" label="0 - 15" />
+											<Checkbox value="older" label="15+" />
+										</Group>
+									</Checkbox.Group>
+									<Select
+										label="Filter by agency"
+										data={agencies.map((agency) => agency.agencyName)}
+										value={searchQueryParams.agencyFilter}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												agencyFilter: value,
+											})
+										}
+										clearable
+										searchable
+									/>
+									<Switch.Group
+										label="Sort by most recent"
+										value={searchQueryParams.sortOrder}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												sortOrder: value,
+											})
+										}
+									>
+										<Group mt="xs">
+											<Switch value="1" aria-label="Most Recent" />
+										</Group>
+									</Switch.Group>
+								</div>
 							</div>
-							<div className="d-flex gap-5 justify-content-center"></div>
 						</form>
 					</div>
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
