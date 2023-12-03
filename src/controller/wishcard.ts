@@ -375,7 +375,7 @@ export default class WishCardController extends BaseController {
 			const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
 
 			let childAge;
-			let showDonated = showDonatedCheck;
+			let showDonated = showDonatedCheck === 'yes' ? true : false;
 
 			// only true on first visit of page
 			if (req.params.init) {
