@@ -3,10 +3,8 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-//import CustomForm from '../components/forms/CustomForm.jsx';
 import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
-//import FormTranslations from '../translations/en/forms.json';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
@@ -18,7 +16,7 @@ function WishCards({ wishCards, user }) {
 	const [searchQueryParams, setSearchQueryParams] = useState({
 		textInput: '',
 		showDonated: 'yes',
-		ageGroups: ['younger', 'older'],
+		ageGroups: [],
 	});
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
@@ -86,51 +84,56 @@ function WishCards({ wishCards, user }) {
 		<MantineProviderWrapper>
 			<div id="wishcards" className="bg-light p-4">
 				<div className="container d-flex flex-column">
-					<div className="container-md">
-						<form className="d-flex p-5 rounded-4 gap-2" onSubmit={handleSearchSubmit}>
-							<div className="">
+					<div className="d-flex justify-content-center">
+						<form className="p-4 rounded-4" onSubmit={handleSearchSubmit}>
+							<div className="d-flex gap-3 mb-2">
 								<TextInput
-									placeholder="Type your Query"
+									placeholder="Search"
 									value={searchQueryParams.textInput}
 									onChange={handleSearchInputChange}
+									size="xl"
 								></TextInput>
+
+								<button
+									className="col btn btn-primary d-flex align-self-center p-3 me-3"
+									id="submit-btn"
+									type="submit"
+								>
+									Submit
+								</button>
+								<Radio.Group
+									name="donationStatus"
+									label="Show donated cards?"
+									value={searchQueryParams.showDonated}
+									onChange={(value) =>
+										setSearchQueryParams({
+											...searchQueryParams,
+											showDonated: value,
+										})
+									}
+								>
+									<Group mt="xs">
+										<Radio value="yes" label="Yes" />
+										<Radio value="no" label="No" />
+									</Group>
+								</Radio.Group>
+								<Checkbox.Group
+									label="Filter by age group"
+									value={searchQueryParams.ageGroups}
+									onChange={(value) =>
+										setSearchQueryParams({
+											...searchQueryParams,
+											ageGroups: value,
+										})
+									}
+								>
+									<Group mt="xs">
+										<Checkbox value="younger" label="0 - 15" />
+										<Checkbox value="older" label="15+" />
+									</Group>
+								</Checkbox.Group>
 							</div>
-							<button
-								className="btn btn-md btn-primary d-flex justify-content-center"
-								id="submit-btn"
-								type="submit"
-							>
-								Submit
-							</button>
-							<Radio.Group
-								name="donationStatus"
-								label="Show donated cards?"
-								value={searchQueryParams.showDonated}
-								onChange={(value) =>
-									setSearchQueryParams({
-										...searchQueryParams,
-										showDonated: value,
-									})
-								}
-							>
-								<Group mt="xs">
-									<Radio value="yes" label="Yes" />
-									<Radio value="no" label="No" />
-								</Group>
-							</Radio.Group>
-							<Checkbox.Group
-								defaultValue={['younger']}
-								label="Select age group"
-								value={searchQueryParams.ageGroups}
-								onChange={(value) =>
-									setSearchQueryParams({ ...searchQueryParams, ageGroups: value })
-								}
-							>
-								<Group mt="xs">
-									<Checkbox value="younger" label="0 - 15" />
-									<Checkbox value="older" label="15+" />
-								</Group>
-							</Checkbox.Group>
+							<div className="d-flex gap-5 justify-content-center"></div>
 						</form>
 					</div>
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
