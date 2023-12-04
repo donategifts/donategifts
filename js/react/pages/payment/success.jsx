@@ -112,7 +112,7 @@ function PaymentSuccess() {
 						)}
 						<Textarea
 							size="lg"
-							rows={6}
+							rows={7}
 							name="message"
 							placeholder={
 								isMessageSent
