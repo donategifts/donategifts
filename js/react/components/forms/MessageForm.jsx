@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core';
+import { Button, Select, Textarea } from '@mantine/core';
 import axios from 'axios';
 import PropType from 'prop-types';
 import { useState, useEffect } from 'react';
@@ -36,11 +36,45 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 		}
 	};
 
+	const handleInput = (e) => {
+		const value = e?.target?.value;
+		console.log(value);
+		// if (value) {
+		// 	setMessage(value);
+		// 	setMessageError('');
+		// }
+	};
+
 	return (
 		<div className="col-md-6 col-lg-6 col-12">
 			<form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
 				<div className="display-6 my-4">Send Message</div>
-				<select
+				<Select
+					id="messageSelect"
+					name="messageSelect"
+					onChange={(value) => setSelectedMessage(value)}
+					size="lg"
+					searchable
+					placeholder="Select a greeting option"
+					data={defaultMessages}
+				/>
+				<Textarea
+					size="lg"
+					mt="sm"
+					rows={6}
+					name="messageCustom"
+					placeholder="Or write your custom message here"
+					// placeholder={
+					// 	isMessageSent
+					// 		? 'Your message was successfully sent.'
+					// 		: 'Your message will appear on the wish card page. Please avoid sharing private information.'
+					// }
+					// error={messageError}
+					// ref={messageRef}
+					onChange={handleInput}
+					// disabled={isMessageSent}
+				/>
+				{/* <select
 					id="messageSelect"
 					className="form-select form-select-lg mb-3"
 					aria-label="Select a message"
@@ -52,7 +86,7 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 							{message}
 						</option>
 					))}
-				</select>
+				</select> */}
 				<Button radius="md" className="w-sm-100" type="submit" mt="md" size="lg">
 					Submit Message
 				</Button>
