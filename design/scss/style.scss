@@ -13,6 +13,21 @@ main {
 	font-family: $font-body;
 }
 
+.display-6 {
+	font-family: $font-body;
+	font-size: 1.3rem;
+	font-weight: $fw-semi-bold;
+	color: $primary;
+}
+
+.text-dark {
+	color: $dark;
+}
+
+.fw-semi-bold {
+	font-weight: $fw-semi-bold;
+}
+
 // Need to be reviewed first and removed after testing
 .cool-font {
 	font-family: DkCoolCrayon, sans-serif;
@@ -89,14 +104,6 @@ main {
 .fa-eye-slash {
 	cursor: pointer;
 	font-size: 1.15rem;
-}
-
-.fw-semi-bold {
-	font-weight: $fw-semi-bold;
-}
-
-.text-dark {
-	color: $dark;
 }
 
 .art-badge {

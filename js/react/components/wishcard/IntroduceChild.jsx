@@ -16,12 +16,12 @@ const IntroduceChild = ({ childId, childName, image, user, status }) => {
 					alt={image.alt}
 					loading="lazy"
 				/>
-				<h1 className="cool-font text-primary my-3">Hi, I am {childName}!</h1>
+				<h1 className="heading-primary my-3">Hi, I am {childName}!</h1>
 				<Button
 					radius="md"
 					className="w-sm-100"
 					color={buttonColor}
-					size="md"
+					size="xl"
 					component="a"
 					href={buttonHref}
 					disabled={isDonated}

@@ -38,11 +38,8 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 
 	return (
 		<div className="col-md-6 col-lg-6 col-12">
-			<form
-				className="text-center d-flex flex-column justify-content-center"
-				onSubmit={handleSubmit}
-			>
-				<div className="display-6 text-primary my-4">Send Message</div>
+			<form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+				<div className="display-6 my-4">Send Message</div>
 				<select
 					id="messageSelect"
 					className="form-select form-select-lg mb-3"
@@ -56,11 +53,8 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 						</option>
 					))}
 				</select>
-				<Button
-					type="submit"
-					className="btn btn-lg btn-primary mt-4 d-flex justify-content-center"
-				>
-					Send Message
+				<Button radius="md" className="w-sm-100" type="submit" mt="md" size="lg">
+					Submit Message
 				</Button>
 			</form>
 			{showToast && (

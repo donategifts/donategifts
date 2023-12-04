@@ -9,14 +9,6 @@
 	}
 }
 
-#wishcard-single {
-	.display-6 {
-		font-size: 1.3rem;
-		font-weight: $fw-semi-bold;
-		color: $primary;
-	}
-}
-
 
 #wish-create-page {
 	background-color: lighten($cream, 10%);
@@ -29,12 +21,6 @@
 
 		.form-text {
 			width: 200px;
-		}
-
-		.display-6 {
-			font-size: 1.3rem;
-			font-weight: $fw-semi-bold;
-			color: $primary;
 		}
 	}
 }
