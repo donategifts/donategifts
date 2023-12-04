@@ -13,6 +13,21 @@ main {
 	font-family: $font-body;
 }
 
+.display-6 {
+	font-family: $font-body;
+	font-size: 1.3rem;
+	font-weight: $fw-semi-bold;
+	color: $primary;
+}
+
+.text-dark {
+	color: $dark;
+}
+
+.fw-semi-bold {
+	font-weight: $fw-semi-bold;
+}
+
 // Need to be reviewed first and removed after testing
 .cool-font {
 	font-family: DkCoolCrayon, sans-serif;
@@ -91,12 +106,10 @@ main {
 	font-size: 1.15rem;
 }
 
-.fw-semi-bold {
-	font-weight: $fw-semi-bold;
-}
-
-.text-dark {
-	color: $dark;
+.fa-question-circle {
+	color: $secondary;
+	font-size: 1.15em;
+	cursor: pointer;
 }
 
 .art-badge {
@@ -106,13 +119,12 @@ main {
 	font-weight: $fw-semi-bold;
 }
 
-.card {
-	.fa-question-circle {
-		color: $secondary;
-		font-size: 1.15em;
-		cursor: pointer;
-	}
-	
+.holiday-bg {
+	background: url('/img/holiday-message-bg.png') center center;
+	background-size: cover;
+}
+
+.card {	
 	.fa-upload {
 		font-size: 1.15rem;
 	}

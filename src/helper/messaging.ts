@@ -363,7 +363,7 @@ export default class Messaging {
 	}) {
 		const body = this.templates.agencyShippingAlert
 			.replace(/%childName%/g, childName)
-			.replace('%donorFirstName%', donorFirstName)
+			.replace(/%donorFirstName%/g, donorFirstName)
 			.replace('%itemName%', itemName)
 			.replace('%orderId%', donationOrderId)
 			.replace('%trackingInfo%', trackingInfo)

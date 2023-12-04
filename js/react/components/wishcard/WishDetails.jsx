@@ -22,7 +22,7 @@ const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
 
 	return (
 		<div className="col-md-6 col-lg-6 col-12">
-			<div className="display-6 text-primary my-4">My Wish</div>
+			<div className="display-6 my-4">My Wish</div>
 			<img
 				className="img-fluid mb-3 rounded-3"
 				alt={wishItemName}

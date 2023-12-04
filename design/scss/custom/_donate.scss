@@ -12,17 +12,8 @@
 }
 
 #payment-success {
-	.display-6 {
-		font-size: 1.3rem;
-		font-weight: $fw-semi-bold;
-		color: $primary;
-	}
-
 	textarea {
-		background: url('/img/holiday-message-bg.png') center center;
-		background-size: cover;
-		padding: 2em 2.5em;
+		padding: 1em 1.5em;
 	}
-	
 }
 

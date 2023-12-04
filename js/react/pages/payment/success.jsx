@@ -94,13 +94,14 @@ function PaymentSuccess() {
 						</p>
 					</div>
 					<hr />
-					<div className="col-sm-12 col-md-6 mt-3">
+					<div className="col-sm-12 col-md-6 mt-3 mb-sm-3">
 						{isMessageSent ? (
 							<p className="display-6">
 								Message was sent to the agency and posted on
 								<a
 									href={`/wishcards/single/${successInfo?.wishCard?._id}`}
 									target="_blank"
+									className="text-secondary"
 									rel="noreferrer"
 								>{` ${successInfo?.wishCard?.childFirstName}'s wish page`}</a>
 							</p>
@@ -135,7 +136,8 @@ function PaymentSuccess() {
 							</Button>
 						</div>
 					</div>
-					<div className="col-sm-12 col-md-6 mt-3 p-5">
+					<div className="col-sm-12 col-md-6 holiday-bg d-flex flex-column justify-content-center align-items-center rounded-2">
+						<p className="display-6">Your Donation Summary</p>
 						<p>
 							Donation Total: <span className="fw-bold">${successInfo?.amount}</span>
 						</p>

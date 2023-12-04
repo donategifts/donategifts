@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import CustomButton from '../../../components/shared/CustomButton.jsx';
+import PopOver from '../../../components/shared/PopOver.jsx';
 
 export default function Donations() {
 	const [donations, setDonations] = useState([]);
@@ -20,6 +21,15 @@ export default function Donations() {
 			});
 
 			new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
+
+			if (status === 'ordered') {
+				new window.DG.Toast().show(
+					'Item Ordered! Shipping alert sent to donor and agency.',
+					window.DG.Toast.styleMap.success,
+				);
+			} else {
+				new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
+			}
 
 			await fetchDonations();
 		} catch (error) {
@@ -54,7 +64,7 @@ export default function Donations() {
 				);
 			} else {
 				new window.DG.Toast().show(
-					'Something went wrong',
+					'Error: Something went wrong',
 					window.DG.Toast.styleMap.success,
 				);
 			}
@@ -79,25 +89,69 @@ export default function Donations() {
 	const constructRows = () =>
 		donations.map((donation) => (
 			<Table.Tr key={donation.id}>
-				<Table.Td>{donation.user.name}</Table.Td>
-				<Table.Td>{donation.agency.name?.slice(0, 50)}...</Table.Td>
 				<Table.Td>
-					<b>${donation.wishCard.itemPrice}</b>
+					<PopOver text={donation.user.email} />
+					{donation.user.name?.length >= 20
+						? ` ${donation.user.name?.slice(0, 20)}...`
+						: ` ${donation.user.name}`}
+				</Table.Td>
+				<Table.Td>
+					{donation.agency.name && <PopOver text={donation.agency.email} />}
+					{donation.agency.name?.length >= 30
+						? ` ${donation.agency.name?.slice(0, 30)}...`
+						: ` ${donation.agency.name || ''}`}
+				</Table.Td>
+				<Table.Td>
+					<b>${donation.totalAmount}</b>
+				</Table.Td>
+				<Table.Td>
+					<a
+						href={`/wishcards/single/${donation.wishCard.id}`}
+						target="_blank"
+						rel="noreferrer"
+					>{`${donation.wishCard.childFirstName}'s Wish`}</a>
+				</Table.Td>
+				<Table.Td
+					className={
+						donation.wishCard.shippingAddress.includes('No address')
+							? 'text-secondary fw-semi-bold'
+							: 'text-dark'
+					}
+				>
+					{donation.wishCard.shippingAddress}
+				</Table.Td>
+				<Table.Td>
+					{donation.wishCard.productID ? (
+						<a
+							href={`https://www.amazon.com/s?k=${donation.wishCard.productID}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{donation.wishCard.productID}
+						</a>
+					) : (
+						''
+					)}
 				</Table.Td>
 				<Table.Td>
 					<a href={donation.wishCard.itemURL} target="_blank" rel="noreferrer">
-						{donation.wishCard.itemURL?.slice(0, 80)}...
+						{donation.wishCard.itemURL?.length >= 20
+							? `${donation.wishCard.itemURL?.slice(0, 20)}...`
+							: donation.wishCard.itemURL}
 					</a>
 				</Table.Td>
 				<Table.Td>{donation.date}</Table.Td>
 				<Table.Td
-					style={{ textAlign: 'center' }}
-					bg={donation.status === 'delivered' ? 'teal.7' : 'yellow.3'}
+					bg={
+						donation.status === 'delivered'
+							? 'teal.9'
+							: donation.status === 'ordered'
+							? 'grape.9'
+							: 'indigo.9'
+					}
+					className="text-white"
 				>
-					{donation.status}
-				</Table.Td>
-				<Table.Td>
-					<b>${donation.totalAmount}</b>
+					<b>{donation.status}</b>
 				</Table.Td>
 				<Table.Td>
 					<Input
@@ -108,7 +162,7 @@ export default function Donations() {
 						}
 					/>
 				</Table.Td>
-				<Table.Td style={{ textAlign: 'center' }}>
+				<Table.Td>
 					{donation.status === 'confirmed' && (
 						<CustomButton
 							component="button"
@@ -144,18 +198,20 @@ export default function Donations() {
 
 	return (
 		<Table.ScrollContainer minWidth={500}>
-			<Table striped highlightOnHover>
+			<Table striped highlightOnHover id="admin-donations">
 				<Table.Thead>
 					<Table.Tr>
-						<Table.Th style={{ textAlign: 'center' }}>Donator</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Agency</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Price</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>URL</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Date</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Status</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Total</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Tracking Info</Table.Th>
-						<Table.Th style={{ textAlign: 'center' }}>Actions</Table.Th>
+						<Table.Th>Donor</Table.Th>
+						<Table.Th>Agency</Table.Th>
+						<Table.Th>Total</Table.Th>
+						<Table.Th>Donated Wish</Table.Th>
+						<Table.Th>Shipping Address</Table.Th>
+						<Table.Th>Product ID</Table.Th>
+						<Table.Th>Item URL</Table.Th>
+						<Table.Th>Date</Table.Th>
+						<Table.Th>Status</Table.Th>
+						<Table.Th>Tracking Info</Table.Th>
+						<Table.Th>Actions</Table.Th>
 					</Table.Tr>
 				</Table.Thead>
 				<Table.Tbody>{rows}</Table.Tbody>
