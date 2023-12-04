@@ -1,8 +1,8 @@
 import type { ColumnType } from "kysely";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-    ? ColumnType<S, I | undefined, U>
-    : ColumnType<T, T | undefined, T>;
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export type Json = ColumnType<JsonValue, string, string>;
 
@@ -73,6 +73,7 @@ export interface Images {
   id: Generated<string>;
   url: string;
   meta_data: Json | null;
+  is_art_image: Generated<boolean>;
   created_by: string;
   created_at: Generated<Timestamp>;
 }
@@ -106,6 +107,12 @@ export interface Orders {
   wishcard_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
+}
+
+export interface Session {
+  sid: string;
+  sess: Json;
+  expire: Timestamp;
 }
 
 export interface Users {
@@ -158,6 +165,7 @@ export interface DB {
   items: Items;
   messages: Messages;
   orders: Orders;
+  session: Session;
   users: Users;
   verification_tokens: VerificationTokens;
   wishcards: Wishcards;
