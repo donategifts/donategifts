@@ -96,7 +96,11 @@ export default function Donations() {
 						: ` ${donation.user.name}`}
 				</Table.Td>
 				<Table.Td>
-					{donation.agency.name && <PopOver text={donation.agency.email} />}
+					{donation.agency.name && (
+						<PopOver
+							text={donation.agency.email || 'Email not found for account manager!'}
+						/>
+					)}
 					{donation.agency.name?.length >= 30
 						? ` ${donation.agency.name?.slice(0, 30)}...`
 						: ` ${donation.agency.name || ''}`}

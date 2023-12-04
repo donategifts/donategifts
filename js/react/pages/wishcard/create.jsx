@@ -49,6 +49,7 @@ function WishCardCreate() {
 		zipcode: '',
 	});
 
+	const [isToastVisible, setIsToastVisible] = useState(false);
 	const [toastProps, setToastProps] = useState({
 		message: '',
 		type: '',
@@ -288,6 +289,7 @@ function WishCardCreate() {
 				},
 			});
 			setToastProps({ message: 'Submission was successful!', type: 'success' });
+			setIsToastVisible(true);
 			clearForm();
 			setTimeout(() => window.location.assign('/wishcards/manage'), 2000);
 		} catch (error) {
@@ -298,6 +300,7 @@ function WishCardCreate() {
 					'Submission was unsuccessful. Please try again or contact us.',
 				type: 'error',
 			});
+			setIsToastVisible(true);
 			setShowSubmitLoader(false);
 		}
 	};
@@ -313,9 +316,12 @@ function WishCardCreate() {
 
 	return (
 		<MantineProviderWrapper>
-			{toastProps.message !== '' && (
-				<CustomToast message={toastProps.message} type={toastProps.type} />
-			)}
+			<CustomToast
+				message={toastProps.message}
+				type={toastProps.type}
+				isVisible={isToastVisible}
+				setIsVisible={setIsToastVisible}
+			/>
 			<div id="wish-create-page" className="py-5">
 				<div className="container">
 					<h1 className="heading-primary mb-4 text-center">Create a wish card</h1>
@@ -367,7 +373,7 @@ function WishCardCreate() {
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
 										<div className="px-3 pt-3 pb-0">
 											<img
-												src={childImage || `/img/img-placeholder.png`}
+												src={childImage || '/img/img-placeholder.png'}
 												alt="image-placeholder"
 												className={
 													childImageError
@@ -495,7 +501,7 @@ function WishCardCreate() {
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
 										<div className="px-3 pt-3 pb-0">
 											<img
-												src={itemImage || `/img/img-placeholder.png`}
+												src={itemImage || '/img/img-placeholder.png'}
 												alt="wish-item-image-placeholder"
 												className={
 													wishItemImageError
@@ -559,7 +565,7 @@ function WishCardCreate() {
 															.popOverText
 													}
 													isImgProvided={true}
-													imgSrc="/img/amazon-helper.png"
+													imageSource="/img/amazon-helper.png"
 												/>
 											}
 										/>
