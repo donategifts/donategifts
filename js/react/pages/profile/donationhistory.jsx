@@ -2,6 +2,7 @@ import { Table } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import CustomToast from '../../components/shared/CustomToast.jsx';
 import PopOver from '../../components/shared/PopOver.jsx';
 import Translations from '../../translations/en/profile.json';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
@@ -10,17 +11,21 @@ function DonationHistory() {
 	const [donations, setDonations] = useState([]);
 	const [totalDonation, setTotalDonation] = useState(0.0);
 	const [totalGifts, setTotalGifts] = useState(0);
+	const [showToast, setShowToast] = useState(false);
 	const dateConfig = { year: 'numeric', month: 'short', day: '2-digit' };
 
 	useEffect(() => {
-		const fetchDonations = () => {
-			axios.get('/api/profile/donations').then((res) => {
+		axios
+			.get('/api/profile/donations')
+			.then((res) => {
 				if (res.data && res.data.data) {
 					setDonations(res.data.data);
 				}
+			})
+			.catch((err) => {
+				console.error(err);
+				setShowToast(true);
 			});
-		};
-		fetchDonations();
 	}, []);
 
 	useEffect(() => {
@@ -36,6 +41,13 @@ function DonationHistory() {
 
 	return (
 		<MantineProviderWrapper>
+			{showToast && (
+				<CustomToast
+					message="Failed to fetch donations!"
+					type="error"
+					delayCloseForSeconds={3}
+				/>
+			)}
 			<div className="container mt-3" id="donation-history">
 				<div className="row p-4">
 					<div className="col-md-4">
@@ -106,7 +118,7 @@ function DonationHistory() {
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
-						{donations.length > 1
+						{donations.length
 							? donations.map((data) => (
 									<Table.Tr key={data?._id}>
 										<Table.Td>
