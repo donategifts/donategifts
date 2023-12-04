@@ -22,9 +22,11 @@
 		"lint:scss": "stylelint design/",
 		"lint:src": "eslint --ext .ts src/",
 		"lint": "npm run lint:pug && npm run lint:src && npm run lint:jsx && npm run lint:scss",
+		"migrations:generate": "ts-node ./scripts/generatemigrationfile.ts",
+		"migrations:run": "ts-node ./scripts/migrationrunner.ts",
 		"prepare": "husky install | chmod ug+x .husky/*",
-		"seed:postgres": "node ./scripts/postgres-seeder/index.js",
 		"seed:mongo": "node ./scripts/mongo-seeder/prepareDbExport.js && node ./scripts/mongo-seeder/seeder.js",
+		"seed:postgres": "node ./scripts/postgres-seeder/index.js",
 		"start": "node dist/index.js",
 		"webpack:build": "webpack --mode=production",
 		"webpack:watch": "webpack --mode=development --watch"

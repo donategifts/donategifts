@@ -47,6 +47,7 @@ CREATE TABLE "images" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "url" varchar(255) NOT NULL,
     "meta_data" json,
+    "is_art_image" BOOLEAN NOT NULL DEFAULT false,
     "created_by" uuid NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
