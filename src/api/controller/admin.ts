@@ -223,15 +223,16 @@ export default class AdminController extends BaseController {
 				user: {
 					id: string;
 					name: string;
+					email: string;
 				};
 				agency: {
 					id: string;
 					name: string;
+					email: string;
 				};
 				wishCard: {
 					id: string;
-					itemName: string;
-					itemPrice: number;
+					childFirstName: string;
 					productID: string;
 					itemURL: string;
 					shippingAddress: string;
@@ -246,6 +247,10 @@ export default class AdminController extends BaseController {
 				const user = donation.donationFrom;
 				const agency = donation.donationTo;
 				const wishCard = donation.donationCard;
+
+				const agencyAccountManager = await this.userRepository.getUserByObjectId(
+					agency?.accountManager,
+				);
 
 				const address = `${wishCard?.address?.address1 ?? ''} ${
 					wishCard?.address?.address2 ?? ''
@@ -270,15 +275,16 @@ export default class AdminController extends BaseController {
 					user: {
 						id: user?._id,
 						name: `${user?.fName} ${user?.lName}`,
+						email: user?.email,
 					},
 					agency: {
 						id: agency?._id || '',
 						name: agency?.agencyName,
+						email: agencyAccountManager?.email || '',
 					},
 					wishCard: {
 						id: wishCard?._id,
-						itemName: wishCard?.wishItemName,
-						itemPrice: wishCard?.wishItemPrice,
+						childFirstName: wishCard?.childFirstName,
 						productID: wishProductId,
 						itemURL: wishCard?.wishItemURL,
 						shippingAddress,
@@ -291,9 +297,7 @@ export default class AdminController extends BaseController {
 			}
 
 			// sort by status
-			// confirmed donations first
-			// then ordered donations
-			// then delivered donations
+			// confirmed donations first, then ordered donations, then delivered donations
 			data.sort((a, b) => {
 				if (a.status === 'confirmed' && b.status !== 'confirmed') {
 					return -1;
@@ -317,7 +321,64 @@ export default class AdminController extends BaseController {
 	async handlePutUpdateDonationStatus(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { donationId, status } = req.body;
-			await this.donationRepository.updateDonationStatus(donationId, status);
+			const statusUpdate = await this.donationRepository.updateDonationStatus(
+				donationId,
+				status,
+			);
+
+			if (statusUpdate && status === 'ordered') {
+				const donation = await this.donationRepository.getDonationById(donationId);
+
+				if (donation) {
+					const agencyAccountManager = await this.userRepository.getUserByObjectId(
+						donation.donationTo?.accountManager,
+					);
+
+					const wishCard = donation.donationCard;
+					const address = `${wishCard?.address?.address1 ?? ''} ${
+						wishCard?.address?.address2 ?? ''
+					} ${wishCard?.address?.city ?? ''} ${wishCard?.address?.state ?? ''} ${
+						wishCard?.address?.zipcode ?? ''
+					} ${wishCard?.address?.country ?? ''}`;
+					const shippingAddress = wishCard?.address
+						? address
+						: 'No address found. Please contact support@donate-gifts.com.';
+
+					try {
+						this.log.info('Sending the donor user shipping alert email.');
+						await Messaging.sendDonorShippingAlert({
+							donorEmail: donation.donationFrom?.email,
+							donorFirstName: donation.donationFrom?.fName,
+							childName: wishCard?.childFirstName,
+							itemName: wishCard?.wishItemName,
+							agencyName: donation.donationTo?.agencyName,
+							donationOrderId: donationId,
+							trackingInfo: donation.tracking_info,
+							wishCardId: wishCard._id,
+						});
+					} catch (error) {
+						this.log.error(`Failed to send Donor Shipping Alert: ${error}`);
+					}
+
+					if (agencyAccountManager) {
+						try {
+							this.log.info('Sending the agency user shipping alert email.');
+							await Messaging.sendAgencyShippingAlert({
+								agencyEmail: agencyAccountManager.email,
+								childName: wishCard?.childFirstName,
+								donorFirstName: donation.donationFrom?.fName,
+								itemName: wishCard?.wishItemName,
+								donationOrderId: donationId,
+								trackingInfo: donation.tracking_info,
+								agencyAddress: shippingAddress,
+							});
+						} catch (error) {
+							this.log.error(`Failed to send Agency Shipping Alert: ${error}`);
+						}
+					}
+				}
+			}
+
 			return this.sendResponse(res, { message: 'Donation status updated' });
 		} catch (error) {
 			return this.handleError(res, error);

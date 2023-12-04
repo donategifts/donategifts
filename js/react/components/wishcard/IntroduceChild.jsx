@@ -26,7 +26,7 @@ const IntroduceChild = ({ childId, childName, image, user, status }) => {
 					href={buttonHref}
 					disabled={isDonated}
 				>
-					{isDonated ? 'Donated' : 'Donate Gift'}
+					{isDonated ? 'Gift Donated' : 'Donate Gift'}
 				</Button>
 			</div>
 		</div>

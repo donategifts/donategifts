@@ -106,6 +106,12 @@ main {
 	font-size: 1.15rem;
 }
 
+.fa-question-circle {
+	color: $secondary;
+	font-size: 1.15em;
+	cursor: pointer;
+}
+
 .art-badge {
 	position: absolute;
 	top: 15px;
@@ -118,13 +124,7 @@ main {
 	background-size: cover;
 }
 
-.card {
-	.fa-question-circle {
-		color: $secondary;
-		font-size: 1.15em;
-		cursor: pointer;
-	}
-	
+.card {	
 	.fa-upload {
 		font-size: 1.15rem;
 	}

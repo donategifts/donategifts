@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import CustomButton from '../../../components/shared/CustomButton.jsx';
+import PopOver from '../../../components/shared/PopOver.jsx';
 
 export default function Donations() {
 	const [donations, setDonations] = useState([]);
@@ -21,10 +22,13 @@ export default function Donations() {
 
 			new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
 
-			//TODO: send shipping alert email to agency and donor trigger axios post request here
-			// sendAgencyShippingAlert
 			if (status === 'ordered') {
-				console.log(id);
+				new window.DG.Toast().show(
+					'Item Ordered! Shipping alert sent to donor and agency.',
+					window.DG.Toast.styleMap.success,
+				);
+			} else {
+				new window.DG.Toast().show(data.message, window.DG.Toast.styleMap.success);
 			}
 
 			await fetchDonations();
@@ -86,22 +90,49 @@ export default function Donations() {
 		donations.map((donation) => (
 			<Table.Tr key={donation.id}>
 				<Table.Td>
+					<PopOver text={donation.user.email} />
 					{donation.user.name?.length >= 20
-						? `${donation.user.name?.slice(0, 20)}...`
-						: donation.user.name}
+						? ` ${donation.user.name?.slice(0, 20)}...`
+						: ` ${donation.user.name}`}
 				</Table.Td>
-				{/* TODO: add wishcard page */}
+				<Table.Td>
+					{donation.agency.name && <PopOver text={donation.agency.email} />}
+					{donation.agency.name?.length >= 30
+						? ` ${donation.agency.name?.slice(0, 30)}...`
+						: ` ${donation.agency.name || ''}`}
+				</Table.Td>
+				<Table.Td>
+					<b>${donation.totalAmount}</b>
+				</Table.Td>
+				<Table.Td>
+					<a
+						href={`/wishcards/single/${donation.wishCard.id}`}
+						target="_blank"
+						rel="noreferrer"
+					>{`${donation.wishCard.childFirstName}'s Wish`}</a>
+				</Table.Td>
 				<Table.Td
 					className={
 						donation.wishCard.shippingAddress.includes('No address')
-							? 'text-danger fw-semi-bold'
+							? 'text-secondary fw-semi-bold'
 							: 'text-dark'
 					}
 				>
 					{donation.wishCard.shippingAddress}
 				</Table.Td>
-				<Table.Td>${donation.wishCard.itemPrice}</Table.Td>
-				<Table.Td>{donation.wishCard.productID ?? ''}</Table.Td>
+				<Table.Td>
+					{donation.wishCard.productID ? (
+						<a
+							href={`https://www.amazon.com/s?k=${donation.wishCard.productID}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{donation.wishCard.productID}
+						</a>
+					) : (
+						''
+					)}
+				</Table.Td>
 				<Table.Td>
 					<a href={donation.wishCard.itemURL} target="_blank" rel="noreferrer">
 						{donation.wishCard.itemURL?.length >= 20
@@ -116,14 +147,11 @@ export default function Donations() {
 							? 'teal.9'
 							: donation.status === 'ordered'
 							? 'grape.9'
-							: 'orange.9'
+							: 'indigo.9'
 					}
 					className="text-white"
 				>
 					<b>{donation.status}</b>
-				</Table.Td>
-				<Table.Td>
-					<b>${donation.totalAmount}</b>
 				</Table.Td>
 				<Table.Td>
 					<Input
@@ -170,17 +198,18 @@ export default function Donations() {
 
 	return (
 		<Table.ScrollContainer minWidth={500}>
-			<Table striped highlightOnHover>
+			<Table striped highlightOnHover id="admin-donations">
 				<Table.Thead>
 					<Table.Tr>
-						<Table.Th>Donor Name</Table.Th>
+						<Table.Th>Donor</Table.Th>
+						<Table.Th>Agency</Table.Th>
+						<Table.Th>Total</Table.Th>
+						<Table.Th>Donated Wish</Table.Th>
 						<Table.Th>Shipping Address</Table.Th>
-						<Table.Th>Price</Table.Th>
 						<Table.Th>Product ID</Table.Th>
 						<Table.Th>Item URL</Table.Th>
-						<Table.Th>Donated Date</Table.Th>
+						<Table.Th>Date</Table.Th>
 						<Table.Th>Status</Table.Th>
-						<Table.Th>Total</Table.Th>
 						<Table.Th>Tracking Info</Table.Th>
 						<Table.Th>Actions</Table.Th>
 					</Table.Tr>
