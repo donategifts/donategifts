@@ -1,10 +1,10 @@
-import { TextInput, Radio, Group, Checkbox, Select, Switch } from '@mantine/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 
 import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
+import SearchBar from '../components/wishcards/SearchBar.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
@@ -50,12 +50,15 @@ function WishCards({ wishCards, user, agencies }) {
 		);
 	};
 
-	const handleSearchSubmit = async (event) => {
-		event.preventDefault();
-		await fetchSearchResults();
-	};
+	const fetchSearchResults = async (checkSearchLength = false) => {
+		if (
+			checkSearchLength &&
+			searchTextRef.current.value !== '' &&
+			searchTextRef.current.value.length < 4
+		) {
+			return;
+		}
 
-	const fetchSearchResults = async () => {
 		const {
 			data: { wishcards },
 		} = await axios.post('/wishcards/search/', {
@@ -75,86 +78,15 @@ function WishCards({ wishCards, user, agencies }) {
 		<MantineProviderWrapper>
 			<div id="wishcards" className="bg-light p-4">
 				<div className="container d-flex flex-column">
-					<div className="d-flex justify-content-center">
-						<form className="p-4 rounded-2 bg-white" onSubmit={handleSearchSubmit}>
-							<div className="d-flex flex-wrap gap-3 mb-2">
-								<TextInput
-									placeholder="Search"
-									ref={searchTextRef}
-									size="xl"
-									aria-label="Search"
-								></TextInput>
-								<button
-									className="col btn btn-primary d-flex align-self-center p-3 me-2"
-									id="submit-btn"
-									type="submit"
-									aria-label="search button"
-								>
-									Submit
-								</button>
-								<div className="d-flex flex-wrap gap-3">
-									<Radio.Group
-										name="donationStatus"
-										label="Show donated cards"
-										value={searchQueryParams.showDonated}
-										onChange={(value) =>
-											setSearchQueryParams({
-												...searchQueryParams,
-												showDonated: value,
-											})
-										}
-									>
-										<Group mt="xs">
-											<Radio value="yes" label="Yes" />
-											<Radio value="no" label="No" />
-										</Group>
-									</Radio.Group>
-									<Checkbox.Group
-										label="Filter by age group"
-										value={searchQueryParams.ageGroups}
-										onChange={(value) =>
-											setSearchQueryParams({
-												...searchQueryParams,
-												ageGroups: value,
-											})
-										}
-									>
-										<Group mt="xs">
-											<Checkbox value="younger" label="0 - 15" />
-											<Checkbox value="older" label="15+" />
-										</Group>
-									</Checkbox.Group>
-									<Select
-										label="Filter by agency"
-										data={agencies.map((agency) => agency.agencyName)}
-										value={searchQueryParams.agencyFilter}
-										onChange={(value) =>
-											setSearchQueryParams({
-												...searchQueryParams,
-												agencyFilter: value,
-											})
-										}
-										clearable
-										searchable
-									/>
-									<Switch.Group
-										label="Sort by most recent"
-										value={searchQueryParams.sortOrder}
-										onChange={(value) =>
-											setSearchQueryParams({
-												...searchQueryParams,
-												sortOrder: value,
-											})
-										}
-									>
-										<Group mt="xs">
-											<Switch value="1" aria-label="Most Recent" />
-										</Group>
-									</Switch.Group>
-								</div>
-							</div>
-						</form>
-					</div>
+					{!isLoading && (
+						<SearchBar
+							searchTextRef={searchTextRef}
+							fetchSearchResults={fetchSearchResults}
+							searchQueryParams={searchQueryParams}
+							setSearchQueryParams={setSearchQueryParams}
+							agencies={agencies}
+						/>
+					)}
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
 						{cardData.length == 0 ? (
 							<h2 className="mt-3">{'No results found'}</h2>
