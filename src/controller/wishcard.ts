@@ -125,10 +125,16 @@ export default class WishCardController extends BaseController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcards = await this.wishCardRepository.getAll();
+			const agencyIds = wishcards
+				.map((card) => card.belongsTo?.toString())
+				.filter((elem, index, self) => index === self.indexOf(elem));
 			const verifiedAgencies = await this.agencyRepository.getVerifiedAgencies();
-			const agencies = verifiedAgencies?.map((agency) => {
-				return { agencyName: agency.agencyName, _id: agency._id };
-			});
+			const agencies = verifiedAgencies
+				?.filter((agency) => agencyIds.includes(agency._id.toString()))
+				.map((agency) => {
+					return { agencyName: agency.agencyName, _id: agency._id };
+				})
+				.sort((a, b) => a.agencyName.localeCompare(b.agencyName));
 
 			const data = [] as unknown as WishCard & { age: number }[];
 			let birthday: moment.Moment;
