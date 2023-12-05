@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 
-import UserRepository from '../db/repository/UserRepository';
-import config from '../helper/config';
-import Utils from '../helper/utils';
+import UserRepository from '../../db/repository/UserRepository';
+import config from '../../helper/config';
+import Utils from '../../helper/utils';
 
 import BaseController from './basecontroller';
 
@@ -15,14 +15,6 @@ export default class LoginController extends BaseController {
 		super();
 
 		this.userRepository = new UserRepository();
-
-		this.handleGetIndex = this.handleGetIndex.bind(this);
-		this.handlePostIndex = this.handlePostIndex.bind(this);
-		this.handlePostGoogleLogin = this.handlePostGoogleLogin.bind(this);
-	}
-
-	handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
-		this.renderView(res, 'login');
 	}
 
 	async handlePostIndex(req: Request, res: Response, _next: NextFunction) {
@@ -30,17 +22,13 @@ export default class LoginController extends BaseController {
 		const user = await this.userRepository.getUserByEmail(email.toLowerCase());
 		if (user) {
 			if (await bcrypt.compare(password, user.password)) {
-				if (req) {
-					req.session.user = user;
-				} else {
-					return this.handleError(res, 'request already ended', 500);
-				}
+				req.session.user = user;
 
-				return this.sendResponse(res, { redirect: '/profile' });
+				return this.sendResponse(res, { url: '/profile' });
 			}
 		}
 
-		this.sendResponse(res, { error: 'Username and/or password incorrect' }, 403);
+		return this.sendResponse(res, { error: 'Username and/or password incorrect' }, 403);
 	}
 
 	async handlePostGoogleLogin(req: Request, res: Response, _next: NextFunction) {
@@ -64,12 +52,12 @@ export default class LoginController extends BaseController {
 							return this.handleError(res, 'request already ended', 500);
 						}
 
-						return res.status(200).send({
+						return this.sendResponse(res, {
 							url: '/profile',
 						});
 					}
 
-					const newUser = await this.userRepository.createNewUser({
+					req.session.user = await this.userRepository.createNewUser({
 						fName,
 						lName,
 						email,
@@ -80,9 +68,7 @@ export default class LoginController extends BaseController {
 						emailVerified: true,
 					});
 
-					req.session.user = newUser;
-
-					return res.status(200).send({
+					return this.sendResponse(res, {
 						url: '/profile',
 					});
 				}

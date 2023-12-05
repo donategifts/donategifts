@@ -26,16 +26,6 @@ export default class AdminController extends BaseController {
 		this.userRepository = new UserRepository();
 		this.wishCardRepository = new WishCardRepository();
 		this.donationRepository = new DonationRepository();
-
-		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
-		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
-		this.handleVerifyAgency = this.handleVerifyAgency.bind(this);
-		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
-		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
-		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
-		this.handleGetAllDonations = this.handleGetAllDonations.bind(this);
-		this.handlePutUpdateDonationStatus = this.handlePutUpdateDonationStatus.bind(this);
-		this.handlePutUpdateTrackingInfo = this.handlePutUpdateTrackingInfo.bind(this);
 	}
 
 	private formatAgencyResponse(agency: Agency, manager: User) {

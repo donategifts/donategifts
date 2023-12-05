@@ -41,6 +41,9 @@ window.DonationHistory = DonationHistory;
 import Signup from './pages/signup.jsx';
 window.Signup = Signup;
 
+import Login from './pages/login.jsx';
+window.Login = Login;
+
 import WishCardCreate from './pages/wishcard/create.jsx';
 window.WishCardCreate = WishCardCreate;
 

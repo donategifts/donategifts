@@ -16,9 +16,6 @@ export default class ProfileController extends BaseController {
 
 		this.userRepository = new UserRepository();
 		this.donationRepository = new DonationRepository();
-
-		this.postResendVerificationLink = this.postResendVerificationLink.bind(this);
-		this.getDonations = this.getDonations.bind(this);
 	}
 
 	private async sendEmail(email: string, verificationHash: string) {
@@ -29,7 +26,7 @@ export default class ProfileController extends BaseController {
 		}
 	}
 
-	async postResendVerificationLink(req: Request, res: Response, _next: NextFunction) {
+	async handlePostResendVerificationLink(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { userId } = req.body;
 
@@ -51,7 +48,7 @@ export default class ProfileController extends BaseController {
 		}
 	}
 
-	async getDonations(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetDonations(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { user } = res.locals;
 

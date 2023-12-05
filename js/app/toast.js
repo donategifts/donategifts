@@ -15,7 +15,7 @@
 
 		show(message, style) {
 			if (message) {
-				$(this._toast).find('.toast-body').text(message);
+				$(this._toast).find($('.toast-body')).text(message);
 			}
 
 			$(this._toast).addClass(style || Toast.styleMap.success);
