@@ -31,11 +31,17 @@ function DonationHistory() {
 	useEffect(() => {
 		if (donations) {
 			setTotalGifts(donations.length);
+
+			let newTotalDonation = 0.0;
+
 			donations.forEach((data) => {
 				if (data?.donationPrice) {
-					setTotalDonation((prev) => prev + data?.donationPrice);
+					newTotalDonation += parseFloat(data?.donationPrice);
 				}
 			});
+
+			newTotalDonation = parseFloat(newTotalDonation.toFixed(2));
+			setTotalDonation(newTotalDonation);
 		}
 	}, [donations]);
 
@@ -49,7 +55,7 @@ function DonationHistory() {
 			/>
 			<div className="container mt-3" id="donation-history">
 				<div className="row p-4">
-					<div className="col-md-4">
+					<div className="col-md-4 mb-sm-3">
 						<div className="card rounded shadow">
 							<div className="card-body d-flex justify-content-around align-items-center">
 								<div>
@@ -70,7 +76,7 @@ function DonationHistory() {
 							</div>
 						</div>
 					</div>
-					<div className="col-md-4">
+					<div className="col-md-4 mb-sm-3">
 						<div className="card rounded shadow">
 							<div className="card-body d-flex justify-content-around align-items-center">
 								<div>
@@ -98,6 +104,7 @@ function DonationHistory() {
 												Translations.DONATION_HISTORY.karmaPoints
 													.popOverText
 											}
+											imageSource="/img/tshirt-2023.png"
 										/>
 									</p>
 								</div>
