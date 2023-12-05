@@ -12,9 +12,8 @@ const cardsPerPage = 24;
 function WishCards({ wishCards, user, agencies }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cardData, setCardData] = useState(wishCards);
-	const [cards, setCards] = useState([]);
+	const [searchTextInput, setSearchTextInput] = useState('');
 	const [searchQueryParams, setSearchQueryParams] = useState({
-		textInput: '',
 		showDonated: 'yes',
 		ageGroups: [],
 		agencyFilter: '',
@@ -23,51 +22,52 @@ function WishCards({ wishCards, user, agencies }) {
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
 	useEffect(() => {
-		setCards(mapwishCards);
-
 		setTimeout(() => {
 			setIsLoading(false);
 		}, 1000);
 	}, [cardData]);
 
+	useEffect(() => {
+		fetchSearchResults();
+	}, [searchQueryParams]);
+
 	function handleLoadMore() {
 		setNumCardsToShow(numCardsToShow + cardsPerPage);
 	}
 
-	const mapwishCards = cardData.map((wishCard) => {
-		let attributes = {};
-
-		if (!user?._id) {
-			attributes = {
-				href: '/login',
-			};
-		} else {
-			attributes = {
-				href: `/wishcards/donate/${wishCard._id}`,
-			};
-		}
-
+	const mapwishCard = (wishCard) => {
 		return (
 			<div key={wishCard._id} className="m-3 col-12 col-md-5 col-lg-4 col-xxl-3">
-				<WishCard wishCard={wishCard} attributes={attributes} />
+				<WishCard
+					wishCard={wishCard}
+					attributes={
+						!user?._id
+							? { href: '/login' }
+							: { href: `/wishcards/donate/${wishCard._id}` }
+					}
+				/>
 			</div>
 		);
-	});
+	};
 
 	const handleSearchInputChange = (event) => {
 		const target = event.target;
 		const { value } = target;
-		setSearchQueryParams({ ...searchQueryParams, textInput: value });
+		setSearchTextInput(value);
 	};
 
 	const handleSearchSubmit = async (event) => {
 		event.preventDefault();
+		await fetchSearchResults();
+	};
+
+	const fetchSearchResults = async () => {
 		const {
 			data: { wishcards },
 		} = await axios.post(
 			'/wishcards/search/',
 			{
-				wishitem: searchQueryParams.textInput,
+				wishitem: searchTextInput,
 				showDonatedCheck: searchQueryParams.showDonated,
 				younger: searchQueryParams.ageGroups.includes('younger') ? 'true' : null,
 				older: searchQueryParams.ageGroups.includes('older') ? 'true' : null,
@@ -95,7 +95,7 @@ function WishCards({ wishCards, user, agencies }) {
 							<div className="d-flex flex-wrap gap-3 mb-2">
 								<TextInput
 									placeholder="Search"
-									value={searchQueryParams.textInput}
+									value={searchTextInput}
 									onChange={handleSearchInputChange}
 									size="xl"
 									aria-label="Search"
@@ -172,15 +172,18 @@ function WishCards({ wishCards, user, agencies }) {
 						</form>
 					</div>
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
+						{cardData.length == 0 ? (
+							<h2 className="mt-3">{'No results found'}</h2>
+						) : null}
 						{isLoading ? (
 							new Array(6)
 								.fill(0)
 								.map((_, index) => <LoadingCard key={index} enableButtons={true} />)
 						) : (
 							<>
-								{cards.slice(0, numCardsToShow).map((card) => card)}
-								{cards.length > cardsPerPage &&
-									cards.length >= numCardsToShow + 1 && (
+								{cardData.slice(0, numCardsToShow).map((card) => mapwishCard(card))}
+								{cardData.length > cardsPerPage &&
+									cardData.length >= numCardsToShow + 1 && (
 										<button
 											className="w-50 mt-5 mb-3 button-modal-secondary"
 											onClick={handleLoadMore}
