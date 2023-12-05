@@ -42,7 +42,7 @@ function WishCards({ wishCards, user, agencies }) {
 					wishCard={wishCard}
 					attributes={
 						!user?._id
-							? { href: '/login' }
+							? { href: `/login?redirect=${wishCard._id}` }
 							: { href: `/wishcards/donate/${wishCard._id}` }
 					}
 				/>

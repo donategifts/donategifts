@@ -4,7 +4,7 @@ import React from 'react';
 
 const IntroduceChild = ({ childId, childName, image, user, status }) => {
 	const isDonated = status === 'donated';
-	const buttonHref = user?._id ? `/wishcards/donate/${childId}` : '/login';
+	const buttonHref = user?._id ? `/wishcards/donate/${childId}` : `/login?redirect=${childId}`;
 	const buttonColor = isDonated ? '#6c757d' : '#ff826b';
 
 	return (

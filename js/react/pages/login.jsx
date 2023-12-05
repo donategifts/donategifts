@@ -8,6 +8,7 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function Login({ clientId }) {
 	const [loading, setLoading] = useState(false);
+	const queryString = new URLSearchParams(window.location.search);
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -23,6 +24,7 @@ function Login({ clientId }) {
 				url: '/api/login/google-signin',
 				data: {
 					id_token: googleResponse.credential,
+					redirect: queryString.get('redirect'),
 				},
 			});
 
@@ -50,6 +52,7 @@ function Login({ clientId }) {
 				data: {
 					email: emailRef.current.value,
 					password: passwordRef.current.value,
+					redirect: queryString.get('redirect'),
 				},
 			});
 
