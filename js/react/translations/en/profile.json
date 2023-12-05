@@ -1,10 +1,10 @@
 {
     "DONATION_HISTORY": {
         "totalDonation": {
-            "popOverText": "Your total donation amount is displayed without tax and transaction fees."
+            "popOverText": "Your total donation amount is displayed with tax and transaction fees."
         },
         "karmaPoints": {
-            "popOverText": "You get 10 donation karma points for signing up. You can collect more karma points with each donation. In the future, you will be able to use the karma points to receive various rewards."
+            "popOverText": "You get 10 donation karma points for signing up. You can collect more karma points with each donation. If you accumulate over 1200 karma points, we will send you a T-shirt as a token of our appreciation."
         },
         "noRecords": "You have no donation records."
     }

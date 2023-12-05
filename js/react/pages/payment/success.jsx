@@ -2,7 +2,9 @@ import { Textarea, Button } from '@mantine/core';
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 
+import PopOver from '../../components/shared/PopOver.jsx';
 import WishCard from '../../components/shared/WishCard.jsx';
+import Translations from '../../translations/en/profile.json';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 function PaymentSuccess() {
@@ -83,9 +85,12 @@ function PaymentSuccess() {
 						<p>
 							Your payment was successful, and we are currently processing your order.
 							As a result of this donation, you have earned{' '}
-							<a href="/profile/donations" target="_blank">
-								{10 + Math.ceil(successInfo?.amount * 2)} donation karma points.
-							</a>
+							<b>{10 + Math.ceil(successInfo?.amount * 2)}</b> donation karma points.
+							<PopOver
+								text={Translations.DONATION_HISTORY.karmaPoints.popOverText}
+								isImgProvided={true}
+								imgSrc="/img/tshirt-2023.png"
+							/>
 						</p>
 						<p>
 							Please check your email at{' '}
@@ -137,7 +142,11 @@ function PaymentSuccess() {
 						</div>
 					</div>
 					<div className="col-sm-12 col-md-6 holiday-bg d-flex flex-column justify-content-center align-items-center rounded-2">
-						<p className="display-6">Your Donation Summary</p>
+						<p className="display-6">
+							<a href="/profile/donations" target="_blank">
+								Your Donation Summary
+							</a>
+						</p>
 						<p>
 							Donation Total: <span className="fw-bold">${successInfo?.amount}</span>
 						</p>
@@ -164,7 +173,13 @@ function PaymentSuccess() {
 								{suggestedCards?.map((card) => (
 									<div key={card._id} className="col-sm-12 col-md-4">
 										<div className="mb-sm-3">
-											<WishCard wishCard={card} />
+											<WishCard
+												wishCard={card}
+												attributes={{
+													href: `/wishcards/donate/${card._id}`,
+													target: `_blank`,
+												}}
+											/>
 										</div>
 									</div>
 								))}

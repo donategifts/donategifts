@@ -35,7 +35,7 @@ window.AgencyRegister = AgencyRegister;
 import Contact from './pages/contact.jsx';
 window.Contact = Contact;
 
-import DonationHistory from './pages/profile/donationhistory.jsx';
+import DonationHistory from './pages/profile/donationHistory.jsx';
 window.DonationHistory = DonationHistory;
 
 import Signup from './pages/signup.jsx';
