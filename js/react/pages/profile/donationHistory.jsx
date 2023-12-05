@@ -32,7 +32,7 @@ function DonationHistory() {
 		if (donations) {
 			setTotalGifts(donations.length);
 
-			let newTotalDonation = Number(0.0);
+			let newTotalDonation = 0.0;
 
 			donations.forEach((data) => {
 				if (data?.donationPrice) {
