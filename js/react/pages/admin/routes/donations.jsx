@@ -148,10 +148,10 @@ export default function Donations() {
 				<Table.Td
 					bg={
 						donation.status === 'delivered'
-							? 'teal.9'
+							? '#00a19a'
 							: donation.status === 'ordered'
-							? 'grape.9'
-							: 'indigo.9'
+							? '#ff826b'
+							: '#333a64'
 					}
 					className="text-white"
 				>

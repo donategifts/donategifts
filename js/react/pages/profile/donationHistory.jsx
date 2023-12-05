@@ -104,8 +104,7 @@ function DonationHistory() {
 												Translations.DONATION_HISTORY.karmaPoints
 													.popOverText
 											}
-											isImgProvided={true}
-											imgSrc="/img/tshirt-2023.png"
+											imageSource="/img/tshirt-2023.png"
 										/>
 									</p>
 								</div>

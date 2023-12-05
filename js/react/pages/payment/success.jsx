@@ -88,8 +88,7 @@ function PaymentSuccess() {
 							<b>{10 + Math.ceil(successInfo?.amount * 2)}</b> donation karma points.
 							<PopOver
 								text={Translations.DONATION_HISTORY.karmaPoints.popOverText}
-								isImgProvided={true}
-								imgSrc="/img/tshirt-2023.png"
+								imageSource="/img/tshirt-2023.png"
 							/>
 						</p>
 						<p>

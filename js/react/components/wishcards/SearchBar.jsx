@@ -52,7 +52,13 @@ function SearchBar({
 	};
 
 	return (
-		<Grid display="flex" justify="center" pos="sticky" top={50} style={{ zIndex: 2000 }}>
+		<Grid
+			display="flex"
+			justify="center"
+			pos={isMobile ? 'sticky' : 'inherit'}
+			top={50}
+			style={{ zIndex: 2000 }}
+		>
 			<Grid.Col span={{ baseLine: 12, md: 10 }}>
 				<Flex justify="end">
 					<Menu
@@ -65,18 +71,19 @@ function SearchBar({
 					>
 						<Menu.Target>
 							<Button
-								variant="filled"
-								size="compact-lg"
-								color="blue.3"
+								variant="outline"
+								size="lg"
+								color="#333a64"
+								className="bg-white"
 								fullWidth={isMobile}
 								my={10}
 								mx={20}
 								style={{
 									boxShadow:
-										'0 4px 8px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19)',
+										'0 4px 8px 0 rgba(0,0,0,0.3), 0 3px 10px 0 rgba(0,0,0,0.2)',
 								}}
 							>
-								Filter <i className="fas fa-filter"></i>
+								Search / Filter<i className="fas fa-filter mx-2"></i>
 							</Button>
 						</Menu.Target>
 
