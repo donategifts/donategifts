@@ -21,7 +21,6 @@ function SearchBar({
 	agencies,
 }) {
 	const [isMobile, setIsMobile] = useState(false);
-
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 	const resizeWidth = () => {
@@ -50,6 +49,13 @@ function SearchBar({
 
 		searchTextRef.current.value = '';
 	};
+
+	const uniqueAgencies = agencies.filter(
+		(agency, index, self) =>
+			index === self.findIndex((a) => a.agencyName === agency.agencyName),
+	);
+
+	const agencyNames = uniqueAgencies.map((agency) => agency.agencyName);
 
 	return (
 		<Grid
@@ -135,7 +141,7 @@ function SearchBar({
 							<Menu.Item closeMenuOnClick={false}>
 								<Select
 									label="Filter by agency"
-									data={agencies.map((agency) => agency.agencyName)}
+									data={agencyNames}
 									value={searchQueryParams.agencyFilter}
 									onChange={(value) =>
 										setSearchQueryParams({
