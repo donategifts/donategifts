@@ -1,7 +1,7 @@
 import { TextInput, Radio, Group, Checkbox, Select, Switch } from '@mantine/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import LoadingCard from '../components/shared/LoadingCard.jsx';
 import WishCard from '../components/shared/WishCard.jsx';
@@ -12,7 +12,7 @@ const cardsPerPage = 24;
 function WishCards({ wishCards, user, agencies }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cardData, setCardData] = useState(wishCards);
-	const [searchTextInput, setSearchTextInput] = useState('');
+	const searchTextRef = useRef('');
 	const [searchQueryParams, setSearchQueryParams] = useState({
 		showDonated: 'yes',
 		ageGroups: [],
@@ -50,12 +50,6 @@ function WishCards({ wishCards, user, agencies }) {
 		);
 	};
 
-	const handleSearchInputChange = (event) => {
-		const target = event.target;
-		const { value } = target;
-		setSearchTextInput(value);
-	};
-
 	const handleSearchSubmit = async (event) => {
 		event.preventDefault();
 		await fetchSearchResults();
@@ -64,25 +58,16 @@ function WishCards({ wishCards, user, agencies }) {
 	const fetchSearchResults = async () => {
 		const {
 			data: { wishcards },
-		} = await axios.post(
-			'/wishcards/search/',
-			{
-				wishitem: searchTextInput,
-				showDonatedCheck: searchQueryParams.showDonated,
-				younger: searchQueryParams.ageGroups.includes('younger') ? 'true' : null,
-				older: searchQueryParams.ageGroups.includes('older') ? 'true' : null,
-				recentlyAdded: searchQueryParams.sortOrder.includes('1') ? 1 : 0,
-				agencyFilter: searchQueryParams.agencyFilter
-					? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)
-							._id
-					: null,
-			},
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			},
-		);
+		} = await axios.post('/wishcards/search/', {
+			wishitem: searchTextRef.current.value,
+			showDonatedCheck: searchQueryParams.showDonated,
+			younger: searchQueryParams.ageGroups.includes('younger') ? 'true' : null,
+			older: searchQueryParams.ageGroups.includes('older') ? 'true' : null,
+			recentlyAdded: searchQueryParams.sortOrder.includes('1') ? 1 : 0,
+			agencyFilter: searchQueryParams.agencyFilter
+				? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)._id
+				: null,
+		});
 		setCardData(wishcards);
 	};
 
@@ -95,8 +80,7 @@ function WishCards({ wishCards, user, agencies }) {
 							<div className="d-flex flex-wrap gap-3 mb-2">
 								<TextInput
 									placeholder="Search"
-									value={searchTextInput}
-									onChange={handleSearchInputChange}
+									ref={searchTextRef}
 									size="xl"
 									aria-label="Search"
 								></TextInput>
