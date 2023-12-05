@@ -41,13 +41,12 @@ function DonationHistory() {
 
 	return (
 		<MantineProviderWrapper>
-			{showToast && (
-				<CustomToast
-					message="Failed to fetch donations!"
-					type="error"
-					delayCloseForSeconds={3}
-				/>
-			)}
+			<CustomToast
+				message="Failed to fetch donations!"
+				type="error"
+				isVisible={showToast}
+				setIsVisible={setShowToast}
+			/>
 			<div className="container mt-3" id="donation-history">
 				<div className="row p-4">
 					<div className="col-md-4">

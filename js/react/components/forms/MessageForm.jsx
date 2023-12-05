@@ -57,9 +57,13 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user }) => {
 					Submit Message
 				</Button>
 			</form>
-			{showToast && (
-				<CustomToast message={toastMessage} type={toastType} delayCloseForSeconds={5} />
-			)}
+			<CustomToast
+				message={toastMessage}
+				type={toastType}
+				delayCloseForSeconds={5}
+				isVisible={showToast}
+				setIsVisible={setShowToast}
+			/>
 		</div>
 	);
 };

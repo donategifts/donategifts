@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-function CustomToast({ message, type, delayCloseForSeconds }) {
-	const [visible, setVisible] = useState(true);
-
+function CustomToast({ message, type, delayCloseForSeconds, isVisible, setIsVisible }) {
 	const getBackgroundType = () => {
 		switch (type) {
 			case 'error':
@@ -18,16 +16,16 @@ function CustomToast({ message, type, delayCloseForSeconds }) {
 	};
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			setVisible(false);
+		const timeout = setTimeout(() => {
+			setIsVisible(false);
 		}, delayCloseForSeconds * 1000);
 
-		return () => clearTimeout(timer);
+		return () => clearTimeout(timeout);
 	}, [delayCloseForSeconds]);
 
 	return (
 		<>
-			{visible && (
+			{isVisible && (
 				<div
 					id="toast"
 					className={`toast position-fixed p-3 show ${getBackgroundType(type)}`}
@@ -47,6 +45,8 @@ function CustomToast({ message, type, delayCloseForSeconds }) {
 CustomToast.propTypes = {
 	message: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
+	isVisible: PropTypes.bool.isRequired,
+	setIsVisible: PropTypes.func.isRequired,
 	delayCloseForSeconds: PropTypes.number,
 };
 
