@@ -16,7 +16,7 @@ export const routes = Router();
 routes.use('/admin', Permissions.checkAdminPermission, admin);
 routes.use('/agency', agency);
 routes.use('/community', community);
-routes.use('/login.ts', login);
+routes.use('/login', login);
 routes.use('/payment', payment);
 routes.use('/profile', profile);
 routes.use('/signup', signup);
