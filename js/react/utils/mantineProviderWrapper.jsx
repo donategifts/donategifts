@@ -50,7 +50,7 @@ const theme = createTheme({
 			'#ffc26a',
 			'#ffbb59',
 		],
-		error: [
+		danger: [
 			'#ffeff1',
 			'#ffdee2',
 			'#ffced4',
