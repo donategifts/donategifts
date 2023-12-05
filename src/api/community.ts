@@ -10,6 +10,6 @@ const fileUpload = new FileUpload();
 
 router.use(communityController.limiter);
 
-router.post('/', fileUpload.upload.single('image'), communityController.addPost);
+router.post('/', fileUpload.upload.single('image'), communityController.handleAddPost);
 
 export default router;

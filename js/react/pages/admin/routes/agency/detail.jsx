@@ -141,11 +141,11 @@ export default function Detail() {
 				/>
 				<CustomButton
 					size="lg"
-					color={'orange.3'}
+					color="secondary.3"
 					loading={showUpdateLoader}
 					onClick={updateAgencyData}
 					disabled={showUpdateLoader}
-					text={'Update Agency Data'}
+					text="Update Agency Data"
 				/>
 			</Group>
 			<hr />

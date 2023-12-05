@@ -27,15 +27,9 @@ export default class WishCardApiController extends BaseApiController {
 		this.messageRepository = new MessageRepository();
 		this.userRepository = new UserRepository();
 		this.donationRepository = new DonationRepository();
-
-		this.getAgencyWishcards = this.getAgencyWishcards.bind(this);
-		this.putAgencyWishCardById = this.putAgencyWishCardById.bind(this);
-		this.postWishCardAsDraft = this.postWishCardAsDraft.bind(this);
-		this.postMessage = this.postMessage.bind(this);
-		this.getWishCardSingle = this.getWishCardSingle.bind(this);
 	}
 
-	async getAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetAgencyWishcards(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const userAgency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 			const wishCards = await this.wishCardRepository.getWishCardByAgencyId(userAgency!._id);
@@ -54,7 +48,7 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	async getWishCardSingle(req: Request, res: Response, _next: NextFunction) {
+	async handleGetWishCardSingle(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
 
@@ -110,7 +104,7 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	async putAgencyWishCardById(req: Request, res: Response, _next: NextFunction) {
+	async handlePutAgencyWishCardById(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const {
 				wishCardId,
@@ -142,7 +136,7 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	async postWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
+	async handlePostWishCardAsDraft(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const {
 				childFirstName,
@@ -202,7 +196,7 @@ export default class WishCardApiController extends BaseApiController {
 		}
 	}
 
-	async postMessage(req: Request, res: Response, _next: NextFunction) {
+	async handlePostMessage(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { messageFrom, messageTo, message } = req.body;
 			const newMessage = await this.messageRepository.createNewMessage({

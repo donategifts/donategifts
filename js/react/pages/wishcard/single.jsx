@@ -59,6 +59,7 @@ export default function WishCardSingle({ user }) {
 			</MantineProviderWrapper>
 		);
 	}
+
 	return (
 		<MantineProviderWrapper>
 			<div className="single">
@@ -109,9 +110,13 @@ export default function WishCardSingle({ user }) {
 						<MessageBoard childName={wishcard.childFirstName} messages={messages} />
 					</div>
 				</div>
-				{showToast && (
-					<CustomToast message={toastMessage} type={toastType} delayCloseForSeconds={5} />
-				)}
+				<CustomToast
+					message={toastMessage}
+					type={toastType}
+					delayCloseForSeconds={5}
+					isVisible={showToast}
+					setIsVisible={setShowToast}
+				/>
 			</div>
 		</MantineProviderWrapper>
 	);
