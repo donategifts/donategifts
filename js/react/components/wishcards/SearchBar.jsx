@@ -9,6 +9,9 @@ import {
 	Button,
 	Menu,
 	Grid,
+	RangeSlider,
+	Text,
+	Chip,
 } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -45,6 +48,8 @@ function SearchBar({
 			ageGroups: [],
 			agencyFilter: '',
 			sortOrder: [],
+			priceSlider: [],
+			priceSortOrder: '',
 		});
 
 		searchTextRef.current.value = '';
@@ -153,6 +158,58 @@ function SearchBar({
 								/>
 							</Menu.Item>
 							<Menu.Item closeMenuOnClick={false}>
+								<Text size="sm" fw={500} className="mb-2">
+									Filter by Price Range
+								</Text>
+								<RangeSlider
+									size={4}
+									min={1}
+									max={50}
+									minRange={1}
+									defaultValue={[1, 50]}
+									className="mb-4"
+									onChangeEnd={(value) =>
+										setSearchQueryParams({
+											...searchQueryParams,
+											priceSlider: value,
+										})
+									}
+									marks={[
+										{
+											value: 1,
+											label: 1,
+										},
+										{
+											value: 50,
+											label: 50,
+										},
+									]}
+								/>
+							</Menu.Item>
+							<Menu.Item
+								closeMenuOnClick={false}
+								styles={{ itemLabel: { display: 'flex', flexDirection: 'column' } }}
+							>
+								<Text size="sm" fw={500}>
+									Sort by Price
+								</Text>
+								<div className="d-flex mt-2 mb-2 gap-2">
+									<Chip.Group
+										multiple={false}
+										value={searchQueryParams.priceSortOrder}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												priceSortOrder: value,
+											})
+										}
+									>
+										<Chip value="1">Low to High</Chip>
+										<Chip value="-1">High to Low</Chip>
+									</Chip.Group>
+								</div>
+							</Menu.Item>
+							<Menu.Item closeMenuOnClick={false}>
 								<Switch.Group
 									label="Sort by most recent"
 									value={searchQueryParams.sortOrder}
@@ -168,7 +225,6 @@ function SearchBar({
 									</Group>
 								</Switch.Group>
 							</Menu.Item>
-
 							<Menu.Divider />
 
 							<Menu.Item

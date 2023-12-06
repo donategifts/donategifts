@@ -125,6 +125,7 @@ export default class WishCardRepository {
 		itemName: string,
 		showDonated: boolean,
 		reverseSort: boolean,
+		priceSortOrder: string | null,
 		cardIds?: string[],
 	) {
 		try {
@@ -156,6 +157,12 @@ export default class WishCardRepository {
 				sortOrder = -1;
 			}
 
+			const sortAttributes = {
+				...(priceSortOrder != null && { wishItemPrice: parseInt(priceSortOrder) }),
+				status: -1,
+				createdAt: sortOrder,
+			};
+
 			const matchPipeline: Record<string, unknown>[] = [
 				{
 					$match: {
@@ -164,10 +171,7 @@ export default class WishCardRepository {
 					},
 				},
 				{
-					$sort: {
-						status: -1,
-						createdAt: sortOrder,
-					},
+					$sort: sortAttributes,
 				},
 			];
 
