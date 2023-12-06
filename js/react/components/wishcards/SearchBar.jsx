@@ -11,6 +11,7 @@ import {
 	Grid,
 	RangeSlider,
 	Text,
+	Chip,
 } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -183,6 +184,29 @@ function SearchBar({
 										},
 									]}
 								/>
+							</Menu.Item>
+							<Menu.Item
+								closeMenuOnClick={false}
+								styles={{ itemLabel: { display: 'flex', flexDirection: 'column' } }}
+							>
+								<Text size="sm" fw={500}>
+									Sort by Price
+								</Text>
+								<div className="d-flex mt-2 mb-2 gap-2">
+									<Chip.Group
+										multiple={false}
+										value={searchQueryParams.priceSortOrder}
+										onChange={(value) =>
+											setSearchQueryParams({
+												...searchQueryParams,
+												priceSortOrder: value,
+											})
+										}
+									>
+										<Chip value="1">Low to High</Chip>
+										<Chip value="-1">High to Low</Chip>
+									</Chip.Group>
+								</div>
 							</Menu.Item>
 							<Menu.Item closeMenuOnClick={false}>
 								<Switch.Group

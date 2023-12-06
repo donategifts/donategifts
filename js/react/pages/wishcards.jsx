@@ -19,6 +19,7 @@ function WishCards({ wishCards, user, agencies, priceSliderRange }) {
 		agencyFilter: '',
 		sortOrder: [],
 		priceSlider: [],
+		priceSortOrder: '',
 	});
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
@@ -72,7 +73,9 @@ function WishCards({ wishCards, user, agencies, priceSliderRange }) {
 				? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)._id
 				: null,
 			priceSlider:
-				searchQueryParams.priceSlider.length > 0 ? searchQueryParams.priceSlider : null,
+				searchQueryParams.priceSlider.length > 0 ? searchQueryParams.priceSlider : [],
+			priceSortOrder:
+				searchQueryParams.priceSortOrder !== '' ? searchQueryParams.priceSortOrder : null,
 		});
 		setCardData(wishcards);
 	};
