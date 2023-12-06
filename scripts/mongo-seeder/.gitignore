@@ -1,2 +1,3 @@
 *.json
-!seeder-data/*.json
+data
+!*.sh
