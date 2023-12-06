@@ -22,7 +22,6 @@ function SearchBar({
 	searchQueryParams,
 	setSearchQueryParams,
 	agencies,
-	priceSliderRange,
 }) {
 	const [isMobile, setIsMobile] = useState(false);
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -49,6 +48,8 @@ function SearchBar({
 			ageGroups: [],
 			agencyFilter: '',
 			sortOrder: [],
+			priceSlider: [],
+			priceSortOrder: '',
 		});
 
 		searchTextRef.current.value = '';
@@ -162,10 +163,10 @@ function SearchBar({
 								</Text>
 								<RangeSlider
 									size={4}
-									min={priceSliderRange.min}
-									max={priceSliderRange.max}
+									min={1}
+									max={50}
 									minRange={1}
-									defaultValue={[priceSliderRange.min, priceSliderRange.max]}
+									defaultValue={[1, 50]}
 									className="mb-4"
 									onChangeEnd={(value) =>
 										setSearchQueryParams({
@@ -175,12 +176,12 @@ function SearchBar({
 									}
 									marks={[
 										{
-											value: priceSliderRange.min,
-											label: priceSliderRange.min,
+											value: 1,
+											label: 1,
 										},
 										{
-											value: priceSliderRange.max,
-											label: priceSliderRange.max,
+											value: 50,
+											label: 50,
 										},
 									]}
 								/>
@@ -250,7 +251,6 @@ SearchBar.propTypes = {
 	searchQueryParams: PropTypes.object,
 	setSearchQueryParams: PropTypes.func,
 	agencies: PropTypes.array,
-	priceSliderRange: PropTypes.object,
 };
 
 export default SearchBar;

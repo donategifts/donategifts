@@ -141,11 +141,6 @@ export default class WishCardController extends BaseController {
 					return { agencyName: agency.agencyName, _id: agency._id };
 				})
 				.sort((a, b) => a.agencyName.localeCompare(b.agencyName));
-			const wishCardPrices = wishcards.map((card) => card.wishItemPrice);
-			const priceSliderRange = {
-				min: Math.min(...wishCardPrices),
-				max: Math.max(...wishCardPrices),
-			};
 
 			const data = [] as unknown as WishCard & { age: number }[];
 			let birthday: moment.Moment;
@@ -163,7 +158,6 @@ export default class WishCardController extends BaseController {
 			this.renderView(res, 'wishcards', {
 				wishcards: data,
 				agencies,
-				priceSliderRange,
 			});
 		} catch (error) {
 			this.handleError(res, error);

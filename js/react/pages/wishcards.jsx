@@ -9,7 +9,7 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
 
-function WishCards({ wishCards, user, agencies, priceSliderRange }) {
+function WishCards({ wishCards, user, agencies }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cardData, setCardData] = useState(wishCards);
 	const searchTextRef = useRef('');
@@ -91,7 +91,6 @@ function WishCards({ wishCards, user, agencies, priceSliderRange }) {
 							searchQueryParams={searchQueryParams}
 							setSearchQueryParams={setSearchQueryParams}
 							agencies={agencies}
-							priceSliderRange={priceSliderRange}
 						/>
 					)}
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
@@ -129,7 +128,6 @@ WishCards.propTypes = {
 	}),
 	wishCards: PropTypes.arrayOf(PropTypes.object),
 	agencies: PropTypes.arrayOf(PropTypes.object),
-	priceSliderRange: PropTypes.object,
 };
 
 export default WishCards;
