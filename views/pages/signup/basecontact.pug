@@ -13,7 +13,10 @@ block scripts
             const root = ReactRoot(document.querySelector('#app-root'));
             root.render(
                 React.createElement(
-                    Signup
+                    Signup,
+                    {
+                        clientId: '#{locals.env.google}',
+                    }
                 )
             );
         });
