@@ -52,6 +52,7 @@ export default class WishCardController extends BaseController {
 		showDonated = false,
 		reverseSort = false,
 		agencyFilter = null,
+		priceSlider = [],
 	) {
 		let fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
 			(itemName && itemName.trim()) || '',
@@ -67,9 +68,16 @@ export default class WishCardController extends BaseController {
 		}
 
 		// remove duplicates
-		const allWishCards = fuzzySearchResult.filter(
+		let allWishCards = fuzzySearchResult.filter(
 			(elem, index, self) => index === self.indexOf(elem),
 		);
+
+		if (priceSlider.length > 0) {
+			allWishCards = allWishCards.filter(
+				(card) =>
+					card.wishItemPrice >= priceSlider[0] && card.wishItemPrice <= priceSlider[1],
+			);
+		}
 
 		for (let i = 0; i < allWishCards.length; i++) {
 			let childBirthday;
@@ -131,6 +139,11 @@ export default class WishCardController extends BaseController {
 					return { agencyName: agency.agencyName, _id: agency._id };
 				})
 				.sort((a, b) => a.agencyName.localeCompare(b.agencyName));
+			const wishCardPrices = wishcards.map((card) => card.wishItemPrice);
+			const priceSliderRange = {
+				min: Math.min(...wishCardPrices),
+				max: Math.max(...wishCardPrices),
+			};
 
 			const data = [] as unknown as WishCard & { age: number }[];
 			let birthday: moment.Moment;
@@ -148,6 +161,7 @@ export default class WishCardController extends BaseController {
 			this.renderView(res, 'wishcards', {
 				wishcards: data,
 				agencies,
+				priceSliderRange,
 			});
 		} catch (error) {
 			this.handleError(res, error);
@@ -394,6 +408,7 @@ export default class WishCardController extends BaseController {
 				cardIds,
 				recentlyAdded,
 				agencyFilter,
+				priceSlider,
 			} = req.body;
 
 			let childAge;
@@ -424,6 +439,7 @@ export default class WishCardController extends BaseController {
 				showDonated,
 				recentlyAdded,
 				agencyFilter,
+				priceSlider,
 			);
 
 			return res.status(200).send({

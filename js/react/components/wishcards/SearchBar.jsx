@@ -9,6 +9,8 @@ import {
 	Button,
 	Menu,
 	Grid,
+	RangeSlider,
+	Text,
 } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -19,6 +21,7 @@ function SearchBar({
 	searchQueryParams,
 	setSearchQueryParams,
 	agencies,
+	priceSliderRange,
 }) {
 	const [isMobile, setIsMobile] = useState(false);
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -153,6 +156,35 @@ function SearchBar({
 								/>
 							</Menu.Item>
 							<Menu.Item closeMenuOnClick={false}>
+								<Text size="sm" fw={500} className="mb-2">
+									Filter by Price Range
+								</Text>
+								<RangeSlider
+									size={4}
+									min={priceSliderRange.min}
+									max={priceSliderRange.max}
+									minRange={1}
+									defaultValue={[priceSliderRange.min, priceSliderRange.max]}
+									className="mb-4"
+									onChangeEnd={(value) =>
+										setSearchQueryParams({
+											...searchQueryParams,
+											priceSlider: value,
+										})
+									}
+									marks={[
+										{
+											value: priceSliderRange.min,
+											label: priceSliderRange.min,
+										},
+										{
+											value: priceSliderRange.max,
+											label: priceSliderRange.max,
+										},
+									]}
+								/>
+							</Menu.Item>
+							<Menu.Item closeMenuOnClick={false}>
 								<Switch.Group
 									label="Sort by most recent"
 									value={searchQueryParams.sortOrder}
@@ -168,7 +200,6 @@ function SearchBar({
 									</Group>
 								</Switch.Group>
 							</Menu.Item>
-
 							<Menu.Divider />
 
 							<Menu.Item
@@ -195,6 +226,7 @@ SearchBar.propTypes = {
 	searchQueryParams: PropTypes.object,
 	setSearchQueryParams: PropTypes.func,
 	agencies: PropTypes.array,
+	priceSliderRange: PropTypes.object,
 };
 
 export default SearchBar;

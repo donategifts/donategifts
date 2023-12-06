@@ -9,7 +9,7 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 const cardsPerPage = 24;
 
-function WishCards({ wishCards, user, agencies }) {
+function WishCards({ wishCards, user, agencies, priceSliderRange }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [cardData, setCardData] = useState(wishCards);
 	const searchTextRef = useRef('');
@@ -18,6 +18,7 @@ function WishCards({ wishCards, user, agencies }) {
 		ageGroups: [],
 		agencyFilter: '',
 		sortOrder: [],
+		priceSlider: [],
 	});
 	const [numCardsToShow, setNumCardsToShow] = useState(cardsPerPage);
 
@@ -70,6 +71,8 @@ function WishCards({ wishCards, user, agencies }) {
 			agencyFilter: searchQueryParams.agencyFilter
 				? agencies.find((agency) => agency.agencyName == searchQueryParams.agencyFilter)._id
 				: null,
+			priceSlider:
+				searchQueryParams.priceSlider.length > 0 ? searchQueryParams.priceSlider : null,
 		});
 		setCardData(wishcards);
 	};
@@ -85,6 +88,7 @@ function WishCards({ wishCards, user, agencies }) {
 							searchQueryParams={searchQueryParams}
 							setSearchQueryParams={setSearchQueryParams}
 							agencies={agencies}
+							priceSliderRange={priceSliderRange}
 						/>
 					)}
 					<div className="d-flex flex-wrap justify-content-center align-items-stretch">
@@ -122,6 +126,7 @@ WishCards.propTypes = {
 	}),
 	wishCards: PropTypes.arrayOf(PropTypes.object),
 	agencies: PropTypes.arrayOf(PropTypes.object),
+	priceSliderRange: PropTypes.object,
 };
 
 export default WishCards;
