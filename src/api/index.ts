@@ -9,6 +9,7 @@ import login from './login';
 import payment from './payment';
 import profile from './profile';
 import signup from './signup';
+import team from './team';
 import wishcards from './wishcards';
 
 export const routes = Router();
@@ -20,4 +21,5 @@ routes.use('/login', login);
 routes.use('/payment', payment);
 routes.use('/profile', profile);
 routes.use('/signup', signup);
+routes.use('/team', team);
 routes.use('/wishcards', wishcards);
