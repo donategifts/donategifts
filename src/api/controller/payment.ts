@@ -12,8 +12,6 @@ export default class PaymentController extends BaseController {
 		super();
 
 		this.wishCardRepository = new WishCardRepository();
-
-		this.handleGetPaymentSuccess = this.handleGetPaymentSuccess.bind(this);
 	}
 
 	async handleGetPaymentSuccess(req: Request, res: Response, _next: NextFunction) {

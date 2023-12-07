@@ -4,73 +4,32 @@ block title
     title Volunteers at Donate Gifts
 
 block content
-    #header.text-center.py-5
-        h1.text-primary.cool-font Meet Our Pets
-        .fs-5.fw-light Say hello to our adorable pets
+    #team
+        #header.text-center.py-5
+            h1.text-primary.cool-font Meet Our Pets
+            .fs-5.fw-light Say hello to our adorable pets
 
-    .container
-        .row.py-4
-            .col-md-4
-                img.img-fluid.rounded.mb-4( src='/img/team/marco-cat-min.jpg' alt='marco cat' loading='lazy' )
-                img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/patric-dog-min.jpg' alt='patric-dog' loading='lazy' )
-            .col-md-4
-                img.img-fluid.rounded.mb-4( src='/img/team/stacy-dog-min.jpeg' alt='stacy-dog' loading='lazy' )
-                img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/markell-hedgehog-min.jpg' alt='markell-hedgehog' loading='lazy' )
-            .col-md-4
-                img.img-fluid.rounded.mb-4( src='/img/team/stacy-chicago-dog.png' alt='stacy-dog-2' loading='lazy' )
-                img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/tokikko-cat-min.jpg' alt='tokikko-cat' loading='lazy' )
+        .container
+            .row.py-4
+                .col-md-4
+                    img.img-fluid.rounded.mb-4( src='/img/team/marco-cat-min.jpg' alt='marco cat' loading='lazy' )
+                    img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/patric-dog-min.jpg' alt='patric-dog' loading='lazy' )
+                .col-md-4
+                    img.img-fluid.rounded.mb-4( src='/img/team/stacy-dog-min.jpeg' alt='stacy-dog' loading='lazy' )
+                    img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/markell-hedgehog-min.jpg' alt='markell-hedgehog' loading='lazy' )
+                .col-md-4
+                    img.img-fluid.rounded.mb-4( src='/img/team/stacy-chicago-dog.png' alt='stacy-dog-2' loading='lazy' )
+                    img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/tokikko-cat-min.jpg' alt='tokikko-cat' loading='lazy' )
 
-        .text-center.py-5.my-2
-            h2.text-primary.cool-font The Volunteers
-            .fs-5
-                | Our volunteers work tirelessly to create positive
-                | changes
-
-        .row.py-4
-            .col-12.col-md-6.d-flex.align-items-stretch.mb-3.mb-md-0
-                .card.p-3.border-0.shadow
-                    .card-title
-                        .h4.text-primary.text-center Stacy Sealky Lee
-                    .card-body
-                        p.fw-bold Founder | Software Developer
-                        p
-                            span.fw-bold.me-1 Q:
-                            span Why are you working for this project?
-                        p
-                            span.fw-bold.me-1 A:
-                            span Because I want the kids to know that they are loved. I hope our organization can serve as a kind and loving community that supports the kids who are struggling in some ways.
-            .col-12.col-md-6.d-flex.align-items-stretch
-                .card.p-3.border-0.shadow
-                    .card-title
-                        .h4.text-primary
-                            a.center-elements.text-decoration-none( href='https://www.linkedin.com/in/marco-schuster-37b70a140/' target='_blank' )
-                                .me-1 Marco Schuster
-                                .fab.fa-linkedin
-                    .card-body
-                        p.fw-bold Software Developer
-                        p
-                            span.fw-bold.me-1 Q:
-                            span Why are you working for this project?
-                        p
-                            span.fw-bold.me-1 A:
-                            span Helping out children who otherwise wouldn't receive anything during holidays season is just amazing in itself. I'm happy to be part of this project and hope that we can make a difference in the lives of many children.
-
-        .py-5.my-3
-            .text-center
-                h2.text-primary.cool-font Our past volunteers
-            .row.justify-content-center.flex-wrap
-                .col-auto
+            .py-5.my-2
+                .text-center
+                    h2.text-primary.cool-font The Volunteers
                     .fs-5
-                        a.text-decoration-none.center-elements( href='https://www.linkedin.com/in/ivan-repusic-15869067/' target='_blank' )
-                            .me-1 Ivan Repusic
-                            .fab.fa-linkedin
-                .col-auto
-                    .fs-5
-                        a.text-decoration-none.center-elements( href='https://www.linkedin.com/in/jeevanjacobjohn/' target='_blank' )
-                            .me-1 Jacob John Jeevan
-                            .fab.fa-linkedin
-                .col-auto
-                    .fs-5
-                        a.text-decoration-none.center-elements( href='https://www.linkedin.com/in/patric-hoffmann-4154411b3/' target='_blank' )
-                            .me-1 Patric Hoffmann
-                            .fab.fa-linkedin
+                        | Due to recent privacy concerns, the volunteer information is no longer available publicly.
+            //-     #contributors.row.justify-content-center.flex-wrap.mt-2
+            //-         for contributor in contributors
+            //-             .contributor.card.border-0.shadow.m-1( style='width: 16rem;' )
+            //-                 a( href=contributor.githubProfile target='_blank' )
+            //-                     img.card-img-top( src=contributor.avatarUrl alt='user image' )
+            //-                 .card-body.text-center
+            //-                     h4.card-title= contributor.name

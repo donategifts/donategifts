@@ -46,7 +46,7 @@ function WishCardsCarousel({ wishCards, user, publishedCards, curatedCards }) {
 								attributes={{
 									href: user?._id
 										? `/wishcards/donate/${currentCard._id}`
-										: '/login',
+										: `/login?redirect=${currentCard._id}`,
 								}}
 							/>
 						</div>

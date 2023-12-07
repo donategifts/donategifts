@@ -51,18 +51,35 @@ export default class WishCardController extends BaseController {
 		cardIds,
 		showDonated = false,
 		reverseSort = false,
+		agencyFilter = null,
+		priceSlider = [],
+		priceSortOrder = null,
 	) {
-		const fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
+		let fuzzySearchResult = await this.wishCardRepository.getWishCardsFuzzy(
 			(itemName && itemName.trim()) || '',
 			showDonated,
 			reverseSort,
+			priceSortOrder,
 			cardIds,
 		);
 
+		if (agencyFilter) {
+			fuzzySearchResult = fuzzySearchResult.filter(
+				(card) => card.belongsTo?.toString() == agencyFilter,
+			);
+		}
+
 		// remove duplicates
-		const allWishCards = fuzzySearchResult.filter(
+		let allWishCards = fuzzySearchResult.filter(
 			(elem, index, self) => index === self.indexOf(elem),
 		);
+
+		if (priceSlider.length > 0) {
+			allWishCards = allWishCards.filter(
+				(card) =>
+					card.wishItemPrice >= priceSlider[0] && card.wishItemPrice <= priceSlider[1],
+			);
+		}
 
 		for (let i = 0; i < allWishCards.length; i++) {
 			let childBirthday;
@@ -114,6 +131,16 @@ export default class WishCardController extends BaseController {
 	async handleGetIndex(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const wishcards = await this.wishCardRepository.getAll();
+			const agencyIds = wishcards
+				.map((card) => card.belongsTo?.toString())
+				.filter((elem, index, self) => index === self.indexOf(elem));
+			const verifiedAgencies = await this.agencyRepository.getVerifiedAgencies();
+			const agencies = verifiedAgencies
+				?.filter((agency) => agencyIds.includes(agency._id.toString()))
+				.map((agency) => {
+					return { agencyName: agency.agencyName, _id: agency._id };
+				})
+				.sort((a, b) => a.agencyName.localeCompare(b.agencyName));
 
 			const data = [] as unknown as WishCard & { age: number }[];
 			let birthday: moment.Moment;
@@ -130,6 +157,7 @@ export default class WishCardController extends BaseController {
 
 			this.renderView(res, 'wishcards', {
 				wishcards: data,
+				agencies,
 			});
 		} catch (error) {
 			this.handleError(res, error);
@@ -368,10 +396,20 @@ export default class WishCardController extends BaseController {
 
 	async handlePostSearch(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const { wishitem, showDonatedCheck, younger, older, cardIds, recentlyAdded } = req.body;
+			const {
+				wishitem,
+				showDonatedCheck,
+				younger,
+				older,
+				cardIds,
+				recentlyAdded,
+				agencyFilter,
+				priceSlider,
+				priceSortOrder,
+			} = req.body;
 
 			let childAge;
-			let showDonated = showDonatedCheck;
+			let showDonated = showDonatedCheck === 'yes' ? true : false;
 
 			// only true on first visit of page
 			if (req.params.init) {
@@ -397,6 +435,9 @@ export default class WishCardController extends BaseController {
 				cardIds || [],
 				showDonated,
 				recentlyAdded,
+				agencyFilter,
+				priceSlider,
+				priceSortOrder,
 			);
 
 			return res.status(200).send({

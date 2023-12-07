@@ -10,9 +10,6 @@ block meta
     meta( name="robots" content="index, follow" )
     meta( name="keywords" content="children, gift, wish, foster, donate, school supplies, back to school, holiday, donation" )
 
-block external
-    include ../mixins/googlefacebookscripts.pug
-
 block content
     #home
         #hero.container-fluid.d-flex.justify-content-center.align-items-center
@@ -73,54 +70,6 @@ block content
             .heading-primary.text-center.mb-3.py-2 Our Partner Agencies
             .container-fluid.pb-5
                 #partner-carousel
-                    ul.align-items-center.small-ul.px-0( data-partner-carousel='' )
-                        li
-                            a( href='https://centraltexastableofgrace.org/' target='_blank' )
-                                img( src='/img/central-texas-table-of-grace-logo.jpg' alt='Central Texas Table of Grace  logo' loading='lazy' )
-                        li
-                            a( href='https://onehopeunited.org/' target='_blank' )
-                                img( src='/img/onehopeunited.png' alt='One Hope United logo' loading='lazy' )
-                        li
-                            a( href='https://www.newalternativesnyc.org/' target='_blank' )
-                                img( src='/img/new-alternatives-logo.png' alt='New Alternatives logo' loading='lazy' )
-                        li
-                            img( src='/svg/childrens-aid-logo.svg' alt='Childrens Aid NYC Agency logo' loading='lazy' )
-                        li
-                            a( href='http://www.lacasanorte.org/' target='_blank' )
-                                img( src='/img/la-casa-norte-logo.png' alt='La casa norte logo' loading='lazy' )
-                        li
-                            a( href='https://www.yos.org/' target='_blank' )
-                                img( src='/img/yos-logo-2.jpeg' alt='Youth Outreach Services logo' loading='lazy' )
-                        li
-                            img( src='/img/partner-coalition-nyc.jpg' alt='Partner Coalition of NewYork City logo' loading='lazy' )
-                        li
-                            a( href='https://www.fosteringhopefoundation.org' target='_blank' )
-                                img( src='/img/fostering-hope-logo.jpg' alt='Fostering Hope logo' loading='lazy' )
-                        li
-                            img( src='/img/you-gotta-believe-logo.jpg' alt='You gotta believe logo' loading='lazy' )
-                        li
-                            img( src='/img/penny-lane-logo.png' alt='Penny Lane Agency logo' loading='lazy' )
-                        li
-                            img( src='/img/epworth-tran-logo.png' alt='Epworth Village logo' loading='lazy' )
-                        li
-                            a( href='https://www.echoesofhope.org/' target='_blank' )
-                                img( src='/img/echoes-of-hope-logo.png' alt='Echoes of Hope logo' loading='lazy' )
-                        li
-                            a( href='https://www.blueskiesforchildren.org/' target='_blank' )
-                                img( src='/img/blue-sky-agency-logo.png' alt='Blue Skies for Children logo'  loading='lazy' )
-                        li
-                            a( href='https://casala.org/' target='_blank' )
-                                img( src='/img/casa-la-logo.png' alt='CASA of Los Angeles logo' loading='lazy' )
-                        li
-                            a( href='https://www.hartdistrict.org/' target='_blank' )
-                                img( src='/img/hart-district-logo.png' alt='William Hart district logo' loading='lazy' )
-                        li
-                            a( href='https://www.nyap.org/' target='_blank' )
-                                img( src='/img/nyap-logo.png' alt='National Youth Advocate Program logo' loading='lazy' )
-                    span.text-dark
-                        i.fa.fa-arrow-circle-right.fa-2x
-                    span.text-dark
-                        i.fa.fa-arrow-circle-left.fa-2x
 
         .my-4
             .container
@@ -193,68 +142,11 @@ block scripts
         })()
 
     script.
-        $(document).ready(() => {
-            const carouselDiv = $('#partner-carousel');
-            let imgList = $('#partner-carousel ul li');
-            const arrowBtns = $('#partner-carousel span');
-
-            imgList.parent().attr('data-partner-carousel', imgList.length);
-
-            const carouselImg = () => {
-                imgList = $('#partner-carousel ul li');
-                if (imgList.length <= imgList.parent().data('partner-carousel')) {
-                    imgList
-                        .parent()
-                        .append('<li>' + imgList.first().html() + '</li>')
-                        .children()
-                        .first()
-                        .animate(
-                            {
-                                marginLeft: -imgList.first().outerWidth(),
-                            },
-                            3000,
-                            () => {
-                                imgList.first().remove();
-                            }
-                        );
-                }
-            };
-
-            let autoSlideCarousel = setInterval(carouselImg, 2500);
-
-            carouselDiv.mouseenter(() => {
-                clearInterval(autoSlideCarousel);
-            });
-
-            carouselDiv.mouseleave(() => {
-                autoSlideCarousel = setInterval(carouselImg, 1000);
-            });
-
-            arrowBtns.first().on('click', () => {
-                imgList = $('#partner-carousel ul li');
-                const leftImg = imgList.first().html();
-                if (imgList.length <= imgList.parent().data('partner-carousel')) {
-                    imgList
-                        .parent()
-                        .append('<li>' + leftImg + '</li>')
-                        .children()
-                        .first()
-                        .remove();
-                }
-            });
-
-            arrowBtns.last().on('click', () => {
-                imgList = $('#partner-carousel ul li');
-                const lastImg = imgList.last().html();
-                if (imgList.length <= imgList.parent().data('partner-carousel')) {
-                    imgList
-                        .parent()
-                        .prepend('<li>' + lastImg + '</li>')
-                        .children()
-                        .last()
-                        .remove();
-                }
-            });
+        $(document).ready(function() {
+            const carouselDivRoot = ReactRoot(document.querySelector('#partner-carousel'));
+            carouselDivRoot.render(
+                React.createElement(PartnerCarousel)
+            );
         });
 
     script.

@@ -96,7 +96,11 @@ export default function Donations() {
 						: ` ${donation.user.name}`}
 				</Table.Td>
 				<Table.Td>
-					{donation.agency.name && <PopOver text={donation.agency.email} />}
+					{donation.agency.name && (
+						<PopOver
+							text={donation.agency.email || 'Email not found for account manager!'}
+						/>
+					)}
 					{donation.agency.name?.length >= 30
 						? ` ${donation.agency.name?.slice(0, 30)}...`
 						: ` ${donation.agency.name || ''}`}
@@ -144,10 +148,10 @@ export default function Donations() {
 				<Table.Td
 					bg={
 						donation.status === 'delivered'
-							? 'teal.9'
+							? '#00a19a'
 							: donation.status === 'ordered'
-							? 'grape.9'
-							: 'indigo.9'
+							? '#ff826b'
+							: '#333a64'
 					}
 					className="text-white"
 				>

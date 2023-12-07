@@ -3,9 +3,9 @@ import { notifications } from '@mantine/notifications';
 import classes from '../styles/Notifications.module.css';
 
 const COLOR_MAP = {
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
+	success: 'success',
+	error: 'error',
+	warning: 'warning',
 	info: 'blue',
 };
 

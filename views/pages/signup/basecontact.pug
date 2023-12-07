@@ -7,49 +7,16 @@ append meta
     if locals.env.mode === 'development'
         meta( name='referrer' content='no-referrer-when-downgrade' )
 
-block external
-    include ../../mixins/googlefacebookscripts.pug
-
-block modal
-    include ../../components/modal/signupModal.pug
-
 block scripts
-    script.
-        const handleCredentialResponse = (googleResponse) => {
-            $.ajax({
-                type: 'POST',
-                url: '/login/google-signin',
-                data: {
-                    id_token: googleResponse.credential,
-                },
-                success: (response) => {
-                    location.assign(response.url);
-                },
-                error: (response) => {
-                    new DG.Toast().show(response.responseJSON.error.msg, DG.Toast.styleMap.danger);
-                },
-            });
-        }
-
-        window.onload = () => {
-            google.accounts.id.initialize({
-                client_id: '#{locals.env.google}',
-                callback: handleCredentialResponse
-            });
-
-            google.accounts.id.renderButton(
-                document.getElementById('google-login-button'),
-                { theme: 'outline', size: 'large', text: "signup_with", width: '280'}  // customization attributes
-            );
-
-            google.accounts.id.prompt(); // also display the One Tap dialog
-        }
     script.
         $(document).ready(() => {
             const root = ReactRoot(document.querySelector('#app-root'));
             root.render(
                 React.createElement(
-                    Signup
+                    Signup,
+                    {
+                        clientId: '#{locals.env.google}',
+                    }
                 )
             );
         });

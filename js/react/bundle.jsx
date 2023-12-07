@@ -19,11 +19,11 @@ window.Nav = Nav;
 import Footer from './components/Footer.jsx';
 window.Footer = Footer;
 
-import WishCards from './pages/wishCards.jsx';
-window.WishCards = WishCards;
-
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 window.WishCardsCarousel = WishCardsCarousel;
+
+import PartnerCarousel from './components/home/PartnerCarousel.jsx';
+window.PartnerCarousel = PartnerCarousel;
 
 // pages
 import Admin from './pages/admin/index.jsx';
@@ -35,11 +35,20 @@ window.AgencyRegister = AgencyRegister;
 import Contact from './pages/contact.jsx';
 window.Contact = Contact;
 
-import DonationHistory from './pages/profile/donationhistory.jsx';
+import DonationHistory from './pages/profile/donationHistory.jsx';
 window.DonationHistory = DonationHistory;
+
+import Login from './pages/login.jsx';
+window.Login = Login;
+
+import PaymentSuccess from './pages/payment/success.jsx';
+window.PaymentSuccess = PaymentSuccess;
 
 import Signup from './pages/signup.jsx';
 window.Signup = Signup;
+
+import Terms from './pages/terms.jsx';
+window.Terms = Terms;
 
 import WishCardCreate from './pages/wishcard/create.jsx';
 window.WishCardCreate = WishCardCreate;
@@ -53,8 +62,5 @@ window.WishCardSingle = WishCardSingle;
 import WishcardsAdministration from './pages/admin/routes/wishcard/administration.jsx';
 window.WishcardsAdministration = WishcardsAdministration;
 
-import PaymentSuccess from './pages/payment/success.jsx';
-window.PaymentSuccess = PaymentSuccess;
-
-import Terms from './pages/terms.jsx';
-window.Terms = Terms;
+import WishCards from './pages/wishcards.jsx';
+window.WishCards = WishCards;
