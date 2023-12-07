@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { PARTNER_CAROUSEL_DATA } from '../../utils/constants';
 
 function PartnerCarousel() {
-	const autoplay = useRef(Autoplay({ delay: 2000 }));
+	const autoplay = useRef(Autoplay({ delay: 2500 }));
 
 	const partnerCarouselSlides = PARTNER_CAROUSEL_DATA.map((data) => (
 		<Carousel.Slide
@@ -28,6 +28,8 @@ function PartnerCarousel() {
 			<div className="container my-5">
 				<Carousel
 					withControls={true}
+					speed={2}
+					slidesToScroll={1}
 					loop
 					plugins={[autoplay.current]}
 					onMouseEnter={autoplay.current.stop}
