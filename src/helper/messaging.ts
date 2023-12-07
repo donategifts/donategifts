@@ -366,7 +366,7 @@ export default class Messaging {
 			.replace(/%donorFirstName%/g, donorFirstName)
 			.replace('%itemName%', itemName)
 			.replace('%orderId%', donationOrderId)
-			.replace('%trackingInfo%', trackingInfo)
+			.replace(/%trackingInfo%/g, trackingInfo)
 			.replace('%agencyAddress%', agencyAddress);
 
 		return this.sendMail(
@@ -393,7 +393,7 @@ export default class Messaging {
 			.replace('%item%', itemName)
 			.replace('%agency%', agencyName)
 			.replace('%orderId%', donationOrderId)
-			.replace('%trackingInfo%', trackingInfo)
+			.replace(/%trackingInfo%/g, trackingInfo)
 			.replace('%wishCardId%', wishCardId);
 
 		return this.sendMail(
