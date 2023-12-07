@@ -151,7 +151,15 @@ function CommunityPosts(props) {
 		<MantineProviderWrapper>
 			<div className="bg-light">
 				<div id="community" className="container py-3">
-					{user?.userRole === 'partner' && agency?.isVerified && createPost()}
+					{user?.userRole === 'partner' && agency?.isVerified ? (
+						createPost()
+					) : (
+						<div>
+							<p className="display-6 text-center my-4">
+								Agency partners must log in to access the post creation section.
+							</p>
+						</div>
+					)}
 					<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 800: 2 }}>
 						<Masonry gutter="1.5rem">
 							{posts.map((post) =>

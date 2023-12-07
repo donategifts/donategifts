@@ -104,7 +104,7 @@ export default function WishCardSingle({ user }) {
 									wishItemPrice={wishcard.wishItemPrice}
 									wishItemInfo={wishcard.wishItemInfo}
 								/>
-								{user && Object.keys(user).length > 0 && (
+								{user && Object.keys(user).length > 0 ? (
 									<MessageForm
 										defaultMessages={defaultMessages}
 										wishcard={wishcard}
@@ -112,6 +112,15 @@ export default function WishCardSingle({ user }) {
 										onMessageSend={addNewMessage}
 										donorId={donorId}
 									/>
+								) : (
+									<div className="col-md-6 col-lg-6 col-12">
+										<div className="d-flex flex-column justify-content-center">
+											<div className="display-6 my-4">Send Message</div>
+											<p>
+												Please log in to access the message sending feature.
+											</p>
+										</div>
+									</div>
 								)}
 							</div>
 						</div>
