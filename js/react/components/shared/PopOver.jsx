@@ -1,14 +1,11 @@
 import { Popover, Text } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import PropTypes from 'prop-types';
 
 function PopOver({ width, position, text, textSize, imageSource, iconStyles }) {
-	const [opened, { close, open }] = useDisclosure(false);
-
 	return (
-		<Popover width={width} position={position} withArrow shadow="md" opened={opened}>
+		<Popover width={width} position={position} withArrow shadow="md">
 			<Popover.Target>
-				<i className={iconStyles} onMouseEnter={open} onMouseLeave={close} />
+				<i className={iconStyles} />
 			</Popover.Target>
 			<Popover.Dropdown>
 				{imageSource && (
