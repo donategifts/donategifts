@@ -332,7 +332,7 @@ export default class AdminController extends BaseController {
 					} ${wishCard?.address?.country ?? ''}`;
 					const shippingAddress = wishCard?.address
 						? address
-						: 'No address found. Please contact support@donate-gifts.com.';
+						: 'No address found. Please contact stacy@donate-gifts.com.';
 
 					try {
 						this.log.info('Sending the donor user shipping alert email.');
