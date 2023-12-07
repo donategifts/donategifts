@@ -21,70 +21,16 @@ block content
                     img.img-fluid.rounded.mb-4( src='/img/team/stacy-chicago-dog.png' alt='stacy-dog-2' loading='lazy' )
                     img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/tokikko-cat-min.jpg' alt='tokikko-cat' loading='lazy' )
 
-            .text-center.py-5.my-2
-                h2.text-primary.cool-font The Volunteers
-                .fs-5
-                    | Our volunteers work tirelessly to create positive
-                    | changes
-
-            .row.py-4
-                .col-12.col-md-6.d-flex.align-items-stretch.mb-3.mb-md-0
-                    .card.p-3.border-0.shadow
-                        .card-title
-                            .h4.text-primary.text-center Stacy Sealky Lee
-                        .card-body
-                            p.fw-bold Founder | Developer
-                            p
-                                span.fw-bold.me-1 Q:
-                                span Why are you working for this project?
-                            p
-                                span.fw-bold.me-1 A:
-                                span Because I want the kids to know that they are loved. I hope our organization can serve as a kind and loving community that supports the kids who are struggling in some ways.
-                .col-12.col-md-6.d-flex.align-items-stretch
-                    .card.p-3.border-0.shadow
-                        .card-title
-                            .h4.text-primary
-                                a.center-elements.text-decoration-none( href='https://www.linkedin.com/in/marco-schuster-37b70a140/' target='_blank' )
-                                    .me-1 Marco Schuster
-                                    .fab.fa-linkedin
-                        .card-body
-                            p.fw-bold Developer
-                            p
-                                span.fw-bold.me-1 Q:
-                                span Why are you working for this project?
-                            p
-                                span.fw-bold.me-1 A:
-                                span Helping out children who otherwise wouldn't receive anything during holidays season is just amazing in itself. I'm happy to be part of this project and hope that we can make a difference in the lives of many children.
-
-            .py-5.my-3
+            .py-5.my-2
                 .text-center
-                    h2.text-primary.cool-font Our amazing contributors
-                #contributors.row.justify-content-center.flex-wrap
-
-append scripts
-    script.
-        $(document).ready(() => {
-            const renderContributors = (contributors) => {
-                const contributorsContainer = document.querySelector('#contributors');
-
-                contributors.forEach(contributor => {
-                    const card = `
-                    <div class="contributor card border-0 shadow m-1" style="width: 16rem;">
-                        <a href="${contributor.githubProfile}" target="_blank">
-                            <img src="${contributor.avatarUrl}" class="card-img-top" alt="user image">
-                        </a>
-                        <div class="card-body text-center">
-                            <h4 class="card-title">${contributor.name}</h4>
-                        </div>
-                    </div>
-                    `;
-
-                    contributorsContainer.insertAdjacentHTML("beforeend", card);
-                });
-            };
-
-            fetch('/api/team/contributors')
-                .then(response => response.json())
-                .then(({ data }) => renderContributors(data))
-                .catch(error => console.log(error));
-        });
+                    h2.text-primary.cool-font The Volunteers
+                    .fs-5
+                        | Our volunteers work tirelessly to create positive
+                        | changes
+                #contributors.row.justify-content-center.flex-wrap.mt-2
+                    for contributor in contributors
+                        .contributor.card.border-0.shadow.m-1( style='width: 16rem;' )
+                            a( href=contributor.githubProfile target='_blank' )
+                                img.card-img-top( src=contributor.avatarUrl alt='user image' )
+                            .card-body.text-center
+                                h4.card-title= contributor.name

@@ -16,7 +16,6 @@ export default class TeamController extends BaseController {
 				githubProfile: string;
 			}[] = data
 				.filter((user) => user.type !== 'Bot' && user.type !== 'Anonymous')
-				.filter((user) => user.login !== 'stacysealky' && user.login !== 'Enubia')
 				.map((contributor: any) => {
 					return {
 						name: contributor.login,
