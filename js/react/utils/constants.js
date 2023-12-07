@@ -87,6 +87,69 @@ const BIRTH_YEAR = [
 	'2000',
 ];
 
+const PARTNER_CAROUSEL_DATA = [
+	{
+		url: 'https://centraltexastableofgrace.org/',
+		img: '/img/central-texas-table-of-grace-logo.jpg',
+		alt: 'Central Texas Table of Grace  logo',
+	},
+	{
+		url: 'https://onehopeunited.org/',
+		img: '/img/onehopeunited.png',
+		alt: 'One Hope United logo',
+	},
+	{
+		url: 'https://www.newalternativesnyc.org/',
+		img: '/img/new-alternatives-logo.png',
+		alt: 'New Alternatives logo',
+	},
+	{ img: '/svg/childrens-aid-logo.svg', alt: 'Childrens Aid NYC Agency logo' },
+	{
+		url: 'http://www.lacasanorte.org/',
+		img: '/img/la-casa-norte-logo.png',
+		alt: 'La casa norte logo',
+	},
+	{
+		url: 'https://www.yos.org/',
+		img: '/img/yos-logo-2.jpeg',
+		alt: 'Youth Outreach Services logo',
+	},
+	{ img: '/img/partner-coalition-nyc.jpg', alt: 'Partner Coalition of NewYork City logo' },
+	{
+		url: 'https://www.fosteringhopefoundation.org',
+		img: '/img/fostering-hope-logo.jpg',
+		alt: 'Fostering Hope logo',
+	},
+	{ img: '/img/you-gotta-believe-logo.jpg', alt: 'You gotta believe logo' },
+	{ img: '/img/penny-lane-logo.png', alt: 'Penny Lane Agency logo' },
+	{ img: '/img/epworth-tran-logo.png', alt: 'Epworth Village logo' },
+	{
+		url: 'https://www.echoesofhope.org/',
+		img: '/img/echoes-of-hope-logo.png',
+		alt: 'Echoes of Hope logo',
+	},
+	{
+		url: 'https://www.blueskiesforchildren.org/',
+		img: '/img/blue-sky-agency-logo.png',
+		alt: 'Blue Skies for Children logo',
+	},
+	{
+		url: 'https://casala.org/',
+		img: '/img/casa-la-logo.png',
+		alt: 'CASA of Los Angeles logo',
+	},
+	{
+		url: 'https://www.hartdistrict.org/',
+		img: '/img/hart-district-logo.png',
+		alt: 'William Hart district logo',
+	},
+	{
+		url: 'https://www.nyap.org/',
+		img: '/img/nyap-logo.png',
+		alt: 'National Youth Advocate Program logo',
+	},
+];
+
 export {
 	LOGIN,
 	LOGIN_WITH_EMAIL,
@@ -96,4 +159,5 @@ export {
 	AMAZON_PRODUCT_REGEX,
 	STATE_NAMES,
 	BIRTH_YEAR,
+	PARTNER_CAROUSEL_DATA,
 };
