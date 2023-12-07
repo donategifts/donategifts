@@ -22,6 +22,9 @@ window.Footer = Footer;
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 window.WishCardsCarousel = WishCardsCarousel;
 
+import PartnerCarousel from './components/home/PartnerCarousel.jsx';
+window.PartnerCarousel = PartnerCarousel;
+
 // pages
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
