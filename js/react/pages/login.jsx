@@ -135,7 +135,7 @@ function Login({ clientId }) {
 										</button>
 										<Flex justify="center" align="center" className="mt-3">
 											<GoogleLogin
-												width="200px"
+												width="280px"
 												onSuccess={handleCredentialResponse}
 												onError={() => {
 													new window.DG.Toast().show(

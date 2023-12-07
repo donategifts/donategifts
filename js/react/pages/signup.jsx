@@ -226,7 +226,7 @@ function Signup({ clientId }) {
 									</button>
 									<Flex justify="center" align="center" className="mt-3">
 										<GoogleLogin
-											width="200px"
+											width="280px"
 											text="signup_with"
 											onSuccess={handleCredentialResponse}
 											onError={() => {
