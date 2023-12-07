@@ -75,7 +75,6 @@ export default class Utils {
 			`${childFirstName}, we love you and we want you to know that! You are amazing!`,
 			`${childFirstName}, hope you enjoy my gift!`,
 			'Happy holidays to the sweetest kid in the entire world.',
-			//`Custom Message`,
 		];
 	}
 

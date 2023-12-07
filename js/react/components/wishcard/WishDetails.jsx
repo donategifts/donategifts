@@ -1,7 +1,7 @@
 import PropType from 'prop-types';
 import { useEffect, useState } from 'react';
 
-const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
+const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice, wishItemInfo }) => {
 	const defaultImages = [
 		'/img/gift-placeholder-1.jpg',
 		'/img/gift-placeholder-2.jpg',
@@ -30,12 +30,16 @@ const WishDetails = ({ wishItemName, wishItemImage, wishItemPrice }) => {
 				src={imageSrc}
 			/>
 			<p>
+				<span className="fw-bold">Item Price:</span>
+				<span className="mx-2">${wishItemPrice}</span>
+			</p>
+			<p>
 				<span className="fw-bold">Item Name:</span>
 				<span className="mx-2">{wishItemName}</span>
 			</p>
 			<p>
-				<span className="fw-bold">Item Price:</span>
-				<span className="mx-2">${wishItemPrice}</span>
+				<span className="fw-bold">Item Description:</span>
+				<span className="mx-2">{wishItemInfo ?? 'Not Provided'}</span>
 			</p>
 		</div>
 	);
@@ -45,6 +49,7 @@ WishDetails.propTypes = {
 	wishItemName: PropType.string.isRequired,
 	wishItemImage: PropType.string,
 	wishItemPrice: PropType.number.isRequired,
+	wishItemInfo: PropType.string,
 };
 
 export default WishDetails;

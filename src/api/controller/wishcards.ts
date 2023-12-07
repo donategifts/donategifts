@@ -85,9 +85,6 @@ export default class WishCardApiController extends BaseApiController {
 					wishcard!.childFirstName,
 				);
 			}
-			if (donationFrom && defaultMessages) {
-				defaultMessages.unshift(`Custom Message`);
-			}
 
 			return this.sendResponse(res, {
 				wishcard: {

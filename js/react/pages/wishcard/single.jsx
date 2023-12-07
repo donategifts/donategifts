@@ -23,6 +23,7 @@ export default function WishCardSingle({ user }) {
 	const [toastMessage, setToastMessage] = useState('');
 	const [toastType, setToastType] = useState('');
 	const [showToast, setShowToast] = useState(false);
+	const [donorId, setDonorId] = useState('');
 
 	const addNewMessage = useCallback((newMessage) => {
 		setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -32,7 +33,12 @@ export default function WishCardSingle({ user }) {
 		setIsLoading(true);
 		try {
 			const response = await axios.get(`/api/wishcards/single/${id}`);
-			const { wishcard, agency, messages, defaultMessages } = response.data.data;
+			const { wishcard, agency, messages, defaultMessages, donationFrom } =
+				response.data.data;
+
+			if (donationFrom && donationFrom.length) {
+				setDonorId(donationFrom);
+			}
 			setWishcard(wishcard);
 			setAgency(agency);
 			setMessages(messages);
@@ -96,6 +102,7 @@ export default function WishCardSingle({ user }) {
 									wishItemName={wishcard.wishItemName}
 									wishItemImage={wishcard.wishItemImage}
 									wishItemPrice={wishcard.wishItemPrice}
+									wishItemInfo={wishcard.wishItemInfo}
 								/>
 								{user && Object.keys(user).length > 0 && (
 									<MessageForm
@@ -103,6 +110,7 @@ export default function WishCardSingle({ user }) {
 										wishcard={wishcard}
 										user={user}
 										onMessageSend={addNewMessage}
+										donorId={donorId}
 									/>
 								)}
 							</div>
