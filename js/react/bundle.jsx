@@ -25,6 +25,9 @@ window.WishCardsCarousel = WishCardsCarousel;
 import PartnerCarousel from './components/home/PartnerCarousel.jsx';
 window.PartnerCarousel = PartnerCarousel;
 
+import ContactBanner from './components/home/ContactBanner.jsx';
+window.ContactBanner = ContactBanner;
+
 // pages
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;
