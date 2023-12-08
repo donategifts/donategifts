@@ -1,4 +1,4 @@
-import { Button, FileButton, Group, Image } from '@mantine/core';
+import { Button, FileButton, Group, Image, Text } from '@mantine/core';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -112,59 +112,65 @@ export default function WishcardDetail() {
 					Go back
 				</button>
 			</div>
-			<div className="d-flex mb-3 gap-2">
-				<div className="d-flex flex-column">
-					<div className="min-vh-50">
-						<Image
-							src={childImage}
-							alt={`${wishcard.childFirstName}'s Image`}
-							className="img-fluid rounded align-self-center"
-							fit="cover"
-							w={150}
-							h={150}
-						/>
+			<div className="d-flex mb-3 gap-4">
+				<div className="d-flex p-4 gap-3" style={{ backgroundColor: '#fdf6ed' }}>
+					<Image
+						src={childImage}
+						alt={`${wishcard.childFirstName}'s Image`}
+						className="img-fluid rounded align-self-center"
+						fit="cover"
+						w={150}
+						h={150}
+					/>
+					<div className="d-flex flex-column justify-content-center">
+						<Text size="md" fw={500}>
+							{"Upload Child's Picture"}
+						</Text>
+						<FileButton
+							onChange={handleChildImage}
+							accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+							name="childImage"
+							id="childImage"
+							className="mt-4 align-self-center"
+							required
+						>
+							{(props) => (
+								<Button {...props}>
+									<i className="fas fa-upload m-2 p-1"></i>
+									<span className="upload-text">Upload</span>
+								</Button>
+							)}
+						</FileButton>
 					</div>
-					<FileButton
-						onChange={handleChildImage}
-						accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
-						name="childImage"
-						id="childImage"
-						className="mt-4 align-self-center"
-						required
-					>
-						{(props) => (
-							<Button {...props}>
-								<i className="fas fa-upload m-2 p-1"></i>
-								<span className="upload-text">Upload Child Image</span>
-							</Button>
-						)}
-					</FileButton>
 				</div>
-				<div className="d-flex flex-column">
-					<div className="min-vh-50">
-						<Image
-							src={wishItemImage}
-							alt={`${wishcard.wishItemName}'s Image`}
-							className="img-fluid rounded align-self-center"
-							fit="cover"
-							w={150}
-							h={150}
-						/>
+				<div className="d-flex p-4 gap-3" style={{ backgroundColor: '#fdf6ed' }}>
+					<Image
+						src={wishItemImage}
+						alt={`${wishcard.wishItemName}'s Image`}
+						className="img-fluid rounded align-self-center"
+						fit="cover"
+						w={150}
+						h={150}
+					/>
+					<div className="d-flex flex-column justify-content-center">
+						<Text size="md" fw={500}>
+							{'Upload Item Picture'}
+						</Text>
+						<FileButton
+							onChange={handleItemImage}
+							className="mt-4 align-self-center"
+							name="wishItemImage"
+							id="wishItemImage"
+							accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+						>
+							{(props) => (
+								<Button {...props}>
+									<i className="fas fa-upload m-2 p-1"></i>
+									<span className="upload-text">Upload</span>
+								</Button>
+							)}
+						</FileButton>
 					</div>
-					<FileButton
-						onChange={handleItemImage}
-						className="mt-4 align-self-center"
-						name="wishItemImage"
-						id="wishItemImage"
-						accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
-					>
-						{(props) => (
-							<Button {...props}>
-								<i className="fas fa-upload m-2 p-1"></i>
-								<span className="upload-text">Upload Item Image</span>
-							</Button>
-						)}
-					</FileButton>
 				</div>
 			</div>
 			<Group justify={'center'}>
