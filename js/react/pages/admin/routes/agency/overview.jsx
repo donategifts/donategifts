@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Overview() {
-	const basePath = '/api/admin';
-
 	const navigate = useNavigate();
 
 	const [rows, setRows] = useState([]);
@@ -18,7 +16,7 @@ export default function Overview() {
 	};
 
 	const fetchAgencies = async (verified = false) => {
-		const res = await fetch(`${basePath}/agencyOverview?getVerified=${verified}`);
+		const res = await fetch(`/api/admin/agencyOverview?getVerified=${verified}`);
 		const { data } = await res.json();
 
 		setRows(

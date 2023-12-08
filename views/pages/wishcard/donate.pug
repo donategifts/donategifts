@@ -6,68 +6,79 @@ block title
 block content
     #donate.bg-light
         .container.py-3
-            h1.text-center.cool-font.text-primary Wish Donation Secure Checkout
-            .text-center
+            -
+                var imgList = ['/img/gift-placeholder-1.jpg', '/img/gift-placeholder-2.jpg', '/img/gift-placeholder-3.jpg', '/img/gift-placeholder-4.jpg', '/img/gift-placeholder-5.jpg'];
+                var wishItemImg = imgList[Math.floor(Math.random() * 5)];
+            h1.text-center.cool-font.text-primary.mt-4 Wish Item Donation Checkout
+            p.text-center.mb-0.fs-5
                 -
                     var text = wishcard.childFirstName + "'s gift will be delivered to our partner agency,";
                     text += '<a href="#" class="fw-bold mx-1" data-bs-toggle="modal" data-bs-target="#checkoutHelper">' + agency.agencyName + '<i class="fa fa-info-circle ms-1" aria-hidden="true"></i></a>';
-                    text += '<span>, after confirmed payment.</span>';
+                    text += '<span>, after payment confirmation.</span>';
 
                 != text
 
             .row
                 .col-md-6.mt-5
-                    .card
-                        .card-header
-                            span From this donation, you will receive:
-                            .mt-1
-                                .center-elements.justify-content-start
-                                    .fa.fa-heart.text-secondary
-                                    .ms-1 100% tax-deductible receipt &amp; shipping details
-                                .center-elements.justify-content-start
-                                    .fa.fa-heart.text-secondary
-                                    .ms-1 Notification with a delivery proof
-                                .center-elements.justify-content-start
-                                    .fa.fa-heart.text-secondary
-                                    .ms-1 Message &amp; photo from <span class="fw-bold">#{wishcard.childFirstName}</span> if partner agency permits
-                        .card-body
-                            .col-6.mx-auto
-                                img.img-fluid.rounded-3( alt='wish card kid photo' src= wishcard.wishCardImage || wishcard.childImage )
+                    .card.p-4
+                        .row
+                            p
+                                | We directly deliver wish items to our nonprofit partner agencies for children and youth. Our partners then collect and distribute the gifts.
+                                | With no need for a drop-off site, we handle shipping to ensure an easy and efficient donation experience.
+                                | Delivery notifications will follow your donation.
+                        hr
+                        span From this donation, you will receive:
+                        .mx-2
+                            .center-elements.justify-content-start
+                                .fa.fa-heart.text-secondary
+                                .ms-1 Tax-deductible receipt with shipping details
+                            .center-elements.justify-content-start
+                                .fa.fa-heart.text-secondary
+                                .ms-1 Notification with a delivery proof
+                            .center-elements.justify-content-start
+                                .fa.fa-heart.text-secondary
+                                .ms-1 Message &amp; photo from <span class="fw-bold">#{wishcard.childFirstName}</span> if partner agency permits
+                        .row.mt-3
+                            .col-6
+                                img.img-fluid.rounded-2( alt='wish card child image' src= wishcard.wishCardImage || wishcard.childImage )
+                            .col-6
+                                img.img-fluid.rounded-2( alt='wish card item image' src= wishcard.wishItemImage || wishItemImg )
 
-                            .py-3 Wish item: #{wishcard.wishItemName}
-
-                            .d-flex.justify-content-between
-                                span Subtotal
-                                span= '$' + wishcard.wishItemPrice + '.00'
-                            .d-flex.justify-content-between
-                                span Shipping
-                                span.fw-bold= extendedPaymentInfo.shipping
-                            .d-flex.justify-content-between
-                                span
-                                    span Processing fee
-                                    a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper2' )
-                                        .fa.fa-question-circle.ms-1
-                                span= '$' + extendedPaymentInfo.processingFee
-                            .d-flex.justify-content-between
-                                span Item sales tax
-                                    a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper3' )
-                                        .fa.fa-question-circle.ms-1
-                                span= '$' + extendedPaymentInfo.tax
-                            #user-donation-div.d-flex.justify-content-between
-                                span Cash donation
-                                span#user-donation $0
-                            hr
-                            .d-flex.justify-content-between.fw-bold
-                                span Total
-                                span#total-cost.text-success= '$' + extendedPaymentInfo.totalItemCost
+                        p.pt-3
+                            span Item Name:
+                            span.fw-semi-bold= ` ${wishcard.wishItemName}`
+                        .d-flex.justify-content-between
+                            span Item Price
+                            span= ` $${wishcard.wishItemPrice}`
+                        .d-flex.justify-content-between
+                            span Shipping
+                            span.fw-bold= extendedPaymentInfo.shipping
+                        .d-flex.justify-content-between
+                            span
+                                span Processing fee
+                                a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper2' )
+                                    .fa.fa-question-circle.ms-1
+                            span= '$' + extendedPaymentInfo.processingFee
+                        .d-flex.justify-content-between
+                            span Item sales tax
+                                a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper3' )
+                                    .fa.fa-question-circle.ms-1
+                            span= '$' + extendedPaymentInfo.tax
+                        #user-donation-div.d-flex.justify-content-between
+                            span Cash donation
+                            span#user-donation $0
+                        hr
+                        .d-flex.justify-content-between.fw-bold
+                            span Total
+                            span#total-cost.text-secondary= '$' + extendedPaymentInfo.totalItemCost
 
                 .col-md-6.mt-5
                     .card
                         .card-body
                             .pb-1
-                                .fw-bold= user.fName + ' would you like to support our cause?'
+                                .fw-bold= user.fName + ', would you like to support our cause?'
 
-                                .my-3 Add cash donation to sponsor our project, so we can help more kids
+                                .my-3 Consider adding a cash donation to sponsor our project so that we can help more kids.
                                     a.text-success( href='#' data-bs-toggle='modal' data-bs-target='#checkoutHelper4' )
                                         .fa.fa-question-circle.ms-1
 
@@ -119,7 +130,7 @@ block content
                                 #card-element.form-control
                                 #card-errors.error-text.bold-text( role='alert' )
 
-                                .mt-3.col-md-6.mx-auto
+                                .mt-3.col.mx-auto
                                     button#submit.btn.btn-lg.btn-primary.w-100.center-elements
                                         span#button-text Pay
                                         #spinner.spinner-border.spinner-border-sm.text-white.ms-1.d-none( role='status' )
@@ -133,9 +144,9 @@ block content
                             #smart-button-container
                                 #paypal-button-container( style='text-align: center; margin-top: 0.25em;' )
 
-            .text-center.mt-2
+            .text-center.mt-5
                 .fw-bold.fs-5 Secure Checkout Guaranteed
-                img.img-fluid( src='/img/secure-cards.png' alt='secure checkout images' )
+                img.img-fluid.checkout-img( src='/img/secure-cards.png' alt='secure checkout images' )
 
     #cardId( hidden )= wishcard._id
     #userId( hidden )= user._id

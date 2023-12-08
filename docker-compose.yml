@@ -24,19 +24,19 @@ services:
         volumes:
             - mongo:/data/db
 
-    # postgres:
-    #     image: postgres:14.1-alpine
-    #     container_name: postgres
-    #     environment:
-    #         - POSTGRES_DB=donategifts
-    #         - POSTGRES_USER=postgres
-    #         - POSTGRES_PASSWORD=postgres
-    #         - PGDATA=/data/donategifts
-    #     ports:
-    #         - 5432:5432
-    #     volumes:
-    #         - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    #         - postgres:/data/db
+    postgres:
+        image: postgres:14.1-alpine
+        container_name: postgres
+        environment:
+            - POSTGRES_DB=donategifts
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - PGDATA=/data/donategifts
+        ports:
+            - 5432:5432
+        volumes:
+            - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - postgres:/data/db
 
     stripe-cli:
         image: stripe/stripe-cli
@@ -47,4 +47,4 @@ services:
 
 volumes:
     mongo:
-    # postgres:
+    postgres:

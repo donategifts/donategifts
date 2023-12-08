@@ -39,4 +39,30 @@ const validateImage = (setError, fieldName, formData, currFormMap) => {
 	}
 };
 
-export { loadlGoogleClientLibraryScript, chunkArray, validateImage, capitalizeFirstLetter };
+const getLastUrlSegment = () => {
+	const pathSegments = window.location.pathname.split('/').filter(Boolean);
+	return pathSegments[pathSegments.length - 1];
+};
+
+const formatAddress = (address) => {
+	const parts = [address.address1, address.city, address.state, address.zipcode].filter(Boolean);
+
+	return parts.join(', ');
+};
+
+const formatPosterName = (messageFrom) => {
+	if (!messageFrom || !messageFrom.fName || !messageFrom.lName) {
+		return 'Anonymous';
+	}
+	return `${messageFrom.fName} ${messageFrom.lName.charAt(0)}.`;
+};
+
+export {
+	loadlGoogleClientLibraryScript,
+	chunkArray,
+	validateImage,
+	capitalizeFirstLetter,
+	getLastUrlSegment,
+	formatAddress,
+	formatPosterName,
+};

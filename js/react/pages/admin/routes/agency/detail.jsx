@@ -8,8 +8,6 @@ export default function Detail() {
 	const { agencyId } = useParams();
 	const navigate = useNavigate();
 
-	const basePath = '/api/admin';
-
 	const [agency, setAgency] = useState({
 		name: '',
 		phone: '',
@@ -39,7 +37,7 @@ export default function Detail() {
 	const verifyAgency = async () => {
 		setShowVerifyLoader(true);
 
-		const res = await fetch(`${basePath}/verifyAgency/${agency.id}`, {
+		const res = await fetch(`/api/admin/verifyAgency/${agency.id}`, {
 			method: 'PUT',
 		});
 
@@ -58,7 +56,7 @@ export default function Detail() {
 
 	const updateAgencyData = async () => {
 		setShowUpdateLoader(true);
-		const res = await fetch(`${basePath}/updateAgencyData/${agency.id}`, {
+		const res = await fetch(`/admin/api/updateAgencyData/${agency.id}`, {
 			method: 'POST',
 			body: JSON.stringify({
 				name: name.current.value,
@@ -84,7 +82,7 @@ export default function Detail() {
 	};
 
 	const fetchAgency = async () => {
-		const res = await fetch(`${basePath}/agencyDetail/${agencyId}`);
+		const res = await fetch(`/api/admin/agencyDetail/${agencyId}`);
 		const { data } = await res.json();
 		setAgency(data);
 	};
@@ -143,11 +141,11 @@ export default function Detail() {
 				/>
 				<CustomButton
 					size="lg"
-					color={'orange.3'}
+					color="secondary.3"
 					loading={showUpdateLoader}
 					onClick={updateAgencyData}
 					disabled={showUpdateLoader}
-					text={'Update Agency Data'}
+					text="Update Agency Data"
 				/>
 			</Group>
 			<hr />

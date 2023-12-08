@@ -3,75 +3,13 @@ extends ../master
 block title
     title Contact Donate Gifts
 
-block content
-    #contact.gradient-form.h-100
-        .container
-            .container.py-5
-                .d-flex.flex-column.justify-content-center.align-items-center
-                    h1.text-center.text-primary.cool-font.mb-3 Get In Touch
-                    p.mb-2 Please fill out the contact form and we will be in touch with you as soon as possible.
-                    p In the meantime, please check if your question has been answered in our
-                        a.text-secondary.ms-1.text-underline( href='/faq' ) FAQs page.
-                form.p-5.rounded-4
-                    .col-md-8.mx-auto.text-white
-                        .py-2
-                            label.form-label( for='name' ) Name
-                            input#name.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( name='name'
-                                type='text'
-                                required
-                            )
-                        .py-2
-                            label.form-label( for='email' ) Email
-                            input#email.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( name='email'
-                                type='email'
-                                required
-                            )
-                        .py-2
-                            label.form-label( for='subject' ) Subject
-                            input#subject.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( name='subject'
-                                type='text'
-                                required
-                            )
-                        .py-2
-                            label.form-label( for='contact-message' ) Message
-                            textarea#contact-message.form-control.bg-transparent.border-0.rounded-0.border-bottom.border-white( name='message'
-                                type='text'
-                                required
-                            )
-
-                        .row.py-2.justify-content-center
-                            .col-md-6
-                                button#submit-btn.btn.btn-lg.btn-primary.w-100( type='submit' ) Contact Us
-
 block scripts
     script.
         $(document).ready(() => {
-            const toast = new DG.Toast();
-
-            $('form').submit(function (e) {
-                e.preventDefault();
-
-                const name = $('#name').val();
-                const email = $('#email').val();
-                const subject = $('#subject').val();
-                const message = $('#contact-message').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/contact/customer-service',
-                    data: {
-                        name,
-                        email,
-                        subject,
-                        message,
-                    },
-                    success: () => {
-                        toast.show('Message sent, thank you for your feedback!');
-                        $('form').trigger('reset');
-                    },
-                    error: (response) => {
-                        toast.show(response.responseJSON.error.msg, toast.styleMap.danger);
-                    }
-                });
-            });
+            const root = ReactRoot(document.querySelector('#app-root'));
+            root.render(
+                React.createElement(
+                    Contact
+                )
+            );
         });

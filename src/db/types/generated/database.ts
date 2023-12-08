@@ -16,9 +16,19 @@ export type JsonPrimitive = boolean | null | number | string;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
+export type Loginmode = "email" | "facebook" | "google";
+
 export type Numeric = ColumnType<string, string | number, string | number>;
 
+export type Orderstatus = "cancelled" | "ordered" | "pending";
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+
+export type Userrole = "admin" | "donor" | "partner";
+
+export type Verificationtype = "email" | "phone";
+
+export type Wishcardstatus = "donated" | "draft" | "published";
 
 export interface Agencies {
   id: Generated<string>;
@@ -30,24 +40,24 @@ export interface Agencies {
   address_line_2: string | null;
   city: string;
   state: string;
-  country: string;
+  country_code: string;
   zip_code: string;
-  verified: Generated<boolean>;
+  is_verified: Generated<boolean>;
   employer_identification_number: string | null;
   account_manager_id: string;
-  image_id: string;
+  image_id: string | null;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
 
 export interface Children {
   id: Generated<string>;
-  first_name: string;
-  last_name: string;
+  name: string;
   birth_year: number;
   interest: string;
   story: string;
-  image_id: string;
+  image_id: string | null;
+  agency_id: string;
   created_at: Generated<Timestamp>;
 }
 
@@ -55,7 +65,7 @@ export interface CommunityPosts {
   id: Generated<string>;
   message: string;
   agency_id: string;
-  image_id: string;
+  image_id: string | null;
   created_at: Generated<Timestamp>;
 }
 
@@ -63,6 +73,7 @@ export interface Images {
   id: Generated<string>;
   url: string;
   meta_data: Json | null;
+  is_art_image: Generated<boolean>;
   created_by: string;
   created_at: Generated<Timestamp>;
 }
@@ -72,10 +83,10 @@ export interface Items {
   name: string;
   price: Numeric;
   link: string;
-  retailer: string;
+  retailer_name: string;
   retailer_product_id: string;
   meta_data: Json | null;
-  image_id: string;
+  image_id: string | null;
   created_at: Generated<Timestamp>;
 }
 
@@ -89,15 +100,19 @@ export interface Messages {
 
 export interface Orders {
   id: Generated<string>;
-  status: Generated<number>;
+  status: Generated<Orderstatus>;
   delivery_date: Timestamp | null;
   tracking_info: string | null;
   donor_id: string;
-  child_id: string;
-  item_id: string;
-  agency_id: string;
+  wishcard_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
+}
+
+export interface Session {
+  sid: string;
+  sess: Json;
+  expire: Timestamp;
 }
 
 export interface Users {
@@ -106,20 +121,12 @@ export interface Users {
   last_name: string;
   email: string;
   password: string;
-  role: number;
-  login_mode: number;
+  role: Userrole;
+  login_mode: Loginmode;
   bio: string | null;
   is_verified: Generated<boolean>;
-  image_id: string;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp | null;
-  deleted_at: Timestamp | null;
-}
-
-export interface Verifications {
-  id: Generated<string>;
-  email_verified: boolean;
-  user_id: string;
+  is_disabled: Generated<boolean>;
+  image_id: string | null;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
@@ -127,9 +134,9 @@ export interface Verifications {
 export interface VerificationTokens {
   id: Generated<string>;
   token: string;
-  type: number;
-  expiration: Timestamp;
+  type: Verificationtype;
   user_id: string;
+  expires_at: Timestamp;
   created_at: Generated<Timestamp>;
 }
 
@@ -139,15 +146,13 @@ export interface Wishcards {
   address_line_2: string | null;
   city: string;
   state: string;
-  country: string;
+  country_code: string;
   zip_code: string;
-  status: Generated<number>;
-  created_by: string;
-  agency_id: string;
+  status: Generated<Wishcardstatus>;
   child_id: string;
   item_id: string;
-  image_id: string;
-  order_id: string;
+  image_id: string | null;
+  created_by: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp | null;
 }
@@ -160,8 +165,8 @@ export interface DB {
   items: Items;
   messages: Messages;
   orders: Orders;
+  session: Session;
   users: Users;
   verification_tokens: VerificationTokens;
-  verifications: Verifications;
   wishcards: Wishcards;
 }

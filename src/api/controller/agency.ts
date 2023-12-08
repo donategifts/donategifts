@@ -11,10 +11,9 @@ export default class AgencyController extends BaseController {
 		super();
 
 		this.agencyRepository = new AgencyRepository();
-		this.getAgency = this.getAgency.bind(this);
 	}
 
-	async getAgency(_req: Request, res: Response, _next: NextFunction) {
+	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
 		try {
 			const agency = await this.agencyRepository.getAgencyByUserId(res.locals.user._id);
 

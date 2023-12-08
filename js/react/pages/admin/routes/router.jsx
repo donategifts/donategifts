@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import AdminLayout from '../../../layouts/admin.jsx';
 
@@ -15,9 +15,8 @@ export const router = createBrowserRouter(
 			element: <AdminLayout />,
 			children: [
 				{
-					path: '/',
-					// TODO: create a dashboard page
-					element: <div>Dashboard</div>,
+					index: true,
+					element: <Navigate to="/agency/overview" />,
 				},
 				{
 					path: 'agency/:agencyId',

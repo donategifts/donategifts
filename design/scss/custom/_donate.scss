@@ -5,4 +5,15 @@
 			color: $white;
 		}
 	}
+	
+	.checkout-img {
+		max-width: 300px;
+	}
 }
+
+#payment-success {
+	textarea {
+		padding: 1em 1.5em;
+	}
+}
+

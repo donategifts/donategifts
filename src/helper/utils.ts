@@ -57,22 +57,24 @@ export default class Utils {
 		}
 
 		return [
+			`May love and happiness be yours this holiday season.`,
+			`Have a lovely festive season.`,
+			`Sending lots of peace and joy your way this season.`,
+			`${childFirstName}, Have a lovely Christmas!`,
 			`${userFirstName} sends you love, ${childFirstName}.`,
 			`${userFirstName} wishes you a happy Hanukkah!`,
 			`${userFirstName} wishes you a merry Christmas!`,
 			`${userFirstName} wishes you happy holidays!`,
+			`${childFirstName}, I hope the season is treating you well.`,
 			`Merry Christmas, ${childFirstName}`,
 			`Happy holidays, ${childFirstName}`,
-			'Merry Christmas and a Happy New Year',
-			`${childFirstName}, have a happy holiday`,
+			'Merry Christmas and a Happy New Year.',
+			`${childFirstName}, have a happy holiday.`,
 			`${childFirstName}, you are awesome!`,
-			`Lots of love and best wishes, ${childFirstName}`,
+			`Lots of love and best wishes, ${childFirstName}.`,
 			`${childFirstName}, we love you and we want you to know that! You are amazing!`,
 			`${childFirstName}, hope you enjoy my gift!`,
-			'Happy birthday to the sweetest kid in the entire world.',
-			`Happy birthday, ${childFirstName}`,
-			`Congratulations, ${childFirstName}`,
-			//`Custom Message`,
+			'Happy holidays to the sweetest kid in the entire world.',
 		];
 	}
 

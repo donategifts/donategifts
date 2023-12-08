@@ -49,6 +49,7 @@ function WishCardCreate() {
 		zipcode: '',
 	});
 
+	const [isToastVisible, setIsToastVisible] = useState(false);
 	const [toastProps, setToastProps] = useState({
 		message: '',
 		type: '',
@@ -288,6 +289,7 @@ function WishCardCreate() {
 				},
 			});
 			setToastProps({ message: 'Submission was successful!', type: 'success' });
+			setIsToastVisible(true);
 			clearForm();
 			setTimeout(() => window.location.assign('/wishcards/manage'), 2000);
 		} catch (error) {
@@ -298,6 +300,7 @@ function WishCardCreate() {
 					'Submission was unsuccessful. Please try again or contact us.',
 				type: 'error',
 			});
+			setIsToastVisible(true);
 			setShowSubmitLoader(false);
 		}
 	};
@@ -313,16 +316,19 @@ function WishCardCreate() {
 
 	return (
 		<MantineProviderWrapper>
-			{toastProps.message !== '' && (
-				<CustomToast message={toastProps.message} type={toastProps.type} />
-			)}
+			<CustomToast
+				message={toastProps.message}
+				type={toastProps.type}
+				isVisible={isToastVisible}
+				setIsVisible={setIsToastVisible}
+			/>
 			<div id="wish-create-page" className="py-5">
 				<div className="container">
 					<h1 className="heading-primary mb-4 text-center">Create a wish card</h1>
 					<div className="text-primary">
 						<div className="card shadow-lg px-4 pt-1 pb-4">
 							<div className="card-body">
-								<div className="display-6 mt-3 mb-3">Information about child</div>
+								<div className="display-6 mt-3 mb-2">Information about child</div>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3">
 										<TextInput
@@ -367,7 +373,7 @@ function WishCardCreate() {
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-start">
 										<div className="px-3 pt-3 pb-0">
 											<img
-												src={childImage || `/img/img-placeholder.png`}
+												src={childImage || '/img/img-placeholder.png'}
 												alt="image-placeholder"
 												className={
 													childImageError
@@ -428,9 +434,21 @@ function WishCardCreate() {
 										onChange={() => handleOnChange(setChildStoryError)}
 									/>
 								</div>
-								<div className="display-6 mt-5 mb-4">
+								<div className="display-6 mt-5 mb-2">
 									Information about wish item
 								</div>
+								<p className="form-text w-100 mb-0">
+									Wish item MUST NOT be a gift card. If you need an inspiration:{' '}
+									<span>
+										<a
+											target="_blank"
+											href="https://www.amazon.com/s?k=gifts+for+kids+all+ages&crid=2438GIIO55T67&sprefix=gifts+for+kids+all+ages%2Caps%2C133&ref=nb_sb_noss_1"
+											rel="noreferrer"
+										>
+											See Suggested Items
+										</a>
+									</span>
+								</p>
 								<div className="row d-flex align-items-center">
 									<div className="form-group col-md-6 px-3 mb-sm-4">
 										<TextInput
@@ -483,7 +501,7 @@ function WishCardCreate() {
 									<div className="uploader form-group py-4 col-sm-12 col-lg-6 col-md-6 d-flex flex-md-row flex-sm-column justify-content-center align-items-center">
 										<div className="px-3 pt-3 pb-0">
 											<img
-												src={itemImage || `/img/img-placeholder.png`}
+												src={itemImage || '/img/img-placeholder.png'}
 												alt="wish-item-image-placeholder"
 												className={
 													wishItemImageError
@@ -547,7 +565,7 @@ function WishCardCreate() {
 															.popOverText
 													}
 													isImgProvided={true}
-													imgSrc="/img/amazon-helper.png"
+													imageSource="/img/amazon-helper.png"
 												/>
 											}
 										/>

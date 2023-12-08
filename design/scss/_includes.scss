@@ -50,7 +50,7 @@
 @import "node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
 
-@import "custom/adminWishcards";
+@import "custom/admin";
 @import "custom/buttons";
 @import "custom/community";
 @import "custom/donate";
@@ -58,12 +58,13 @@
 @import "custom/faq";
 @import "custom/footer";
 @import "custom/home";
+@import "custom/mission";
+@import "custom/modal";
 @import "custom/navbar";
 @import "custom/passwordreset";
 @import "custom/profile";
-@import "custom/wishcards";
-@import "custom/mission";
-@import "custom/modal";
 @import "custom/signup";
+@import "custom/team";
 @import "custom/verify";
+@import "custom/wishcards";
 

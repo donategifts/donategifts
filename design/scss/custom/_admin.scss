@@ -1,0 +1,25 @@
+#admin-page {
+    h2 span,
+    .card-text-container span {
+        font-weight: $fw-semi-bold;
+    }
+
+    .wishcards {
+        background-color: lighten($cream, 8%);
+    }
+
+    .card-img-top {
+		max-height: 250px;
+		object-fit: cover;
+	}
+
+    .agency-cards {
+        border-bottom: 1.5px solid $primary;
+    }
+}
+
+#admin-donations { 
+    .fa-question-circle {
+        color: $primary;
+    }
+}

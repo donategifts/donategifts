@@ -155,8 +155,9 @@
             }
         },
         "agencyImage": {
-            "label": "Upload your agency logo",
+            "label": "Upload your agency logo (Required)",
             "errors": {
+                "default": "Agency Logo Image is required.",
                 "size": "File must be less than 5 megabytes.",
                 "validate": "File must be in jpeg, jpg, gif, or png format."
             },

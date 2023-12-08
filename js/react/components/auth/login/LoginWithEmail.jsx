@@ -10,6 +10,7 @@ function LoginWithEmail({ modalRef, dispatch }) {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [hidePassword, setHidePassword] = useState(true);
+	const [isToastVisible, setIsToastVisible] = useState(false);
 	const togglePasswordVisibility = () => {
 		setHidePassword((prev) => !prev);
 	};
@@ -18,16 +19,11 @@ function LoginWithEmail({ modalRef, dispatch }) {
 		e.preventDefault();
 		if (email === '' || password === '') {
 			setError('Please fill out email and password');
-			setTimeout(() => {
-				setError('');
-			}, 5000);
-			return;
+			return setIsToastVisible(true);
 		}
 		if (!email.split('').includes('@')) {
 			setError('Please provide valid email');
-			setTimeout(() => {
-				setError('');
-			}, 5000);
+			setIsToastVisible(true);
 			return;
 		}
 		// TBD get base url from env local
@@ -39,22 +35,25 @@ function LoginWithEmail({ modalRef, dispatch }) {
 			},
 			body: JSON.stringify({ email, password }),
 		});
+
 		if (response.ok) {
-			const data = await response.json();
-			return data;
+			return await response.json();
 		}
-		// console.log(response);
+
 		setEmail('');
 		setPassword('');
 		setError('Email and/or password incorrect');
-		setTimeout(() => {
-			setError('');
-		}, 5000);
+		setIsToastVisible(true);
 	};
 
 	return (
 		<>
-			{error !== '' ? <CustomToast type="error" title={error} /> : null}
+			<CustomToast
+				type="error"
+				message={error}
+				isVisible={isToastVisible}
+				setIsVisible={setIsToastVisible}
+			/>
 			<Modal
 				ref={modalRef}
 				title={<h1 className="cool-font text-secondary">Log in with email</h1>}

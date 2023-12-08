@@ -21,4 +21,6 @@ router.get('/donations', adminController.handleGetAllDonations);
 
 router.put('/donations', adminController.handlePutUpdateDonationStatus);
 
+router.put('/donations/tracking', adminController.handlePutUpdateTrackingInfo);
+
 export default router;

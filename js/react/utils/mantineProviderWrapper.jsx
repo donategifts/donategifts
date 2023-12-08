@@ -2,7 +2,7 @@ import { MantineProvider, createTheme } from '@mantine/core';
 
 const theme = createTheme({
 	colors: {
-		indigo: [
+		primary: [
 			'#ebebf0',
 			'#d6d8e0',
 			'#c2c4d1',
@@ -14,7 +14,7 @@ const theme = createTheme({
 			'#474e74',
 			'#333a64',
 		],
-		orange: [
+		secondary: [
 			'#fff3f0',
 			'#ffe6e1',
 			'#ffdad3',
@@ -26,7 +26,7 @@ const theme = createTheme({
 			'#ff8f7a',
 			'#ff826b',
 		],
-		teal: [
+		success: [
 			'#e6f6f5',
 			'#cceceb',
 			'#b3e3e1',
@@ -38,7 +38,7 @@ const theme = createTheme({
 			'#1aaaa4',
 			'#00a19a',
 		],
-		yellow: [
+		warning: [
 			'#fff8ee',
 			'#fff1de',
 			'#ffebcd',
@@ -50,7 +50,7 @@ const theme = createTheme({
 			'#ffc26a',
 			'#ffbb59',
 		],
-		red: [
+		danger: [
 			'#ffeff1',
 			'#ffdee2',
 			'#ffced4',
@@ -75,7 +75,7 @@ const theme = createTheme({
 			'#6c757d',
 		],
 	},
-	primaryColor: 'indigo',
+	primaryColor: 'primary',
 	primaryShade: 9,
 });
 

@@ -26,15 +26,6 @@ export default class AdminController extends BaseController {
 		this.userRepository = new UserRepository();
 		this.wishCardRepository = new WishCardRepository();
 		this.donationRepository = new DonationRepository();
-
-		this.handleGetAgencyOverview = this.handleGetAgencyOverview.bind(this);
-		this.handleGetAgencyDetail = this.handleGetAgencyDetail.bind(this);
-		this.handleVerifyAgency = this.handleVerifyAgency.bind(this);
-		this.handleUpdateAgencyData = this.handleUpdateAgencyData.bind(this);
-		this.handleGetDraftWishcards = this.handleGetDraftWishcards.bind(this);
-		this.handlePutDraftWishcard = this.handlePutDraftWishcard.bind(this);
-		this.handleGetAllDonations = this.handleGetAllDonations.bind(this);
-		this.handlePutUpdateDonationStatus = this.handlePutUpdateDonationStatus.bind(this);
 	}
 
 	private formatAgencyResponse(agency: Agency, manager: User) {
@@ -59,7 +50,7 @@ export default class AdminController extends BaseController {
 	async handleGetAgencyOverview(req: Request, res: Response, _next: NextFunction) {
 		const getVerified = req.query.getVerified;
 		try {
-			let agencies: Agency[] | null = [];
+			let agencies: Agency[] | null;
 
 			if (getVerified === 'true') {
 				agencies = await this.agencyRepository.getVerifiedAgencies();
@@ -222,17 +213,21 @@ export default class AdminController extends BaseController {
 				user: {
 					id: string;
 					name: string;
+					email: string;
 				};
 				agency: {
 					id: string;
 					name: string;
+					email: string;
 				};
 				wishCard: {
 					id: string;
-					itemName: string;
-					itemPrice: number;
+					childFirstName: string;
+					productID: string;
 					itemURL: string;
+					shippingAddress: string;
 				};
+				tracking_info: string;
 				date: string;
 				status: STATUS;
 				totalAmount: number;
@@ -243,32 +238,56 @@ export default class AdminController extends BaseController {
 				const agency = donation.donationTo;
 				const wishCard = donation.donationCard;
 
+				const agencyAccountManager = await this.userRepository.getUserByObjectId(
+					agency?.accountManager,
+				);
+
+				const address = `${wishCard?.address?.address1 ?? ''} ${
+					wishCard?.address?.address2 ?? ''
+				} ${wishCard?.address?.city ?? ''} ${wishCard?.address?.state ?? ''} ${
+					wishCard?.address?.zipcode ?? ''
+				} ${wishCard?.address?.country ?? ''}`;
+				const shippingAddress = wishCard?.address
+					? address
+					: 'No address found. Contact agency.';
+
+				let wishProductId = '';
+				const match = wishCard?.wishItemURL?.match(/\/dp\/([A-Z0-9]{10})/);
+
+				if (wishCard?.productID) {
+					wishProductId = wishCard.productID;
+				} else if (match) {
+					wishProductId = match[1];
+				}
+
 				data.push({
 					id: donation._id,
 					user: {
 						id: user?._id,
 						name: `${user?.fName} ${user?.lName}`,
+						email: user?.email,
 					},
 					agency: {
 						id: agency?._id || '',
 						name: agency?.agencyName,
+						email: agencyAccountManager?.email || '',
 					},
 					wishCard: {
 						id: wishCard?._id,
-						itemName: wishCard?.wishItemName,
-						itemPrice: wishCard?.wishItemPrice,
+						childFirstName: wishCard?.childFirstName,
+						productID: wishProductId,
 						itemURL: wishCard?.wishItemURL,
+						shippingAddress,
 					},
-					date: moment(donation.donationDate).format('DD-MM-yyyy'),
+					tracking_info: donation.tracking_info || '',
+					date: moment(donation.donationDate).format('MMM DD, YYYY'),
 					status: donation.status,
 					totalAmount: donation.donationPrice,
 				});
 			}
 
 			// sort by status
-			// confirmed donations first
-			// then ordered donations
-			// then delivered donations
+			// confirmed donations first, then ordered donations, then delivered donations
 			data.sort((a, b) => {
 				if (a.status === 'confirmed' && b.status !== 'confirmed') {
 					return -1;
@@ -292,8 +311,80 @@ export default class AdminController extends BaseController {
 	async handlePutUpdateDonationStatus(req: Request, res: Response, _next: NextFunction) {
 		try {
 			const { donationId, status } = req.body;
-			await this.donationRepository.updateDonationStatus(donationId, status);
+			const statusUpdate = await this.donationRepository.updateDonationStatus(
+				donationId,
+				status,
+			);
+
+			if (statusUpdate && status === 'ordered') {
+				const donation = await this.donationRepository.getDonationById(donationId);
+
+				if (donation) {
+					const agencyAccountManager = await this.userRepository.getUserByObjectId(
+						donation.donationTo?.accountManager,
+					);
+
+					const wishCard = donation.donationCard;
+					const address = `${wishCard?.address?.address1 ?? ''} ${
+						wishCard?.address?.address2 ?? ''
+					} ${wishCard?.address?.city ?? ''} ${wishCard?.address?.state ?? ''} ${
+						wishCard?.address?.zipcode ?? ''
+					} ${wishCard?.address?.country ?? ''}`;
+					const shippingAddress = wishCard?.address
+						? address
+						: 'No address found. Please contact stacy@donate-gifts.com.';
+
+					try {
+						this.log.info('Sending the donor user shipping alert email.');
+						await Messaging.sendDonorShippingAlert({
+							donorEmail: donation.donationFrom?.email,
+							donorFirstName: donation.donationFrom?.fName,
+							childName: wishCard?.childFirstName,
+							itemName: wishCard?.wishItemName,
+							agencyName: donation.donationTo?.agencyName,
+							donationOrderId: donationId,
+							trackingInfo: donation.tracking_info,
+							wishCardId: wishCard._id,
+						});
+					} catch (error) {
+						this.log.error(`Failed to send Donor Shipping Alert: ${error}`);
+					}
+
+					if (agencyAccountManager) {
+						try {
+							this.log.info('Sending the agency user shipping alert email.');
+							await Messaging.sendAgencyShippingAlert({
+								agencyEmail: agencyAccountManager.email,
+								childName: wishCard?.childFirstName,
+								donorFirstName: donation.donationFrom?.fName,
+								itemName: wishCard?.wishItemName,
+								donationOrderId: donationId,
+								trackingInfo: donation.tracking_info,
+								agencyAddress: shippingAddress,
+							});
+						} catch (error) {
+							this.log.error(`Failed to send Agency Shipping Alert: ${error}`);
+						}
+					}
+				}
+			}
+
 			return this.sendResponse(res, { message: 'Donation status updated' });
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePutUpdateTrackingInfo(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { id, tracking_info } = req.body;
+			const result = await this.donationRepository.updateTrackingInfo(id, tracking_info);
+
+			if (result.acknowledged) {
+				return this.sendResponse(res, { message: 'Donation tracking info updated' });
+			} else {
+				return this.handleError(res, 'Failed to update donation tracking info');
+			}
 		} catch (error) {
 			return this.handleError(res, error);
 		}

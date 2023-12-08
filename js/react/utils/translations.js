@@ -80,7 +80,7 @@ const AGENCY_SIGNUP_FORM_INPUTS = {
 		placeholder: `(e.g. Your non-profit agency's purpose, mission, history, etc.)`,
 	},
 	agencyImage: {
-		label: 'Upload your agency logo',
+		label: 'Upload your agency logo (Required)',
 		errors: {
 			size: 'File must be less than 5 megabytes.',
 			validate: 'File must be in jpeg, jpg, gif, or png format.',

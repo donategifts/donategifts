@@ -1,15 +1,15 @@
 import { Popover, Text } from '@mantine/core';
 import PropTypes from 'prop-types';
 
-function PopOver({ width, position, text, textSize, isBtnQuestion, isImgProvided, imgSrc }) {
+function PopOver({ width, position, text, textSize, imageSource, iconStyles }) {
 	return (
 		<Popover width={width} position={position} withArrow shadow="md">
 			<Popover.Target>
-				{isBtnQuestion && <i className="fa fa-question-circle ms-1"></i>}
+				<i className={iconStyles} />
 			</Popover.Target>
 			<Popover.Dropdown>
-				{isImgProvided && (
-					<img src={imgSrc} alt="pop-over helper image" className="img-fluid pb-2" />
+				{imageSource && (
+					<img src={imageSource} alt="pop-over helper image" className="img-fluid pb-2" />
 				)}
 				<Text size={textSize}>{text}</Text>
 			</Popover.Dropdown>
@@ -21,8 +21,7 @@ PopOver.defaultProps = {
 	width: 300,
 	position: 'bottom',
 	textSize: 'md',
-	isBtnQuestion: true,
-	isImgProvided: false,
+	iconStyles: 'fa fa-question-circle ms-1', //default icon is set to question mark
 };
 
 PopOver.propTypes = {
@@ -30,9 +29,8 @@ PopOver.propTypes = {
 	position: PropTypes.string,
 	text: PropTypes.string.isRequired,
 	textSize: PropTypes.string,
-	isBtnQuestion: PropTypes.bool,
-	isImgProvided: PropTypes.bool,
-	imgSrc: PropTypes.string,
+	imageSource: PropTypes.string,
+	iconStyles: PropTypes.string,
 };
 
 export default PopOver;

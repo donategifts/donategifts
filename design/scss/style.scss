@@ -13,6 +13,21 @@ main {
 	font-family: $font-body;
 }
 
+.display-6 {
+	font-family: $font-body;
+	font-size: 1.3rem;
+	font-weight: $fw-semi-bold;
+	color: $primary;
+}
+
+.text-dark {
+	color: $dark;
+}
+
+.fw-semi-bold {
+	font-weight: $fw-semi-bold;
+}
+
 // Need to be reviewed first and removed after testing
 .cool-font {
 	font-family: DkCoolCrayon, sans-serif;
@@ -91,14 +106,25 @@ main {
 	font-size: 1.15rem;
 }
 
+.fa-question-circle {
+	color: $secondary;
+	font-size: 1.15em;
+	cursor: pointer;
+}
 
-.card {
-	.fa-question-circle {
-		color: $secondary;
-		font-size: 1.15em;
-		cursor: pointer;
-	}
-	
+.art-badge {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	font-weight: $fw-semi-bold;
+}
+
+.holiday-bg {
+	background: url('/img/holiday-message-bg.png') center center;
+	background-size: cover;
+}
+
+.card {	
 	.fa-upload {
 		font-size: 1.15rem;
 	}
@@ -122,6 +148,14 @@ main {
 			}
 		}
 	}
+
+	.w-sm-100 {
+		width: auto;
+	}
+
+	.mb-sm-3 {
+		margin-bottom: auto;
+	}
 }
 
 @media (width <= 768px) {
@@ -132,4 +166,14 @@ main {
 			}
 		}
 	}
+
+	.w-sm-100 {
+		width: 100% !important;
+		margin-top: -3px !important;
+	}
+
+	.mb-sm-3 {
+		margin-bottom: 1.5rem;
+	}
 }
+

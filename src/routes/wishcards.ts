@@ -28,7 +28,7 @@ router.get(
 
 router.post(
 	'/message',
-	Permissions.checkUserVerification,
+	Permissions.redirectLogin,
 	Validator.postMessageValidationRules(),
 	Validator.validate,
 	wishCardController.handlePostMessage,

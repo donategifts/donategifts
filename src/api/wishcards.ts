@@ -10,14 +10,16 @@ const router = express.Router();
 const wishCardController = new WishCardApiController();
 const fileUpload = new FileUpload();
 
-router.get('/agency', Permissions.isAdminOrAgency, wishCardController.getAgencyWishcards);
+router.get('/agency', Permissions.isAdminOrAgency, wishCardController.handleGetAgencyWishcards);
+
+router.get('/single/:id', wishCardController.handleGetWishCardSingle);
 
 router.put(
 	'/agency',
 	Permissions.isAdminOrAgency,
 	Validator.updateAgencyWishcardValidationRules(),
 	Validator.validate,
-	wishCardController.putAgencyWishCardById,
+	wishCardController.handlePutAgencyWishCardById,
 );
 
 router.post(
@@ -35,7 +37,14 @@ router.post(
 	]),
 	Validator.createWishcardValidationRules(),
 	Validator.validate,
-	wishCardController.postWishCardAsDraft,
+	wishCardController.handlePostWishCardAsDraft,
+);
+
+router.post(
+	'/message',
+	// Validator.postMessageValidationRules(),
+	Validator.validate,
+	wishCardController.handlePostMessage,
 );
 
 export default router;

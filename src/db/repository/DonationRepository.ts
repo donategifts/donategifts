@@ -18,6 +18,20 @@ export default class DonationRepository {
 		}
 	}
 
+	async getDonationById(donationId: string) {
+		try {
+			return await this.donationModel
+				.findOne({ _id: donationId })
+				.populate<{ donationCard: WishCard }>('donationCard')
+				.populate<{ donationFrom: User }>('donationFrom')
+				.populate<{ donationTo: Agency }>('donationTo')
+				.lean()
+				.exec();
+		} catch (error) {
+			throw new Error(`Failed to get Donation: ${error}`);
+		}
+	}
+
 	async getDonationsByUser(userId: string) {
 		try {
 			return await this.donationModel
@@ -49,6 +63,7 @@ export default class DonationRepository {
 				.populate<{ donationCard: WishCard }>('donationCard')
 				.populate<{ donationFrom: User }>('donationFrom')
 				.populate<{ donationTo: Agency }>('donationTo')
+				.lean()
 				.exec();
 		} catch (error) {
 			throw new Error(`Failed to get Agency's Donations: ${error}`);
@@ -74,5 +89,9 @@ export default class DonationRepository {
 			.populate<{ donationTo: Agency }>('donationTo')
 			.lean()
 			.exec();
+	}
+
+	updateTrackingInfo(id: string, tracking_info: string) {
+		return this.donationModel.updateOne({ _id: id }, { $set: { tracking_info } });
 	}
 }
