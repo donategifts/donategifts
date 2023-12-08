@@ -7,6 +7,7 @@ import Detail from './agency/detail.jsx';
 import Overview from './agency/overview.jsx';
 import Donations from './donations.jsx';
 import Administration from './wishcard/administration.jsx';
+import WishcardDetail from './wishcard/wishcardDetail.jsx';
 
 export const router = createBrowserRouter(
 	[
@@ -33,6 +34,10 @@ export const router = createBrowserRouter(
 				{
 					path: 'donations',
 					element: <Donations />,
+				},
+				{
+					path: 'wishcards/:wishcardId',
+					element: <WishcardDetail />,
 				},
 			],
 			// TODO: create a 404 page
