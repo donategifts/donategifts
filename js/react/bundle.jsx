@@ -25,6 +25,12 @@ window.WishCards = WishCards;
 import WishCardsCarousel from './components/home/WishCardsCarousel.jsx';
 window.WishCardsCarousel = WishCardsCarousel;
 
+import ContactBanner from './components/home/ContactBanner.jsx';
+window.ContactBanner = ContactBanner;
+
+import AgenciesCarousel from './components/home/AgenciesCarousel.jsx';
+window.AgenciesCarousel = AgenciesCarousel;
+
 // pages
 import Admin from './pages/admin/index.jsx';
 window.Admin = Admin;

@@ -29,41 +29,22 @@
 	}
 
 	#partner-carousel {
-		overflow: hidden;
-		position: relative;
-
 		ul {
-			display: flex;
-			top: 0;
-
 			li {
 				list-style: none;
 				margin-left: 6%;
-
+				
 				img {
 					max-width: 150px;
 					height: auto;
 				}
 			}
-		}
-
-		span {
-			position: absolute;
-			top: calc(50% - 20px);
-			opacity: 0.6;
-			cursor: pointer;
-			color: $white;
-
-			&:hover {
-				opacity: 0.4;
-			}
-
-			&:first-of-type {
-				right: 10px;
-			}
-
-			&:last-of-type {
-				left: 10px;
+			
+			span {
+				img {
+					max-width: 150px;
+					height: auto;
+				}
 			}
 		}
 	}
