@@ -101,9 +101,7 @@ export default function WishcardDetail() {
 		<>
 			<div className="d-flex align-items-baseline justify-content-between">
 				<div className="d-flex align-items-baseline">
-					<h2 className="me-2">
-						{wishcard.childFirstName + ' ' + wishcard.childLastName + "'s Wishcard"}
-					</h2>
+					<h2 className="me-2">{wishcard.childFirstName + "'s Wishcard"}</h2>
 				</div>
 				<button onClick={() => navigate(-1)} className="btn btn-link">
 					Go back
