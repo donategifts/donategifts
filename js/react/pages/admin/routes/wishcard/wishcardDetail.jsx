@@ -69,10 +69,7 @@ export default function WishcardDetail() {
 				'content-type': 'multipart/form-data',
 			},
 		});
-		const {
-			error,
-			data: { message },
-		} = res;
+		const { error } = res;
 
 		setShowUpdateLoader(false);
 
@@ -80,7 +77,7 @@ export default function WishcardDetail() {
 			toast.show(error, toast.styleMap.danger);
 			return;
 		}
-		toast.show(message);
+		toast.show('Updated Wishcard');
 	};
 
 	const fetchWishCard = async () => {
