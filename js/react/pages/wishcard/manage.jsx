@@ -117,16 +117,13 @@ export default function WishCardManage() {
 
 	const handleAgencyCardEditFormSubmit = async (submitData) => {
 		try {
-			await axios.put('/api/wishcards/agency', {
-				wishCardId: cardOnEdit?._id,
-				childFirstName: submitData.childFirstName,
-				wishItemName: submitData.wishItemName,
-				wishItemPrice: submitData.wishItemPrice,
-				childInterest: submitData.childInterest,
-				childStory: submitData.childStory,
+			submitData.append('wishCardId', cardOnEdit?._id);
+			await axios.put('/api/wishcards/agency', submitData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 			setIsOpenEditModal(false);
 			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
+			new window.DG.Toast().show('Wishcard Updated');
 		} catch (error) {
 			new window.DG.Toast().show(
 				error?.response?.data?.error?.msg || error?.message || 'Unable to update wish card',
