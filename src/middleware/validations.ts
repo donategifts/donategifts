@@ -425,4 +425,8 @@ export default class Validations {
 				.withMessage('Message must contain at least 30 characters'),
 		];
 	}
+
+	static deleteWishCardValidationRules() {
+		return [param('id').notEmpty().withMessage('Id parameter is required')];
+	}
 }

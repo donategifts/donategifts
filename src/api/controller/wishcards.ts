@@ -228,4 +228,35 @@ export default class WishCardApiController extends BaseApiController {
 			return this.handleError(res, error);
 		}
 	}
+
+	async handleDeleteWishCardSingle(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getWishCardByObjectId(req.params.id);
+			const agency = wishcard!.belongsTo;
+			const currentUser = await this.userRepository.getUserByObjectId(res.locals.user._id);
+
+			if (currentUser?.userRole !== 'admin') {
+				const userAgency = await this.agencyRepository.getAgencyByUserId(
+					res.locals.user._id,
+				);
+				if (String(agency._id) !== String(userAgency?._id)) {
+					return this.handleError(res, 'Unauthorized user: cannot delete this card.');
+				}
+				if (wishcard?.status !== 'draft') {
+					return this.handleError(res, 'Unauthorized action: cannot delete this card.');
+				}
+			}
+
+			await this.wishCardRepository.deleteWishCard(wishcard!._id);
+
+			this.log.info({
+				mgs: 'Wishcard Deleted',
+				wishCardId: wishcard?._id,
+			});
+
+			return this.sendResponse(res, 'Wishcard deleted');
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
 }
