@@ -1,9 +1,15 @@
-import { Modal, Text } from '@mantine/core';
+import { Modal, Text, Button } from '@mantine/core';
 import PropTypes from 'prop-types';
 
-function SignupModal({ opened, onClose, CloseButton }) {
+function SignupModal({ opened, onClose }) {
 	return (
-		<Modal opened={opened} onClose={onClose} size={'xl'} withCloseButton={false}>
+		<Modal
+			opened={opened}
+			onClose={onClose}
+			size={'xl'}
+			withCloseButton={false}
+			aria-label="Partner Signup Agreement"
+		>
 			<div className="d-flex flex-column">
 				<Text className="h1 mt-2 cool-font text-warning align-self-center">
 					Before we start our partnership
@@ -51,7 +57,16 @@ function SignupModal({ opened, onClose, CloseButton }) {
 						</Text>
 					</div>
 				</div>
-				{CloseButton()}
+				<Button
+					radius="md"
+					onClick={onClose}
+					className="align-self-center"
+					color="#ff826b"
+					size="lg"
+					aria-label="Close Partner Signup Agreement Modal"
+				>
+					<Text className="px-3">I agree and understand</Text>
+				</Button>
 			</div>
 		</Modal>
 	);
@@ -60,7 +75,6 @@ function SignupModal({ opened, onClose, CloseButton }) {
 SignupModal.propTypes = {
 	opened: PropTypes.bool,
 	onClose: PropTypes.func,
-	CloseButton: PropTypes.func,
 };
 
 export default SignupModal;

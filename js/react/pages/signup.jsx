@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from '@mantine/core';
+import { Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
@@ -20,11 +20,12 @@ function Signup({ clientId }) {
 	const [userRole, setUserRole] = useState('donor');
 	const [showPassword, setShowPassword] = useState(false);
 	const recaptchaRef = useRef();
-	const [opened, { open, close }] = useDisclosure(false);
+	const [isSignupModalOpen, { open: openSignupModal, close: closeSignupModal }] =
+		useDisclosure(false);
 
 	useEffect(() => {
 		if (userRole === 'partner') {
-			open();
+			openSignupModal();
 		}
 	}, [userRole]);
 
@@ -78,24 +79,14 @@ function Signup({ clientId }) {
 		}
 	};
 
-	const CloseButton = () => {
-		return (
-			<Button
-				radius="md"
-				onClick={close}
-				className="align-self-center"
-				color="#ff826b"
-				size="lg"
-			>
-				<Text className="px-3">I agree and understand</Text>
-			</Button>
-		);
+	const handleSignUpModalClose = () => {
+		closeSignupModal();
 	};
 
 	return (
 		<MantineProviderWrapper>
 			<GoogleOAuthProvider clientId={clientId}>
-				<SignupModal opened={opened} onClose={close} CloseButton={CloseButton} />
+				<SignupModal opened={isSignupModalOpen} onClose={handleSignUpModalClose} />
 				<div
 					className="gradient-form d-flex justify-content-center align-items-center flex-column"
 					id="sign-up"
