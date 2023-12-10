@@ -1,4 +1,5 @@
-import { Tabs } from '@mantine/core';
+import { Button, Modal, Tabs } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 
@@ -6,7 +7,12 @@ import AgencyCardEditForm from '../../components/forms/AgencyCardEditForm.jsx';
 import SimpleModal from '../../components/shared/SimpleModal.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
-const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard }) => {
+const renderAgencyWishCards = ({
+	wishCards,
+	emptyMessage,
+	onClickEditWishcard,
+	onClickDeleteWishcard = null,
+}) => {
 	return !wishCards || wishCards.length === 0 ? (
 		<div className="mt-3 p-5 d-flex justify-content-center flex-column align-items-center">
 			<h6 className="text-center mb-3">{emptyMessage}</h6>
@@ -29,6 +35,10 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 					onClickEditWishcard(card);
 				};
 
+				const handleClickDeleteIcon = () => {
+					onClickDeleteWishcard(card);
+				};
+
 				return (
 					<div id="wishcards" className="col-lg-4 col-xs-12 mb-5 mt-4" key={card._id}>
 						<div className="card border-0 shadow h-100 mb-1">
@@ -45,6 +55,12 @@ const renderAgencyWishCards = ({ wishCards, emptyMessage, onClickEditWishcard })
 									onClick={handleClickEditIcon}
 									className="btn btn-secondary fas fa-edit pointer position-absolute top-0 end-0 mt-2 me-2"
 								></div>
+								{card.status == 'draft' ? (
+									<div
+										onClick={handleClickDeleteIcon}
+										className="btn btn-secondary fas fa-trash-can pointer position-absolute bottom-0 end-0 mb-2 me-2"
+									></div>
+								) : null}
 							</div>
 							<div className="card-body rounded-0 rounded-bottom-3">
 								<div className="card-text-container">
@@ -89,6 +105,11 @@ export default function WishCardManage() {
 	const [cardOnEdit, setCardOnEdit] = useState(null);
 	const [isOpenEditModal, setIsOpenEditModal] = useState(false);
 	const [refetchWishCards, setRefetchWishCards] = useState(false);
+	const [cardOnDelete, setCardOnDelete] = useState(null);
+	const [
+		isOpenDeleteConfirmModal,
+		{ open: openDeleteConfirmModal, close: closeDeleteConfirmModal },
+	] = useDisclosure(false);
 
 	useEffect(() => {
 		const fetchWishCards = () => {
@@ -113,6 +134,35 @@ export default function WishCardManage() {
 	const handleCloseEditModal = () => {
 		setCardOnEdit(null);
 		setIsOpenEditModal(false);
+	};
+
+	const handleClickDeleteOnCard = (card) => {
+		setCardOnDelete(card);
+		openDeleteConfirmModal();
+	};
+
+	const handleCloseDeleteModal = (shouldDelete) => {
+		closeDeleteConfirmModal();
+		if (shouldDelete) {
+			handleAgencyCardDeleteFormSubmit(cardOnDelete?._id);
+		}
+		setCardOnDelete(null);
+	};
+
+	const handleAgencyCardDeleteFormSubmit = async (cardId) => {
+		try {
+			const { data } = await axios.post(`/api/wishcards/delete/${cardId}`);
+			setRefetchWishCards((v) => !v); // trigger refetch agency wish cards
+			new window.DG.Toast().show(data.data);
+		} catch (error) {
+			new window.DG.Toast().show(
+				error?.response?.data?.error ||
+					error?.response?.data?.error?.msg ||
+					error?.message ||
+					'Unable to delete wish card',
+				window.DG.Toast.styleMap.danger,
+			);
+		}
 	};
 
 	const handleAgencyCardEditFormSubmit = async (submitData) => {
@@ -155,6 +205,7 @@ export default function WishCardManage() {
 								emptyMessage: 'You have 0 draft wish cards.',
 								wishCards: agencyCards.draftWishcards,
 								onClickEditWishcard: handleClickEditOnCard,
+								onClickDeleteWishcard: handleClickDeleteOnCard,
 							})}
 						</Tabs.Panel>
 
@@ -199,6 +250,33 @@ export default function WishCardManage() {
 						</div>
 					}
 				/>
+				<Modal
+					title="Confirm"
+					opened={isOpenDeleteConfirmModal}
+					closeOnClickOutside={false}
+					onClose={() => handleCloseDeleteModal(false)}
+					centered
+				>
+					<div className="d-flex flex-column gap-3 mt-2">
+						<div>Are you sure you want to delete this wishcard?</div>
+						<div className="d-flex justify-content-end gap-3">
+							<Button
+								variant="filled"
+								color="green"
+								onClick={() => handleCloseDeleteModal(true)}
+							>
+								Yes
+							</Button>
+							<Button
+								variant="filled"
+								color="red"
+								onClick={() => handleCloseDeleteModal(false)}
+							>
+								No
+							</Button>
+						</div>
+					</div>
+				</Modal>
 			</div>
 		</MantineProviderWrapper>
 	);
