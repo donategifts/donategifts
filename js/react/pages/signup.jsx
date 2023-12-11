@@ -1,10 +1,12 @@
 import { Flex } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
+import SignupModal from '../components/auth/SignupModal.jsx';
 import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function Signup({ clientId }) {
@@ -18,6 +20,14 @@ function Signup({ clientId }) {
 	const [userRole, setUserRole] = useState('donor');
 	const [showPassword, setShowPassword] = useState(false);
 	const recaptchaRef = useRef();
+	const [isSignupModalOpen, { open: openSignupModal, close: closeSignupModal }] =
+		useDisclosure(false);
+
+	useEffect(() => {
+		if (userRole === 'partner') {
+			openSignupModal();
+		}
+	}, [userRole]);
 
 	function handleChange(e) {
 		setFormState((prevState) => ({
@@ -69,9 +79,14 @@ function Signup({ clientId }) {
 		}
 	};
 
+	const handleSignUpModalClose = () => {
+		closeSignupModal();
+	};
+
 	return (
 		<MantineProviderWrapper>
 			<GoogleOAuthProvider clientId={clientId}>
+				<SignupModal opened={isSignupModalOpen} onClose={handleSignUpModalClose} />
 				<div
 					className="gradient-form d-flex justify-content-center align-items-center flex-column"
 					id="sign-up"
