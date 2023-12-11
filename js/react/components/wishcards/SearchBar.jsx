@@ -79,6 +79,8 @@ function SearchBar({
 						offset={10}
 						withArrow
 						arrowPosition="center"
+						closeOnClickOutside={false}
+						closeOnEscape={true}
 					>
 						<Menu.Target>
 							<Button
