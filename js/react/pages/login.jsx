@@ -8,6 +8,7 @@ import MantineProviderWrapper from '../utils/mantineProviderWrapper.jsx';
 
 function Login({ clientId }) {
 	const [loading, setLoading] = useState(false);
+	const [isShowPassword, setIsShowPassword] = useState(false);
 	const queryString = new URLSearchParams(window.location.search);
 
 	const emailRef = useRef(null);
@@ -67,6 +68,10 @@ function Login({ clientId }) {
 		}
 	};
 
+	const handleShowPassword = () => {
+		setIsShowPassword(!isShowPassword);
+	};
+
 	return (
 		<MantineProviderWrapper>
 			<GoogleOAuthProvider clientId={clientId}>
@@ -109,13 +114,18 @@ function Login({ clientId }) {
 												className="form-control bg-transparent border-0 rounded-0 border-bottom border-white"
 												id="password"
 												required="required"
-												type="password"
+												type={`${isShowPassword ? 'text' : 'password'}`}
 												ref={passwordRef}
 											/>
 											<span className="input-group-text bg-transparent border-0 rounded-0 border-bottom border-white">
 												<div
-													className="fas fa-eye text-white pointer"
+													className={`${
+														isShowPassword
+															? 'fas fa-eye-slash text-white pointer'
+															: 'fas fa-eye text-white pointer'
+													}`}
 													id="showPassword"
+													onClick={handleShowPassword}
 												></div>
 											</span>
 										</div>
