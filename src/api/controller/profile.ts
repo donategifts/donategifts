@@ -126,7 +126,53 @@ export default class ProfileController extends BaseController {
 
 				this.sendResponse(res, agency);
 			}
-			return this.sendResponse(res, 'Unauthorized: Not an agency user');
+			return this.handleError(res, 'Unauthorized: Not an agency user');
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handlePutAccount(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { fName, lName } = req.body;
+
+			if (!res.locals.user) {
+				return this.handleError(res, 'Unauthorized action: No user in request');
+			}
+
+			const user = await this.userRepository.getUserByObjectId(res.locals.user._id);
+
+			if (!user) {
+				return this.handleError(res, 'Error: User could not be found');
+			}
+
+			const updatedUser = await this.userRepository.getUserAndUpdateById(
+				user._id.toString(),
+				{
+					fName,
+					lName,
+				},
+			);
+			// include eslint line disable because of the false positive error
+			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
+			if (updatedUser) {
+				req.session.user = updatedUser; // eslint-disable-line require-atomic-updates
+			}
+
+			return this.sendResponse(res, 'Acount details updated');
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetAccount(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { user } = res.locals;
+			const foundUser = await this.userRepository.getUserByObjectId(user._id);
+			if (!foundUser) {
+				return this.handleError(res, 'Error: User not found');
+			}
+			return this.sendResponse(res, foundUser);
 		} catch (error) {
 			return this.handleError(res, error);
 		}

@@ -20,6 +20,16 @@ router.put(
 
 router.get('/agency', Permissions.redirectLogin, profileController.handleGetAgency);
 
+router.get('/account', Permissions.redirectLogin, profileController.handleGetAccount);
+
+router.put(
+	'/account',
+	Permissions.redirectLogin,
+	Validator.updateAccountDetailsRules(),
+	Validator.validate,
+	profileController.handlePutAccount,
+);
+
 router.get('/donations', profileController.handleGetDonations);
 
 export default router;
