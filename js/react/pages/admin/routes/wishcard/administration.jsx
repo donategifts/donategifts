@@ -13,12 +13,9 @@ export default function Administration() {
 		type: '',
 	});
 	const [isToastVisible, setIsToastVisible] = useState(false);
-	const [shouldNavigate, setShouldNavigate] = useState(false);
-	const [wishcardId, setWishcardId] = useState('');
 
 	const forward = (id) => {
-		setShouldNavigate(true);
-		setWishcardId(id);
+		navigate(`/wishcards/${id}`);
 	};
 
 	const handleUpdateWishcard = async (wishCardId) => {
@@ -65,12 +62,6 @@ export default function Administration() {
 			setIsToastVisible(true);
 		});
 	}, []);
-
-	useEffect(() => {
-		if (shouldNavigate) {
-			navigate(`/wishcards/${wishcardId}`);
-		}
-	}, [shouldNavigate, wishcardId]);
 
 	return (
 		<div id="admin-page">
