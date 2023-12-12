@@ -112,4 +112,23 @@ export default class ProfileController extends BaseController {
 			return this.handleError(res, error);
 		}
 	}
+
+	async handleGetAgency(_req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { user } = res.locals;
+			if (user?.userRole === 'partner') {
+				const agency = await this.agencyRepository.getAgencyByUserId(user._id);
+
+				// If user hadn't filled out agency info, redirect them to form
+				if (!agency) {
+					return this.handleError(res, 'signup/agencydata');
+				}
+
+				this.sendResponse(res, agency);
+			}
+			return this.sendResponse(res, 'Unauthorized: Not an agency user');
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
 }

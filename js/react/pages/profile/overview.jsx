@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react';
 import AgencyEditModal from '../../components/profile/agencyEditModal.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
-function ProfileOverview({ user, agency, wishCardsLength }) {
-	const [userAgency, setUserAgency] = useState(agency);
+function ProfileOverview({ user, wishCardsLength }) {
+	const [userAgency, setUserAgency] = useState(null);
 	const [isAgencyEditModalOpen, { open: openAgencyEditModal, close: closeAgencyEditModal }] =
 		useDisclosure();
+	const [refetchAgency, setRefetchAgency] = useState(false);
+
 	const agencyWishCardsManagement = () => {
 		if (!userAgency.isVerified) {
 			return (
@@ -359,26 +361,35 @@ function ProfileOverview({ user, agency, wishCardsLength }) {
 				window.DG.Toast.styleMap.danger,
 			);
 		}
+		setRefetchAgency((v) => !v);
 		closeAgencyEditModal();
 	};
 
-	const fetchAgencyDetails = () => {
-		//fetch Agency
-		setUserAgency(null);
-	};
-
 	useEffect(() => {
+		const fetchAgencyDetails = () => {
+			axios
+				.get('/api/profile/agency')
+				.then((res) => setUserAgency(res.data.data))
+				.catch(() =>
+					new window.DG.Toast().show(
+						'Could not fetch Agency Details.',
+						window.DG.Toast().styleMap.danger,
+					),
+				);
+		};
 		fetchAgencyDetails();
-	}, []);
+	}, [refetchAgency]);
 
 	return (
 		<MantineProviderWrapper>
-			<AgencyEditModal
-				agency={userAgency}
-				opened={isAgencyEditModalOpen}
-				onClose={closeAgencyEditModal}
-				formSubmit={agencyModalSubmit}
-			/>
+			{userAgency ? (
+				<AgencyEditModal
+					agency={userAgency}
+					opened={isAgencyEditModalOpen}
+					onClose={closeAgencyEditModal}
+					formSubmit={agencyModalSubmit}
+				/>
+			) : null}
 			<div id="profile">
 				<div className="profile-welcome cool-font center-elements text-secondary">
 					<h1 id="welcome-title">Welcome {user.fName}</h1>
@@ -405,7 +416,6 @@ function ProfileOverview({ user, agency, wishCardsLength }) {
 
 ProfileOverview.propTypes = {
 	user: PropType.object,
-	agency: PropType.object,
 	wishCardsLength: PropType.number,
 };
 

@@ -18,6 +18,8 @@ router.put(
 	profileController.handlePutAgency,
 );
 
+router.get('/agency', Permissions.redirectLogin, profileController.handleGetAgency);
+
 router.get('/donations', profileController.handleGetDonations);
 
 export default router;
