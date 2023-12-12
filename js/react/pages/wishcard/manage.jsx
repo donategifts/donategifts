@@ -254,7 +254,7 @@ export default function WishCardManage() {
 					title="Confirm"
 					opened={isOpenDeleteConfirmModal}
 					closeOnClickOutside={false}
-					onClose={() => handleCloseDeleteModal(false)}
+					onClose={closeDeleteConfirmModal}
 					centered
 				>
 					<div className="d-flex flex-column gap-3 mt-2">
