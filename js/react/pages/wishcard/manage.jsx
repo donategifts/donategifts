@@ -261,15 +261,15 @@ export default function WishCardManage() {
 						<div>Are you sure you want to delete this wishcard?</div>
 						<div className="d-flex justify-content-end gap-3">
 							<Button
-								variant="filled"
-								color="green"
+								variant="outline"
+								color="success.9"
 								onClick={() => handleCloseDeleteModal(true)}
 							>
 								Yes
 							</Button>
 							<Button
-								variant="filled"
-								color="red"
+								variant="outline"
+								color="danger.9"
 								onClick={() => handleCloseDeleteModal(false)}
 							>
 								No

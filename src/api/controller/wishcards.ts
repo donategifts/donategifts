@@ -249,10 +249,7 @@ export default class WishCardApiController extends BaseApiController {
 
 			await this.wishCardRepository.deleteWishCard(wishcard!._id);
 
-			this.log.info({
-				mgs: 'Wishcard Deleted',
-				wishCardId: wishcard?._id,
-			});
+			this.log.info('Wishcard Deleted', wishcard?._id);
 
 			return this.sendResponse(res, 'Wishcard deleted');
 		} catch (error) {
