@@ -30,6 +30,14 @@ router.put(
 	profileController.handlePutAccount,
 );
 
+router.put(
+	'/account/aboutMe',
+	Permissions.redirectLogin,
+	Validator.updateProfileValidationRules(),
+	Validator.validate,
+	profileController.handlePutAccount,
+);
+
 router.get('/donations', profileController.handleGetDonations);
 
 export default router;

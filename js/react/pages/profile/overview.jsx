@@ -4,6 +4,7 @@ import axios from 'axios';
 import PropType from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import AccountBioEditModal from '../../components/profile/accountBioEditModal.jsx';
 import AccountEditModal from '../../components/profile/accountEditModal.jsx';
 import AgencyEditModal from '../../components/profile/agencyEditModal.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
@@ -14,8 +15,12 @@ function ProfileOverview({ wishCardsLength }) {
 		useDisclosure();
 	const [refetchAgency, setRefetchAgency] = useState(false);
 	const [refetchAccount, setRefetchAccount] = useState(false);
-	const [isUserEditModalOpen, { open: openUserEditModal, close: closeUserEditModal }] =
+	const [isAccountEditModalOpen, { open: openAccountEditModal, close: closeAccountEditModal }] =
 		useDisclosure();
+	const [
+		isAccountBioEditModalOpen,
+		{ open: openAccountBioEditModal, close: closeAccountBioEditModal },
+	] = useDisclosure();
 
 	const agencyWishCardsManagement = () => {
 		if (!profileStore.agency.isVerified) {
@@ -209,7 +214,7 @@ function ProfileOverview({ wishCardsLength }) {
 			<div className="card shadow mb-5 border-0 p-4">
 				<div className="card-title d-flex justify-content-between p-3 pb-0">
 					<div className="display-6">Account Details</div>
-					<div className="fas fa-edit" onClick={() => openUserEditModal()}></div>
+					<div className="fas fa-edit" onClick={() => openAccountEditModal()}></div>
 				</div>
 				<div className="card-body">
 					<div className="row justify-content-center my-4">
@@ -252,7 +257,10 @@ function ProfileOverview({ wishCardsLength }) {
 									<div className="fa fa-user mx-2" aria-hidden={true}></div>
 									<span>About Me</span>
 								</div>
-								<div className="fas fa-edit" onClick={() => {}}></div>
+								<div
+									className="fas fa-edit"
+									onClick={() => openAccountBioEditModal()}
+								></div>
 							</div>
 							{profileStore.user.aboutMe ? (
 								<div className="y-scroll">
@@ -374,7 +382,7 @@ function ProfileOverview({ wishCardsLength }) {
 		closeAgencyEditModal();
 	};
 
-	const userModalSubmit = async (formData) => {
+	const accountEditModalSubmit = async (formData) => {
 		try {
 			await axios.put('/api/profile/account/', formData);
 			new window.DG.Toast().show('Updated Account Information');
@@ -388,7 +396,24 @@ function ProfileOverview({ wishCardsLength }) {
 			);
 		}
 		setRefetchAccount((v) => !v);
-		closeUserEditModal();
+		closeAccountEditModal();
+	};
+
+	const accountBioEditModalSubmit = async (formData) => {
+		try {
+			await axios.put('/api/profile/account/aboutMe', formData);
+			new window.DG.Toast().show('Updated Account Biography');
+		} catch (error) {
+			new window.DG.Toast().show(
+				error?.response?.data?.error ||
+					error?.response?.data?.error?.msg ||
+					error?.message ||
+					'Unable to update Account Biography.',
+				window.DG.Toast.styleMap.danger,
+			);
+		}
+		setRefetchAccount((v) => !v);
+		closeAccountBioEditModal();
 	};
 
 	useEffect(() => {
@@ -437,9 +462,15 @@ function ProfileOverview({ wishCardsLength }) {
 					) : null}
 					<AccountEditModal
 						user={profileStore.user}
-						opened={isUserEditModalOpen}
-						onClose={closeUserEditModal}
-						formSubmit={userModalSubmit}
+						opened={isAccountEditModalOpen}
+						onClose={closeAccountEditModal}
+						formSubmit={accountEditModalSubmit}
+					/>
+					<AccountBioEditModal
+						user={profileStore.user}
+						opened={isAccountBioEditModalOpen}
+						onClose={closeAccountBioEditModal}
+						formSubmit={accountBioEditModalSubmit}
 					/>
 					<div id="profile">
 						<div className="profile-welcome cool-font center-elements text-secondary">

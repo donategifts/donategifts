@@ -134,7 +134,7 @@ export default class ProfileController extends BaseController {
 
 	async handlePutAccount(req: Request, res: Response, _next: NextFunction) {
 		try {
-			const { fName, lName } = req.body;
+			const { fName, lName, aboutMe } = req.body;
 
 			if (!res.locals.user) {
 				return this.handleError(res, 'Unauthorized action: No user in request');
@@ -146,12 +146,15 @@ export default class ProfileController extends BaseController {
 				return this.handleError(res, 'Error: User could not be found');
 			}
 
+			const updateProps = {
+				...(fName != null && { fName }),
+				...(lName != null && { lName }),
+				...(aboutMe != null && { aboutMe }),
+			};
+
 			const updatedUser = await this.userRepository.getUserAndUpdateById(
 				user._id.toString(),
-				{
-					fName,
-					lName,
-				},
+				updateProps,
 			);
 			// include eslint line disable because of the false positive error
 			// Possible race condition: `req.session.user` might be assigned based on an outdated state of `req`
