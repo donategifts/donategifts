@@ -51,18 +51,17 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 		<Modal.Root size="xl" opened={opened} onClose={() => closeAndReset()}>
 			<Modal.Overlay />
 			<Modal.Content>
-				<Modal.Header>
+				<Modal.Header styles={{ header: { borderBottom: '0.5px solid gray' } }}>
 					<Modal.Title>Edit Agency Details</Modal.Title>
 					<Modal.CloseButton />
 				</Modal.Header>
 				<Container>
-					<form>
+					<form className="mx-2">
 						<div className="my-2 flex flex-column gap-2">
 							<Textarea
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="agencyBio-edit"
 								name="agencyBio"
 								rows="3"
 								placeholder="Enter agency description"
@@ -76,7 +75,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="agencyPhone-edit"
 								type="text"
 								placeholder="000-000-0000"
 								label="Contact Number:"
@@ -88,7 +86,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="agencyWebsite-edit"
 								type="text"
 								label="Website:"
 								{...getInputProps('agencyWebsite')}
@@ -99,7 +96,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="address1-edit"
 								type="text"
 								label="Address Line 1:"
 								{...getInputProps('address1')}
@@ -110,7 +106,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="address2-edit"
 								type="text"
 								label="Address Line 2:"
 								{...getInputProps('address2')}
@@ -121,7 +116,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="city-edit"
 								type="text"
 								label="City:"
 								{...getInputProps('city')}
@@ -132,7 +126,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="state-edit"
 								type="text"
 								label="State:"
 								{...getInputProps('state')}
@@ -143,7 +136,6 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="country-edit"
 								type="text"
 								label="Country:"
 								{...getInputProps('country')}
@@ -154,21 +146,19 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
-								id="zipcode-edit"
 								type="text"
 								label="Zipcode:"
 								{...getInputProps('zipcode')}
 							/>
 						</div>
-						<div className="modal-footer d-flex justify-content-end">
-							<div className="col-12 col-md-4">
-								<Button
-									className="btn btn-lg btn-primary w-100"
-									onClick={() => formSubmit(userAgency)}
-								>
-									Save
-								</Button>
-							</div>
+						<div className="modal-footer d-flex justify-content-end mb-2">
+							<Button
+								size="lg"
+								className="btn btn-primary w-25"
+								onClick={() => formSubmit(userAgency)}
+							>
+								Save
+							</Button>
 						</div>
 					</form>
 				</Container>
