@@ -16,6 +16,16 @@ router.get('/single/:id', wishCardController.handleGetWishCardSingle);
 
 router.put(
 	'/agency',
+	fileUpload.upload.fields([
+		{
+			name: 'childImage',
+			maxCount: 1,
+		},
+		{
+			name: 'wishItemImage',
+			maxCount: 1,
+		},
+	]),
 	Permissions.isAdminOrAgency,
 	Validator.updateAgencyWishcardValidationRules(),
 	Validator.validate,

@@ -112,13 +112,27 @@ export default class WishCardApiController extends BaseApiController {
 				childStory,
 			} = req.body;
 
-			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, {
+			const { childImage, wishItemImage } = req.files;
+
+			const updateProps = {
 				childFirstName,
 				wishItemName,
 				wishItemPrice,
 				childInterest,
 				childStory,
-			});
+				...(wishItemImage && {
+					wishItemImage: config.AWS.USE
+						? req.files?.wishItemImage[0].Location
+						: `/uploads/${wishItemImage[0].filename}`,
+				}),
+				...(childImage && {
+					childImage: config.AWS.USE
+						? req.files?.childImage[0].Location
+						: `/uploads/${childImage[0].filename}`,
+				}),
+			};
+
+			await this.wishCardRepository.updateWishCardByObjectId(wishCardId, updateProps);
 
 			return this.sendResponse(res, {
 				wishCardId,
