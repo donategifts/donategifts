@@ -1,16 +1,22 @@
 import { Box, Button, Container, Input } from '@mantine/core';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import CustomToast from '../../../../components/shared/CustomToast.jsx';
 
 export default function Administration() {
+	const navigate = useNavigate();
 	const [agenciesWithWishCards, setAgenciesWithWishCards] = useState({});
 	const [toastProps, setToastProps] = useState({
 		message: '',
 		type: '',
 	});
 	const [isToastVisible, setIsToastVisible] = useState(false);
+
+	const forward = (id) => {
+		navigate(`/wishcards/${id}`);
+	};
 
 	const handleUpdateWishcard = async (wishCardId) => {
 		const newWishItemUrl = document.getElementById('newWishItemUrl' + wishCardId).value;
@@ -145,10 +151,18 @@ export default function Administration() {
 													name="newWishItemUrl"
 													placeholder="Replace wish item URL"
 												/>
-												<div className="d-flex justify-content-center mt-3">
+												<div className="d-flex justify-content-center mt-3 gap-2">
+													<Button
+														color="blue"
+														size="md"
+														data-value-id={card._id}
+														onClick={() => forward(card._id)}
+													>
+														Edit WishCard
+													</Button>
 													<Button
 														color="orange"
-														size="lg"
+														size="md"
 														id={'donate-btn-' + card._id}
 														data-value-id={card._id}
 														onClick={() => {

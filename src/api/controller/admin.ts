@@ -8,6 +8,7 @@ import AgencyRepository from '../../db/repository/AgencyRepository';
 import DonationRepository from '../../db/repository/DonationRepository';
 import UserRepository from '../../db/repository/UserRepository';
 import WishCardRepository from '../../db/repository/WishCardRepository';
+import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
 import BaseController from './basecontroller';
@@ -202,6 +203,54 @@ export default class AdminController extends BaseController {
 			return this.sendResponse(res, wishCardId);
 		} catch (error) {
 			return this.handleError(res, error);
+		}
+	}
+
+	async handleGetWishCardDetail(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const wishcard = await this.wishCardRepository.getWishCardById(req.params.wishcardId);
+
+			if (!wishcard) {
+				return this.handleError(res, 'Wishcard not found');
+			}
+			return this.sendResponse(res, wishcard);
+		} catch (error) {
+			return this.handleError(res, error);
+		}
+	}
+
+	async handleUpdateWishCardData(req: Request, res: Response, _next: NextFunction) {
+		try {
+			const { childImage, wishItemImage } = req.files;
+
+			const updateProps = {
+				...(childImage != null && {
+					childImage: config.AWS.USE
+						? req.files?.childImage[0].Location
+						: `/uploads/${childImage[0].filename}`,
+				}),
+				...(wishItemImage != null && {
+					wishItemImage: config.AWS.USE
+						? req.files?.wishItemImage[0].Location
+						: `/uploads/${wishItemImage[0].filename}`,
+				}),
+			};
+
+			const result = await this.wishCardRepository.updateWishCardByObjectId(
+				req.params.wishcardId,
+				updateProps,
+			);
+
+			if (result == null) {
+				return this.handleError(res, 'Wishcard could not be updated, check post params');
+			}
+
+			return this.sendResponse(res, {
+				message: 'Wishcard updated',
+			});
+		} catch (error) {
+			this.log.error('[AdminController] handleUpdateWishCardData: ', error);
+			return this.handleError(res, 'Failed to update wishcard');
 		}
 	}
 
