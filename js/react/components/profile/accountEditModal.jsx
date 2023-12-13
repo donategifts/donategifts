@@ -1,35 +1,51 @@
 import { Button, Container, Modal, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 function AccountEditModal({ user, opened, onClose, formSubmit }) {
-	const [accountInfo, setAccountInfo] = useState({
-		fName: user.fName,
-		lName: user.lName || '',
-	});
-
-	const handleInputChange = (event) => {
-		const target = event.target;
-		const { name, value } = target;
-
-		setAccountInfo({
-			...accountInfo,
-			[name]: value,
-		});
-	};
-
-	const getInputProps = (name) => ({
-		name,
-		value: accountInfo[name],
-		onChange: handleInputChange,
-	});
-
-	const closeAndReset = () => {
-		setAccountInfo({
-			...accountInfo,
+	const formRefs = {};
+	const form = useForm({
+		initialValues: {
 			fName: user.fName,
 			lName: user.lName || '',
-		});
+		},
+		validate: {
+			fName: (value) =>
+				value.length < 2 || value.length > 250
+					? 'First Name must contain at least 2 characters.'
+					: null,
+		},
+	});
+
+	const getInputProps = (name) => {
+		const currentRef = useRef();
+		formRefs[`${name}Ref`] = currentRef;
+		return {
+			ref: currentRef,
+			...form.getInputProps(name),
+		};
+	};
+
+	const handleScroll = (ref) => {
+		if (ref?.current) {
+			window?.scrollTo({
+				top: ref.offsetTop,
+				left: 0,
+				behavior: 'smooth',
+			});
+			ref.current.focus();
+		}
+	};
+
+	const handleError = (errors) => {
+		const firstError = Object.keys(errors)[0];
+		const errorRef = formRefs[`${firstError}Ref`];
+		handleScroll(errorRef);
+	};
+
+	const closeAndReset = () => {
+		form.reset();
 		onClose();
 	};
 
@@ -68,7 +84,7 @@ function AccountEditModal({ user, opened, onClose, formSubmit }) {
 							<Button
 								size="lg"
 								className="btn btn-primary w-25"
-								onClick={() => formSubmit(accountInfo)}
+								onClick={form.onSubmit((values) => formSubmit(values), handleError)}
 							>
 								Save
 							</Button>
