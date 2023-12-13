@@ -43,6 +43,7 @@
 	},
 	"homepage": "https://github.com/stacysealky/donategifts#readme",
 	"dependencies": {
+		"@mantine/form": "7.3.1",
 		"aws-sdk": "2.1435.0",
 		"axios": "1.6.0",
 		"bcryptjs": "2.4.3",
