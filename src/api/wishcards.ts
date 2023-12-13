@@ -57,4 +57,11 @@ router.post(
 	wishCardController.handlePostMessage,
 );
 
+router.post(
+	'/delete/:id',
+	Validator.deleteWishCardValidationRules(),
+	Validator.validate,
+	wishCardController.handleDeleteWishCardSingle,
+);
+
 export default router;
