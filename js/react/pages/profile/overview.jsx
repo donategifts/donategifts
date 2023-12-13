@@ -10,7 +10,8 @@ import AgencyEditModal from '../../components/profile/agencyEditModal.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
 function ProfileOverview({ wishCardsLength }) {
-	const [profileStore, setProfileStore] = useState({ user: null, agency: null });
+	const [accountStore, setAccountStore] = useState(null);
+	const [agencyStore, setAgencyStore] = useState(null);
 	const [isAgencyEditModalOpen, { open: openAgencyEditModal, close: closeAgencyEditModal }] =
 		useDisclosure();
 	const [refetchAgency, setRefetchAgency] = useState(false);
@@ -23,7 +24,7 @@ function ProfileOverview({ wishCardsLength }) {
 	] = useDisclosure();
 
 	const agencyWishCardsManagement = () => {
-		if (!profileStore.agency.isVerified) {
+		if (!agencyStore.isVerified) {
 			return (
 				<div className="my-3">
 					<div
@@ -94,10 +95,10 @@ function ProfileOverview({ wishCardsLength }) {
 					<div className="row justify-content-center">
 						<div className="mb-2 col-12 d-flex">
 							<div className="text-muted">Agency name:</div>
-							<span className="mx-1">{profileStore.agency.agencyName}</span>
-							{profileStore.agency.isVerified ? (
+							<span className="mx-1">{agencyStore.agencyName}</span>
+							{agencyStore.isVerified ? (
 								<div className="text-secondary fw-bold">
-									Verified{' '}
+									Verified
 									<div
 										className="fas fa-check-circle text-secondary"
 										aria-hidden={true}
@@ -112,7 +113,7 @@ function ProfileOverview({ wishCardsLength }) {
 						<div className="col-12">
 							<span className="text-muted">Agency description:</span>
 							<span id="agencyBio" className="mx-2">
-								{profileStore.agency.agencyBio || 'Not Provided'}
+								{agencyStore.agencyBio || 'Not Provided'}
 							</span>
 						</div>
 					</div>
@@ -126,11 +127,7 @@ function ProfileOverview({ wishCardsLength }) {
 						<div className="col-12 col-md-6">
 							<span className="text-muted">Partner since:</span>
 							<span id="agencyBio" className="mx-2">
-								{
-									new Date(profileStore.agency.joined)
-										.toLocaleString()
-										.split(',')[0]
-								}
+								{new Date(agencyStore.joined).toLocaleString().split(',')[0]}
 							</span>
 						</div>
 					</div>
@@ -138,30 +135,29 @@ function ProfileOverview({ wishCardsLength }) {
 						<div className="col-12 col-md-6 mb-4 mb-md-0">
 							<span className="text-muted">Contact number:</span>
 							<span id="agencyPhone" className="mx-2">
-								{profileStore.agency.agencyPhone}
+								{agencyStore.agencyPhone}
 							</span>
 						</div>
 						<div className="col-12 col-md-6">
 							<span className="text-muted">Website:</span>
 							<span id="agencyWebsite" className="mx-2 text-wrap">
-								{profileStore.agency.agencyWebsite || 'Not provided'}
+								{agencyStore.agencyWebsite || 'Not provided'}
 							</span>
 						</div>
 					</div>
-					{profileStore.agency.agencyAddress ? (
+					{agencyStore.agencyAddress ? (
 						<>
 							<div className="row justify-content-center my-4">
 								<div className="col-12 col-lg-6 mb-4 mb-md-0">
 									<span className="text-muted">Address line 1:</span>
 									<span id="address1" className="mx-2">
-										{profileStore.agency.agencyAddress.address1}
+										{agencyStore.agencyAddress.address1}
 									</span>
 								</div>
 								<div className="col-12 col-lg-6">
 									<span className="text-muted">Address line 2:</span>
 									<span id="address2" className="mx-2">
-										{profileStore.agency.agencyAddress.address2 ||
-											'Not provided'}
+										{agencyStore.agencyAddress.address2 || 'Not provided'}
 									</span>
 								</div>
 							</div>
@@ -169,13 +165,13 @@ function ProfileOverview({ wishCardsLength }) {
 								<div className="col-12 col-lg-6 mb-4 mb-md-0">
 									<span className="text-muted">City:</span>
 									<span id="city" className="mx-2">
-										{profileStore.agency.agencyAddress.city}
+										{agencyStore.agencyAddress.city}
 									</span>
 								</div>
 								<div className="col-12 col-lg-6">
 									<span className="text-muted">State:</span>
 									<span id="state" className="mx-2">
-										{profileStore.agency.agencyAddress.state}
+										{agencyStore.agencyAddress.state}
 									</span>
 								</div>
 							</div>
@@ -183,13 +179,13 @@ function ProfileOverview({ wishCardsLength }) {
 								<div className="col-12 col-lg-6 mb-4 mb-md-0">
 									<span className="text-muted">Country</span>
 									<span id="country" className="mx-2">
-										{profileStore.agency.agencyAddress.country}
+										{agencyStore.agencyAddress.country}
 									</span>
 								</div>
 								<div className="col-12 col-lg-6">
 									<span className="text-muted">Zipcode:</span>
 									<span id="zipcode" className="mx-2">
-										{profileStore.agency.agencyAddress.zipcode}
+										{agencyStore.agencyAddress.zipcode}
 									</span>
 								</div>
 							</div>
@@ -221,24 +217,24 @@ function ProfileOverview({ wishCardsLength }) {
 						<div className="col-12 col-lg-6 mb-4 mb-md-0">
 							<span className="text-muted">First Name:</span>
 							<span id="fName" className="mx-2">
-								{profileStore.user.fName}
+								{accountStore.fName}
 							</span>
 						</div>
 						<div className="col-12 col-lg-6">
 							<span className="text-muted">Last name:</span>
 							<span id="lName" className="mx-2">
-								{profileStore.user.lName}
+								{accountStore.lName}
 							</span>
 						</div>
 					</div>
 					<div className="row justify-content-center my-4">
 						<div className="col-12 col-lg-6 mb-4 mb-md-0">
 							<span className="text-muted">Your email:</span>
-							<span className="mx-2">{profileStore.user.email}</span>
+							<span className="mx-2">{accountStore.email}</span>
 						</div>
 						<div className="col-12 col-lg-6">
 							<span className="text-muted">Your role:</span>
-							<span className="mx-2">{profileStore.user.userRole}</span>
+							<span className="mx-2">{accountStore.userRole}</span>
 						</div>
 					</div>
 				</div>
@@ -262,10 +258,10 @@ function ProfileOverview({ wishCardsLength }) {
 									onClick={() => openAccountBioEditModal()}
 								></div>
 							</div>
-							{profileStore.user.aboutMe ? (
+							{accountStore.aboutMe ? (
 								<div className="y-scroll">
 									<div id="about-me" className="p-4">
-										{profileStore.user.aboutMe}
+										{accountStore.aboutMe}
 									</div>
 								</div>
 							) : (
@@ -332,7 +328,7 @@ function ProfileOverview({ wishCardsLength }) {
 										</Button>
 									</div>
 								</div>
-								{!profileStore.user.emailVerified ? (
+								{!accountStore.emailVerified ? (
 									<div className="row justify-content-center">
 										<div className="col-12 col-lg-8">
 											<Button
@@ -340,6 +336,7 @@ function ProfileOverview({ wishCardsLength }) {
 												id="resend-verification-link"
 												className="button-primary w-100"
 												component="a"
+												onClick={() => sendVerificationEmailLink()}
 											>
 												Resend Verification Link
 											</Button>
@@ -368,7 +365,7 @@ function ProfileOverview({ wishCardsLength }) {
 	const agencyModalSubmit = async (formData) => {
 		try {
 			await axios.put('/api/profile/agency/', formData);
-			new window.DG.Toast().show('Updated Wishcard');
+			new window.DG.Toast().show('Updated Wishcard', window.DG.Toast.styleMap.success);
 		} catch (error) {
 			new window.DG.Toast().show(
 				error?.response?.data?.error ||
@@ -385,7 +382,10 @@ function ProfileOverview({ wishCardsLength }) {
 	const accountEditModalSubmit = async (formData) => {
 		try {
 			await axios.put('/api/profile/account/', formData);
-			new window.DG.Toast().show('Updated Account Information');
+			new window.DG.Toast().show(
+				'Updated Account Information',
+				window.DG.Toast.styleMap.success,
+			);
 		} catch (error) {
 			new window.DG.Toast().show(
 				error?.response?.data?.error ||
@@ -402,7 +402,10 @@ function ProfileOverview({ wishCardsLength }) {
 	const accountBioEditModalSubmit = async (formData) => {
 		try {
 			await axios.put('/api/profile/account/aboutMe', formData);
-			new window.DG.Toast().show('Updated Account Biography');
+			new window.DG.Toast().show(
+				'Updated Account Biography',
+				window.DG.Toast.styleMap.success,
+			);
 		} catch (error) {
 			new window.DG.Toast().show(
 				error?.response?.data?.error ||
@@ -416,68 +419,90 @@ function ProfileOverview({ wishCardsLength }) {
 		closeAccountBioEditModal();
 	};
 
-	useEffect(() => {
-		const fetchAgencyDetails = () => {
-			axios
-				.get('/api/profile/agency')
-				.then((res) => setProfileStore({ ...profileStore, agency: res.data.data }))
-				.catch(() =>
-					new window.DG.Toast().show(
-						'Could not fetch Agency Details.',
-						window.DG.Toast().styleMap.danger,
-					),
-				);
-		};
-		if (profileStore.user && profileStore.user.userRole == 'partner') {
-			fetchAgencyDetails();
+	const sendVerificationEmailLink = async () => {
+		try {
+			await axios.post('/api/profile/resend-verification-link', {
+				userId: accountStore._id,
+			});
+			new window.DG.Toast().show(
+				'Resent verification link!',
+				window.DG.Toast.styleMap.success,
+			);
+		} catch (error) {
+			new window.DG.Toast().show(
+				error?.response?.data?.error ||
+					error?.response?.data?.error?.msg ||
+					error?.message ||
+					'Could not resend verification link.',
+				window.DG.Toast.styleMap.danger,
+			);
 		}
-	}, [refetchAgency]);
+	};
+
+	const fetchAccountDetails = () => {
+		axios
+			.get('/api/profile/account')
+			.then((res) => setAccountStore(res.data.data))
+			.catch(() =>
+				new window.DG.Toast().show(
+					'Could not fetch Agency Details.',
+					window.DG.Toast().styleMap.danger,
+				),
+			);
+	};
+
+	const fetchAgencyDetails = () => {
+		axios
+			.get('/api/profile/agency')
+			.then((res) => setAgencyStore(res.data.data))
+			.catch(() =>
+				new window.DG.Toast().show(
+					'Could not fetch Agency Details.',
+					window.DG.Toast().styleMap.danger,
+				),
+			);
+	};
 
 	useEffect(() => {
-		const fetchAccountDetails = () => {
-			axios
-				.get('/api/profile/account')
-				.then((res) => setProfileStore({ ...profileStore, user: res.data.data }))
-				.catch(() =>
-					new window.DG.Toast().show(
-						'Could not fetch Agency Details.',
-						window.DG.Toast().styleMap.danger,
-					),
-				);
-		};
 		fetchAccountDetails();
 	}, [refetchAccount]);
 
+	useEffect(() => {
+		if (accountStore && accountStore.userRole == 'partner') {
+			fetchAgencyDetails();
+		}
+	}, [refetchAgency, accountStore]);
+
 	return (
 		<MantineProviderWrapper>
-			{profileStore.user ? (
+			{accountStore ? (
 				<>
-					{profileStore.agency ? (
+					{agencyStore ? (
 						<AgencyEditModal
-							agency={profileStore.agency}
+							agency={agencyStore}
 							opened={isAgencyEditModalOpen}
 							onClose={closeAgencyEditModal}
 							formSubmit={agencyModalSubmit}
 						/>
 					) : null}
 					<AccountEditModal
-						user={profileStore.user}
+						user={accountStore}
 						opened={isAccountEditModalOpen}
 						onClose={closeAccountEditModal}
 						formSubmit={accountEditModalSubmit}
 					/>
 					<AccountBioEditModal
-						user={profileStore.user}
+						user={accountStore}
 						opened={isAccountBioEditModalOpen}
 						onClose={closeAccountBioEditModal}
 						formSubmit={accountBioEditModalSubmit}
 					/>
 					<div id="profile">
 						<div className="profile-welcome cool-font center-elements text-secondary">
-							<h1 id="welcome-title">Welcome {profileStore.user.fName}</h1>
+							<h1 id="welcome-title">Welcome {accountStore.fName}</h1>
 						</div>
 						<Container size="xl" className="pt-5">
-							{!profileStore.user.emailVerified ? (
+							{!accountStore.emailVerified ? (
 								<div className="my-3">
 									<div
 										className="fa fa-exclamation-triangle me-2 text-secondary"
@@ -487,7 +512,7 @@ function ProfileOverview({ wishCardsLength }) {
 									verify your email.
 								</div>
 							) : null}
-							{profileStore.user.userRole == 'partner' && profileStore.agency
+							{accountStore.userRole == 'partner' && agencyStore
 								? agencyDashboard()
 								: null}
 							{accountDetails()}
