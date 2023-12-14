@@ -1,27 +1,44 @@
 import { Button, Container, Modal, Textarea } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 function AccountBioEditModal({ user, opened, onClose, formSubmit }) {
-	const [accountInfo, setAccountInfo] = useState({
-		aboutMe: user.aboutMe || '',
+	const formRefs = {};
+	const form = useForm({
+		initialValues: {
+			aboutMe: user.aboutMe || '',
+		},
 	});
 
-	const handleInputChange = (event) => {
-		const target = event.target;
-		const { name, value } = target;
+	const getInputProps = (name) => {
+		const currentRef = useRef();
+		formRefs[`${name}Ref`] = currentRef;
+		return {
+			ref: currentRef,
+			...form.getInputProps(name),
+		};
+	};
 
-		setAccountInfo({
-			...accountInfo,
-			[name]: value,
-		});
+	const handleScroll = (ref) => {
+		if (ref?.current) {
+			window?.scrollTo({
+				top: ref.offsetTop,
+				left: 0,
+				behavior: 'smooth',
+			});
+			ref.current.focus();
+		}
+	};
+
+	const handleError = (errors) => {
+		const firstError = Object.keys(errors)[0];
+		const errorRef = formRefs[`${firstError}Ref`];
+		handleScroll(errorRef);
 	};
 
 	const closeAndReset = () => {
-		setAccountInfo({
-			...accountInfo,
-			aboutMe: user.aboutMe || '',
-		});
+		form.reset();
 		onClose();
 	};
 
@@ -34,25 +51,24 @@ function AccountBioEditModal({ user, opened, onClose, formSubmit }) {
 					<Modal.CloseButton />
 				</Modal.Header>
 				<Container>
-					<form className="mx-2">
-						<div className="d-flex my-4 gap-3">
-							<Textarea
-								styles={{
-									input: { border: '1px solid #dee2e6', marginTop: '5px' },
-								}}
-								name="aboutMe"
-								rows="3"
-								placeholder="Write something about you"
-								label="About Me:"
-								defaultValue={accountInfo.aboutMe}
-								onChange={handleInputChange}
-							/>
-						</div>
-						<div className="d-flex justify-content-end mb-2">
+					<form className="m-3 d-flex flex-column gap-3">
+						<Textarea
+							styles={{
+								input: { border: '1px solid #dee2e6', marginTop: '5px' },
+							}}
+							name="aboutMe"
+							rows="3"
+							placeholder="Write something about you"
+							label="About Me:"
+							{...getInputProps('aboutMe')}
+						/>
+						<div className="d-flex justify-content-end my-2">
 							<Button
 								size="lg"
-								className="btn btn-primary w-25"
-								onClick={() => formSubmit(accountInfo)}
+								variant="outline"
+								color="success.9"
+								styles={{ inner: { paddingLeft: '50px', paddingRight: '50px' } }}
+								onClick={form.onSubmit((values) => formSubmit(values), handleError)}
 							>
 								Save
 							</Button>
