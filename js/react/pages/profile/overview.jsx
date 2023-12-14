@@ -368,8 +368,8 @@ function ProfileOverview({ wishCardsLength }) {
 			new window.DG.Toast().show('Updated Wishcard', window.DG.Toast.styleMap.success);
 		} catch (error) {
 			new window.DG.Toast().show(
-				error?.response?.data?.error ||
-					error?.response?.data?.error?.msg ||
+				error?.response?.data?.error?.msg ||
+					error?.response?.data?.error ||
 					error?.message ||
 					'Unable to update wish card',
 				window.DG.Toast.styleMap.danger,
@@ -388,8 +388,8 @@ function ProfileOverview({ wishCardsLength }) {
 			);
 		} catch (error) {
 			new window.DG.Toast().show(
-				error?.response?.data?.error ||
-					error?.response?.data?.error?.msg ||
+				error?.response?.data?.error?.msg ||
+					error?.response?.data?.error ||
 					error?.message ||
 					'Unable to update Account Details.',
 				window.DG.Toast.styleMap.danger,
@@ -408,8 +408,8 @@ function ProfileOverview({ wishCardsLength }) {
 			);
 		} catch (error) {
 			new window.DG.Toast().show(
-				error?.response?.data?.error ||
-					error?.response?.data?.error?.msg ||
+				error?.response?.data?.error?.msg ||
+					error?.response?.data?.error ||
 					error?.message ||
 					'Unable to update Account Biography.',
 				window.DG.Toast.styleMap.danger,
@@ -430,8 +430,8 @@ function ProfileOverview({ wishCardsLength }) {
 			);
 		} catch (error) {
 			new window.DG.Toast().show(
-				error?.response?.data?.error ||
-					error?.response?.data?.error?.msg ||
+				error?.response?.data?.error?.msg ||
+					error?.response?.data?.error ||
 					error?.message ||
 					'Could not resend verification link.',
 				window.DG.Toast.styleMap.danger,

@@ -58,7 +58,7 @@ function AccountEditModal({ user, opened, onClose, formSubmit }) {
 					<Modal.CloseButton />
 				</Modal.Header>
 				<Container>
-					<form className="mx-2">
+					<form className="m-3">
 						<div className="d-flex my-4 gap-3">
 							<TextInput
 								styles={{
@@ -83,7 +83,9 @@ function AccountEditModal({ user, opened, onClose, formSubmit }) {
 						<div className="d-flex justify-content-end mb-2">
 							<Button
 								size="lg"
-								className="btn btn-primary w-25"
+								styles={{ inner: { paddingLeft: '50px', paddingRight: '50px' } }}
+								variant="outline"
+								color="success.9"
 								onClick={form.onSubmit((values) => formSubmit(values), handleError)}
 							>
 								Save

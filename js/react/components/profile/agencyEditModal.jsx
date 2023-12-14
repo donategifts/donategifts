@@ -28,10 +28,13 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 				value.length < 2 || value.length > 250
 					? 'Address line 1 must contain at least 2 characters.'
 					: null,
-			city: (value) =>
-				value.length < 2 || value.length > 250
-					? 'Address line 1 must contain at least 2 characters.'
-					: null,
+			city: (value) => (value.length < 2 ? 'City must contain at least 2 characters.' : null),
+			state: (value) =>
+				value.length < 2 ? 'State must contain at least 2 characters.' : null,
+			country: (value) =>
+				value.length < 2 ? 'Country must contain at least 2 characters.' : null,
+			zipcode: (value) =>
+				value.length < 2 ? 'Zipcode must contain at least 5 characters.' : null,
 		},
 	});
 
@@ -97,8 +100,8 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 					<Modal.CloseButton />
 				</Modal.Header>
 				<Container>
-					<form className="mx-2">
-						<div className="my-2 flex flex-column gap-2">
+					<form className="m-3 d-flex flex-column gap-3">
+						<div>
 							<Textarea
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
@@ -110,92 +113,94 @@ function AgencyEditModal({ agency, opened, onClose, formSubmit }) {
 								{...getInputProps('agencyBio')}
 							/>
 						</div>
-						<div className="my-2">
+						<div className="d-flex flex-wrap gap-3">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
 								type="text"
+								className="flex-fill"
 								placeholder="000-000-0000"
 								label="Contact Number:"
 								{...getInputProps('agencyPhone')}
 								onChange={handleInputChangePhone}
 							/>
-						</div>
-						<div className="my-2">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="Website:"
 								{...getInputProps('agencyWebsite')}
 							/>
 						</div>
-						<div className="my-2">
+						<div className="d-flex flex-wrap gap-3">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="Address Line 1:"
 								{...getInputProps('address1')}
 							/>
-						</div>
-						<div className="my-2">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="Address Line 2:"
 								{...getInputProps('address2')}
 							/>
 						</div>
-						<div className="my-2">
+						<div className="d-flex flex-wrap gap-3">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="City:"
 								{...getInputProps('city')}
 							/>
-						</div>
-						<div className="my-2">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="State:"
 								{...getInputProps('state')}
 							/>
 						</div>
-						<div className="my-2">
+						<div className="d-flex flex-wrap gap-3">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="Country:"
 								{...getInputProps('country')}
 							/>
-						</div>
-						<div className="my-2">
 							<TextInput
 								styles={{
 									input: { border: '1px solid #dee2e6', marginTop: '5px' },
 								}}
+								className="flex-fill"
 								type="text"
 								label="Zipcode:"
 								{...getInputProps('zipcode')}
 							/>
 						</div>
-						<div className="modal-footer d-flex justify-content-end mb-2">
+						<div className="d-flex justify-content-end mb-2">
 							<Button
 								size="lg"
-								className="btn btn-primary w-25"
+								styles={{ inner: { paddingLeft: '50px', paddingRight: '50px' } }}
+								variant="outline"
+								color="success.9"
 								onClick={form.onSubmit((values) => formSubmit(values), handleError)}
 							>
 								Save
