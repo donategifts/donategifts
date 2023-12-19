@@ -1,7 +1,6 @@
 import { Button, Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
-import PropType from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import AccountBioEditModal from '../../components/profile/accountBioEditModal.jsx';
@@ -9,7 +8,7 @@ import AccountEditModal from '../../components/profile/accountEditModal.jsx';
 import AgencyEditModal from '../../components/profile/agencyEditModal.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
 
-function ProfileOverview({ wishCardsLength }) {
+export default function ProfileOverview() {
 	const [accountStore, setAccountStore] = useState(null);
 	const [agencyStore, setAgencyStore] = useState(null);
 	const [isAgencyEditModalOpen, { open: openAgencyEditModal, close: closeAgencyEditModal }] =
@@ -121,7 +120,7 @@ function ProfileOverview({ wishCardsLength }) {
 						<div className="col-12 col-md-6 mb-4 mb-md-0">
 							<span className="text-muted">Number of existing wish cards:</span>
 							<span id="agencyBio" className="mx-2">
-								{wishCardsLength}
+								{agencyStore.wishCardsLength}
 							</span>
 						</div>
 						<div className="col-12 col-md-6">
@@ -524,9 +523,3 @@ function ProfileOverview({ wishCardsLength }) {
 		</MantineProviderWrapper>
 	);
 }
-
-ProfileOverview.propTypes = {
-	wishCardsLength: PropType.number,
-};
-
-export default ProfileOverview;

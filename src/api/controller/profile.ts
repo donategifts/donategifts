@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import AgencyRepository from '../../db/repository/AgencyRepository';
 import DonationRepository from '../../db/repository/DonationRepository';
 import UserRepository from '../../db/repository/UserRepository';
+import WishCardRepository from '../../db/repository/WishCardRepository';
 import config from '../../helper/config';
 import Messaging from '../../helper/messaging';
 
@@ -12,6 +13,7 @@ export default class ProfileController extends BaseController {
 	private userRepository: UserRepository;
 	private donationRepository: DonationRepository;
 	private agencyRepository: AgencyRepository;
+	private wishcardRepository: WishCardRepository;
 
 	constructor() {
 		super();
@@ -19,6 +21,7 @@ export default class ProfileController extends BaseController {
 		this.userRepository = new UserRepository();
 		this.donationRepository = new DonationRepository();
 		this.agencyRepository = new AgencyRepository();
+		this.wishcardRepository = new WishCardRepository();
 	}
 
 	private async sendEmail(email: string, verificationHash: string) {
@@ -124,7 +127,10 @@ export default class ProfileController extends BaseController {
 					return this.handleError(res, 'signup/agencydata');
 				}
 
-				this.sendResponse(res, agency);
+				const wishCards = await this.wishcardRepository.getWishCardByAgencyId(agency?._id);
+				const wishCardsLength = wishCards.length;
+
+				return this.sendResponse(res, { ...agency, wishCardsLength });
 			}
 			return this.handleError(res, 'Unauthorized: Not an agency user');
 		} catch (error) {
