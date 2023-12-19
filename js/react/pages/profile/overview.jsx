@@ -29,15 +29,14 @@ export default function ProfileOverview() {
 					<div
 						className=" fa fa-exclamation-triangle me-2 text-secondary"
 						aria-hidden={true}
-					>
-						Wish card creation feature is disabled for your account. It will be enabled
-						after agency verification. This usually takes 1-2 business days. For a
-						faster verification,
-						<a className="text-secondary" href="/contact">
-							contact us
-						</a>
-						.
-					</div>
+					></div>
+					Wish card creation feature is disabled for your account. It will be enabled
+					after agency verification. This usually takes 1-2 business days. For a faster
+					verification,{' '}
+					<a className="text-secondary" href="/contact">
+						contact us
+					</a>
+					.
 				</div>
 			);
 		} else {
@@ -444,8 +443,8 @@ export default function ProfileOverview() {
 			.then((res) => setAccountStore(res.data.data))
 			.catch(() =>
 				new window.DG.Toast().show(
-					'Could not fetch Agency Details.',
-					window.DG.Toast().styleMap.danger,
+					'Could not fetch Account Details.',
+					new window.DG.Toast().styleMap.danger,
 				),
 			);
 	};
@@ -454,12 +453,12 @@ export default function ProfileOverview() {
 		axios
 			.get('/api/profile/agency')
 			.then((res) => setAgencyStore(res.data.data))
-			.catch(() =>
+			.catch(() => {
 				new window.DG.Toast().show(
 					'Could not fetch Agency Details.',
-					window.DG.Toast().styleMap.danger,
-				),
-			);
+					new window.DG.Toast().styleMap.danger,
+				);
+			});
 	};
 
 	useEffect(() => {

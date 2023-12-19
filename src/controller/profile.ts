@@ -48,20 +48,10 @@ export default class ProfileController extends BaseController {
 
 				const wishCards = await this.wishCardRepository.getWishCardByAgencyId(agency._id);
 				const wishCardsLength = wishCards.length;
-				const draftWishcards = wishCards.filter((wishcard) => wishcard.status === 'draft');
-				const activeWishcards = wishCards.filter(
-					(wishcard) => wishcard.status === 'published',
-				);
-				const inactiveWishcards = wishCards.filter(
-					(wishcard) => wishcard.status === 'donated',
-				);
 
 				this.renderView(res, 'profile/overview', {
 					agency,
 					wishCardsLength,
-					draftWishcards,
-					activeWishcards,
-					inactiveWishcards,
 				});
 			} else {
 				this.renderView(res, 'profile/overview');

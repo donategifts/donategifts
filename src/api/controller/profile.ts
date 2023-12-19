@@ -124,7 +124,7 @@ export default class ProfileController extends BaseController {
 
 				// If user hadn't filled out agency info, redirect them to form
 				if (!agency) {
-					return this.handleError(res, 'signup/agencydata');
+					return this.handleError(res, 'Unauthorized: Agency not registered');
 				}
 
 				const wishCards = await this.wishcardRepository.getWishCardByAgencyId(agency?._id);
