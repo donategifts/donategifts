@@ -140,7 +140,7 @@ function PaymentSuccess() {
 							</Button>
 						</div>
 					</div>
-					<div className="col-sm-12 col-md-6 holiday-bg d-flex flex-column justify-content-center align-items-center rounded-2">
+					<div className="col-sm-12 col-md-6 holiday-bg d-flex flex-column justify-content-center align-items-center rounded-2 py-3 my-3">
 						<p className="display-6">
 							<a href="/profile/donations" target="_blank">
 								Your Donation Summary

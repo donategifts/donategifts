@@ -27,7 +27,7 @@ function Footer() {
 		},
 		{
 			link: '/team',
-			text: 'Our Team',
+			text: 'Our Volunteers',
 			addPipe: true,
 		},
 		{
@@ -37,7 +37,7 @@ function Footer() {
 		},
 		{
 			link: '/community',
-			text: 'Community',
+			text: 'Gifts Received',
 			addPipe: true,
 		},
 		{

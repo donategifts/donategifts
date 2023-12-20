@@ -89,9 +89,24 @@ const BIRTH_YEAR = [
 
 const PARTNER_CAROUSEL_DATA = [
 	{
+		url: 'https://www.childrensaidnyc.org/',
+		img: '/svg/childrens-aid-logo.svg',
+		alt: 'Childrens Aid NYC Agency logo',
+	},
+	{
+		url: 'https://childrenawaitingparents.org/',
+		img: '/img/cap-logo.png',
+		alt: 'CAP Agency logo',
+	},
+	{
+		url: 'https://www.ococtexas.org/',
+		img: '/img/ocog-logo.webp',
+		alt: 'OCOC Texas logo',
+	},
+	{
 		url: 'https://centraltexastableofgrace.org/',
 		img: '/img/central-texas-table-of-grace-logo.jpg',
-		alt: 'Central Texas Table of Grace  logo',
+		alt: 'Central Texas Table of Grace logo',
 	},
 	{
 		url: 'https://onehopeunited.org/',
@@ -103,7 +118,6 @@ const PARTNER_CAROUSEL_DATA = [
 		img: '/img/new-alternatives-logo.png',
 		alt: 'New Alternatives logo',
 	},
-	{ img: '/svg/childrens-aid-logo.svg', alt: 'Childrens Aid NYC Agency logo' },
 	{
 		url: 'http://www.lacasanorte.org/',
 		img: '/img/la-casa-norte-logo.png',
@@ -114,15 +128,36 @@ const PARTNER_CAROUSEL_DATA = [
 		img: '/img/yos-logo-2.jpeg',
 		alt: 'Youth Outreach Services logo',
 	},
-	{ img: '/img/partner-coalition-nyc.jpg', alt: 'Partner Coalition of NewYork City logo' },
+	{
+		url: 'https://www.eaglequestservices.org/',
+		img: '/img/eaglequest-logo.png',
+		alt: 'Eagle Quest logo',
+	},
+	{
+		url: 'https://www.azleway.org/',
+		img: '/img/azleway-logo.png',
+		alt: 'Azleway logo',
+	},
 	{
 		url: 'https://www.fosteringhopefoundation.org',
 		img: '/img/fostering-hope-logo.jpg',
 		alt: 'Fostering Hope logo',
 	},
-	{ img: '/img/you-gotta-believe-logo.jpg', alt: 'You gotta believe logo' },
-	{ img: '/img/penny-lane-logo.png', alt: 'Penny Lane Agency logo' },
-	{ img: '/img/epworth-tran-logo.png', alt: 'Epworth Village logo' },
+	{
+		url: 'https://www.yougottabelieve.org/',
+		img: '/img/you-gotta-believe-logo.jpg',
+		alt: 'You gotta believe logo',
+	},
+	{
+		url: 'https://www.pennylane.org/',
+		img: '/img/penny-lane-logo.png',
+		alt: 'Penny Lane Agency logo',
+	},
+	{
+		url: 'https://www.epworthfamilyresources.org/',
+		img: '/img/epworth-tran-logo.png',
+		alt: 'Epworth Village logo',
+	},
 	{
 		url: 'https://www.echoesofhope.org/',
 		img: '/img/echoes-of-hope-logo.png',

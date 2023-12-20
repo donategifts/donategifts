@@ -5,8 +5,23 @@ block title
 
 block content
     #team
-        #header.text-center.py-5
-            h1.text-primary.cool-font Meet Our Pets
+        .py-5.my-2
+            .text-center
+                h2.text-primary.cool-font The Volunteers
+                p.fs-5.mt-2.mb-0
+                    | DonateGifts is a nonprofit project licensed under the Non-Profit Open Software License 3.0 (NPOSL-3.0).
+                p.fs-5
+                    | As open-source software, our volunteers come from all over the world, dedicating their free time to create a positive impact.
+            .container.pt-2
+                #contributors.row.justify-content-center.flex-wrap.mt-2
+                    each contributor, index in contributors.slice(0, 10)
+                        .contributor.card.border-0.shadow.m-1( style='width: 16rem;' )
+                            a( href=contributor.githubProfile target='_blank' )
+                                img.card-img-top( src=contributor.avatarUrl alt='user image' )
+                            .card-body.text-center
+                                h4.card-title= contributor.name
+        #header.text-center.pt-5.pb-2
+            h2.text-primary.cool-font Meet Our Pets
             .fs-5.fw-light Say hello to our adorable pets
 
         .container
@@ -20,16 +35,3 @@ block content
                 .col-md-4
                     img.img-fluid.rounded.mb-4( src='/img/team/stacy-chicago-dog.png' alt='stacy-dog-2' loading='lazy' )
                     img.img-fluid.rounded.mb-4.mb-md-0( src='/img/team/tokikko-cat-min.jpg' alt='tokikko-cat' loading='lazy' )
-
-            .py-5.my-2
-                .text-center
-                    h2.text-primary.cool-font The Volunteers
-                    .fs-5
-                        | Due to recent privacy concerns, the volunteer information is no longer available publicly.
-            //-     #contributors.row.justify-content-center.flex-wrap.mt-2
-            //-         for contributor in contributors
-            //-             .contributor.card.border-0.shadow.m-1( style='width: 16rem;' )
-            //-                 a( href=contributor.githubProfile target='_blank' )
-            //-                     img.card-img-top( src=contributor.avatarUrl alt='user image' )
-            //-                 .card-body.text-center
-            //-                     h4.card-title= contributor.name
