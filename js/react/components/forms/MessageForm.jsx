@@ -72,6 +72,7 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user, donorId }
 					data={defaultMessages}
 					disabled={customMessage}
 					error={messageError}
+					className="mb-sm-3"
 				/>
 				{donorId && userId === donorId ? (
 					<Textarea
@@ -86,6 +87,7 @@ const MessageForm = ({ defaultMessages, wishcard, onMessageSend, user, donorId }
 						}
 						onChange={handleInput}
 						disabled={selectedMessage}
+						className="mb-sm-3"
 					/>
 				) : null}
 				<Button radius="md" className="w-sm-100" type="submit" mt="md" size="lg">

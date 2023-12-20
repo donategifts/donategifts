@@ -43,7 +43,7 @@ function NavBar({ user, agency }) {
 							</li>
 							<li className="nav-item">
 								<a className="nav-link" href="/community">
-									Community
+									Gifts Received
 								</a>
 							</li>
 							{!user ? (
