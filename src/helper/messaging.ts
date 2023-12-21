@@ -414,6 +414,14 @@ export default class Messaging {
 			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'A new agency has registered! <@766721399497687042>';
 
+			let description = bio;
+			description += '\n\n';
+			description += website;
+			description += '\n\n';
+			description += `Please check their website before verifying it!`;
+			description += '\n\n';
+			description += `Agency Id: ${id}`;
+
 			await axios({
 				method: 'POST',
 				url: config.DISCORD.AGENCY_REGISTRATION_WEBHOOK_URL,
@@ -428,15 +436,7 @@ export default class Messaging {
 								name,
 								url: website,
 							},
-							description: `
-							${bio}
-
-							${website}
-							
-							Please check their website before verifying it!
-
-							Agency Id: ${id}
-						`,
+							description,
 							color: 16776960, // #FFFF00
 						},
 					],
@@ -456,6 +456,12 @@ export default class Messaging {
 			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'A new message from our contact form! <@766721399497687042>';
 
+			let description = email;
+			description += '\n';
+			description += subject;
+			description += '\n\n';
+			description += message;
+
 			return await axios({
 				method: 'POST',
 				url: config.DISCORD.CONTACT_WEBHOOK_URL,
@@ -469,12 +475,7 @@ export default class Messaging {
 							author: {
 								name,
 							},
-							description: `
-						${email}
-						${subject}
-
-						${message}
-                        `,
+							description,
 							color: 1752220, // #1ABC9C
 						},
 					],
@@ -500,6 +501,17 @@ export default class Messaging {
 			let content = config.NODE_ENV !== 'production' ? '[TEST] ' : '';
 			content += 'One of our wish cards received a donation! <@766721399497687042>';
 
+			let description = `${user} donated to ${child} via ${service}`;
+			description += '\n\n';
+			description += item;
+			description += '\n';
+			description += url;
+			description += '\n\n';
+			description += `$${amount} was covered.`;
+			description += '\n';
+			description +=
+				userDonation > 0 ? `We received something too: **$${userDonation}**` : '';
+
 			return await axios({
 				method: 'POST',
 				url: config.DISCORD.STATUS_WEBHOOK_URL,
@@ -513,15 +525,7 @@ export default class Messaging {
 							author: {
 								user,
 							},
-							description: `
-						${user} donated to ${child} via ${service}
-
-						${item}
-						${url}
-
-						$${amount} was covered.
-						${userDonation > 0 ? `We received something too: **$${userDonation}**` : ''}
-                        `,
+							description,
 							color: 5793266, // #5865F2
 						},
 					],
