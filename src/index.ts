@@ -159,7 +159,9 @@ const app = express();
 	}
 
 	// ERROR PAGE
-	app.get('*', (_req, res) => {
+	app.get('*', (req, res) => {
+		logger.warn(`[404] ${req.method} ${req.ip} path: ${req.originalUrl}`);
+
 		return res.status(404).render('error/404');
 	});
 
