@@ -4,8 +4,8 @@
   // stupid default formatter
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": false
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
   },
   "editor.tabSize": 4,
   "search.exclude": {

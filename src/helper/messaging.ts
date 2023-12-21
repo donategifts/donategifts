@@ -429,14 +429,14 @@ export default class Messaging {
 								url: website,
 							},
 							description: `
-								${bio}
+							${bio}
 
-								${website}
-								
-								Please check their website before verifying it!
+							${website}
+							
+							Please check their website before verifying it!
 
-								Agency Id: ${id}
-                        	`,
+							Agency Id: ${id}
+						`,
 							color: 16776960, // #FFFF00
 						},
 					],
@@ -470,10 +470,10 @@ export default class Messaging {
 								name,
 							},
 							description: `
-                            ${email}
-                            ${subject}
+						${email}
+						${subject}
 
-                            ${message}
+						${message}
                         `,
 							color: 1752220, // #1ABC9C
 						},
@@ -514,13 +514,13 @@ export default class Messaging {
 								user,
 							},
 							description: `
-                            ${user} donated to ${child} via ${service}
+						${user} donated to ${child} via ${service}
 
-                            ${item}
-                            ${url}
+						${item}
+						${url}
 
-                            $${amount} was covered.
-                            ${userDonation > 0 ? `We received something too: $${userDonation}` : ''}
+						$${amount} was covered.
+						${userDonation > 0 ? `We received something too: **$${userDonation}**` : ''}
                         `,
 							color: 5793266, // #5865F2
 						},
