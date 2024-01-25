@@ -67,3 +67,6 @@ window.WishcardsAdministration = WishcardsAdministration;
 
 import WishCards from './pages/wishcards.jsx';
 window.WishCards = WishCards;
+
+import ProfileOverview from './pages/profile/overview.jsx';
+window.ProfileOverview = ProfileOverview;
