@@ -3,3 +3,4 @@ dist
 .git
 npm-debug.log
 docker-compose.yml
+v2
