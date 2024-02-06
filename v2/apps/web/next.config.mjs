@@ -4,7 +4,6 @@ const config = {
     transpilePackages: [
         'ui',
     ],
-    output: 'standalone',
     eslint: {
         ignoreDuringBuilds: true,
     },
