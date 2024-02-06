@@ -1,0 +1,25 @@
+{
+    "name": "donate-gifts",
+    "version": "1.0.0",
+    "private": true,
+    "engines": {
+        "node": "20.11.0",
+        "pnpm": "8.15.1"
+    },
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "ui:add": "pnpm --filter ui ui:add"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "2.6.4",
+        "@turbo/gen": "1.12.2",
+        "eslint": "8.56.0",
+        "eslint-config-next": "14.1.0",
+        "eslint-config-turbo": "1.12.2",
+        "eslint-plugin-format": "0.1.0",
+        "eslint-plugin-react": "7.33.2",
+        "turbo": "1.12.2"
+    }
+}

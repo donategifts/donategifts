@@ -1,0 +1,20 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "target": "es6",
+        "jsx": "react-jsx",
+        "lib": [
+            "ES2015",
+            "DOM"
+        ],
+        "baseUrl": ".",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "paths": {
+            "@ui/*": ["./*"],
+            "@ui/componets/ui*": ["./components/ui*"]
+        }
+    },
+    "include": ["."],
+    "exclude": ["dist", "build", "node_modules"]
+}

@@ -3,5 +3,6 @@
     "rules": {
         "scss/no-global-function-names": null,
         "no-descending-specificity": null
-    }
+    },
+    "ignoreFiles": "v2/**/*.css"
 }

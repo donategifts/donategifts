@@ -1,0 +1,79 @@
+version: '3.8'
+services:
+    postgres:
+        image: postgres:14.1-alpine
+        container_name: postgres
+        environment:
+            - POSTGRES_DB=donategifts
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - PGDATA=/data/donategifts
+        ports:
+            - 5432:5432
+        volumes:
+            - postgres:/data/db
+
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        command: listen --api-key $${STRIPE_SECRET_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to host.docker.internal:3000/payment/webhook/
+        env_file:
+            - configs/config_stripe_cli.env
+    # working but unfortunately "watch" shows no logs
+    # web:
+    #     build:
+    #         dockerfile: dockerfiles/dev/web.Dockerfile
+    #     ports:
+    #     - "3000:3000"
+    #     depends_on:
+    #     - api
+    #     develop:
+    #         watch:
+    #             -
+    #                 path: ./apps/web
+    #                 action: sync # Synchronize the files on your host ./apps/web with your containers /app/apps/web when any file changes in that path
+    #                 target: /app/apps/web
+    #                 ignore:
+    #                     - node_modules/
+        
+    #             -
+    #                 path: ./packages/ui
+    #                 action: sync # Same as above but with component library
+    #                 target: /app/packages/ui
+    #                 ignore:
+    #                     - node_modules/
+        
+    #             -
+    #                 path: package.json
+    #                 action: rebuild # Rebuild if the package.json changes
+        
+    #             -
+    #                 path: ./apps/web/package.json
+    #                 action: rebuild
+
+    # api:
+    #     build:
+    #         dockerfile: dockerfiles/dev/api.Dockerfile
+    #     ports:
+    #         - "3001:3001"
+    #     depends_on:
+    #         - postgres
+    #     develop:
+    #         watch:
+    #             -
+    #                 path: ./apps/api 
+    #                 action: sync # Synchronize the files on your host ./apps/api with your containers /app/apps/api when any file changes in that path
+    #                 target: /app/apps/api
+    #                 ignore:
+    #                     - node_modules/
+
+    #             -
+    #                 path: package.json
+    #                 action: rebuild # Rebuild container if the package.json changes
+
+    #             -
+    #                 path: ./apps/api/package.json
+    #                 action: rebuild
+
+volumes:
+    postgres:
