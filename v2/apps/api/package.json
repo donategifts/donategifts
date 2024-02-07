@@ -8,8 +8,10 @@
     },
     "dependencies": {
         "@hono/node-server": "1.7.0",
+        "@hono/zod-validator": "0.1.11",
         "database": "workspace:*",
-        "hono": "3.12.11"
+        "hono": "3.12.11",
+        "zod": "3.22.4"
     },
     "devDependencies": {
         "tsx": "4.7.0",

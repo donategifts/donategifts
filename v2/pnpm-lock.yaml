@@ -38,12 +38,18 @@ importers:
       '@hono/node-server':
         specifier: 1.7.0
         version: 1.7.0
+      '@hono/zod-validator':
+        specifier: 0.1.11
+        version: 0.1.11(hono@3.12.11)(zod@3.22.4)
       database:
         specifier: workspace:*
         version: link:../../packages/database
       hono:
         specifier: 3.12.11
         version: 3.12.11
+      zod:
+        specifier: 3.22.4
+        version: 3.22.4
     devDependencies:
       tsx:
         specifier: 4.7.0
@@ -563,6 +569,16 @@ packages:
   /@hono/node-server@1.7.0:
     resolution: {integrity: sha512-W+Gy16xWZMgB8hYU4XInCwE746y8V3VDTH1J3+EhUBqbCzk4zEXo1p6dv3BiCD5O6Z4aHuoCW+mRKoJgUn3ZCA==}
     engines: {node: '>=18.14.1'}
+    dev: false
+
+  /@hono/zod-validator@0.1.11(hono@3.12.11)(zod@3.22.4):
+    resolution: {integrity: sha512-PQXeHUP0+36qpRt8yfeD7N2jbK3ETlGvSN6dMof/HwUC/APRokQRjpXZm4rrlG71Ft0aWE01+Bm4XejqPie5Uw==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+    dependencies:
+      hono: 3.12.11
+      zod: 3.22.4
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -5698,3 +5714,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false

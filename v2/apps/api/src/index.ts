@@ -2,20 +2,30 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { HTTPException } from 'hono/http-exception';
+import index from './routes/index';
 
 const app = new Hono();
 
 app.use(
     '*',
     cors({
-        origin: ['http://localhost:3000'],
+        origin: (origin) => {
+            return origin.endsWith('.donate-gifts.com') ? origin : 'http://localhost:3000';
+        },
     }),
 );
 
 app.use(logger());
 
-app.get('/hello', (c) => {
-    return c.json({ message: 'hello, World!' });
+app.route('/', index);
+
+app.onError((err, c) => {
+    if (err instanceof HTTPException) {
+        return err.getResponse();
+    }
+
+    return c.json({ statusText: 'Internal Server Error' }, 500);
 });
 
 serve({
