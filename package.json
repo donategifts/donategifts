@@ -103,7 +103,7 @@
 		"css-loader": "6.8.1",
 		"eslint-config-slurp-config": "1.1.4",
 		"eslint-plugin-react": "7.33.1",
-		"gulp": "4.0.2",
+		"gulp": "5.0.0",
 		"gulp-autoprefixer": "8.0.0",
 		"gulp-concat": "2.6.1",
 		"gulp-dart-sass": "1.1.0",
